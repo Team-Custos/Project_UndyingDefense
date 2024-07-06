@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class UD_Ingame_InputSystem : MonoBehaviour
 {
+    public static UD_Ingame_InputSystem inst;
+
+    private void Awake()
+    {
+        inst = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +21,11 @@ public class UD_Ingame_InputSystem : MonoBehaviour
     void Update()
     {
         
+    }
+
+
+    public void TileClick()
+    {
+        Debug.LogWarning("OverTesting!");
     }
 }
