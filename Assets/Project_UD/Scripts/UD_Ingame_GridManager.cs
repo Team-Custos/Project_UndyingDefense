@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class UD_Ingame_GridManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class UD_Ingame_GridManager : MonoBehaviour
 
     public GameObject TILEPARENT;
 
-    GameObject[] Tiles_Obj;
+    public GameObject[] Tiles_Obj;
     int Tiles_idx;
 
     public float tile_Offset;
@@ -49,6 +50,7 @@ public class UD_Ingame_GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, TILEPARENT.transform);
                 spawnedTile.name = $"Tile {x} {y}";
+                spawnedTile.GetComponent<UD_Ingame_GridTile>().GridPos = new Vector2(x, y);
 
                 spawnedTile.transform.position = new Vector3(x * tile_Offset, 0, y * tile_Offset);
 

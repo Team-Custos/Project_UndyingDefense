@@ -8,8 +8,20 @@ public enum UnitType
     Enemy,
 }
 
+public interface IState
+{
+    public void EnterState();
+
+    public void UpdateState();
+    public void ExitState();
+
+}
+
 public class UD_Ingame_UnitCtrl : MonoBehaviour
 {
+    
+
+
     MeshRenderer MeshRenderer;
 
 
