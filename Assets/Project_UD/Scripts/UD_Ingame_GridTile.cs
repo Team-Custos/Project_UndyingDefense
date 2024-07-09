@@ -18,6 +18,8 @@ public class UD_Ingame_GridTile : MonoBehaviour
     MeshRenderer MeshR;
 
     bool mouseHover = false;
+    bool isUnitPlaced = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,9 +60,10 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GAMEMANAGER.AllyUnitSetMode)
+        if (GAMEMANAGER.AllyUnitSetMode && !isUnitPlaced)
         {
             UD_Ingame_UnitSpawnManager.inst.UnitSpawn(true, this.transform.position.x, this.transform.position.z);
+            isUnitPlaced = true;
         }
         else
         {

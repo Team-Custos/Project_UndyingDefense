@@ -2,11 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitType
-{
-    Ally,
-    Enemy,
-}
+
 
 public interface IState
 {
@@ -17,10 +13,10 @@ public interface IState
 
 }
 
+//TODO : 유닛 상태 변수 추가
+
 public class UD_Ingame_UnitCtrl : MonoBehaviour
 {
-    
-
 
     MeshRenderer MeshRenderer;
 
@@ -42,17 +38,23 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (UnitType)
-        {
-            case UnitType.Enemy:
-                MeshRenderer.material.color = colorEnemy;
-                break;
-            case UnitType.Ally:
-                MeshRenderer.material.color = colorAlly;
-                break;
+        MeshRenderer.material.color = colorAlly;
+        //switch (UnitType)
+        //{
+        //    case UnitType.Enemy:
+        //        MeshRenderer.material.color = colorEnemy;
+        //        break;
+        //    case UnitType.Ally:
+        //        MeshRenderer.material.color = colorAlly;
+        //        break;
 
-        }
+        //}
 
 
+    }
+
+    void Init(UnitSpawnData data)
+    {
+        
     }
 }

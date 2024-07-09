@@ -20,7 +20,7 @@ public class UD_Ingame_GridManager : MonoBehaviour
     public float tile_Offset;
 
 
-
+ 
     private void Start()
     {
         GenerateGrid();
@@ -29,6 +29,8 @@ public class UD_Ingame_GridManager : MonoBehaviour
     private void Update()
     {
         Tiles_Obj = GameObject.FindGameObjectsWithTag("Tile");
+
+        
 
     }
 

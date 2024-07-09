@@ -2,9 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+
+public class UnitSpawnData
+{
+    public int spriteType;
+    public float spawnTime;
+    public int HP;
+    public float speed;
+    public UnitType unitType;
+
+}
+
+public enum UnitType
+{
+    Basic,
+    what
+}
+
+
 public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 {
     public static UD_Ingame_UnitSpawnManager inst;
+
+    public UnitSpawnData[] spawnData;
 
     public GameObject Test_Ally;
     public GameObject Test_Enemy;
@@ -22,6 +43,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         
     }
 
+    //¿Ø¥÷ º“»Ø
     public void UnitSpawn(bool IsAlly , float X, float Y)
     {
         if (IsAlly)

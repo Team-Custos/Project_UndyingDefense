@@ -5,6 +5,8 @@ using UnityEngine;
 public class UD_Ingame_GameManager : MonoBehaviour
 {
     public static UD_Ingame_GameManager inst;
+    public UD_Ingame_GridManager gridManager;
+   
 
     public bool AllyUnitSetMode = false;
 

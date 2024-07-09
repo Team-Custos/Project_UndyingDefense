@@ -15,6 +15,9 @@ public class UD_Ingame_InputSystem : MonoBehaviour
     public bool IsPressedSecondaryButton = false;
     public bool IsPressedWheelButton = false;
 
+    public bool IsWheelScrollUp = false;
+    public bool IsWheelScrollDown = false;
+
     private void Awake()
     {
         inst = this;
@@ -37,6 +40,10 @@ public class UD_Ingame_InputSystem : MonoBehaviour
         IsPressedPrimaryButton = Input.GetMouseButtonDown(0);
         IsPressedSecondaryButton = Input.GetMouseButtonDown(1);
         IsPressedWheelButton = Input.GetMouseButtonDown(2);
+
+        IsWheelScrollUp = Input.mouseScrollDelta.y > 0;
+        IsWheelScrollDown = Input.mouseScrollDelta.y < 0;
+
     }
 
 }
