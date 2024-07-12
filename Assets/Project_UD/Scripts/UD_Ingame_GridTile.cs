@@ -27,11 +27,18 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GAMEMANAGER = UD_Ingame_GameManager.inst;
         MeshR = GetComponent<MeshRenderer>();
         Selected = false;
+
+        GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
+
+        this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
+
         if (Selected)
         {
             MeshR.material.color = colorSelected;

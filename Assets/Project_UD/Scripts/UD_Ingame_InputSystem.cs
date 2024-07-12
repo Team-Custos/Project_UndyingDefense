@@ -32,10 +32,32 @@ public class UD_Ingame_InputSystem : MonoBehaviour
     void Start()
     {
         
+
+
+
     }
 
     // Update is called once per frame
     private void Update()
+    {
+        _inputInit();
+
+        if (IsPressedPrimaryButton)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                //오브젝트 클릭했을때
+            }
+
+
+        }
+
+    }
+
+    void _inputInit()
     {
         IsPressedPrimaryButton = Input.GetMouseButtonDown(0);
         IsPressedSecondaryButton = Input.GetMouseButtonDown(1);
@@ -43,7 +65,6 @@ public class UD_Ingame_InputSystem : MonoBehaviour
 
         IsWheelScrollUp = Input.mouseScrollDelta.y > 0;
         IsWheelScrollDown = Input.mouseScrollDelta.y < 0;
-
     }
 
 }
