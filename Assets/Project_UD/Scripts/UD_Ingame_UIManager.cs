@@ -8,6 +8,9 @@ public class UD_Ingame_UIManager : MonoBehaviour
 {
     public Button allyUnitSetMode = null;
 
+    public GameObject gitTest = null;
+
+
 
     // Start is called before the first frame update
     void Start()
