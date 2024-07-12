@@ -8,7 +8,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
 {
     public Button allyUnitSetMode = null;
 
-    public int gitTest = 0;
+    public int gitTest1 = 0;
 
 
 
