@@ -10,18 +10,15 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
     public Button allyUnitSetMode = null;
 
-<<<<<<< Updated upstream
     public int gitTest1 = 0;
 
 
-=======
     public GameObject unitDeployCheckBox = null;
 
     private void Awake()
     {
         instance = this;
     }
->>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
