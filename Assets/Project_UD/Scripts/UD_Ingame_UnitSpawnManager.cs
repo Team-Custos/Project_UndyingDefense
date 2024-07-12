@@ -50,6 +50,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         {
             GameObject Obj = Instantiate(Test_Ally);
             Obj.transform.position = new Vector3(X, 0, Y);
+            UD_Ingame_UIManager.instance.CreateDeployCheckBox(Obj.transform.position);
         }
         else
         {

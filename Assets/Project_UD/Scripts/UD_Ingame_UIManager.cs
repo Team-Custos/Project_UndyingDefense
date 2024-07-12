@@ -6,11 +6,22 @@ using DG.Tweening;
 
 public class UD_Ingame_UIManager : MonoBehaviour
 {
+    public static UD_Ingame_UIManager instance;
+
     public Button allyUnitSetMode = null;
 
+<<<<<<< Updated upstream
     public int gitTest1 = 0;
 
 
+=======
+    public GameObject unitDeployCheckBox = null;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+>>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +47,11 @@ public class UD_Ingame_UIManager : MonoBehaviour
             allyUnitSetMode.GetComponentInChildren<Text>().text = "Ally Unit Set Mode ON";
         }
 
+    }
 
+    public void CreateDeployCheckBox(Vector3 pos)
+    {
+        GameObject unitDeploy = Instantiate(unitDeployCheckBox) as GameObject;
+        unitDeploy.transform.position = pos;
     }
 }
