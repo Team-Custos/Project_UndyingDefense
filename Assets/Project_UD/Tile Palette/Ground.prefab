@@ -76,8 +76,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7831380361987563309}
   - {fileID: 6066023558478846983}
+  - {fileID: 6820238844019677398}
   m_Father: {fileID: 6210408694435106103}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &1161285240176120958
@@ -127,7 +127,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 1
-    m_Data: {r: 0.7769792, g: 0.36616656, b: 0.42639297, a: 1}
+    m_Data: {r: 0.8295145, g: 0.45451257, b: 0.5033691, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -201,7 +201,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!1001 &6836758821319478108
+--- !u!1001 &7377306682016221302
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -274,13 +274,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!4 &7831380361987563309 stripped
+--- !u!4 &6066023558478846983 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
     type: 3}
-  m_PrefabInstance: {fileID: 6836758821319478108}
+  m_PrefabInstance: {fileID: 7377306682016221302}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7377306682016221302
+--- !u!1001 &7848074345592392871
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -353,13 +353,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!4 &6066023558478846983 stripped
+--- !u!4 &6820238844019677398 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
     type: 3}
-  m_PrefabInstance: {fileID: 7377306682016221302}
+  m_PrefabInstance: {fileID: 7848074345592392871}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6034736638491815529
+--- !u!114 &2562063124440963018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -17,8 +17,10 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     MeshRenderer MeshR;
 
+    public GameObject currentPlacedUnit;
+
     bool mouseHover = false;
-    bool isUnitPlaced = false;
+    public bool isPlaceable = true;
 
 
     // Start is called before the first frame update
@@ -65,19 +67,21 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GetComponent<MeshRenderer>().material.color = colorDefault;
     }
 
+
+
     private void OnMouseDown()
     {
-        if (GAMEMANAGER.AllyUnitSetMode && !isUnitPlaced)
+        if (GAMEMANAGER.AllyUnitSetMode && isPlaceable)
         {
-            UD_Ingame_UnitSpawnManager.inst.UnitSpawn(true, this.transform.position.x, this.transform.position.z);
-            isUnitPlaced = true;
+            
+            isPlaceable = false;
         }
         else
         {
             Selected = !Selected;
         }
 
-        
-        Debug.Log(gameObject.name + " Selected");
+
+        //Debug.Log(gameObject.name + " Selected");
     }
 }

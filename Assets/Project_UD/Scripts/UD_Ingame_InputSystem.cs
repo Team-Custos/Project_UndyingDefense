@@ -6,34 +6,36 @@ using UnityEngine;
 public class UD_Ingame_InputSystem : MonoBehaviour
 {
 
-    public static UD_Ingame_InputSystem inst;
+    public static UD_Ingame_InputSystem Instance { get; private set; }
 
     public float AxisX = 0;
     public float AxisY = 0;
 
     public bool IsPressedPrimaryButton = false;
     public bool IsPressedSecondaryButton = false;
+    public bool IsPressingSecondaryButton = false;
     public bool IsPressedWheelButton = false;
 
     public bool IsWheelScrollUp = false;
     public bool IsWheelScrollDown = false;
 
+    public System.Action OnPrimaryPerformed;
+    public System.Action OnSecondaryPerformed;
+    public System.Action OnWheelButtonPerformed;
+
     private void Awake()
     {
-        inst = this;
+        Instance = this;
     }
 
     void OnDestroy()
     {
-        inst = null;
+        //Instance = null;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
-
-
 
     }
 
@@ -41,30 +43,35 @@ public class UD_Ingame_InputSystem : MonoBehaviour
     private void Update()
     {
         _inputInit();
-
-        if (IsPressedPrimaryButton)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                //오브젝트 클릭했을때
-            }
-
-
-        }
-
     }
 
     void _inputInit()
     {
         IsPressedPrimaryButton = Input.GetMouseButtonDown(0);
+        if (IsPressedPrimaryButton)
+        {
+            OnPrimaryPerformed?.Invoke();
+        }
+
         IsPressedSecondaryButton = Input.GetMouseButtonDown(1);
+        if (IsPressedSecondaryButton)
+        {
+            OnSecondaryPerformed?.Invoke();
+        }
+        IsPressingSecondaryButton = Input.GetMouseButton(2);
+
         IsPressedWheelButton = Input.GetMouseButtonDown(2);
+        if (IsPressedWheelButton)
+        {
+            OnWheelButtonPerformed?.Invoke();
+        }
 
         IsWheelScrollUp = Input.mouseScrollDelta.y > 0;
         IsWheelScrollDown = Input.mouseScrollDelta.y < 0;
+
+        AxisX = Input.GetAxisRaw("Horizontal");
+        AxisY = Input.GetAxisRaw("Vertical");
+
     }
 
 }
