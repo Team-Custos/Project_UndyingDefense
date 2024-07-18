@@ -14,8 +14,11 @@ public class UD_UnitDeckManager : MonoBehaviour
     private Sprite emptyDeckImageSprite = null;
     private Color emptyDeckImageColor;
 
-    private bool[] isDeckEmpty;
+    private bool[] isUnitDeckEmpty;
     private bool[] isUnitSelect;
+
+    private int[] unitDeckIndex;
+
 
 
 
@@ -25,22 +28,42 @@ public class UD_UnitDeckManager : MonoBehaviour
         emptyDeckImageSprite = unitDeckList[0].sprite;
         emptyDeckImageColor = unitDeckList[0].color;
 
-        isDeckEmpty = new bool[unitDeckList.Length];
+        isUnitDeckEmpty = new bool[unitDeckList.Length];
 
-        for (int i = 0; i < isDeckEmpty.Length; i++)
+        unitDeckIndex = new int[unitDeckList.Length];
+
+        for (int i = 0; i < isUnitDeckEmpty.Length; i++)
         {
-            isDeckEmpty[i] = true;
+            isUnitDeckEmpty[i] = true;
+            unitDeckIndex[i] = -1;
+        }
+
+        isUnitSelect = new bool[unitList.Length];
+
+        for (int i = 0; i < isUnitSelect.Length; i++)
+        {
+            isUnitSelect[i] = false;
         }
 
         for (int i = 0; i < unitListButton.Length; i++)
         {
-            int unitIndex = i;
+            
             if (unitListButton[i] != null)
             {
+                int unitIndex = i;
                 unitListButton[i].onClick.AddListener(() => _addUnitToDeck(unitIndex));
             }
         }
 
+        for (int i = 0; i < unitDeckButton.Length; i++)
+        {
+
+            if (unitDeckButton[i] != null)
+            {
+                int deckIndex = i;
+                unitDeckButton[i].onClick.AddListener(() => _clearUnitDeck(deckIndex));
+            }
+        }
 
 
     }
@@ -53,29 +76,37 @@ public class UD_UnitDeckManager : MonoBehaviour
 
     void _addUnitToDeck(int unitIndex)
     {
-        // 유닛 중복 추가 불가능 구현 중
-        //for (int i = 0; i < unitDeckList.Length; i++)
-        //{
-        //    if (!isDeckEmpty[i] && unitDeckList[i].sprite == unitList[unitIndex].sprite)
-        //    {
-        //        return;
-        //    }
-        //}
-
-        for (int i = 0; i < unitDeckList.Length; i++)
+        if (isUnitSelect[unitIndex])
         {
-            if (isDeckEmpty[i])
+            Debug.Log("유닛 중복");
+            return;
+        }
+
+
+        for (int i = 0; i < isUnitDeckEmpty.Length; i++)
+        {
+            if (isUnitDeckEmpty[i])
             {
                 unitDeckList[i].sprite = unitList[unitIndex].sprite;
                 unitDeckList[i].color = unitList[unitIndex].color;
-                isDeckEmpty[i] = false;
+                isUnitDeckEmpty[i] = false;
+                isUnitSelect[unitIndex] = true;
+                unitDeckIndex[i] = unitIndex;
                 break;
             }
         }
     }
 
-    void _clearUnitDeck(int unitIndex)
+    void _clearUnitDeck(int deckIndex)
     {
-
+        int unitIndex = unitDeckIndex[deckIndex];
+        if (unitIndex != -1)
+        {
+            unitDeckList[deckIndex].sprite = emptyDeckImageSprite;
+            unitDeckList[deckIndex].color = emptyDeckImageColor;
+            isUnitDeckEmpty[deckIndex] = true;
+            isUnitSelect[unitIndex] = false;
+            unitDeckIndex[deckIndex] = -1;
+        }
     }
 }
