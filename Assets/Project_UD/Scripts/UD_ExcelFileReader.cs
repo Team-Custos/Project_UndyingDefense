@@ -18,7 +18,7 @@ public class UD_ExcelFileReader : MonoBehaviour
         }
 
         List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath);
-        unitDataManager.SetUnitData(unitDatas);
+       unitDataManager.SetUnitData(unitDatas);
     }
 
 
@@ -64,11 +64,10 @@ public class UD_ExcelFileReader : MonoBehaviour
                 int hp = int.Parse(dataValues[5]);
                 string material = dataValues[6];
 
-                UD_UnitDataManager.UnitData unit = new UD_UnitDataManager.UnitData(name, type, level, hp, material);
-                unitDatas.Add(unit);
+                UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(name, type, level, hp, material);
+                unitDatas.Add(unitData);
             }
         }
-        Debug.Log("파일읽기 끝");
         return unitDatas;
     }
 
