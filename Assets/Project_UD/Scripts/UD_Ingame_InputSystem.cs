@@ -58,7 +58,7 @@ public class UD_Ingame_InputSystem : MonoBehaviour
         {
             OnSecondaryPerformed?.Invoke();
         }
-        IsPressingSecondaryButton = Input.GetMouseButton(2);
+        IsPressingSecondaryButton = Input.GetMouseButton(1);
 
         IsPressedWheelButton = Input.GetMouseButtonDown(2);
         if (IsPressedWheelButton)

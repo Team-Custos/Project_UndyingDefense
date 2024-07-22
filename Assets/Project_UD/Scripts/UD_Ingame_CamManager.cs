@@ -1,43 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UD_Ingame_CamManager : MonoBehaviour
 {
     UD_Ingame_InputSystem inputSystem;
 
-    float camPosition_X = 0;
-    float camPosition_Z = 0;
 
-    public float camPosition_Y = 0;
+    public float camZoomValue = 0.5f;
 
     public float moveSpeed = 2;
-    Vector3 dragOrigin;
+
+    private bool _userMoveInput; // 현재 조작을 하고있는지 확인을 위한 변수
+    private Vector3 _startPosition;  // 입력 시작 위치를 기억
+    private Vector3 _directionForce; // 조작을 멈췄을때 서서히 감속하면서 이동 시키기 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        inputSystem = UD_Ingame_InputSystem.Instance;   
+        inputSystem = UD_Ingame_InputSystem.Instance;
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
         MouseMove();
         KeyboardMove();
-        
+        ZoomCamera();
 
 
-        if (inputSystem.IsWheelScrollUp)
-        {
-            camPosition_Y += 0.5f;
-            
-        }
-        else if (inputSystem.IsWheelScrollDown)
-        {
-            camPosition_Y -= 0.5f;
-        }
+
+
     }
 
     private void MoveCamera(float xInput, float zInput)
@@ -48,26 +43,60 @@ public class UD_Ingame_CamManager : MonoBehaviour
         transform.position = transform.position + new Vector3(xMove, 0, zMove);
     }
 
+    void ZoomCamera()
+    {
+        if (inputSystem.IsWheelScrollUp)
+        {
+            transform.position = transform.position + new Vector3(0, camZoomValue, 0);
+        }
+        else if (inputSystem.IsWheelScrollDown)
+        {
+            transform.position = transform.position - new Vector3(0, camZoomValue, 0);
+        }
+    }
+
+
+
     // Get mouse drag inputs
     void MouseMove()
     {
+        var mouseWorldPosition = GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+
         if (inputSystem.IsPressedSecondaryButton)
         {
-            dragOrigin = transform.position;
-            dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            _userMoveInput = true;
+            _startPosition = mouseWorldPosition;
+            _directionForce = Vector2.zero;
         }
 
-        if (inputSystem.IsPressingSecondaryButton)
+        else if (inputSystem.IsPressingSecondaryButton)
         {
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;
-            Vector3 desirePos = dragOrigin + -1 * new Vector3(pos.x, 0, pos.y) * moveSpeed;
-            Vector3 move = desirePos - transform.position;
-            MoveCamera(move.x, move.z);
+            if (!_userMoveInput)
+            {
+                _userMoveInput = true;
+                _startPosition = mouseWorldPosition;
+                _directionForce = Vector2.zero;
+                return;
+            }
+
+            _directionForce = _startPosition - mouseWorldPosition;
+        }
+        else
+        {
+            _userMoveInput = false;
+        }
+    }
+    private void UpdateCameraPosition()
+    {
+        // 이동 수치가 없으면 아무것도 안함
+        if (_directionForce == Vector3.zero)
+        {
+            return;
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-        }
+        var currentPosition = transform.position;
+        var targetPosition = currentPosition + _directionForce;
+        transform.position = Vector3.Lerp(currentPosition, targetPosition, 0.5f);
     }
 
     void KeyboardMove()

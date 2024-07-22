@@ -61,7 +61,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     GridTile.Selected = !GridTile.Selected;
                 }
             }
-            //유닛 클릭했을때
+            //유닛 클릭했을 때
             else if (clickedObj.tag == UD_CONSTANT.TAG_UNIT)
             {
                 UD_Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<UD_Ingame_UnitCtrl>();
@@ -79,18 +79,31 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
 
             }
+            //적 클릭했을 때
             else if (clickedObj.tag == UD_CONSTANT.TAG_ENEMY)
             {
+                UD_Ingame_EnemyCtrl Enemy = clickedObj.GetComponent<UD_Ingame_EnemyCtrl>();
+                Enemy.isSelected = !Enemy.isSelected;
+
                 if (selectedUnit != null)
                 {
                     UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
-                    AllyUnit.moveTargetPos = new Vector3(clickedWorldPos.x, 0, clickedWorldPos.z);
                     AllyUnit.targetEnemy = clickedObj.gameObject;
+
+                    if (AllyUnit.Unit_Mode == Mode.Free)
+                    {
+                        AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
+                        
+                    }
+
+                    
+                    Enemy.isSelected = false;
 
                     selectedUnit = null;
                 }
             }
+            //지형 클릭했을 때
             else if (clickedObj.tag == UD_CONSTANT.TAG_GROUND)
             {
                 if (clickedPosIndicator != null)
@@ -103,9 +116,14 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 {
                     UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
-                    selectedUnit = null;
+                    
+                    if (AllyUnit.Unit_Mode == Mode.Free)
+                    {
+                        AllyUnit.moveTargetPos = new Vector3(clickedWorldPos.x, 0, clickedWorldPos.z);
+                        //AllyUnit.fsm.ChangeState(State.Move);
+                    }
 
-                    AllyUnit.moveTargetPos = new Vector3(clickedWorldPos.x, 0, clickedWorldPos.z);
+                    selectedUnit = null;
 
 
                 }
