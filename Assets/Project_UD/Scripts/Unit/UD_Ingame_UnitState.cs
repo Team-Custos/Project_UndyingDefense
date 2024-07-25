@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using MonsterLove.StateMachine;
-using UnityEditor;
 
 public enum UnitState
 {
@@ -18,6 +18,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     public StateMachine<UnitState, StateDriverUnity> fsm;
 
     UD_Ingame_UnitCtrl UnitCtrl;
+    NavMeshAgent navAgent;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
         fsm.ChangeState(UnitState.Idle);
 
         UnitCtrl = this.GetComponent<UD_Ingame_UnitCtrl>();
+        navAgent = this.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -36,6 +38,11 @@ public class UD_Ingame_UnitState : MonoBehaviour
     void Idle_Enter()
     {
         Debug.Log("Idle Enter");
+    }
+
+    void Idle_Exit()
+    {
+        Debug.Log("Idle Exit");
     }
     #endregion
 
@@ -61,34 +68,47 @@ public class UD_Ingame_UnitState : MonoBehaviour
     void Move_Enter()
     {
         Debug.Log("Move_Enter");
-        UnitCtrl.isEnemyInRange = false;
+        //UnitCtrl.isEnemyInRange = false;
+        //UnitCtrl.isEnemyInSight = false;
     }
 
     void Move_Update()
     {
-        transform.LookAt(UnitCtrl.moveTargetPos);
-        transform.Translate(Vector3.forward * UnitCtrl.testSpeed * Time.deltaTime, Space.Self);
+        
 
         if (UnitCtrl.targetEnemy != null)
         {
-            float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
             UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;
+            //navAgent.stoppingDistance = UnitCtrl.enemyAttackDistance;
+
+            float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
 
             if (targetEnemyDistance_Cur <= UnitCtrl.enemyAttackDistance)
             {
-                UnitCtrl.moveTargetPos = transform.position;
                 UnitCtrl.isEnemyInRange = true;
-                return;
+                navAgent.ResetPath();
+            }
+            else
+            {
+                if (UnitCtrl.isEnemyInRange == false)
+                {
+                    navAgent.SetDestination(UnitCtrl.moveTargetPos);
+                }
+                
             }
         }
         else
         {
+            navAgent.SetDestination(UnitCtrl.moveTargetPos);
+            navAgent.stoppingDistance = 0;
+
             float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
 
             if (targetMoveDistance_Cur <= 0.1f)
             {
                 UnitCtrl.moveTargetPos = transform.position;
-                fsm.ChangeState(UnitState.Idle);
+
+                fsm.ChangeState(UnitState.Search);
                 return;
             }
         }
@@ -99,14 +119,16 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Move_Exit()
     {
-
+        
     }
     #endregion
 
 
     void Search_Enter()
     {
-
+        Debug.Log("Search_Enter");
+        UnitCtrl.SearchEnemy();
+        
     }
 
     

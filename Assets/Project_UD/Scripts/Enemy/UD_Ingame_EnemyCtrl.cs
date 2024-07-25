@@ -32,6 +32,7 @@ public class UD_Ingame_EnemyCtrl : MonoBehaviour
 
     public Vector3 moveTargetPos = Vector3.zero;
     public GameObject targetUnit = null;
+    public UD_Ingame_RangeCtrl sightRangeSensor;
     public float unitSightDistance = 0;
     public float unitAttackDistance = 0;
     public bool isUnitInSight = false;
@@ -39,7 +40,6 @@ public class UD_Ingame_EnemyCtrl : MonoBehaviour
 
     public bool isBaseInRange = false;
 
-    public GameObject findUnitRange = null;
     public GameObject Bow = null;
 
 
@@ -61,12 +61,17 @@ public class UD_Ingame_EnemyCtrl : MonoBehaviour
     {
         MeshRenderer.material.color = colorEnemy;
         Selected_Particle.SetActive(isSelected);
-        findUnitRange.SetActive(isSelected);
 
-        findUnitRange.transform.localScale = new Vector3(unitAttackDistance + 4, unitAttackDistance + 4, 0);
+        //colliderRangeAttack.transform.localScale = new Vector3(unitAttackDistance + 4, unitAttackDistance + 4, 0);
+
+        isBaseInRange =
+            (Vector3.Distance(transform.position, targetBase.transform.position) <= unitAttackDistance);
 
         if (targetUnit != null && !isBaseInRange)//병사 발견시
         {
+            isUnitInRange = 
+                (Vector3.Distance(transform.position,targetUnit.transform.position) <= unitAttackDistance);
+
             if (isUnitInSight)
             {
                 if (isUnitInRange)
@@ -105,13 +110,22 @@ public class UD_Ingame_EnemyCtrl : MonoBehaviour
         if (isBaseInRange)
         {
             transform.LookAt(targetBase.transform.position);
+            Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
         }
-        else if(targetUnit != null)
+        else 
         {
-            transform.LookAt(targetUnit.transform.position);
+            if (targetUnit != null)
+            {
+                transform.LookAt(targetUnit.transform.position);
+                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+            }
+            else if (targetUnit == null)
+            {
+                Enemy_State.fsm.ChangeState(EnemyState.Search);
+            }  
         }
 
-        Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+        
     }
 
     //스폰 하기전 스폰 데이터 값을 불러옴.

@@ -37,7 +37,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     #region Idle State
     void Idle_Enter()
     {
-        Debug.Log("Idle Enter");
+        Debug.Log("Enemy Idle Enter");
         
     }
     #endregion
@@ -45,7 +45,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     #region Attack State
     void Attack_Enter()
     {
-        Debug.Log("Attack_Enter");
+        Debug.Log("Enemy Attack_Enter");
     }
 
     void Attack_Update()
@@ -63,7 +63,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     #region Move State
     void Move_Enter()
     {
-        Debug.Log("Move_Enter");
+        Debug.Log("Enemy Move_Enter");
         EnemyCtrl.isUnitInRange = false;
     }
 
@@ -81,7 +81,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 
             if (targetUnitDistance_Cur <= EnemyCtrl.unitAttackDistance)
             {
-                EnemyCtrl.moveTargetPos = transform.position;
+                //EnemyCtrl.moveTargetPos = transform.position;
                 EnemyCtrl.isUnitInRange = true;
                 navAgent.SetDestination(transform.position);
                 return;
@@ -93,7 +93,8 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 
             if (EnemyCtrl.isBaseInRange)
             {
-                EnemyCtrl.moveTargetPos = EnemyCtrl.targetBase.transform.position;
+                navAgent.SetDestination(transform.position);
+                navAgent.isStopped = true;
                 return;
             }
         }
@@ -110,6 +111,28 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 
     void Search_Enter()
     {
+        Debug.Log("Enemy Search_Enter");
 
+        UD_Ingame_RangeCtrl Range = EnemyCtrl.GetComponentInChildren<UD_Ingame_RangeCtrl>();
+
+        if (Range == null)
+        {
+            Debug.LogError("Range Error in : " + EnemyCtrl.gameObject.name);
+        }
+        else
+        {
+            //GameObject TargetObj = Range.ObjectSearch(EnemyCtrl.unitSightDistance,EnemyCtrl.unitAttackDistance, true);
+
+            //if (TargetObj != null)
+            //{
+            //    EnemyCtrl.moveTargetPos = TargetObj.transform.position;
+            //}
+            //else
+            //{
+            //    EnemyCtrl.moveTargetPos = EnemyCtrl.targetBase.transform.position;
+            //}
+        }
+
+       
     }
 }

@@ -14,7 +14,6 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
     public GameObject clickedPosIndicator = null;
 
-
     private void Start()
     {
         GAMEMANAGER = UD_Ingame_GameManager.inst;
@@ -38,8 +37,6 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
         {
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
-
-
 
             //타일 클릭했을때
             if (clickedObj.tag == UD_CONSTANT.TAG_TILE)

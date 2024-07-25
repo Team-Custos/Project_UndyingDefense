@@ -34,8 +34,8 @@ public class UD_Ingame_GameManager : MonoBehaviour
         Enemy = GameObject.FindGameObjectsWithTag(UD_CONSTANT.TAG_ENEMY);
 
         //정렬보다 찾는 식으로 코드 다시 짜야됨.
-        UnitSearch();
-        EnemySearch();
+        //UnitSearch();
+        //EnemySearch();
     }
 
     void UnitSearch()
