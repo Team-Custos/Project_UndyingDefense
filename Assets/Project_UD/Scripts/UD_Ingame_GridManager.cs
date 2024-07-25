@@ -23,7 +23,7 @@ public class UD_Ingame_GridManager : MonoBehaviour
  
     private void Start()
     {
-        GenerateGrid();
+        //GenerateGrid();
     }
 
     private void Update()
