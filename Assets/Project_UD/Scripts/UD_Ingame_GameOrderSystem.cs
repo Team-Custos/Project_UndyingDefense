@@ -73,13 +73,11 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 {
                     selectedUnit = null;
                 }
-
-
             }
             //적 클릭했을 때
             else if (clickedObj.tag == UD_CONSTANT.TAG_ENEMY)
             {
-                UD_Ingame_EnemyCtrl Enemy = clickedObj.GetComponent<UD_Ingame_EnemyCtrl>();
+                UD_Ingame_UnitCtrl Enemy = clickedObj.GetComponent<UD_Ingame_UnitCtrl>();
                 Enemy.isSelected = !Enemy.isSelected;
 
                 if (selectedUnit != null)
@@ -88,13 +86,10 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     AllyUnit.isSelected = false;
                     AllyUnit.targetEnemy = clickedObj.gameObject;
 
-                    if (AllyUnit.Unit_Mode == Mode.Free)
+                    if (AllyUnit.Ally_Mode == AllyMode.Free)
                     {
                         AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
-                        
                     }
-
-                    
                     Enemy.isSelected = false;
 
                     selectedUnit = null;
@@ -114,15 +109,13 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
                     
-                    if (AllyUnit.Unit_Mode == Mode.Free)
+                    if (AllyUnit.Ally_Mode == AllyMode.Free)
                     {
+                        AllyUnit.haveToMovePosition = true;
                         AllyUnit.moveTargetPos = new Vector3(clickedWorldPos.x, 0, clickedWorldPos.z);
-                        //AllyUnit.fsm.ChangeState(State.Move);
                     }
 
                     selectedUnit = null;
-
-
                 }
             }
 

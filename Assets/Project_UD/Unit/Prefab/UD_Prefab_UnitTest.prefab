@@ -191,9 +191,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041ce2edeec9e6244b85f64eb7ec9e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tagToSearch: Enemy
   radius: 5
   detectedObjects: []
-  ignoreList: []
+  ignoreList:
+  - {fileID: 4121165819109045414}
   Obj_Nearest: {fileID: 0}
 --- !u!1 &4121165819109045414
 GameObject:
@@ -299,27 +301,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8cbf0331ef89df498f6c438eb5cc6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit_State: {fileID: 0}
+  Ally_State: {fileID: 0}
+  Enemy_State: {fileID: 0}
   modelType: 0
-  HP: 0
+  health: 0
+  maxHealth: 0
   speed: 0
   unitType: 0
-  Unit_Mode: 0
-  UnitPos: {x: 0, y: 0}
+  Ally_Mode: 0
+  unitPos: {x: 0, y: 0}
   colorAlly:
     serializedVersion: 2
     rgba: 4294901760
+  colorEnemy:
+    serializedVersion: 2
+    rgba: 4278190335
   Selected_Particle: {fileID: 7366631472429168028}
   isSelected: 0
   weaponCooldown: 0
   skillCooldown: 0
+  targetBase: {fileID: 0}
   moveTargetPos: {x: 0, y: 0, z: 0}
   targetEnemy: {fileID: 0}
   sightRangeSensor: {fileID: 7192402244997906564}
-  enemySightDistance: 0
-  enemyAttackDistance: 0
+  sightDistance: 0
+  attackDistance: 0
   isEnemyInSight: 0
   isEnemyInRange: 0
+  enemy_isBaseInRange: 0
   findEnemyRange: {fileID: 8765057394433084762}
   Bow: {fileID: 1362734177078947744}
   testSpeed: 10

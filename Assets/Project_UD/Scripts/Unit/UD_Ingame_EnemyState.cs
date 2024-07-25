@@ -17,12 +17,12 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 {
     public StateMachine<EnemyState, StateDriverUnity> fsm;
 
-    UD_Ingame_EnemyCtrl EnemyCtrl;
+    UD_Ingame_UnitCtrl EnemyCtrl;
     NavMeshAgent navAgent;
 
     private void Start()
     {
-        EnemyCtrl = this.GetComponent<UD_Ingame_EnemyCtrl>();
+        EnemyCtrl = this.GetComponent<UD_Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
 
         fsm = new StateMachine<EnemyState, StateDriverUnity>(this);
@@ -50,13 +50,13 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 
     void Attack_Update()
     {
-        EnemyCtrl.Enemy_Attack();
+        EnemyCtrl.Unit_Attack();
     }
 
     void Attack_Exit()
     {
-        EnemyCtrl.targetUnit = null;
-        EnemyCtrl.isUnitInRange = false;
+        EnemyCtrl.targetEnemy = null;
+        EnemyCtrl.isEnemyInRange = false;
     }
     #endregion
 
@@ -64,26 +64,27 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     void Move_Enter()
     {
         Debug.Log("Enemy Move_Enter");
-        EnemyCtrl.isUnitInRange = false;
+        EnemyCtrl.isEnemyInRange = false;
     }
 
     void Move_Update()
     {
         navAgent.SetDestination(EnemyCtrl.moveTargetPos);
+        EnemyCtrl.SearchEnemy();
 
         //transform.LookAt(EnemyCtrl.moveTargetPos);
         //transform.Translate(Vector3.forward * EnemyCtrl.testSpeed * Time.deltaTime, Space.Self);
 
-        if (EnemyCtrl.targetUnit != null)
+        if (EnemyCtrl.targetEnemy != null)
         {
-            float targetUnitDistance_Cur = Vector3.Distance(transform.position, EnemyCtrl.targetUnit.transform.position);
-            EnemyCtrl.moveTargetPos = EnemyCtrl.targetUnit.transform.position;
+            float targetUnitDistance_Cur = Vector3.Distance(transform.position, EnemyCtrl.targetEnemy.transform.position);
+            EnemyCtrl.moveTargetPos = EnemyCtrl.targetEnemy.transform.position;
 
-            if (targetUnitDistance_Cur <= EnemyCtrl.unitAttackDistance)
+            if (targetUnitDistance_Cur <= EnemyCtrl.attackDistance)
             {
                 //EnemyCtrl.moveTargetPos = transform.position;
-                EnemyCtrl.isUnitInRange = true;
-                navAgent.SetDestination(transform.position);
+                EnemyCtrl.isEnemyInRange = true;
+                navAgent.SetDestination(EnemyCtrl.transform.position);
                 return;
             }
         }
@@ -91,7 +92,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
         {
             //float targetMoveDistance_Cur = Vector3.Distance(transform.position, EnemyCtrl.moveTargetPos);
 
-            if (EnemyCtrl.isBaseInRange)
+            if (EnemyCtrl.enemy_isBaseInRange)
             {
                 navAgent.SetDestination(transform.position);
                 navAgent.isStopped = true;
@@ -121,16 +122,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
         }
         else
         {
-            //GameObject TargetObj = Range.ObjectSearch(EnemyCtrl.unitSightDistance,EnemyCtrl.unitAttackDistance, true);
-
-            //if (TargetObj != null)
-            //{
-            //    EnemyCtrl.moveTargetPos = TargetObj.transform.position;
-            //}
-            //else
-            //{
-            //    EnemyCtrl.moveTargetPos = EnemyCtrl.targetBase.transform.position;
-            //}
+            EnemyCtrl.SearchEnemy();
         }
 
        

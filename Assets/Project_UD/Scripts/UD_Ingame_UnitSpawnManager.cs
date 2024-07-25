@@ -55,7 +55,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         {
             Obj = Instantiate(Test_Ally);
             Obj.transform.position = new Vector3(X, 0, Y);
-            Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitPos = new Vector2 ((int)(X/2), (int)(Y/2));
+            Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
             
         }
         else

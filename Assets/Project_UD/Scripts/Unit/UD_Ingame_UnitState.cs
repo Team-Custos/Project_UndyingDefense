@@ -9,14 +9,16 @@ public enum UnitState
     Idle,
     Attack,
     Search,
+    Chase,
     Move
 }
 
 
 public class UD_Ingame_UnitState : MonoBehaviour
 {
+    [HideInInspector]public UnitState State;
     public StateMachine<UnitState, StateDriverUnity> fsm;
-
+    
     UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
 
@@ -40,6 +42,11 @@ public class UD_Ingame_UnitState : MonoBehaviour
         Debug.Log("Idle Enter");
     }
 
+    void Idle_Update()
+    {
+        UnitCtrl.SearchEnemy();
+    }
+
     void Idle_Exit()
     {
         Debug.Log("Idle Exit");
@@ -54,11 +61,32 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Attack_Update()
     {
-        UnitCtrl.Unit_Attack();
+        if (UnitCtrl.targetEnemy != null)
+        {
+            if (UnitCtrl.haveToMovePosition)
+            {
+                UnitCtrl.targetEnemy = null;
+                UnitCtrl.isEnemyInRange = false;
+                UnitCtrl.isEnemyInSight = false;
+                fsm.ChangeState(UnitState.Move);
+                UnitCtrl.haveToMovePosition = false;
+            }
+            else 
+            {
+                UnitCtrl.Unit_Attack();
+            }
+        }
+        else
+        {
+            UnitCtrl.sightRangeSensor.ListRefresh();
+            fsm.ChangeState(UnitState.Search);
+        }
+        
     }
 
     void Attack_Exit()
     {
+        Debug.Log("Attack_Exit");
         UnitCtrl.targetEnemy = null;
         UnitCtrl.isEnemyInRange = false;
     }
@@ -74,47 +102,18 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Move_Update()
     {
-        
+        navAgent.SetDestination(UnitCtrl.moveTargetPos);
+        navAgent.stoppingDistance = 0;
 
-        if (UnitCtrl.targetEnemy != null)
+        float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
+
+        if (targetMoveDistance_Cur <= 0.1f)
         {
-            UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;
-            //navAgent.stoppingDistance = UnitCtrl.enemyAttackDistance;
+            UnitCtrl.moveTargetPos = transform.position;
 
-            float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
-
-            if (targetEnemyDistance_Cur <= UnitCtrl.enemyAttackDistance)
-            {
-                UnitCtrl.isEnemyInRange = true;
-                navAgent.ResetPath();
-            }
-            else
-            {
-                if (UnitCtrl.isEnemyInRange == false)
-                {
-                    navAgent.SetDestination(UnitCtrl.moveTargetPos);
-                }
-                
-            }
+            fsm.ChangeState(UnitState.Search);
+            return;
         }
-        else
-        {
-            navAgent.SetDestination(UnitCtrl.moveTargetPos);
-            navAgent.stoppingDistance = 0;
-
-            float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
-
-            if (targetMoveDistance_Cur <= 0.1f)
-            {
-                UnitCtrl.moveTargetPos = transform.position;
-
-                fsm.ChangeState(UnitState.Search);
-                return;
-            }
-        }
-
-        
-
     }
 
     void Move_Exit()
@@ -123,12 +122,34 @@ public class UD_Ingame_UnitState : MonoBehaviour
     }
     #endregion
 
+    void Chase_Enter()
+    {
+        
+    }
+
+    void Chase_Update()
+    {
+        //Debug.Log("Chase_Update");
+
+        if (UnitCtrl.targetEnemy != null)
+        {
+            float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
+
+            navAgent.SetDestination(UnitCtrl.targetEnemy.transform.position);
+
+            if (targetEnemyDistance_Cur <= UnitCtrl.attackDistance)
+            {
+                UnitCtrl.isEnemyInRange = true;
+                navAgent.SetDestination(UnitCtrl.transform.position);
+            }
+        }
+    }
 
     void Search_Enter()
     {
         Debug.Log("Search_Enter");
+        UnitCtrl.haveToMovePosition = false;
         UnitCtrl.SearchEnemy();
-        
     }
 
     

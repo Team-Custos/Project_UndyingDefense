@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using WSWhitehouse.TagSelector;
 
 public class UD_Ingame_RangeCtrl : MonoBehaviour
 {
-    Transform Parent;
-    //public List<GameObject> ObjInRange = new List<GameObject>();
+    [TagSelector] public string tagToSearch;
+
     public float radius = 5;
 
     public List<GameObject> detectedObjects = new List<GameObject>();
@@ -17,11 +18,6 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
     
 
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        Parent = GetComponentInParent<Transform>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -31,7 +27,6 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
 
     public GameObject NearestObjectSearch(float attackRange, bool isParentEnemy)
     {
-
         if (detectedObjects.Count > 0)
         {
             Obj_Nearest = detectedObjects[0];
@@ -49,14 +44,7 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
                 }
             }
 
-            if (Obj_Distance_Nearest <= attackRange)
-            {
-                return Obj_Nearest;
-            }
-            else
-            { 
-                return null;
-            }
+            return Obj_Nearest;
         }
         else
         {
@@ -66,25 +54,35 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
         
     }
 
+    public void ListRefresh()
+    {
+        if (detectedObjects.Contains(Obj_Nearest))
+        {
+            detectedObjects.Remove(Obj_Nearest);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.root.TryGetComponent(out UD_Ingame_EnemyCtrl unit))
+        if (other.transform.root.TryGetComponent(out UD_Ingame_UnitCtrl unit))
         {
-            if (ignoreList.Exists(x => x.gameObject == other.transform.root))
-                return;
-
-            detectedObjects.Add(unit.gameObject);
+            if (other.CompareTag(tagToSearch.ToString()))
+            {
+                detectedObjects.Add(unit.gameObject);
+            }
+            else return;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.root.TryGetComponent(out UD_Ingame_EnemyCtrl unit))
+        if (other.transform.root.TryGetComponent(out UD_Ingame_UnitCtrl unit))
         {
-            if (ignoreList.Exists(x => x.gameObject == other.transform.root))
-                return;
-
-            detectedObjects.Remove(unit.gameObject);
+            if (other.CompareTag(tagToSearch))
+            {
+                detectedObjects.Remove(unit.gameObject);
+            }
+            else return;
         }
     }
 

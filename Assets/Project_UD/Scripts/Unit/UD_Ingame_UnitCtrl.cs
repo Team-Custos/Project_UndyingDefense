@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Mode
+public enum AllyMode
 {
     Seige,
     Free
@@ -12,41 +12,47 @@ public enum Mode
 
 public class UD_Ingame_UnitCtrl : MonoBehaviour
 {
-    [HideInInspector] public UD_Ingame_UnitState Unit_State;
+    [HideInInspector] public UD_Ingame_UnitState Ally_State;
+    [HideInInspector] public UD_Ingame_EnemyState Enemy_State;
     MeshRenderer MeshRenderer;
 
     [Header("====Data====")]
     public int modelType;
-    public int HP;
+    public float health;
+    public float maxHealth;
     public float speed;
     public UnitType unitType;
 
     [Header("====Status====")]
-    public Mode Unit_Mode;
+    public AllyMode Ally_Mode;
 
-    public Vector2 UnitPos = Vector2.zero;
+    public Vector2 unitPos = Vector2.zero;
     public Color32 colorAlly = Color.blue;
+    public Color32 colorEnemy = Color.red;
+
     public GameObject Selected_Particle;
     public bool isSelected = false;
-    public float weaponCooldown = 0;
 
+    public float weaponCooldown = 0;
     public float skillCooldown = 0;
 
-
     [Header("====AI====")]
-    public Vector3 moveTargetPos = Vector3.zero; 
+    public GameObject targetBase;
+
+    public Vector3 moveTargetPos = Vector3.zero;
+    public bool haveToMovePosition = false;
     public GameObject targetEnemy = null;
     public UD_Ingame_RangeCtrl sightRangeSensor;
-    public float enemySightDistance = 0;
-    public float enemyAttackDistance = 0;
+
+    public float sightDistance = 0;
+    public float attackDistance = 0;
+
     public bool isEnemyInSight = false;
     public bool isEnemyInRange = false;
-
-    
+    public bool enemy_isBaseInRange = false;
 
     public GameObject findEnemyRange = null;
     public GameObject Bow = null;
-
 
     public float testSpeed = 1;
 
@@ -55,7 +61,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     void Start()
     {
         MeshRenderer = GetComponent<MeshRenderer>();
-        Unit_State = GetComponent<UD_Ingame_UnitState>();
+        Ally_State = GetComponent<UD_Ingame_UnitState>();
+        Enemy_State = GetComponent<UD_Ingame_EnemyState>();
+
+        targetBase = UD_Ingame_GameManager.inst.Base;
+
         moveTargetPos = transform.position;
     }
 
@@ -64,43 +74,103 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MeshRenderer.material.color = colorAlly;
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
 
-        sightRangeSensor.radius = enemySightDistance;
-        findEnemyRange.transform.localScale = new Vector3(enemyAttackDistance + 4, enemyAttackDistance + 4, 0);
+        sightRangeSensor.radius = sightDistance;
+        findEnemyRange.transform.localScale = new Vector3(attackDistance + 4, attackDistance + 4, 0);
 
-        //if (Unit_State.fsm.State == UnitState.Idle)
-        //{
-        //    SearchEnemy();
-        //}
-
-        if (targetEnemy != null)
+        #region 아군 병사 제어
+        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
-            if (isEnemyInSight)
+            MeshRenderer.material.color = colorAlly;
+            if (targetEnemy != null && !haveToMovePosition)
             {
-                isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= enemyAttackDistance);
-                if (isEnemyInRange)
+                if (isEnemyInSight)
                 {
-                    Unit_State.fsm.ChangeState(UnitState.Attack);
+                    haveToMovePosition = false;
+                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+                    if (isEnemyInRange)
+                    {
+                        moveTargetPos = this.transform.position;
+
+                        Ally_State.fsm.ChangeState(UnitState.Attack);
+                    }
+                    else
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Chase);
+                    }
+                }
+            }
+            else
+            {
+                if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                {
+                    Ally_State.fsm.ChangeState(UnitState.Move);
                 }
                 else
                 {
-                    Unit_State.fsm.ChangeState(UnitState.Move);
+                    haveToMovePosition = false;
+                    Ally_State.fsm.ChangeState(UnitState.Idle);
                 }
             }
+            
         }
+        #endregion
 
-        if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+
+        #region 적 제어
+        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
         {
-            Unit_State.fsm.ChangeState(UnitState.Move);
+            if (Input.GetKeyDown(KeyCode.H) && isSelected)
+            {
+                Destroy(this.gameObject);
+            }
+
+            MeshRenderer.material.color = colorEnemy;
+            enemy_isBaseInRange =
+            (Vector3.Distance(transform.position, targetBase.transform.position) <= attackDistance);
+
+            if (targetEnemy != null && !enemy_isBaseInRange)//병사 발견시
+            {
+                isEnemyInRange =
+                    (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+
+                if (isEnemyInSight)
+                {
+                    if (isEnemyInRange)
+                    {
+                        Enemy_State.fsm.ChangeState(EnemyState.Attack);
+                    }
+                    else
+                    {
+                        Enemy_State.fsm.ChangeState(EnemyState.Move);
+                    }
+                }
+            }
+            else
+            {
+                moveTargetPos = targetBase.transform.position; // 성 공격
+                if (enemy_isBaseInRange)
+                {
+                    Enemy_State.fsm.ChangeState(EnemyState.Attack);
+                }
+                else
+                {
+                    Enemy_State.fsm.ChangeState(EnemyState.Move);
+                }
+
+            }
+
+            if (!isEnemyInRange && !enemy_isBaseInRange)
+            {
+                Enemy_State.fsm.ChangeState(EnemyState.Move);
+            }
         }
-        else
-        {
-            Unit_State.fsm.ChangeState(UnitState.Idle);
-        }
+        #endregion
     }
+
+
 
     public void SearchEnemy()
     {
@@ -112,7 +182,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         else
         {
             GameObject TargetObj = 
-                sightRangeSensor.NearestObjectSearch(enemyAttackDistance, false);
+                sightRangeSensor.NearestObjectSearch(attackDistance, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
             {
@@ -122,7 +192,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-                moveTargetPos = transform.position;
+                isEnemyInSight = false;
                 targetEnemy = null;
             }
         }
@@ -130,16 +200,41 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void Unit_Attack()
     {
-        if (targetEnemy == null)
+        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
-            Unit_State.fsm.ChangeState(UnitState.Search);
-            return;
+            if (targetEnemy == null)
+            {
+                Ally_State.fsm.ChangeState(UnitState.Search);
+                return;
+            }
+            else
+            {
+                transform.LookAt(targetEnemy.transform.position);
+                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+            }
         }
-        else
+        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
         {
-            transform.LookAt(targetEnemy.transform.position);
-            Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+            if (enemy_isBaseInRange)
+            {
+                transform.LookAt(targetBase.transform.position);
+                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+            }
+            else
+            {
+                if (targetEnemy != null)
+                {
+                    transform.LookAt(targetEnemy.transform.position);
+                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown);
+                }
+                else if (targetEnemy == null)
+                {
+                    Enemy_State.fsm.ChangeState(EnemyState.Search);
+                }
+            }
         }
+
+        
 
         
     }
@@ -147,7 +242,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public void Init(UnitSpawnData data)
     {
         modelType = data.modelType;
-        HP = data.HP;
+        //HP = data.HP;
         speed = data.speed;
         unitType = data.unitType;
 
