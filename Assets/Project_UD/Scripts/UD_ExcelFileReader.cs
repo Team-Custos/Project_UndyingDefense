@@ -6,7 +6,7 @@ using System.IO;
 public class UD_ExcelFileReader : MonoBehaviour
 {
 
-    public string filePath = "240716 UD_charData"; // 파일 경로
+    public string filePath1 = "240724 UD_charData"; // 파일 경로
     public UD_UnitDataManager unitDataManager;
 
     // Update is called once per frame
@@ -17,7 +17,7 @@ public class UD_ExcelFileReader : MonoBehaviour
             unitDataManager = GetComponent<UD_UnitDataManager>();
         }
 
-        List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath);
+        List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath1);
        unitDataManager.SetUnitData(unitDatas);
     }
 
@@ -29,42 +29,65 @@ public class UD_ExcelFileReader : MonoBehaviour
 
         if (csvData == null)
         {
+            Debug.Log("파일 없음");
             return unitDatas;
         }
 
 
-        Debug.Log(csvData.text);
-
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
-        int lineNumber = 0;
+        Debug.Log(csvData.text);
 
-        
-        reader.ReadLine();
         reader.ReadLine();
 
         while (!endOfFile)
         {
             string dataString = reader.ReadLine();
-            lineNumber++;
             if (dataString == null)
             {
                 endOfFile = true;
                 break;
             }
 
-
             var dataValues = dataString.Split(',');
 
-            if (dataValues.Length >= 6)
+            if (dataValues.Length >= 14)
             {
-                string name = dataValues[2];
-                string type = dataValues[3];
-                int level = int.Parse(dataValues[4]);
-                int hp = int.Parse(dataValues[5]);
-                string material = dataValues[6];
+                string name = dataValues[1];
+                string type = dataValues[0];
+                int tier;
+                if (string.IsNullOrWhiteSpace(dataValues[2]))
+                {
+                    tier = 0;
+                }
+                else
+                {
+                    tier = int.Parse(dataValues[2]);
+                }
+                string weapon = dataValues[3];
+                string skillType = dataValues[4];
+                string skill = dataValues[5];
+                string description = dataValues[6];
+                string attackType = dataValues[7];
+                int damage;
+                if (!int.TryParse(dataValues[8], out damage))
+                {
+                    damage = 0; // 기본값 설정
+                }
+                int targetCount = int.Parse(dataValues[9]);
+                string hitShape = dataValues[10];
+                int critRate;
+                if (!int.TryParse(dataValues[11], out critRate))
+                {
+                    critRate = 0; // 기본값 설정
+                }
+                string critEffect1 = dataValues[12];
+                string critEffect2 = dataValues[13];
 
-                UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(name, type, level, hp, material);
+                
+
+                UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(
+                    name, type, tier, weapon, skillType, skill, description, attackType, damage, targetCount, hitShape, critRate, critEffect1, critEffect2);
                 unitDatas.Add(unitData);
             }
         }
