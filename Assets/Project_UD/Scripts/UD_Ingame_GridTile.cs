@@ -17,8 +17,10 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     MeshRenderer MeshR;
 
+    public GameObject currentPlacedUnit;
+
     bool mouseHover = false;
-    bool isUnitPlaced = false;
+    public bool isPlaceable = true;
 
 
     // Start is called before the first frame update
@@ -27,11 +29,18 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GAMEMANAGER = UD_Ingame_GameManager.inst;
         MeshR = GetComponent<MeshRenderer>();
         Selected = false;
+
+        GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
+
+        this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
+
         if (Selected)
         {
             MeshR.material.color = colorSelected;
@@ -58,19 +67,21 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GetComponent<MeshRenderer>().material.color = colorDefault;
     }
 
+
+
     private void OnMouseDown()
     {
-        if (GAMEMANAGER.AllyUnitSetMode && !isUnitPlaced)
+        if (GAMEMANAGER.AllyUnitSetMode && isPlaceable)
         {
-            UD_Ingame_UnitSpawnManager.inst.UnitSpawn(true, this.transform.position.x, this.transform.position.z);
-            isUnitPlaced = true;
+            
+            isPlaceable = false;
         }
         else
         {
             Selected = !Selected;
         }
 
-        
-        Debug.Log(gameObject.name + " Selected");
+
+        //Debug.Log(gameObject.name + " Selected");
     }
 }

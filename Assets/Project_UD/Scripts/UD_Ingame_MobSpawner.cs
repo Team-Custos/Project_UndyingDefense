@@ -63,10 +63,10 @@ public class UD_Ingame_MobSpawner : MonoBehaviour
         {
             for (int idx = 0; idx < gridManager.Tiles_Obj.Length; idx++)
             {
-                Debug.Log("Idx : " + idx);
+                //Debug.Log("Idx : " + idx);
                 if (gridManager.Tiles_Obj[idx].GetComponent<UD_Ingame_GridTile>().GridPos.x == mobSpawnPosX - 1)
                 {
-                    Debug.Log("PointIdx : " + pointidx);
+                    //Debug.Log("PointIdx : " + pointidx);
                     spawnPoint[pointidx] = gridManager.Tiles_Obj[idx].transform;
                     if (pointidx >= gridHeight - 1)
                     {
