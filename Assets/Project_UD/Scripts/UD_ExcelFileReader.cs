@@ -6,7 +6,7 @@ using System.IO;
 public class UD_ExcelFileReader : MonoBehaviour
 {
 
-    public string filePath1 = "240724 UD_charData"; // 파일 경로
+    public string filePath1 = "240724 UD_charData";
     public UD_UnitDataManager unitDataManager;
 
     // Update is called once per frame
@@ -72,14 +72,14 @@ public class UD_ExcelFileReader : MonoBehaviour
                 int damage;
                 if (!int.TryParse(dataValues[8], out damage))
                 {
-                    damage = 0; // 기본값 설정
+                    damage = 0;
                 }
                 int targetCount = int.Parse(dataValues[9]);
                 string hitShape = dataValues[10];
                 int critRate;
                 if (!int.TryParse(dataValues[11], out critRate))
                 {
-                    critRate = 0; // 기본값 설정
+                    critRate = 0;
                 }
                 string critEffect1 = dataValues[12];
                 string critEffect2 = dataValues[13];

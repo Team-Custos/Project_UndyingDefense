@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using MonsterLove.StateMachine;
+using UnityEngine.UI;
 
 public enum UnitState
 {
@@ -13,6 +14,12 @@ public enum UnitState
     Move
 }
 
+public enum defaultUnitState
+{
+    free,
+    siege
+}
+
 
 public class UD_Ingame_UnitState : MonoBehaviour
 {
@@ -21,6 +28,9 @@ public class UD_Ingame_UnitState : MonoBehaviour
     
     UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
+
+    public defaultUnitState defaultState = defaultUnitState.free;
+
 
     private void Start()
     {

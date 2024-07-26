@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 
@@ -32,18 +35,66 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     public GameObject Test_Ally;
     public GameObject Test_Enemy;
 
+    public Button MinByeongBtn;
+    public Button HunterBtn;
+
+    public Button FreeBtn = null;
+    public Button SiegeBtn = null;
+
+    public GameObject MinByeongPrefab;
+    public GameObject HunterPrefab;
+
+    private Camera mainCamera;
+
+    public Transform SpawnPos;
+    private bool isSpawnBtnClick = false;
+
+    private string UnitType;
 
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = Camera.main;
+
         GRIDMANAGER = UD_Ingame_GameManager.inst.gridManager;
         inst = this;
+
+        if(MinByeongBtn != null )
+        {
+            MinByeongBtn.onClick.AddListener(() => OnButtonClicked("MinByeong"));
+        }
+
+        if (HunterBtn != null)
+        {
+            HunterBtn.onClick.AddListener(() => OnButtonClicked("Hunter"));
+        }
 
     }
     // Update is called once per frame
     void Update()
     {
-        
+        if (isSpawnBtnClick)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    if (hit.collider.CompareTag("Ground"))
+                    {
+                        if (UnitType == "MinByeong")
+                        {
+                            MinByeongSpawn(hit.point);
+                        }
+                        else if (UnitType == "Hunter")
+                        {
+                            HunterSpawn(hit.point);
+                        }
+                        isSpawnBtnClick = false;
+                    }
+                }
+            }
+        }
     }
 
     //¿Ø¥÷ º“»Ø
@@ -67,4 +118,25 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
         return Obj;
     }
+
+    public void MinByeongSpawn(Vector3 spawnPosition)
+    {
+        GameObject MinByeon = Instantiate(MinByeongPrefab) as GameObject;
+        MinByeon.transform.position = spawnPosition;
+    }
+
+    public void HunterSpawn(Vector3 spawnPosition)
+    {
+        GameObject Hunter = Instantiate(HunterPrefab) as GameObject;
+        Hunter.transform.position = spawnPosition;
+    }
+
+
+
+    void OnButtonClicked(string unitType)
+    {
+        isSpawnBtnClick = true;
+        UnitType = unitType;
+    }
+
 }

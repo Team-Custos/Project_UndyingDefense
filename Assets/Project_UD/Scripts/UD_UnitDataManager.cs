@@ -62,7 +62,6 @@ public class UD_UnitDataManager : MonoBehaviour
             Debug.Log($"Name: {unitData.Name}, Class: {unitData.Type}, Level: {unitData.Tier}, HP: {unitData.Damage}, Material: {unitData.Weapon}");
         }
 
-        // 모든 유닛 데이터를 출력하는 메서드 호출
         ShowUnitData();
     }
 
