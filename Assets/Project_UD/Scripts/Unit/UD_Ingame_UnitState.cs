@@ -16,8 +16,8 @@ public enum UnitState
 
 public enum defaultUnitState
 {
-    free,
-    siege
+    Free,
+    Siege
 }
 
 
@@ -29,7 +29,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
 
-    public defaultUnitState defaultState = defaultUnitState.free;
+    public defaultUnitState defaultState = defaultUnitState.Free;
 
 
     private void Start()

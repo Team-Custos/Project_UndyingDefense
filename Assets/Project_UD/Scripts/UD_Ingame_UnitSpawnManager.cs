@@ -35,11 +35,15 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     public GameObject Test_Ally;
     public GameObject Test_Enemy;
 
-    public Button MinByeongBtn;
-    public Button HunterBtn;
+    public Button MinByeongBtn = null;
+    public Button HunterBtn = null;
 
     public Button FreeBtn = null;
     public Button SiegeBtn = null;
+
+    public GameObject UnitStateCheckBox;
+    private GameObject currentUnitStateCheckBox; // 현재 생성된 체크박스를 참조할 변수
+    private Vector3 currentSpawnPosition;
 
     public GameObject MinByeongPrefab;
     public GameObject HunterPrefab;
@@ -50,6 +54,8 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     private bool isSpawnBtnClick = false;
 
     private string UnitType;
+
+    defaultUnitState defaultunitState;
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +75,18 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
             HunterBtn.onClick.AddListener(() => OnButtonClicked("Hunter"));
         }
 
+        defaultunitState = defaultUnitState.Free;
+
+        if (FreeBtn != null)
+        {
+            FreeBtn.onClick.AddListener(() => { FreeState(); RemoveUnitStateCheckBox(); });
+        }
+
+        if (SiegeBtn != null)
+        {
+            SiegeBtn.onClick.AddListener(() => { SiegeState(); RemoveUnitStateCheckBox(); });
+        }
+
     }
     // Update is called once per frame
     void Update()
@@ -82,14 +100,8 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                 {
                     if (hit.collider.CompareTag("Ground"))
                     {
-                        if (UnitType == "MinByeong")
-                        {
-                            MinByeongSpawn(hit.point);
-                        }
-                        else if (UnitType == "Hunter")
-                        {
-                            HunterSpawn(hit.point);
-                        }
+                        currentSpawnPosition = hit.point;
+                        CreateUnitStateCheckBox(currentSpawnPosition);
                         isSpawnBtnClick = false;
                     }
                 }
@@ -137,6 +149,68 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         isSpawnBtnClick = true;
         UnitType = unitType;
+        Debug.Log($"Button clicked: {unitType}");
     }
 
+
+    void FreeState()
+    {
+        defaultunitState = defaultUnitState.Free;
+        SpawnSelectedUnit();
+        RemoveUnitStateCheckBox();
+    }
+
+    void SiegeState()
+    {
+        defaultunitState = defaultUnitState.Siege;
+        SpawnSelectedUnit();
+        RemoveUnitStateCheckBox();
+    }
+
+
+    void CreateUnitStateCheckBox(Vector3 worldPosition)
+    {
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
+        if (currentUnitStateCheckBox != null)
+        {
+            Destroy(currentUnitStateCheckBox);
+        }
+
+        currentUnitStateCheckBox = Instantiate(UnitStateCheckBox) as GameObject;
+
+        GameObject canvas = GameObject.Find("Canvas");
+
+        currentUnitStateCheckBox.transform.SetParent(canvas.transform, false);
+
+        RectTransform rectTransform = currentUnitStateCheckBox.GetComponent<RectTransform>();
+        rectTransform.position = screenPos;
+
+        Button freeBtn = currentUnitStateCheckBox.transform.Find("FreeBtn").GetComponent<Button>();
+        Button siegeBtn = currentUnitStateCheckBox.transform.Find("SiegeBtn").GetComponent<Button>();
+
+        freeBtn.onClick.AddListener(() => FreeState());
+        siegeBtn.onClick.AddListener(() => SiegeState());
+    }
+
+    void RemoveUnitStateCheckBox()
+    {
+        if (currentUnitStateCheckBox != null)
+        {
+            Destroy(currentUnitStateCheckBox);
+            currentUnitStateCheckBox = null;
+        }
+    }
+
+    void SpawnSelectedUnit()
+    {
+        if (UnitType == "MinByeong")
+        {
+            MinByeongSpawn(currentSpawnPosition);
+        }
+        else if (UnitType == "Hunter")
+        {
+            HunterSpawn(currentSpawnPosition);
+        }
+    }
 }
