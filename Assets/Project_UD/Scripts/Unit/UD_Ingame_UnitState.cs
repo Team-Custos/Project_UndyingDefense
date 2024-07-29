@@ -14,11 +14,6 @@ public enum UnitState
     Move
 }
 
-public enum defaultUnitState
-{
-    Free,
-    Siege
-}
 
 
 public class UD_Ingame_UnitState : MonoBehaviour
@@ -28,8 +23,6 @@ public class UD_Ingame_UnitState : MonoBehaviour
     
     UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
-
-    public defaultUnitState defaultState = defaultUnitState.Free;
 
 
     private void Start()
@@ -112,18 +105,34 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Move_Update()
     {
-        navAgent.SetDestination(UnitCtrl.moveTargetPos);
-        navAgent.stoppingDistance = 0;
-
-        float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
-
-        if (targetMoveDistance_Cur <= 0.1f)
+        if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
-            UnitCtrl.moveTargetPos = transform.position;
+            navAgent.SetDestination(UnitCtrl.moveTargetPos);
+            navAgent.stoppingDistance = 0;
 
-            fsm.ChangeState(UnitState.Search);
-            return;
+            float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
+
+            if (targetMoveDistance_Cur <= 0.1f)
+            {
+                UnitCtrl.moveTargetPos = transform.position;
+                fsm.ChangeState(UnitState.Search);
+                return;
+            }
         }
+
+
+        //navAgent.SetDestination(UnitCtrl.moveTargetPos);
+        //navAgent.stoppingDistance = 0;
+
+        //float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
+
+        //if (targetMoveDistance_Cur <= 0.1f)
+        //{
+        //    UnitCtrl.moveTargetPos = transform.position;
+
+        //    fsm.ChangeState(UnitState.Search);
+        //    return;
+        //}
     }
 
     void Move_Exit()

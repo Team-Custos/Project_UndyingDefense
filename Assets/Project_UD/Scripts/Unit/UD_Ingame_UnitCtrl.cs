@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AllyMode
 {
-    Seige,
+    Siege,
     Free
 }
 
@@ -80,43 +80,95 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         sightRangeSensor.radius = sightDistance;
         findEnemyRange.transform.localScale = new Vector3(attackDistance + 4, attackDistance + 4, 0);
 
-        #region 아군 병사 제어
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
             MeshRenderer.material.color = colorAlly;
-            if (targetEnemy != null && !haveToMovePosition)
-            {
-                if (isEnemyInSight)
-                {
-                    haveToMovePosition = false;
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
-                    if (isEnemyInRange)
-                    {
-                        moveTargetPos = this.transform.position;
 
-                        Ally_State.fsm.ChangeState(UnitState.Attack);
-                    }
-                    else
+            if (Ally_Mode == AllyMode.Siege)
+            {
+                if (targetEnemy != null && !haveToMovePosition)
+                {
+                    if (isEnemyInSight)
                     {
-                        Ally_State.fsm.ChangeState(UnitState.Chase);
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+                        if (isEnemyInRange)
+                        {
+                            Ally_State.fsm.ChangeState(UnitState.Attack);
+                        }
                     }
                 }
             }
-            else
+            else if (Ally_Mode == AllyMode.Free)
             {
-                if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                if (targetEnemy != null && !haveToMovePosition)
                 {
-                    Ally_State.fsm.ChangeState(UnitState.Move);
+                    if (isEnemyInSight)
+                    {
+                        haveToMovePosition = false;
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+                        if (isEnemyInRange)
+                        {
+                            moveTargetPos = this.transform.position;
+                            Ally_State.fsm.ChangeState(UnitState.Attack);
+                        }
+                        else
+                        {
+                            Ally_State.fsm.ChangeState(UnitState.Chase);
+                        }
+                    }
                 }
                 else
                 {
-                    haveToMovePosition = false;
-                    Ally_State.fsm.ChangeState(UnitState.Idle);
+                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Move);
+                    }
+                    else
+                    {
+                        haveToMovePosition = false;
+                        Ally_State.fsm.ChangeState(UnitState.Idle);
+                    }
                 }
             }
-            
         }
-        #endregion
+
+        //#region 아군 병사 제어
+        //if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        //{
+        //    MeshRenderer.material.color = colorAlly;
+        //    if (targetEnemy != null && !haveToMovePosition)
+        //    {
+        //        if (isEnemyInSight)
+        //        {
+        //            haveToMovePosition = false;
+        //            isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+        //            if (isEnemyInRange)
+        //            {
+        //                moveTargetPos = this.transform.position;
+
+        //                Ally_State.fsm.ChangeState(UnitState.Attack);
+        //            }
+        //            else
+        //            {
+        //                Ally_State.fsm.ChangeState(UnitState.Chase);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+        //        {
+        //            Ally_State.fsm.ChangeState(UnitState.Move);
+        //        }
+        //        else
+        //        {
+        //            haveToMovePosition = false;
+        //            Ally_State.fsm.ChangeState(UnitState.Idle);
+        //        }
+        //    }
+
+        //}
+        //#endregion
 
 
         #region 적 제어
