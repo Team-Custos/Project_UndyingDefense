@@ -2,6 +2,7 @@ using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UD_Ingame_GameOrderSystem : MonoBehaviour
 {
@@ -33,8 +34,10 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
         RaycastHit hit;
 
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit) && (Input.GetMouseButtonDown(0)))
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
 

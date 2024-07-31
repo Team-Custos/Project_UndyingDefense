@@ -62,8 +62,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    NavMeshObstacle navMeshObstacle;
-
 
     // Start is called before the first frame update
     void Start()
@@ -78,7 +76,9 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         unitStateChangeTime = 0.0f;
 
-        navMeshObstacle = GetComponent<NavMeshObstacle>();
+        Ally_Mode = AllyMode.Siege;
+
+        attackDistance = 10.0f;
     }
 
     
@@ -92,59 +92,62 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         sightRangeSensor.radius = sightDistance;
         findEnemyRange.transform.localScale = new Vector3(attackDistance + 4, attackDistance + 4, 0);
 
-        // Change 상태일 때는 다른 행동을 하지 않음
-        if (Ally_Mode == AllyMode.Change)
-        {
-            if (unitStateChangeTime > 0)
-            {
-                unitStateChangeTime -= Time.deltaTime;
-                Ally_State.fsm.ChangeState(UnitState.Idle);
-                return;
-            }
-            else
-            {
-                if (previousAllyMode == AllyMode.Free)
-                {
-                    Ally_Mode = AllyMode.Siege;
-                    SearchEnemy();
-                }
-                else if (previousAllyMode == AllyMode.Siege)
-                {
-                    Ally_Mode = AllyMode.Free;
-                }
-            }
-        }
+        
 
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
             MeshRenderer.material.color = colorAlly;
 
-            if (Ally_Mode == AllyMode.Siege)
+            // Change 상태일 때는 다른 행동을 하지 않음
+            if (Ally_Mode == AllyMode.Change)
             {
-              //  navMeshObstacle.carving = true;
-                if (targetEnemy != null && !haveToMovePosition)
+                if (unitStateChangeTime > 0)
                 {
-                    if (isEnemyInSight)
+                    unitStateChangeTime -= Time.deltaTime;
+                    if (Ally_State != null && Ally_State.fsm != null)
                     {
-                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
-                        if (isEnemyInRange)
-                        {
-                            Ally_State.fsm.ChangeState(UnitState.Attack);
-                        }
+                        Ally_State.fsm.ChangeState(UnitState.Idle); // 움직임을 멈추게 함
                     }
                     else
                     {
-                        SearchEnemy();
+                        Debug.LogError("Ally_State or FSM is null in " + this.gameObject.name);
                     }
+                    return;
                 }
                 else
                 {
-                    SearchEnemy(); 
+                    if (previousAllyMode == AllyMode.Free)
+                    {
+                        Ally_Mode = AllyMode.Siege;
+                        SearchEnemy();
+                    }
+                    else if (previousAllyMode == AllyMode.Siege)
+                    {
+                        Ally_Mode = AllyMode.Free;
+                    }
+                }
+            }
+            else if (Ally_Mode == AllyMode.Siege)
+            {
+                if (targetEnemy == null || !isEnemyInSight)
+                {
+                    SearchEnemy();
+                }
+
+                if (targetEnemy != null && !haveToMovePosition)
+                {
+                    float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+                    isEnemyInRange = (distanceToEnemy <= attackDistance);
+
+                    if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Attack);
+                    }
                 }
             }
             else if (Ally_Mode == AllyMode.Free)
             {
-               // navMeshObstacle.carving = false;
+                //navMeshObstacle.carving = false;
                 if (targetEnemy != null && !haveToMovePosition)
                 {
                     if (isEnemyInSight)
@@ -239,34 +242,14 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj = sightRangeSensor.NearestObjectSearch(attackDistance, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
+            GameObject TargetObj =
+                sightRangeSensor.NearestObjectSearch(attackDistance, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
             {
                 isEnemyInSight = true;
                 moveTargetPos = TargetObj.transform.position;
                 targetEnemy = TargetObj;
-
-                // 적이 발견되면 상태를 Attack으로 변경
-                if (Ally_Mode == AllyMode.Siege)
-                {
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
-                    if (isEnemyInRange)
-                    {
-                        if (Ally_State != null && Ally_State.fsm != null)
-                        {
-                            Ally_State.fsm.ChangeState(UnitState.Attack);
-                        }
-                        else
-                        {
-                            Debug.Log(this.gameObject.name);
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
             }
             else
             {
@@ -311,9 +294,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
             }
         }
-
-        
-
         
     }
 
@@ -323,6 +303,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         //HP = data.HP;
         speed = data.speed;
         unitType = data.unitType;
+        Ally_Mode = AllyMode.Siege;
 
     }
+
 }

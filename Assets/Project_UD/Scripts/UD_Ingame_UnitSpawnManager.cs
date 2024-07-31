@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -48,6 +49,8 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
     private Camera mainCamera;
 
+    public Canvas canvas;
+
     public Transform SpawnPos;
     private bool isSpawnBtnClick = false;
 
@@ -91,6 +94,8 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (EventSystem.current.IsPointerOverGameObject()) return;
+
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
@@ -99,13 +104,15 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                         currentSpawnPosition = hit.point;
                         SpawnSelectedUnit();
                         isSpawnBtnClick = false;
-                        RemoveUnitStateCheckBox();
+                        RemoveUnitStateChangeBox();
                     }
                 }
             }
         }
         else if(Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -159,17 +166,6 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     }
 
 
-    void SetFreeMode()
-    {
-        allyMode = AllyMode.Free;
-    }
-
-    void SetSiegeMode()
-    {
-        allyMode = AllyMode.Siege;
-    }
-
-
     void OnButtonClicked(string unitType)
     {
         isSpawnBtnClick = true;
@@ -180,13 +176,13 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     void FreeState()
     {
         SpawnSelectedUnit();
-        RemoveUnitStateCheckBox();
+        RemoveUnitStateChangeBox();
     }
 
     void SiegeState()
     {
         SpawnSelectedUnit();
-        RemoveUnitStateCheckBox();
+        RemoveUnitStateChangeBox();
     }
 
 
@@ -202,9 +198,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         currentUnitStateChangeBox = Instantiate(UnitStateChangeBox) as GameObject;
 
         GameObject canvas = GameObject.Find("Canvas");
-
         currentUnitStateChangeBox.transform.SetParent(canvas.transform, false);
-
         RectTransform rectTransform = currentUnitStateChangeBox.GetComponent<RectTransform>();
         screenPos.x += 180;
         screenPos.y -= 90;
@@ -222,11 +216,11 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
             selectedUnit.unitStateChangeTime = 10.0f;
             selectedUnit.Ally_Mode = AllyMode.Change;  // Change 상태로 설정
 
-            RemoveUnitStateCheckBox();
+            RemoveUnitStateChangeBox();
         });
     }
 
-    void RemoveUnitStateCheckBox()
+    void RemoveUnitStateChangeBox()
     {
         if (currentUnitStateChangeBox != null)
         {
