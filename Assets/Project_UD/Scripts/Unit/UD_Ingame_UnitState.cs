@@ -74,7 +74,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
                 fsm.ChangeState(UnitState.Move);
                 UnitCtrl.haveToMovePosition = false;
             }
-            else 
+            else
             {
                 UnitCtrl.Unit_Attack();
             }
@@ -84,7 +84,6 @@ public class UD_Ingame_UnitState : MonoBehaviour
             UnitCtrl.sightRangeSensor.ListRefresh();
             fsm.ChangeState(UnitState.Search);
         }
-        
     }
 
     void Attack_Exit()

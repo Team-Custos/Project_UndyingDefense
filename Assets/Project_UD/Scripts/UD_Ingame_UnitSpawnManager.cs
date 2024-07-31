@@ -38,11 +38,9 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     public Button MinByeongBtn = null;
     public Button HunterBtn = null;
 
-    public Button FreeBtn = null;
-    public Button SiegeBtn = null;
 
-    public GameObject UnitStateCheckBox;
-    private GameObject currentUnitStateCheckBox;
+    public GameObject UnitStateChangeBox;
+    private GameObject currentUnitStateChangeBox;
     private Vector3 currentSpawnPosition;
 
     public GameObject MinByeongPrefab;
@@ -76,21 +74,19 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
             HunterBtn.onClick.AddListener(() => OnButtonClicked("Hunter"));
         }
 
-
-        if (FreeBtn != null)
-        {
-            FreeBtn.onClick.AddListener(() => { SetFreeMode(); });
-        }
-
-        if (SiegeBtn != null)
-        {
-            SiegeBtn.onClick.AddListener(() => { SetSiegeMode(); });
-        }
-
+        allyMode = AllyMode.Siege;
     }
     // Update is called once per frame
     void Update()
     {
+        UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+        foreach (UD_Ingame_UnitCtrl unit in allUnits)
+        {
+            if (unit.unitStateChangeTime > 0)
+            {
+                unit.unitStateChangeTime -= Time.deltaTime;
+            }
+        }
         if (isSpawnBtnClick)
         {
             if (Input.GetMouseButtonDown(0))
@@ -101,8 +97,25 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                     if (hit.collider.CompareTag("Ground"))
                     {
                         currentSpawnPosition = hit.point;
-                        CreateUnitStateCheckBox(currentSpawnPosition);
+                        SpawnSelectedUnit();
                         isSpawnBtnClick = false;
+                        RemoveUnitStateCheckBox();
+                    }
+                }
+            }
+        }
+        else if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.CompareTag("Unit"))
+                {
+                    UD_Ingame_UnitCtrl unitCtrl = hit.collider.gameObject.GetComponent<UD_Ingame_UnitCtrl>();
+
+                    if (unitCtrl.unitStateChangeTime <= 0)
+                    {
+                        CreateUnitStateChangeBox(hit.point, unitCtrl);
                     }
                 }
             }
@@ -135,27 +148,25 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         GameObject MinByeon = Instantiate(MinByeongPrefab) as GameObject;
         MinByeon.transform.position = spawnPosition;
-        MinByeon.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = allyMode; // AllyMode 설정
+        MinByeon.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
     }
 
     public void HunterSpawn(Vector3 spawnPosition)
     {
         GameObject Hunter = Instantiate(HunterPrefab) as GameObject;
         Hunter.transform.position = spawnPosition;
-        Hunter.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = allyMode; // AllyMode 설정
+        Hunter.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
     }
 
 
     void SetFreeMode()
     {
         allyMode = AllyMode.Free;
-        Debug.Log("Free mode set");
     }
 
     void SetSiegeMode()
     {
         allyMode = AllyMode.Siege;
-        Debug.Log("Siege mode set");
     }
 
 
@@ -163,7 +174,6 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         isSpawnBtnClick = true;
         UnitType = unitType;
-        Debug.Log($"Button clicked: {unitType}");
     }
 
 
@@ -180,61 +190,59 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     }
 
 
-    void CreateUnitStateCheckBox(Vector3 worldPosition)
+    void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl selectedUnit)
     {
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
-        if (currentUnitStateCheckBox != null)
+        if (currentUnitStateChangeBox != null)
         {
-            Destroy(currentUnitStateCheckBox);
+            Destroy(currentUnitStateChangeBox);
         }
 
-        currentUnitStateCheckBox = Instantiate(UnitStateCheckBox) as GameObject;
+        currentUnitStateChangeBox = Instantiate(UnitStateChangeBox) as GameObject;
 
         GameObject canvas = GameObject.Find("Canvas");
 
-        currentUnitStateCheckBox.transform.SetParent(canvas.transform, false);
+        currentUnitStateChangeBox.transform.SetParent(canvas.transform, false);
 
-        RectTransform rectTransform = currentUnitStateCheckBox.GetComponent<RectTransform>();
+        RectTransform rectTransform = currentUnitStateChangeBox.GetComponent<RectTransform>();
+        screenPos.x += 180;
+        screenPos.y -= 90;
+
         rectTransform.position = screenPos;
 
-        Button freeBtn = currentUnitStateCheckBox.transform.Find("FreeBtn").GetComponent<Button>();
-        Button siegeBtn = currentUnitStateCheckBox.transform.Find("SiegeBtn").GetComponent<Button>();
+        Button changeStateBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
 
-        freeBtn.onClick.AddListener(() => { SetFreeMode(); FreeState(); });
-        siegeBtn.onClick.AddListener(() => { SetSiegeMode(); SiegeState(); });
+        // ChangeState 버튼 클릭 시 동작 추가
+        changeStateBtn.onClick.AddListener(() =>
+        {
+            selectedUnit.previousAllyMode = selectedUnit.Ally_Mode;  // 현재 상태를 이전 상태로 저장
 
+            // 상태 변경 시간을 현재 시간으로 업데이트
+            selectedUnit.unitStateChangeTime = 10.0f;
+            selectedUnit.Ally_Mode = AllyMode.Change;  // Change 상태로 설정
 
-        //Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
-
-        //if (currentUnitStateCheckBox != null)
-        //{
-        //    Destroy(currentUnitStateCheckBox);
-        //}
-
-        //currentUnitStateCheckBox = Instantiate(UnitStateCheckBox) as GameObject;
-
-        //GameObject canvas = GameObject.Find("Canvas");
-
-        //currentUnitStateCheckBox.transform.SetParent(canvas.transform, false);
-
-        //RectTransform rectTransform = currentUnitStateCheckBox.GetComponent<RectTransform>();
-        //rectTransform.position = screenPos;
-
-        //Button freeBtn = currentUnitStateCheckBox.transform.Find("FreeBtn").GetComponent<Button>();
-        //Button siegeBtn = currentUnitStateCheckBox.transform.Find("SiegeBtn").GetComponent<Button>();
-
-        //freeBtn.onClick.AddListener(() => FreeState());
-        //siegeBtn.onClick.AddListener(() => SiegeState());
+            RemoveUnitStateCheckBox();
+        });
     }
 
     void RemoveUnitStateCheckBox()
     {
-        if (currentUnitStateCheckBox != null)
+        if (currentUnitStateChangeBox != null)
         {
-            Destroy(currentUnitStateCheckBox);
-            currentUnitStateCheckBox = null;
+            Destroy(currentUnitStateChangeBox);
+            currentUnitStateChangeBox = null;
         }
+    }
+
+    void SetFreeMode(UD_Ingame_UnitCtrl unit)
+    {
+        unit.Ally_Mode = AllyMode.Free;
+    }
+
+    void SetSiegeMode(UD_Ingame_UnitCtrl unit)
+    {
+        unit.Ally_Mode = AllyMode.Siege;
     }
 
     void SpawnSelectedUnit()
