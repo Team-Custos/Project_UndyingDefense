@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
 
 public class UnitSpawnData
 {
+    public Mesh Tier2Mesh;
+    public Mesh Tier3Mesh;
+
+    public Material Tier2Material;
+    public Material Tier3Material;
+
     public int modelType;
     public float spawnTime;
     public int HP;
     public float speed;
+    public int atk;
     public UnitType unitType;
-
 }
+
 
 public enum UnitType
 {
@@ -51,12 +59,13 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         GameObject Obj = null;
 
+        Debug.Log(new Vector3(X, 0, Y));
+
         if (IsAlly)
         {
             Obj = Instantiate(Test_Ally);
             Obj.transform.position = new Vector3(X, 0, Y);
             Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
-            
         }
         else
         {
@@ -64,6 +73,8 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
             Obj.transform.position = new Vector3(X, 0, Y);
             Obj.GetComponent<UD_Ingame_UnitCtrl>().Init(spawnData[unitType]);
         }
+
+        
 
         return Obj;
     }

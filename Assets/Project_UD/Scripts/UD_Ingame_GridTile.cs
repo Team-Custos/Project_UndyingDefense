@@ -33,13 +33,13 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
 
         this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
+
+        colorDefault = new Color(0, 0, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-
 
         if (Selected)
         {
@@ -71,15 +71,7 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GAMEMANAGER.AllyUnitSetMode && isPlaceable)
-        {
-            
-            isPlaceable = false;
-        }
-        else
-        {
-            Selected = !Selected;
-        }
+        
 
 
         //Debug.Log(gameObject.name + " Selected");

@@ -7,6 +7,7 @@ using DG.Tweening;
 public class UD_Ingame_UIManager : MonoBehaviour
 {
     public Button allyUnitSetMode = null;
+    public Text UnitSetModeText = null;
 
 
     // Start is called before the first frame update
@@ -24,14 +25,27 @@ public class UD_Ingame_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
+        if (UnitSetModeText != null)
         {
-            allyUnitSetMode.GetComponentInChildren<Text>().text = "Ally Unit Set Mode OFF";
+            if (UD_Ingame_GameManager.inst.UnitSetMode)
+            {
+                UnitSetModeText.text = "UnitSetMode : ON";
+                if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
+                {
+                    UnitSetModeText.color = Color.cyan;
+                }
+                else if (UD_Ingame_GameManager.inst.EnemyUnitSetMode)
+                {
+                    UnitSetModeText.color = Color.red;
+                }
+            }
+            else
+            {
+                UnitSetModeText.text = "UnitSetMode : OFF";
+                UnitSetModeText.color = Color.white;
+            }
         }
-        else
-        {
-            allyUnitSetMode.GetComponentInChildren<Text>().text = "Ally Unit Set Mode ON";
-        }
+
 
 
     }

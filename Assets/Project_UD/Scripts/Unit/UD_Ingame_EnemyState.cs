@@ -8,7 +8,6 @@ public enum EnemyState
 {
     Idle,
     Attack,
-    Search,
     Move
 }
 
@@ -17,16 +16,20 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 {
     public StateMachine<EnemyState, StateDriverUnity> fsm;
 
-    UD_Ingame_UnitCtrl EnemyCtrl;
+    UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
+
+    Vector3 previousNavDestination;
 
     private void Start()
     {
-        EnemyCtrl = this.GetComponent<UD_Ingame_UnitCtrl>();
+        UnitCtrl = this.GetComponent<UD_Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
 
         fsm = new StateMachine<EnemyState, StateDriverUnity>(this);
-        fsm.ChangeState(EnemyState.Move);
+
+        previousNavDestination = this.transform.position;
+        //fsm.ChangeState(EnemyState.Move);
     }
 
     private void Update()
@@ -50,13 +53,13 @@ public class UD_Ingame_EnemyState : MonoBehaviour
 
     void Attack_Update()
     {
-        EnemyCtrl.Unit_Attack();
+        UnitCtrl.Unit_Attack();
     }
 
     void Attack_Exit()
     {
-        EnemyCtrl.targetEnemy = null;
-        EnemyCtrl.isEnemyInRange = false;
+        UnitCtrl.targetEnemy = null;
+        UnitCtrl.isEnemyInRange = false;
     }
     #endregion
 
@@ -64,67 +67,90 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     void Move_Enter()
     {
         Debug.Log("Enemy Move_Enter");
-        EnemyCtrl.isEnemyInRange = false;
+        UnitCtrl.isEnemyInRange = false;
+        navAgent.isStopped = false;
+
+        UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
+        UnitCtrl.enemy_isPathBlocked = false;
     }
 
     void Move_Update()
     {
-        navAgent.SetDestination(EnemyCtrl.moveTargetPos);
-        EnemyCtrl.SearchEnemy();
+        SearchPath();
 
-        //transform.LookAt(EnemyCtrl.moveTargetPos);
-        //transform.Translate(Vector3.forward * EnemyCtrl.testSpeed * Time.deltaTime, Space.Self);
-
-        if (EnemyCtrl.targetEnemy != null)
+        if (UnitCtrl.enemy_isBaseInRange)
         {
-            float targetUnitDistance_Cur = Vector3.Distance(transform.position, EnemyCtrl.targetEnemy.transform.position);
-            EnemyCtrl.moveTargetPos = EnemyCtrl.targetEnemy.transform.position;
-
-            if (targetUnitDistance_Cur <= EnemyCtrl.attackDistance)
-            {
-                //EnemyCtrl.moveTargetPos = transform.position;
-                EnemyCtrl.isEnemyInRange = true;
-                navAgent.SetDestination(EnemyCtrl.transform.position);
-                return;
-            }
-        }
-        else
-        {
-            //float targetMoveDistance_Cur = Vector3.Distance(transform.position, EnemyCtrl.moveTargetPos);
-
-            if (EnemyCtrl.enemy_isBaseInRange)
-            {
-                navAgent.SetDestination(transform.position);
-                navAgent.isStopped = true;
-                return;
-            }
+            fsm.ChangeState(EnemyState.Attack);
+            return;
         }
 
-    
+        navAgent.SetDestination(UnitCtrl.moveTargetPos);
+
+        if (UnitCtrl.enemy_isPathBlocked)
+        {
+            UnitCtrl.SearchEnemy();
+
+            if (UnitCtrl.targetEnemy != null)
+            {
+                if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)
+                {
+                    //Debug.Log("목표 병사보다 현재 타겟 위치가 더 멈.");
+                    UnitCtrl.enemy_isPathBlocked = false;
+                    return;
+                }
+
+                float targetUnitDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
+                UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;
+
+                if (targetUnitDistance_Cur <= UnitCtrl.attackRange)
+                {
+                    UnitCtrl.isEnemyInRange = true;
+                    navAgent.SetDestination(UnitCtrl.transform.position);
+                    return;
+                }
+            }
+        }
+
+        
     }
 
     void Move_Exit()
     {
-
+        navAgent.SetDestination(transform.position);
+        navAgent.isStopped = true;
     }
+
+    void SearchPath()//길찾기
+    {
+        StartCoroutine(DestinationValidCheck());
+        IEnumerator DestinationValidCheck()
+        {
+            yield return new WaitUntil(() => { return !navAgent.pathPending; });
+
+            int cornerCount = navAgent.path.corners.Length;
+            //Debug.Log("명령 받은 목표 지점 위치 : " + UnitCtrl.moveTargetBasePos);
+
+            Vector3 navDestination = new Vector3(navAgent.path.corners[cornerCount - 1].x, 0, navAgent.path.corners[cornerCount - 1].z);
+
+            //Debug.Log("계산 된 마지막 목표 지점 위치 : " + navDestination);
+            //Debug.Log("거리 : " + (navDestination.z - UnitCtrl.moveTargetBasePos.z));
+
+            if (navDestination.z - UnitCtrl.moveTargetBasePos.z <= UnitCtrl.attackRange)
+            {
+                //Debug.Log("목표 지점으로 이동할 수 있습니다.");
+                UnitCtrl.enemy_isPathBlocked = false;
+            }
+            else
+            {
+                //Debug.Log("목표 지점으로 이동할수는 없지만 중간 지점까진 갈 수 있습니다.");
+                UnitCtrl.enemy_isPathBlocked = true;
+            }
+            previousNavDestination = navDestination;
+        }
+    }
+
     #endregion
 
 
-    void Search_Enter()
-    {
-        Debug.Log("Enemy Search_Enter");
 
-        UD_Ingame_RangeCtrl Range = EnemyCtrl.GetComponentInChildren<UD_Ingame_RangeCtrl>();
-
-        if (Range == null)
-        {
-            Debug.LogError("Range Error in : " + EnemyCtrl.gameObject.name);
-        }
-        else
-        {
-            EnemyCtrl.SearchEnemy();
-        }
-
-       
-    }
 }

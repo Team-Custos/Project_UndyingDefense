@@ -43,13 +43,9 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
             {
                 UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
 
-                if (GridTile.currentPlacedUnit != null)
+                if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
-                    GridTile.currentPlacedUnit.transform.Translate(Vector3.forward);
-                }
-                else if (GAMEMANAGER.AllyUnitSetMode && GridTile.isPlaceable)
-                {
-                    GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(true, this.transform.position.x, this.transform.position.z);
+                    GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(GAMEMANAGER.AllyUnitSetMode, GridTile.transform.position.x, GridTile.transform.position.z);
                     GridTile.isPlaceable = false;
                 }
                 else

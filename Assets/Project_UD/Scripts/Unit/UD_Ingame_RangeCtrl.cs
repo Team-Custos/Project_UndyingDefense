@@ -27,6 +27,11 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
 
     public GameObject NearestObjectSearch(float attackRange, bool isParentEnemy)
     {
+        if (Obj_Nearest == null)
+        {
+            ListRefresh();
+        }
+
         if (detectedObjects.Count > 0)
         {
             Obj_Nearest = detectedObjects[0];
