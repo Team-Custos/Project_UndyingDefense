@@ -58,6 +58,19 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
     private AllyMode allyMode;
 
+    private UD_Ingame_UnitCtrl selectedUnit;
+
+    public void SetSelectedUnit(UD_Ingame_UnitCtrl unit)
+    {
+        selectedUnit = unit;
+    }
+
+    // 선택된 유닛을 반환
+    public UD_Ingame_UnitCtrl GetSelectedUnit()
+    {
+        return selectedUnit;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -78,6 +91,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         }
 
         allyMode = AllyMode.Siege;
+
     }
     // Update is called once per frame
     void Update()
@@ -90,6 +104,28 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                 unit.unitStateChangeTime -= Time.deltaTime;
             }
         }
+
+        DeleteSlectedUnit();
+
+        //if (isSpawnBtnClick)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        //        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        //        if (Physics.Raycast(ray, out RaycastHit hit))
+        //        {
+        //            if (hit.collider.CompareTag("Ground") || hit.collider.CompareTag("Tile"))
+        //            {
+        //                currentSpawnPosition = hit.point;
+        //                SpawnSelectedUnit();
+        //                isSpawnBtnClick = false;
+        //                RemoveUnitStateChangeBox();
+        //            }
+        //        }
+        //    }
+        //}
         if (isSpawnBtnClick)
         {
             if (Input.GetMouseButtonDown(0))
@@ -99,12 +135,27 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if (hit.collider.CompareTag("Ground"))
+                    //if (hit.collider.CompareTag("Ground"))
+                    //{
+                    //    currentSpawnPosition = hit.point;
+                    //    SpawnSelectedUnit();
+                    //    isSpawnBtnClick = false;
+                    //    RemoveUnitStateChangeBox();
+                    //}
+
+
+
+                    if (hit.collider.CompareTag("Tile"))
                     {
-                        currentSpawnPosition = hit.point;
-                        SpawnSelectedUnit();
-                        isSpawnBtnClick = false;
-                        RemoveUnitStateChangeBox();
+                        UD_Ingame_GridTile gridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
+
+                        if (gridTile != null && gridTile.IsPlaceable())
+                        {
+                            currentSpawnPosition = hit.point;
+                            SpawnSelectedUnit(gridTile);
+                            isSpawnBtnClick = false;
+                            RemoveUnitStateChangeBox();
+                        }
                     }
                 }
             }
@@ -120,13 +171,18 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                 {
                     UD_Ingame_UnitCtrl unitCtrl = hit.collider.gameObject.GetComponent<UD_Ingame_UnitCtrl>();
 
+                   // Debug.Log(selectedUnit.name);
+
                     if (unitCtrl.unitStateChangeTime <= 0)
                     {
                         CreateUnitStateChangeBox(hit.point, unitCtrl);
+                        SetSelectedUnit(unitCtrl); // 선택된 유닛을 설정
                     }
                 }
             }
         }
+
+        
     }
 
     //유닛 소환
@@ -151,39 +207,51 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         return Obj;
     }
 
-    public void MinByeongSpawn(Vector3 spawnPosition)
+    public void MinByeongSpawn(Vector3 spawnPosition, UD_Ingame_GridTile gridTile)
     {
-        GameObject MinByeon = Instantiate(MinByeongPrefab) as GameObject;
-        MinByeon.transform.position = spawnPosition;
-        MinByeon.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
+        Vector3 tileCenter = gridTile.transform.position;
+        GameObject MinByeong = Instantiate(MinByeongPrefab, tileCenter, Quaternion.identity);
+        MinByeong.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
+        MinByeong.GetComponent<UD_Ingame_UnitCtrl>().unitName = "민병";
+        gridTile.currentPlacedUnit = MinByeong;
+        gridTile.SetPlaceable(false);
     }
 
-    public void HunterSpawn(Vector3 spawnPosition)
+    public void HunterSpawn(Vector3 spawnPosition, UD_Ingame_GridTile gridTile)
     {
-        GameObject Hunter = Instantiate(HunterPrefab) as GameObject;
-        Hunter.transform.position = spawnPosition;
+        Vector3 tileCenter = gridTile.transform.position;
+        GameObject Hunter = Instantiate(HunterPrefab, tileCenter, Quaternion.identity);
         Hunter.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
+        Hunter.GetComponent<UD_Ingame_UnitCtrl>().unitName = "사냥꾼";
+        gridTile.currentPlacedUnit = Hunter;
+        gridTile.SetPlaceable(false);
     }
-
 
     void OnButtonClicked(string unitType)
     {
         isSpawnBtnClick = true;
         UnitType = unitType;
+
+        // 타일 색상 업데이트
+        UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+        foreach (var tile in allTiles)
+        {
+            tile.ShowPlacementColors(true);
+        }
     }
 
 
-    void FreeState()
-    {
-        SpawnSelectedUnit();
-        RemoveUnitStateChangeBox();
-    }
+    //void FreeState()
+    //{
+    //    SpawnSelectedUnit();
+    //    RemoveUnitStateChangeBox();
+    //}
 
-    void SiegeState()
-    {
-        SpawnSelectedUnit();
-        RemoveUnitStateChangeBox();
-    }
+    //void SiegeState()
+    //{
+    //    SpawnSelectedUnit();
+    //    RemoveUnitStateChangeBox();
+    //}
 
 
     void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl selectedUnit)
@@ -229,25 +297,32 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         }
     }
 
-    void SetFreeMode(UD_Ingame_UnitCtrl unit)
-    {
-        unit.Ally_Mode = AllyMode.Free;
-    }
-
-    void SetSiegeMode(UD_Ingame_UnitCtrl unit)
-    {
-        unit.Ally_Mode = AllyMode.Siege;
-    }
-
-    void SpawnSelectedUnit()
+    void SpawnSelectedUnit(UD_Ingame_GridTile gridTile)
     {
         if (UnitType == "MinByeong")
         {
-            MinByeongSpawn(currentSpawnPosition);
+            MinByeongSpawn(gridTile.transform.position, gridTile);
         }
         else if (UnitType == "Hunter")
         {
-            HunterSpawn(currentSpawnPosition);
+            HunterSpawn(gridTile.transform.position, gridTile);
+        }
+
+        UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+        foreach (var tile in allTiles)
+        {
+            tile.ShowPlacementColors(false);
+        }
+    }
+
+    void DeleteSlectedUnit()
+    {   
+        if (selectedUnit != null && Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("Delete Unit");
+
+            Destroy(selectedUnit);
+            selectedUnit = null;
         }
     }
 }

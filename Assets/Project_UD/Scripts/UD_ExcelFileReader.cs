@@ -36,7 +36,8 @@ public class UD_ExcelFileReader : MonoBehaviour
 
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
-        Debug.Log(csvData.text);
+        
+        //Debug.Log(csvData.text);
 
         reader.ReadLine();
 
@@ -55,36 +56,32 @@ public class UD_ExcelFileReader : MonoBehaviour
             {
                 string name = dataValues[1];
                 string type = dataValues[0];
-                int tier;
-                if (string.IsNullOrWhiteSpace(dataValues[2]))
+                if (!int.TryParse(dataValues[2], out int tier))
                 {
                     tier = 0;
-                }
-                else
-                {
-                    tier = int.Parse(dataValues[2]);
                 }
                 string weapon = dataValues[3];
                 string skillType = dataValues[4];
                 string skill = dataValues[5];
                 string description = dataValues[6];
                 string attackType = dataValues[7];
-                int damage;
-                if (!int.TryParse(dataValues[8], out damage))
+                if (!int.TryParse(dataValues[8], out int damage))
                 {
                     damage = 0;
                 }
-                int targetCount = int.Parse(dataValues[9]);
+                if (!int.TryParse(dataValues[9], out int targetCount))
+                {
+                    targetCount = 0;
+                }
                 string hitShape = dataValues[10];
-                int critRate;
-                if (!int.TryParse(dataValues[11], out critRate))
+                if (!int.TryParse(dataValues[11], out int critRate))
                 {
                     critRate = 0;
                 }
                 string critEffect1 = dataValues[12];
                 string critEffect2 = dataValues[13];
 
-                
+
 
                 UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(
                     name, type, tier, weapon, skillType, skill, description, attackType, damage, targetCount, hitShape, critRate, critEffect1, critEffect2);

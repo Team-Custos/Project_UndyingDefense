@@ -62,6 +62,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
+    public string unitName;
+
+    void OnMouseDown()
+    {
+        if (UD_Ingame_UIManager.instance != null)
+        {
+            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -235,28 +244,28 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void SearchEnemy()
     {
-        if (sightRangeSensor == null)
-        {
-            Debug.LogError("Range Error in : " + this.gameObject.name);
-            return;
-        }
-        else
-        {
-            GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch(attackDistance, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
+        //if (sightRangeSensor == null)
+        //{
+        //    Debug.LogError("Range Error in : " + this.gameObject.name);
+        //    return;
+        //}
+        //else
+        //{
+        //    GameObject TargetObj =
+        //        sightRangeSensor.NearestObjectSearch(attackDistance, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
 
-            if (TargetObj != null)
-            {
-                isEnemyInSight = true;
-                moveTargetPos = TargetObj.transform.position;
-                targetEnemy = TargetObj;
-            }
-            else
-            {
-                isEnemyInSight = false;
-                targetEnemy = null;
-            }
-        }
+        //    if (TargetObj != null)
+        //    {
+        //        isEnemyInSight = true;
+        //        moveTargetPos = TargetObj.transform.position;
+        //        targetEnemy = TargetObj;
+        //    }
+        //    else
+        //    {
+        //        isEnemyInSight = false;
+        //        targetEnemy = null;
+        //    }
+        //}
     }
 
     public void Unit_Attack()

@@ -12,7 +12,6 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     public Color32 colorDefault = Color.white;
     public Color32 colorHighlit = Color.white;
-
     public Color32 colorSelected = Color.white;
 
     MeshRenderer MeshR;
@@ -22,8 +21,10 @@ public class UD_Ingame_GridTile : MonoBehaviour
     bool mouseHover = false;
     public bool isPlaceable = true;
 
+    public Color32 colorOccupied = Color.red; // 유닛이 있는 타일 색상
+    public Color32 colorAvailable = Color.green; // 유닛이 없는 타일 색상
+    public bool showPlacementColors = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         GAMEMANAGER = UD_Ingame_GameManager.inst;
@@ -35,45 +36,74 @@ public class UD_Ingame_GridTile : MonoBehaviour
         this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        //if (Selected)
+        //{
+        //    MeshR.material.color = colorSelected;
+        //}
+        //else if (!mouseHover)
+        //{
+        //    MeshR.material.color = colorDefault;
+        //}
 
-
-        if (Selected)
+        if (showPlacementColors)
         {
-            MeshR.material.color = colorSelected;
+            if (currentPlacedUnit != null)
+            {
+                MeshR.material.color = colorOccupied;
+            }
+            else if (!mouseHover)
+            {
+                MeshR.material.color = colorAvailable;
+            }
         }
-        else if(!mouseHover)
+        else
         {
-            MeshR.material.color = colorDefault;
+            if (Selected)
+            {
+                MeshR.material.color = colorSelected;
+            }
+            else if (!mouseHover)
+            {
+                MeshR.material.color = colorDefault;
+            }
         }
-        
-        
-
     }
 
     private void OnMouseOver()
     {
-        mouseHover = true;
-        MeshR.material.color = colorHighlit;
-    }
+        //mouseHover = true;
+        //MeshR.material.color = colorHighlit;
 
+        mouseHover = true;
+        if (!showPlacementColors)
+        {
+            MeshR.material.color = colorHighlit;
+        }
+    }
 
     private void OnMouseExit()
     {
+        //    mouseHover = false;
+        //    GetComponent<MeshRenderer>().material.color = colorDefault;
+
         mouseHover = false;
-        GetComponent<MeshRenderer>().material.color = colorDefault;
+        if (!showPlacementColors)
+        {
+            MeshR.material.color = colorDefault;
+        }
     }
-
-
 
     private void OnMouseDown()
     {
+        if (currentPlacedUnit != null)
+        {
+            return;
+        }
+
         if (GAMEMANAGER.AllyUnitSetMode && isPlaceable)
         {
-            
             isPlaceable = false;
         }
         else
@@ -81,7 +111,21 @@ public class UD_Ingame_GridTile : MonoBehaviour
             Selected = !Selected;
         }
 
-
         //Debug.Log(gameObject.name + " Selected");
+    }
+
+    public void SetPlaceable(bool placeable)
+    {
+        isPlaceable = placeable;
+    }
+
+    public bool IsPlaceable()
+    {
+        return isPlaceable;
+    }
+
+    public void ShowPlacementColors(bool show)
+    {
+        showPlacementColors = show;
     }
 }

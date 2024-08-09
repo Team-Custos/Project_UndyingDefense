@@ -8,6 +8,19 @@ using static UD_UnitDataManager;
 
 public class UD_UnitDataManager : MonoBehaviour
 {
+    public static UD_UnitDataManager inst;
+
+    void Awake()
+    {
+        if (inst == null)
+        {
+            inst = this;
+        }
+        else if (inst != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public class UnitData
     {
@@ -59,16 +72,15 @@ public class UD_UnitDataManager : MonoBehaviour
         foreach (var unitData in unitDataList)
         {
             unitDataDictionary[unitData.Name] = unitData;
-            Debug.Log($"Name: {unitData.Name}, Class: {unitData.Type}, Level: {unitData.Tier}, HP: {unitData.Damage}, Material: {unitData.Weapon}");
         }
 
         ShowUnitData();
     }
 
 
-    public UnitData GetUnitData(string unitType)
+    public UnitData GetUnitData(string unitName)
     {
-        if (unitDataDictionary.TryGetValue(name, out UnitData unitData))
+        if (unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
         {
             return unitData;
         }
@@ -79,14 +91,17 @@ public class UD_UnitDataManager : MonoBehaviour
         }
     }
 
-    
+
     public void ShowUnitData()
     {
         foreach (var unitdata in unitDataDictionary)
         {
             var unitName = unitdata.Key;
             var unitData = unitdata.Value;
-            Debug.Log($"Name: {unitName}, Class: {unitData.Type}, Tier: {unitData.Tier}, Weapon: {unitData.Weapon}, SkillType: {unitData.SkillType}, Skill: {unitData.Skill}, Description: {unitData.Description}, AttackType: {unitData.AttackType}, Damage: {unitData.Damage}, TargetCount: {unitData.TargetCount}, HitShape: {unitData.HitShape}, CritRate: {unitData.CritRate}, CritEffect1: {unitData.CritEffect1}, CritEffect2: {unitData.CritEffect2}");
+            Debug.Log($"Name: {unitName}, Class: {unitData.Type}, Tier: {unitData.Tier}, Weapon: {unitData.Weapon}, SkillType: {unitData.SkillType}," +
+                      $" Skill: {unitData.Skill}, Description: {unitData.Description}, AttackType: {unitData.AttackType}, Damage: {unitData.Damage}, " +
+                      $"TargetCount: {unitData.TargetCount}, HitShape: {unitData.HitShape}, CritRate: {unitData.CritRate}, CritEffect1: {unitData.CritEffect1}," +
+                      $" CritEffect2: {unitData.CritEffect2}");
         }
 
     }
