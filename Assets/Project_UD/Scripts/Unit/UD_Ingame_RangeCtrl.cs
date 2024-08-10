@@ -86,6 +86,10 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
             if (other.CompareTag(tagToSearch))
             {
                 detectedObjects.Remove(unit.gameObject);
+                if (Obj_Nearest == unit.gameObject)
+                {
+                    Obj_Nearest = null;
+                }
             }
             else return;
         }

@@ -298,7 +298,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -505,7 +505,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4530147203320522840, guid: b284ef815987a44459fc4cf89ce506d8,
         type: 3}
@@ -2329,7 +2329,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -2823,7 +2823,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -2954,7 +2954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &424941220
 Transform:
   m_ObjectHideFlags: 0
@@ -5773,7 +5773,9 @@ MonoBehaviour:
   Unit: []
   Enemy: []
   Base: {fileID: 122481044}
+  UnitSetMode: 0
   AllyUnitSetMode: 0
+  EnemyUnitSetMode: 0
 --- !u!1 &877068171
 GameObject:
   m_ObjectHideFlags: 0
@@ -6298,7 +6300,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -7160,7 +7162,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -8241,7 +8243,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -10096,11 +10098,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: []
   spawnData:
-  - spriteType: 0
+  - modelType: 0
     spawnTime: 0
     HP: 0
     speed: 0
+    atk: 0
+    sightRange: 0
+    attackRange: 0
+    generalSkill: 0
+    specialSkill: 0
     enemyType: 0
+  Test_Enemy: {fileID: 0}
+  enemyType: 0
 --- !u!1 &1501589459 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6321061373231660444, guid: aabff1cdb302d9a4f969d950162ac1a4,
@@ -10372,7 +10381,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -10759,7 +10768,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -12195,7 +12204,7 @@ PrefabInstance:
     - target: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4147722830000177926, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
         type: 3}
@@ -12574,19 +12583,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 0
   spawnData:
-  - Tier2Mesh: {fileID: 0}
-    Tier3Mesh: {fileID: 0}
-    Tier2Material: {fileID: 0}
-    Tier3Material: {fileID: 0}
-    modelType: 0
+  - modelType: 0
     spawnTime: 0
     HP: 0
     speed: 0
     atk: 0
+    sightRange: 0
+    attackRange: 0
+    generalSkill: 0
+    specialSkill: 0
     unitType: 0
   Test_Ally: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
-    type: 3}
-  Test_Enemy: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
 --- !u!1 &1841101955 stripped
 GameObject:
@@ -12983,7 +12990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1976871871
 Transform:
   m_ObjectHideFlags: 0

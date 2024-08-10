@@ -6,23 +6,30 @@ using UnityEngine;
 
 public class EnemySpawnData
 {
-    public int spriteType;
+    public int modelType;
     public float spawnTime;
     public int HP;
     public float speed;
-    public EnemyType enemyType;
+    public int atk;
+    public float sightRange;
+    public float attackRange;
+
+    public int generalSkill;
+    public int specialSkill;
+    public UnitType enemyType;
 
 }
 
-public enum EnemyType
-{
-    Basic,
-    what
-}
+//public enum EnemyType
+//{
+//    Warrior,
+//    Archer,
+//}
 
 public class UD_Ingame_MobSpawner : MonoBehaviour
 {
-    
+    public static UD_Ingame_MobSpawner inst;
+
     UD_Ingame_GridManager gridManager;
 
     int mobSpawnPosX = 0;
@@ -38,9 +45,13 @@ public class UD_Ingame_MobSpawner : MonoBehaviour
     int level;
     float timer;
 
+    public GameObject Test_Enemy;
+
+    public int enemyType = 0;
+
     private void Awake()
     {
-       
+       inst = this;
         
     }
 
@@ -94,14 +105,20 @@ public class UD_Ingame_MobSpawner : MonoBehaviour
         if (timer > spawnData[level].spawnTime)
         {
             timer = 0;
-            Spawn();
+            //EnemySpawn();
         }
     }
 
-    void Spawn()
+    //Àû ¼ÒÈ¯
+    public GameObject EnemySpawn(float X, float Y)
     {
-        //GameObject enemy = Game_Manager.instance.pool.Get(0);
-        //enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-        //enemy.GetComponent<Enemy_Ctrl>().Init(spawnData[level]);
+        GameObject Obj = null;
+
+        Debug.Log(new Vector3(X, 0, Y));
+
+        Obj = Instantiate(Test_Enemy);
+        Obj.transform.position = new Vector3(X, 0, Y);
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]);
+        return Obj;
     }
 }

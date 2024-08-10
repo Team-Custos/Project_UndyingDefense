@@ -25,6 +25,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public UD_Ingame_EnemyState Enemy_State;
     [HideInInspector] public NavMeshObstacle NavObstacle;
     [HideInInspector] public NavMeshAgent NavAgent;
+    [HideInInspector] public UD_Ingame_UnitSkillManager UnitSkill;
 
     MeshRenderer MeshRenderer;
 
@@ -81,9 +82,27 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public GameObject findEnemyRange = null;
     public GameObject Bow = null;
 
-    private void OnEnable()
+    private void Awake()
     {
+        MeshRenderer = GetComponent<MeshRenderer>();
+        NavAgent = GetComponent<NavMeshAgent>();
+        NavObstacle = GetComponent<NavMeshObstacle>();
 
+        Ally_State = GetComponent<UD_Ingame_UnitState>();
+        Enemy_State = GetComponent<UD_Ingame_EnemyState>();
+
+        UnitSkill = GetComponentInChildren<UD_Ingame_UnitSkillManager>();
+
+        targetBase = UD_Ingame_GameManager.inst.Base;
+
+        
+        
+        HP = maxHP;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         Ally_Mode = AllyMode.Seige;
 
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
@@ -100,23 +119,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
         }
 
-        HP = maxHP;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        MeshRenderer = GetComponent<MeshRenderer>();
-        NavAgent = GetComponent<NavMeshAgent>();
-        NavObstacle = GetComponent<NavMeshObstacle>();
-
-        Ally_State = GetComponent<UD_Ingame_UnitState>();
-        Enemy_State = GetComponent<UD_Ingame_EnemyState>();
-
-        targetBase = UD_Ingame_GameManager.inst.Base;
-
-        moveTargetPos = transform.position;
-        moveTargetBasePos = new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z);
+        moveTargetPos = this.transform.position;
     }
 
     private void OnDrawGizmosSelected()
@@ -131,9 +134,10 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     {
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
-
+        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
         sightRangeSensor.radius = sightRange;
-        findEnemyRange.transform.localScale = new Vector3(attackRange + 4, attackRange + 4, 0);
+
+        NavAgent.speed = moveSpeed;
 
         if (HP <= 0)
         {
@@ -163,6 +167,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 {
                     haveToMovePosition = false;
                     isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
+
+                    if ((Vector3.Distance(transform.position, targetEnemy.transform.position) > sightRange - 0.5f))
+                    {
+                        isEnemyInSight = false;
+                        targetEnemy = null;
+                    }
+
                     if (isEnemyInRange)
                     {
                         moveTargetPos = this.transform.position;
@@ -173,17 +184,25 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     {
                         Ally_State.fsm.ChangeState(UnitState.Chase);
                     }
+
+                    
+
                 }
             }
             else
             {
-                if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                if (Vector3.Distance(transform.position, moveTargetPos) > 0.2f)
                 {
-                    Ally_State.fsm.ChangeState(UnitState.Move);
+                    Debug.Log("Distance : " + Vector3.Distance(transform.position, moveTargetPos));
+                    if (Ally_Mode == AllyMode.Free)
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Move);
+                    }
                 }
                 else
                 {
                     haveToMovePosition = false;
+                    transform.position = moveTargetPos;
                     Ally_State.fsm.ChangeState(UnitState.Idle);
                 }
             }
@@ -202,7 +221,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
             MeshRenderer.material.color = colorEnemy;
             enemy_isBaseInRange =
-            (Vector3.Distance(transform.position, new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z)) <= attackRange);
+            (Vector3.Distance(transform.position, moveTargetBasePos) <= attackRange);
 
             if (enemy_isPathBlocked)
             {
@@ -226,7 +245,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else // ¼º °ø°Ý
             {
-                moveTargetPos = new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z); 
+                moveTargetPos = moveTargetBasePos; 
                 
                 //NavAgent.SetDestination(new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z)); 
                 if (enemy_isBaseInRange)
@@ -292,6 +311,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
+                
                 Bow.transform.LookAt(targetEnemy.transform.position);
                 Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
@@ -300,15 +320,18 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         {
             if (enemy_isBaseInRange)
             {
-                Bow.transform.LookAt(moveTargetPos);
-                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
+
+                //Bow.transform.LookAt(moveTargetPos);
+                //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    Bow.transform.LookAt(targetEnemy.transform.position);
-                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
+                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position);
+                    //Bow.transform.LookAt(targetEnemy.transform.position);
+                    //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -319,14 +342,34 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void Init(UnitSpawnData data)
+    public void UnitInit(UnitSpawnData data)
     {
         modelType = data.modelType;
         maxHP = data.HP;
         moveSpeed = data.speed;
         attackPoint = data.atk;
-        unitType = data.unitType;
+        sightRange = data.sightRange;
+        attackRange = data.attackRange;
 
+        generalSkillCode = data.generalSkill;
+        specialSkillCode = data.specialSkill;
+
+        unitType = data.unitType;
+    }
+
+    public void EnemyInit(EnemySpawnData data)
+    {
+        modelType = data.modelType;
+        maxHP = data.HP;
+        moveSpeed = data.speed;
+        attackPoint = data.atk;
+        sightRange = data.sightRange;
+        attackRange = data.attackRange;
+
+        generalSkillCode = data.generalSkill;
+        specialSkillCode = data.specialSkill;
+
+        unitType = data.enemyType;
     }
 
     private void OnTriggerEnter(Collider other)

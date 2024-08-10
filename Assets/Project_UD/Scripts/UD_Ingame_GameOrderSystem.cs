@@ -45,7 +45,15 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
                 if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
-                    GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(GAMEMANAGER.AllyUnitSetMode, GridTile.transform.position.x, GridTile.transform.position.z);
+                    if (GAMEMANAGER.AllyUnitSetMode)
+                    {
+                        GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                    }
+                    else if (GAMEMANAGER.EnemyUnitSetMode)
+                    {
+                        GridTile.currentPlacedUnit = UD_Ingame_MobSpawner.inst.EnemySpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                    }
+
                     GridTile.isPlaceable = false;
                 }
                 else

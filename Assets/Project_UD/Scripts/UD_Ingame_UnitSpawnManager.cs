@@ -7,25 +7,31 @@ using UnityEngine;
 
 public class UnitSpawnData
 {
-    public Mesh Tier2Mesh;
-    public Mesh Tier3Mesh;
+    //public Mesh Tier2Mesh;
+    //public Mesh Tier3Mesh;
 
-    public Material Tier2Material;
-    public Material Tier3Material;
+    //public Material Tier2Material;
+    //public Material Tier3Material;
 
     public int modelType;
     public float spawnTime;
     public int HP;
     public float speed;
     public int atk;
+    public float sightRange;
+    public float attackRange;
+
+    public int generalSkill;
+    public int specialSkill;
     public UnitType unitType;
 }
 
 
+
 public enum UnitType
 {
-    Basic,
-    what
+    Warrior,
+    Archer,
 }
 
 
@@ -38,8 +44,6 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     public UnitSpawnData[] spawnData;
 
     public GameObject Test_Ally;
-    public GameObject Test_Enemy;
-
 
     // Start is called before the first frame update
     void Start()
@@ -55,26 +59,17 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     }
 
     //¿Ø¥÷ º“»Ø
-    public GameObject UnitSpawn(bool IsAlly , float X, float Y)
+    public GameObject UnitSpawn(float X, float Y)
     {
         GameObject Obj = null;
 
         Debug.Log(new Vector3(X, 0, Y));
 
-        if (IsAlly)
-        {
-            Obj = Instantiate(Test_Ally);
-            Obj.transform.position = new Vector3(X, 0, Y);
-            Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
-        }
-        else
-        {
-            Obj = Instantiate(Test_Enemy);
-            Obj.transform.position = new Vector3(X, 0, Y);
-            Obj.GetComponent<UD_Ingame_UnitCtrl>().Init(spawnData[unitType]);
-        }
 
-        
+        Obj = Instantiate(Test_Ally);
+        Obj.transform.position = new Vector3(X, 0, Y);
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
 
         return Obj;
     }
