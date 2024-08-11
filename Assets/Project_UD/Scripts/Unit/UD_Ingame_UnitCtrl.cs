@@ -1,13 +1,14 @@
+using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public enum AllyMode
 {
-    Seige,
-    Free
+    Siege,
+    Free,
+    Change
 }
 
 public enum TargetSelectType
@@ -82,7 +83,23 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public GameObject findEnemyRange = null;
     public GameObject Bow = null;
 
-    private void Awake()
+    public float testSpeed = 1;
+
+    public float unitStateChangeTime;
+    public AllyMode previousAllyMode;
+
+    public string unitName;
+
+    void OnMouseDown()
+    {
+        if (UD_Ingame_UIManager.instance != null)
+        {
+            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
     {
         MeshRenderer = GetComponent<MeshRenderer>();
         NavAgent = GetComponent<NavMeshAgent>();
@@ -94,9 +111,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         UnitSkill = GetComponentInChildren<UD_Ingame_UnitSkillManager>();
 
         targetBase = UD_Ingame_GameManager.inst.Base;
-
-        
-        
         HP = maxHP;
     }
 
@@ -126,6 +140,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, attackRange + 0.5f);
+        moveTargetPos = transform.position;
+
+        unitStateChangeTime = 0.0f;
+
+        Ally_Mode = AllyMode.Siege;
+
+        attackDistance = 10.0f;
     }
 
 
@@ -145,7 +166,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        #region æ∆±∫ ∫¥ªÁ ¡¶æÓ
+        
+
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
             MeshRenderer.material.color = colorAlly;
@@ -160,58 +182,96 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 NavAgent.enabled = false;
             }
 
-
-            if (targetEnemy != null && !haveToMovePosition)
+            // Change ÏÉÅÌÉúÏùº ÎïåÎäî Îã§Î•∏ ÌñâÎèôÏùÑ ÌïòÏßÄ ÏïäÏùå
+            if (Ally_Mode == AllyMode.Change)
             {
-                if (isEnemyInSight)
+                if (unitStateChangeTime > 0)
                 {
-                    haveToMovePosition = false;
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
-
-                    if ((Vector3.Distance(transform.position, targetEnemy.transform.position) > sightRange - 0.5f))
+                    unitStateChangeTime -= Time.deltaTime;
+                    if (Ally_State != null && Ally_State.fsm != null)
                     {
-                        isEnemyInSight = false;
-                        targetEnemy = null;
-                    }
-
-                    if (isEnemyInRange)
-                    {
-                        moveTargetPos = this.transform.position;
-
-                        Ally_State.fsm.ChangeState(UnitState.Attack);
+                        Ally_State.fsm.ChangeState(UnitState.Idle); // ÏõÄÏßÅÏûÑÏùÑ Î©àÏ∂îÍ≤å Ìï®
                     }
                     else
                     {
-                        Ally_State.fsm.ChangeState(UnitState.Chase);
+                        Debug.LogError("Ally_State or FSM is null in " + this.gameObject.name);
                     }
-
-                    
-
+                    return;
+                }
+                else
+                {
+                    if (previousAllyMode == AllyMode.Free)
+                    {
+                        Ally_Mode = AllyMode.Siege;
+                        SearchEnemy();
+                    }
+                    else if (previousAllyMode == AllyMode.Siege)
+                    {
+                        Ally_Mode = AllyMode.Free;
+                    }
                 }
             }
-            else
+            else if (Ally_Mode == AllyMode.Siege)
+            {
+                if (targetEnemy == null || !isEnemyInSight)
+                {
+                    SearchEnemy();
+                }
+
+                if (targetEnemy != null && !haveToMovePosition)
+                {
+                    float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+                    isEnemyInRange = (distanceToEnemy <= attackDistance);
+
+                    if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Attack);
+                    }
+                }
+            }
+            else if (Ally_Mode == AllyMode.Free)
             {
                 if (Vector3.Distance(transform.position, moveTargetPos) > 0.2f)
                 {
                     Debug.Log("Distance : " + Vector3.Distance(transform.position, moveTargetPos));
-                    if (Ally_Mode == AllyMode.Free)
+                    Ally_State.fsm.ChangeState(UnitState.Move);
+                }
+                
+                if (targetEnemy != null && !haveToMovePosition)
+                {
+                    if (isEnemyInSight)
                     {
-                        Ally_State.fsm.ChangeState(UnitState.Move);
+                        haveToMovePosition = false;
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+                        if (isEnemyInRange)
+                        {
+                            moveTargetPos = this.transform.position;
+                            Ally_State.fsm.ChangeState(UnitState.Attack);
+                        }
+                        else
+                        {
+                            Ally_State.fsm.ChangeState(UnitState.Chase);
+                        }
                     }
                 }
                 else
                 {
-                    haveToMovePosition = false;
                     transform.position = moveTargetPos;
                     Ally_State.fsm.ChangeState(UnitState.Idle);
+                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Move);
+                    }
+                    else
+                    {
+                        haveToMovePosition = false;
+                        Ally_State.fsm.ChangeState(UnitState.Idle);
+                    }
                 }
             }
-            
         }
-        #endregion
 
-
-        #region ¿˚ ¡¶æÓ
+        #region Ï†Å Ï†úÏñ¥
         else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
         {
             if (Input.GetKeyDown(KeyCode.H) && isSelected)
@@ -225,7 +285,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
             if (enemy_isPathBlocked)
             {
-                if (targetEnemy != null && !enemy_isBaseInRange)//∫¥ªÁ πﬂ∞ﬂΩ√
+                if (targetEnemy != null && !enemy_isBaseInRange)//Î≥ëÏÇ¨ Î∞úÍ≤¨Ïãú
                 {
                     isEnemyInRange =
                         (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
@@ -243,7 +303,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                 }
             }
-            else // º∫ ∞¯∞›
+            else // ÏÑ± Í≥µÍ≤©
             {
                 moveTargetPos = moveTargetBasePos; 
                 
@@ -335,7 +395,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
                 else if (targetEnemy == null)
                 {
-                    Debug.Log("∞Ê∑Œ ¥ŸΩ√ ∞Àªˆ...");
+                    Debug.Log("Í≤ΩÎ°ú Îã§Ïãú Í≤ÄÏÉâ...");
                     Enemy_State.fsm.ChangeState(EnemyState.Move);
                 }
             }
@@ -365,7 +425,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         attackPoint = data.atk;
         sightRange = data.sightRange;
         attackRange = data.attackRange;
-
         generalSkillCode = data.generalSkill;
         specialSkillCode = data.specialSkill;
 
@@ -375,7 +434,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         GameObject OBJ = other.gameObject;
-        //««∞› ∆«¡§
+        //ÌîºÍ≤© ÌåêÏ†ï
         if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
         {
             UD_Ingame_ArrowCtrl Arrow = OBJ.GetComponent<UD_Ingame_ArrowCtrl>();
@@ -417,4 +476,5 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
         
     }
+
 }

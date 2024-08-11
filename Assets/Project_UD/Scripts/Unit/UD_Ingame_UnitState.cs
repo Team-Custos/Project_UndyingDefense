@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using MonsterLove.StateMachine;
+using UnityEngine.UI;
 
 public enum UnitState
 {
@@ -14,6 +15,7 @@ public enum UnitState
 }
 
 
+
 public class UD_Ingame_UnitState : MonoBehaviour
 {
     [HideInInspector]public UnitState State;
@@ -21,6 +23,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     
     UD_Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
+
 
     private void Start()
     {
@@ -71,7 +74,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
                 fsm.ChangeState(UnitState.Move);
                 UnitCtrl.haveToMovePosition = false;
             }
-            else 
+            else
             {
                 UnitCtrl.Unit_Attack();
             }
@@ -81,7 +84,6 @@ public class UD_Ingame_UnitState : MonoBehaviour
             UnitCtrl.sightRangeSensor.ListRefresh();
             fsm.ChangeState(UnitState.Search);
         }
-        
     }
 
     void Attack_Exit()
@@ -103,18 +105,34 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Move_Update()
     {
-        navAgent.SetDestination(UnitCtrl.moveTargetPos);
-        navAgent.stoppingDistance = 0;
-
-        float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
-
-        if (targetMoveDistance_Cur <= 0.1f)
+        if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
-            UnitCtrl.moveTargetPos = transform.position;
+            navAgent.SetDestination(UnitCtrl.moveTargetPos);
+            navAgent.stoppingDistance = 0;
 
-            fsm.ChangeState(UnitState.Search);
-            return;
+            float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
+
+            if (targetMoveDistance_Cur <= 0.1f)
+            {
+                UnitCtrl.moveTargetPos = transform.position;
+                fsm.ChangeState(UnitState.Search);
+                return;
+            }
         }
+
+
+        //navAgent.SetDestination(UnitCtrl.moveTargetPos);
+        //navAgent.stoppingDistance = 0;
+
+        //float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
+
+        //if (targetMoveDistance_Cur <= 0.1f)
+        //{
+        //    UnitCtrl.moveTargetPos = transform.position;
+
+        //    fsm.ChangeState(UnitState.Search);
+        //    return;
+        //}
     }
 
     void Move_Exit()
