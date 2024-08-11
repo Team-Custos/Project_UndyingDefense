@@ -1274,14 +1274,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 0
   spawnData:
+  - Tier2Mesh: {fileID: 0}
+    Tier3Mesh: {fileID: 0}
+    Tier2Material: {fileID: 0}
+    Tier3Material: {fileID: 0}
+    modelType: 0
   - modelType: 0
     spawnTime: 0
     HP: 0
     speed: 0
+    atk: 0
     unitType: 0
   Test_Ally: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
-  Test_Enemy: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
+  Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
   MinByeongBtn: {fileID: 99514391}
   HunterBtn: {fileID: 1660477275}
@@ -1512,6 +1518,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camZoomValue: 0.5
+  moveSpeed: 10
+--- !u!1001 &346853807
+PrefabInstance:
   moveSpeed: 2
 --- !u!1 &331696851
 GameObject:
@@ -6718,6 +6727,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridManager: {fileID: 698467705}
+  Unit: []
+  Enemy: []
+  Base: {fileID: 0}
+  AllyUnitSetMode: 0
+--- !u!4 &1614305011 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
+    type: 3}
+  m_PrefabInstance: {fileID: 391045878}
   m_Navigation:
     m_Mode: 3
     m_WrapAround: 0

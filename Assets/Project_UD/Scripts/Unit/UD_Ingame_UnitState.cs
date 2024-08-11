@@ -98,6 +98,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     void Move_Enter()
     {
         Debug.Log("Move_Enter");
+        navAgent.isStopped = false;
         //UnitCtrl.isEnemyInRange = false;
         //UnitCtrl.isEnemyInSight = false;
     }
@@ -136,7 +137,8 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Move_Exit()
     {
-        
+        navAgent.SetDestination(transform.position);
+        navAgent.isStopped = true;
     }
     #endregion
 
@@ -149,17 +151,26 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         //Debug.Log("Chase_Update");
 
-        if (UnitCtrl.targetEnemy != null)
+        if (UnitCtrl.targetEnemy != null && UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
 
             navAgent.SetDestination(UnitCtrl.targetEnemy.transform.position);
 
-            if (targetEnemyDistance_Cur <= UnitCtrl.attackDistance)
+            if (targetEnemyDistance_Cur <= UnitCtrl.attackRange)
             {
                 UnitCtrl.isEnemyInRange = true;
                 navAgent.SetDestination(UnitCtrl.transform.position);
             }
+        }
+    }
+
+    void Chase_Exit()
+    {
+        if (UnitCtrl.Ally_Mode == AllyMode.Free)
+        {
+            navAgent.SetDestination(transform.position);
+            navAgent.isStopped = true;
         }
     }
 

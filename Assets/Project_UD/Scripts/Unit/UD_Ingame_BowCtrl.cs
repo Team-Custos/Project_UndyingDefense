@@ -5,6 +5,7 @@ using UnityEngine;
 public class UD_Ingame_BowCtrl : MonoBehaviour
 {
     public GameObject Arrow;
+    public Transform ShootPos;
 
     float ShootCooldown_Cur = 0;
 
@@ -21,15 +22,18 @@ public class UD_Ingame_BowCtrl : MonoBehaviour
         
     }
 
-    public void ArrowShoot(float ShootCooldown)
+    public void ArrowShoot(float ShootCooldown, int atk, bool isEnemyAttack)
     {
         if (ShootCooldown_Cur <= 0)
         {
             GameObject arrow_Obj = Instantiate(Arrow.gameObject);
-            arrow_Obj.transform.position = this.transform.position;
+            arrow_Obj.transform.position = this.ShootPos.position;
             arrow_Obj.transform.rotation = this.transform.rotation;
 
             UD_Ingame_ArrowCtrl arrowCtrl = arrow_Obj.GetComponent<UD_Ingame_ArrowCtrl>();
+
+            arrowCtrl.Atk = atk;
+            arrowCtrl.isEnemyAttack = isEnemyAttack;
 
             ShootCooldown_Cur = ShootCooldown;
         }

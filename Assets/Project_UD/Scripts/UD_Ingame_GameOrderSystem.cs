@@ -38,14 +38,21 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
 
-            //≈∏¿œ ≈¨∏Ø«ﬂ¿ª∂ß
+            //ÌÉÄÏùº ÌÅ¥Î¶≠ÌñàÏùÑÎïå
             if (clickedObj.tag == UD_CONSTANT.TAG_TILE)
             {
                 UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
 
-                if (GAMEMANAGER.AllyUnitSetMode && GridTile.isPlaceable)
+                if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
-                    GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(true, this.transform.position.x, this.transform.position.z);
+                    if (GAMEMANAGER.AllyUnitSetMode)
+                    {
+                        GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                    }
+                    else if (GAMEMANAGER.EnemyUnitSetMode)
+                    {
+                        GridTile.currentPlacedUnit = UD_Ingame_MobSpawner.inst.EnemySpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                    }
                     GridTile.isPlaceable = false;
                 }
                 else if (GridTile.currentPlacedUnit == null)
@@ -53,7 +60,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     GridTile.Selected = !GridTile.Selected;
                 }
             }
-            //¿Ø¥÷ ≈¨∏Ø«ﬂ¿ª ∂ß
+            //Ïú†Îãõ ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
             else if (clickedObj.tag == UD_CONSTANT.TAG_UNIT)
             {
                 UD_Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<UD_Ingame_UnitCtrl>();
@@ -69,7 +76,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
             }
-            //¿˚ ≈¨∏Ø«ﬂ¿ª ∂ß
+            //Ï†Å ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
             else if (clickedObj.tag == UD_CONSTANT.TAG_ENEMY)
             {
                 UD_Ingame_UnitCtrl Enemy = clickedObj.GetComponent<UD_Ingame_UnitCtrl>();
@@ -90,7 +97,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
             }
-            //¡ˆ«¸ ≈¨∏Ø«ﬂ¿ª ∂ß
+            //ÏßÄÌòï ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
             else if (clickedObj.tag == UD_CONSTANT.TAG_GROUND)
             {
                 if (clickedPosIndicator != null)

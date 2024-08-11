@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using UnityEditor;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,18 +12,31 @@ using UnityEngine.UI;
 
 public class UnitSpawnData
 {
+    //public Mesh Tier2Mesh;
+    //public Mesh Tier3Mesh;
+
+    //public Material Tier2Material;
+    //public Material Tier3Material;
+
     public int modelType;
     public float spawnTime;
     public int HP;
     public float speed;
-    public UnitType unitType;
+    public int atk;
+    public float sightRange;
+    public float attackRange;
 
+    public int generalSkill;
+    public int specialSkill;
+    public UnitType unitType;
 }
+
+
 
 public enum UnitType
 {
-    Basic,
-    what
+    Warrior,
+    Archer,
 }
 
 
@@ -65,12 +80,11 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         selectedUnit = unit;
     }
 
-    // ¼±ÅÃµÈ À¯´ÖÀ» ¹İÈ¯
+    // ì„ íƒëœ ìœ ë‹›ì„ ë°˜í™˜
     public UD_Ingame_UnitCtrl GetSelectedUnit()
     {
         return selectedUnit;
     }
-
 
     // Start is called before the first frame update
     void Start()
@@ -176,7 +190,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
                     if (unitCtrl.unitStateChangeTime <= 0)
                     {
                         CreateUnitStateChangeBox(hit.point, unitCtrl);
-                        SetSelectedUnit(unitCtrl); // ¼±ÅÃµÈ À¯´ÖÀ» ¼³Á¤
+                        SetSelectedUnit(unitCtrl); // ì„ íƒëœ ìœ ë‹›ì„ ì„¤ì •
                     }
                 }
             }
@@ -185,24 +199,18 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         
     }
 
-    //À¯´Ö ¼ÒÈ¯
-    public GameObject UnitSpawn(bool IsAlly , float X, float Y)
+    //ìœ ë‹› ì†Œí™˜
+    public GameObject UnitSpawn(float X, float Y)
     {
         GameObject Obj = null;
 
-        if (IsAlly)
-        {
-            Obj = Instantiate(Test_Ally);
-            Obj.transform.position = new Vector3(X, 0, Y);
-            Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
-            
-        }
-        else
-        {
-            Obj = Instantiate(Test_Enemy);
-            Obj.transform.position = new Vector3(X, 0, Y);
-            Obj.GetComponent<UD_Ingame_UnitCtrl>().Init(spawnData[unitType]);
-        }
+        Debug.Log(new Vector3(X, 0, Y));
+
+
+        Obj = Instantiate(Test_Ally);
+        Obj.transform.position = new Vector3(X, 0, Y);
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2 ((int)(X/2), (int)(Y/2));
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
 
         return Obj;
     }
@@ -212,7 +220,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         Vector3 tileCenter = gridTile.transform.position;
         GameObject MinByeong = Instantiate(MinByeongPrefab, tileCenter, Quaternion.identity);
         MinByeong.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
-        MinByeong.GetComponent<UD_Ingame_UnitCtrl>().unitName = "¹Îº´";
+        MinByeong.GetComponent<UD_Ingame_UnitCtrl>().unitName = "ë¯¼ë³‘";
         gridTile.currentPlacedUnit = MinByeong;
         gridTile.SetPlaceable(false);
     }
@@ -222,7 +230,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         Vector3 tileCenter = gridTile.transform.position;
         GameObject Hunter = Instantiate(HunterPrefab, tileCenter, Quaternion.identity);
         Hunter.GetComponent<UD_Ingame_UnitCtrl>().Ally_Mode = AllyMode.Siege;
-        Hunter.GetComponent<UD_Ingame_UnitCtrl>().unitName = "»ç³É²Û";
+        Hunter.GetComponent<UD_Ingame_UnitCtrl>().unitName = "ì‚¬ëƒ¥ê¾¼";
         gridTile.currentPlacedUnit = Hunter;
         gridTile.SetPlaceable(false);
     }
@@ -232,7 +240,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         isSpawnBtnClick = true;
         UnitType = unitType;
 
-        // Å¸ÀÏ »ö»ó ¾÷µ¥ÀÌÆ®
+        // íƒ€ì¼ ìƒ‰ìƒ ì—…ë°ì´íŠ¸
         UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
         foreach (var tile in allTiles)
         {
@@ -275,14 +283,14 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
         Button changeStateBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
 
-        // ChangeState ¹öÆ° Å¬¸¯ ½Ã µ¿ÀÛ Ãß°¡
+        // ChangeState ë²„íŠ¼ í´ë¦­ ì‹œ ë™ì‘ ì¶”ê°€
         changeStateBtn.onClick.AddListener(() =>
         {
-            selectedUnit.previousAllyMode = selectedUnit.Ally_Mode;  // ÇöÀç »óÅÂ¸¦ ÀÌÀü »óÅÂ·Î ÀúÀå
+            selectedUnit.previousAllyMode = selectedUnit.Ally_Mode;  // í˜„ì¬ ìƒíƒœë¥¼ ì´ì „ ìƒíƒœë¡œ ì €ì¥
 
-            // »óÅÂ º¯°æ ½Ã°£À» ÇöÀç ½Ã°£À¸·Î ¾÷µ¥ÀÌÆ®
+            // ìƒíƒœ ë³€ê²½ ì‹œê°„ì„ í˜„ì¬ ì‹œê°„ìœ¼ë¡œ ì—…ë°ì´íŠ¸
             selectedUnit.unitStateChangeTime = 10.0f;
-            selectedUnit.Ally_Mode = AllyMode.Change;  // Change »óÅÂ·Î ¼³Á¤
+            selectedUnit.Ally_Mode = AllyMode.Change;  // Change ìƒíƒœë¡œ ì„¤ì •
 
             RemoveUnitStateChangeBox();
         });

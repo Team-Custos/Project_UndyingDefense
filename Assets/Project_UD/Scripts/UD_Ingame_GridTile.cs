@@ -21,8 +21,8 @@ public class UD_Ingame_GridTile : MonoBehaviour
     bool mouseHover = false;
     public bool isPlaceable = true;
 
-    public Color32 colorOccupied = Color.red; // À¯´ÖÀÌ ÀÖ´Â Å¸ÀÏ »ö»ó
-    public Color32 colorAvailable = Color.green; // À¯´ÖÀÌ ¾ø´Â Å¸ÀÏ »ö»ó
+    public Color32 colorOccupied = Color.red; // ìœ ë‹›ì´ ìˆëŠ” íƒ€ì¼ ìƒ‰ìƒ
+    public Color32 colorAvailable = Color.green; // ìœ ë‹›ì´ ì—†ëŠ” íƒ€ì¼ ìƒ‰ìƒ
     public bool showPlacementColors = false;
 
     void Start()
@@ -34,19 +34,12 @@ public class UD_Ingame_GridTile : MonoBehaviour
         GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
 
         this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
+
+        colorDefault = new Color(0, 0, 0, 0);
     }
 
     void Update()
     {
-        //if (Selected)
-        //{
-        //    MeshR.material.color = colorSelected;
-        //}
-        //else if (!mouseHover)
-        //{
-        //    MeshR.material.color = colorDefault;
-        //}
-
         if (showPlacementColors)
         {
             if (currentPlacedUnit != null)
@@ -73,9 +66,6 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     private void OnMouseOver()
     {
-        //mouseHover = true;
-        //MeshR.material.color = colorHighlit;
-
         mouseHover = true;
         if (!showPlacementColors)
         {
@@ -110,8 +100,6 @@ public class UD_Ingame_GridTile : MonoBehaviour
         {
             Selected = !Selected;
         }
-
-        //Debug.Log(gameObject.name + " Selected");
     }
 
     public void SetPlaceable(bool placeable)

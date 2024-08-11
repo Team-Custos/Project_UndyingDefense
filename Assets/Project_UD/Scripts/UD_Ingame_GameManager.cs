@@ -14,7 +14,9 @@ public class UD_Ingame_GameManager : MonoBehaviour
     public GameObject Base;
    
 
+    public bool UnitSetMode = false;
     public bool AllyUnitSetMode = false;
+    public bool EnemyUnitSetMode = false;
 
     private void Awake()
     {
@@ -30,7 +32,26 @@ public class UD_Ingame_GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            UnitSetMode = !UnitSetMode;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (AllyUnitSetMode)
+            {
+                AllyUnitSetMode = false;
+                EnemyUnitSetMode = true;
+            }
+            else if (EnemyUnitSetMode)
+            {
+                EnemyUnitSetMode = false;
+                AllyUnitSetMode = true;
+            }
+        }
+
+
     }
 
     

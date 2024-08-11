@@ -12,6 +12,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     private UD_Ingame_UnitSpawnManager unitSpawnManager;
 
     public Button allyUnitSetMode = null;
+    public Text UnitSetModeText = null;
 
     [Header("====UnitInfoPanel====")]
     public Text unitName;
@@ -74,15 +75,25 @@ public class UD_Ingame_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
-        //{
-        //    allyUnitSetMode.GetComponentInChildren<Text>().text = "Ally Unit Set Mode OFF";
-        //}
-        //else
-        //{
-        //    allyUnitSetMode.GetComponentInChildren<Text>().text = "Ally Unit Set Mode ON";
-        //}
-
+        if (UnitSetModeText != null)
+        {
+            if (UD_Ingame_GameManager.inst.UnitSetMode)
+            {
+                UnitSetModeText.text = "UnitSetMode : ON";
+                if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
+                {
+                    UnitSetModeText.color = Color.cyan;
+                }
+                else if (UD_Ingame_GameManager.inst.EnemyUnitSetMode)
+                {
+                    UnitSetModeText.color = Color.red;
+                }
+            }
+            else
+            {
+                UnitSetModeText.text = "UnitSetMode : OFF";
+                UnitSetModeText.color = Color.white;
+            }
     }
 
 
@@ -92,13 +103,13 @@ public class UD_Ingame_UIManager : MonoBehaviour
         //UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitName);
         //if (unitData != null)
         //{
-        //    this.unitName.text = "¿Ã∏ß : " + unitData.Name;
-        //    this.unitType.text = "≈∏¿‘ : " + unitData.Type;
-        //    this.unitTier.text = "∆ºæÓ : " + unitData.Tier.ToString();
-        //    this.unitWeapon.text = "π´±‚ : " + unitData.Weapon;
-        //    this.unitSkill.text = "Ω∫≈≥ : " + unitData.Skill;
-        //    this.unitDamage.text = "µ•πÃ¡ˆ : " + unitData.Damage.ToString();
-        //    this.unitAttackType.text = "∞¯∞› ≈∏¿‘ : " + unitData.AttackType;
+        //    this.unitName.text = "Ïù¥Î¶Ñ : " + unitData.Name;
+        //    this.unitType.text = "ÌÉÄÏûÖ : " + unitData.Type;
+        //    this.unitTier.text = "Ìã∞Ïñ¥ : " + unitData.Tier.ToString();
+        //    this.unitWeapon.text = "Î¨¥Í∏∞ : " + unitData.Weapon;
+        //    this.unitSkill.text = "Ïä§ÌÇ¨ : " + unitData.Skill;
+        //    this.unitDamage.text = "Îç∞ÎØ∏ÏßÄ : " + unitData.Damage.ToString();
+        //    this.unitAttackType.text = "Í≥µÍ≤© ÌÉÄÏûÖ : " + unitData.AttackType;
         //}
     }
 
