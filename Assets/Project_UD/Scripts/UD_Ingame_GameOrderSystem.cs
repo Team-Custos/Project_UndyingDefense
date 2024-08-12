@@ -2,7 +2,6 @@ using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class UD_Ingame_GameOrderSystem : MonoBehaviour
 {
@@ -28,17 +27,18 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
     private void OnPrimaryButtonOrder()
     {
+        //Debug.Log("OnPrimaryButtonOrder");
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit) && (Input.GetMouseButtonDown(0)))
-        {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
 
+        if (Physics.Raycast(ray, out hit))
+        {
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
 
-            //ÌÉÄÏùº ÌÅ¥Î¶≠ÌñàÏùÑÎïå
+            //≈∏¿œ ≈¨∏Ø«ﬂ¿ª∂ß
             if (clickedObj.tag == UD_CONSTANT.TAG_TILE)
             {
                 UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
@@ -53,14 +53,16 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     {
                         GridTile.currentPlacedUnit = UD_Ingame_MobSpawner.inst.EnemySpawn(GridTile.transform.position.x, GridTile.transform.position.z);
                     }
+
                     GridTile.isPlaceable = false;
                 }
-                else if (GridTile.currentPlacedUnit == null)
+                else
                 {
+                    Debug.Log("s");
                     GridTile.Selected = !GridTile.Selected;
                 }
             }
-            //Ïú†Îãõ ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
+            //¿Ø¥÷ ≈¨∏Ø«ﬂ¿ª ∂ß
             else if (clickedObj.tag == UD_CONSTANT.TAG_UNIT)
             {
                 UD_Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<UD_Ingame_UnitCtrl>();
@@ -76,7 +78,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
             }
-            //Ï†Å ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
+            //¿˚ ≈¨∏Ø«ﬂ¿ª ∂ß
             else if (clickedObj.tag == UD_CONSTANT.TAG_ENEMY)
             {
                 UD_Ingame_UnitCtrl Enemy = clickedObj.GetComponent<UD_Ingame_UnitCtrl>();
@@ -97,7 +99,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
             }
-            //ÏßÄÌòï ÌÅ¥Î¶≠ÌñàÏùÑ Îïå
+            //¡ˆ«¸ ≈¨∏Ø«ﬂ¿ª ∂ß
             else if (clickedObj.tag == UD_CONSTANT.TAG_GROUND)
             {
                 if (clickedPosIndicator != null)
@@ -110,7 +112,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 {
                     UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
-
+                    
                     if (AllyUnit.Ally_Mode == AllyMode.Free)
                     {
                         AllyUnit.haveToMovePosition = true;
@@ -120,6 +122,9 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
             }
+
+            
+           
         }
     }
 
