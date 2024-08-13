@@ -28,13 +28,7 @@ public class UD_Ingame_GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            UnitSetMode = !UnitSetMode;
-            EnemyUnitSetMode = !EnemyUnitSetMode;
-        }
-
+    { 
         if (UnitSetMode && AllyUnitSetMode)
         {
             // 타일 색상 업데이트

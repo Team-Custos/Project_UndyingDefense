@@ -167,20 +167,33 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        if (Input.GetKeyDown(KeyCode.H) && isSelected)
+        {
+            Destroy(this.gameObject);
+        }
+
 
         #region 아군 제어
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
-            MeshRenderer.material.color = colorAlly;
+            
             if (Ally_Mode == AllyMode.Free)
             {
                 NavObstacle.enabled = false;
                 NavAgent.enabled = true;
+                MeshRenderer.material.color = Color.cyan;
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
                 NavObstacle.enabled = true;
                 NavAgent.enabled = false;
+                MeshRenderer.material.color = colorAlly;
+            }
+
+            if(isSelected && Input.GetKeyDown(KeyCode.Q))
+            {
+                previousAllyMode = Ally_Mode;
+                Ally_Mode = AllyMode.Change;
             }
 
             // Change 상태일 때는 다른 행동을 하지 않음
@@ -210,6 +223,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     {
                         Ally_Mode = AllyMode.Free;
                     }
+                    unitStateChangeTime = 3;
                 }
             }
             else if (Ally_Mode == AllyMode.Siege)
@@ -288,11 +302,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
                 StartCoroutine(MySecondCoroutine());
                 SpawnDelay = false;
-            }
-
-            if (Input.GetKeyDown(KeyCode.H) && isSelected)
-            {
-                Destroy(this.gameObject);
             }
 
             MeshRenderer.material.color = colorEnemy;

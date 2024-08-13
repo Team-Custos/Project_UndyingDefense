@@ -60,8 +60,8 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                         UD_Ingame_EnemySpawner SpawnMgr = UD_Ingame_EnemySpawner.inst;
                         GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1,GridTile.transform.position.x, GridTile.transform.position.z);
                         //GridTile.isPlaceable = false;
-                        //UD_Ingame_GameManager.inst.UnitSetMode = false;
-                        //UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
+                        UD_Ingame_GameManager.inst.UnitSetMode = false;
+                        UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
                     }
                 }
                 else if (GridTile.currentPlacedUnit == null)

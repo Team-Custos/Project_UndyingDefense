@@ -98,20 +98,23 @@ public class UD_Ingame_UIManager : MonoBehaviour
         {
             if (UD_Ingame_GameManager.inst.UnitSetMode)
             {
-                UnitSetModeText.text = "UnitSetMode : ON";
+                
+                
                 if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
                 {
-                    UnitSetModeText.color = Color.cyan;
+                    UnitSetModeText.color = Color.white;
+                    UnitSetModeText.text = "UnitSetMode";
                 }
                 else if (UD_Ingame_GameManager.inst.EnemyUnitSetMode)
                 {
                     UnitSetModeText.color = Color.red;
+                    UnitSetModeText.text = "EnemySetMode";
                 }
             }
             else
             {
-                UnitSetModeText.text = "UnitSetMode : OFF";
-                UnitSetModeText.color = Color.white;
+                UnitSetModeText.color = Color.black;
+                UnitSetModeText.text = "SetModeOff";
             }
         }
     }
