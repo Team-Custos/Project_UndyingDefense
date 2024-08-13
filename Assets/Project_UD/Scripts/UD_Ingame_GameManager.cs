@@ -8,9 +8,6 @@ public class UD_Ingame_GameManager : MonoBehaviour
     public static UD_Ingame_GameManager inst;
     public UD_Ingame_GridManager gridManager;
 
-    public GameObject[] Unit;
-    public GameObject[] Enemy;
-
     public GameObject Base;
    
 
@@ -32,27 +29,35 @@ public class UD_Ingame_GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            UnitSetMode = !UnitSetMode;
-        }
-
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (AllyUnitSetMode)
+            UnitSetMode = !UnitSetMode;
+            EnemyUnitSetMode = !EnemyUnitSetMode;
+        }
+
+        if (UnitSetMode && AllyUnitSetMode)
+        {
+            // 타일 색상 업데이트
+            UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+            foreach (var tile in allTiles)
             {
-                AllyUnitSetMode = false;
-                EnemyUnitSetMode = true;
+                tile.ShowPlacementColors(true);
             }
-            else if (EnemyUnitSetMode)
+        }
+        else
+        {
+            // 타일 색상 업데이트
+            UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+            foreach (var tile in allTiles)
             {
-                EnemyUnitSetMode = false;
-                AllyUnitSetMode = true;
+                tile.ShowPlacementColors(false);
             }
         }
 
 
     }
+
+    
 
     
 }

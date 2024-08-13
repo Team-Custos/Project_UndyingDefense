@@ -64,13 +64,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public int[][] debuffs;
 
-    
+
 
     [Header("====AI====")]
+    bool SpawnDelay = true;
+
     public GameObject targetBase;
 
     public Vector3 moveTargetBasePos;
-    public Vector3 moveTargetPos = Vector3.zero;
+    public Vector3 moveTargetPos;
     public bool haveToMovePosition = false;
     public GameObject targetEnemy = null;
     public UD_Ingame_RangeCtrl sightRangeSensor;
@@ -98,8 +100,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         MeshRenderer = GetComponent<MeshRenderer>();
         NavAgent = GetComponent<NavMeshAgent>();
@@ -109,15 +110,17 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         Enemy_State = GetComponent<UD_Ingame_EnemyState>();
 
         UnitSkill = GetComponentInChildren<UD_Ingame_UnitSkillManager>();
-
-        targetBase = UD_Ingame_GameManager.inst.Base;
-        HP = maxHP;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Ally_Mode = AllyMode.Seige;
+        SpawnDelay = true;
+
+        targetBase = UD_Ingame_GameManager.inst.Base;
+        HP = maxHP;
+
+        Ally_Mode = AllyMode.Siege;
 
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
@@ -126,7 +129,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 NavObstacle.enabled = false;
                 NavAgent.enabled = true;
             }
-            else if (Ally_Mode == AllyMode.Seige)
+            else if (Ally_Mode == AllyMode.Siege)
             {
                 NavAgent.enabled = false;
                 NavObstacle.enabled = true;
@@ -134,25 +137,23 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
 
         moveTargetPos = this.transform.position;
+
+        unitStateChangeTime = 0.0f;
     }
+
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, attackRange + 0.5f);
-        moveTargetPos = transform.position;
-
-        unitStateChangeTime = 0.0f;
-
-        Ally_Mode = AllyMode.Siege;
-
-        attackDistance = 10.0f;
     }
 
+    bool a = true;
 
     // Update is called once per frame
     void Update()
     {
+        //여기서부터 위치가 튀는 경우가 발생. (다른 위치로 지정.) -> update들어가기전에 뭔가가 위치를 변경했다!
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
@@ -166,8 +167,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        
 
+        #region 아군 제어
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
             MeshRenderer.material.color = colorAlly;
@@ -176,7 +177,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 NavObstacle.enabled = false;
                 NavAgent.enabled = true;
             }
-            else if (Ally_Mode == AllyMode.Seige)
+            else if (Ally_Mode == AllyMode.Siege)
             {
                 NavObstacle.enabled = true;
                 NavAgent.enabled = false;
@@ -213,7 +214,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-                if (targetEnemy == null || !isEnemyInSight)
+                if (targetEnemy == null && !isEnemyInSight)
                 {
                     SearchEnemy();
                 }
@@ -221,7 +222,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 if (targetEnemy != null && !haveToMovePosition)
                 {
                     float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-                    isEnemyInRange = (distanceToEnemy <= attackDistance);
+                    isEnemyInRange = (distanceToEnemy <= attackRange);
 
                     if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
                     {
@@ -242,7 +243,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     if (isEnemyInSight)
                     {
                         haveToMovePosition = false;
-                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackDistance);
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
                         if (isEnemyInRange)
                         {
                             moveTargetPos = this.transform.position;
@@ -270,10 +271,25 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
             }
         }
+        #endregion
 
         #region 적 제어
         else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
         {
+            if (SpawnDelay)
+            {
+                IEnumerator MySecondCoroutine()
+                {
+                    Debug.Log("coroutine");
+                    NavAgent.enabled = true;
+                    
+                    yield return new WaitForSeconds(0.5f);
+                }
+
+                StartCoroutine(MySecondCoroutine());
+                SpawnDelay = false;
+            }
+
             if (Input.GetKeyDown(KeyCode.H) && isSelected)
             {
                 Destroy(this.gameObject);
@@ -381,9 +397,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if (enemy_isBaseInRange)
             {
                 UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
-
-                //Bow.transform.LookAt(moveTargetPos);
-                //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
             }
             else
             {

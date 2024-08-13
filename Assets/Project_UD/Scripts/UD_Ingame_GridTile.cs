@@ -67,10 +67,7 @@ public class UD_Ingame_GridTile : MonoBehaviour
     private void OnMouseOver()
     {
         mouseHover = true;
-        if (!showPlacementColors)
-        {
-            MeshR.material.color = colorHighlit;
-        }
+        MeshR.material.color = colorHighlit;
     }
 
     private void OnMouseExit()
@@ -83,22 +80,9 @@ public class UD_Ingame_GridTile : MonoBehaviour
         {
             MeshR.material.color = colorDefault;
         }
-    }
-
-    private void OnMouseDown()
-    {
-        if (currentPlacedUnit != null)
-        {
-            return;
-        }
-
-        if (GAMEMANAGER.AllyUnitSetMode && isPlaceable)
-        {
-            isPlaceable = false;
-        }
         else
         {
-            Selected = !Selected;
+            MeshR.material.color = colorAvailable;
         }
     }
 

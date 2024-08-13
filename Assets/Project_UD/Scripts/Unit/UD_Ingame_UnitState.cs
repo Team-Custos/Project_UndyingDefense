@@ -64,19 +64,22 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Attack_Update()
     {
-        if (UnitCtrl.targetEnemy != null)
+        if (UnitCtrl.sightRangeSensor.Obj_Nearest != null)
         {
-            if (UnitCtrl.haveToMovePosition)
+            if (UnitCtrl.targetEnemy != null)
             {
-                UnitCtrl.targetEnemy = null;
-                UnitCtrl.isEnemyInRange = false;
-                UnitCtrl.isEnemyInSight = false;
-                fsm.ChangeState(UnitState.Move);
-                UnitCtrl.haveToMovePosition = false;
-            }
-            else
-            {
-                UnitCtrl.Unit_Attack();
+                if (UnitCtrl.haveToMovePosition)
+                {
+                    UnitCtrl.targetEnemy = null;
+                    UnitCtrl.isEnemyInRange = false;
+                    UnitCtrl.isEnemyInSight = false;
+                    fsm.ChangeState(UnitState.Move);
+                    UnitCtrl.haveToMovePosition = false;
+                }
+                else
+                {
+                    UnitCtrl.Unit_Attack();
+                }
             }
         }
         else

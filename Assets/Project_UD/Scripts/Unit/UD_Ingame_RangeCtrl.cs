@@ -90,6 +90,7 @@ public class UD_Ingame_RangeCtrl : MonoBehaviour
                 {
                     Obj_Nearest = null;
                 }
+                
             }
             else return;
         }

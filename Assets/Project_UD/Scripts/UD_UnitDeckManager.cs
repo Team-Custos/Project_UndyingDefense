@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UD_UnitDeckManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class UD_UnitDeckManager : MonoBehaviour
     private bool[] isUnitSelect;
 
     private int[] unitDeckIndex;
+
+    public Button StageStartBtn = null;
 
 
 
@@ -65,6 +68,13 @@ public class UD_UnitDeckManager : MonoBehaviour
             }
         }
 
+        if (StageStartBtn != null)
+        {
+            StageStartBtn.onClick.AddListener(() =>
+            {
+                SceneManager.LoadSceneAsync("Stage 1");
+            });
+        }
 
     }
 

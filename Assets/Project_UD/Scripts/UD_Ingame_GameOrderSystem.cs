@@ -11,6 +11,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
     public GameObject clickedObj = null;
     public GameObject selectedUnit = null;
 
+
     public Vector3 clickedWorldPos = Vector3.zero;
 
     public GameObject clickedPosIndicator = null;
@@ -45,18 +46,31 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
                 if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
-                    if (GAMEMANAGER.AllyUnitSetMode)
+                    if (GAMEMANAGER.AllyUnitSetMode)//아군 배치
                     {
-                        GridTile.currentPlacedUnit = UD_Ingame_UnitSpawnManager.inst.UnitSpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                        UD_Ingame_UnitSpawnManager SpawnMgr = UD_Ingame_UnitSpawnManager.inst;
+                        GridTile.currentPlacedUnit = 
+                            SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
+                        GridTile.isPlaceable = false;
+                        UD_Ingame_GameManager.inst.UnitSetMode = false;
+                        UD_Ingame_GameManager.inst.AllyUnitSetMode = false;
                     }
-                    else if (GAMEMANAGER.EnemyUnitSetMode)
+                    else if (GAMEMANAGER.EnemyUnitSetMode)// 적 배치
                     {
-                        GridTile.currentPlacedUnit = UD_Ingame_MobSpawner.inst.EnemySpawn(GridTile.transform.position.x, GridTile.transform.position.z);
+                        UD_Ingame_EnemySpawner SpawnMgr = UD_Ingame_EnemySpawner.inst;
+                        GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1,GridTile.transform.position.x, GridTile.transform.position.z);
+                        //GridTile.isPlaceable = false;
+                        //UD_Ingame_GameManager.inst.UnitSetMode = false;
+                        //UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
                     }
-                    GridTile.isPlaceable = false;
                 }
                 else if (GridTile.currentPlacedUnit == null)
                 {
+                    UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+                    foreach (var tile in allTiles)
+                    {
+                        tile.Selected = false;
+                    }
                     GridTile.Selected = !GridTile.Selected;
                 }
             }

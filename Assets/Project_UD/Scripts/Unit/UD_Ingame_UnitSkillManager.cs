@@ -39,7 +39,5 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                 
                 
         }
-
-
     }
 }

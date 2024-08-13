@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
 public class UD_ExcelFileReader : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class UD_ExcelFileReader : MonoBehaviour
         }
 
         List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath1);
-       unitDataManager.SetUnitData(unitDatas);
+        unitDataManager.SetUnitData(unitDatas);
     }
 
 
@@ -36,7 +36,7 @@ public class UD_ExcelFileReader : MonoBehaviour
 
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
-        
+
         //Debug.Log(csvData.text);
 
         reader.ReadLine();

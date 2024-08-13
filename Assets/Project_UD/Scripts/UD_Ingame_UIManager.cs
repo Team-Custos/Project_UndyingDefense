@@ -9,9 +9,9 @@ public class UD_Ingame_UIManager : MonoBehaviour
 {
     public static UD_Ingame_UIManager instance;
 
-    private UD_Ingame_UnitSpawnManager unitSpawnManager;
+    UD_Ingame_UnitSpawnManager unitSpawnManager;
 
-    public Button allyUnitSetMode = null;
+    public Button EnemyTestModeBtn = null;
     public Text UnitSetModeText = null;
 
     [Header("====UnitInfoPanel====")]
@@ -36,25 +36,44 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
     private UD_Ingame_UnitCtrl selectedUnit;
 
+    public GameObject unitSpawnPanel;
+    public Button[] unitSpawnBtn;
+
 
     private void Awake()
     {
         instance = this;
+        unitSpawnManager = UD_Ingame_UnitSpawnManager.inst;
+        unitSpawnBtn = unitSpawnPanel.GetComponentsInChildren<Button>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        unitSpawnManager = UD_Ingame_UnitSpawnManager.inst;
-
-
-        if (allyUnitSetMode != null)
+        for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
-            allyUnitSetMode.onClick.AddListener(() => 
+            if (unitSpawnBtn[ii] != null)
             {
-                UD_Ingame_GameManager.inst.AllyUnitSetMode = !UD_Ingame_GameManager.inst.AllyUnitSetMode;
+                int idx = ii;
+                unitSpawnBtn[idx].onClick.AddListener(() => 
+                {
+                    UD_Ingame_UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<UD_Ingame_UnitSpawnBtnStatus>().UnitCode;
+                    UD_Ingame_GameManager.inst.UnitSetMode = !UD_Ingame_GameManager.inst.UnitSetMode;
+                    UD_Ingame_GameManager.inst.AllyUnitSetMode = !UD_Ingame_GameManager.inst.AllyUnitSetMode;
+                });
+            }
+        }
+
+        if (EnemyTestModeBtn != null)
+        {
+            EnemyTestModeBtn.onClick.AddListener(()=> 
+            {
+                UD_Ingame_GameManager.inst.UnitSetMode = !UD_Ingame_GameManager.inst.UnitSetMode;
+                UD_Ingame_GameManager.inst.EnemyUnitSetMode = !UD_Ingame_GameManager.inst.EnemyUnitSetMode;
             });
         }
+
+
 
         if(endGameBtn != null)
         {
@@ -94,6 +113,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 UnitSetModeText.text = "UnitSetMode : OFF";
                 UnitSetModeText.color = Color.white;
             }
+        }
     }
 
 
@@ -111,16 +131,6 @@ public class UD_Ingame_UIManager : MonoBehaviour
         //    this.unitDamage.text = "데미지 : " + unitData.Damage.ToString();
         //    this.unitAttackType.text = "공격 타입 : " + unitData.AttackType;
         //}
-    }
-
-    void SetUnitFreeMode(UD_Ingame_UnitCtrl unit)
-    {
-        unit.Ally_Mode = AllyMode.Free;
-    }
-
-    void SetUnitSiegeMode(UD_Ingame_UnitCtrl unit)
-    {
-        unit.Ally_Mode = AllyMode.Siege;
     }
 
     void EndGame()
