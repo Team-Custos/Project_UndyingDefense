@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using static UnityEngine.UI.CanvasScaler;
 
 public class UD_Ingame_UIManager : MonoBehaviour
 {
@@ -189,8 +190,9 @@ public class UD_Ingame_UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl selectedUnit)
+    public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
     {
+
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
         if (currentUnitStateChangeBox != null)
@@ -200,6 +202,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
 
         currentUnitStateChangeBox = Instantiate(UnitStateChangeBox) as GameObject;
+
+        SetSelectedUnit(unit);
 
         GameObject canvas = GameObject.Find("Canvas");
         currentUnitStateChangeBox.transform.SetParent(canvas.transform, false);
@@ -211,11 +215,15 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         uniStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
 
+
         if (uniStateChageBtn != null)
         {
-            uniStateChageBtn.onClick.AddListener(UnitStateChange);
+            // 이전 리스너 제거 후 새 리스너 추가
+            uniStateChageBtn.onClick.RemoveAllListeners();
+            uniStateChageBtn.onClick.AddListener(() => UnitStateChange(unit));
         }
         Image buttonImage = uniStateChageBtn.GetComponent<Image>();
+
 
         if (selectedUnit.Ally_Mode == AllyMode.Siege)
         {
@@ -240,18 +248,17 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
 
-    public void UnitStateChange()
+    public void UnitStateChange(UD_Ingame_UnitCtrl unit)
     {
-        if (selectedUnit != null)
+        if (unit != null)
         {
-            Debug.Log("ccc");
-            UD_Ingame_UnitCtrl unitCtrl = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
+            UD_Ingame_UnitCtrl unitCtrl = unit.GetComponent<UD_Ingame_UnitCtrl>();
 
             if (unitCtrl != null)
             {
                 UD_Ingame_UnitState unitState = unitCtrl.GetComponent<UD_Ingame_UnitState>();
 
-                if (unitState != null && !isStateChanging)
+                if (unitState != null)
                 {
                     if (unitCtrl.Ally_Mode == AllyMode.Siege)
                     {
@@ -264,16 +271,24 @@ public class UD_Ingame_UIManager : MonoBehaviour
                         unitCtrl.Ally_Mode = AllyMode.Siege;
                     }
 
-                    unitState.fsm.ChangeState(UnitState.Idle); 
+                    // Idle 상태로 변경
+                    unitState.fsm.ChangeState(UnitState.Idle);
+
+                    // 상태 변경 중으로 설정 및 타이머 초기화
                     isStateChanging = true;
                     stateChangeTimer = 3.0f;
+
+                    // 상태 변경 UI를 제거
+                    DestroyUnitStateChangeBox();
                 }
 
+                // 상태 변경이 진행 중일 때 타이머를 관리
                 if (isStateChanging)
                 {
                     stateChangeTimer -= Time.deltaTime;
                     if (stateChangeTimer <= 0)
                     {
+                        // 3초가 지나면 상태 복원
                         if (unitState.fsm.State == UnitState.Idle)
                         {
                             if (unitCtrl.previousAllyMode == AllyMode.Siege)
@@ -284,12 +299,24 @@ public class UD_Ingame_UIManager : MonoBehaviour
                             {
                                 unitCtrl.Ally_Mode = AllyMode.Free;
                             }
+
+                            // 원하는 다른 상태로 변경할 수 있습니다.
+                            // 예를 들어, Search 상태로 변경
+                            unitState.fsm.ChangeState(UnitState.Search);
                         }
+
+                        // 상태 변경 완료
                         isStateChanging = false;
                     }
                 }
             }
         }
+    }
+
+
+    public void SetSelectedUnit(UD_Ingame_UnitCtrl unit)
+    {
+        selectedUnit = unit;
     }
 
 

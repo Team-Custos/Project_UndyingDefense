@@ -51,7 +51,7 @@ public class UD_Ingame_GridTile : MonoBehaviour
 
     void Update()
     {
-
+        CheckUnitPresence();
         UpdateTileColor();
     }
 
@@ -175,5 +175,35 @@ public class UD_Ingame_GridTile : MonoBehaviour
     public void ShowPlacementColors(bool show)
     {
         showPlacementColors = show;
+    }
+
+    void CheckUnitPresence()
+    {
+        if (currentPlacedUnit != null)
+        {
+            Vector3 unitPos = currentPlacedUnit.transform.position;
+            if (Mathf.Abs(unitPos.x - transform.position.x) > 0.1f || Mathf.Abs(unitPos.z - transform.position.z) > 0.1f)
+            {
+                // 유닛이 타일 위에 없다면
+                currentPlacedUnit = null;
+                ResetTile();  // 타일 상태를 초기화
+            }
+        }
+        else
+        {
+            // 타일 위에 유닛이 없는 경우, 다시 확인
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f); // 타일 주변의 콜라이더를 확인
+            foreach (var collider in colliders)
+            {
+                UD_Ingame_UnitCtrl unitCtrl = collider.GetComponent<UD_Ingame_UnitCtrl>();
+                if (unitCtrl != null)
+                {
+                    // 유닛이 타일 위에 있으면 currentPlacedUnit 설정
+                    currentPlacedUnit = unitCtrl.gameObject;
+                    SetTileOccupied(true);  // 타일을 점령 상태로 설정
+                    break;
+                }
+            }
+        }
     }
 }
