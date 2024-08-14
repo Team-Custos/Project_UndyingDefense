@@ -147,14 +147,15 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Chase_Enter()
     {
-        
+        Debug.Log("Chase_Enter");
+        navAgent.isStopped = false;
     }
 
     void Chase_Update()
     {
         //Debug.Log("Chase_Update");
 
-        if (UnitCtrl.targetEnemy != null && UnitCtrl.Ally_Mode == AllyMode.Free)
+        if (UnitCtrl.targetEnemy != null)
         {
             float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
 
@@ -170,6 +171,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
 
     void Chase_Exit()
     {
+        Debug.Log("Chase_Exit");
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.SetDestination(transform.position);

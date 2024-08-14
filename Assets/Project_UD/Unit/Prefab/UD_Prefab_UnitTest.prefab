@@ -446,6 +446,7 @@ MonoBehaviour:
   Enemy_State: {fileID: 0}
   NavObstacle: {fileID: 0}
   NavAgent: {fileID: 0}
+  UnitSkill: {fileID: 0}
   modelType: 0
   curLevel: 1
   HP: 1
@@ -485,6 +486,10 @@ MonoBehaviour:
   enemy_isPathBlocked: 0
   findEnemyRange: {fileID: 3451818444616251428}
   Bow: {fileID: 803691724125410477}
+  testSpeed: 1
+  unitStateChangeTime: 3
+  previousAllyMode: 0
+  unitName: 
 --- !u!114 &5355504695922375969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ade45e10dea540893707ad93ea072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetPos: {x: 0, y: 0, z: 0}
   Bow: {fileID: 803691724125410477}
   Sword: {fileID: 2506970858598283249}
   UnitCtrl: {fileID: -2917136115213169904}

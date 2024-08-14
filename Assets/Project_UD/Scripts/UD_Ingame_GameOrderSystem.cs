@@ -73,12 +73,32 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     }
                     GridTile.Selected = !GridTile.Selected;
                 }
+
+                if (selectedUnit != null)
+                {
+                    Vector3 GridTilePos = GridTile.transform.position;
+
+                    UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
+                    AllyUnit.isSelected = false;
+
+                    if (AllyUnit.Ally_Mode == AllyMode.Free)
+                    {
+                        AllyUnit.haveToMovePosition = true;
+                        AllyUnit.moveTargetPos = new Vector3(GridTilePos.x, 0, GridTilePos.z);
+                    }
+
+                    selectedUnit = null;
+                }
             }
             //유닛 클릭했을 때
             else if (clickedObj.tag == UD_CONSTANT.TAG_UNIT)
             {
                 UD_Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<UD_Ingame_UnitCtrl>();
-
+                UD_Ingame_UnitCtrl[] allUnit = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+                foreach (var unit in allUnit)
+                {
+                    unit.isSelected = false;
+                }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
                 if (AllyUnit.isSelected)
