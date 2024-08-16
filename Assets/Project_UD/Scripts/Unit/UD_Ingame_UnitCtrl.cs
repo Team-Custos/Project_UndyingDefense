@@ -148,12 +148,10 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, attackRange + 0.5f);
     }
 
-    bool a = true;
-
     // Update is called once per frame
     void Update()
     {
-        //여기서부터 위치가 튀는 경우가 발생. (다른 위치로 지정.) -> update들어가기전에 뭔가가 위치를 변경했다!
+
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
@@ -193,6 +191,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if(isSelected && Input.GetKeyDown(KeyCode.Q))
             {
                 previousAllyMode = Ally_Mode;
+                //isSelected = false;
                 Ally_Mode = AllyMode.Change;
             }
 
@@ -221,11 +220,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                     else if (previousAllyMode == AllyMode.Siege)
                     {
+                        //NavAgent.updatePosition = false;
+                        transform.position = moveTargetPos;
+
                         Ally_Mode = AllyMode.Free;
                     }
                     unitStateChangeTime = 3;
                 }
             }
+            //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
                 if (targetEnemy == null && !isEnemyInSight)
@@ -244,14 +247,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                 }
             }
+            //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-                if (Vector3.Distance(transform.position, moveTargetPos) > 0.2f)
-                {
-                    Debug.Log("Distance : " + Vector3.Distance(transform.position, moveTargetPos));
-                    Ally_State.fsm.ChangeState(UnitState.Move);
-                }
-                
+                SearchEnemy();
+
                 if (targetEnemy != null && !haveToMovePosition)
                 {
                     if (isEnemyInSight)
@@ -268,12 +268,20 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                             Ally_State.fsm.ChangeState(UnitState.Chase);
                         }
                     }
+                    else
+                    {
+                        Ally_State.fsm.ChangeState(UnitState.Idle);
+                    }
                 }
                 else
                 {
-                    transform.position = moveTargetPos;
+                    //transform.position = moveTargetPos;
                     Ally_State.fsm.ChangeState(UnitState.Idle);
-                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.1f)
+                }
+
+                if (haveToMovePosition)
+                {
+                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.12f)
                     {
                         Ally_State.fsm.ChangeState(UnitState.Move);
                     }
@@ -292,15 +300,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         {
             if (SpawnDelay)
             {
-                IEnumerator MySecondCoroutine()
+                IEnumerator SpawnDelayCoroutine()
                 {
-                    Debug.Log("coroutine");
                     NavAgent.enabled = true;
-                    
                     yield return new WaitForSeconds(0.5f);
                 }
 
-                StartCoroutine(MySecondCoroutine());
+                StartCoroutine(SpawnDelayCoroutine());
                 SpawnDelay = false;
             }
 
