@@ -93,17 +93,6 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
                     UD_Ingame_UIManager.instance.CreateUnitStateChangeBox(hit.point, AllyUnit);
 
-                    // 유닛 제거(테스트 용)
-                    if (selectedUnit != null && Input.GetKeyDown(KeyCode.C)) // 유닛이 선택이 안된 상태에서 유닛 클릭과 C입력 동시에
-                    {
-                        Destroy(selectedUnit);
-                        selectedUnit = null;
-                        if(UD_Ingame_UIManager.instance.currentUnitStateChangeBox != null)
-                        {
-                            Destroy((UD_Ingame_UIManager.instance.currentUnitStateChangeBox));
-                        }
-                    }
-                    
                 }
                 else
                 {
