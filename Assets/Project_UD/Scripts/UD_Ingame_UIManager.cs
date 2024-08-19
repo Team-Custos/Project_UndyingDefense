@@ -49,10 +49,10 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Sprite SiegeModeImage;
 
     public Button uniStateChageBtn;
-    private float stateChangeTimer = 0f;
     private bool isStateChanging = false;
 
-
+    public Image unitMoveImage;
+    public GameObject unitMoveUI;
 
 
     private void Awake()
@@ -60,6 +60,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         instance = this;
         unitSpawnManager = UD_Ingame_UnitSpawnManager.inst;
         unitSpawnBtn = unitSpawnPanel.GetComponentsInChildren<Button>();
+
     }
 
     // Start is called before the first frame update
@@ -114,6 +115,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
             pauseGameBtn.onClick.AddListener(PauseGame);
         }
 
+
     }
 
     // Update is called once per frame
@@ -142,6 +144,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 UnitSetModeText.text = "SetModeOff";
             }
         }
+
+        UpdateMoveImagesForAllUnits();
     }
 
 
@@ -192,6 +196,11 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
     public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
     {
+        if (unit.Ally_Mode == AllyMode.Change)
+        {
+            return; // Change 상태에서는 버튼을 생성하지 않고 종료
+        }
+
 
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
@@ -218,9 +227,14 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         if (uniStateChageBtn != null)
         {
-            // 이전 리스너 제거 후 새 리스너 추가
             uniStateChageBtn.onClick.RemoveAllListeners();
-           // uniStateChageBtn.onClick.AddListener(() => UnitStateChange(unit));
+            uniStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                // 버튼을 누른 후에 UnitStateChangeBox를 삭제
+                DestroyUnitStateChangeBox();
+            });
         }
         Image buttonImage = uniStateChageBtn.GetComponent<Image>();
 
@@ -248,13 +262,104 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
 
-
-
     public void SetSelectedUnit(UD_Ingame_UnitCtrl unit)
     {
         selectedUnit = unit;
     }
 
+    public void UnitStateChange(UD_Ingame_UnitCtrl unit)
+    {
+        if (unit != null && unit.isSelected) // 선택된 유닛만 상태 변경
+        {
+            unit.ChangeAllyMode(); // 버튼 클릭 시 유닛의 Ally_Mode 변경
+        }
+    }
 
+    //public void ShowUnitMoveImage()
+    //{
+    //    UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+    //    foreach(var unit in allUnits)
+    //    {
+    //        if(unit.Ally_State.fsm.State == UnitState.Move)
+    //        {
+    //            unit.
+    //        }
+    //    }
+    //}
 
+    public void ShowMoveImage(bool show)
+    {
+        if (unitMoveUI != null)
+        {
+            unitMoveUI.SetActive(show);
+        }
+    }
+
+    public void UpdateMoveImagesForAllUnits()
+    {
+        // 게임 내 모든 유닛을 찾습니다 (태그를 사용하거나 특정 유닛의 부모 오브젝트를 사용)
+        UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+
+        foreach (UD_Ingame_UnitCtrl unitCtrl in allUnits)
+        {
+
+            if (unitCtrl.CompareTag("Unit"))
+            {
+                // 유닛이 Move 또는 Chase 상태인지 확인
+                if (unitCtrl.Ally_State.fsm.State == UnitState.Move)// ||
+                    //unitCtrl.Ally_State.fsm.State == UnitState.Chase)
+                {
+                    // 해당 유닛의 UnitMoveImage를 활성화
+                    ShowMoveImage(unitCtrl.gameObject, true);
+                }
+                else
+                {
+                    // 유닛이 Move 상태가 아닐 경우 UnitMoveImage 비활성화
+                    ShowMoveImage(unitCtrl.gameObject, false);
+                }
+            }
+        }
+    }
+
+    // 특정 유닛의 이동 UI를 켜거나 끄는 함수
+    public void ShowMoveImage(GameObject unit, bool show)
+    {
+        if (unit == null)
+        {
+            Debug.LogError("Unit is null. Cannot show move image.");
+            return;
+        }
+
+        // 유닛의 자식 오브젝트 중 Canvas 하위에 있는 UnitMoveImage를 찾아 활성화/비활성화
+        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+
+        if (unitMoveImageTransform == null)
+        {
+            Debug.LogError("UnitMoveImage를 찾을 수 없습니다. 경로를 확인하세요.");
+            return;
+        }
+
+        // UnitMoveImage를 활성화하거나 비활성화
+        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
+        unitMoveImage.SetActive(show);
+
+        if (show)
+        {
+            // Canvas가 World Space로 설정되었을 경우, 유닛 머리 위로 위치 설정
+            Canvas canvas = unitMoveImage.GetComponentInParent<Canvas>();
+            if (canvas != null && canvas.renderMode == RenderMode.WorldSpace)
+            {
+                // 유닛의 머리 위로 이미지 위치 설정 (월드 좌표계 기준)
+                RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(1, 1);
+
+                rectTransform.position = unit.transform.position + new Vector3(0, 2.0f, 0); // 유닛 머리 위에 위치
+                rectTransform.rotation = Quaternion.identity; // 이미지가 고정된 방향을 유지
+            }
+            else
+            {
+                Debug.LogError("Canvas is not in World Space mode.");
+            }
+        }
+    }
 }
