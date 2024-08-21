@@ -24,13 +24,16 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Text unitSkill;
     public Text unitDamage;
     public Text unitAttackType;
-    public Button unitModeChangeBtn;
-    public Button unitUpgradeBtn;
 
     [Header("====GameOption====")]
     public Button endGameBtn;
     public Button restartGameBtn;
     public Button pauseGameBtn;
+
+    [Header("====UnitOption====")]
+    public GameObject slectedUnitOptionBox;
+    public GameObject unitUpgradeMenuBox;
+
 
     private bool isPasue = false;
 
@@ -48,8 +51,10 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Sprite FreeModeImage;
     public Sprite SiegeModeImage;
 
-    public Button uniStateChageBtn;
-    private bool isStateChanging = false;
+    public GameObject currentSelectedUnitOptionBox;
+    public Button unitStateChageBtn;
+    public Button unitUpgradeBtn;
+
 
     public Image unitMoveImage;
     public GameObject unitMoveUI;
@@ -194,6 +199,75 @@ public class UD_Ingame_UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
+    {
+        if (unit.Ally_Mode == AllyMode.Change)
+        {
+            return;
+        }
+
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
+        if (slectedUnitOptionBox != null)
+        {
+            Destroy(currentSelectedUnitOptionBox);
+            currentSelectedUnitOptionBox = null;
+        }
+
+        currentSelectedUnitOptionBox = Instantiate(UnitStateChangeBox) as GameObject;
+
+        SetSelectedUnit(unit);
+
+        GameObject canvas = GameObject.Find("Canvas");
+        currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
+        RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
+        screenPos.x += 140;
+        screenPos.y -= 90;
+
+        rectTransform.position = screenPos;
+
+        // 모드 전환 버튼
+        unitStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
+        // 업그레이드 버튼
+        unitUpgradeBtn = currentUnitStateChangeBox.transform.Find("UnitUpgradeBtn").GetComponent<Button>();
+
+        // 모드 전환 버튼
+        if (unitStateChageBtn != null)
+        {
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                DestroyUnitStateChangeBox();
+            });
+        }
+
+        Image buttonImage = unitStateChageBtn.GetComponent<Image>();
+
+        if (selectedUnit.Ally_Mode == AllyMode.Siege)
+        {
+            buttonImage.sprite = FreeModeImage;
+        }
+        else if (selectedUnit.Ally_Mode == AllyMode.Free)
+        {
+            buttonImage.sprite = SiegeModeImage;
+        }
+
+        // 업그레이드 버튼
+        if (unitUpgradeBtn != null)
+        {
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                DestroyUnitStateChangeBox();
+            });
+        }
+    }
+
     public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
     {
         if (unit.Ally_Mode == AllyMode.Change)
@@ -222,13 +296,13 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         rectTransform.position = screenPos;
 
-        uniStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
+        unitStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
 
 
-        if (uniStateChageBtn != null)
+        if (unitStateChageBtn != null)
         {
-            uniStateChageBtn.onClick.RemoveAllListeners();
-            uniStateChageBtn.onClick.AddListener(() =>
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
             {
                 UnitStateChange(unit);
 
@@ -236,7 +310,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 DestroyUnitStateChangeBox();
             });
         }
-        Image buttonImage = uniStateChageBtn.GetComponent<Image>();
+        Image buttonImage = unitStateChageBtn.GetComponent<Image>();
 
 
         if (selectedUnit.Ally_Mode == AllyMode.Siege)
