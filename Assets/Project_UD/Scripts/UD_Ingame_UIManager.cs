@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using static UnityEngine.UI.CanvasScaler;
 
 public class UD_Ingame_UIManager : MonoBehaviour
 {
@@ -22,13 +24,16 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Text unitSkill;
     public Text unitDamage;
     public Text unitAttackType;
-    public Button unitModeChangeBtn;
-    public Button unitUpgradeBtn;
 
     [Header("====GameOption====")]
     public Button endGameBtn;
     public Button restartGameBtn;
     public Button pauseGameBtn;
+
+    [Header("====UnitOption====")]
+    public GameObject slectedUnitOptionBox;
+    public GameObject unitUpgradeMenuBox;
+
 
     private bool isPasue = false;
 
@@ -39,56 +44,83 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public GameObject unitSpawnPanel;
     public Button[] unitSpawnBtn;
 
+    Camera mainCamera;
+
+    public GameObject UnitStateChangeBox;
+    public GameObject currentUnitStateChangeBox;
+    public Sprite FreeModeImage;
+    public Sprite SiegeModeImage;
+
+    public GameObject currentSelectedUnitOptionBox;
+    public Button unitStateChageBtn;
+    public Button unitUpgradeBtn;
+
+
+    public Image unitMoveImage;
+    public GameObject unitMoveUI;
+
 
     private void Awake()
     {
         instance = this;
         unitSpawnManager = UD_Ingame_UnitSpawnManager.inst;
         unitSpawnBtn = unitSpawnPanel.GetComponentsInChildren<Button>();
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = Camera.main;
+
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
             if (unitSpawnBtn[ii] != null)
             {
                 int idx = ii;
-                unitSpawnBtn[idx].onClick.AddListener(() => 
+                unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
                     UD_Ingame_UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<UD_Ingame_UnitSpawnBtnStatus>().UnitCode;
                     UD_Ingame_GameManager.inst.UnitSetMode = !UD_Ingame_GameManager.inst.UnitSetMode;
                     UD_Ingame_GameManager.inst.AllyUnitSetMode = !UD_Ingame_GameManager.inst.AllyUnitSetMode;
+
+                    DestroyUnitStateChangeBox();
+
                 });
             }
         }
 
         if (EnemyTestModeBtn != null)
         {
-            EnemyTestModeBtn.onClick.AddListener(()=> 
+            EnemyTestModeBtn.onClick.AddListener(() =>
             {
                 UD_Ingame_GameManager.inst.UnitSetMode = !UD_Ingame_GameManager.inst.UnitSetMode;
                 UD_Ingame_GameManager.inst.EnemyUnitSetMode = !UD_Ingame_GameManager.inst.EnemyUnitSetMode;
+
+                DestroyUnitStateChangeBox();
+
+
             });
         }
 
 
 
-        if(endGameBtn != null)
+        if (endGameBtn != null)
         {
             endGameBtn.onClick.AddListener(EndGame);
         }
 
-        if(restartGameBtn != null)
+        if (restartGameBtn != null)
         {
             restartGameBtn.onClick.AddListener(RestartGame);
         }
 
-        if(pauseGameBtn != null)
+        if (pauseGameBtn != null)
         {
             pauseGameBtn.onClick.AddListener(PauseGame);
         }
+
+
     }
 
     // Update is called once per frame
@@ -98,8 +130,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
         {
             if (UD_Ingame_GameManager.inst.UnitSetMode)
             {
-                
-                
+
+
                 if (UD_Ingame_GameManager.inst.AllyUnitSetMode)
                 {
                     UnitSetModeText.color = Color.white;
@@ -117,6 +149,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 UnitSetModeText.text = "SetModeOff";
             }
         }
+
+        UpdateMoveImagesForAllUnits();
     }
 
 
@@ -138,16 +172,16 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
     void EndGame()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
     }
 
     void PauseGame()
     {
-        if(isPasue == false)
+        if (isPasue == false)
         {
             Time.timeScale = 0.0f;
             isPasue = true;
@@ -163,5 +197,217 @@ public class UD_Ingame_UIManager : MonoBehaviour
     void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
+    {
+        if (unit.Ally_Mode == AllyMode.Change)
+        {
+            return;
+        }
+
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
+        if (slectedUnitOptionBox != null)
+        {
+            Destroy(currentSelectedUnitOptionBox);
+            currentSelectedUnitOptionBox = null;
+        }
+
+        currentSelectedUnitOptionBox = Instantiate(UnitStateChangeBox) as GameObject;
+
+        SetSelectedUnit(unit);
+
+        GameObject canvas = GameObject.Find("Canvas");
+        currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
+        RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
+        screenPos.x += 140;
+        screenPos.y -= 90;
+
+        rectTransform.position = screenPos;
+
+        // 모드 전환 버튼
+        unitStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
+        // 업그레이드 버튼
+        unitUpgradeBtn = currentUnitStateChangeBox.transform.Find("UnitUpgradeBtn").GetComponent<Button>();
+
+        // 모드 전환 버튼
+        if (unitStateChageBtn != null)
+        {
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                DestroyUnitStateChangeBox();
+            });
+        }
+
+        Image buttonImage = unitStateChageBtn.GetComponent<Image>();
+
+        if (selectedUnit.Ally_Mode == AllyMode.Siege)
+        {
+            buttonImage.sprite = FreeModeImage;
+        }
+        else if (selectedUnit.Ally_Mode == AllyMode.Free)
+        {
+            buttonImage.sprite = SiegeModeImage;
+        }
+
+        // 업그레이드 버튼
+        if (unitUpgradeBtn != null)
+        {
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                DestroyUnitStateChangeBox();
+            });
+        }
+    }
+
+    public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
+    {
+        if (unit.Ally_Mode == AllyMode.Change)
+        {
+            return; 
+        }
+
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
+        if (currentUnitStateChangeBox != null)
+        {
+            Destroy(currentUnitStateChangeBox);
+            currentUnitStateChangeBox = null;
+        }
+
+        currentUnitStateChangeBox = Instantiate(UnitStateChangeBox) as GameObject;
+
+        SetSelectedUnit(unit);
+
+        GameObject canvas = GameObject.Find("Canvas");
+        currentUnitStateChangeBox.transform.SetParent(canvas.transform, false);
+        RectTransform rectTransform = currentUnitStateChangeBox.GetComponent<RectTransform>();
+        screenPos.x += 140;
+        screenPos.y -= 90;
+
+        rectTransform.position = screenPos;
+
+        unitStateChageBtn = currentUnitStateChangeBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
+
+
+        if (unitStateChageBtn != null)
+        {
+            unitStateChageBtn.onClick.RemoveAllListeners();
+            unitStateChageBtn.onClick.AddListener(() =>
+            {
+                UnitStateChange(unit);
+
+                // 버튼을 누른 후에 UnitStateChangeBox를 삭제
+                DestroyUnitStateChangeBox();
+            });
+        }
+        Image buttonImage = unitStateChageBtn.GetComponent<Image>();
+
+
+        if (selectedUnit.Ally_Mode == AllyMode.Siege)
+        {
+            buttonImage.sprite = FreeModeImage;
+        }
+        else if (selectedUnit.Ally_Mode == AllyMode.Free)
+        {
+            buttonImage.sprite = SiegeModeImage;
+        }
+
+    }
+
+    public void DestroyUnitStateChangeBox() 
+    {
+        if (currentUnitStateChangeBox != null)
+        {
+            // UnitStateChangeBox를 삭제
+            Destroy(currentUnitStateChangeBox);
+
+            // 참조를 null로 설정하여 이후 문제가 발생하지 않도록 함
+            currentUnitStateChangeBox = null;
+        }
+    }
+
+    public void SetSelectedUnit(UD_Ingame_UnitCtrl unit)
+    {
+        selectedUnit = unit;
+    }
+
+    public void UnitStateChange(UD_Ingame_UnitCtrl unit)
+    {
+        if (unit != null && unit.isSelected) // 선택된 유닛만 상태 변경
+        {
+            unit.ChangeAllyMode(); // 버튼 클릭 시 유닛의 Ally_Mode 변경
+        }
+    }
+
+    public void ShowMoveImage(bool show)
+    {
+        if (unitMoveUI != null)
+        {
+            unitMoveUI.SetActive(show);
+        }
+    }
+
+    public void UpdateMoveImagesForAllUnits()
+    {
+        UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+
+        foreach (UD_Ingame_UnitCtrl unitCtrl in allUnits)
+        {
+
+            if (unitCtrl.CompareTag("Unit"))
+            {
+                if (unitCtrl.Ally_State.fsm.State == UnitState.Move)// ||
+                    //unitCtrl.Ally_State.fsm.State == UnitState.Chase)
+                {
+                    ShowMoveImage(unitCtrl.gameObject, true);
+                }
+                else
+                {
+                    ShowMoveImage(unitCtrl.gameObject, false);
+                }
+            }
+        }
+    }
+
+    // 특정 유닛의 이동 UI를 켜거나 끄는 함수
+    public void ShowMoveImage(GameObject unit, bool show)
+    {
+        if (unit == null)
+        {
+            return;
+        }
+
+        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+
+        if (unitMoveImageTransform == null)
+        {
+            return;
+        }
+
+        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
+        unitMoveImage.SetActive(show);
+
+        if (show)
+        {
+            Canvas canvas = unitMoveImage.GetComponentInParent<Canvas>();
+            if (canvas != null && canvas.renderMode == RenderMode.WorldSpace)
+            {
+                RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(1, 1);
+
+                rectTransform.position = unit.transform.position + new Vector3(0, 2.0f, 0);
+                rectTransform.rotation = Quaternion.identity;
+            }
+        }
     }
 }

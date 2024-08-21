@@ -1,8 +1,10 @@
 using MonsterLove.StateMachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public enum AllyMode
 {
@@ -188,7 +190,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 MeshRenderer.material.color = colorAlly;
             }
 
-            if(isSelected && Input.GetKeyDown(KeyCode.Q))
+            if (isSelected && Input.GetKeyDown(KeyCode.Q))
             {
                 previousAllyMode = Ally_Mode;
                 //isSelected = false;
@@ -216,6 +218,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
+                        MoveUnitToNearestTile();
                         SearchEnemy();
                     }
                     else if (previousAllyMode == AllyMode.Siege)
@@ -359,6 +362,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     }
 
+
+    public void ChangeAllyMode()
+    {
+        if (isSelected)
+        {
+            previousAllyMode = Ally_Mode;
+            Ally_Mode = AllyMode.Change;
+        }
+    }
 
 
     public void SearchEnemy()
@@ -505,4 +517,52 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         
     }
 
-}
+    void MoveUnitToNearestTile()
+    {
+        float searchRadius = 2.0f; 
+        bool foundTile = false;
+
+        Vector3 unitPosition = transform.position; 
+
+        while (!foundTile && searchRadius <= 10.0f) 
+        {
+            Collider[] nearbyTiles = Physics.OverlapSphere(unitPosition, searchRadius);
+
+            float closestDistance = Mathf.Infinity;
+            UD_Ingame_GridTile closestTile = null; 
+
+            foreach (Collider collider in nearbyTiles)
+            {
+                UD_Ingame_GridTile tile = collider.GetComponent<UD_Ingame_GridTile>();
+
+                if (tile != null && tile.isPlaceable && !tile.isTileOccupied)
+                {
+                    float distanceToTile = Vector3.Distance(unitPosition, tile.transform.position);
+
+                    if (distanceToTile < closestDistance)
+                    {
+                        closestDistance = distanceToTile;
+                        closestTile = tile; 
+                    }
+                }
+            }
+
+            if (closestTile != null )
+            {
+                transform.position = closestTile.transform.position;
+                Debug.Log("fdfefe");
+                closestTile.SetTileOccupied(true);
+                closestTile.currentPlacedUnit = this.gameObject;
+                foundTile = true; 
+
+            }
+            else
+            {
+                searchRadius += 3.0f;
+            }
+        }
+
+    }
+
+
+ }

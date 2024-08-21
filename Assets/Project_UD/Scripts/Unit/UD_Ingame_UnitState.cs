@@ -142,6 +142,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
+
     }
     #endregion
 

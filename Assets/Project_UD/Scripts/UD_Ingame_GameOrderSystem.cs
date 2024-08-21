@@ -42,6 +42,11 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
             //타일 클릭했을때
             if (clickedObj.tag == UD_CONSTANT.TAG_TILE)
             {
+                if (UD_Ingame_UIManager.instance.currentUnitStateChangeBox != null)
+                {
+                    UD_Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
+
                 UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
 
                 if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
@@ -104,6 +109,15 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 if (AllyUnit.isSelected)
                 {
                     selectedUnit = AllyUnit.gameObject;
+
+                    if (UD_Ingame_UIManager.instance.currentUnitStateChangeBox != null)
+                    {
+                        Destroy(UD_Ingame_UIManager.instance.currentUnitStateChangeBox);
+                        UD_Ingame_UIManager.instance.currentUnitStateChangeBox = null;
+                    }
+
+                    UD_Ingame_UIManager.instance.CreateUnitStateChangeBox(hit.point, AllyUnit);
+
                 }
                 else
                 {
