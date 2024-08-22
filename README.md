@@ -1,2 +1,2 @@
-# Project_UndyingDefence
-유닛 지휘 디펜스 프로젝트
+# 조선수호대작전 (구 Project_UndyingDefence)
+조선 판타지를 배경으로 서양에서온 요괴들로부터 성을 지켜야하는 유닛 지휘 디펜스 게임 프로젝트
