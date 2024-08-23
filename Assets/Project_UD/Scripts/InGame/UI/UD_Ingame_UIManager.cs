@@ -16,24 +16,46 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Button EnemyTestModeBtn = null;
     public Text UnitSetModeText = null;
 
+    [Header("====UnitSpawnDeck====")]
+    public GameObject unitSpawnPanel;
+    public Button[] unitSpawnBtn;
+
     [Header("====UnitInfoPanel====")]
-    public Text unitName;
-    public Text unitType;
-    public Text unitTier;
-    public Text unitWeapon;
-    public Text unitSkill;
-    public Text unitDamage;
-    public Text unitAttackType;
+    public Image unitInfoImage;
+    public Image levelImage;
+    public Text nameText;
+    public Image gSkillImage;
+    public Text gSkillText;
+    public Image sSkillImage;
+    public Text sSkillText;
+    public Image hpImage;
+    public Text hpText;
+    public Image attackTypeImage;
+    public Text attackTypeText;
+    public Image defenseTypeImage;
+    public Text defeneTypeText;
+    
+
 
     [Header("====GameOption====")]
     public Button endGameBtn;
     public Button restartGameBtn;
     public Button pauseGameBtn;
 
-    [Header("====UnitOption====")]
-    public GameObject slectedUnitOptionBox;
-    public GameObject unitUpgradeMenuBox;
+    [Header("====UnitOptionMenu====")]
+    public GameObject slectedUnitOptionBox;         // 업그레이드 and 모드 변경 판넬
+    public GameObject currentSelectedUnitOptionBox; // 프리펩으로 생성될 판넬
+    public Button unitStateChageBtn;                // 유닛 모드 변경 버튼
+    public Sprite FreeModeImage;                    // 모든 변경 버튼 Free
+    public Sprite SiegeModeImage;                   // 모든 변경 버튼 Siege
+    public GameObject unitUpgradeMenuBox;           // 유닛 업그레이드 메뉴 판넬
+    public GameObject currentUpgradeMenu;           // 프리펩으로 생성될 업그레이드 판넬
 
+    public int curUnitHp;
+
+
+    public GameObject UnitStateChangeBox;
+    public GameObject currentUnitStateChangeBox;
 
     private bool isPasue = false;
 
@@ -41,23 +63,17 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
     private UD_Ingame_UnitCtrl selectedUnit;
 
-    public GameObject unitSpawnPanel;
-    public Button[] unitSpawnBtn;
 
     Camera mainCamera;
 
-    public GameObject UnitStateChangeBox;
-    public GameObject currentUnitStateChangeBox;
-    public Sprite FreeModeImage;
-    public Sprite SiegeModeImage;
 
-    public GameObject currentSelectedUnitOptionBox;
-    public Button unitStateChageBtn;
     public Button unitUpgradeBtn;
 
 
     public Image unitMoveImage;
     public GameObject unitMoveUI;
+
+    private UD_UnitDataManager unitDataManager;
 
 
     private void Awake()
@@ -72,6 +88,9 @@ public class UD_Ingame_UIManager : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+
+        unitDataManager = UD_UnitDataManager.inst;
+
 
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
@@ -154,20 +173,33 @@ public class UD_Ingame_UIManager : MonoBehaviour
     }
 
 
-    public void UpdateUnitInfoPanel(string unitName)
+    public void UpdateUnitInfoPanel(UD_Ingame_UnitCtrl selectedUnit)
     {
+        string unitDataKey = "";
+        if(selectedUnit.unitType == UnitType.Warrior)
+        {
+            unitDataKey = "민병";
+        }
+        else if(selectedUnit.unitType == UnitType.Archer)
+        {
+            unitDataKey = "사냥꾼";
+        }
 
-        //UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitName);
-        //if (unitData != null)
-        //{
-        //    this.unitName.text = "이름 : " + unitData.Name;
-        //    this.unitType.text = "타입 : " + unitData.Type;
-        //    this.unitTier.text = "티어 : " + unitData.Tier.ToString();
-        //    this.unitWeapon.text = "무기 : " + unitData.Weapon;
-        //    this.unitSkill.text = "스킬 : " + unitData.Skill;
-        //    this.unitDamage.text = "데미지 : " + unitData.Damage.ToString();
-        //    this.unitAttackType.text = "공격 타입 : " + unitData.AttackType;
-        //}
+        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitDataKey);
+
+        curUnitHp = unitData.Hp;
+
+        if(unitData != null)
+        {
+            nameText.text = unitData.Name;
+            gSkillText.text = unitData.g_SkillName;
+            sSkillText.text = unitData.s_SkillName;
+            hpText.text = curUnitHp.ToString() + "/" + unitData.Hp.ToString();
+            defeneTypeText.text = unitData.DefenseType;
+            //attackTypeText.text = unitData.
+           
+        }
+        
     }
 
     void EndGame()
@@ -215,7 +247,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox = null;
         }
 
-        currentSelectedUnitOptionBox = Instantiate(UnitStateChangeBox) as GameObject;
+        currentSelectedUnitOptionBox = Instantiate(currentSelectedUnitOptionBox) as GameObject;
 
         SetSelectedUnit(unit);
 
@@ -258,14 +290,23 @@ public class UD_Ingame_UIManager : MonoBehaviour
         // 업그레이드 버튼
         if (unitUpgradeBtn != null)
         {
-            unitStateChageBtn.onClick.RemoveAllListeners();
-            unitStateChageBtn.onClick.AddListener(() =>
-            {
-                UnitStateChange(unit);
+            // 업그레이드 메뉴 생성
 
-                DestroyUnitStateChangeBox();
-            });
+
+            //unitStateChageBtn.onClick.RemoveAllListeners();
+            //unitStateChageBtn.onClick.AddListener(() =>
+            //{
+            //    UnitStateChange(unit);
+
+            //    DestroyUnitStateChangeBox();
+            //});
         }
+    }
+
+    void CreateUpgradeMenu(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
+    {
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
     }
 
     public void CreateUnitStateChangeBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
@@ -379,7 +420,6 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
 
-    // 특정 유닛의 이동 UI를 켜거나 끄는 함수
     public void ShowMoveImage(GameObject unit, bool show)
     {
         if (unit == null)

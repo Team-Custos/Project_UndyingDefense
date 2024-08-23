@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using static UD_UnitDataManager;
 
 public enum AllyMode
 {
@@ -94,11 +95,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public string unitName;
 
+    private UD_UnitDataManager.UnitData unitData;
+
     void OnMouseDown()
     {
         if (UD_Ingame_UIManager.instance != null)
         {
-            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this);
         }
     }
 
@@ -564,5 +567,9 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     }
 
+    public void SetUnitData(UD_UnitDataManager.UnitData data)
+    {
+        unitData = data;
+    }
 
- }
+}
