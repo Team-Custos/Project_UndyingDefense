@@ -15,4 +15,10 @@ public class UD_Ingame_BaseStatus : MonoBehaviour
     {
         
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+
+    }
 }

@@ -18,8 +18,6 @@ public enum TargetSelectType
     Fixed
 }
 
-
-
 public class UD_Ingame_UnitCtrl : MonoBehaviour
 {
     [HideInInspector] public UD_Ingame_UnitState Ally_State;
@@ -27,12 +25,14 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public NavMeshObstacle NavObstacle;
     [HideInInspector] public NavMeshAgent NavAgent;
     [HideInInspector] public UD_Ingame_UnitSkillManager UnitSkill;
+   
 
-    MeshRenderer MeshRenderer;
+    UD_Ingame_UnitModelSwapManager ModelSwap;
 
-
+    //Data를 다른 스크립트로 빼는게 좋지 않을까? - 폴라오
     [Header("====Data====")]
     public int modelType;
+    int cur_modelType;
     public int curLevel = 1;
     public int HP;
     public int maxHP;
@@ -56,6 +56,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public Color32 colorAlly = Color.blue;
     public Color32 colorEnemy = Color.red;
 
+    public Transform VisualModel;
     public GameObject Selected_Particle;
     public bool isSelected = false;
 
@@ -102,7 +103,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     private void Awake()
     {
-        MeshRenderer = GetComponent<MeshRenderer>();
+        ModelSwap = UD_Ingame_UnitModelSwapManager.inst;
+
         NavAgent = GetComponent<NavMeshAgent>();
         NavObstacle = GetComponent<NavMeshObstacle>();
 
@@ -115,6 +117,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        {
+            Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+        }
+        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        {
+            Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+        }
+
         SpawnDelay = true;
 
         targetBase = UD_Ingame_GameManager.inst.Base;
@@ -138,7 +149,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-        unitStateChangeTime = 0.0f;
+        
     }
 
 
@@ -148,9 +159,29 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, attackRange + 0.5f);
     }
 
+
     // Update is called once per frame
     void Update()
     {
+        //유닛의 현재 위치에 따른 타일 배치 가능 설정
+        UD_Ingame_GridManager.inst.TileSetPlaceable(this.transform.position);
+
+
+        //모델 변경
+        if (modelType != cur_modelType)
+        {
+            Destroy(VisualModel.GetChild(0).gameObject);
+            if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+            {
+                Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+            else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+            {
+                Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+
+            cur_modelType = modelType;
+        }
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
@@ -179,13 +210,10 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             {
                 NavObstacle.enabled = false;
                 NavAgent.enabled = true;
-                MeshRenderer.material.color = Color.cyan;
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-                NavObstacle.enabled = true;
-                NavAgent.enabled = false;
-                MeshRenderer.material.color = colorAlly;
+                
             }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
@@ -217,14 +245,37 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
+                        
+                        IEnumerator ModeChangeDelayCoroutine()
+                        {
+                            NavAgent.enabled = false;
+                            this.transform.rotation = new Quaternion(0, 0, 0, 0);
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                        StartCoroutine(ModeChangeDelayCoroutine());
+
+                        NavObstacle.enabled = true;
                         SearchEnemy();
                     }
                     else if (previousAllyMode == AllyMode.Siege)
                     {
                         //NavAgent.updatePosition = false;
-                        transform.position = moveTargetPos;
+
+                        NavObstacle.enabled = false;
+                        
+                        IEnumerator ModeChangeDelayCoroutine()
+                        {
+                            yield return new WaitForEndOfFrame();
+                            yield return new WaitForEndOfFrame();
+
+                            NavAgent.enabled = true;
+                        }
+                        StartCoroutine(ModeChangeDelayCoroutine());
+
+                        //NavAgent.Warp(transform.position);
 
                         Ally_Mode = AllyMode.Free;
+                        //NavAgent.updatePosition = true;
                     }
                     unitStateChangeTime = 3;
                 }
@@ -251,53 +302,52 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-                SearchEnemy();
-
-                if (targetEnemy != null)
+                if (haveToMovePosition)
                 {
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
-                    //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
-                }
+                    targetEnemy = null;
+                    Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
 
-                if (targetEnemy != null && !haveToMovePosition)
-                {
-                    if (isEnemyInSight)
+                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)
                     {
-                        haveToMovePosition = false;
-                        
-                        if (isEnemyInRange)
-                        {
-                            moveTargetPos = this.transform.position;
-                            Ally_State.fsm.ChangeState(UnitState.Attack);
-                        }
-                        else
-                        {
-                            Ally_State.fsm.ChangeState(UnitState.Chase);
-                        }
+                        Ally_State.fsm.ChangeState(UnitState.Move);
                     }
                     else
                     {
+                        haveToMovePosition = false;
+                        this.transform.position = moveTargetPos;
                         Ally_State.fsm.ChangeState(UnitState.Idle);
                     }
                 }
                 else
                 {
-                    //transform.position = moveTargetPos;
-                    Ally_State.fsm.ChangeState(UnitState.Idle);
-                }
+                    SearchEnemy();
 
-                if (haveToMovePosition)
-                {
-                    Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
-
-                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x,moveTargetPos.z)) >= 0.1f)
+                    if (targetEnemy != null)
                     {
-                        Ally_State.fsm.ChangeState(UnitState.Move);
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
+                        //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
                     }
-                    else
-                    { 
-                        haveToMovePosition = false;
-                        Ally_State.fsm.ChangeState(UnitState.Idle);
+
+                    if (targetEnemy != null && !haveToMovePosition)
+                    {
+                        if (isEnemyInSight)
+                        {
+                            haveToMovePosition = false;
+
+                            if (isEnemyInRange)
+                            {
+                                moveTargetPos = this.transform.position;
+                                Ally_State.fsm.ChangeState(UnitState.Attack);
+                            }
+                            else
+                            {
+                                Ally_State.fsm.ChangeState(UnitState.Chase);
+                            }
+                        }
+                        else
+                        {
+                            Ally_State.fsm.ChangeState(UnitState.Idle);
+                        }
                     }
                 }
             }
@@ -319,7 +369,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 SpawnDelay = false;
             }
 
-            MeshRenderer.material.color = colorEnemy;
             enemy_isBaseInRange =
             (Vector3.Distance(transform.position, moveTargetBasePos) <= attackRange);
 
@@ -411,7 +460,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-
+                VisualModel.transform.LookAt(targetEnemy.transform.position);
                 Bow.transform.LookAt(targetEnemy.transform.position);
                 Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
@@ -478,13 +527,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
             if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT) && Arrow.isEnemyAttack)
             {
-                Debug.Log(this.gameObject.name + " attack hit!");
+                //Debug.Log(this.gameObject.name + " attack hit!");
                 this.HP -= Arrow.Atk;
                 Destroy(OBJ);
             }
             else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY) && !Arrow.isEnemyAttack)
             {
-                Debug.Log(this.gameObject.name + " attack hit!");
+                //Debug.Log(this.gameObject.name + " attack hit!");
                 this.HP -= Arrow.Atk;
                 Destroy(OBJ);
             }

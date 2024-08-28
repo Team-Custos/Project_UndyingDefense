@@ -74,6 +74,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     //유닛 소환
     public GameObject UnitSpawn(int unitType,float X, float Y)
     {
+
         GameObject Obj = null;
 
         //Debug.Log(new Vector3(X, 0, Y));

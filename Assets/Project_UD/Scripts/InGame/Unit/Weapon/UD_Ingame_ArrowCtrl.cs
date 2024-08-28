@@ -2,8 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Attack
+{
+    Pierce,
+    Slash,
+    Crush,
+    Magic
+}
+
 public class UD_Ingame_ArrowCtrl : MonoBehaviour
 {
+    public Attack AttackType;
+
     public int Atk = 1;
     public float speed = 1f;
     public bool isEnemyAttack = false;

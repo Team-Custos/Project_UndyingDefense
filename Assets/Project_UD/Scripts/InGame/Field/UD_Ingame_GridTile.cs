@@ -7,6 +7,8 @@ public class UD_Ingame_GridTile : MonoBehaviour
 {
     UD_Ingame_GameManager GAMEMANAGER;
 
+    UD_Ingame_GridManager GridMgr;
+
     public bool Selected = false;
     public Vector2 GridPos = Vector2.zero;
 
@@ -28,21 +30,30 @@ public class UD_Ingame_GridTile : MonoBehaviour
     void Start()
     {
         GAMEMANAGER = UD_Ingame_GameManager.inst;
+        GridMgr = UD_Ingame_GridManager.inst;
+
         MeshR = GetComponent<MeshRenderer>();
         Selected = false;
-
-        GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
 
         this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
 
         colorDefault = new Color(0, 0, 0, 0);
     }
 
+    void UpdateTilePlaceable()
+    {
+        //Debug.Log(GridPos + " " + GridMgr._tiles[GridPos]);
+        isPlaceable = GridMgr._tiles[GridPos];
+    }
+
     void Update()
     {
+        UpdateTilePlaceable();
+
+
         if (showPlacementColors)
         {
-            if (currentPlacedUnit != null)
+            if (!isPlaceable)
             {
                 MeshR.material.color = colorOccupied;
             }

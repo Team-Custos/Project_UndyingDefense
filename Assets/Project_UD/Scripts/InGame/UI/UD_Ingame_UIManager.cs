@@ -91,9 +91,14 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
+        
+
+
         if (UnitSetModeText != null)
         {
             if (UD_Ingame_GameManager.inst.UnitSetMode)

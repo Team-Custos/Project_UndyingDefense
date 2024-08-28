@@ -2,37 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Tilemaps;
+using System;
+
 
 public class UD_Ingame_GridManager : MonoBehaviour
 {
+    public static UD_Ingame_GridManager inst;
+
     public int _width, _height;
 
     [SerializeField] private UD_Ingame_GridTile _tilePrefab;
 
-    Dictionary<Vector2, UD_Ingame_GridTile> _tiles = new Dictionary<Vector2, UD_Ingame_GridTile>
+    public Dictionary<Vector2, bool> _tiles = new Dictionary<Vector2, bool>
     { };
 
     public GameObject TILEPARENT;
 
-    public GameObject[] Tiles_Obj;
+    public UD_Ingame_GridTile[] Tiles_Obj;
     int Tiles_idx;
+
+    public Grid mapGrid;
+    public Tilemap groundTilemap;
 
     public float tile_Offset;
 
+    private void Awake()
+    {
+        inst = this;
+        Tiles_Obj = FindObjectsOfType<UD_Ingame_GridTile>();
+        for (Tiles_idx = 0; Tiles_idx < Tiles_Obj.Length; Tiles_idx++)
+        {
+            Tiles_Obj[Tiles_idx].GridPos = new Vector2(mapGrid.WorldToCell(Tiles_Obj[Tiles_idx].transform.position).x, mapGrid.WorldToCell(Tiles_Obj[Tiles_idx].transform.position).y);
+            _tiles.Add(new Vector2(Tiles_Obj[Tiles_idx].GridPos.x, Tiles_Obj[Tiles_idx].GridPos.y), true);
+        }
+    }
 
- 
     private void Start()
     {
-        //GenerateGrid();
+        
     }
 
     private void Update()
     {
-        Tiles_Obj = GameObject.FindGameObjectsWithTag("Tile");
-
         
+    }
+
+    public void TileSetPlaceable(Vector3 pos)
+    {
+        Vector3Int CurCellPos = groundTilemap.WorldToCell(pos);
+        Vector3 CurCellWorldPos = new Vector3 (groundTilemap.GetCellCenterWorld(CurCellPos).x,0,groundTilemap.GetCellCenterWorld(CurCellPos).z);
+
+        Vector3 CurUnitWorldPos = new Vector3(pos.x, 0, pos.z);
+
+        //Debug.Log("현재 배치 가능 여부 : " + _tiles[CurCellPos]);
+        //Debug.Log("현재 위치한 타일의 그리드 좌표 : " + CurCellPos);
+        //Debug.Log("현재 위치한 타일의 월드 좌표 : " + CurCellWorldPos);
+
+        // 유닛과 타일의 중심 간의 거리 계산 (x와 z만 비교)
+        float distanceX = Mathf.Abs(CurCellWorldPos.x - CurUnitWorldPos.x);
+        float distanceZ = Mathf.Abs(CurCellWorldPos.z - CurUnitWorldPos.z);
+
+        //Debug.Log(new Vector2(distanceX,distanceZ));
+
+        // 타일 중심과 유닛 위치의 x 및 z 거리 차이를 이용하여 배치 가능 여부를 판단
+        if (distanceX > 0.95f || distanceZ > 0.95f)
+        {
+            // 타일과 유닛이 같은 위치에 있다고 판단 - 배치 가능
+            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = true;
+        }
+        else
+        {
+            // 타일과 유닛이 충분히 가까이 있지 않음 - 배치 불가
+            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
+        }
 
     }
+
 
     public bool IsTilesAllOff()
     {
@@ -43,31 +89,4 @@ public class UD_Ingame_GridManager : MonoBehaviour
         else { return true; }
     }
 
-
-    public void GenerateGrid()
-    {
-        for (int x = 0; x < _width; x++)
-        {
-            for (int y = 0; y < _height; y++)
-            {
-                var spawnedTile = Instantiate(_tilePrefab, TILEPARENT.transform);
-                spawnedTile.name = $"Tile {x} {y}";
-                spawnedTile.GetComponent<UD_Ingame_GridTile>().GridPos = new Vector2(x, y);
-
-                spawnedTile.transform.position = new Vector3(x * tile_Offset, 0, y * tile_Offset);
-
-
-                _tiles[new Vector2(x, y)] = spawnedTile;
-            }
-        }
-
-    }
-
-    public UD_Ingame_GridTile GetTileAtPosition(Vector2 pos)
-    {
-        if (_tiles.TryGetValue(pos, out var tile))
-        { return tile; }
-
-        return null;
-    }
 }
