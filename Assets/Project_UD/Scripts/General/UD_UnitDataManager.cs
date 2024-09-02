@@ -15,7 +15,6 @@ public class UD_UnitDataManager : MonoBehaviour
         if (inst == null)
         {
             inst = this;
-            DontDestroyOnLoad(gameObject);
         }
         else if (inst != this)
         {
@@ -86,7 +85,7 @@ public class UD_UnitDataManager : MonoBehaviour
             unitDataDictionary[unitData.Name] = unitData;
         }
 
-        ShowUnitData();
+        //ShowUnitData();
     }
 
 
@@ -120,16 +119,17 @@ public class UD_UnitDataManager : MonoBehaviour
 
     }
 
-    public void AssignUnitData(GameObject unitObject, string unitName)
-    {
-        if (unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
-        {
-            UD_Ingame_UnitCtrl unitCtrl = unitObject.GetComponent<UD_Ingame_UnitCtrl>();
+    //public void AssignUnitData(GameObject unitObject, string unitName)
+    //{
+    //    if(unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
+    //    {
+    //        UD_Ingame_UnitCtrl unitCtrl = unitObject.GetComponent<UD_Ingame_UnitCtrl>();
 
-            if (unitCtrl != null)
-            {
-                unitCtrl.SetUnitData(unitData);
-            }
-        }
-    }
+    //        if(unitCtrl != null)
+    //        {
+    //            unitCtrl.SetUnitData(unitData);
+    //        }
+    //    }
+    //}
+
 }

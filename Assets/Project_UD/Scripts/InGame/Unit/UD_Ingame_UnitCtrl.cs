@@ -35,6 +35,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
 
     [Header("====Data====")]
+    public string unitName;
     public int modelType;
     public int curLevel = 1;
     public int HP;
@@ -50,6 +51,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public int specialSkillCode = 101;
     public UnitType unitType;
     public TargetSelectType targetSelectType;
+    // LoPol 추가
+    //public string unitName;
+    public string g_SkillName;
+    public string s_SkillName;
+    public int cost;
+    public string DefenseType;
+
 
 
     [Header("====Status====")]
@@ -93,9 +101,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
-
-    private UD_UnitDataManager.UnitData unitData;
 
     void OnMouseDown()
     {
@@ -103,6 +108,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         {
             UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this);
         }
+
     }
 
     private void Awake()
@@ -144,6 +150,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         moveTargetPos = this.transform.position;
 
         unitStateChangeTime = 0.0f;
+
     }
 
 
@@ -445,20 +452,61 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void UnitInit(UnitSpawnData data)
+    public void UnitInit(UD_UnitDataManager.UnitData unitData)
     {
-        modelType = data.modelType;
-        maxHP = data.HP;
-        moveSpeed = data.speed;
-        attackPoint = data.atk;
-        sightRange = data.sightRange;
-        attackRange = data.attackRange;
+        if (unitData.Name == "민병")
+        {
+            unitType = UnitType.Warrior;
+        }
+        else if (unitData.Name == "사냥꾼")
+        {
+            unitType = UnitType.Archer;
+        }
+        else
+        {
+            unitType = UnitType.Warrior;
+        }
 
-        generalSkillCode = data.generalSkill;
-        specialSkillCode = data.specialSkill;
+        curLevel = unitData.Level;
+        unitName = unitData.Name;
+        modelType = unitData.Number;
+        HP = unitData.Hp;
+        maxHP = unitData.Hp;
+        moveSpeed = unitData.MoveSpeed;
+        attackSpeed = unitData.AttackSpeed;
+        sightRange = unitData.SightRange;
+        attackRange = unitData.AttackRange;
+        DefenseType = unitData.DefenseType;
+        critChanceRate = unitData.CritRate;
+        g_SkillName = unitData.g_SkillName;
+        s_SkillName = unitData.s_SkillName;
+        cost = unitData.Cost;
 
-        unitType = data.unitType;
     }
+
+    //public void UnitInit(UnitSpawnData data)
+    //{
+    //    modelType = data.modelType;
+    //    maxHP = data.HP;
+    //    moveSpeed = data.speed;
+    //    attackPoint = data.atk;
+    //    sightRange = data.sightRange;
+    //    attackRange = data.attackRange;
+
+    //    generalSkillCode = data.generalSkill;
+    //    specialSkillCode = data.specialSkill;
+
+    //    unitType = data.unitType;
+
+    //    //LoPol 추가
+    //    unitName = data.unitName;
+    //    DefenseType = data.defenseType;
+    //    critChanceRate = data.critRate;
+    //    g_SkillName = data.gSkillName;
+    //    s_SkillName = data.sSkillName;
+    //    cost = data.cost;
+    //    HP = maxHP;
+    //}
 
     public void EnemyInit(EnemySpawnData data)
     {
@@ -553,7 +601,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if (closestTile != null )
             {
                 transform.position = closestTile.transform.position;
-                Debug.Log("fdfefe");
                 closestTile.SetTileOccupied(true);
                 closestTile.currentPlacedUnit = this.gameObject;
                 foundTile = true; 
@@ -566,10 +613,4 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
 
     }
-
-    public void SetUnitData(UD_UnitDataManager.UnitData data)
-    {
-        unitData = data;
-    }
-
 }

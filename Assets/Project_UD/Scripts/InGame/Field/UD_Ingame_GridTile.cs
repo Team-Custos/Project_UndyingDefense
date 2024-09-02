@@ -156,11 +156,11 @@ public class UD_Ingame_GridTile : MonoBehaviour
         UpdateTileColor(); // 점령 상태 변경 시 타일 색상 업데이트
     }
 
-    public void SetArrangeState(bool arrangeState)
-    {
-        isArrangeState = arrangeState;
-        UpdateTileColor(); // 배치 상태 변경 시 타일 색상 업데이트
-    }
+    //public void SetArrangeState(bool arrangeState)
+    //{
+    //    isArrangeState = arrangeState;
+    //    UpdateTileColor(); // 배치 상태 변경 시 타일 색상 업데이트
+    //}
 
     public void ResetTile()
     {
@@ -203,6 +203,7 @@ public class UD_Ingame_GridTile : MonoBehaviour
             }
         }
     }
+
 
     
 }

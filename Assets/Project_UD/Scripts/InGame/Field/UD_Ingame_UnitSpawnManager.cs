@@ -29,6 +29,14 @@ public class UnitSpawnData
     public int generalSkill;
     public int specialSkill;
     public UnitType unitType;
+
+    // LoPol추가
+    public string unitName;
+    public string defenseType;
+    public int critRate;
+    public string gSkillName;
+    public string sSkillName;
+    public int cost;
 }
 
 
@@ -58,6 +66,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         inst = this;
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -76,13 +85,32 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         GameObject Obj = null;
 
-        //Debug.Log(new Vector3(X, 0, Y));
+        string unitName = GetUnitNameByType(unitType);
+
+      
+         UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitName);
+
 
         Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
+        //Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
+
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(unitData);
 
         return Obj;
+    }
+
+    private string GetUnitNameByType(int unitType)
+    {
+        switch (unitType)
+        {
+            case 0:
+                return "민병";
+            case 1:
+                return "사냥꾼";
+            default:
+                return "민병";
+        }
     }
 }
