@@ -60,14 +60,30 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Sprite upGradeImage_3Level;
     public Sprite upGradeImage_4Level;
 
+    [Header("====Wave Menu UI====")]
+    public float waveCount = 20;
+    public Text waveCountText;
+    public int waveStep;
+    public Text waveStepText;
+    public Text waveStartText;
+    public GameObject waveResultPanel;
+    public Text waveResultText;
+    public Button reStartBtn;
+    public Button menuBtn;
+    public Text waveRewardText;
+    public Image waveGoldImage;
+    public Text waveGoldText;
+    public bool isCurrentWaveFinshed;
+    public bool isCurrentWaveSucceed;
+
     int unitLevel;
 
+    public Text curGoldText;
+    public int curHaveGold;
 
 
     public int curUnitHp;
 
-    public Text curGoldText;
-    public int curHaveGold;
 
 
     public GameObject UnitStateChangeBox;
@@ -175,12 +191,34 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
 
         curHaveGold = 10000000;
+
+        waveCount = 20;
     }
 
     // Update is called once per frame
     void Update()
     {
-        curGoldText.text = curHaveGold.ToString();
+
+        if (waveCountText != null)
+        {
+            waveCount -= Time.deltaTime;
+            if(waveCount >= 0)
+            {
+                waveStartText.gameObject.SetActive(false);
+                waveCountText.gameObject.SetActive(true);
+                waveCountText.text = Mathf.Ceil(waveCount).ToString();
+            }
+            else if(waveCount < 0)
+            {
+                waveCountText.gameObject.SetActive(false);
+                waveStartText.gameObject.SetActive(true);
+                isCurrentWaveFinshed = true;
+                ShowWaveResultPanel();
+            }
+
+        }
+
+        //curGoldText.text = curHaveGold.ToString();
 
         if (UnitSetModeText != null)
         {
@@ -542,6 +580,25 @@ public class UD_Ingame_UIManager : MonoBehaviour
         else if (unitLevel >= 4)
         {
             return;
+        }
+    }
+
+    void ShowWaveResultPanel()
+    {
+        if(isCurrentWaveFinshed == true)
+        {
+            waveResultPanel.gameObject.SetActive(true);
+
+            if(isCurrentWaveSucceed == true)
+            {
+                waveResultText.text = "전투에 승리했습니다.";
+            }
+            else
+            {
+                waveResultText.text = "전투에 패배했습니다.";
+            }
+
+
         }
     }
 }
