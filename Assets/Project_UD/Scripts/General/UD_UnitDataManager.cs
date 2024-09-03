@@ -82,16 +82,17 @@ public class UD_UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
-            unitDataDictionary[unitData.Name] = unitData;
+            unitDataDictionary[unitData.ID] = unitData;
         }
 
         //ShowUnitData();
     }
 
 
-    public UnitData GetUnitData(string unitName)
+    public UnitData GetUnitData(string unitID)
     {
-        if (unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
+
+        if (unitDataDictionary.TryGetValue(unitID, out UnitData unitData))
         {
             return unitData;
         }
@@ -102,14 +103,18 @@ public class UD_UnitDataManager : MonoBehaviour
         }
     }
 
+    public bool DoesUnitExist(string unitId)
+    {
+        return unitDataDictionary.ContainsKey(unitId);
+    }
 
     public void ShowUnitData()
     {
         foreach (var unitdata in unitDataDictionary)
         {
-            var unitName = unitdata.Key;
+            var unitID = unitdata.Key;
             var unitData = unitdata.Value;
-            Debug.Log($"Name : {unitName}, Number : {unitData.Number}, ID : {unitData.ID}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
+            Debug.Log($"ID : {unitID}, Number : {unitData.Number}, Name : {unitData.Name}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
                       $"HP : {unitData.Hp}, AttackSpeed : {unitData.AttackSpeed}, DefenseType : {unitData.DefenseType}, GlobalTime : {unitData.GlobalTime} " +
                       $"Mental : {unitData.Mental}, MoveSpeed : {unitData.MoveSpeed}, SightRange : {unitData.SightRange},AttackRange : {unitData.AttackRange} " +
                       $"TargetSelectType : {unitData.TargetSelectType}, crtiRate : {unitData.CritRate}, g_Skill : {unitData.g_Skil}, g_SkillName : {unitData.g_SkillName}" +
@@ -118,18 +123,5 @@ public class UD_UnitDataManager : MonoBehaviour
         }
 
     }
-
-    //public void AssignUnitData(GameObject unitObject, string unitName)
-    //{
-    //    if(unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
-    //    {
-    //        UD_Ingame_UnitCtrl unitCtrl = unitObject.GetComponent<UD_Ingame_UnitCtrl>();
-
-    //        if(unitCtrl != null)
-    //        {
-    //            unitCtrl.SetUnitData(unitData);
-    //        }
-    //    }
-    //}
 
 }

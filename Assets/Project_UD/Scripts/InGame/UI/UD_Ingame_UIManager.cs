@@ -198,24 +198,23 @@ public class UD_Ingame_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // 웨이브 카운트 다운 텍스트
         if (waveCountText != null)
         {
             waveCount -= Time.deltaTime;
-            if(waveCount >= 0)
+            if (waveCount >= 0)
             {
                 waveStartText.gameObject.SetActive(false);
                 waveCountText.gameObject.SetActive(true);
-                waveCountText.text = Mathf.Ceil(waveCount).ToString();
+                waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveCount).ToString() + "초";
             }
-            else if(waveCount < 0)
+            else if (waveCount < 0)
             {
                 waveCountText.gameObject.SetActive(false);
                 waveStartText.gameObject.SetActive(true);
                 isCurrentWaveFinshed = true;
-                ShowWaveResultPanel();
+                //ShowWaveResultPanel();
             }
-
         }
 
         //curGoldText.text = curHaveGold.ToString();
@@ -243,7 +242,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 UnitSetModeText.text = "SetModeOff";
             }
         }
-
+        
+        // 이동 UI (재 구현 예정)
         UpdateMoveImagesForAllUnits();
 
         if (selectedUnit != null)
@@ -275,9 +275,13 @@ public class UD_Ingame_UIManager : MonoBehaviour
             return;
         }
 
+        string unitID = selectedUnit.ID;
+        Debug.Log(unitID);
         string unitName = selectedUnit.unitName;
+        Debug.Log(unitName);
 
-        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitName);
+        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitID);
+
 
         if (unitData == null)
         {
@@ -295,6 +299,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         defeneTypeText.text = unitData.DefenseType; 
 
         Debug.Log($"'{unitName}'업데이트 성공");
+
     }
 
     void EndGame()
@@ -415,49 +420,64 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
         Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
-        screenPos.x += 300; 
+        screenPos.x += 300;
         rectTransform.position = screenPos;
 
-        
         UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
         Image upGrade1BtnImage = UnitUpgrade1Btn.GetComponent<Image>();
 
         UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
         Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
 
+        // 업그레이드 옵션 가져오기
+        List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.ID);
 
-        UD_Ingame_UnitUpgradeManager.UnitUpgrade upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.unitName);
-        if (upgradeOptions == null)
+        if (upgradeOptions == null || upgradeOptions.Count == 0)
         {
-            Debug.LogError($"{unit.unitName} 업그레이드 없음");
+            Debug.LogError("업그레이드 옵션이 없습니다.");
             Destroy(currentUpgradeMenu);
+            currentUpgradeMenu = null;
             return;
         }
 
-        // 업그레이드 1 버튼 설정
+        // 3티어인 경우 버튼 하나만 생성
+        if (unit.curLevel == 3)
+        {
+            UnitUpgrade2Btn.gameObject.SetActive(false);
+
+            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x - 80, rectTransform.sizeDelta.y);
+
+            RectTransform unitUpgrade1Rect = UnitUpgrade1Btn.GetComponent<RectTransform>();
+            unitUpgrade1Rect.anchoredPosition = new Vector2(unitUpgrade1Rect.anchoredPosition.x + 60, unitUpgrade1Rect.anchoredPosition.y);
+        }
+
+        // 첫 번째 업그레이드 옵션 버튼 
         UnitUpgrade1Btn.onClick.RemoveAllListeners();
         UnitUpgrade1Btn.onClick.AddListener(() =>
         {
-            if (!string.IsNullOrEmpty(upgradeOptions.UpgradeOption1))
+            if (upgradeOptions.Count > 0)
             {
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions.UpgradeOption1);
+                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[0]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
         });
 
-        // 업그레이드 2 버튼 설정
+        // 두 번째 업그레이드 옵션 버튼 
         UnitUpgrade2Btn.onClick.RemoveAllListeners();
         UnitUpgrade2Btn.onClick.AddListener(() =>
         {
-            if (!string.IsNullOrEmpty(upgradeOptions.UpgradeOption2))
+            if (upgradeOptions.Count > 1)
             {
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions.UpgradeOption2);
+                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[1]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
         });
+
     }
+
+    
 
 
 
@@ -558,47 +578,23 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
     
-    void CreateUnitUpgradeButton(int unitLevel, Transform pos)
-    {
-        if(unitLevel == 1)
-        {
 
-            // 버튼 두개 생성
-            CreateUpgradeMenu(selectedUnit);
-            curHaveGold -= 1000;
-        }
-        else if(unitLevel == 2)
-        {
-            CreateUpgradeMenu(selectedUnit);
-            curHaveGold -= 1500;
-        }
-        else if(unitLevel == 3)
-        {
-            // 버튼 하나 생성
-            curHaveGold -= 2000;
-        }
-        else if (unitLevel >= 4)
-        {
-            return;
-        }
-    }
+    //void ShowWaveResultPanel()
+    //{
+    //    if(isCurrentWaveFinshed == true)
+    //    {
+    //        waveResultPanel.gameObject.SetActive(true);
 
-    void ShowWaveResultPanel()
-    {
-        if(isCurrentWaveFinshed == true)
-        {
-            waveResultPanel.gameObject.SetActive(true);
-
-            if(isCurrentWaveSucceed == true)
-            {
-                waveResultText.text = "전투에 승리했습니다.";
-            }
-            else
-            {
-                waveResultText.text = "전투에 패배했습니다.";
-            }
+    //        if(isCurrentWaveSucceed == true)
+    //        {
+    //            waveResultText.text = "전투에 승리했습니다.";
+    //        }
+    //        else
+    //        {
+    //            waveResultText.text = "전투에 패배했습니다.";
+    //        }
 
 
-        }
-    }
+    //    }
+    //}
 }

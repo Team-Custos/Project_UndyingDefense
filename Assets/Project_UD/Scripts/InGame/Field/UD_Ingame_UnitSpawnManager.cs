@@ -31,6 +31,7 @@ public class UnitSpawnData
     public UnitType unitType;
 
     // LoPol추가
+    public string unitID;
     public string unitName;
     public string defenseType;
     public int critRate;
@@ -85,10 +86,10 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     {
         GameObject Obj = null;
 
-        string unitName = GetUnitNameByType(unitType);
+        string unitID = GetUnitIDByType(unitType);
 
       
-         UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitName);
+         UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
 
 
         Obj = Instantiate(Test_Ally);
@@ -101,16 +102,16 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         return Obj;
     }
 
-    private string GetUnitNameByType(int unitType)
+    private string GetUnitIDByType(int unitType)
     {
         switch (unitType)
         {
             case 0:
-                return "민병";
+                return "1";
             case 1:
-                return "사냥꾼";
+                return "2";
             default:
-                return "민병";
+                return "1";
         }
     }
 }

@@ -52,7 +52,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public UnitType unitType;
     public TargetSelectType targetSelectType;
     // LoPol 추가
-    //public string unitName;
+    public string ID;
     public string g_SkillName;
     public string s_SkillName;
     public int cost;
@@ -454,11 +454,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void UnitInit(UD_UnitDataManager.UnitData unitData)
     {
-        if (unitData.Name == "민병")
+        if (unitData.ID == "1")
         {
             unitType = UnitType.Warrior;
         }
-        else if (unitData.Name == "사냥꾼")
+        else if (unitData.ID == "2")
         {
             unitType = UnitType.Archer;
         }
@@ -467,6 +467,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             unitType = UnitType.Warrior;
         }
 
+        ID = unitData.ID;
         curLevel = unitData.Level;
         unitName = unitData.Name;
         modelType = unitData.Number;
