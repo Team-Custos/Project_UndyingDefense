@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 513589119368596452}
   - component: {fileID: 3166612255250759096}
   - component: {fileID: 1524628817576402750}
-  - component: {fileID: 6248428960530035995}
   - component: {fileID: -7253675673234515982}
+  - component: {fileID: 1653212543355842366}
   m_Layer: 10
   m_Name: UD_Prefab_ArrowTest
   m_TagString: Attack
@@ -107,21 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6248428960530035995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8462500469413093967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bb6e516522675e4896b6b21ce840874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atk: 1
-  speed: 0.4
-  isEnemyAttack: 0
 --- !u!54 &-7253675673234515982
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,3 +134,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1653212543355842366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462500469413093967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f94a778dbbaf1c4ab22eb69d06c2198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  MethodType: 0
+  Atk: 1
+  speed: 0.3
+  CritPercent: 100
+  isEnemyAttack: 0

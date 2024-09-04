@@ -3,20 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+public class WaveData
+{
+    public int charactor;
+
+}
+
 
 
 public class UD_Ingame_WaveSystemManager : MonoBehaviour
 {
+    public WaveData[] data;
+
     [Header("====WaveData====")]
     public int waveMax = 10;
-    public UnitType[][] unitType;
-
     public int waveCur = 1;
     
     public float waveStartDelay = 0;
     float waveStartDelayCur = 0;
 
+    public float SpawnDelay = 0;
+    float SpawnDelayCur = 0;
+
     public GameObject[] remainEnemy;
+
+
 
     // Start is called before the first frame update
     void Start()

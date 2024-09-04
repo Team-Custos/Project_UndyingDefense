@@ -21,14 +21,19 @@ public class UnitSpawnData
     public int modelType;
     public float spawnTime;
     public int HP;
-    public float speed;
-    public int atk;
+    public float moveSpeed;
+    public int attackPoint;
+    public float attackSpeed;
+    public int critChanceRate;
+
     public float sightRange;
     public float attackRange;
 
     public int generalSkill;
     public int specialSkill;
     public UnitType unitType;
+    public DefenseType defenseType;
+    public TargetSelectType targetSelectType;
 }
 
 
@@ -81,7 +86,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
         Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+        //Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
 
         return Obj;

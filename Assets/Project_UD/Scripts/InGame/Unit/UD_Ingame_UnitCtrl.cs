@@ -4,6 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+public enum DefenseType
+{
+    cloth,
+    metal,
+    leather
+}
+
+
 public enum AllyMode
 {
     Siege,
@@ -46,7 +55,9 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public int generalSkillCode = 101;
     public int specialSkillCode = 101;
     public UnitType unitType;
+    public DefenseType defenseType;
     public TargetSelectType targetSelectType;
+   
 
 
     [Header("====Status====")]
@@ -164,7 +175,10 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     void Update()
     {
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-        UD_Ingame_GridManager.inst.TileSetPlaceable(this.transform.position);
+        UD_Ingame_GridManager.inst.SetTilePlaceable(this.transform.position);
+
+        //유닛의 현재 위치에 따른 타일 위치 가져오기
+        unitPos = UD_Ingame_GridManager.inst.GetTilePos(this.transform.position);
 
 
         //모델 변경
@@ -351,6 +365,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                 }
             }
+            UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
         }
         #endregion
 
@@ -461,8 +476,9 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                Bow.transform.LookAt(targetEnemy.transform.position);
-                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position);
+                //Bow.transform.LookAt(targetEnemy.transform.position);
+                //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
         }
         else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
@@ -470,6 +486,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if (enemy_isBaseInRange)
             {
                 UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
+                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
             }
             else
             {
@@ -492,8 +509,10 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     {
         modelType = data.modelType;
         maxHP = data.HP;
-        moveSpeed = data.speed;
-        attackPoint = data.atk;
+        moveSpeed = data.moveSpeed;
+        attackPoint = data.attackPoint;
+        critChanceRate = data.critChanceRate;
+
         sightRange = data.sightRange;
         attackRange = data.attackRange;
 
@@ -501,20 +520,27 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         specialSkillCode = data.specialSkill;
 
         unitType = data.unitType;
+        defenseType = data.defenseType;
+        targetSelectType = data.targetSelectType;
     }
 
     public void EnemyInit(EnemySpawnData data)
     {
         modelType = data.modelType;
         maxHP = data.HP;
-        moveSpeed = data.speed;
-        attackPoint = data.atk;
+        moveSpeed = data.moveSpeed;
+        attackPoint = data.attackPoint;
+        critChanceRate = data.critChanceRate;
+
         sightRange = data.sightRange;
         attackRange = data.attackRange;
+
         generalSkillCode = data.generalSkill;
         specialSkillCode = data.specialSkill;
 
-        unitType = data.enemyType;
+        unitType = data.unitType;
+        defenseType = data.defenseType;
+        targetSelectType = data.targetSelectType;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -523,19 +549,36 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         //피격 판정
         if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
         {
-            UD_Ingame_ArrowCtrl Arrow = OBJ.GetComponent<UD_Ingame_ArrowCtrl>();
+            UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
 
-            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT) && Arrow.isEnemyAttack)
+            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT) && Attack.isEnemyAttack)
             {
                 //Debug.Log(this.gameObject.name + " attack hit!");
-                this.HP -= Arrow.Atk;
+                this.HP -= Attack.Atk;
                 Destroy(OBJ);
             }
-            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY) && !Arrow.isEnemyAttack)
+            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY) && !Attack.isEnemyAttack)
             {
                 //Debug.Log(this.gameObject.name + " attack hit!");
-                this.HP -= Arrow.Atk;
-                Destroy(OBJ);
+
+                if (Attack.Type == AttackType.Magic)
+                {
+
+                }
+                else
+                {
+                    ReceivePhysicalDamage(Attack, Attack.Atk, Attack.CritPercent, Attack.Type);
+                    if (Attack.MethodType == AttackMethod.Trap)
+                    {
+                        Destroy(OBJ);
+                        //GameObject.FindObjectOfType<UD_Ingame_GridManager>().SetTilePlaceable( , true);
+                    }
+                    else
+                    {
+                        this.HP -= Attack.Atk;
+                        Destroy(OBJ);
+                    }
+                }
             }
         }
     }
@@ -559,6 +602,85 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 Enemy_State.fsm.ChangeState(EnemyState.Idle);
             }
 
+        }
+
+    }
+
+    void ReceivePhysicalDamage(UD_Ingame_AttackCtrl AtkObj, int Damage, float Crit, AttackType attackType)
+    {
+        if (defenseType == DefenseType.cloth)
+        {
+            if (attackType == AttackType.Slash)
+            {
+                Crit = Crit + 30;
+                Damage = Damage + (Damage / 100 * 40);
+            }
+            else if (attackType == AttackType.Pierce)
+            {
+                Crit = Crit - 30;
+                Damage = Damage - (Damage / 100 * 30);
+            }
+            else if (attackType == AttackType.Crush)
+            {
+                Crit = Crit + 0;
+                Damage = Damage + 0;
+            }
+        }
+        else if (defenseType == DefenseType.leather)
+        {
+            if (attackType == AttackType.Slash)
+            {
+                Crit = Crit + 0;
+                Damage = Damage + 0;
+            }
+            else if (attackType == AttackType.Pierce)
+            {
+                Crit = Crit + 30;
+                Damage = Damage + (Damage / 100 * 40);
+            }
+            else if (attackType == AttackType.Crush)
+            {
+                Crit = Crit - 30;
+                Damage = Damage - (Damage / 100 * 30);
+            }
+        }
+        else if (defenseType == DefenseType.metal)
+        {
+            if (attackType == AttackType.Slash)
+            {
+                Crit = Crit - 30;
+                Damage = Damage - (Damage / 100 * 30);
+            }
+            else if (attackType == AttackType.Pierce)
+            {
+                Crit = Crit + 0;
+                Damage = Damage + 0;
+            }
+            else if (attackType == AttackType.Crush)
+            {
+                Crit = Crit + 30;
+                Damage = Damage + (Damage / 100 * 40);
+            }
+        }
+
+        if (Damage <= 0)
+        {
+            Damage = 0;
+        }
+
+        if (Crit <= 0)
+        {
+            Crit = 0;
+        }
+        else if (Crit >= 100)
+        {
+            Crit = 100;
+        }
+
+        this.HP -= Damage;
+        if (Random.Range(0, 100) <= Crit)
+        {
+            Debug.Log("Critical Hit!");
         }
 
     }

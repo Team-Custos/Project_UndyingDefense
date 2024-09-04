@@ -400,8 +400,8 @@ MonoBehaviour:
   curLevel: 1
   HP: 1
   maxHP: 1
-  moveSpeed: 0
-  attackSpeed: 0
+  moveSpeed: 3.5
+  attackSpeed: 1
   mental: 1
   sightRange: 5
   attackRange: 3
@@ -410,6 +410,7 @@ MonoBehaviour:
   generalSkillCode: 101
   specialSkillCode: 101
   unitType: 0
+  defenseType: 0
   targetSelectType: 0
   Ally_Mode: 0
   unitPos: {x: 0, y: 0}
@@ -423,7 +424,7 @@ MonoBehaviour:
   Selected_Particle: {fileID: 7366631472429168028}
   isSelected: 0
   weaponCooldown: 1
-  skillCooldown: 0
+  skillCooldown: 3
   targetBase: {fileID: 0}
   moveTargetBasePos: {x: 0, y: 0, z: 0}
   moveTargetPos: {x: 0, y: 0, z: 0}
@@ -682,8 +683,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ade45e10dea540893707ad93ea072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetCellidx: 
   Bow: {fileID: 803691724125410477}
   Sword: {fileID: 2506970858598283249}
+  Trap: {fileID: 3424956440323876401, guid: 4c257a9da9840d14780eb504ec49bdc0, type: 3}
   UnitCtrl: {fileID: -2917136115213169904}
 --- !u!1 &8392021169629693780
 GameObject:
