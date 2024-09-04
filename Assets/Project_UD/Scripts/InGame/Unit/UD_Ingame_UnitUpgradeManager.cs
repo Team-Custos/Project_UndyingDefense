@@ -6,32 +6,13 @@ using static UD_UnitDataManager;
 
 public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class UnitUpgrade
-    {
-        public string CurrentUnitName;
-        public string UpgradeOption1; 
-        public string UpgradeOption2; 
-
-        public UnitUpgrade(string currentUnit, string option1, string option2)
-        {
-            CurrentUnitName = currentUnit;
-            UpgradeOption1 = option1;
-            UpgradeOption2 = option2;
-        }
-    }
-
-
     private UD_Ingame_UIManager uiManager; // UI와의 상호작용을 위해
-    private Dictionary<string, UnitUpgrade> upgradeTree = new Dictionary<string, UnitUpgrade>();
 
 
     // Start is called before the first frame update
     void Start()
     {
         uiManager = UD_Ingame_UIManager.instance;
-
-
     }
 
     // Update is called once per frame

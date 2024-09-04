@@ -25,6 +25,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public GameObject unitInfoPanel;
     public Image unitInfoImage;
     public Image levelImage;
+    public Text levelText;
     public Text nameText;
     public Image gSkillImage;
     public Text gSkillText;
@@ -289,6 +290,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
             return;
         }
 
+        levelText.text = unitData.Level.ToString() + "티어" ;
         nameText.text = unitData.Name; 
         gSkillText.text = unitData.g_SkillName; 
         sSkillText.text = unitData.s_SkillName; 
@@ -571,8 +573,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
                 rectTransform.sizeDelta = new Vector2(1, 1);
 
-                rectTransform.position = unit.transform.position + new Vector3(0, 2.0f, 0);
-                rectTransform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+                rectTransform.position = unit.transform.position + new Vector3(0, 3.0f, 0);
+                rectTransform.rotation = Quaternion.Euler(new Vector3(60, 0, 0));
                 //rectTransform.rotation = Quaternion.identity;
             }
         }
