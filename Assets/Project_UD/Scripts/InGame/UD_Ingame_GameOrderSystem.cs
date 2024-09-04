@@ -76,14 +76,25 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 }
                 else if (GridTile.currentPlacedUnit == null)
                 {
-                    UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
-                    foreach (var tile in allTiles)
-                    {
-                        tile.Selected = false;
-                    }
+                    GAMEMANAGER.AllTileSelectOff();
                     GridTile.Selected = !GridTile.Selected;
-                }
 
+                    if (selectedUnit != null)
+                    {
+                        UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
+                        AllyUnit.isSelected = false;
+
+                        if (AllyUnit.Ally_Mode == AllyMode.Free)
+                        {
+                            AllyUnit.haveToMovePosition = true;
+                            AllyUnit.moveTargetPos = GridTile.transform.position;
+                        }
+
+                        selectedUnit = null;
+                    }
+
+                }
+				
                 if (selectedUnit != null)
                 {
                     Vector3 GridTilePos = GridTile.transform.position;
@@ -184,4 +195,6 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
 
     }
+
+    
 }

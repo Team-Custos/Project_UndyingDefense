@@ -123,19 +123,6 @@ public class UD_Ingame_UnitState : MonoBehaviour
             }
         }
 
-
-        //navAgent.SetDestination(UnitCtrl.moveTargetPos);
-        //navAgent.stoppingDistance = 0;
-
-        //float targetMoveDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.moveTargetPos);
-
-        //if (targetMoveDistance_Cur <= 0.1f)
-        //{
-        //    UnitCtrl.moveTargetPos = transform.position;
-
-        //    fsm.ChangeState(UnitState.Search);
-        //    return;
-        //}
     }
 
     void Move_Exit()

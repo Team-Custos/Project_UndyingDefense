@@ -28,7 +28,13 @@ public class UD_Ingame_GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            UnitSetMode = !UnitSetMode;
+            EnemyUnitSetMode = !EnemyUnitSetMode;
+        }
+
         if (UnitSetMode && AllyUnitSetMode)
         {
             // 타일 색상 업데이트
@@ -49,6 +55,24 @@ public class UD_Ingame_GameManager : MonoBehaviour
         }
 
 
+    }
+
+    public void AllUnitSelectOff()
+    {
+        UD_Ingame_UnitCtrl[] allUnit = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+        foreach (var unit in allUnit)
+        {
+            unit.isSelected = false;
+        }
+    }
+
+    public void AllTileSelectOff()
+    {
+        UD_Ingame_GridTile[] allTiles = FindObjectsOfType<UD_Ingame_GridTile>();
+        foreach (var tile in allTiles)
+        {
+            tile.Selected = false;
+        }
     }
 
     

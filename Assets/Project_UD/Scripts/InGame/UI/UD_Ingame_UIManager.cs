@@ -257,7 +257,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
 
         // UI 유닛 따라가기
-        if(selectedUnit != null && currentSelectedUnitOptionBox != null)
+        if (selectedUnit != null && currentSelectedUnitOptionBox != null)
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
             screenPos.x += 140;
