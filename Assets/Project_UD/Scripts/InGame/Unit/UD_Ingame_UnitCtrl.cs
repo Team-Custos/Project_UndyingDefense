@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using static UD_UnitDataManager;
 
 public enum AllyMode
 {
@@ -34,6 +35,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
 
     [Header("====Data====")]
+    public string unitName;
     public int modelType;
     public int curLevel = 1;
     public int HP;
@@ -49,6 +51,13 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public int specialSkillCode = 101;
     public UnitType unitType;
     public TargetSelectType targetSelectType;
+    // LoPol 추가
+    public string ID;
+    public string g_SkillName;
+    public string s_SkillName;
+    public int cost;
+    public string DefenseType;
+
 
 
     [Header("====Status====")]
@@ -92,14 +101,14 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
 
     void OnMouseDown()
     {
         if (UD_Ingame_UIManager.instance != null)
         {
-            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this);
         }
+
     }
 
     private void Awake()
@@ -141,6 +150,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         moveTargetPos = this.transform.position;
 
         unitStateChangeTime = 0.0f;
+
     }
 
 
@@ -176,6 +186,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         #region 아군 제어
         if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
         {
+            
             if (Ally_Mode == AllyMode.Free)
             {
                 NavObstacle.enabled = false;
@@ -214,7 +225,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
-                    UD_Ingame_GameManager.inst.AllUnitSelectOff();
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
@@ -255,17 +265,12 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             {
                 SearchEnemy();
 
-                if (targetEnemy != null)
-                {
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
-                    //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
-                }
-
                 if (targetEnemy != null && !haveToMovePosition)
                 {
                     if (isEnemyInSight)
                     {
                         haveToMovePosition = false;
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
                         if (isEnemyInRange)
                         {
                             moveTargetPos = this.transform.position;
@@ -289,14 +294,12 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
                 if (haveToMovePosition)
                 {
-                    Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
-
-                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x,moveTargetPos.z)) >= 0.1f)
+                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.12f)
                     {
                         Ally_State.fsm.ChangeState(UnitState.Move);
                     }
                     else
-                    { 
+                    {
                         haveToMovePosition = false;
                         Ally_State.fsm.ChangeState(UnitState.Idle);
                     }
@@ -346,8 +349,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else // 성 공격
             {
-                moveTargetPos = moveTargetBasePos;
-
+                moveTargetPos = moveTargetBasePos; 
+                
                 //NavAgent.SetDestination(new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z)); 
                 if (enemy_isBaseInRange)
                 {
@@ -389,7 +392,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj =
+            GameObject TargetObj = 
                 sightRangeSensor.NearestObjectSearch(attackRange, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
@@ -421,7 +424,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-
+                
                 Bow.transform.LookAt(targetEnemy.transform.position);
                 Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
@@ -449,20 +452,62 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void UnitInit(UnitSpawnData data)
+    public void UnitInit(UD_UnitDataManager.UnitData unitData)
     {
-        modelType = data.modelType;
-        maxHP = data.HP;
-        moveSpeed = data.speed;
-        attackPoint = data.atk;
-        sightRange = data.sightRange;
-        attackRange = data.attackRange;
+        if (unitData.ID == "1")
+        {
+            unitType = UnitType.Warrior;
+        }
+        else if (unitData.ID == "2")
+        {
+            unitType = UnitType.Archer;
+        }
+        else
+        {
+            unitType = UnitType.Warrior;
+        }
 
-        generalSkillCode = data.generalSkill;
-        specialSkillCode = data.specialSkill;
+        ID = unitData.ID;
+        curLevel = unitData.Level;
+        unitName = unitData.Name;
+        modelType = unitData.Number;
+        HP = unitData.Hp;
+        maxHP = unitData.Hp;
+        moveSpeed = unitData.MoveSpeed;
+        attackSpeed = unitData.AttackSpeed;
+        sightRange = unitData.SightRange;
+        attackRange = unitData.AttackRange;
+        DefenseType = unitData.DefenseType;
+        critChanceRate = unitData.CritRate;
+        g_SkillName = unitData.g_SkillName;
+        s_SkillName = unitData.s_SkillName;
+        cost = unitData.Cost;
 
-        unitType = data.unitType;
     }
+
+    //public void UnitInit(UnitSpawnData data)
+    //{
+    //    modelType = data.modelType;
+    //    maxHP = data.HP;
+    //    moveSpeed = data.speed;
+    //    attackPoint = data.atk;
+    //    sightRange = data.sightRange;
+    //    attackRange = data.attackRange;
+
+    //    generalSkillCode = data.generalSkill;
+    //    specialSkillCode = data.specialSkill;
+
+    //    unitType = data.unitType;
+
+    //    //LoPol 추가
+    //    unitName = data.unitName;
+    //    DefenseType = data.defenseType;
+    //    critChanceRate = data.critRate;
+    //    g_SkillName = data.gSkillName;
+    //    s_SkillName = data.sSkillName;
+    //    cost = data.cost;
+    //    HP = maxHP;
+    //}
 
     public void EnemyInit(EnemySpawnData data)
     {
@@ -521,7 +566,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
 
         }
-
+        
     }
 
     void MoveUnitToNearestTile()
@@ -557,7 +602,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if (closestTile != null )
             {
                 transform.position = closestTile.transform.position;
-                Debug.Log("fdfefe");
                 closestTile.SetTileOccupied(true);
                 closestTile.currentPlacedUnit = this.gameObject;
                 foundTile = true; 
@@ -570,7 +614,4 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
 
     }
-
-
- }
 }

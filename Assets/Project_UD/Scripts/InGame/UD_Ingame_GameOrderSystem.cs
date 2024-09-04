@@ -42,9 +42,14 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
             //타일 클릭했을때
             if (clickedObj.tag == UD_CONSTANT.TAG_TILE)
             {
-                if (UD_Ingame_UIManager.instance.currentUnitStateChangeBox != null)
+                if (UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
                     UD_Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
+
+                if (UD_Ingame_UIManager.instance.currentUpgradeMenu != null)
+                {
+                    UD_Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
 
                 UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
@@ -54,7 +59,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     if (GAMEMANAGER.AllyUnitSetMode)//아군 배치
                     {
                         UD_Ingame_UnitSpawnManager SpawnMgr = UD_Ingame_UnitSpawnManager.inst;
-                        GridTile.currentPlacedUnit = 
+                        GridTile.currentPlacedUnit =
                             SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
                         GridTile.isPlaceable = false;
                         UD_Ingame_GameManager.inst.UnitSetMode = false;
@@ -63,7 +68,7 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     else if (GAMEMANAGER.EnemyUnitSetMode)// 적 배치
                     {
                         UD_Ingame_EnemySpawner SpawnMgr = UD_Ingame_EnemySpawner.inst;
-                        GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1,GridTile.transform.position.x, GridTile.transform.position.z);
+                        GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1, GridTile.transform.position.x, GridTile.transform.position.z);
                         //GridTile.isPlaceable = false;
                         UD_Ingame_GameManager.inst.UnitSetMode = false;
                         UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
@@ -121,13 +126,13 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 {
                     selectedUnit = AllyUnit.gameObject;
 
-                    if (UD_Ingame_UIManager.instance.currentUnitStateChangeBox != null)
+                    if (UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
-                        Destroy(UD_Ingame_UIManager.instance.currentUnitStateChangeBox);
-                        UD_Ingame_UIManager.instance.currentUnitStateChangeBox = null;
+                        Destroy(UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox);
+                        UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
 
-                    UD_Ingame_UIManager.instance.CreateUnitStateChangeBox(hit.point, AllyUnit);
+                    UD_Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
 
                 }
                 else

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 
 public class UD_ExcelFileReader : MonoBehaviour
 {
 
-    public string filePath1 = "240724 UD_charData";
+    public string filePath = "240820 UD_charData";
     public UD_UnitDataManager unitDataManager;
 
     // Update is called once per frame
@@ -17,7 +18,7 @@ public class UD_ExcelFileReader : MonoBehaviour
             unitDataManager = GetComponent<UD_UnitDataManager>();
         }
 
-        List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath1);
+        List<UD_UnitDataManager.UnitData> unitDatas = ReadCSV(filePath);
         unitDataManager.SetUnitData(unitDatas);
     }
 
@@ -37,8 +38,8 @@ public class UD_ExcelFileReader : MonoBehaviour
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
 
-        //Debug.Log(csvData.text);
-
+        // 첫 두줄 안읽음
+        reader.ReadLine();
         reader.ReadLine();
 
         while (!endOfFile)
@@ -52,39 +53,63 @@ public class UD_ExcelFileReader : MonoBehaviour
 
             var dataValues = dataString.Split(',');
 
-            if (dataValues.Length >= 14)
+            if (dataValues.Length >= 19)
             {
-                string name = dataValues[1];
-                string type = dataValues[0];
-                if (!int.TryParse(dataValues[2], out int tier))
+                if (!int.TryParse(dataValues[0], out int number))
                 {
-                    tier = 0;
+                    number = 0;
                 }
-                string weapon = dataValues[3];
-                string skillType = dataValues[4];
-                string skill = dataValues[5];
-                string description = dataValues[6];
-                string attackType = dataValues[7];
-                if (!int.TryParse(dataValues[8], out int damage))
+                string id = dataValues[1];
+                string name = dataValues[2];
+                if (!int.TryParse(dataValues[3], out int level))
                 {
-                    damage = 0;
+                    level = 0;
                 }
-                if (!int.TryParse(dataValues[9], out int targetCount))
+                if (!int.TryParse(dataValues[4], out int cost))
                 {
-                    targetCount = 0;
+                    cost = 0;
                 }
-                string hitShape = dataValues[10];
-                if (!int.TryParse(dataValues[11], out int critRate))
+                if (!int.TryParse(dataValues[5], out int hp))
+                {
+                    hp = 0;
+                }
+                if (!int.TryParse(dataValues[6], out int attackSpeed))
+                {
+                    attackSpeed = 0;
+                }
+                string defenseType = dataValues[7];
+                if (!float.TryParse(dataValues[8],out float globalTime))
+                {
+                    globalTime = 0;
+                }
+                if (!int.TryParse(dataValues[9], out int mental))
+                {
+                    mental = 0;
+                }
+                if (!int.TryParse(dataValues[10], out int moveSpeed))
+                {
+                    moveSpeed = 0;
+                }
+                if (!int.TryParse(dataValues[11], out int sightRange))
+                {
+                    sightRange = 0;
+                }
+                if (!int.TryParse(dataValues[12], out int attackRange))
+                {
+                    attackRange = 0;
+                }
+                string targetSelectType = dataValues[13];
+                if (!int.TryParse(dataValues[14], out int critRate))
                 {
                     critRate = 0;
                 }
-                string critEffect1 = dataValues[12];
-                string critEffect2 = dataValues[13];
+                string g_skill = dataValues[15];
+                string g_skillName = dataValues[16];
+                string s_skill = dataValues[17];
+                string s_skillName = dataValues[18];
 
-
-
-                UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(
-                    name, type, tier, weapon, skillType, skill, description, attackType, damage, targetCount, hitShape, critRate, critEffect1, critEffect2);
+                UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(number, id, name, level, cost, hp, attackSpeed, defenseType, 
+                    globalTime, mental, moveSpeed, sightRange, attackRange, targetSelectType, critRate, g_skill, g_skillName, s_skill, s_skillName);
                 unitDatas.Add(unitData);
             }
         }

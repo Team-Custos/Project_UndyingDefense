@@ -24,42 +24,53 @@ public class UD_UnitDataManager : MonoBehaviour
 
     public class UnitData
     {
+        public int Number;
+        public string ID;
         public string Name;
-        public string Type;
-        public int Tier;
-        public string Weapon;
-        public string SkillType;
-        public string Skill;
-        public string Description;
-        public string AttackType;
-        public int Damage;
-        public int TargetCount;
-        public string HitShape;
+        public int Level;
+        public int Cost;
+        public int Hp;
+        public int AttackSpeed;
+        public string DefenseType;
+        public float GlobalTime;
+        public int Mental;
+        public int MoveSpeed;
+        public int SightRange;
+        public int AttackRange;
+        public string TargetSelectType;
         public int CritRate;
-        public string CritEffect1;
-        public string CritEffect2;
+        public string g_Skil;
+        public string g_SkillName;
+        public string s_Skill;
+        public string s_SkillName;
 
-        public UnitData(string name, string type, int tier, string weapon, string skillType, string skill, string description, string attackType, int damage, int targetCount, string hitShape, int critRate, string critEffect1, string critEffect2)
+        public UnitData(int number, string id, string name, int level, int cost, int hp, int attackSpeed, string defenseType, float globalTime, int mental, int moveSpeed,
+                        int sightRange, int attackRange, string targetSelectType, int critRate, string g_skill, string g_skillName, string s_skill, string s_skillName)
         {
+            Number = number;
+            ID = id;
             Name = name;
-            Type = type;
-            Tier = tier;
-            Weapon = weapon;
-            SkillType = skillType;
-            Skill = skill;
-            Description = description;
-            AttackType = attackType;
-            Damage = damage;
-            TargetCount = targetCount;
-            HitShape = hitShape;
+            Level = level;
+            Cost = cost;
+            Hp = hp;
+            AttackSpeed = attackSpeed;
+            DefenseType = defenseType;
+            GlobalTime = globalTime;
+            Mental = mental;
+            MoveSpeed = moveSpeed;
+            SightRange = sightRange;
+            AttackRange = attackRange;
+            TargetSelectType = targetSelectType;
             CritRate = critRate;
-            CritEffect1 = critEffect1;
-            CritEffect2 = critEffect2;
+            g_Skil = g_skill;
+            g_SkillName = g_skillName;
+            s_Skill = s_skill;
+            s_SkillName = s_skillName;
         }
     }
 
 
-    private Dictionary<string, UnitData> unitDataDictionary = new Dictionary<string, UnitData>();
+    public Dictionary<string, UnitData> unitDataDictionary = new Dictionary<string, UnitData>();
 
 
     void Start()
@@ -71,16 +82,17 @@ public class UD_UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
-            unitDataDictionary[unitData.Name] = unitData;
+            unitDataDictionary[unitData.ID] = unitData;
         }
 
-        ShowUnitData();
+        //ShowUnitData();
     }
 
 
-    public UnitData GetUnitData(string unitName)
+    public UnitData GetUnitData(string unitID)
     {
-        if (unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
+
+        if (unitDataDictionary.TryGetValue(unitID, out UnitData unitData))
         {
             return unitData;
         }
@@ -91,17 +103,23 @@ public class UD_UnitDataManager : MonoBehaviour
         }
     }
 
+    public bool DoesUnitExist(string unitId)
+    {
+        return unitDataDictionary.ContainsKey(unitId);
+    }
 
     public void ShowUnitData()
     {
         foreach (var unitdata in unitDataDictionary)
         {
-            var unitName = unitdata.Key;
+            var unitID = unitdata.Key;
             var unitData = unitdata.Value;
-            Debug.Log($"Name: {unitName}, Class: {unitData.Type}, Tier: {unitData.Tier}, Weapon: {unitData.Weapon}, SkillType: {unitData.SkillType}," +
-                      $" Skill: {unitData.Skill}, Description: {unitData.Description}, AttackType: {unitData.AttackType}, Damage: {unitData.Damage}, " +
-                      $"TargetCount: {unitData.TargetCount}, HitShape: {unitData.HitShape}, CritRate: {unitData.CritRate}, CritEffect1: {unitData.CritEffect1}," +
-                      $" CritEffect2: {unitData.CritEffect2}");
+            Debug.Log($"ID : {unitID}, Number : {unitData.Number}, Name : {unitData.Name}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
+                      $"HP : {unitData.Hp}, AttackSpeed : {unitData.AttackSpeed}, DefenseType : {unitData.DefenseType}, GlobalTime : {unitData.GlobalTime} " +
+                      $"Mental : {unitData.Mental}, MoveSpeed : {unitData.MoveSpeed}, SightRange : {unitData.SightRange},AttackRange : {unitData.AttackRange} " +
+                      $"TargetSelectType : {unitData.TargetSelectType}, crtiRate : {unitData.CritRate}, g_Skill : {unitData.g_Skil}, g_SkillName : {unitData.g_SkillName}" +
+                      $"s_Skill : {unitData.s_Skill}, s_SkillName : {unitData.s_SkillName}");
+
         }
 
     }
