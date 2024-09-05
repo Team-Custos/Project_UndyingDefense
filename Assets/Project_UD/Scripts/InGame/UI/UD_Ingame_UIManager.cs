@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEngine.UI.CanvasScaler;
 using static UD_UnitDataManager;
+using UnityEngine.Rendering.Universal;
 
 public class UD_Ingame_UIManager : MonoBehaviour
 {
@@ -95,6 +96,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     private AllyMode allyMode;
 
     private UD_Ingame_UnitCtrl selectedUnit;
+    public GameObject unit;
 
 
     Camera mainCamera;
@@ -244,8 +246,6 @@ public class UD_Ingame_UIManager : MonoBehaviour
             }
         }
         
-        // 이동 UI (재 구현 예정)
-        UpdateMoveImagesForAllUnits();
 
         if (selectedUnit != null)
         {
@@ -265,6 +265,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
+
+        //LookUIMainCamera(unit);
     }
 
 
@@ -277,9 +279,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
 
         string unitID = selectedUnit.ID;
-        Debug.Log(unitID);
         string unitName = selectedUnit.unitName;
-        Debug.Log(unitName);
 
         UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitID);
 
@@ -300,7 +300,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         defeneTypeText.text = unitData.DefenseType; 
 
-        Debug.Log($"'{unitName}'업데이트 성공");
+       // Debug.Log($"'{unitName}'업데이트 성공");
 
     }
 
@@ -517,37 +517,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         }
     }
 
-    public void ShowMoveImage(bool show)
-    {
-        if (unitMoveUI != null)
-        {
-            unitMoveUI.SetActive(show);
-        }
-    }
-
-    public void UpdateMoveImagesForAllUnits()
-    {
-        UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
-
-        foreach (UD_Ingame_UnitCtrl unitCtrl in allUnits)
-        {
-
-            if (unitCtrl.CompareTag("Unit"))
-            {
-                if (unitCtrl.Ally_State.fsm.State == UnitState.Move)// ||
-                    //unitCtrl.Ally_State.fsm.State == UnitState.Chase)
-                {
-                    ShowMoveImage(unitCtrl.gameObject, true);
-                }
-                else
-                {
-                    ShowMoveImage(unitCtrl.gameObject, false);
-                }
-            }
-        }
-    }
-
-    public void ShowMoveImage(GameObject unit, bool show)
+    public void ShowMoveUI(GameObject unit, bool show)
     {
         if (unit == null)
         {
@@ -573,13 +543,19 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
                 rectTransform.sizeDelta = new Vector2(1, 1);
 
-                rectTransform.position = unit.transform.position + new Vector3(0, 3.0f, 0);
-                rectTransform.rotation = Quaternion.Euler(new Vector3(60, 0, 0));
+                //rectTransform.position = unit.transform.position + new Vector3(0, 3.0f, 0);
+                //rectTransform.rotation = Quaternion.Euler(new Vector3(60, 0, 0));
                 //rectTransform.rotation = Quaternion.identity;
             }
         }
+
+        if (unitMoveUI != null)
+        {
+            unitMoveUI.SetActive(show);
+        }
     }
-    
+
+
 
     //void ShowWaveResultPanel()
     //{
@@ -597,6 +573,19 @@ public class UD_Ingame_UIManager : MonoBehaviour
     //        }
 
 
+    //    }
+    //}
+
+    //void LookUIMainCamera(GameObject unit)
+    //{
+    //    Transform unitCanvas = unit.transform.Find("Canvas");
+
+    //    if (unitCanvas != null)
+    //    {
+    //        // 카메라의 회전과 상관없이 캔버스가 카메라를 항상 바라보게 함
+    //        unitCanvas.rotation = Quaternion.LookRotation(unitCanvas.position - mainCamera.transform.position);
+
+    //        Debug.Log("Canvas is now facing the camera.");
     //    }
     //}
 }
