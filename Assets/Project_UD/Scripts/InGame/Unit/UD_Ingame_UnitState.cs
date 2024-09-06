@@ -93,19 +93,19 @@ public class UD_Ingame_UnitState : MonoBehaviour
     void Attack_Exit()
     {
         Debug.Log("Attack_Exit");
-        UnitCtrl.targetEnemy = null;
-        UnitCtrl.isEnemyInRange = false;
+        //UnitCtrl.targetEnemy = null;
+        //UnitCtrl.isEnemyInRange = false;
     }
     #endregion
 
     #region Move State
     void Move_Enter()
     {
-       // Debug.Log("Move_Enter");
+        Debug.Log("Move_Enter");
+        
         navAgent.isStopped = false;
-        //UnitCtrl.isEnemyInRange = false;
-        //UnitCtrl.isEnemyInSight = false;
-        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
+        UnitCtrl.isEnemyInRange = false;
+        UnitCtrl.isEnemyInSight = false;
     }
 
     void Move_Update()
@@ -131,7 +131,8 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
+       // UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
+
     }
     #endregion
 
@@ -145,17 +146,21 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         //Debug.Log("Chase_Update");
 
-        if (UnitCtrl.targetEnemy != null)
+        float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
+
+        if (targetEnemyDistance_Cur <= UnitCtrl.attackRange)
         {
-            float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
-
+            UnitCtrl.isEnemyInRange = true;
+            navAgent.SetDestination(UnitCtrl.transform.position);
+        }
+        else
+        {
             navAgent.SetDestination(UnitCtrl.targetEnemy.transform.position);
+        }
 
-            if (targetEnemyDistance_Cur <= UnitCtrl.attackRange)
-            {
-                UnitCtrl.isEnemyInRange = true;
-                navAgent.SetDestination(UnitCtrl.transform.position);
-            }
+        if (UnitCtrl.targetEnemy != null && UnitCtrl.Ally_Mode == AllyMode.Free)
+        {
+            
         }
     }
 
@@ -165,7 +170,6 @@ public class UD_Ingame_UnitState : MonoBehaviour
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.SetDestination(transform.position);
-            navAgent.isStopped = true;
         }
     }
 

@@ -1,8 +1,11 @@
 using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 
 public class UD_Ingame_GameOrderSystem : MonoBehaviour
 {
@@ -51,17 +54,16 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 {
                     UD_Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
-
-                UD_Ingame_GridTile GridTile = hit.collider.GetComponent<UD_Ingame_GridTile>();
+                UD_Ingame_GridTile GridTile = clickedObj.GetComponent<UD_Ingame_GridTile>();
+                //Debug.Log("클릭한 그리드 좌표 : " + GridTile.GridPos + ", 배치 가능 여부 : " + GridTile.isPlaceable);
 
                 if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
                     if (GAMEMANAGER.AllyUnitSetMode)//아군 배치
                     {
                         UD_Ingame_UnitSpawnManager SpawnMgr = UD_Ingame_UnitSpawnManager.inst;
-                        GridTile.currentPlacedUnit =
-                            SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
-                        GridTile.isPlaceable = false;
+                        GridTile.currentPlacedUnit = SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
+                        //GridTile.isPlaceable = false;
                         UD_Ingame_GameManager.inst.UnitSetMode = false;
                         UD_Ingame_GameManager.inst.AllyUnitSetMode = false;
                     }
@@ -86,15 +88,15 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
                         if (AllyUnit.Ally_Mode == AllyMode.Free)
                         {
-                            AllyUnit.haveToMovePosition = true;
                             AllyUnit.moveTargetPos = GridTile.transform.position;
+                            AllyUnit.targetEnemy = null;
+                            AllyUnit.haveToMovePosition = true;
                         }
 
                         selectedUnit = null;
                     }
 
-                }
-				
+                }	
                 if (selectedUnit != null)
                 {
                     Vector3 GridTilePos = GridTile.transform.position;

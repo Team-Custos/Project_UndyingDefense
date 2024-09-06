@@ -7,6 +7,8 @@ public class UD_Ingame_GridTile : MonoBehaviour
 {
     UD_Ingame_GameManager GAMEMANAGER;
 
+    UD_Ingame_GridManager GridMgr;
+
     public bool Selected = false;
     public Vector2 GridPos = Vector2.zero;
 
@@ -39,20 +41,26 @@ public class UD_Ingame_GridTile : MonoBehaviour
         colorUnitSiege = Color.yellow;
 
         GAMEMANAGER = UD_Ingame_GameManager.inst;
+        GridMgr = UD_Ingame_GridManager.inst;
+
         MeshR = GetComponent<MeshRenderer>();
         Selected = false;
-
-        GridPos = new Vector2((int)(transform.position.x / 2), (int)(transform.position.z / 2));
 
         this.gameObject.name = this.name + " " + GridPos.x + " " + GridPos.y;
 
         UpdateTileColor();
     }
 
+    void UpdateTilePlaceable()
+    {
+        //Debug.Log(GridPos + " " + GridMgr._tiles[GridPos]);
+        isPlaceable = GridMgr._tiles[GridPos];
+    }
+
     void Update()
     {
-        CheckUnitPresence();
-        UpdateTileColor();
+        UpdateTilePlaceable();
+		UpdateTileColor();
     }
 
     private void OnMouseOver()
@@ -81,6 +89,8 @@ public class UD_Ingame_GridTile : MonoBehaviour
             MeshR.material.color = colorAvailable;
         }
     }
+
+
 
     public void SetPlaceable(bool placeable)
     {
@@ -162,32 +172,6 @@ public class UD_Ingame_GridTile : MonoBehaviour
         showPlacementColors = show;
     }
 
-    void CheckUnitPresence()
-    {
-        if (currentPlacedUnit != null)
-        {
-            Vector3 unitPos = currentPlacedUnit.transform.position;
-            if (Mathf.Abs(unitPos.x - transform.position.x) > 0.1f || Mathf.Abs(unitPos.z - transform.position.z) > 0.1f)
-            {
-                currentPlacedUnit = null;
-                ResetTile();
-            }
-        }
-        else
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f);
-            foreach (var collider in colliders)
-            {
-                UD_Ingame_UnitCtrl unitCtrl = collider.GetComponent<UD_Ingame_UnitCtrl>();
-                if (unitCtrl != null)
-                {
-                    currentPlacedUnit = unitCtrl.gameObject;
-                    SetTileOccupied(true);
-                    break;
-                }
-            }
-        }
-    }
 
 
     

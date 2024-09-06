@@ -21,21 +21,28 @@ public class UnitSpawnData
     public int modelType;
     public float spawnTime;
     public int HP;
-    public float speed;
-    public int atk;
+    public float moveSpeed;
+    public int attackPoint;
+    public float attackSpeed;
+    public float skillCooldown;
+    public int critChanceRate;
+
     public float sightRange;
     public float attackRange;
 
     public int generalSkill;
     public int specialSkill;
     public UnitType unitType;
+	public DefenseType defenseType;
+    public TargetSelectType targetSelectType;
 
     // LoPol추가
-    public string unitID;
-    public string unitName;
-    public string defenseType;
-    public int critRate;
-    public string gSkillName;
+    public string unitID; // 나중에 int의 유닛 ID로 처리.
+    public string unitName; 
+    //public string defenseType; //enum으로 처리
+    //public int critRate;
+	//스킬 코드로 처리해야하는가 아님 string으로 처리해야하는가
+    public string gSkillName; 
     public string sSkillName;
     public int cost;
 }
@@ -84,20 +91,19 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     //유닛 소환
     public GameObject UnitSpawn(int unitType,float X, float Y)
     {
-        GameObject Obj = null;
+
+        GameObject Obj;
 
         string unitID = GetUnitIDByType(unitType);
 
       
-         UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
+         //UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
 
 
         Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-        //Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]);
-
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(unitData);
+        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]); //엑셀 데이터는 spawnData쪽으로 불러온뒤 Unit Initial할때 spawnData에서.
 
         return Obj;
     }

@@ -1,4 +1,5 @@
 using MonsterLove.StateMachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,6 +7,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 using static UD_UnitDataManager;
+
+
+public enum DefenseType
+{
+    cloth,
+    metal,
+    leather
+}
+
 
 public enum AllyMode
 {
@@ -21,6 +31,23 @@ public enum TargetSelectType
     Fixed
 }
 
+[Serializable]
+public class Debuff
+{
+    public int debuffTypeCode;  //디버프 코드
+    public bool isStackable;
+    public int debuffStack;
+    public int debuffTime;
+}
+
+[Serializable]
+public class Buff
+{
+    public int buffTypeCode;  //버프 코드
+    public bool isStackable;
+    public int buffStack;
+    public int buffTime;
+}
 
 
 public class UD_Ingame_UnitCtrl : MonoBehaviour
@@ -30,18 +57,21 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public NavMeshObstacle NavObstacle;
     [HideInInspector] public NavMeshAgent NavAgent;
     [HideInInspector] public UD_Ingame_UnitSkillManager UnitSkill;
+   
 
-    MeshRenderer MeshRenderer;
+    UD_Ingame_UnitModelSwapManager ModelSwap;
 
-
+    //Data를 다른 스크립트로 빼는게 좋지 않을까? - 폴라오
     [Header("====Data====")]
     public string unitName;
     public int modelType;
+    int cur_modelType;
     public int curLevel = 1;
     public int HP;
     public int maxHP;
     public float moveSpeed;
-    public float attackSpeed;
+    public float weaponCooldown;
+    public float skillCooldown;
     public int mental = 1;
     public float sightRange = 0;
     public float attackRange = 0;
@@ -50,30 +80,27 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public int generalSkillCode = 101;
     public int specialSkillCode = 101;
     public UnitType unitType;
+    public DefenseType defenseType;
     public TargetSelectType targetSelectType;
+
     // LoPol 추가
     public string ID;
     public string g_SkillName;
     public string s_SkillName;
     public int cost;
-    public string DefenseType;
-
-
+    //public string DefenseType;
 
     [Header("====Status====")]
     public AllyMode Ally_Mode;
 
     public Vector2 unitPos = Vector2.zero;
-    public Color32 colorAlly = Color.blue;
-    public Color32 colorEnemy = Color.red;
 
+    public Transform VisualModel;
     public GameObject Selected_Particle;
     public bool isSelected = false;
 
-    public float weaponCooldown = 0;
-    public float skillCooldown = 0;
-
-    public int[][] debuffs;
+    public Debuff[] debuffInfo;
+    public Buff[] buffInfo;
 
 
 
@@ -102,18 +129,18 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public AllyMode previousAllyMode;
 
 
-    void OnMouseDown()
+        void OnMouseDown()
     {
         if (UD_Ingame_UIManager.instance != null)
         {
-            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this);
+            //UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
         }
-
     }
 
     private void Awake()
     {
-        MeshRenderer = GetComponent<MeshRenderer>();
+        ModelSwap = UD_Ingame_UnitModelSwapManager.inst;
+
         NavAgent = GetComponent<NavMeshAgent>();
         NavObstacle = GetComponent<NavMeshObstacle>();
 
@@ -126,6 +153,15 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
+        {
+            Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+        }
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
+        {
+            Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+        }
+
         SpawnDelay = true;
 
         targetBase = UD_Ingame_GameManager.inst.Base;
@@ -133,7 +169,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         Ally_Mode = AllyMode.Siege;
 
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             if (Ally_Mode == AllyMode.Free)
             {
@@ -149,8 +185,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-        unitStateChangeTime = 0.0f;
-
+        
     }
 
 
@@ -160,9 +195,32 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, attackRange + 0.5f);
     }
 
+
     // Update is called once per frame
     void Update()
     {
+        //유닛의 현재 위치에 따른 타일 배치 가능 설정
+        UD_Ingame_GridManager.inst.SetTilePlaceable(this.transform.position,false,false);
+
+        //유닛의 현재 위치에 따른 타일 위치 가져오기
+        unitPos = UD_Ingame_GridManager.inst.GetTilePos(this.transform.position);
+
+
+        //모델 변경
+        if (modelType != cur_modelType)
+        {
+            Destroy(VisualModel.GetChild(0).gameObject);
+            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
+            {
+                Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
+            {
+                Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+
+            cur_modelType = modelType;
+        }
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
@@ -184,20 +242,17 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
 
         #region 아군 제어
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
-            
+
             if (Ally_Mode == AllyMode.Free)
             {
                 NavObstacle.enabled = false;
                 NavAgent.enabled = true;
-                MeshRenderer.material.color = Color.cyan;
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-                NavObstacle.enabled = true;
-                NavAgent.enabled = false;
-                MeshRenderer.material.color = colorAlly;
+                
             }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
@@ -225,18 +280,41 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
+                    UD_Ingame_GameManager.inst.AllUnitSelectOff();
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
-                        MoveUnitToNearestTile();
+                        
+                        IEnumerator ModeChangeDelayCoroutine()
+                        {
+                            NavAgent.enabled = false;
+                            this.transform.rotation = new Quaternion(0, 0, 0, 0);
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                        StartCoroutine(ModeChangeDelayCoroutine());
+
+                        NavObstacle.enabled = true;
                         SearchEnemy();
                     }
                     else if (previousAllyMode == AllyMode.Siege)
                     {
                         //NavAgent.updatePosition = false;
-                        transform.position = moveTargetPos;
+
+                        NavObstacle.enabled = false;
+                        
+                        IEnumerator ModeChangeDelayCoroutine()
+                        {
+                            yield return new WaitForEndOfFrame();
+                            yield return new WaitForEndOfFrame();
+
+                            NavAgent.enabled = true;
+                        }
+                        StartCoroutine(ModeChangeDelayCoroutine());
+
+                        //NavAgent.Warp(transform.position);
 
                         Ally_Mode = AllyMode.Free;
+                        //NavAgent.updatePosition = true;
                     }
                     unitStateChangeTime = 3;
                 }
@@ -244,6 +322,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
+                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
                 if (targetEnemy == null && !isEnemyInSight)
                 {
                     SearchEnemy();
@@ -263,45 +342,53 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-                SearchEnemy();
-
-                if (targetEnemy != null && !haveToMovePosition)
-                {
-                    if (isEnemyInSight)
-                    {
-                        haveToMovePosition = false;
-                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
-                        if (isEnemyInRange)
-                        {
-                            moveTargetPos = this.transform.position;
-                            Ally_State.fsm.ChangeState(UnitState.Attack);
-                        }
-                        else
-                        {
-                            Ally_State.fsm.ChangeState(UnitState.Chase);
-                        }
-                    }
-                    else
-                    {
-                        Ally_State.fsm.ChangeState(UnitState.Idle);
-                    }
-                }
-                else
-                {
-                    //transform.position = moveTargetPos;
-                    Ally_State.fsm.ChangeState(UnitState.Idle);
-                }
-
+                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
                 if (haveToMovePosition)
                 {
-                    if (Vector3.Distance(transform.position, moveTargetPos) > 0.12f)
+                    targetEnemy = null;
+                    Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
+
+                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)
                     {
                         Ally_State.fsm.ChangeState(UnitState.Move);
                     }
                     else
                     {
                         haveToMovePosition = false;
+                        this.transform.position = moveTargetPos;
                         Ally_State.fsm.ChangeState(UnitState.Idle);
+                    }
+                }
+                else
+                {
+                    SearchEnemy();
+
+                    if (targetEnemy != null)
+                    {
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= attackRange);
+                        //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
+                    }
+
+                    if (targetEnemy != null && !haveToMovePosition)
+                    {
+                        if (isEnemyInSight)
+                        {
+                            haveToMovePosition = false;
+
+                            if (isEnemyInRange)
+                            {
+                                moveTargetPos = this.transform.position;
+                                Ally_State.fsm.ChangeState(UnitState.Attack);
+                            }
+                            else
+                            {
+                                Ally_State.fsm.ChangeState(UnitState.Chase);
+                            }
+                        }
+                        else
+                        {
+                            Ally_State.fsm.ChangeState(UnitState.Idle);
+                        }
                     }
                 }
             }
@@ -309,7 +396,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         #endregion
 
         #region 적 제어
-        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (SpawnDelay)
             {
@@ -323,7 +410,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 SpawnDelay = false;
             }
 
-            MeshRenderer.material.color = colorEnemy;
             enemy_isBaseInRange =
             (Vector3.Distance(transform.position, moveTargetBasePos) <= attackRange);
 
@@ -349,8 +435,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else // 성 공격
             {
-                moveTargetPos = moveTargetBasePos; 
-                
+                moveTargetPos = moveTargetBasePos;
+
                 //NavAgent.SetDestination(new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z)); 
                 if (enemy_isBaseInRange)
                 {
@@ -373,15 +459,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     }
 
 
-    public void ChangeAllyMode()
-    {
-        if (isSelected)
-        {
-            previousAllyMode = Ally_Mode;
-            Ally_Mode = AllyMode.Change;
-        }
-    }
-
 
     public void SearchEnemy()
     {
@@ -392,7 +469,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj = 
+            GameObject TargetObj =
                 sightRangeSensor.NearestObjectSearch(attackRange, this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
@@ -415,7 +492,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void Unit_Attack()
     {
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             if (targetEnemy == null)
             {
@@ -424,22 +501,23 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-                
-                Bow.transform.LookAt(targetEnemy.transform.position);
-                Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
+                VisualModel.transform.LookAt(targetEnemy.transform.position);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, false);
+                //Bow.transform.LookAt(targetEnemy.transform.position);
+                //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
         }
-        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position);
+                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
@@ -452,75 +530,44 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void UnitInit(UD_UnitDataManager.UnitData unitData)
+    public void UnitInit(UnitSpawnData data)
     {
-        if (unitData.ID == "1")
-        {
-            unitType = UnitType.Warrior;
-        }
-        else if (unitData.ID == "2")
-        {
-            unitType = UnitType.Archer;
-        }
-        else
-        {
-            unitType = UnitType.Warrior;
-        }
+        modelType = data.modelType;
+        maxHP = data.HP;
+        moveSpeed = data.moveSpeed;
+        weaponCooldown = data.attackSpeed;
+        skillCooldown = data.skillCooldown;
+        attackPoint = data.attackPoint;
+        critChanceRate = data.critChanceRate;
 
-        ID = unitData.ID;
-        curLevel = unitData.Level;
-        unitName = unitData.Name;
-        modelType = unitData.Number;
-        HP = unitData.Hp;
-        maxHP = unitData.Hp;
-        moveSpeed = unitData.MoveSpeed;
-        attackSpeed = unitData.AttackSpeed;
-        sightRange = unitData.SightRange;
-        attackRange = unitData.AttackRange;
-        DefenseType = unitData.DefenseType;
-        critChanceRate = unitData.CritRate;
-        g_SkillName = unitData.g_SkillName;
-        s_SkillName = unitData.s_SkillName;
-        cost = unitData.Cost;
+        sightRange = data.sightRange;
+        attackRange = data.attackRange;
 
+        generalSkillCode = data.generalSkill;
+        specialSkillCode = data.specialSkill;
+
+        unitType = data.unitType;
+        defenseType = data.defenseType;
+        targetSelectType = data.targetSelectType;
     }
-
-    //public void UnitInit(UnitSpawnData data)
-    //{
-    //    modelType = data.modelType;
-    //    maxHP = data.HP;
-    //    moveSpeed = data.speed;
-    //    attackPoint = data.atk;
-    //    sightRange = data.sightRange;
-    //    attackRange = data.attackRange;
-
-    //    generalSkillCode = data.generalSkill;
-    //    specialSkillCode = data.specialSkill;
-
-    //    unitType = data.unitType;
-
-    //    //LoPol 추가
-    //    unitName = data.unitName;
-    //    DefenseType = data.defenseType;
-    //    critChanceRate = data.critRate;
-    //    g_SkillName = data.gSkillName;
-    //    s_SkillName = data.sSkillName;
-    //    cost = data.cost;
-    //    HP = maxHP;
-    //}
 
     public void EnemyInit(EnemySpawnData data)
     {
         modelType = data.modelType;
         maxHP = data.HP;
-        moveSpeed = data.speed;
-        attackPoint = data.atk;
+        moveSpeed = data.moveSpeed;
+        attackPoint = data.attackPoint;
+        critChanceRate = data.critChanceRate;
+
         sightRange = data.sightRange;
         attackRange = data.attackRange;
+
         generalSkillCode = data.generalSkill;
         specialSkillCode = data.specialSkill;
 
-        unitType = data.enemyType;
+        unitType = data.unitType;
+        defenseType = data.defenseType;
+        targetSelectType = data.targetSelectType;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -529,19 +576,36 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         //피격 판정
         if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
         {
-            UD_Ingame_ArrowCtrl Arrow = OBJ.GetComponent<UD_Ingame_ArrowCtrl>();
+            UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
 
-            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT) && Arrow.isEnemyAttack)
+            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT) && Attack.isEnemyAttack)
             {
-                Debug.Log(this.gameObject.name + " attack hit!");
-                this.HP -= Arrow.Atk;
+                //Debug.Log(this.gameObject.name + " attack hit!");
+                this.HP -= Attack.Atk;
                 Destroy(OBJ);
             }
-            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY) && !Arrow.isEnemyAttack)
+            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY) && !Attack.isEnemyAttack)
             {
-                Debug.Log(this.gameObject.name + " attack hit!");
-                this.HP -= Arrow.Atk;
-                Destroy(OBJ);
+                //Debug.Log(this.gameObject.name + " attack hit!");
+
+                if (Attack.Type == AttackType.Magic)
+                {
+
+                }
+                else
+                {
+                    ReceivePhysicalDamage(Attack, Attack.Atk, Attack.CritPercent, Attack.Type);
+                    if (Attack.MethodType == AttackMethod.Trap)
+                    {
+                        Destroy(OBJ);
+                        //GameObject.FindObjectOfType<UD_Ingame_GridManager>().SetTilePlaceable( , true);
+                    }
+                    else
+                    {
+                        this.HP -= Attack.Atk;
+                        Destroy(OBJ);
+                    }
+                }
             }
         }
     }
@@ -566,51 +630,84 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             }
 
         }
-        
+
     }
 
-    void MoveUnitToNearestTile()
+    void ReceivePhysicalDamage(UD_Ingame_AttackCtrl AtkObj, int Damage, float Crit, AttackType attackType)
     {
-        float searchRadius = 2.0f; 
-        bool foundTile = false;
-
-        Vector3 unitPosition = transform.position; 
-
-        while (!foundTile && searchRadius <= 10.0f) 
+        if (defenseType == DefenseType.cloth)
         {
-            Collider[] nearbyTiles = Physics.OverlapSphere(unitPosition, searchRadius);
-
-            float closestDistance = Mathf.Infinity;
-            UD_Ingame_GridTile closestTile = null; 
-
-            foreach (Collider collider in nearbyTiles)
+            if (attackType == AttackType.Slash)
             {
-                UD_Ingame_GridTile tile = collider.GetComponent<UD_Ingame_GridTile>();
-
-                if (tile != null && tile.isPlaceable && !tile.isTileOccupied)
-                {
-                    float distanceToTile = Vector3.Distance(unitPosition, tile.transform.position);
-
-                    if (distanceToTile < closestDistance)
-                    {
-                        closestDistance = distanceToTile;
-                        closestTile = tile; 
-                    }
-                }
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
             }
-
-            if (closestTile != null )
+            else if (attackType == AttackType.Pierce)
             {
-                transform.position = closestTile.transform.position;
-                closestTile.SetTileOccupied(true);
-                closestTile.currentPlacedUnit = this.gameObject;
-                foundTile = true; 
-
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
             }
-            else
+            else if (attackType == AttackType.Crush)
             {
-                searchRadius += 3.0f;
+                Crit += 0;
+                Damage += 0;
             }
+        }
+        else if (defenseType == DefenseType.leather)
+        {
+            if (attackType == AttackType.Slash)
+            {
+                Crit += 0;
+                Damage += 0;
+            }
+            else if (attackType == AttackType.Pierce)
+            {
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
+            }
+            else if (attackType == AttackType.Crush)
+            {
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
+            }
+        }
+        else if (defenseType == DefenseType.metal)
+        {
+            if (attackType == AttackType.Slash)
+            {
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
+            }
+            else if (attackType == AttackType.Pierce)
+            {
+                Crit += 0;
+                Damage += 0;
+            }
+            else if (attackType == AttackType.Crush)
+            {
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
+            }
+        }
+
+        if (Damage <= 0)
+        {
+            Damage = 0;
+        }
+
+        if (Crit <= 0)
+        {
+            Crit = 0;
+        }
+        else if (Crit >= 100)
+        {
+            Crit = 100;
+        }
+
+        this.HP -= Damage;
+        if (UnityEngine.Random.Range(0, 100) <= Crit)
+        {
+            Debug.Log("Critical Hit!");
         }
 
     }
