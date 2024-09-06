@@ -541,7 +541,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
             if (canvas != null && canvas.renderMode == RenderMode.WorldSpace)
             {
                 RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(1, 1);
+                rectTransform.sizeDelta = new Vector2(1.5f, 1.5f);
 
                 //rectTransform.position = unit.transform.position + new Vector3(0, 3.0f, 0);
                 //rectTransform.rotation = Quaternion.Euler(new Vector3(60, 0, 0));
