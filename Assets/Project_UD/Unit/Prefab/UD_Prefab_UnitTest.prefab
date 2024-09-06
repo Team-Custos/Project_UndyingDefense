@@ -401,7 +401,8 @@ MonoBehaviour:
   HP: 1
   maxHP: 1
   moveSpeed: 3.5
-  attackSpeed: 1
+  weaponCooldown: 1
+  skillCooldown: 3
   mental: 1
   sightRange: 5
   attackRange: 3
@@ -414,17 +415,11 @@ MonoBehaviour:
   targetSelectType: 0
   Ally_Mode: 0
   unitPos: {x: 0, y: 0}
-  colorAlly:
-    serializedVersion: 2
-    rgba: 4294901760
-  colorEnemy:
-    serializedVersion: 2
-    rgba: 4278190335
   VisualModel: {fileID: 616483561687818118}
   Selected_Particle: {fileID: 7366631472429168028}
   isSelected: 0
-  weaponCooldown: 1
-  skillCooldown: 3
+  debuffInfo: []
+  buffInfo: []
   targetBase: {fileID: 0}
   moveTargetBasePos: {x: 0, y: 0, z: 0}
   moveTargetPos: {x: 0, y: 0, z: 0}
@@ -683,11 +678,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ade45e10dea540893707ad93ea072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetCellidx: 
+  TargetCellIdx: 
   Bow: {fileID: 803691724125410477}
   Sword: {fileID: 2506970858598283249}
   Trap: {fileID: 3424956440323876401, guid: 4c257a9da9840d14780eb504ec49bdc0, type: 3}
   UnitCtrl: {fileID: -2917136115213169904}
+  SetObject: {fileID: 0}
 --- !u!1 &8392021169629693780
 GameObject:
   m_ObjectHideFlags: 0

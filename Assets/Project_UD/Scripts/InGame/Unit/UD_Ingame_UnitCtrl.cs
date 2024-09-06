@@ -1,4 +1,5 @@
 using MonsterLove.StateMachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,25 @@ public enum TargetSelectType
     Fixed
 }
 
+[Serializable]
+public class Debuff
+{
+    public int debuffTypeCode;  //디버프 코드
+    public bool isStackable;
+    public int debuffStack;
+    public int debuffTime;
+}
+
+[Serializable]
+public class Buff
+{
+    public int buffTypeCode;  //버프 코드
+    public bool isStackable;
+    public int buffStack;
+    public int buffTime;
+}
+
+
 public class UD_Ingame_UnitCtrl : MonoBehaviour
 {
     [HideInInspector] public UD_Ingame_UnitState Ally_State;
@@ -46,7 +66,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public int HP;
     public int maxHP;
     public float moveSpeed;
-    public float attackSpeed;
+    public float weaponCooldown;
+    public float skillCooldown;
     public int mental = 1;
     public float sightRange = 0;
     public float attackRange = 0;
@@ -58,23 +79,17 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public DefenseType defenseType;
     public TargetSelectType targetSelectType;
    
-
-
     [Header("====Status====")]
     public AllyMode Ally_Mode;
 
     public Vector2 unitPos = Vector2.zero;
-    public Color32 colorAlly = Color.blue;
-    public Color32 colorEnemy = Color.red;
 
     public Transform VisualModel;
     public GameObject Selected_Particle;
     public bool isSelected = false;
 
-    public float weaponCooldown = 0;
-    public float skillCooldown = 0;
-
-    public int[][] debuffs;
+    public Debuff[] debuffInfo;
+    public Buff[] buffInfo;
 
 
 
@@ -128,11 +143,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
-        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
@@ -144,7 +159,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         Ally_Mode = AllyMode.Siege;
 
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             if (Ally_Mode == AllyMode.Free)
             {
@@ -185,11 +200,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         if (modelType != cur_modelType)
         {
             Destroy(VisualModel.GetChild(0).gameObject);
-            if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+            if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
             {
                 Instantiate(ModelSwap.AllyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
             }
-            else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+            else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
             {
                 Instantiate(ModelSwap.EnemyModel[modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
             }
@@ -217,7 +232,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
 
         #region 아군 제어
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
 
             if (Ally_Mode == AllyMode.Free)
@@ -297,6 +312,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
+                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
                 if (targetEnemy == null && !isEnemyInSight)
                 {
                     SearchEnemy();
@@ -316,6 +332,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
+                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
                 if (haveToMovePosition)
                 {
                     targetEnemy = null;
@@ -365,12 +382,11 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                 }
             }
-            UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
         }
         #endregion
 
         #region 적 제어
-        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (SpawnDelay)
             {
@@ -466,7 +482,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void Unit_Attack()
     {
-        if (this.gameObject.tag == UD_CONSTANT.TAG_UNIT)
+        if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             if (targetEnemy == null)
             {
@@ -476,22 +492,22 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, false);
                 //Bow.transform.LookAt(targetEnemy.transform.position);
                 //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
             }
         }
-        else if (this.gameObject.tag == UD_CONSTANT.TAG_ENEMY)
+        else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position);
+                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
@@ -509,6 +525,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         modelType = data.modelType;
         maxHP = data.HP;
         moveSpeed = data.moveSpeed;
+        weaponCooldown = data.attackSpeed;
+        skillCooldown = data.skillCooldown;
         attackPoint = data.attackPoint;
         critChanceRate = data.critChanceRate;
 
@@ -611,54 +629,54 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         {
             if (attackType == AttackType.Slash)
             {
-                Crit = Crit + 30;
-                Damage = Damage + (Damage / 100 * 40);
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
             }
             else if (attackType == AttackType.Pierce)
             {
-                Crit = Crit - 30;
-                Damage = Damage - (Damage / 100 * 30);
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
             }
             else if (attackType == AttackType.Crush)
             {
-                Crit = Crit + 0;
-                Damage = Damage + 0;
+                Crit += 0;
+                Damage += 0;
             }
         }
         else if (defenseType == DefenseType.leather)
         {
             if (attackType == AttackType.Slash)
             {
-                Crit = Crit + 0;
-                Damage = Damage + 0;
+                Crit += 0;
+                Damage += 0;
             }
             else if (attackType == AttackType.Pierce)
             {
-                Crit = Crit + 30;
-                Damage = Damage + (Damage / 100 * 40);
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
             }
             else if (attackType == AttackType.Crush)
             {
-                Crit = Crit - 30;
-                Damage = Damage - (Damage / 100 * 30);
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
             }
         }
         else if (defenseType == DefenseType.metal)
         {
             if (attackType == AttackType.Slash)
             {
-                Crit = Crit - 30;
-                Damage = Damage - (Damage / 100 * 30);
+                Crit -= 30;
+                Damage -= (int)(Damage * 0.3f);
             }
             else if (attackType == AttackType.Pierce)
             {
-                Crit = Crit + 0;
-                Damage = Damage + 0;
+                Crit += 0;
+                Damage += 0;
             }
             else if (attackType == AttackType.Crush)
             {
-                Crit = Crit + 30;
-                Damage = Damage + (Damage / 100 * 40);
+                Crit += 30;
+                Damage += (int)(Damage * 0.4f);
             }
         }
 
@@ -677,11 +695,12 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         }
 
         this.HP -= Damage;
-        if (Random.Range(0, 100) <= Crit)
+        if (UnityEngine.Random.Range(0, 100) <= Crit)
         {
             Debug.Log("Critical Hit!");
         }
 
     }
+
 
 }

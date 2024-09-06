@@ -43,7 +43,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
         //TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
     }
 
-    public void UnitGeneralSkill(int SkillCode, Vector3 TargetPos)
+    public void UnitGeneralSkill(int SkillCode, Vector3 TargetPos, bool isEnemyAttack)
     {
         switch (SkillCode)
         {
@@ -52,12 +52,12 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
 
                 break;
             case 102://È° ½î±â
-                if (Bow != null)
+                if (Bow != null && Bow.GetComponent<UD_Ingame_BowCtrl>() != null)
                 {
                     Bow.transform.LookAt(TargetPos);
-                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(UnitCtrl.weaponCooldown, UnitCtrl.attackPoint, true);
+                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(UnitCtrl.weaponCooldown, UnitCtrl.attackPoint, isEnemyAttack);
                 }
-                break;  
+                break;
         }
     }
 
@@ -174,7 +174,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                         skillCooldown_Cur = 0;
                         return;
                     }
-                    
+
 
                     
 

@@ -42,7 +42,7 @@ public class UD_Ingame_AttackCtrl : MonoBehaviour
         switch (MethodType)
         {
             case AttackMethod.Arrow:
-                transform.Translate(Vector3.forward * speed * 0.5f);
+                transform.Translate(0.5f * speed * Vector3.forward);
                 break;
             case AttackMethod.Melee:
                 break;
