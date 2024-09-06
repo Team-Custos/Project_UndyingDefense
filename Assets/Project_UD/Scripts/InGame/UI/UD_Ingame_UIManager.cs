@@ -196,6 +196,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
         waveCount = 20;
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {

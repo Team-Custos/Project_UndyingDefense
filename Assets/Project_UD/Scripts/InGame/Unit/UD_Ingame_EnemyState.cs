@@ -128,21 +128,21 @@ public class UD_Ingame_EnemyState : MonoBehaviour
             yield return new WaitUntil(() => { return !navAgent.pathPending; });
 
             int cornerCount = navAgent.path.corners.Length;
-            Debug.Log("명령 받은 목표 지점 위치 : " + UnitCtrl.moveTargetBasePos);
+            //Debug.Log("명령 받은 목표 지점 위치 : " + UnitCtrl.moveTargetBasePos);
 
             Vector3 navDestination = new Vector3(navAgent.path.corners[cornerCount - 1].x, 0, navAgent.path.corners[cornerCount - 1].z);
 
-            Debug.Log("계산 된 마지막 목표 지점 위치 : " + navDestination);
-            Debug.Log("거리 : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
+            //Debug.Log("계산 된 마지막 목표 지점 위치 : " + navDestination);
+            //Debug.Log("거리 : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
 
             if (Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x) <= UnitCtrl.attackRange)
             {
-                Debug.Log("목표 지점으로 이동할 수 있습니다.");
+                //Debug.Log("목표 지점으로 이동할 수 있습니다.");
                 UnitCtrl.enemy_isPathBlocked = false;
             }
             else
             {
-                Debug.Log("목표 지점으로 이동할수는 없지만 중간 지점까진 갈 수 있습니다.");
+                //Debug.Log("목표 지점으로 이동할수는 없지만 중간 지점까진 갈 수 있습니다.");
                 UnitCtrl.enemy_isPathBlocked = true;
             }
             previousNavDestination = navDestination;

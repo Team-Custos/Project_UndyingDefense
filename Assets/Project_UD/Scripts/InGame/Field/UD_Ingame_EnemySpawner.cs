@@ -9,14 +9,19 @@ public class EnemySpawnData
     public int modelType;
     public float spawnTime;
     public int HP;
-    public float speed;
-    public int atk;
+    public float moveSpeed;
+    public int attackPoint;
+    public float attackSpeed;
+    public int critChanceRate;
+
     public float sightRange;
     public float attackRange;
 
     public int generalSkill;
     public int specialSkill;
-    public UnitType enemyType;
+    public UnitType unitType;
+    public DefenseType defenseType;
+    public TargetSelectType targetSelectType;
 
 }
 
@@ -113,7 +118,7 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
         Debug.Log(new Vector3(X, 0, Y));
         GameObject Obj = Instantiate(Test_Enemy);
         Obj.transform.position = new Vector3(X, 0, Y);
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+        //Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]);
         return Obj;
     }
