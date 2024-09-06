@@ -88,7 +88,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public string g_SkillName;
     public string s_SkillName;
     public int cost;
-    public string DefenseType;
+    //public string DefenseType;
 
     [Header("====Status====")]
     public AllyMode Ally_Mode;
@@ -133,7 +133,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     {
         if (UD_Ingame_UIManager.instance != null)
         {
-            UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+            //UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
         }
     }
 

@@ -249,14 +249,14 @@ public class UD_Ingame_UIManager : MonoBehaviour
         // 이동 UI (재 구현 예정)
         UpdateMoveImagesForAllUnits();
 
-        if (selectedUnit != null)
-        {
-            unitInfoPanel.SetActive(true);
-        }
-        else
-        {
-            unitInfoPanel.SetActive(false);
-        }
+        //if (selectedUnit != null)
+        //{
+        //    unitInfoPanel.SetActive(true);
+        //}
+        //else
+        //{
+        //    unitInfoPanel.SetActive(false);
+        //}
 
         // UI 유닛 따라가기
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
@@ -515,7 +515,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     {
         if (unit != null && unit.isSelected)
         {
-            unit.ChangeAllyMode(); 
+           // unit.ChangeAllyMode(); 
         }
     }
 

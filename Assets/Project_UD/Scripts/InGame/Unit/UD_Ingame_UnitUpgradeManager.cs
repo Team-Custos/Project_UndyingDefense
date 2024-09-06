@@ -53,7 +53,7 @@ public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
 
         if(newUnitData != null)
         {
-            selectedUnit.UnitInit(newUnitData);
+            //selectedUnit.UnitInit(newUnitData);
             Debug.Log(selectedUnit.unitName + "업그레이드 완료");
 
             uiManager.UpdateUnitInfoPanel(selectedUnit);

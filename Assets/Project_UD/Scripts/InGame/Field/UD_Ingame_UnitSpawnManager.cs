@@ -39,7 +39,7 @@ public class UnitSpawnData
     // LoPol추가
     public string unitID; // 나중에 int의 유닛 ID로 처리.
     public string unitName; 
-    public string defenseType; //enum으로 처리
+    //public string defenseType; //enum으로 처리
     //public int critRate;
 	//스킬 코드로 처리해야하는가 아님 string으로 처리해야하는가
     public string gSkillName; 
@@ -97,7 +97,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
         string unitID = GetUnitIDByType(unitType);
 
       
-         UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
+         //UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
 
 
         Obj = Instantiate(Test_Ally);
