@@ -54,7 +54,7 @@ public class UD_Ingame_GridManager : MonoBehaviour
         return TilePos;
     }
 
-    public void SetTilePlaceable(Vector3 pos, bool PlaceableToSet = true)
+    public void SetTilePlaceable(Vector3 pos, bool SetManualMode, bool PlaceableToSetManual)
     {
         Vector3Int CurCellPos = groundTilemap.WorldToCell(pos);
         Vector3 CurCellWorldPos = new Vector3 (groundTilemap.GetCellCenterWorld(CurCellPos).x,0,groundTilemap.GetCellCenterWorld(CurCellPos).z);
@@ -71,28 +71,32 @@ public class UD_Ingame_GridManager : MonoBehaviour
 
         //Debug.Log(new Vector2(distanceX,distanceZ));
 
-        if (PlaceableToSet == false)
+        if (SetManualMode == true)//직접 설정할경우
         {
-            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
+            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = PlaceableToSetManual;
             return;
-        }
-
-        // 타일 중심과 유닛 위치의 x 및 z 거리 차이를 이용하여 배치 가능 여부를 판단
-        if (distanceX > 0.95f || distanceZ > 0.95f)
-        {
-            // 타일과 유닛이 같은 위치에 있다고 판단 - 배치 가능
-            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = true;
         }
         else
         {
-            // 타일과 유닛이 충분히 가까이 있지 않음 - 배치 불가
-            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
+            // 타일 중심과 유닛 위치의 x 및 z 거리 차이를 이용하여 배치 가능 여부를 판단
+            if (distanceX > 0.95f || distanceZ > 0.95f)
+            {
+                // 타일과 유닛이 같은 위치에 있다고 판단 - 배치 가능
+                _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = true;
+            }
+            else
+            {
+                // 타일과 유닛이 충분히 가까이 있지 않음 - 배치 불가
+                _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
+            }
         }
+
+        
     }
 
-    public bool GetTilePlaceable(Vector3 pos)
+    public bool GetTilePlaceable(Vector3 WorldPosToFind)
     {
-        Vector3Int CellPos = groundTilemap.WorldToCell(pos);
+        Vector3Int CellPos = groundTilemap.WorldToCell(WorldPosToFind);
         if (_tiles.ContainsKey(new Vector2(CellPos.x, CellPos.y)))
         {
             return _tiles[new Vector2(CellPos.x, CellPos.y)];

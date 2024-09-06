@@ -9,7 +9,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
     { };
 
-    public List<int> TargetCellidx = new List<int>();
+    public List<int> TargetCellIdx = new List<int>();
 
     public GameObject Bow;
     public GameObject Sword;
@@ -20,6 +20,8 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
 
     public UD_Ingame_UnitCtrl UnitCtrl;
     UD_Ingame_GridManager GridManager;
+
+    public GameObject SetObject = null;
 
     int TargetCellIdxFinal = 0;
 
@@ -38,7 +40,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
+        //TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
     }
 
     public void UnitGeneralSkill(int SkillCode, Vector3 TargetPos)
@@ -61,6 +63,8 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
 
     public void UnitSpecialSkill(int SkillCode, Vector3 TargetPos, float skillCooldown)
     {
+        GameObject TargetEnemy = UnitCtrl.targetEnemy;
+
         if (skillCooldown_Cur <= 0)
         {
             skillCooldown_Cur = skillCooldown;
@@ -68,48 +72,47 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
             {
                 case 101://낫 찍기
                          // 검베기와 같은 처리. 스탯만 다르게.
+                    if (TargetEnemy == null)
+                    {
+                        return;
+                    }
                     break;
                 case 102://덫 설치
-                         //현재 바라보는 방향으로 설치 범위를 설정. 각도에 따라 범위가 변경. 현재 위치에서 2칸 정도 떨어져 있는 위치의 변 3칸중 랜덤으로 지정하여 설치.
-                         //TODO : 난수가 제대로 적용이 되는지 확인해야함.
+
+                    if (SetObject != null)
+                    {
+                        GridManager.SetTilePlaceable(SetObject.transform.position, true, true);
+                        Destroy(SetObject);
+                        SetObject = null;
+                    }
+
                     float CurAngle = Mathf.Abs(gameObject.transform.rotation.y % 360);
                     Vector2 CurCellPos = UnitCtrl.unitPos;
-                    Vector2[] TargetCells = new Vector2[]
-                    {
-                        Vector2.zero, Vector2.zero, Vector2.zero
-                    };
+                    Vector2[] TargetCells = new Vector2[3];
 
-                    if (CurAngle <= 45 || CurAngle > 315)//북
+                    // 각도에 따라 x, y 오프셋을 설정
+                    Vector2[] directionOffsets;
+                    if (CurAngle <= 45 || CurAngle > 315)       // 북쪽
                     {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            TargetCells[i].y = CurCellPos.y + 2;
-                            TargetCells[i].x = CurCellPos.x - 1 + i;
-                        }
+                        directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
-                    else if (CurAngle <= 135 || CurAngle > 45)//동
+                    else if (CurAngle <= 135 || CurAngle > 45)   // 동쪽
                     {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            TargetCells[i].x = CurCellPos.x + 2;
-                            TargetCells[i].y = CurCellPos.y + 1 - i;
-                        }
+                        directionOffsets = new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
                     }
-                    else if (CurAngle <= 225 || CurAngle > 135)//남
+                    else if (CurAngle <= 225 || CurAngle > 135)  // 남쪽
                     {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            TargetCells[i].y = CurCellPos.y - 2;
-                            TargetCells[i].x = CurCellPos.x + 1 - i;
-                        }
+                        directionOffsets = new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
                     }
-                    else if (CurAngle <= 315 && CurAngle > 225)//서
+                    else // 서쪽
                     {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            TargetCells[i].x = CurCellPos.x - 2;
-                            TargetCells[i].y = CurCellPos.y - 1 + i;
-                        }
+                        directionOffsets = new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
+                    }
+
+                    // TargetCells에 오프셋 적용하여 좌표 계산
+                    for (int i = 0; i < 3; i++)
+                    {
+                        TargetCells[i] = CurCellPos + directionOffsets[i];
                     }
 
 
@@ -121,44 +124,70 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                         {
                             TargetCellPlaceable.Add(i, GridManager.GetTilePlaceable(TargetCells[i]));
                         }
-                        if (!TargetCellidx.Contains(i))
+                        if (!TargetCellIdx.Contains(i))
                         {
-                            TargetCellidx.Add(i);
+                            TargetCellIdx.Add(i);
                         }
                     }
 
-                    int TargetCellFinal = TargetCellidx[TargetCellIdxFinal];
-
-                    while (TargetCellidx.Count != 0)
+                    if (TargetCellIdx.Count > 0)
                     {
-                        if (GridManager.GetTilePlaceable(TargetCells[TargetCellIdxFinal]))
-                        {
-                            TargetCellWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
-                            break;
-                        }
-                        else
-                        {
-                            TargetCellidx.RemoveAt(TargetCellIdxFinal);
-                        }
+                        TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
+                        Debug.Log("난수 : " + TargetCellIdxFinal);
+                        int TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
+                        Vector3 TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
 
-                        if (TargetCellidx.Count == 0)
+                        while (TargetCellIdx.Count != 0)
                         {
-                            Debug.Log("모두 설치 불가. 스킬 쿨타임을 초기화합니다.");
-                            skillCooldown_Cur = skillCooldown;
-                            return;
+                            TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
+
+                            Debug.Log(TargetCellFinal + "번 셀에 설치를 시도합니다.");
+                            if (GridManager.GetTilePlaceable(TargetCellFinalWorldPos))
+                            {
+                                Debug.Log("해당 셀에 설치가 가능 합니다.");
+                                TargetCellWorldPos = TargetCellFinalWorldPos;
+                                break;
+                            }
+                            else
+                            {
+                                Debug.Log("해당 셀에 설치가 불가능 합니다.");
+                                TargetCellIdx.RemoveAt(TargetCellIdxFinal);
+                                if (TargetCellIdx.Count == 0)
+                                {
+                                    Debug.Log("모두 설치 불가. 스킬 쿨타임을 초기화합니다.");
+                                    skillCooldown_Cur = 0;
+                                    return;
+                                }
+                                else
+                                {
+                                    TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
+                                    Debug.Log("새로운 난수 : " + TargetCellIdxFinal);
+                                    TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
+                                    continue;
+                                }
+                            }
                         }
                     }
+                    else
+                    {
+                        Debug.Log("모두 설치 불가. 스킬 쿨타임을 초기화합니다.");
+                        skillCooldown_Cur = 0;
+                        return;
+                    }
+                    
+
+                    
 
                     if (GridManager.GetTilePlaceable(TargetCellWorldPos))
                     {
                         Vector3 CellWorldPosFinal = TargetCellWorldPos+ new Vector3(GridManager.mapGrid.cellSize.x * 0.5f,0, GridManager.mapGrid.cellSize.y * 0.5f);
                         
                             //GridManager.mapGrid.GetCellCenterWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, 1, (int)TargetCells[TargetCellFinal].y));
-                        GameObject TrapObj = Instantiate(Trap);
-                        TrapObj.transform.position = new Vector3(CellWorldPosFinal.x,-1,CellWorldPosFinal.z);
-                        GridManager.SetTilePlaceable(TargetCellWorldPos, false);
+                        SetObject = Instantiate(Trap);
+                        SetObject.transform.position = new Vector3(CellWorldPosFinal.x,-1,CellWorldPosFinal.z);
+                        GridManager.SetTilePlaceable(TargetCellWorldPos, true, false);
                         TargetCellPlaceable.Clear();
-                        TargetCellidx.Clear();
+                        TargetCellIdx.Clear();
                     }
                     break;
             }

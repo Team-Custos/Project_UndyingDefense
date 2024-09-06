@@ -175,7 +175,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     void Update()
     {
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-        UD_Ingame_GridManager.inst.SetTilePlaceable(this.transform.position);
+        UD_Ingame_GridManager.inst.SetTilePlaceable(this.transform.position,false,false);
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = UD_Ingame_GridManager.inst.GetTilePos(this.transform.position);
@@ -486,7 +486,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             if (enemy_isBaseInRange)
             {
                 UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos);
-                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
             }
             else
             {
