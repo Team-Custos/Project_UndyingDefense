@@ -107,9 +107,10 @@ public class UD_ExcelFileReader : MonoBehaviour
                 string g_skillName = dataValues[16];
                 string s_skill = dataValues[17];
                 string s_skillName = dataValues[18];
+                string unitCode = dataValues[19];
 
                 UD_UnitDataManager.UnitData unitData = new UD_UnitDataManager.UnitData(number, id, name, level, cost, hp, attackSpeed, defenseType, 
-                    globalTime, mental, moveSpeed, sightRange, attackRange, targetSelectType, critRate, g_skill, g_skillName, s_skill, s_skillName);
+                    globalTime, mental, moveSpeed, sightRange, attackRange, targetSelectType, critRate, g_skill, g_skillName, s_skill, s_skillName, unitCode);
                 unitDatas.Add(unitData);
             }
         }

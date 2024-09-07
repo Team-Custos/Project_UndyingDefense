@@ -21,13 +21,13 @@ public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
         
     }
 
-    public List<string> GetUpgradeOptions(string unitID)
+    public List<string> GetUpgradeOptions(string unitCode)
     {
         List<string> upgradeOptions = new List<string>();
 
         // 업그레이드 로직 : ID 뒤에 1 또는 2를 추가
-        string option1 = unitID + "1";
-        string option2 = unitID + "2";
+        string option1 = unitCode + "1";
+        string option2 = unitCode + "2";
 
         if(UD_UnitDataManager.inst.DoesUnitExist(option1))
         {
@@ -47,9 +47,9 @@ public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
         return upgradeOptions;
     }
 
-    public void PerformUpgrade(UD_Ingame_UnitCtrl selectedUnit, string newUnitID)
+    public void PerformUpgrade(UD_Ingame_UnitCtrl selectedUnit, string newUnitCode)
     {
-        UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitID);
+        UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitCode);
 
         if(newUnitData != null)
         {

@@ -280,10 +280,10 @@ public class UD_Ingame_UIManager : MonoBehaviour
             return;
         }
 
-        string unitID = selectedUnit.ID;
+        string unitCode = selectedUnit.unitCode;
         string unitName = selectedUnit.unitName;
 
-        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitID);
+        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitCode);
 
 
         if (unitData == null)

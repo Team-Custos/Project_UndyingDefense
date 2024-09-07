@@ -43,9 +43,10 @@ public class UD_UnitDataManager : MonoBehaviour
         public string g_SkillName;
         public string s_Skill;
         public string s_SkillName;
+        public string UnitCode;
 
         public UnitData(int number, string id, string name, int level, int cost, int hp, int attackSpeed, string defenseType, float globalTime, int mental, int moveSpeed,
-                        int sightRange, int attackRange, string targetSelectType, int critRate, string g_skill, string g_skillName, string s_skill, string s_skillName)
+                        int sightRange, int attackRange, string targetSelectType, int critRate, string g_skill, string g_skillName, string s_skill, string s_skillName, string unitCdoe)
         {
             Number = number;
             ID = id;
@@ -66,6 +67,7 @@ public class UD_UnitDataManager : MonoBehaviour
             g_SkillName = g_skillName;
             s_Skill = s_skill;
             s_SkillName = s_skillName;
+            UnitCode = unitCdoe;
         }
     }
 
@@ -82,17 +84,17 @@ public class UD_UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
-            unitDataDictionary[unitData.ID] = unitData;
+            unitDataDictionary[unitData.UnitCode] = unitData;
         }
 
-        //ShowUnitData();
+       // ShowUnitData();
     }
 
 
-    public UnitData GetUnitData(string unitID)
+    public UnitData GetUnitData(string unitCode)
     {
 
-        if (unitDataDictionary.TryGetValue(unitID, out UnitData unitData))
+        if (unitDataDictionary.TryGetValue(unitCode, out UnitData unitData))
         {
             return unitData;
         }
@@ -103,18 +105,18 @@ public class UD_UnitDataManager : MonoBehaviour
         }
     }
 
-    public bool DoesUnitExist(string unitId)
+    public bool DoesUnitExist(string unitCode)
     {
-        return unitDataDictionary.ContainsKey(unitId);
+        return unitDataDictionary.ContainsKey(unitCode);
     }
 
     public void ShowUnitData()
     {
         foreach (var unitdata in unitDataDictionary)
         {
-            var unitID = unitdata.Key;
+            var unitCode = unitdata.Key;
             var unitData = unitdata.Value;
-            Debug.Log($"ID : {unitID}, Number : {unitData.Number}, Name : {unitData.Name}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
+            Debug.Log($"Code : {unitCode}, Number : {unitData.Number}, ID : {unitData.ID} , Name : {unitData.Name}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
                       $"HP : {unitData.Hp}, AttackSpeed : {unitData.AttackSpeed}, DefenseType : {unitData.DefenseType}, GlobalTime : {unitData.GlobalTime} " +
                       $"Mental : {unitData.Mental}, MoveSpeed : {unitData.MoveSpeed}, SightRange : {unitData.SightRange},AttackRange : {unitData.AttackRange} " +
                       $"TargetSelectType : {unitData.TargetSelectType}, crtiRate : {unitData.CritRate}, g_Skill : {unitData.g_Skil}, g_SkillName : {unitData.g_SkillName}" +

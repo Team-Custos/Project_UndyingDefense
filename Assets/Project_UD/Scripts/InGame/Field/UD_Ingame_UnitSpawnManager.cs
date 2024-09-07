@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 [System.Serializable]
 
@@ -44,7 +45,34 @@ public class UnitSpawnData
 	//스킬 코드로 처리해야하는가 아님 string으로 처리해야하는가
     public string gSkillName; 
     public string sSkillName;
+    public string s_Skill;
+    public string g_Skill;
     public int cost;
+    public string unitCode;
+    public int level;
+    public float globalTime;
+    public int mental;
+
+    public void InitFromUnitData(UD_UnitDataManager.UnitData unitData)
+    {
+        unitCode = unitData.UnitCode;
+        unitName = unitData.Name;
+        level = unitData.Level;
+        HP = unitData.Hp;
+        attackSpeed = unitData.AttackSpeed;
+        moveSpeed = unitData.MoveSpeed;
+        globalTime = unitData.GlobalTime;
+        mental = unitData.Mental;
+        sightRange = unitData.SightRange;
+        attackRange = unitData.AttackRange;
+        critChanceRate = unitData.CritRate;
+        gSkillName = unitData.g_SkillName;
+        sSkillName = unitData.s_SkillName;
+        g_Skill = unitData.g_Skil;
+        s_Skill = unitData.s_Skill;
+
+
+    }
 }
 
 
@@ -78,14 +106,7 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
-        //foreach (UD_Ingame_UnitCtrl unit in allUnits)
-        //{
-        //    if (unit.unitStateChangeTime > 0)
-        //    {
-        //        unit.unitStateChangeTime -= Time.deltaTime;
-        //    }
-        //}
+
     }
 
     //유닛 소환
@@ -94,19 +115,26 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
         GameObject Obj;
 
-        string unitID = GetUnitIDByType(unitType);
+        string unitCode = GetUnitIDByType(unitType);
 
-      
-         //UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitID);
+        UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitCode);
 
+        if (unitData != null)
+        {
+            Obj = Instantiate(Test_Ally);
+            Obj.transform.position = new Vector3(X, 0, Y);
+            Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
 
-        Obj = Instantiate(Test_Ally);
-        Obj.transform.position = new Vector3(X, 0, Y);
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-        Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData[unitType]); //엑셀 데이터는 spawnData쪽으로 불러온뒤 Unit Initial할때 spawnData에서.
+            UnitSpawnData spawnData = new UnitSpawnData();
+            spawnData.InitFromUnitData(unitData);
 
-        return Obj;
-    }
+            Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData);
+
+            return Obj;
+        }
+
+        return null;
+}
 
     private string GetUnitIDByType(int unitType)
     {

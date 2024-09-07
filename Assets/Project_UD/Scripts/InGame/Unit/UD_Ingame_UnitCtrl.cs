@@ -88,6 +88,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     public string g_SkillName;
     public string s_SkillName;
     public int cost;
+    public string unitCode;
     //public string DefenseType;
 
     [Header("====Status====")]
@@ -549,6 +550,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         unitType = data.unitType;
         defenseType = data.defenseType;
         targetSelectType = data.targetSelectType;
+        unitCode = data.unitCode;
+        unitName = data.unitName;
     }
 
     public void EnemyInit(EnemySpawnData data)

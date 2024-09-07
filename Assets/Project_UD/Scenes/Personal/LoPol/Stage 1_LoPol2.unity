@@ -1245,6 +1245,7 @@ RectTransform:
   m_Children:
   - {fileID: 1421193971}
   - {fileID: 1859106224}
+  - {fileID: 1961968237}
   - {fileID: 400403326}
   - {fileID: 1397786249}
   - {fileID: 253143775}
@@ -1253,7 +1254,6 @@ RectTransform:
   - {fileID: 1298284308}
   - {fileID: 443325105}
   - {fileID: 1010813515}
-  - {fileID: 1961968237}
   - {fileID: 2019948434}
   - {fileID: 413653600}
   - {fileID: 1451475129}
@@ -6137,7 +6137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 75.5, y: 20}
+  m_AnchoredPosition: {x: 356.2, y: 20}
   m_SizeDelta: {x: 800, y: 250}
   m_Pivot: {x: 0, y: 0}
 --- !u!1001 &502770517
@@ -9910,30 +9910,32 @@ MonoBehaviour:
   UnitSetModeText: {fileID: 128548080}
   unitSpawnPanel: {fileID: 499509645}
   unitSpawnBtn: []
-  unitInfoPanel: {fileID: 0}
-  unitInfoImage: {fileID: 0}
-  levelImage: {fileID: 0}
-  levelText: {fileID: 0}
-  nameText: {fileID: 0}
-  gSkillImage: {fileID: 0}
-  gSkillText: {fileID: 0}
-  sSkillImage: {fileID: 0}
-  sSkillText: {fileID: 0}
-  hpImage: {fileID: 0}
-  hpText: {fileID: 0}
-  attackTypeImage: {fileID: 0}
-  attackTypeText: {fileID: 0}
-  defenseTypeImage: {fileID: 0}
-  defeneTypeText: {fileID: 0}
+  unitInfoPanel: {fileID: 50727466}
+  unitInfoImage: {fileID: 1421193972}
+  levelImage: {fileID: 1859106225}
+  levelText: {fileID: 1961968238}
+  nameText: {fileID: 400403327}
+  gSkillImage: {fileID: 253143776}
+  gSkillText: {fileID: 1298284309}
+  sSkillImage: {fileID: 253143776}
+  sSkillText: {fileID: 1909528400}
+  hpImage: {fileID: 443325106}
+  hpText: {fileID: 1010813516}
+  attackTypeImage: {fileID: 2019948435}
+  attackTypeText: {fileID: 413653601}
+  defenseTypeImage: {fileID: 1451475130}
+  defeneTypeText: {fileID: 1498065477}
   endGameBtn: {fileID: 1463860153}
   restartGameBtn: {fileID: 287665430}
   pauseGameBtn: {fileID: 1567758455}
-  slectedUnitOptionBox: {fileID: 0}
+  slectedUnitOptionBox: {fileID: 4658650071193815894, guid: 465dcfa83dfe92841b4b954b8a9ab1b1,
+    type: 3}
   currentSelectedUnitOptionBox: {fileID: 0}
   unitStateChageBtn: {fileID: 0}
   FreeModeImage: {fileID: 0}
-  SiegeModeImage: {fileID: 0}
-  unitUpgradeMenuBox: {fileID: 0}
+  SiegeModeImage: {fileID: 21300000, guid: dca2e9756b2dcd5459cc622b960efeca, type: 3}
+  unitUpgradeMenuBox: {fileID: 8370161515158320542, guid: 6c94bdf4eab27ce4fbf86c56f743ba61,
+    type: 3}
   currentUpgradeMenu: {fileID: 0}
   UnitUpgrade1Btn: {fileID: 0}
   UnitUpgrade2Btn: {fileID: 0}
@@ -9959,6 +9961,7 @@ MonoBehaviour:
   curUnitHp: 0
   UnitStateChangeBox: {fileID: 0}
   currentUnitStateChangeBox: {fileID: 0}
+  unit: {fileID: 0}
   unitUpgradeBtn: {fileID: 0}
   unitMoveImage: {fileID: 0}
   unitMoveUI: {fileID: 0}
@@ -21539,7 +21542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 666.80005, y: 20.200195}
+  m_AnchoredPosition: {x: 1244.3, y: 20.200195}
   m_SizeDelta: {x: 800, y: 250}
   m_Pivot: {x: 0, y: 0}
 --- !u!1001 &1738052144
@@ -22325,7 +22328,13 @@ MonoBehaviour:
     unitName: 
     gSkillName: 
     sSkillName: 
+    s_Skill: 
+    g_Skill: 
     cost: 0
+    unitCode: 
+    level: 0
+    globalTime: 0
+    mental: 0
   - modelType: 1
     spawnTime: 0
     HP: 100
@@ -22345,7 +22354,13 @@ MonoBehaviour:
     unitName: 
     gSkillName: 
     sSkillName: 
+    s_Skill: 
+    g_Skill: 
     cost: 0
+    unitCode: 
+    level: 0
+    globalTime: 0
+    mental: 0
   Test_Ally: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
   Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
