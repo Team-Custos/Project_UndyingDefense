@@ -101,11 +101,13 @@ public class UD_Ingame_UnitState : MonoBehaviour
     #region Move State
     void Move_Enter()
     {
-        Debug.Log("Move_Enter");
+        //Debug.Log("Move_Enter");
         
         navAgent.isStopped = false;
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
+
+        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
     }
 
     void Move_Update()
@@ -131,7 +133,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-       // UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
+        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
 
     }
     #endregion

@@ -262,8 +262,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
-            screenPos.x += 140;
-            screenPos.y -= 90;
+            screenPos.x += 100;
+            screenPos.y -= 50;
 
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
@@ -272,7 +272,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     }
 
 
-    public void UpdateUnitInfoPanel(UD_Ingame_UnitCtrl selectedUnit)
+    public void UpdateUnitInfoPanel(UD_Ingame_UnitCtrl selectedUnit, string newUnitCode)
     {
         if (selectedUnit == null)
         {
@@ -280,27 +280,27 @@ public class UD_Ingame_UIManager : MonoBehaviour
             return;
         }
 
-        string unitCode = selectedUnit.unitCode;
+        //string unitCode = selectedUnit.unitCode;
         string unitName = selectedUnit.unitName;
 
-        UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitCode);
+        //UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitCode);
+        UnitSpawnData newUnitData = UD_Ingame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
 
-
-        if (unitData == null)
+        if (newUnitData == null)
         {
             Debug.LogError($"'{unitName}' 유닛데이터 없음");
             return;
         }
 
-        levelText.text = unitData.Level.ToString() + "티어" ;
-        nameText.text = unitData.Name; 
-        gSkillText.text = unitData.g_SkillName; 
-        sSkillText.text = unitData.s_SkillName; 
+        levelText.text = newUnitData.level + "티어" ;
+        nameText.text = newUnitData.unitName;
+        gSkillText.text = newUnitData.gSkillName;
+        sSkillText.text = newUnitData.sSkillName; 
 
-        curUnitHp = selectedUnit.HP; 
-        hpText.text = $"{curUnitHp} / {unitData.Hp}"; 
+        //curUnitHp = selectedUnit.HP; 
+        hpText.text = $"{newUnitData.HP} / {newUnitData.HP}";
 
-        defeneTypeText.text = unitData.DefenseType; 
+        defeneTypeText.text = newUnitData.defenseType.ToString();
 
        // Debug.Log($"'{unitName}'업데이트 성공");
 
@@ -358,8 +358,8 @@ public class UD_Ingame_UIManager : MonoBehaviour
         GameObject canvas = GameObject.Find("Canvas");
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
         RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
-        screenPos.x += 140;
-        screenPos.y -= 90;
+        screenPos.x += 100;
+        screenPos.y -= 50;
 
         rectTransform.position = screenPos;
 
@@ -374,9 +374,13 @@ public class UD_Ingame_UIManager : MonoBehaviour
             unitStateChageBtn.onClick.RemoveAllListeners();
             unitStateChageBtn.onClick.AddListener(() =>
             {
-                UnitStateChange(unit);
+                if (unit.isSelected)
+                {
+                    unit.previousAllyMode = unit.Ally_Mode;
+                    unit.Ally_Mode = AllyMode.Change;
 
-                DestroyUnitStateChangeBox();
+                    DestroyUnitStateChangeBox();
+                }
             });
         }
 
@@ -424,7 +428,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
 
         RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
         Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
-        screenPos.x += 300;
+        screenPos.x += 200;
         rectTransform.position = screenPos;
 
         UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
@@ -434,7 +438,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
         Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
 
         // 업그레이드 옵션 가져오기
-        List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.ID);
+        List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.unitCode);
 
         if (upgradeOptions == null || upgradeOptions.Count == 0)
         {
@@ -511,13 +515,13 @@ public class UD_Ingame_UIManager : MonoBehaviour
         selectedUnit = unit;
     }
 
-    public void UnitStateChange(UD_Ingame_UnitCtrl unit)
-    {
-        if (unit != null && unit.isSelected)
-        {
-           // unit.ChangeAllyMode(); 
-        }
-    }
+    //public void UnitStateChange(UD_Ingame_UnitCtrl unit)
+    //{
+    //    if (unit != null && unit.isSelected)
+    //    {
+    //        unit.Ally_Mode = AllyMode.Change;
+    //    }
+    //}
 
     public void ShowMoveUI(GameObject unit, bool show)
     {
@@ -578,16 +582,4 @@ public class UD_Ingame_UIManager : MonoBehaviour
     //    }
     //}
 
-    //void LookUIMainCamera(GameObject unit)
-    //{
-    //    Transform unitCanvas = unit.transform.Find("Canvas");
-
-    //    if (unitCanvas != null)
-    //    {
-    //        // 카메라의 회전과 상관없이 캔버스가 카메라를 항상 바라보게 함
-    //        unitCanvas.rotation = Quaternion.LookRotation(unitCanvas.position - mainCamera.transform.position);
-
-    //        Debug.Log("Canvas is now facing the camera.");
-    //    }
-    //}
 }

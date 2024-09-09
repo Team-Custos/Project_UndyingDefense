@@ -49,14 +49,15 @@ public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
 
     public void PerformUpgrade(UD_Ingame_UnitCtrl selectedUnit, string newUnitCode)
     {
-        UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitCode);
+        //UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitCode);
+        UnitSpawnData newUnitData = UD_Ingame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
 
-        if(newUnitData != null)
+        if(newUnitCode != null)
         {
-            //selectedUnit.UnitInit(newUnitData);
+            selectedUnit.UnitInit(newUnitData);
             Debug.Log(selectedUnit.unitName + "업그레이드 완료");
 
-            uiManager.UpdateUnitInfoPanel(selectedUnit);
+            uiManager.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);
         }
         else
         {

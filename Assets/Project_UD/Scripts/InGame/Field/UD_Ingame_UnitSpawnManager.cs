@@ -117,16 +117,13 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
 
         string unitCode = GetUnitIDByType(unitType);
 
-        UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitCode);
+        UnitSpawnData spawnData = GetUnitSpawnData(unitCode);
 
-        if (unitData != null)
+        if (spawnData != null)
         {
             Obj = Instantiate(Test_Ally);
             Obj.transform.position = new Vector3(X, 0, Y);
             Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-
-            UnitSpawnData spawnData = new UnitSpawnData();
-            spawnData.InitFromUnitData(unitData);
 
             Obj.GetComponent<UD_Ingame_UnitCtrl>().UnitInit(spawnData);
 
@@ -147,5 +144,21 @@ public class UD_Ingame_UnitSpawnManager : MonoBehaviour
             default:
                 return "1";
         }
+    }
+
+    public UnitSpawnData GetUnitSpawnData(string unitCode)
+    {
+        UD_UnitDataManager.UnitData unitData = UD_UnitDataManager.inst.GetUnitData(unitCode);
+
+        if(unitData != null)
+        {
+            UnitSpawnData spawnData = new UnitSpawnData();
+
+            spawnData.InitFromUnitData(unitData);
+            return spawnData;
+        }
+
+        return null;
+        
     }
 }

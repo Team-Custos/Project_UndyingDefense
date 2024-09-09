@@ -552,6 +552,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         targetSelectType = data.targetSelectType;
         unitCode = data.unitCode;
         unitName = data.unitName;
+        curLevel = data.level;
     }
 
     public void EnemyInit(EnemySpawnData data)

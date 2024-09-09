@@ -127,7 +127,6 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                 if (AllyUnit.isSelected)
                 {
                     selectedUnit = AllyUnit.gameObject;
-
                     if (UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
                         Destroy(UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox);
@@ -135,6 +134,8 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
                     }
 
                     UD_Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
+                    UD_Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                    UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
 
                 }
                 else
