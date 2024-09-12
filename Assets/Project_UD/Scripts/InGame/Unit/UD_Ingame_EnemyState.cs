@@ -48,7 +48,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     #region Attack State
     void Attack_Enter()
     {
-        Debug.Log("Enemy Attack_Enter");
+        //Debug.Log("Enemy Attack_Enter");
     }
 
     void Attack_Update()
@@ -66,7 +66,7 @@ public class UD_Ingame_EnemyState : MonoBehaviour
     #region Move State
     void Move_Enter()
     {
-        Debug.Log("Enemy Move_Enter");
+        //Debug.Log("Enemy Move_Enter");
         UnitCtrl.isEnemyInRange = false;
         //navAgent.isStopped = false;
 

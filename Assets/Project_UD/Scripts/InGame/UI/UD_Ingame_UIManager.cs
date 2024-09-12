@@ -77,6 +77,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
     public Text waveGoldText;
     public bool isCurrentWaveFinshed;
     public bool isCurrentWaveSucceed;
+    public Button nextWavBtn;
 
     int unitLevel;
 
@@ -193,6 +194,14 @@ public class UD_Ingame_UIManager : MonoBehaviour
             pauseGameBtn.onClick.AddListener(PauseGame);
         }
 
+        if (nextWavBtn != null)
+        {
+            nextWavBtn.onClick.AddListener(() =>
+            {
+                UD_Ingame_EnemySpawner.inst.NextWave();
+            });
+        }
+
         curHaveGold = 10000000;
 
         waveCount = 20;
@@ -247,7 +256,7 @@ public class UD_Ingame_UIManager : MonoBehaviour
                 UnitSetModeText.text = "SetModeOff";
             }
         }
-        
+
 
         //if (selectedUnit != null)
         //{
