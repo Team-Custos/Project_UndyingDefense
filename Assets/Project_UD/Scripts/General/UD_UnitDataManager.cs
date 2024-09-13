@@ -39,14 +39,14 @@ public class UD_UnitDataManager : MonoBehaviour
         public int AttackRange;
         public string TargetSelectType;
         public int CritRate;
-        public string g_Skil;
+        public int g_Skil;
         public string g_SkillName;
-        public string s_Skill;
+        public int s_Skill;
         public string s_SkillName;
         public string UnitCode;
 
         public UnitData(int number, string id, string name, int level, int cost, int hp, int attackSpeed, string defenseType, float globalTime, int mental, int moveSpeed,
-                        int sightRange, int attackRange, string targetSelectType, int critRate, string g_skill, string g_skillName, string s_skill, string s_skillName, string unitCdoe)
+                        int sightRange, int attackRange, string targetSelectType, int critRate, int g_skill, string g_skillName, int s_skill, string s_skillName, string unitCdoe)
         {
             Number = number;
             ID = id;

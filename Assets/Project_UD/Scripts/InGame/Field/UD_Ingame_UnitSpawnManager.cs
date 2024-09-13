@@ -45,8 +45,6 @@ public class UnitSpawnData
 	//스킬 코드로 처리해야하는가 아님 string으로 처리해야하는가
     public string gSkillName; 
     public string sSkillName;
-    public string s_Skill;
-    public string g_Skill;
     public int cost;
     public string unitCode;
     public int level;
@@ -68,8 +66,10 @@ public class UnitSpawnData
         critChanceRate = unitData.CritRate;
         gSkillName = unitData.g_SkillName;
         sSkillName = unitData.s_SkillName;
-        g_Skill = unitData.g_Skil;
-        s_Skill = unitData.s_Skill;
+        generalSkill = unitData.g_Skil;
+        specialSkill = unitData.s_Skill;
+        skillCooldown = unitData.GlobalTime;
+
 
 
     }

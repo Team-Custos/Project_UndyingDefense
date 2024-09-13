@@ -553,6 +553,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         unitCode = data.unitCode;
         unitName = data.unitName;
         curLevel = data.level;
+        skillCooldown = data.skillCooldown;
     }
 
     public void EnemyInit(EnemySpawnData data)
