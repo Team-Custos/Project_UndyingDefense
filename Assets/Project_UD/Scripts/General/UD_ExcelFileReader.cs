@@ -103,9 +103,15 @@ public class UD_ExcelFileReader : MonoBehaviour
                 {
                     critRate = 0;
                 }
-                string g_skill = dataValues[15];
+                if (!int.TryParse(dataValues[15], out int g_skill))
+                {
+                    g_skill = 0;
+                }
                 string g_skillName = dataValues[16];
-                string s_skill = dataValues[17];
+                if (!int.TryParse(dataValues[17], out int s_skill))
+                {
+                    s_skill = 0;
+                }
                 string s_skillName = dataValues[18];
                 string unitCode = dataValues[19];
 
