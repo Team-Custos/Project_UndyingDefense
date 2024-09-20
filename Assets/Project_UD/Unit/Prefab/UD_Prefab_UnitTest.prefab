@@ -449,7 +449,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitCurDebuff: 00000000
-  Debuffs2Manage: []
+  Debuffs2Manage:
+  - name: 0
+    stack: 0
+    Time: 0
+    Cur_Time: 0
 --- !u!114 &3943989692316205449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,6 +697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 616483561687818118}
+  - component: {fileID: 2249890075700127024}
   m_Layer: 8
   m_Name: Visual
   m_TagString: Untagged
@@ -715,3 +720,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8289127471445694446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2249890075700127024
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8392021169629693780}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

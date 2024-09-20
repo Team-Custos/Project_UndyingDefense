@@ -16,6 +16,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
 
     public GameObject Trap;
 
+    float weaponCooldown_Cur = 0;
     float skillCooldown_Cur = 0;
 
     public UD_Ingame_UnitCtrl UnitCtrl;
@@ -43,27 +44,53 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
         //TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
     }
 
-    public void UnitGeneralSkill(int SkillCode, Vector3 TargetPos, bool isEnemyAttack)
+    public void UnitGeneralSkill(int SkillCode, UD_Ingame_UnitCtrl TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
-        switch (SkillCode)
+        Vector3 TargetPos = TargetEnemy.transform.position;
+        if (weaponCooldown_Cur <= 0)
         {
-            case 101://검 베기
-                //근거리 공격 정해지는 대로 작업.
-
-                break;
-            case 102://활 쏘기
-                if (Bow != null && Bow.GetComponent<UD_Ingame_BowCtrl>() != null)
-                {
-                    Bow.transform.LookAt(TargetPos);
-                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(UnitCtrl.weaponCooldown, UnitCtrl.attackPoint, isEnemyAttack);
-                }
-                break;
+            weaponCooldown_Cur = weaponCooldown;
+            switch (SkillCode)
+            {
+                case 101://검 베기
+                         //근거리 공격 정해지는 대로 작업. -> 타겟팅 방식으로 재작업중.
+                    TargetEnemy.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Slash);
+                    break;
+                case 102://활 쏘기
+                    if (Bow != null && Bow.GetComponent<UD_Ingame_BowCtrl>() != null)
+                    {
+                        Bow.transform.LookAt(TargetPos);
+                        Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(isEnemyAttack);
+                        TargetEnemy.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Pierce);
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            weaponCooldown_Cur -= Time.deltaTime;
         }
     }
 
-    public void UnitSpecialSkill(int SkillCode, Vector3 TargetPos, float skillCooldown)
+    int SkillDamageInit()
     {
-        GameObject TargetEnemy = UnitCtrl.targetEnemy;
+
+
+        return 0;
+    }
+
+
+    public void UnitSpecialSkill(int SkillCode,float skillCooldown)
+    {
+        int SkillDamage = SkillDamageInit();
+
+
+
+        UD_Ingame_UnitCtrl TargetEnemy = null;
+        if (UnitCtrl.targetEnemy != null)
+        {
+            TargetEnemy = UnitCtrl.targetEnemy.GetComponent<UD_Ingame_UnitCtrl>();
+        }
 
         if (skillCooldown_Cur <= 0)
         {
@@ -71,13 +98,20 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
             switch (SkillCode)
             {
                 case 101://낫 찍기
+                         //낫으로 앞에 있는 한 명의 적을 세게 찍어 5 데미지의 관통 공격을 가한다. 치명타율 5% 증가. 치명타 발동 시 충격 효과
                          // 검베기와 같은 처리. 스탯만 다르게.
                     if (TargetEnemy == null)
                     {
                         return;
                     }
+
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.critChanceRate + 5, AttackType.Pierce);
+
                     break;
                 case 102://덫 설치
+                        //서있는 칸을 기준으로 바라보는 방향 2칸 앞에 꿩덫을 설치하여 지나가는 한 명의 적에게 5 데미지의 베기 공격을 가한다. 치명타율이 5% 증가. 치명타 발동 시 속박 효과.
+                        //이미 설치된 꿩덫이 발동되기 전에 해당 스킬을 다시 사용한다면, 이전에 설치된 꿩덫이 부서지고 해당 스킬이 발동되어 새로 꿩덫을 설치한다.
+                        //-> 덫 설치 관련해서 기획쪽이랑 이야기를 해야할 필요가 있어보임.
 
                     if (SetObject != null)
                     {
@@ -86,7 +120,8 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                         SetObject = null;
                     }
 
-                    float CurAngle = Mathf.Abs(gameObject.transform.rotation.y % 360);
+                    float CurAngle = gameObject.transform.eulerAngles.y;
+                    Debug.Log("현재 각도: " + CurAngle);
                     Vector2 CurCellPos = UnitCtrl.unitPos;
                     Vector2[] TargetCells = new Vector2[3];
 
@@ -96,17 +131,22 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                     {
                         directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
-                    else if (CurAngle <= 135 || CurAngle > 45)   // 동쪽
+                    else if (CurAngle <= 135 && CurAngle > 45)   // 동쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
                     }
-                    else if (CurAngle <= 225 || CurAngle > 135)  // 남쪽
+                    else if (CurAngle <= 225 && CurAngle > 135)  // 남쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
                     }
-                    else // 서쪽
+                    else if (CurAngle > 225 && CurAngle <= 315) // 서쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
+                    }
+                    else
+                    {
+                        Debug.LogError("덫 설치 관련 각도 계산 오류.");
+                        directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
 
                     // TargetCells에 오프셋 적용하여 좌표 계산
@@ -210,7 +250,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
                 if (Bow != null)
                 {
                     Bow.transform.LookAt(TargetPos);
-                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(UnitCtrl.weaponCooldown, UnitCtrl.attackPoint, true);
+                    Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(true);
                 }
                 break;
         }

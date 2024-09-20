@@ -24,7 +24,7 @@ public class UD_Ingame_AttackCtrl : MonoBehaviour
 
     public int Atk = 1;
     public float speed = 1f;
-    public float CritPercent = 1;
+    public float CritPercentAdd = 0;
     public bool isEnemyAttack = false;
 
     // Start is called before the first frame update
@@ -47,6 +47,7 @@ public class UD_Ingame_AttackCtrl : MonoBehaviour
             case AttackMethod.Melee:
                 break;
             case AttackMethod.Trap:
+                CritPercentAdd = 5;
                 break;
         }        
     }

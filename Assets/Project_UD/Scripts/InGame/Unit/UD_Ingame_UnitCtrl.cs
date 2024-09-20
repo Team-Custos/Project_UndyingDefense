@@ -312,7 +312,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
-                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
+                UnitSkill.UnitSpecialSkill(specialSkillCode, skillCooldown);
                 if (targetEnemy == null && !isEnemyInSight)
                 {
                     SearchEnemy();
@@ -332,7 +332,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-                UnitSkill.UnitSpecialSkill(specialSkillCode, moveTargetPos, skillCooldown);
+                UnitSkill.UnitSpecialSkill(specialSkillCode, skillCooldown);
                 if (haveToMovePosition)
                 {
                     targetEnemy = null;
@@ -482,6 +482,8 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     public void Unit_Attack()
     {
+       
+
         if (this.gameObject.CompareTag(UD_CONSTANT.TAG_UNIT))
         {
             if (targetEnemy == null)
@@ -492,22 +494,20 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, false);
-                //Bow.transform.LookAt(targetEnemy.transform.position);
-                //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, false);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(), weaponCooldown,false);
             }
         }
         else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(generalSkillCode, moveTargetPos, true);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(), weaponCooldown, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.transform.position, true);
+                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(),weaponCooldown , true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
@@ -535,6 +535,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
         generalSkillCode = data.generalSkill;
         specialSkillCode = data.specialSkill;
+        
 
         unitType = data.unitType;
         defenseType = data.defenseType;
@@ -563,7 +564,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         GameObject OBJ = other.gameObject;
-        //피격 판정
+        //피격 판정 -> 삭제 예정
         if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
         {
             UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
@@ -584,7 +585,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
-                    ReceivePhysicalDamage(Attack, Attack.Atk, Attack.CritPercent, Attack.Type);
+                    ReceivePhysicalDamage(Attack.Atk, critChanceRate + Attack.CritPercentAdd, Attack.Type);
                     if (Attack.MethodType == AttackMethod.Trap)
                     {
                         Destroy(OBJ);
@@ -592,7 +593,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
                     }
                     else
                     {
-                        this.HP -= Attack.Atk;
                         Destroy(OBJ);
                     }
                 }
@@ -623,7 +623,7 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
 
     }
 
-    void ReceivePhysicalDamage(UD_Ingame_AttackCtrl AtkObj, int Damage, float Crit, AttackType attackType)
+    public void ReceivePhysicalDamage(int Damage, float Crit, AttackType attackType)
     {
         if (defenseType == DefenseType.cloth)
         {
@@ -699,7 +699,6 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
         {
             Debug.Log("Critical Hit!");
         }
-
     }
 
 

@@ -9,6 +9,7 @@ public class UD_Ingame_UnitModelSwapManager : MonoBehaviour
     public static UD_Ingame_UnitModelSwapManager inst;
     public GameObject[] AllyModel;
     public GameObject[] EnemyModel;
+    public Animator[] Animator;
 
     private void Awake()
     {
