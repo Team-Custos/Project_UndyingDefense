@@ -24,43 +24,44 @@ public class UD_Ingame_BaseStatus : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        GameObject OBJ = collision.gameObject;
-        //피격 판정
-        if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
-        {
-            UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
-
-            if (Attack.isEnemyAttack)
-            {
-                //Debug.Log(this.gameObject.name + " attack hit!");
-                this.BaseHPCur -= Attack.Atk;
-                if (Attack.MethodType == AttackMethod.Arrow)
-                {
-                    Destroy(OBJ);
-                }
-            }
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         GameObject OBJ = other.gameObject;
         //피격 판정
-        if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
-        {
-            UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
+        //if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
+        //{
+        //    UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
 
-            if (Attack.isEnemyAttack)
-            {
-                //Debug.Log(this.gameObject.name + " attack hit!");
-                this.BaseHPCur -= Attack.Atk;
-                if (Attack.MethodType == AttackMethod.Arrow)
-                {
-                    Destroy(OBJ);
-                }
-            }
-        }
+        //    if (Attack.isEnemyAttack)
+        //    {
+        //        //Debug.Log(this.gameObject.name + " attack hit!");
+        //        this.BaseHPCur -= Attack.Atk;
+        //        if (Attack.MethodType == AttackMethod.Arrow)
+        //        {
+        //            Destroy(OBJ);
+        //        }
+        //    }
+        //}
     }
+
+    public void ReceiveDamage(int Damage)
+    {
+        IEnumerator HitEffect()
+        {
+            this.GetComponent<MeshRenderer>().material.color = new Color32(255, 0, 0, 255);
+
+            yield return new WaitForSeconds(0.1f);
+
+            this.GetComponent<MeshRenderer>().material.color = new Color32(255, 255, 255, 255);
+        }
+
+        StartCoroutine(HitEffect());
+
+        BaseHPCur -= Damage;
+
+       
+    }
+
+   
+
 }

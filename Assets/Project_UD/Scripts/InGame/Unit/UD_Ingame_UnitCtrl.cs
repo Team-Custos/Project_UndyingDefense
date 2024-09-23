@@ -494,20 +494,20 @@ public class UD_Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(), weaponCooldown,false);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy, weaponCooldown,false);
             }
         }
         else if (this.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(), weaponCooldown, true);
+                UnitSkill.UnitGeneralSkill(generalSkillCode, targetBase, weaponCooldown, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy.GetComponent<UD_Ingame_UnitCtrl>(),weaponCooldown , true);
+                    UnitSkill.UnitGeneralSkill(generalSkillCode, targetEnemy,weaponCooldown , true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }

@@ -44,7 +44,7 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
         //TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
     }
 
-    public void UnitGeneralSkill(int SkillCode, UD_Ingame_UnitCtrl TargetEnemy, float weaponCooldown, bool isEnemyAttack)
+    public void UnitGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
         Vector3 TargetPos = TargetEnemy.transform.position;
         if (weaponCooldown_Cur <= 0)
@@ -54,14 +54,33 @@ public class UD_Ingame_UnitSkillManager : MonoBehaviour
             {
                 case 101://검 베기
                          //근거리 공격 정해지는 대로 작업. -> 타겟팅 방식으로 재작업중.
-                    TargetEnemy.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Slash);
+                    if (TargetEnemy.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
+                    {
+                        UD_Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<UD_Ingame_UnitCtrl>();
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Slash);
+                    }
+                    else
+                    {
+                        UD_Ingame_BaseStatus BaseCtrl = TargetEnemy.GetComponent<UD_Ingame_BaseStatus>();
+                        BaseCtrl.BaseHPCur -= UnitCtrl.attackPoint;
+                    }
+                    
                     break;
                 case 102://활 쏘기
                     if (Bow != null && Bow.GetComponent<UD_Ingame_BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
                         Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(isEnemyAttack);
-                        TargetEnemy.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Pierce);
+                        if (TargetEnemy.gameObject.CompareTag(UD_CONSTANT.TAG_ENEMY))
+                        {
+                            UD_Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<UD_Ingame_UnitCtrl>();
+                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.attackPoint, UnitCtrl.critChanceRate, AttackType.Pierce);
+                        }
+                        else
+                        {
+                            UD_Ingame_BaseStatus BaseCtrl = TargetEnemy.GetComponent<UD_Ingame_BaseStatus>();
+                            BaseCtrl.ReceiveDamage(UnitCtrl.attackPoint);
+                        }
                     }
                     break;
             }
