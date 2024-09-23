@@ -59,21 +59,17 @@ public class UD_Ingame_GameOrderSystem : MonoBehaviour
 
                 if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
                 {
-                    if (GAMEMANAGER.AllyUnitSetMode)//아군 배치
+                    if (GAMEMANAGER.AllyUnitSetMode) // 아군 배치
                     {
                         UD_Ingame_UnitSpawnManager SpawnMgr = UD_Ingame_UnitSpawnManager.inst;
                         GridTile.currentPlacedUnit = SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
-                        //GridTile.isPlaceable = false;
+
+                        // UI 업데이트: 버튼 비활성화 및 패널 활성화
+                        int unitIndex = UD_Ingame_UIManager.instance.GetButtonIndexByUnitCode(SpawnMgr.unitToSpawn);
+                        UD_Ingame_UIManager.instance.UpdateSpawnButtonState(unitIndex);
+
                         UD_Ingame_GameManager.inst.UnitSetMode = false;
                         UD_Ingame_GameManager.inst.AllyUnitSetMode = false;
-                    }
-                    else if (GAMEMANAGER.EnemyUnitSetMode)// 적 배치
-                    {
-                        UD_Ingame_EnemySpawner SpawnMgr = UD_Ingame_EnemySpawner.inst;
-                        GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1, GridTile.transform.position.x, GridTile.transform.position.z);
-                        //GridTile.isPlaceable = false;
-                        UD_Ingame_GameManager.inst.UnitSetMode = false;
-                        UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
                     }
                 }
                 else if (GridTile.currentPlacedUnit == null)

@@ -92,7 +92,7 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
 
         currentWave = 1;
 
-        StartCoroutine(WaveSystem());
+        //StartCoroutine(WaveSystem());
     }
 
     // Update is called once per frame
@@ -152,26 +152,24 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
         return Obj;
     }
 
-    IEnumerator WaveSystem()
+    public IEnumerator WaveSystem()
     {
         isWaveInProgress = true;
         spawnedMonsterCount = 0;
 
         Debug.Log($"Wave {currentWave} 시작");
 
-        // 몬스터 스폰 루틴 실행
+        UD_Ingame_UIManager.instance.isCurrentWaveFinshed = true;
+
         yield return StartCoroutine(SpawnMonstersForWave());
 
-        // 몬스터가 모두 죽을 때까지 기다림
-        //yield return StartCoroutine(CheckAllMonstersDead());
+        yield return StartCoroutine(CheckAllMonstersDead());
 
-        //Debug.Log("20초 대기");
-        //yield return new WaitForSeconds(20f); // 20초 대기
+        Debug.Log("모든 몬스터 처치 완료. 다음 웨이브로...");
 
-        isWaveInProgress = false; 
+        isWaveInProgress = false;
     }
 
-    // 웨이브에 따른 몬스터 생성 코루틴
     IEnumerator SpawnMonstersForWave()
     {
         if (currentWave <= 2)
@@ -180,35 +178,28 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
             for (int i = 0; i < monsterPerWave; i++)
             {
                 SpawnEnemy(0); // 몬스터 A 스폰
-                yield return new WaitForSeconds(spawnInterval);
+                yield return new WaitForSeconds(spawnInterval); 
             }
         }
         else
         {
-            // 3~10 웨이브는 A, B 몬스터가 각각 5마리씩 생성되도록 수정
+            // 3~10 웨이브는 A, B 몬스터가 각각 5마리씩 생성
             int spawnedA = 0;
             int spawnedB = 0;
 
             while (spawnedA < monsterPerWave || spawnedB < monsterPerWave)
             {
-                // 랜덤으로 A 또는 B 몬스터 생성
                 int enemyType = Random.Range(0, 2);
 
                 if (enemyType == 0 && spawnedA < monsterPerWave)
                 {
-                    SpawnEnemy(0); // A 몬스터 스폰
+                    SpawnEnemy(0);
                     spawnedA++;
                 }
                 else if (enemyType == 1 && spawnedB < monsterPerWave)
                 {
-                    SpawnEnemy(1); // B 몬스터 스폰
+                    SpawnEnemy(1);
                     spawnedB++;
-                }
-
-                // A와 B 모두 생성 완료 시 루프를 종료
-                if (spawnedA >= monsterPerWave && spawnedB >= monsterPerWave)
-                {
-                    break;
                 }
 
                 yield return new WaitForSeconds(spawnInterval);
@@ -216,28 +207,24 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
         }
     }
 
-    // 몬스터 생성
     void SpawnEnemy(int enemyType)
     {
-        // 스폰 위치 랜덤 선택
         Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
 
-        GameObject enemyObj = UD_Ingame_ObjectPool.GetObject(); // 오브젝트 풀에서 가져오기
-
+        GameObject enemyObj = UD_Ingame_ObjectPool.GetObject(); 
         enemyObj.transform.position = spawnPos.position;
         enemyObj.transform.rotation = Quaternion.identity;
 
-
         if (enemyType == 0)
         {
-            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // A 몬스터 초기화
         }
         else
         {
-            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // B 몬스터 초기화
         }
 
-        activeMonsters.Add(enemyObj); // 생성된 몬스터 목록에 추가
+        activeMonsters.Add(enemyObj); 
     }
 
     // 몬스터 죽음 처리
@@ -246,22 +233,25 @@ public class UD_Ingame_EnemySpawner : MonoBehaviour
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            UD_Ingame_ObjectPool.ReturnObject(monster); // 오브젝트를 풀로 반환
+            UD_Ingame_ObjectPool.ReturnObject(monster); 
         }
     }
 
     // 몬스터가 모두 죽었는지 확인
     IEnumerator CheckAllMonstersDead()
     {
-        while (activeMonsters.Count > 0) // 몬스터가 아직 남아 있는지 확인
+        while (activeMonsters.Count > 0) 
         {
             yield return null;
         }
 
+        UD_Ingame_UIManager.instance.isCurrentWaveFinshed = true;
     }
 
     public void NextWave()
     {
+        UD_Ingame_UIManager.instance.isCurrentWaveFinshed = true;
+
         Debug.Log("다음 웨이브로 넘어갑니다.");
 
         // 현재 활성화된 모든 몬스터 제거
