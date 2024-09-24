@@ -26,11 +26,9 @@ public class UD_Ingame_BowCtrl : MonoBehaviour
     {
         if (ShootCooldown_Cur <= 0)
         {
-            GameObject arrow_Obj = Instantiate(Arrow.gameObject);
-            arrow_Obj.transform.position = this.ShootPos.position;
-            arrow_Obj.transform.rotation = this.transform.rotation;
-
-            UD_Ingame_ArrowCtrl arrowCtrl = arrow_Obj.GetComponent<UD_Ingame_ArrowCtrl>();
+            GameObject arrow_Obj = Instantiate(Arrow);
+            arrow_Obj.transform.SetPositionAndRotation(this.ShootPos.position, this.transform.rotation);
+            UD_Ingame_AttackCtrl arrowCtrl = arrow_Obj.GetComponent<UD_Ingame_AttackCtrl>();
 
             arrowCtrl.Atk = atk;
             arrowCtrl.isEnemyAttack = isEnemyAttack;
