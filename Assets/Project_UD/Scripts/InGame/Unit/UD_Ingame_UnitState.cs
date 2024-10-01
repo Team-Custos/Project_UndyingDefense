@@ -21,8 +21,8 @@ public class UD_Ingame_UnitState : MonoBehaviour
     [HideInInspector]public UnitState State;
     public StateMachine<UnitState, StateDriverUnity> fsm;
     
-    UD_Ingame_UnitCtrl UnitCtrl;
-    UD_Ingame_UIManager UnitUIManager;
+    Ingame_UnitCtrl UnitCtrl;
+    Ingame_UIManager UnitUIManager;
     NavMeshAgent navAgent;
 
 
@@ -31,7 +31,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
         fsm = new StateMachine<UnitState, StateDriverUnity>(this);
         fsm.ChangeState(UnitState.Idle);
 
-        UnitCtrl = this.GetComponent<UD_Ingame_UnitCtrl>();
+        UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
     }
 
@@ -107,7 +107,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
     }
 
     void Move_Update()
@@ -133,7 +133,7 @@ public class UD_Ingame_UnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
 
     }
     #endregion
