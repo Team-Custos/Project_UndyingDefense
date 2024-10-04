@@ -70,7 +70,6 @@ public class EnemySpawner : MonoBehaviour
     private bool isWaveInProgress = false;
 
     private List<GameObject> activeMonsters = new List<GameObject>();
-    bool isCurrentWaveFinshed = false;
 
 
     private void Awake()

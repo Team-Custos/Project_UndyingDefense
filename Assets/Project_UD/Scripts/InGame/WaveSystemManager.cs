@@ -23,7 +23,7 @@ public class WaveSystemManager : MonoBehaviour
     float waveStartDelayCur = 0;
 
     public float SpawnDelay = 0;
-    float SpawnDelayCur = 0;
+    //float SpawnDelayCur = 0;
 
     public GameObject[] remainEnemy;
 

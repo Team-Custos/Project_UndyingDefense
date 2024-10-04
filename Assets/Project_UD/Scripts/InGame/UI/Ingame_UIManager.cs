@@ -13,8 +13,14 @@ public class Ingame_UIManager : MonoBehaviour
 {
     public static Ingame_UIManager instance;
 
-    UnitSpawnManager unitSpawnManager;
+    private UnitSpawnManager unitSpawnManager;
+    private UnitDataManager unitDataManager;
+    private UnitUpgradeManager unitUpgradeManager;
+    private GameOrderSystem gameOrderSystem;
 
+    private Camera mainCamera;
+
+    [Header("====Test UI====")]
     public Button EnemyTestModeBtn = null;
     public Text UnitSetModeText = null;
 
@@ -42,18 +48,18 @@ public class Ingame_UIManager : MonoBehaviour
     public Text gSkillInfoText;
     public Text sSkillInfoText;
 
-
-    [Header("====GameOption====")]
+    [Header("====Game Option====")]
     public Button endGameBtn;
     public Button restartGameBtn;
     public Button pauseGameBtn;
+    private bool isPasue = false;
 
     [Header("====UnitOptionMenu====")]
     public GameObject slectedUnitOptionBox;         // 업그레이드 and 모드 변경 판넬
     public GameObject currentSelectedUnitOptionBox; // 프리펩으로 생성될 판넬
     public Button unitStateChageBtn;                // 유닛 모드 변경 버튼
-    public Sprite FreeModeImage;                    // 모든 변경 버튼 Free
-    public Sprite SiegeModeImage;                   // 모든 변경 버튼 Siege
+    public Sprite FreeModeImage;                    // 모드 변경 버튼 Free
+    public Sprite SiegeModeImage;                   // 모드 변경 버튼 Siege
     public GameObject unitUpgradeMenuBox;           // 유닛 업그레이드 메뉴 판넬
     public GameObject currentUpgradeMenu;           // 프리펩으로 생성될 업그레이드 판넬
     public Button UnitUpgrade1Btn;
@@ -77,45 +83,29 @@ public class Ingame_UIManager : MonoBehaviour
     public Button nextWavBtn;
     public Button waveCheckBtn;
 
-    int unitLevel;
+    [Header("====Game Setting UI====")]
+    public Button settingBtn;
+    public Button settingCloseBtn;
+    public GameObject settingPanel;
 
-    public Text curGoldText;
-    public int curHaveGold;
-
-
-    public int curUnitHp;
-
-
-
+    [Header("====Unit GamoeObject====")]
     public GameObject UnitStateChangeBox;
     public GameObject currentUnitStateChangeBox;
+    public GameObject unitMoveUI;
 
-    private bool isPasue = false;
+
+
+    public int curHaveGold;
+    public int curUnitHp;
+
 
     private AllyMode allyMode;
 
     private Ingame_UnitCtrl selectedUnit;
     public GameObject unit;
 
-
-    Camera mainCamera;
-
-
     public Button unitUpgradeBtn;
 
-
-    public Image unitMoveImage;
-    public GameObject unitMoveUI;
-
-    private UnitDataManager unitDataManager;
-    private UnitUpgradeManager unitUpgradeManager;
-    private GameOrderSystem gameOrderSystem;
-
-
-    [Header("====Game Setting====")]
-    public Button settingBtn;
-    public Button settingCloseBtn;
-    public GameObject settingPanel;
 
 
 
@@ -633,14 +623,6 @@ public class Ingame_UIManager : MonoBehaviour
     {
         selectedUnit = unit;
     }
-
-    //public void UnitStateChange(UD_Ingame_UnitCtrl unit)
-    //{
-    //    if (unit != null && unit.isSelected)
-    //    {
-    //        unit.Ally_Mode = AllyMode.Change;
-    //    }
-    //}
 
     public void ShowMoveUI(GameObject unit, bool show)
     {
