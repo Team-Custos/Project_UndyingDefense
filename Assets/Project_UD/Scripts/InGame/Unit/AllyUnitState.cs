@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using MonsterLove.StateMachine;
-using UnityEngine.UI;
 
 public enum UnitState
 {
@@ -23,6 +22,7 @@ public class AllyUnitState : MonoBehaviour
     
     Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
+    Animator allyAnimator;
 
 
     private void Start()
@@ -32,10 +32,12 @@ public class AllyUnitState : MonoBehaviour
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
+        
     }
 
     private void Update()
     {
+        allyAnimator = UnitCtrl.CurVisualModelAnimator;
         fsm.Driver.Update.Invoke();
     }
 
@@ -43,10 +45,13 @@ public class AllyUnitState : MonoBehaviour
     void Idle_Enter()
     {
         Debug.Log("Idle Enter");
+        
     }
 
     void Idle_Update()
     {
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         UnitCtrl.SearchEnemy();
     }
 
@@ -60,6 +65,7 @@ public class AllyUnitState : MonoBehaviour
     void Attack_Enter()
     {
         Debug.Log("Attack_Enter");
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
     }
 
     void Attack_Update()
@@ -105,6 +111,8 @@ public class AllyUnitState : MonoBehaviour
         navAgent.isStopped = false;
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
+
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
     }
 
     void Move_Update()
@@ -143,10 +151,10 @@ public class AllyUnitState : MonoBehaviour
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
 
-        if (targetEnemyDistance_Cur <= UnitCtrl.DataStatus.attackRange)
+        if (targetEnemyDistance_Cur <= UnitCtrl.unitData.attackRange)
         {
             UnitCtrl.isEnemyInRange = true;
-            navAgent.SetDestination(UnitCtrl.DataStatus.transform.position);
+            navAgent.SetDestination(UnitCtrl.transform.position);
         }
         else
         {

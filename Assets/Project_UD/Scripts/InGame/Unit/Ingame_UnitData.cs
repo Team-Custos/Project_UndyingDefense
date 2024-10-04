@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ingame_UnitDataStatus : MonoBehaviour
+[CreateAssetMenu(fileName = "UnitData", menuName = "Scriptable Object/UnitData", order = int.MaxValue)]
+public class Ingame_UnitData : ScriptableObject
 {
     [Header("====General====")]
     public UnitType unitType;
@@ -10,9 +11,6 @@ public class Ingame_UnitDataStatus : MonoBehaviour
     public TargetSelectType targetSelectType;
 
     public int modelType;
-    public int cur_modelType;
-    public int curLevel = 1;
-    public int HP;
     public int maxHP;
     public int mental = 1;
     public float moveSpeed;

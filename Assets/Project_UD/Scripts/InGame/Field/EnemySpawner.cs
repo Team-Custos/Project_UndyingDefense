@@ -33,6 +33,8 @@ public class EnemySpawnData
 
 public class EnemySpawner : MonoBehaviour
 {
+    public List<Ingame_UnitData> enemyDatas;
+
     public static EnemySpawner inst;
 
     GridManager gridManager;
@@ -119,7 +121,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject Obj = Instantiate(Test_Enemy);
         Obj.transform.position = new Vector3(X, 0, Y);
         //Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-        Obj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]);
+        Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
         return Obj;
     }
 }

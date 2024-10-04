@@ -1,7 +1,4 @@
-using MonsterLove.StateMachine;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -36,7 +33,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public NavMeshAgent NavAgent;
     [HideInInspector] public UnitSkillManager UnitSkill;
 
-    public Ingame_UnitDataStatus DataStatus;
+    public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
     UnitModelSwapManager ModelSwap;
     
@@ -46,8 +43,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Vector2 unitPos = Vector2.zero;
 
     public Transform VisualModel;
+    public Animator CurVisualModelAnimator;
     public GameObject Selected_Particle;
     public bool isSelected = false;
+    public int cur_modelType;
+    public int curLevel = 1;
+    public int HP;
 
     [Header("====AI====")]
     bool SpawnDelay = true;
@@ -86,18 +87,20 @@ public class Ingame_UnitCtrl : MonoBehaviour
     private void Awake()
     {
         ModelSwap = UnitModelSwapManager.inst;
-        if (DataStatus == null)
-        {
-            DataStatus = GetComponent<Ingame_UnitDataStatus>();
-        }
         debuffManager = GetComponent<UnitDebuffManager>();
 
 
         NavAgent = GetComponent<NavMeshAgent>();
         NavObstacle = GetComponent<NavMeshObstacle>();
 
-        Ally_State = GetComponent<AllyUnitState>();
-        Enemy_State = GetComponent<EnemyUnitState>();
+        if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        {
+            Ally_State = GetComponent<AllyUnitState>();
+        }
+        else if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        {
+            Enemy_State = GetComponent<EnemyUnitState>();
+        }
 
         UnitSkill = GetComponentInChildren<UnitSkillManager>();
     }
@@ -107,17 +110,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
-            Instantiate(ModelSwap.AllyModel[DataStatus.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
-            Instantiate(ModelSwap.EnemyModel[DataStatus.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
 
         SpawnDelay = true;
 
         targetBase = InGameManager.inst.Base;
-        DataStatus.HP = DataStatus.maxHP;
+        HP = unitData.maxHP;
 
         Ally_Mode = AllyMode.Siege;
 
@@ -144,15 +147,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(findEnemyRange.transform.position, DataStatus.attackRange + 0.5f);
+        Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
-
+        CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position,false,false);
@@ -162,29 +164,28 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
 
         //모델 변경
-        if (DataStatus.modelType != DataStatus.cur_modelType)
+        if (unitData.modelType != cur_modelType)
         {
             Destroy(VisualModel.GetChild(0).gameObject);
             if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
-                Instantiate(ModelSwap.AllyModel[DataStatus.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+                Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
             }
             else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
-                Instantiate(ModelSwap.EnemyModel[DataStatus.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+                Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
             }
 
-            DataStatus.cur_modelType = DataStatus.modelType;
+            cur_modelType = unitData.modelType;
         }
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
-        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
-        sightRangeSensor.radius = DataStatus.sightRange;
+        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);        
 
-        NavAgent.speed = DataStatus.moveSpeed;
+        NavAgent.speed = unitData.moveSpeed;
 
-        if (DataStatus.HP <= 0)
+        if (HP <= 0)
         {
             Debug.Log(this.gameObject.name + " Destroyed");
             Destroy(this.gameObject);
@@ -199,7 +200,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         #region 아군 제어
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
-
+            sightRangeSensor.radius = unitData.sightRange;
             if (Ally_Mode == AllyMode.Free)
             {
                 NavObstacle.enabled = false;
@@ -282,7 +283,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
-                UnitSkill.UnitSpecialSkill(DataStatus.specialSkillCode, DataStatus.skillCooldown);
+                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
                 if (targetEnemy == null && !isEnemyInSight)
                 {
                     SearchEnemy();
@@ -291,7 +292,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 if (targetEnemy != null && !haveToMovePosition)
                 {
                     float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-                    isEnemyInRange = (distanceToEnemy <= DataStatus.attackRange);
+                    isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
 
                     if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
                     {
@@ -302,7 +303,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-                UnitSkill.UnitSpecialSkill(DataStatus.specialSkillCode, DataStatus.skillCooldown);
+                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
                 if (haveToMovePosition)
                 {
                     targetEnemy = null;
@@ -325,7 +326,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                     if (targetEnemy != null)
                     {
-                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= DataStatus.attackRange);
+                        isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= unitData.attackRange);
                         //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
                     }
 
@@ -371,14 +372,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
 
             enemy_isBaseInRange =
-            (Vector3.Distance(transform.position, moveTargetBasePos) <= DataStatus.attackRange);
+            (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange);
 
             if (enemy_isPathBlocked)
             {
                 if (targetEnemy != null && !enemy_isBaseInRange)//병사 발견시
                 {
                     isEnemyInRange =
-                        (Vector3.Distance(transform.position, targetEnemy.transform.position) <= DataStatus.attackRange);
+                        (Vector3.Distance(transform.position, targetEnemy.transform.position) <= unitData.attackRange);
 
                     if (isEnemyInSight)
                     {
@@ -430,7 +431,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else
         {
             GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch(DataStatus.attackRange, this.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+                sightRangeSensor.NearestObjectSearch(unitData.attackRange, this.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
             {
@@ -464,20 +465,20 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(DataStatus.generalSkillCode, targetEnemy, DataStatus.weaponCooldown,false);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown,false);
             }
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(DataStatus.generalSkillCode, targetBase, DataStatus.weaponCooldown, true);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetBase, unitData.weaponCooldown, true);
             }
             else
             {
                 if (targetEnemy != null)
                 {
-                    UnitSkill.UnitGeneralSkill(DataStatus.generalSkillCode, targetEnemy,DataStatus.weaponCooldown , true);
+                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
@@ -492,43 +493,45 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public void UnitInit(UnitSpawnData data)
     {
-        DataStatus.modelType = data.modelType;
-        DataStatus.maxHP = data.HP;
-        DataStatus.moveSpeed = data.moveSpeed;
-        DataStatus.weaponCooldown = data.attackSpeed;
-        DataStatus.skillCooldown = data.skillCooldown;
-        DataStatus.attackPoint = data.attackPoint;
-        DataStatus.critChanceRate = data.critChanceRate;
+        unitData = UnitSpawnManager.inst.unitDatas[data.unitType.GetHashCode()];
 
-        DataStatus.sightRange = data.sightRange;
-        DataStatus.attackRange = data.attackRange;
+        unitData.modelType = data.modelType;
+        unitData.maxHP = data.HP;
+        unitData.moveSpeed = data.moveSpeed;
+        unitData.weaponCooldown = data.attackSpeed;
+        unitData.skillCooldown = data.skillCooldown;
+        unitData.attackPoint = data.attackPoint;
+        unitData.critChanceRate = data.critChanceRate;
 
-        DataStatus.generalSkillCode = data.generalSkill;
-        DataStatus.specialSkillCode = data.specialSkill;
+        unitData.sightRange = data.sightRange;
+        unitData.attackRange = data.attackRange;
+
+        unitData.generalSkillCode = data.generalSkill;
+        unitData.specialSkillCode = data.specialSkill;
         
 
-        DataStatus.unitType = data.unitType;
-        DataStatus.defenseType = data.defenseType;
-        DataStatus.targetSelectType = data.targetSelectType;
+        unitData.unitType = data.unitType;
+        unitData.defenseType = data.defenseType;
+        unitData.targetSelectType = data.targetSelectType;
     }
 
     public void EnemyInit(EnemySpawnData data)
     {
-        DataStatus.modelType = data.modelType;
-        DataStatus.maxHP = data.HP;
-        DataStatus.moveSpeed = data.moveSpeed;
-        DataStatus.attackPoint = data.attackPoint;
-        DataStatus.critChanceRate = data.critChanceRate;
+        unitData.modelType = data.modelType;
+        unitData.maxHP = data.HP;
+        unitData.moveSpeed = data.moveSpeed;
+        unitData.attackPoint = data.attackPoint;
+        unitData.critChanceRate = data.critChanceRate;
 
-        DataStatus.sightRange = data.sightRange;
-        DataStatus.attackRange = data.attackRange;
+        unitData.sightRange = data.sightRange;
+        unitData.attackRange = data.attackRange;
 
-        DataStatus.generalSkillCode = data.generalSkill;
-        DataStatus.specialSkillCode = data.specialSkill;
+        unitData.generalSkillCode = data.generalSkill;
+        unitData.specialSkillCode = data.specialSkill;
 
-        DataStatus.unitType = data.unitType;
-        DataStatus.defenseType = data.defenseType;
-        DataStatus.targetSelectType = data.targetSelectType;
+        unitData.unitType = data.unitType;
+        unitData.defenseType = data.defenseType;
+        unitData.targetSelectType = data.targetSelectType;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -542,7 +545,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT) && Attack.isEnemyAttack)
             {
                 //Debug.Log(this.gameObject.name + " attack hit!");
-                DataStatus.HP -= Attack.Atk;
+                HP -= Attack.Atk;
                 Destroy(OBJ);
             }
             else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && !Attack.isEnemyAttack)
@@ -555,7 +558,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
-                    ReceivePhysicalDamage(Attack.Atk, DataStatus.critChanceRate + Attack.CritPercentAdd, Attack.Type);
+                    ReceivePhysicalDamage(Attack.Atk, unitData.critChanceRate + Attack.CritPercentAdd, Attack.Type);
                     if (Attack.MethodType == AttackMethod.Trap)
                     {
                         Destroy(OBJ);
@@ -596,7 +599,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     //물리적 데미지
     public void ReceivePhysicalDamage(int Damage, float Crit, AttackType attackType)
     {
-        if (DataStatus.defenseType == DefenseType.cloth)
+        if (unitData.defenseType == DefenseType.cloth)
         {
             if (attackType == AttackType.Slash)
             {
@@ -614,7 +617,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 Damage += 0;
             }
         }
-        else if (DataStatus.defenseType == DefenseType.leather)
+        else if (unitData.defenseType == DefenseType.leather)
         {
             if (attackType == AttackType.Slash)
             {
@@ -632,7 +635,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 Damage -= (int)(Damage * 0.3f);
             }
         }
-        else if (DataStatus.defenseType == DefenseType.metal)
+        else if (unitData.defenseType == DefenseType.metal)
         {
             if (attackType == AttackType.Slash)
             {
@@ -665,7 +668,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        DataStatus.HP -= Damage;
+        HP -= Damage;
         if (UnityEngine.Random.Range(0, 100) <= Crit)
         {
             Debug.Log("Critical Hit!");

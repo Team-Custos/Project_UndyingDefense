@@ -46,27 +46,43 @@ public class UnitSkillManager : MonoBehaviour
 
     public void UnitGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
+        void TargetAnalyze()
+        {
+            if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
+            }
+            else
+            {
+                BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+            }
+        }
+
         Vector3 TargetPos = TargetEnemy.transform.position;
         if (weaponCooldown_Cur <= 0)
         {
             weaponCooldown_Cur = weaponCooldown;
             switch (SkillCode)
             {
-                case 101://검 베기
-                         //근거리 공격 정해지는 대로 작업. -> 타겟팅 방식으로 재작업중.
+
+                case 101://낫 베기
+                         //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
                     if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
                     {
                         Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.DataStatus.attackPoint, UnitCtrl.DataStatus.critChanceRate, AttackType.Slash);
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Slash);
                     }
                     else
                     {
                         BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.BaseHPCur -= UnitCtrl.DataStatus.attackPoint;
+                        BaseCtrl.BaseHPCur -= UnitCtrl.unitData.attackPoint;
                     }
                     
                     break;
                 case 102://활 쏘기
+                         //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
@@ -74,15 +90,53 @@ public class UnitSkillManager : MonoBehaviour
                         if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
                         {
                             Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.DataStatus.attackPoint, UnitCtrl.DataStatus.critChanceRate, AttackType.Pierce);
+                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
                         }
                         else
                         {
                             BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                            BaseCtrl.ReceiveDamage(UnitCtrl.DataStatus.attackPoint);
+                            BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
                         }
                     }
                     break;
+                case 201://창 찌르기
+                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+                    {
+                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
+                    }
+                    else
+                    {
+                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                    }
+                    break;
+                case 202://망치 내려치기
+                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+                    {
+                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Crush);
+                    }
+                    else
+                    {
+                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                    }
+                    break;
+                case 203://엽총 쏘기
+                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+                    {
+                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
+                    }
+                    else
+                    {
+                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                    }
+                    
+                    break;
+
             }
         }
         else
@@ -124,10 +178,34 @@ public class UnitSkillManager : MonoBehaviour
                         return;
                     }
 
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.DataStatus.critChanceRate + 5, AttackType.Pierce);
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
 
                     break;
-                case 102://덫 설치
+
+                case 102://연사
+                    if (TargetEnemy == null)
+                    {
+                        return;
+                    }
+
+                    StartCoroutine(DoubleShot());
+
+                    IEnumerator DoubleShot()
+                    {
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
+                        yield return new WaitForSeconds(0.5f);
+                    }
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
+
+                    break;
+                case 201://멀리베기
+                    break;
+                case 202://방패치기
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush);
+                    break;
+                case 203://수류탄 투척
+                    break;
+                case 204://덫 설치
                         //서있는 칸을 기준으로 바라보는 방향 2칸 앞에 꿩덫을 설치하여 지나가는 한 명의 적에게 5 데미지의 베기 공격을 가한다. 치명타율이 5% 증가. 치명타 발동 시 속박 효과.
                         //이미 설치된 꿩덫이 발동되기 전에 해당 스킬을 다시 사용한다면, 이전에 설치된 꿩덫이 부서지고 해당 스킬이 발동되어 새로 꿩덫을 설치한다.
                         //-> 덫 설치 관련해서 기획쪽이랑 이야기를 해야할 필요가 있어보임.

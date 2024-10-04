@@ -102,7 +102,7 @@ public class EnemyUnitState : MonoBehaviour
                 float targetUnitDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);
                 UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;
 
-                if (targetUnitDistance_Cur <= UnitCtrl.DataStatus.attackRange)
+                if (targetUnitDistance_Cur <= UnitCtrl.unitData.attackRange)
                 {
                     UnitCtrl.isEnemyInRange = true;
                     navAgent.SetDestination(UnitCtrl.transform.position);
@@ -135,7 +135,7 @@ public class EnemyUnitState : MonoBehaviour
             //Debug.Log("계산 된 마지막 목표 지점 위치 : " + navDestination);
             //Debug.Log("거리 : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
 
-            if (Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x) <= UnitCtrl.DataStatus.attackRange)
+            if (Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x) <= UnitCtrl.unitData.attackRange)
             {
                 //Debug.Log("목표 지점으로 이동할 수 있습니다.");
                 UnitCtrl.enemy_isPathBlocked = false;
