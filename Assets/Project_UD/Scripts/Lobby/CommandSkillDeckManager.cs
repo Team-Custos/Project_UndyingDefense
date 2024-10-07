@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class UnitDeckManager : MonoBehaviour
+
+public class CommandSkillDeckManager : MonoBehaviour
 {
-    public Image[] unitDeckList = null;
+    public Image[] CommandSkillDeckList = null;
     public Image[] unitList = null;
 
     public Button[] unitDeckButton = null;
@@ -23,17 +24,22 @@ public class UnitDeckManager : MonoBehaviour
     public Button StageStartBtn = null;
 
 
+    private List<CommandSkillManager.SkillData> commandskillList = new List<CommandSkillManager.SkillData>();
+    private CommandSkillManager commandskillDataManager;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        emptyDeckImageSprite = unitDeckList[0].sprite;
-        emptyDeckImageColor = unitDeckList[0].color;
+        commandskillDataManager = FindObjectOfType<CommandSkillManager>();
 
-        isUnitDeckEmpty = new bool[unitDeckList.Length];
+        emptyDeckImageSprite = CommandSkillDeckList[0].sprite;
+        emptyDeckImageColor = CommandSkillDeckList[0].color;
 
-        unitDeckIndex = new int[unitDeckList.Length];
+        isUnitDeckEmpty = new bool[CommandSkillDeckList.Length];
+
+        unitDeckIndex = new int[CommandSkillDeckList.Length];
 
         for (int i = 0; i < isUnitDeckEmpty.Length; i++)
         {
@@ -76,6 +82,12 @@ public class UnitDeckManager : MonoBehaviour
             });
         }
 
+        for (int i = 0; i < unitDeckButton.Length; i++)
+        {
+            int index = i;
+            unitDeckButton[index].onClick.AddListener(() => AddCommandSkillToList(index));
+        }
+
     }
 
     // Update is called once per frame
@@ -88,7 +100,7 @@ public class UnitDeckManager : MonoBehaviour
     {
         if (isUnitSelect[unitIndex])
         {
-            Debug.Log("유닛 중복");
+            Debug.Log("컨맨더 스킬 중복");
             return;
         }
 
@@ -97,8 +109,8 @@ public class UnitDeckManager : MonoBehaviour
         {
             if (isUnitDeckEmpty[i])
             {
-                unitDeckList[i].sprite = unitList[unitIndex].sprite;
-                unitDeckList[i].color = unitList[unitIndex].color;
+                CommandSkillDeckList[i].sprite = unitList[unitIndex].sprite;
+                CommandSkillDeckList[i].color = unitList[unitIndex].color;
                 isUnitDeckEmpty[i] = false;
                 isUnitSelect[unitIndex] = true;
                 unitDeckIndex[i] = unitIndex;
@@ -112,11 +124,40 @@ public class UnitDeckManager : MonoBehaviour
         int unitIndex = unitDeckIndex[deckIndex];
         if (unitIndex != -1)
         {
-            unitDeckList[deckIndex].sprite = emptyDeckImageSprite;
-            unitDeckList[deckIndex].color = emptyDeckImageColor;
+            CommandSkillDeckList[deckIndex].sprite = emptyDeckImageSprite;
+            CommandSkillDeckList[deckIndex].color = emptyDeckImageColor;
             isUnitDeckEmpty[deckIndex] = true;
             isUnitSelect[unitIndex] = false;
             unitDeckIndex[deckIndex] = -1;
+        }
+    }
+
+    private void AddCommandSkillToList(int index)
+    {
+        string stringIndex = index.ToString();
+
+        // CommandSkillManager 딕셔너리에서 특정 CommandSkill 가져오기
+        if (commandskillDataManager.skillDataDictionary.TryGetValue(stringIndex, out CommandSkillManager.SkillData skill))
+        {
+            commandskillList.Add(skill); // 리스트에 추가
+            Debug.Log($"CommandSkill {index} 추가됨");
+        }
+        else
+        {
+            Debug.LogWarning("해당 인덱스에 대한 CommandSkill을 찾을 수 없습니다.");
+        }
+    }
+
+    public void ClearUnitDeck(int deckIndex)
+    {
+        if (deckIndex >= 0 && deckIndex < commandskillList.Count)
+        {
+            commandskillList.RemoveAt(deckIndex); // 리스트에서 해당 인덱스 제거
+            Debug.Log($"CommandSkill {deckIndex} 삭제됨");
+        }
+        else
+        {
+            Debug.LogWarning("유효하지 않은 인덱스입니다.");
         }
     }
 }
