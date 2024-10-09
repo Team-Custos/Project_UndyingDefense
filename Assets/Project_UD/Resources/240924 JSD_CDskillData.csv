@@ -1,0 +1,10 @@
+﻿no,skill_ID,skillName,skillScript,leadSkillType,coolTime,targetType,leadSkillCastType,traceType,areaShape,areaLength,areaWidth,damageType,baseDamage,damage(ps),link_ID1,link_ID2,time(s),speedChange(%),critRateChange(%),attackSpeedChange(%),mentalChange,hpRegen(ps),damageBlock,targetSelectTypeChange,readyAnimation,castingAnimation1,castingAnimation2,castingVfx,castingSfx,projectile_ID,projectileVfx,projectileSfx,endVfx,endSfx,icon
+1,lead_order101,집중 공격,5초 동안 필드 내 모든 병사들이 티어가 가장 높은 적을 집중 공격,active,20,ally,instant,remote,all,0,0,0,0,0,0,0,5,0,0,0,0,0,0,highTier,,,,,,,,,,,
+2,lead_order102,전진 명령,5초 동안 필드 내 모든 병사들의 이동 속도 20% 증가,active,20,ally,instant,remote,all,0,0,0,0,0,0,0,5,120,0,0,0,0,0,0,,,,,,,,,,,
+3,lead_order103,기본 구급약 보급,5초 동안 영역 내의 병사들의 초당 체력 5 회복,active,15,ally,select,remote,circle,3,0,0,0,0,0,0,5,0,0,0,0,5,0,0,,,,,,,,,,,
+4,lead_support101,화살 비 내리기,5초 동안 영역 내 적들에게 초당 10 데미지의 관통 공격,active,20,enemy,select,trajectory,circle,3,0,pierce,0,10,0,0,5,0,0,0,0,0,0,0,,,,,,,,,,,
+5,lead_support102,불 붙은 기름 붓기,5초 동안 성벽 앞에 불 붙은 기름을 부어 영역 내 적들에게 작열 효과,active,20,enemy,instant,remote,square,2,5,0,0,0,effect2_burn01,0,5,0,0,0,0,0,0,0,,,,,,,,,,,
+6,lead_support103,바위 굴리기,3초 동안 바위를 한 방향으로 굴려 영역 내 적들에게 충격 효과,active,20,enemy,appoint,remote,square,2,5,0,0,0,effect1_stun01,0,3,0,0,0,0,0,0,0,,,,,,,,,,,
+7,lead_morale101,삼계탕 특식,모든 병사들의 최대 체력 2 증가,passive,0,ally,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,,,,,
+8,lead_morale102,비장한 출사,모든 병사들의 스킬 공격 데미지 2% 증가,passive,0,ally,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,,,,,
+9,lead_morale103,전리품 수급,적 처치시 얻는 골드량 1% 증가,passive,0,ally,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,,,,,
