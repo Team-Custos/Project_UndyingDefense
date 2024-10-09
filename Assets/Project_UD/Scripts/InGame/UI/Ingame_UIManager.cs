@@ -306,7 +306,7 @@ public class Ingame_UIManager : MonoBehaviour
                 waveCountText.gameObject.SetActive(false);
                 waveStartText.gameObject.SetActive(true);
                 isCurrentWaveFinshed = true;
-                EnemySpawner.inst.StartCoroutine(EnemySpawner.inst.WaveSystem());
+                //EnemySpawner.inst.StartCoroutine(EnemySpawner.inst.WaveSystem());
                 isCurrentWaveFinshed = false;
                 //ShowWaveResultPanel();
             }

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using static UD_UnitDataManager;
+using static UnitDataManager;
 
 
 public enum DefenseType

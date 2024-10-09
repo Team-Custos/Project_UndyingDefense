@@ -4662,14 +4662,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 447005216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b23ff709df765ef45a685294a4486201, type: 3}
+  m_Script: {fileID: 11500000, guid: b660c63f05b657a4cae762bc24e9ff83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _width: 10
   _height: 5
   _tilePrefab: {fileID: 7111599022381917294, guid: cf16c39e35b497840b9a727ece7e63d3,
     type: 3}
-  TILEPARENT: {fileID: 1515057053}
+  TILEPARENT: {fileID: 0}
   Tiles_Obj: []
   mapGrid: {fileID: 1904682908}
   groundTilemap: {fileID: 1515057057}
@@ -7877,13 +7877,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 825525761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b33248c0476996248a14613d556c697b, type: 3}
+  m_Script: {fileID: 11500000, guid: 26a4859edec90ba478e71dfff924757e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyTestModeBtn: {fileID: 39659760}
-  UnitSetModeText: {fileID: 128548080}
-  unitSpawnPanel: {fileID: 499509645}
+  EnemyTestModeBtn: {fileID: 0}
+  UnitSetModeText: {fileID: 0}
+  unitSpawnPanel: {fileID: 0}
   unitSpawnBtn: []
+  unitSpawnBtnPanel: []
   unitInfoPanel: {fileID: 0}
   unitInfoImage: {fileID: 0}
   levelImage: {fileID: 0}
@@ -7899,9 +7900,11 @@ MonoBehaviour:
   attackTypeText: {fileID: 0}
   defenseTypeImage: {fileID: 0}
   defeneTypeText: {fileID: 0}
-  endGameBtn: {fileID: 287665430}
-  restartGameBtn: {fileID: 287665430}
-  pauseGameBtn: {fileID: 1567758455}
+  gSkillInfoText: {fileID: 0}
+  sSkillInfoText: {fileID: 0}
+  endGameBtn: {fileID: 0}
+  restartGameBtn: {fileID: 0}
+  pauseGameBtn: {fileID: 0}
   slectedUnitOptionBox: {fileID: 0}
   currentSelectedUnitOptionBox: {fileID: 0}
   unitStateChageBtn: {fileID: 0}
@@ -7911,9 +7914,6 @@ MonoBehaviour:
   currentUpgradeMenu: {fileID: 0}
   UnitUpgrade1Btn: {fileID: 0}
   UnitUpgrade2Btn: {fileID: 0}
-  upGradeImage_2Level: {fileID: 0}
-  upGradeImage_3Level: {fileID: 0}
-  upGradeImage_4Level: {fileID: 0}
   waveCount: 20
   waveCountText: {fileID: 0}
   waveStep: 0
@@ -7929,15 +7929,17 @@ MonoBehaviour:
   isCurrentWaveFinshed: 0
   isCurrentWaveSucceed: 0
   nextWavBtn: {fileID: 0}
-  curGoldText: {fileID: 0}
-  curHaveGold: 0
-  curUnitHp: 0
+  waveCheckBtn: {fileID: 0}
+  settingBtn: {fileID: 0}
+  settingCloseBtn: {fileID: 0}
+  settingPanel: {fileID: 0}
   UnitStateChangeBox: {fileID: 0}
   currentUnitStateChangeBox: {fileID: 0}
+  unitMoveUI: {fileID: 0}
+  curHaveGold: 0
+  curUnitHp: 0
   unit: {fileID: 0}
   unitUpgradeBtn: {fileID: 0}
-  unitMoveImage: {fileID: 0}
-  unitMoveUI: {fileID: 0}
 --- !u!1 &826693390
 GameObject:
   m_ObjectHideFlags: 0
@@ -8390,11 +8392,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 856739623}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 629d3f1caff0c0a42b716c2e1fab5cbc, type: 3}
+  m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 447005218}
-  unitStatusCtrl: {fileID: 2006614620}
+  unitStatusCtrl: {fileID: 0}
   Base: {fileID: 122481044}
   UnitSetMode: 0
   AllyUnitSetMode: 0

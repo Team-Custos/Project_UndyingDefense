@@ -223,7 +223,7 @@ public class EnemySpawner : MonoBehaviour
         // 스폰 위치 랜덤 선택
         Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
 
-        GameObject enemyObj = UD_Ingame_ObjectPool.GetObject(); // 오브젝트 풀에서 가져오기
+        GameObject enemyObj = ObjectPool.GetObject(); // 오브젝트 풀에서 가져오기
 
         enemyObj.transform.position = spawnPos.position;
         enemyObj.transform.rotation = Quaternion.identity;
@@ -247,7 +247,7 @@ public class EnemySpawner : MonoBehaviour
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            UD_Ingame_ObjectPool.ReturnObject(monster); // 오브젝트를 풀로 반환
+            ObjectPool.ReturnObject(monster); // 오브젝트를 풀로 반환
         }
     }
 
