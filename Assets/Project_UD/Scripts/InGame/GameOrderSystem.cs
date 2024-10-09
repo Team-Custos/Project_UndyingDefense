@@ -45,14 +45,14 @@ public class GameOrderSystem : MonoBehaviour
             //타일 클릭했을때
             if (clickedObj.tag == CONSTANT.TAG_TILE)
             {
-                if (UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
-                    UD_Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
                 }
 
-                if (UD_Ingame_UIManager.instance.currentUpgradeMenu != null)
+                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
                 {
-                    UD_Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
                 GridTile GridTile = clickedObj.GetComponent<GridTile>();
                 //Debug.Log("클릭한 그리드 좌표 : " + GridTile.GridPos + ", 배치 가능 여부 : " + GridTile.isPlaceable);
@@ -72,8 +72,8 @@ public class GameOrderSystem : MonoBehaviour
                         EnemySpawner SpawnMgr = EnemySpawner.inst;
                         GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1, GridTile.transform.position.x, GridTile.transform.position.z);
                         //GridTile.isPlaceable = false;
-                        UD_Ingame_GameManager.inst.UnitSetMode = false;
-                        UD_Ingame_GameManager.inst.EnemyUnitSetMode = false;
+                        InGameManager.inst.UnitSetMode = false;
+                        InGameManager.inst.EnemyUnitSetMode = false;
                     }
                 }
                 else if (GridTile.currentPlacedUnit == null)
@@ -101,7 +101,7 @@ public class GameOrderSystem : MonoBehaviour
                 {
                     Vector3 GridTilePos = GridTile.transform.position;
 
-                    UD_Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<UD_Ingame_UnitCtrl>();
+                    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
 
                     if (AllyUnit.Ally_Mode == AllyMode.Free)
@@ -116,8 +116,8 @@ public class GameOrderSystem : MonoBehaviour
             //유닛 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_UNIT)
             {
-                UD_Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<UD_Ingame_UnitCtrl>();
-                UD_Ingame_UnitCtrl[] allUnit = FindObjectsOfType<UD_Ingame_UnitCtrl>();
+                Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
+                Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
                 foreach (var unit in allUnit)
                 {
                     unit.isSelected = false;
@@ -127,15 +127,15 @@ public class GameOrderSystem : MonoBehaviour
                 if (AllyUnit.isSelected)
                 {
                     selectedUnit = AllyUnit.gameObject;
-                    if (UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                    if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
-                        Destroy(UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox);
-                        UD_Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
+                        Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
+                        Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
 
-                    UD_Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
-                    UD_Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
-                    UD_Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
+                    //Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
+                    //Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                    //Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
 
                 }
                 else

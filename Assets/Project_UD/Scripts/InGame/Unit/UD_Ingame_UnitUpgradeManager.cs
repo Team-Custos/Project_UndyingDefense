@@ -6,13 +6,13 @@ using static UD_UnitDataManager;
 
 public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
 {
-    private UD_Ingame_UIManager uiManager; // UI와의 상호작용을 위해
+    private Ingame_UIManager uiManager; // UI와의 상호작용을 위해
 
 
     // Start is called before the first frame update
     void Start()
     {
-        uiManager = UD_Ingame_UIManager.instance;
+        uiManager = Ingame_UIManager.instance;
     }
 
     // Update is called once per frame
@@ -47,23 +47,23 @@ public class UD_Ingame_UnitUpgradeManager : MonoBehaviour
         return upgradeOptions;
     }
 
-    public void PerformUpgrade(UD_Ingame_UnitCtrl selectedUnit, string newUnitCode)
-    {
-        //UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitCode);
-        UnitSpawnData newUnitData = UD_Ingame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
+    //public void PerformUpgrade(Ingame_UnitCtrl selectedUnit, string newUnitCode)
+    //{
+    //    //UnitData newUnitData = UD_UnitDataManager.inst.GetUnitData(newUnitCode);
+    //    UnitSpawnData newUnitData = Ingame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
 
-        if(newUnitCode != null)
-        {
-            selectedUnit.UnitInit(newUnitData);
-            Debug.Log(selectedUnit.unitName + "업그레이드 완료");
+    //    if(newUnitCode != null)
+    //    {
+    //        selectedUnit.UnitInit(newUnitData);
+    //        Debug.Log(selectedUnit.unitName + "업그레이드 완료");
 
-            uiManager.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);
-        }
-        else
-        {
-            Debug.Log("유닛 데이터 없음");
-        }
-    }
+    //        uiManager.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("유닛 데이터 없음");
+    //    }
+    //}
 
 
 }

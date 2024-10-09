@@ -34,11 +34,9 @@ public class EnemySpawnData
 
 public class EnemySpawner : MonoBehaviour
 {
-    public static UD_Ingame_EnemySpawner inst;
+    public static EnemySpawner inst;
     //UD_Ingame_ObjectPool objectPool;
     public List<Ingame_UnitData> enemyDatas;
-
-    public static EnemySpawner inst;
 
     GridManager gridManager;
 
@@ -91,11 +89,11 @@ public class EnemySpawner : MonoBehaviour
 
         spawnPoint = new Transform[gridHeight];
 
-        UD_Ingame_ObjectPool.Instance.Intialize(20);
+        //UD_Ingame_ObjectPool.Instance.Intialize(20);
 
         currentWave = 1;
 
-        StartCoroutine(WaveSystem());
+        //StartCoroutine(WaveSystem());
     }
 
     // Update is called once per frame
@@ -233,11 +231,11 @@ public class EnemySpawner : MonoBehaviour
 
         if (enemyType == 0)
         {
-            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+            enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
         }
         else
         {
-            enemyObj.GetComponent<UD_Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+            enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
         }
 
         activeMonsters.Add(enemyObj); // 생성된 몬스터 목록에 추가

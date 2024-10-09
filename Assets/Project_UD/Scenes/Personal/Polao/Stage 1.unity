@@ -1664,8 +1664,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbb5e0487acff04890e412230b39062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseHPMax: 100
-  BaseHPCur: 0
 --- !u!54 &122481050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4674,7 +4672,7 @@ MonoBehaviour:
   TILEPARENT: {fileID: 1515057053}
   Tiles_Obj: []
   mapGrid: {fileID: 1904682908}
-  groundTilemap: {fileID: 0}
+  groundTilemap: {fileID: 1515057057}
   tile_Offset: 2
 --- !u!4 &448448000 stripped
 Transform:
@@ -7884,20 +7882,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyTestModeBtn: {fileID: 39659760}
   UnitSetModeText: {fileID: 128548080}
-  unitName: {fileID: 0}
-  unitType: {fileID: 0}
-  unitTier: {fileID: 0}
-  unitWeapon: {fileID: 0}
-  unitSkill: {fileID: 0}
-  unitDamage: {fileID: 0}
-  unitAttackType: {fileID: 0}
-  unitModeChangeBtn: {fileID: 0}
-  unitUpgradeBtn: {fileID: 0}
+  unitSpawnPanel: {fileID: 499509645}
+  unitSpawnBtn: []
+  unitInfoPanel: {fileID: 0}
+  unitInfoImage: {fileID: 0}
+  levelImage: {fileID: 0}
+  levelText: {fileID: 0}
+  nameText: {fileID: 0}
+  gSkillImage: {fileID: 0}
+  gSkillText: {fileID: 0}
+  sSkillImage: {fileID: 0}
+  sSkillText: {fileID: 0}
+  hpImage: {fileID: 0}
+  hpText: {fileID: 0}
+  attackTypeImage: {fileID: 0}
+  attackTypeText: {fileID: 0}
+  defenseTypeImage: {fileID: 0}
+  defeneTypeText: {fileID: 0}
   endGameBtn: {fileID: 287665430}
   restartGameBtn: {fileID: 287665430}
   pauseGameBtn: {fileID: 1567758455}
-  unitSpawnPanel: {fileID: 499509645}
-  unitSpawnBtn: []
+  slectedUnitOptionBox: {fileID: 0}
+  currentSelectedUnitOptionBox: {fileID: 0}
+  unitStateChageBtn: {fileID: 0}
+  FreeModeImage: {fileID: 0}
+  SiegeModeImage: {fileID: 0}
+  unitUpgradeMenuBox: {fileID: 0}
+  currentUpgradeMenu: {fileID: 0}
+  UnitUpgrade1Btn: {fileID: 0}
+  UnitUpgrade2Btn: {fileID: 0}
+  upGradeImage_2Level: {fileID: 0}
+  upGradeImage_3Level: {fileID: 0}
+  upGradeImage_4Level: {fileID: 0}
+  waveCount: 20
+  waveCountText: {fileID: 0}
+  waveStep: 0
+  waveStepText: {fileID: 0}
+  waveStartText: {fileID: 0}
+  waveResultPanel: {fileID: 0}
+  waveResultText: {fileID: 0}
+  reStartBtn: {fileID: 0}
+  menuBtn: {fileID: 0}
+  waveRewardText: {fileID: 0}
+  waveGoldImage: {fileID: 0}
+  waveGoldText: {fileID: 0}
+  isCurrentWaveFinshed: 0
+  isCurrentWaveSucceed: 0
+  nextWavBtn: {fileID: 0}
+  curGoldText: {fileID: 0}
+  curHaveGold: 0
+  curUnitHp: 0
+  UnitStateChangeBox: {fileID: 0}
+  currentUnitStateChangeBox: {fileID: 0}
+  unit: {fileID: 0}
+  unitUpgradeBtn: {fileID: 0}
+  unitMoveImage: {fileID: 0}
+  unitMoveUI: {fileID: 0}
 --- !u!1 &826693390
 GameObject:
   m_ObjectHideFlags: 0
@@ -12021,6 +12061,12 @@ MonoBehaviour:
   Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
   enemyToSpawn: 0
+  poolSapwnPoint: []
+  waveCount: 10
+  monsterPerWave: 5
+  spawnInterval: 2
+  Test_EnemyA: {fileID: 0}
+  Test_EnemyB: {fileID: 0}
 --- !u!1001 &1398138505
 PrefabInstance:
   m_ObjectHideFlags: 0

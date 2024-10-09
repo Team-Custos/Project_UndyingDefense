@@ -21,7 +21,7 @@ public class AllyUnitState : MonoBehaviour
     public StateMachine<UnitState, StateDriverUnity> fsm;
     
     Ingame_UnitCtrl UnitCtrl;
-    UD_Ingame_UIManager UnitUIManager;
+    Ingame_UIManager UnitUIManager;
     NavMeshAgent navAgent;
     Animator allyAnimator;
 
@@ -139,7 +139,7 @@ public class AllyUnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-        UD_Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
 
     }
     #endregion

@@ -133,7 +133,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         if (unitUpgradeManager == null)
         {
-            Debug.LogError("unitUpgradeManager 초기화 실패");
+            //Debug.LogError("unitUpgradeManager 초기화 실패");
         }
 
     }
@@ -194,7 +194,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             nextWavBtn.onClick.AddListener(() =>
             {
-                UD_Ingame_EnemySpawner.inst.NextWave();
+                //Ingame_EnemySpawner.inst.NextWave();
             });
         }
 
@@ -276,39 +276,39 @@ public class Ingame_UIManager : MonoBehaviour
     }
 
 
-    public void UpdateUnitInfoPanel(UD_Ingame_UnitCtrl selectedUnit, string newUnitCode)
-    {
-        if (selectedUnit == null)
-        {
-            Debug.LogError("선택된 유닛이 null입니다.");
-            return;
-        }
+    //public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit, string newUnitCode)
+    //{
+    //    if (selectedUnit == null)
+    //    {
+    //        Debug.LogError("선택된 유닛이 null입니다.");
+    //        return;
+    //    }
 
-        //string unitCode = selectedUnit.unitCode;
-        string unitName = selectedUnit.unitName;
+    //    //string unitCode = selectedUnit.unitCode;
+    //    string unitName = selectedUnit.unitName;
 
-        //UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitCode);
-        UnitSpawnData newUnitData = UD_Ingame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
+    //    //UD_UnitDataManager.UnitData unitData = unitDataManager.GetUnitData(unitCode);
+    //    UnitSpawnData newUnitData = UIngame_UnitSpawnManager.inst.GetUnitSpawnData(newUnitCode);
 
-        if (newUnitData == null)
-        {
-            Debug.LogError($"'{unitName}' 유닛데이터 없음");
-            return;
-        }
+    //    if (newUnitData == null)
+    //    {
+    //        Debug.LogError($"'{unitName}' 유닛데이터 없음");
+    //        return;
+    //    }
 
-        levelText.text = newUnitData.level + "티어" ;
-        nameText.text = newUnitData.unitName;
-        gSkillText.text = newUnitData.gSkillName;
-        sSkillText.text = newUnitData.sSkillName; 
+    //    levelText.text = newUnitData.level + "티어" ;
+    //    nameText.text = newUnitData.unitName;
+    //    gSkillText.text = newUnitData.gSkillName;
+    //    sSkillText.text = newUnitData.sSkillName; 
 
-        //curUnitHp = selectedUnit.HP; 
-        hpText.text = $"{newUnitData.HP} / {newUnitData.HP}";
+    //    //curUnitHp = selectedUnit.HP; 
+    //    hpText.text = $"{newUnitData.HP} / {newUnitData.HP}";
 
-        defeneTypeText.text = newUnitData.defenseType.ToString();
+    //    defeneTypeText.text = newUnitData.defenseType.ToString();
 
-       // Debug.Log($"'{unitName}'업데이트 성공");
+    //   // Debug.Log($"'{unitName}'업데이트 성공");
 
-    }
+    //}
 
     void EndGame()
     {
@@ -339,7 +339,7 @@ public class Ingame_UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, UD_Ingame_UnitCtrl unit)
+    public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)
     {
         if (unit.Ally_Mode == AllyMode.Change)
         {
@@ -357,7 +357,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
 
-        SetSelectedUnit(unit);
+        //SetSelectedUnit(unit);
 
         GameObject canvas = GameObject.Find("Canvas");
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
@@ -412,82 +412,82 @@ public class Ingame_UIManager : MonoBehaviour
                 }
 
 
-                CreateUpgradeMenu(unit);
+                //CreateUpgradeMenu(unit);
             });
         }
 
 
     }
 
-    private void CreateUpgradeMenu(UD_Ingame_UnitCtrl unit)
-    {
-        GameObject canvas = GameObject.Find("Canvas");
-        if (canvas == null)
-        {
-            Debug.LogError("Canvas를 찾을 수 없습니다.");
-            return;
-        }
+    //private void CreateUpgradeMenu(Ingame_UnitCtrl unit)
+    //{
+    //    GameObject canvas = GameObject.Find("Canvas");
+    //    if (canvas == null)
+    //    {
+    //        Debug.LogError("Canvas를 찾을 수 없습니다.");
+    //        return;
+    //    }
 
-        currentUpgradeMenu = Instantiate(unitUpgradeMenuBox, canvas.transform);
+    //    currentUpgradeMenu = Instantiate(unitUpgradeMenuBox, canvas.transform);
 
-        RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
-        Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
-        screenPos.x += 200;
-        rectTransform.position = screenPos;
+    //    RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
+    //    Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
+    //    screenPos.x += 200;
+    //    rectTransform.position = screenPos;
 
-        UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
-        Image upGrade1BtnImage = UnitUpgrade1Btn.GetComponent<Image>();
+    //    UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
+    //    Image upGrade1BtnImage = UnitUpgrade1Btn.GetComponent<Image>();
 
-        UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
-        Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
+    //    UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
+    //    Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
 
-        // 업그레이드 옵션 가져오기
-        List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.unitCode);
+    //    // 업그레이드 옵션 가져오기
+    //    //List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.unitCode);
 
-        if (upgradeOptions == null || upgradeOptions.Count == 0)
-        {
-            Debug.LogError("업그레이드 옵션이 없습니다.");
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
-            return;
-        }
+    //    if (upgradeOptions == null || upgradeOptions.Count == 0)
+    //    {
+    //        Debug.LogError("업그레이드 옵션이 없습니다.");
+    //        Destroy(currentUpgradeMenu);
+    //        currentUpgradeMenu = null;
+    //        return;
+    //    }
 
-        // 3티어인 경우 버튼 하나만 생성
-        if (unit.curLevel == 3)
-        {
-            UnitUpgrade2Btn.gameObject.SetActive(false);
+    //    // 3티어인 경우 버튼 하나만 생성
+    //    if (unit.curLevel == 3)
+    //    {
+    //        UnitUpgrade2Btn.gameObject.SetActive(false);
 
-            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x - 80, rectTransform.sizeDelta.y);
+    //        rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x - 80, rectTransform.sizeDelta.y);
 
-            RectTransform unitUpgrade1Rect = UnitUpgrade1Btn.GetComponent<RectTransform>();
-            unitUpgrade1Rect.anchoredPosition = new Vector2(unitUpgrade1Rect.anchoredPosition.x + 60, unitUpgrade1Rect.anchoredPosition.y);
-        }
+    //        RectTransform unitUpgrade1Rect = UnitUpgrade1Btn.GetComponent<RectTransform>();
+    //        unitUpgrade1Rect.anchoredPosition = new Vector2(unitUpgrade1Rect.anchoredPosition.x + 60, unitUpgrade1Rect.anchoredPosition.y);
+    //    }
 
-        // 첫 번째 업그레이드 옵션 버튼 
-        UnitUpgrade1Btn.onClick.RemoveAllListeners();
-        UnitUpgrade1Btn.onClick.AddListener(() =>
-        {
-            if (upgradeOptions.Count > 0)
-            {
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[0]);
-            }
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
-        });
+    //    // 첫 번째 업그레이드 옵션 버튼 
+    //    UnitUpgrade1Btn.onClick.RemoveAllListeners();
+    //    UnitUpgrade1Btn.onClick.AddListener(() =>
+    //    {
+    //        if (upgradeOptions.Count > 0)
+    //        {
+    //            //unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[0]);
+    //        }
+    //        Destroy(currentUpgradeMenu);
+    //        currentUpgradeMenu = null;
+    //    });
 
-        // 두 번째 업그레이드 옵션 버튼 
-        UnitUpgrade2Btn.onClick.RemoveAllListeners();
-        UnitUpgrade2Btn.onClick.AddListener(() =>
-        {
-            if (upgradeOptions.Count > 1)
-            {
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[1]);
-            }
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
-        });
+    //    // 두 번째 업그레이드 옵션 버튼 
+    //    UnitUpgrade2Btn.onClick.RemoveAllListeners();
+    //    UnitUpgrade2Btn.onClick.AddListener(() =>
+    //    {
+    //        if (upgradeOptions.Count > 1)
+    //        {
+    //            //unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[1]);
+    //        }
+    //        Destroy(currentUpgradeMenu);
+    //        currentUpgradeMenu = null;
+    //    });
 
-    }
+    //}
 
     
 
@@ -514,7 +514,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
     }
 
-    public void SetSelectedUnit(UD_Ingame_UnitCtrl unit)
+    public void SetSelectedUnit(Ingame_UnitCtrl unit)
     {
         selectedUnit = unit;
     }
