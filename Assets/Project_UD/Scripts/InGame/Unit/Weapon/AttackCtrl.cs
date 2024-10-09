@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum AttackType
 {
+    UnKnown,
     Pierce,
     Slash,
     Crush,
@@ -50,10 +51,5 @@ public class AttackCtrl : MonoBehaviour
                 CritPercentAdd = 5;
                 break;
         }        
-    }
-
-    private void OnDestroy()
-    {
-        
     }
 }

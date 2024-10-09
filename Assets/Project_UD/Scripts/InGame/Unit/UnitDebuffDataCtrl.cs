@@ -3,28 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitDebuff
+{
+    None,
+    Bleed,
+    Dizzy,
+    Stun,
+    Tied,
+    Burn,
+    Inferno,
+    Poison
+}
+
 [Serializable]
 public class UnitDebuffData
 {
     public UnitDebuff name;
     public int stackLimit;
-    public float Time;
+    public float duration;
 }
 
-public class UnitStatusCtrl : MonoBehaviour
+public class UnitDebuffDataCtrl : MonoBehaviour
 {
-
     public UnitDebuffData[] debuffDatas;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

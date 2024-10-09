@@ -24,26 +24,6 @@ public class BaseStatus : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject OBJ = other.gameObject;
-        //피격 판정
-        //if (OBJ.CompareTag(UD_CONSTANT.TAG_ATTACK))
-        //{
-        //    UD_Ingame_AttackCtrl Attack = OBJ.GetComponent<UD_Ingame_AttackCtrl>();
-
-        //    if (Attack.isEnemyAttack)
-        //    {
-        //        //Debug.Log(this.gameObject.name + " attack hit!");
-        //        this.BaseHPCur -= Attack.Atk;
-        //        if (Attack.MethodType == AttackMethod.Arrow)
-        //        {
-        //            Destroy(OBJ);
-        //        }
-        //    }
-        //}
-    }
-
     public void ReceiveDamage(int Damage)
     {
         IEnumerator HitEffect()

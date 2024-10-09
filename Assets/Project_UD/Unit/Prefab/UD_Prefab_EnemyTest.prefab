@@ -48,7 +48,7 @@ MonoBehaviour:
   Bow: {fileID: 6920284489904662650}
   Sword: {fileID: 2863448554778092319}
   Trap: {fileID: 0}
-  UnitCtrl: {fileID: 0}
+  UnitCtrl: {fileID: 1211345596767314744}
   SetObject: {fileID: 0}
 --- !u!1 &1277920915999584873
 GameObject:
@@ -487,7 +487,7 @@ MonoBehaviour:
   moveTargetPos: {x: 0, y: 0, z: 0}
   haveToMovePosition: 0
   targetEnemy: {fileID: 0}
-  sightRangeSensor: {fileID: 0}
+  sightRangeSensor: {fileID: 7232103411387622663}
   isEnemyInSight: 0
   isEnemyInRange: 0
   enemy_isBaseInRange: 0
@@ -510,7 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fba4437a313d2c48b100cf5cf4fdedd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Debuffs2Manage: []
+  activeDebuffs: []
 --- !u!114 &9172314069886537248
 MonoBehaviour:
   m_ObjectHideFlags: 0

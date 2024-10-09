@@ -26,118 +26,84 @@ public class UnitSkillManager : MonoBehaviour
 
     int TargetCellIdxFinal = 0;
 
+    public Dictionary<int, UnitDebuff> GeneralSkillCodeToDebuff = new Dictionary<int, UnitDebuff>()
+    {
+        {101 , UnitDebuff.Bleed},
+        {102 , UnitDebuff.Bleed},
+    };
 
     private void Awake()
     {
         GridManager = GridManager.inst;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //TargetCellIdxFinal = Random.Range(0, TargetCellidx.Count);
-    }
-
     public void UnitGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
-        void TargetAnalyze()
+        Vector3 TargetPos = TargetEnemy.transform.position;
+
+        //공격 정보 관리 (데미지, 치명타 확률, 공격 타입, 디버프(필요한 경우))
+        int damage = 0;
+        AttackType attackType = AttackType.UnKnown;
+        UnitDebuff debuff = UnitDebuff.None;
+
+        switch (SkillCode)
+        {
+            case 101://낫 베기
+                     //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
+                damage = 5;
+                attackType = AttackType.Slash;
+                debuff = UnitDebuff.Bleed;
+                break;
+            case 102://활 쏘기
+                     //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
+                if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
+                {
+                    Bow.transform.LookAt(TargetPos);
+                    Bow.GetComponent<BowCtrl>().ArrowShoot(isEnemyAttack);
+                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+                    {
+                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce, UnitDebuff.Bleed);
+                    }
+                    else
+                    {
+                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                    }
+                }
+                break;
+            case 201://창 찌르기
+                damage = 7;
+                attackType = AttackType.Pierce;
+                debuff = UnitDebuff.Bleed;
+                break;
+            case 202://망치 내려치기
+                damage = 7;
+                attackType = AttackType.Crush;
+                debuff = UnitDebuff.Dizzy;
+                break;
+            case 203://엽총 쏘기
+                damage = 7;
+                attackType = AttackType.Pierce;
+                debuff = UnitDebuff.Bleed;
+                break;
+        }
+
+        
+
+        if (weaponCooldown_Cur <= 0)
         {
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
+                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
             else
             {
                 BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
                 BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
             }
-        }
-
-        Vector3 TargetPos = TargetEnemy.transform.position;
-        if (weaponCooldown_Cur <= 0)
-        {
             weaponCooldown_Cur = weaponCooldown;
-            switch (SkillCode)
-            {
-
-                case 101://낫 베기
-                         //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
-                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                    {
-                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Slash);
-                    }
-                    else
-                    {
-                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.BaseHPCur -= UnitCtrl.unitData.attackPoint;
-                    }
-                    
-                    break;
-                case 102://활 쏘기
-                         //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
-                    if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
-                    {
-                        Bow.transform.LookAt(TargetPos);
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(isEnemyAttack);
-                        if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                        {
-                            Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
-                        }
-                        else
-                        {
-                            BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                            BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                        }
-                    }
-                    break;
-                case 201://창 찌르기
-                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                    {
-                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
-                    }
-                    else
-                    {
-                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                    }
-                    break;
-                case 202://망치 내려치기
-                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                    {
-                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Crush);
-                    }
-                    else
-                    {
-                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                    }
-                    break;
-                case 203://엽총 쏘기
-                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                    {
-                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce);
-                    }
-                    else
-                    {
-                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                    }
-                    
-                    break;
-
-            }
         }
         else
         {
@@ -147,8 +113,6 @@ public class UnitSkillManager : MonoBehaviour
 
     int SkillDamageInit()
     {
-
-
         return 0;
     }
 
@@ -178,8 +142,7 @@ public class UnitSkillManager : MonoBehaviour
                         return;
                     }
 
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
-
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     break;
 
                 case 102://연사
@@ -192,16 +155,16 @@ public class UnitSkillManager : MonoBehaviour
 
                     IEnumerator DoubleShot()
                     {
-                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                         yield return new WaitForSeconds(0.5f);
                     }
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
 
                     break;
                 case 201://멀리베기
                     break;
                 case 202://방패치기
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush);
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
                 case 203://수류탄 투척
                     break;

@@ -211,10 +211,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.B) && isSelected)
-            {
-                debuffManager.AddUnitDebuff(UnitDebuff.Bleed);
-            }
+            //if (Input.GetKeyDown(KeyCode.B) && isSelected)
+            //{
+            //    debuffManager.AddDebuff(UnitDebuff.Bleed);
+            //}
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
             {
@@ -453,9 +453,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public void Unit_Attack()
     {
-       
-
-        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT)) //아군일때
         {
             if (targetEnemy == null)
             {
@@ -468,7 +466,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown,false);
             }
         }
-        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY)) //적일때
         {
             if (enemy_isBaseInRange)
             {
@@ -478,6 +476,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 if (targetEnemy != null)
                 {
+                    Debug.Log("SkillCode : " + unitData.generalSkillCode);
+                    Debug.Log("targetEnemy." + targetEnemy.name);
+                    Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
+
                     UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
                     //Bow.transform.LookAt(targetEnemy.transform.position);
                     //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
@@ -534,44 +536,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         unitData.targetSelectType = data.targetSelectType;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        GameObject OBJ = other.gameObject;
-        //피격 판정 -> 삭제 예정
-        if (OBJ.CompareTag(CONSTANT.TAG_ATTACK))
-        {
-            AttackCtrl Attack = OBJ.GetComponent<AttackCtrl>();
-
-            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT) && Attack.isEnemyAttack)
-            {
-                //Debug.Log(this.gameObject.name + " attack hit!");
-                HP -= Attack.Atk;
-                Destroy(OBJ);
-            }
-            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && !Attack.isEnemyAttack)
-            {
-                //Debug.Log(this.gameObject.name + " attack hit!");
-
-                if (Attack.Type == AttackType.Magic)
-                {
-
-                }
-                else
-                {
-                    ReceivePhysicalDamage(Attack.Atk, unitData.critChanceRate + Attack.CritPercentAdd, Attack.Type);
-                    if (Attack.MethodType == AttackMethod.Trap)
-                    {
-                        Destroy(OBJ);
-                        //GameObject.FindObjectOfType<UD_Ingame_GridManager>().SetTilePlaceable( , true);
-                    }
-                    else
-                    {
-                        Destroy(OBJ);
-                    }
-                }
-            }
-        }
-    }
+    
 
 
     private void OnCollisionEnter(Collision collision)
@@ -597,7 +562,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     }
 
     //물리적 데미지
-    public void ReceivePhysicalDamage(int Damage, float Crit, AttackType attackType)
+    public void ReceivePhysicalDamage(int Damage = 1, float Crit = 0, AttackType attackType = AttackType.UnKnown, UnitDebuff Crit2Debuff = UnitDebuff.None)
     {
         if (unitData.defenseType == DefenseType.cloth)
         {
@@ -669,11 +634,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         HP -= Damage;
-        if (UnityEngine.Random.Range(0, 100) <= Crit)
+        if (Random.Range(1, 101) <= Crit)
         {
             Debug.Log("Critical Hit!");
-
-
+            debuffManager.AddDebuff(Crit2Debuff);
         }
     }
 

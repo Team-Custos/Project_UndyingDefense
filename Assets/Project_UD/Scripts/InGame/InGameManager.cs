@@ -7,6 +7,7 @@ public class InGameManager : MonoBehaviour
 {
     public static InGameManager inst;
     public GridManager gridManager;
+    public UnitDebuffDataCtrl unitStatusCtrl;
 
     public GameObject Base;
    
