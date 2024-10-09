@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LbbySceneManager : MonoBehaviour
+public class LobbySceneManager : MonoBehaviour
 {
     public Button unitDeckButton = null;
     public GameObject unitDeckPanel = null;
