@@ -463,7 +463,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown,false);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
             }
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY)) //적일때
@@ -481,8 +481,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
-                    //Bow.transform.LookAt(targetEnemy.transform.position);
-                    //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -492,50 +490,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
         }
     }
-
-    public void UnitInit(UnitSpawnData data)
-    {
-        unitData = UnitSpawnManager.inst.unitDatas[data.unitType.GetHashCode()];
-
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.weaponCooldown = data.attackSpeed;
-        unitData.skillCooldown = data.skillCooldown;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-        
-
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
-    public void EnemyInit(EnemySpawnData data)
-    {
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
     
 
 

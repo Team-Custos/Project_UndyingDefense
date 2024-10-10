@@ -46,53 +46,56 @@ public class UnitSkillManager : MonoBehaviour
         AttackType attackType = AttackType.UnKnown;
         UnitDebuff debuff = UnitDebuff.None;
 
-        switch (SkillCode)
-        {
-            case 101://낫 베기
-                     //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
-                damage = 5;
-                attackType = AttackType.Slash;
-                debuff = UnitDebuff.Bleed;
-                break;
-            case 102://활 쏘기
-                     //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
-                if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
-                {
-                    Bow.transform.LookAt(TargetPos);
-                    Bow.GetComponent<BowCtrl>().ArrowShoot(isEnemyAttack);
-                    if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                    {
-                        Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                        EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce, UnitDebuff.Bleed);
-                    }
-                    else
-                    {
-                        BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                        BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                    }
-                }
-                break;
-            case 201://창 찌르기
-                damage = 7;
-                attackType = AttackType.Pierce;
-                debuff = UnitDebuff.Bleed;
-                break;
-            case 202://망치 내려치기
-                damage = 7;
-                attackType = AttackType.Crush;
-                debuff = UnitDebuff.Dizzy;
-                break;
-            case 203://엽총 쏘기
-                damage = 7;
-                attackType = AttackType.Pierce;
-                debuff = UnitDebuff.Bleed;
-                break;
-        }
-
-        
-
         if (weaponCooldown_Cur <= 0)
         {
+            switch (SkillCode)
+            {
+                //낫 베기
+                case 101:
+                         //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
+                    damage = 5;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+                //활 쏘기
+                case 102:
+                         //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
+                    if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
+                    {
+                        Bow.transform.LookAt(TargetPos);
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(isEnemyAttack);
+                        if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+                        {
+                            Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce, UnitDebuff.Bleed);
+                        }
+                        else
+                        {
+                            BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                            BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                        }
+                    }
+                    break;
+                //창 찌르기
+                case 201:
+                    damage = 7;
+                    attackType = AttackType.Pierce;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+                //망치 내려치기
+                case 202:
+                    damage = 7;
+                    attackType = AttackType.Crush;
+                    debuff = UnitDebuff.Dizzy;
+                    break;
+                //엽총 쏘기
+                case 203:
+                    damage = 7;
+                    attackType = AttackType.Pierce;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+            }
+
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
@@ -113,17 +116,16 @@ public class UnitSkillManager : MonoBehaviour
 
     int SkillDamageInit()
     {
-        return 0;
+        //스킬 데미지 데이터 가져오기.
+        return 1;
     }
 
 
     public void UnitSpecialSkill(int SkillCode,float skillCooldown)
     {
         int SkillDamage = SkillDamageInit();
-
-
-
         Ingame_UnitCtrl TargetEnemy = null;
+
         if (UnitCtrl.targetEnemy != null)
         {
             TargetEnemy = UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>();
@@ -134,18 +136,19 @@ public class UnitSkillManager : MonoBehaviour
             skillCooldown_Cur = skillCooldown;
             switch (SkillCode)
             {
-                case 101://낫 찍기
+                //낫 찍기
+                case 101:
                          //낫으로 앞에 있는 한 명의 적을 세게 찍어 5 데미지의 관통 공격을 가한다. 치명타율 5% 증가. 치명타 발동 시 충격 효과
                          // 검베기와 같은 처리. 스탯만 다르게.
                     if (TargetEnemy == null)
                     {
                         return;
                     }
-
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     break;
 
-                case 102://연사
+                //연사
+                case 102:
                     if (TargetEnemy == null)
                     {
                         return;
@@ -153,22 +156,37 @@ public class UnitSkillManager : MonoBehaviour
 
                     StartCoroutine(DoubleShot());
 
-                    IEnumerator DoubleShot()
+                    IEnumerator DoubleShot() // 2연사 코루틴
                     {
+                        Debug.Log("Double shot 1");
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                        // 지연 시간 후 두 번째 총알 발사
                         yield return new WaitForSeconds(0.5f);
+                        Debug.Log("Double shot 2");
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                     }
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                    break;
+                //멀리베기
+                case 201:
+                    //창에 달린 낫으로 멀리 있는 적을 베어 7 데미지의 베기 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 출혈 효과
+                    //스킬을 사용할때만 거리 측정을 따로 해야할것 같음. -> 시야범위? 기획쪽과 이야기가 필요할것 같음.
+
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Slash, UnitDebuff.Bleed);
 
                     break;
-                case 201://멀리베기
-                    break;
-                case 202://방패치기
+                //방패치기
+                case 202:
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                case 203://수류탄 투척
+                //수류탄 투척
+                case 203:
+                    //수류탄을 던져 범위 내에 있는 모든 적에게 10 데미지의 분쇄 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 기절 효과
+                    //덫 설치와 비슷하게 구현. 서있는 칸을 기준으로 바라보는 방향 몇칸 앞에 공격 트리거 오브젝트를 설치하는 식으로.
+                    //단, 미리 배치 되어있는지는 고려하지 않음.
+                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                case 204://덫 설치
+                //곰덫 설치
+                case 204:
                         //서있는 칸을 기준으로 바라보는 방향 2칸 앞에 꿩덫을 설치하여 지나가는 한 명의 적에게 5 데미지의 베기 공격을 가한다. 치명타율이 5% 증가. 치명타 발동 시 속박 효과.
                         //이미 설치된 꿩덫이 발동되기 전에 해당 스킬을 다시 사용한다면, 이전에 설치된 꿩덫이 부서지고 해당 스킬이 발동되어 새로 꿩덫을 설치한다.
                         //-> 덫 설치 관련해서 기획쪽이랑 이야기를 해야할 필요가 있어보임.
@@ -275,9 +293,6 @@ public class UnitSkillManager : MonoBehaviour
                         return;
                     }
 
-
-                    
-
                     if (GridManager.GetTilePlaceable(TargetCellWorldPos))
                     {
                         Vector3 CellWorldPosFinal = TargetCellWorldPos+ new Vector3(GridManager.mapGrid.cellSize.x * 0.5f,0, GridManager.mapGrid.cellSize.y * 0.5f);
@@ -304,9 +319,11 @@ public class UnitSkillManager : MonoBehaviour
     {
         switch (SkillCode)
         {
-            case 101://검 베기
+            //검 베기
+            case 101:
                 break;
-            case 102://활 쏘기
+            //활 쏘기
+            case 102:
                 if (Bow != null)
                 {
                     Bow.transform.LookAt(TargetPos);

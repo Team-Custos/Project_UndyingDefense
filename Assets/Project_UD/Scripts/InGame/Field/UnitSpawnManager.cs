@@ -1,35 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-
-public class UnitSpawnData
-{
-    //public Mesh Tier2Mesh;
-    //public Mesh Tier3Mesh;
-
-    //public Material Tier2Material;
-    //public Material Tier3Material;
-
-    public int modelType;
-    public float spawnTime;
-    public int HP;
-    public float moveSpeed;
-    public int attackPoint;
-    public float attackSpeed;
-    public float skillCooldown;
-    public int critChanceRate;
-
-    public float sightRange;
-    public float attackRange;
-
-    public int generalSkill;
-    public int specialSkill;
-    public UnitType unitType;
-    public DefenseType defenseType;
-    public TargetSelectType targetSelectType;
-}
-
 
 
 public enum UnitType
@@ -46,8 +17,6 @@ public class UnitSpawnManager : MonoBehaviour
     private GameObject unitPrefab;
 
     public static UnitSpawnManager inst;
-
-    public UnitSpawnData[] spawnData;
 
     public GameObject Test_Ally;
 

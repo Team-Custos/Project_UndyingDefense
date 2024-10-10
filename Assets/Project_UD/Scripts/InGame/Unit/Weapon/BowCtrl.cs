@@ -15,6 +15,7 @@ public class BowCtrl : MonoBehaviour
         arrow_Obj.transform.SetPositionAndRotation(this.ShootPos.position, this.transform.rotation);
         AttackCtrl arrowCtrl = arrow_Obj.GetComponent<AttackCtrl>();
 
-        arrowCtrl.isEnemyAttack = isEnemyAttack;
+        //여기서 NullReferenceException 오류 발생. 왜지?????
+        //arrowCtrl.isEnemyAttack = isEnemyAttack;
     }
 }

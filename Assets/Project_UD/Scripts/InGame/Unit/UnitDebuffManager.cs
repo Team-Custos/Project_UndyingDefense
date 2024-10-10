@@ -35,6 +35,8 @@ public class UnitDebuffManager : MonoBehaviour
                 RemoveDebuff(activeDebuffs[i]);
             }
         }
+
+        //디버프 실행 함수 구현해야함.
     }
 
     // 디버프 추가 함수
@@ -70,6 +72,7 @@ public class UnitDebuffManager : MonoBehaviour
                         duration = debuffData[i].duration,
                         currentTime = debuffData[i].duration
                     });
+
                 }
             }
         }
