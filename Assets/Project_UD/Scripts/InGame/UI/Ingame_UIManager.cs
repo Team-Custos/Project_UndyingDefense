@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using static UnityEngine.UI.CanvasScaler;
 using static UnitDataManager;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening.Core.Easing;
 
 public class Ingame_UIManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Ingame_UIManager : MonoBehaviour
     private UnitDataManager unitDataManager;
     private UnitUpgradeManager unitUpgradeManager;
     private GameOrderSystem gameOrderSystem;
+    private InGameManager inGameManager;
 
     private Camera mainCamera;
 
@@ -106,7 +108,8 @@ public class Ingame_UIManager : MonoBehaviour
 
     public Button unitUpgradeBtn;
 
-
+    // 곧 지울거
+    public Button commanderSkillBtn;
 
 
     private void Awake()
@@ -142,6 +145,23 @@ public class Ingame_UIManager : MonoBehaviour
         unitDataManager = UnitDataManager.inst;
 
         gameOrderSystem = GetComponent<GameOrderSystem>();
+
+        inGameManager = InGameManager.inst;
+
+        // 저장된 커맨더 스킬 확인 용
+        if (commanderSkillBtn != null)
+        {
+            commanderSkillBtn.onClick.AddListener(() =>
+            {
+                Dictionary<string, string> savedSkills = inGameManager.LoadCommandSkillList();
+
+                foreach (var skill in savedSkills)
+                {
+                    Debug.Log($"이름: {skill.Value}");
+                }
+            });
+        }
+
 
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {

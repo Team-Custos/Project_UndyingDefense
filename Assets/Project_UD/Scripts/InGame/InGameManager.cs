@@ -76,7 +76,31 @@ public class InGameManager : MonoBehaviour
         }
     }
 
-    
 
-    
+    // 저장된 커맨더 스킬 불러오기
+    public Dictionary<string, string> LoadCommandSkillList()
+    {
+        Dictionary<string, string> loadedSkills = new Dictionary<string, string>();
+
+        string skillIDList = PlayerPrefs.GetString("SkillIDList", "");
+
+        if (!string.IsNullOrEmpty(skillIDList))
+        {
+            string[] skillIDs = skillIDList.Split(',');
+
+            foreach (string skillID in skillIDs)
+            {
+                string skillName = PlayerPrefs.GetString(skillID, "이름 없음");
+                loadedSkills.Add(skillID, skillName);
+            }
+        }
+
+        if (loadedSkills.Count == 0)
+        {
+            Debug.LogWarning("불러온 스킬이 없습니다.");
+        }
+
+        return loadedSkills;
+    }
+
 }
