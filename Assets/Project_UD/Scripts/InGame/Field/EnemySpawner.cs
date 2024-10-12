@@ -229,14 +229,14 @@ public class EnemySpawner : MonoBehaviour
         enemyObj.transform.rotation = Quaternion.identity;
 
 
-        if (enemyType == 0)
-        {
-            enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
-        }
-        else
-        {
-            enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
-        }
+        //if (enemyType == 0)
+        //{
+        //    enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+        //}
+        //else
+        //{
+        //    enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
+        //}
 
         activeMonsters.Add(enemyObj); // 생성된 몬스터 목록에 추가
     }

@@ -35,6 +35,8 @@ public class UnitDebuffManager : MonoBehaviour
                 RemoveDebuff(activeDebuffs[i]);
             }
         }
+
+        //디버프 실행 함수 구현해야함.
     }
 
     // 디버프 추가 함수
@@ -46,13 +48,13 @@ public class UnitDebuffManager : MonoBehaviour
             return;
         }
 
-        
+
         for (int i = 0; i < debuffData.Length; i++)
         {
             if (debuff == debuffData[i].name) // 이미 해당 디버프가 있는지 확인
             {
                 UnitCurDebuff existingDebuff = activeDebuffs.Find(d => d.name == debuffData[i].name);
-                
+
                 if (existingDebuff != null) // 디버프가 이미 있으면 시간 초기화 및 스택 증가
                 {
                     existingDebuff.currentTime = debuffData[i].duration;
@@ -70,6 +72,7 @@ public class UnitDebuffManager : MonoBehaviour
                         duration = debuffData[i].duration,
                         currentTime = debuffData[i].duration
                     });
+
                 }
             }
         }
@@ -87,4 +90,3 @@ public class UnitDebuffManager : MonoBehaviour
         return activeDebuffs.Exists(d => d.name == debuff);
     }
 }
-

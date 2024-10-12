@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using static UnitDataManager;
 
 
 public enum DefenseType
@@ -38,6 +36,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
     UnitModelSwapManager ModelSwap;
+
     [Header("====Status====")]
     public AllyMode Ally_Mode;
 
@@ -75,13 +74,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
+    public string unitName;
 
-        void OnMouseDown()
+    void OnMouseDown()
     {
-        if (Ingame_UIManager.instance != null)
-        {
-            //Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
-        }
+        //if (Ingame_UIManager.instance != null)
+        //{
+        //    Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+        //}
     }
 
     private void Awake()
@@ -140,7 +140,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-        
+
     }
 
 
@@ -157,7 +157,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-        GridManager.inst.SetTilePlaceable(this.transform.position,false,false);
+        GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
@@ -181,7 +181,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
-        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);        
+        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
 
         NavAgent.speed = unitData.moveSpeed;
 
@@ -208,7 +208,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-                
+
             }
 
             //if (Input.GetKeyDown(KeyCode.B) && isSelected)
@@ -245,7 +245,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
-                        
+
                         IEnumerator ModeChangeDelayCoroutine()
                         {
                             NavAgent.enabled = false;
@@ -262,7 +262,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                         //NavAgent.updatePosition = false;
 
                         NavObstacle.enabled = false;
-                        
+
                         IEnumerator ModeChangeDelayCoroutine()
                         {
                             yield return new WaitForEndOfFrame();
@@ -463,7 +463,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown,false);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
             }
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY)) //적일때
@@ -480,9 +480,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("targetEnemy." + targetEnemy.name);
                     Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
-                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
-                    //Bow.transform.LookAt(targetEnemy.transform.position);
-                    //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
+                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -493,49 +491,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void UnitInit(UnitSpawnData data)
-    {
-        unitData = UnitSpawnManager.inst.unitDatas[data.unitType.GetHashCode()];
-
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.weaponCooldown = data.attackSpeed;
-        unitData.skillCooldown = data.skillCooldown;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-		
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
-    public void EnemyInit(EnemySpawnData data)
-    {
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
-    
 
 
     private void OnCollisionEnter(Collision collision)
@@ -639,4 +594,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             debuffManager.AddDebuff(Crit2Debuff);
         }
     }
+
+
 }

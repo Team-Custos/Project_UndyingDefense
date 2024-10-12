@@ -258,6 +258,7 @@ public class LobbyUIManager : MonoBehaviour
     // 커맨더 스킬 저장
     public void SaveCommandSkillList(Dictionary<string, string> skillData)
     {
+        UserDataModel.instance.skillIDs.Clear();
         List<string> skillIDs = new List<string>();
 
         foreach (var entry in skillData)
@@ -265,6 +266,7 @@ public class LobbyUIManager : MonoBehaviour
             // 스킬 ID와 이름을 각각 PlayerPrefs에 저장
             PlayerPrefs.SetString(entry.Key, entry.Value);
             skillIDs.Add(entry.Key);
+            UserDataModel.instance.skillIDs.Add(entry.Key);
         }
 
         // 모든 스킬 ID 리스트를 저장 (나중에 불러올 때 사용)
