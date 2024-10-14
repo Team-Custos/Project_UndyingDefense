@@ -1,6 +1,8 @@
 using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 
 public enum DefenseType
@@ -9,7 +11,6 @@ public enum DefenseType
     metal,
     leather
 }
-
 
 public enum AllyMode
 {
@@ -36,6 +37,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
     UnitModelSwapManager ModelSwap;
+    public UnitSoundManager soundManager;
     
     [Header("====Status====")]
     public AllyMode Ally_Mode;
@@ -49,6 +51,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public int cur_modelType;
     public int curLevel = 1;
     public int HP;
+    public float cur_moveSpeed = 1;
+    public float cur_attackSpeed = 1;
+    public bool unActable = false;
 
     [Header("====AI====")]
     bool SpawnDelay = true;
@@ -69,8 +74,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public GameObject findEnemyRange = null;
     public GameObject Bow = null;
 
-    public float testSpeed = 1;
-
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
@@ -88,7 +91,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         ModelSwap = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
-
+        if (soundManager == null)
+        {
+            soundManager = GetComponentInChildren<UnitSoundManager>();
+        }
 
         NavAgent = GetComponent<NavMeshAgent>();
         NavObstacle = GetComponent<NavMeshObstacle>();
@@ -211,10 +217,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 
             }
 
-            //if (Input.GetKeyDown(KeyCode.B) && isSelected)
-            //{
-            //    debuffManager.AddDebuff(UnitDebuff.Bleed);
-            //}
+            if (Input.GetKeyDown(KeyCode.B) && isSelected)
+            {
+                debuffManager.AddDebuff(UnitDebuff.Bleed);
+            }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
             {
@@ -373,6 +379,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             enemy_isBaseInRange =
             (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange);
+
+            if (unActable)
+            {
+                return;
+            }
 
             if (enemy_isPathBlocked)
             {
@@ -588,12 +599,29 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         HP -= Damage;
-        if (Random.Range(1, 101) <= Crit)
+
+        if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {
             Debug.Log("Critical Hit!");
             debuffManager.AddDebuff(Crit2Debuff);
+            for (int idx = 0; idx < soundManager.HitSound.Length; idx++)
+            {
+                if (attackType == soundManager.HitSound[idx].type)
+                {
+                    soundManager.PlaySFX(soundManager.HitSound[idx].hitSoundCrit);
+                }
+            }
+        }
+        else //치명타 비적용시
+        {
+            for (int idx = 0; idx < soundManager.HitSound.Length; idx++)
+            {
+                if (attackType == soundManager.HitSound[idx].type)
+                {
+                    int HitSoundRandomNum = Random.Range(0, 2);
+                    soundManager.PlaySFX(soundManager.HitSound[idx].hitSound[HitSoundRandomNum]);
+                }
+            }
         }
     }
-
-
 }

@@ -76,6 +76,8 @@ public class EnemyUnitState : MonoBehaviour
 
     void Move_Update()
     {
+        navAgent.speed = UnitCtrl.cur_moveSpeed;
+
         SearchPath();
 
         if (UnitCtrl.enemy_isBaseInRange)
