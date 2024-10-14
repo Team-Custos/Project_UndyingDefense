@@ -25,6 +25,15 @@ public class Ingame_UnitData : ScriptableObject
     public float sightRange = 0;
     public float attackRange = 0;
 
+    // Ãß°¡
+    public float globalTime;
+    public string g_SkillName;
+    public string s_SkillName;
+    public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -11,7 +11,7 @@ public class LobbyUIManager : MonoBehaviour
     public Button stageStartBtn = null;
 
     [Header("===== Local Situation UI ====")]
-    public GameObject localSituationPanel = null;
+    public RectTransform localSituationPanel = null;
     public Button localSituationPanelCloseBtn = null;
     public Image battleFieldImage = null;
     public Text battleFieldScriptTxt = null;
@@ -21,7 +21,7 @@ public class LobbyUIManager : MonoBehaviour
     public Button battleStartBtn = null;
 
     [Header("==== CommandSkill UI ====")]
-    public GameObject commandSkillPanel = null;
+    public RectTransform commandSkillPanel = null;
     public Button commandSkillPanelCloseBtn = null;
     public Image[] commandSkillDeckListImage = null;
     public Image[] commandSkillList = null;
@@ -66,16 +66,17 @@ public class LobbyUIManager : MonoBehaviour
         {
             if (battleStartBtn != null)
             {
+
                 battleStartBtn.onClick.AddListener(() => SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1"));
             }
         }
 
-        //UI 판넬 On / Off
+        // UI 판넬 On / Off
         if (stageStartBtn != null)
         {
             stageStartBtn.onClick.AddListener(() =>
             {
-                localSituationPanel.SetActive(true);
+                ShowUI(localSituationPanel);  
             });
         }
 
@@ -83,29 +84,30 @@ public class LobbyUIManager : MonoBehaviour
         {
             localSituationPanelCloseBtn.onClick.AddListener(() =>
             {
-                localSituationPanel.SetActive(false);
+                HideUI(localSituationPanel);  
             });
         }
 
-        if(commandSkillPanelCloseBtn != null)
+        if (commandSkillPanelCloseBtn != null)
         {
             commandSkillPanelCloseBtn.onClick.AddListener(() =>
             {
-                commandSkillPanel.SetActive(false);
-                localSituationPanel.SetActive(true);
+                HideUI(commandSkillPanel);  
+                ShowUI(localSituationPanel);
             });
         }
 
-        if(commandSkillResetBtn != null)
+        if (commandSkillResetBtn != null)
         {
             commandSkillResetBtn.onClick.AddListener(() =>
             {
-                localSituationPanel.SetActive(false);
-                commandSkillPanel.SetActive(true);
+                HideUI(localSituationPanel);
+                ShowUI(commandSkillPanel);  
 
             });
         }
         // UI 판넬 On/Off
+
 
         // 초기화: 덱 비우기
         for (int i = 0; i < isCommandSkillDeckEmpty.Length; i++)
@@ -277,5 +279,58 @@ public class LobbyUIManager : MonoBehaviour
         Debug.Log("커맨더 스킬 저장");
     }
 
+
+
+    // 패널의 크기를 조절하는 코루틴
+    public IEnumerator AnimateUI(RectTransform ui, bool isActive, float duration = 0.3f)
+    {
+        // 패널의 중심을 화면 중앙으로 설정 (피벗과 앵커를 중앙으로)
+        ui.pivot = new Vector2(0.5f, 0.5f);
+        ui.anchorMin = new Vector2(0.5f, 0.5f);
+        ui.anchorMax = new Vector2(0.5f, 0.5f);
+
+        // 시작 크기와 끝 크기 설정
+        Vector3 startScale = ui.localScale;
+        Vector3 endScale;
+
+        // isActive에 따라 크기 설정
+        if (isActive)
+        {
+            endScale = Vector3.one;  // (1, 1, 1) 크기로 활성화
+        }
+        else
+        {
+            endScale = Vector3.zero; // (0, 0, 0) 크기로 비활성화
+        }
+
+        // 애니메이션 타이머
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            // 크기를 서서히 변화시킴
+            ui.localScale = Vector3.Lerp(startScale, endScale, time / duration);
+            yield return null;
+        }
+
+        // 최종 크기 설정
+        ui.localScale = endScale;
+        // 끝났을 때 패널의 활성/비활성 설정
+        ui.gameObject.SetActive(isActive);
+    }
+
+    // 패널을 활성화하는 함수
+    public void ShowUI(RectTransform ui)
+    {
+        ui.gameObject.SetActive(true); // 먼저 활성화
+        StartCoroutine(AnimateUI(ui, true, 0.3f)); // 커지면서 나타나는 연출
+    }
+
+    // 패널을 비활성화하는 함수
+    public void HideUI(RectTransform ui)
+    {
+        StartCoroutine(AnimateUI(ui, false, 0.3f)); // 작아지면서 사라지는 연출
+    }
 
 }

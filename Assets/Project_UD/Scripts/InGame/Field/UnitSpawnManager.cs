@@ -32,14 +32,14 @@ public class UnitSpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UD_Ingame_UnitCtrl[] allUnits = FindObjectsOfType<UD_Ingame_UnitCtrl>();
-        //foreach (UD_Ingame_UnitCtrl unit in allUnits)
-        //{
-        //    if (unit.unitStateChangeTime > 0)
-        //    {
-        //        unit.unitStateChangeTime -= Time.deltaTime;
-        //    }
-        //}
+        Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
+        foreach (Ingame_UnitCtrl unit in allUnits)
+        {
+            if (unit.unitStateChangeTime > 0)
+            {
+                unit.unitStateChangeTime -= Time.deltaTime;
+            }
+        }
     }
 
     //유닛 소환

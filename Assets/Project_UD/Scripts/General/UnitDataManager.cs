@@ -9,14 +9,7 @@ public class UnitDataManager : MonoBehaviour
 
     void Awake()
     {
-        if (inst == null)
-        {
-            inst = this;
-        }
-        else if (inst != this)
-        {
-            Destroy(gameObject);
-        }
+        inst = this;
     }
 
     public class UnitData
@@ -77,10 +70,12 @@ public class UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
+            // 엑셀 데이터를 딕셔너리에 저장
             unitDataDictionary[unitData.UnitCode] = unitData;
-        }
 
-       // ShowUnitData();
+            // 스크립터블 오브젝트로 매핑
+            Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
+        }
     }
 
 
@@ -118,5 +113,37 @@ public class UnitDataManager : MonoBehaviour
         }
 
     }
+
+
+    // 엑셀 데이터를 스크립터블 오브젝트에 매핑하는 함수
+    public Ingame_UnitData CreateUnitDataObject(UnitData unitData)
+    {
+        Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
+
+        // 매핑
+        ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
+        ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
+        ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
+        //ingameUnitData.modelType = unitData.Number;
+        ingameUnitData.maxHP = unitData.Hp;
+        ingameUnitData.mental = unitData.Mental;
+        ingameUnitData.moveSpeed = unitData.MoveSpeed;
+        //ingameUnitData.attackPoint = unitData.AttackSpeed;
+        ingameUnitData.critChanceRate = unitData.CritRate;
+        ingameUnitData.generalSkillCode = unitData.g_Skil;
+        ingameUnitData.specialSkillCode = unitData.s_Skill;
+        ingameUnitData.weaponCooldown = unitData.GlobalTime; 
+        ingameUnitData.sightRange = unitData.SightRange;
+        ingameUnitData.attackRange = unitData.AttackRange;
+        ingameUnitData.unitCode = unitData.UnitCode;
+        ingameUnitData.s_SkillName = unitData.s_SkillName;
+        ingameUnitData.g_SkillName = unitData.g_SkillName;
+        ingameUnitData.level = unitData.Level;
+        ingameUnitData.cost = unitData.Cost;
+        ingameUnitData.name = unitData.Name;
+
+        return ingameUnitData;
+    }
+
 
 }

@@ -1,7 +1,9 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.UI;
+using static UnitDataManager;
 
 public enum DefenseType
 {
@@ -50,6 +52,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public int curLevel = 1;
     public int HP;
 
+    public int maxHp;
+    public Image hpBar;
+
     [Header("====AI====")]
     bool SpawnDelay = true;
 
@@ -75,6 +80,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public AllyMode previousAllyMode;
 
     public string unitName;
+    public string gSkill;
+    public string sSkill;
+    public string unitCode;
 
     void OnMouseDown()
     {
@@ -121,6 +129,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         targetBase = InGameManager.inst.Base;
         HP = unitData.maxHP;
+        maxHp = unitData.maxHP;
 
         Ally_Mode = AllyMode.Siege;
 
@@ -189,6 +198,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             Debug.Log(this.gameObject.name + " Destroyed");
             Destroy(this.gameObject);
+
+            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)
@@ -593,7 +604,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Debug.Log("Critical Hit!");
             debuffManager.AddDebuff(Crit2Debuff);
         }
+
+
+        if (hpBar != null)
+        {
+
+            hpBar.fillAmount = (float)HP / (float)maxHp;
+        }
     }
 
-
+    
 }

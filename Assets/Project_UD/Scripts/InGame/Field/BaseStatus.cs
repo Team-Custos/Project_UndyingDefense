@@ -7,6 +7,13 @@ public class BaseStatus : MonoBehaviour
     public int BaseHPMax = 0;
     public int BaseHPCur = 0;
 
+    public static BaseStatus instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +26,12 @@ public class BaseStatus : MonoBehaviour
     {
         if (BaseHPCur <= 0)
         {
+            BaseHPCur = 0;
+
+            Time.timeScale = 0.0f;
+
             //패배처리
+            Ingame_UIManager.instance.waveResultPanel.SetActive(true);
         }
         
     }

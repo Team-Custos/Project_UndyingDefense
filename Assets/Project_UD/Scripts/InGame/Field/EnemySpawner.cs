@@ -35,7 +35,7 @@ public class EnemySpawnData
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner inst;
-    //UD_Ingame_ObjectPool objectPool;
+    ObjectPool objectPool;
     public List<Ingame_UnitData> enemyDatas;
 
     GridManager gridManager;
@@ -71,7 +71,6 @@ public class EnemySpawner : MonoBehaviour
     private bool isWaveInProgress = false;
 
     private List<GameObject> activeMonsters = new List<GameObject>();
-    //bool isCurrentWaveFinshed = false;
 
 
     private void Awake()
@@ -89,7 +88,7 @@ public class EnemySpawner : MonoBehaviour
 
         spawnPoint = new Transform[gridHeight];
 
-        //UD_Ingame_ObjectPool.Instance.Intialize(20);
+        ObjectPool.Instance.Intialize(20);
 
         currentWave = 1;
 
@@ -148,14 +147,20 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log(new Vector3(X, 0, Y));
         GameObject Obj = Instantiate(Test_Enemy);
         Obj.transform.position = new Vector3(X, 0, Y);
-        //Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+        Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
         return Obj;
     }
 
-    IEnumerator WaveSystem()
+    public IEnumerator WaveSystem()
     {
-        isWaveInProgress = true;
+        if (isWaveInProgress)
+        {
+            // 이미 웨이브가 진행 중이면, 중복 실행을 방지
+            yield break;
+        }
+
+        isWaveInProgress = true; // 웨이브 진행 중 상태 설정
         spawnedMonsterCount = 0;
 
         Debug.Log($"Wave {currentWave} 시작");
@@ -164,12 +169,9 @@ public class EnemySpawner : MonoBehaviour
         yield return StartCoroutine(SpawnMonstersForWave());
 
         // 몬스터가 모두 죽을 때까지 기다림
-        //yield return StartCoroutine(CheckAllMonstersDead());
+        yield return StartCoroutine(CheckAllMonstersDead());
 
-        //Debug.Log("20초 대기");
-        //yield return new WaitForSeconds(20f); // 20초 대기
-
-        isWaveInProgress = false; 
+        isWaveInProgress = false; // 웨이브가 끝나면 진행 중 상태 해제
     }
 
     // 웨이브에 따른 몬스터 생성 코루틴
@@ -220,25 +222,21 @@ public class EnemySpawner : MonoBehaviour
     // 몬스터 생성
     void SpawnEnemy(int enemyType)
     {
-        // 스폰 위치 랜덤 선택
-        Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
+        // 적 타입이 enemyDatas 범위를 넘지 않는지 확인
+        if (enemyType >= 0 && enemyType < enemyDatas.Count)
+        {
+            // 스폰 위치 랜덤 선택
+            Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
 
-        GameObject enemyObj = ObjectPool.GetObject(); // 오브젝트 풀에서 가져오기
+            GameObject enemyObj = ObjectPool.GetObject(); // 오브젝트 풀에서 가져오기
+            enemyObj.transform.position = spawnPos.position;
+            enemyObj.transform.rotation = Quaternion.identity;
 
-        enemyObj.transform.position = spawnPos.position;
-        enemyObj.transform.rotation = Quaternion.identity;
+            // 적 초기화
+            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
 
-
-        //if (enemyType == 0)
-        //{
-        //    enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
-        //}
-        //else
-        //{
-        //    enemyObj.GetComponent<Ingame_UnitCtrl>().EnemyInit(spawnData[enemyType]); // 적 초기화
-        //}
-
-        activeMonsters.Add(enemyObj); // 생성된 몬스터 목록에 추가
+            activeMonsters.Add(enemyObj); // 생성된 몬스터 목록에 추가
+        }
     }
 
     // 몬스터 죽음 처리
@@ -254,15 +252,47 @@ public class EnemySpawner : MonoBehaviour
     // 몬스터가 모두 죽었는지 확인
     IEnumerator CheckAllMonstersDead()
     {
-        while (activeMonsters.Count > 0) // 몬스터가 아직 남아 있는지 확인
+        // 몬스터가 모두 죽을 때까지 대기
+        while (activeMonsters.Count > 0)
         {
             yield return null;
         }
 
+        Debug.Log("모든 몬스터가 죽었습니다. 다음 웨이브를 준비합니다.");
+
+        // 몬스터가 모두 죽었을 때, 다음 웨이브를 위해 카운트다운 시작
+        StartCoroutine(StartNextWaveCountdown());
+    }
+
+    // 다음 웨이브 카운트다운 시작
+    IEnumerator StartNextWaveCountdown()
+    {
+        Ingame_UIManager.instance.waveSuccessPanel.SetActive(true);
+        Time.timeScale = 0.0f;
+
+
+        Ingame_UIManager.instance.waveCount = 20f;
+        Ingame_UIManager.instance.isCurrentWaveFinshed = true;
+
+        while (Ingame_UIManager.instance.waveCount > 0)
+        {
+            Ingame_UIManager.instance.waveCount -= Time.deltaTime;
+            Ingame_UIManager.instance.waveCountText.text = "적군 침공까지 " + Mathf.Ceil(Ingame_UIManager.instance.waveCount).ToString() + "초";
+            yield return null;
+        }
+
+        Ingame_UIManager.instance.waveCountText.gameObject.SetActive(false);
+        StartCoroutine(StartWaveWithDelay(1f)); // 1초 지연 후 웨이브 시작
     }
 
     public void NextWave()
     {
+        if (isWaveInProgress)
+        {
+            Debug.LogWarning("웨이브가 이미 진행 중입니다. 새로운 웨이브 시작을 중단합니다.");
+            return;
+        }
+
         Debug.Log("다음 웨이브로 넘어갑니다.");
 
         // 현재 활성화된 모든 몬스터 제거
@@ -279,5 +309,13 @@ public class EnemySpawner : MonoBehaviour
             currentWave++;
             StartCoroutine(WaveSystem());
         }
+    }
+
+
+    // 웨이브를 1초 딜레이 후 시작하는 코루틴
+    public IEnumerator StartWaveWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 1초 지연
+        EnemySpawner.inst.StartCoroutine(EnemySpawner.inst.WaveSystem());
     }
 }
