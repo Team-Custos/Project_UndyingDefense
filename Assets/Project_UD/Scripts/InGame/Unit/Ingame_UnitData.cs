@@ -24,16 +24,6 @@ public class Ingame_UnitData : ScriptableObject
     public float skillCooldown = 0;
     public float sightRange = 0;
     public float attackRange = 0;
+    public AudioClip[] attackSound;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

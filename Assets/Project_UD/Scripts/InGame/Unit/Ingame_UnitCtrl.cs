@@ -1,8 +1,8 @@
 using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-using static UnitDataManager;
+using UnityEngine.SceneManagement;
 
 
 public enum DefenseType
@@ -11,7 +11,6 @@ public enum DefenseType
     metal,
     leather
 }
-
 
 public enum AllyMode
 {
@@ -38,6 +37,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
     UnitModelSwapManager ModelSwap;
+    public UnitSoundManager soundManager;
+    
     [Header("====Status====")]
     public AllyMode Ally_Mode;
 
@@ -50,6 +51,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public int cur_modelType;
     public int curLevel = 1;
     public int HP;
+    public float cur_moveSpeed = 1;
+    public float cur_attackSpeed = 1;
+    public bool unActable = false;
 
     [Header("====AI====")]
     bool SpawnDelay = true;
@@ -70,17 +74,16 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public GameObject findEnemyRange = null;
     public GameObject Bow = null;
 
-    public float testSpeed = 1;
-
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
+    public string unitName;
 
-        void OnMouseDown()
+    void OnMouseDown()
     {
         if (Ingame_UIManager.instance != null)
         {
-            //Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+            Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
         }
     }
 
@@ -88,7 +91,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         ModelSwap = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
-
+        if (soundManager == null)
+        {
+            soundManager = GetComponentInChildren<UnitSoundManager>();
+        }
 
         NavAgent = GetComponent<NavMeshAgent>();
         NavObstacle = GetComponent<NavMeshObstacle>();
@@ -211,10 +217,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 
             }
 
-            //if (Input.GetKeyDown(KeyCode.B) && isSelected)
-            //{
-            //    debuffManager.AddDebuff(UnitDebuff.Bleed);
-            //}
+            if (Input.GetKeyDown(KeyCode.B) && isSelected)
+            {
+                debuffManager.AddDebuff(UnitDebuff.Bleed);
+            }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
             {
@@ -374,6 +380,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
             enemy_isBaseInRange =
             (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange);
 
+            if (unActable)
+            {
+                return;
+            }
+
             if (enemy_isPathBlocked)
             {
                 if (targetEnemy != null && !enemy_isBaseInRange)//병사 발견시
@@ -463,7 +474,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown,false);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
             }
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY)) //적일때
@@ -481,8 +492,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
-                    //Bow.transform.LookAt(targetEnemy.transform.position);
-                    //Bow.GetComponent<UD_Ingame_BowCtrl>().ArrowShoot(weaponCooldown, attackPoint, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -492,49 +501,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
         }
     }
-
-    public void UnitInit(UnitSpawnData data)
-    {
-        unitData = UnitSpawnManager.inst.unitDatas[data.unitType.GetHashCode()];
-
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.weaponCooldown = data.attackSpeed;
-        unitData.skillCooldown = data.skillCooldown;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-		
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
-    public void EnemyInit(EnemySpawnData data)
-    {
-        unitData.modelType = data.modelType;
-        unitData.maxHP = data.HP;
-        unitData.moveSpeed = data.moveSpeed;
-        unitData.attackPoint = data.attackPoint;
-        unitData.critChanceRate = data.critChanceRate;
-
-        unitData.sightRange = data.sightRange;
-        unitData.attackRange = data.attackRange;
-
-        unitData.generalSkillCode = data.generalSkill;
-        unitData.specialSkillCode = data.specialSkill;
-
-        unitData.unitType = data.unitType;
-        unitData.defenseType = data.defenseType;
-        unitData.targetSelectType = data.targetSelectType;
-    }
-
     
 
 
@@ -633,10 +599,29 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         HP -= Damage;
-        if (Random.Range(1, 101) <= Crit)
+
+        if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {
             Debug.Log("Critical Hit!");
             debuffManager.AddDebuff(Crit2Debuff);
+            for (int idx = 0; idx < soundManager.HitSound.Length; idx++)
+            {
+                if (attackType == soundManager.HitSound[idx].type)
+                {
+                    soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSoundCrit);
+                }
+            }
+        }
+        else //치명타 비적용시
+        {
+            for (int idx = 0; idx < soundManager.HitSound.Length; idx++)
+            {
+                if (attackType == soundManager.HitSound[idx].type)
+                {
+                    int HitSoundRandomNum = Random.Range(0, 2);
+                    soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSound[HitSoundRandomNum]);
+                }
+            }
         }
     }
 }

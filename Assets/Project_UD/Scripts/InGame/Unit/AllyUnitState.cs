@@ -120,6 +120,8 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
+            navAgent.speed = UnitCtrl.cur_moveSpeed;
+
             navAgent.SetDestination(UnitCtrl.moveTargetPos);
             navAgent.stoppingDistance = 0;
 
