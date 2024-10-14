@@ -88,10 +88,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     
     void OnMouseDown()
     {
-        if (Ingame_UIManager.instance != null)
-        {
-            Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
-        }
+        //if (Ingame_UIManager.instance != null)
+        //{
+        //    Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+        //}
     }
 
     private void Awake()

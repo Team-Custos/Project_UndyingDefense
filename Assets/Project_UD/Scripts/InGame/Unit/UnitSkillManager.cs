@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class UnitSkillManager : MonoBehaviour
 {
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
@@ -24,6 +26,12 @@ public class UnitSkillManager : MonoBehaviour
 
     int TargetCellIdxFinal = 0;
 
+    public Dictionary<int, UnitDebuff> GeneralSkillCodeToDebuff = new Dictionary<int, UnitDebuff>()
+    {
+        {101 , UnitDebuff.Bleed},
+        {102 , UnitDebuff.Bleed},
+    };
+
     private void Awake()
     {
         GridManager = GridManager.inst;
@@ -33,7 +41,7 @@ public class UnitSkillManager : MonoBehaviour
     {
         Vector3 TargetPos = TargetEnemy.transform.position;
 
-        //���� ���� ���� (������, ġ��Ÿ Ȯ��, ���� Ÿ��, �����(�ʿ��� ���))
+        //공격 정보 관리 (데미지, 치명타 확률, 공격 타입, 디버프(필요한 경우))
         int damage = 0;
         AttackType attackType = AttackType.UnKnown;
         UnitDebuff debuff = UnitDebuff.None;
@@ -42,16 +50,16 @@ public class UnitSkillManager : MonoBehaviour
         {
             switch (SkillCode)
             {
-                //�� ����
+                //낫 베기
                 case 101:
-                    //������ �տ� �ִ� �� ���� ���� ���� 5 �������� ���� ������ ���Ѵ�. ġ��Ÿ �ߵ� �� ���� ȿ��
+                    //낫으로 앞에 있는 한 명의 적을 베어 5 데미지의 베기 공격을 가한다. 치명타 발동 시 출혈 효과
                     damage = 5;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
-                //Ȱ ���
+                //활 쏘기
                 case 102:
-                    //ȭ���� ��� �� ���� ������ 5 �������� ���� ������ ���Ѵ�. ġ��Ÿ �ߵ� �� ���� ȿ��
+                    //화살을 쏘아 한 명의 적에게 5 데미지의 관통 공격을 가한다. 치명타 발동 시 출혈 효과
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
@@ -68,19 +76,19 @@ public class UnitSkillManager : MonoBehaviour
                         }
                     }
                     break;
-                //â ���
+                //창 찌르기
                 case 201:
                     damage = 7;
                     attackType = AttackType.Pierce;
                     debuff = UnitDebuff.Bleed;
                     break;
-                //��ġ ����ġ��
+                //망치 내려치기
                 case 202:
                     damage = 7;
                     attackType = AttackType.Crush;
                     debuff = UnitDebuff.Dizzy;
                     break;
-                //���� ���
+                //엽총 쏘기
                 case 203:
                     damage = 7;
                     attackType = AttackType.Pierce;
@@ -91,10 +99,6 @@ public class UnitSkillManager : MonoBehaviour
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                int HitSoundRandomNum = Random.Range(0, 2);
-                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
-
-                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX ,SFX2Play);
                 EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
             else
@@ -112,7 +116,7 @@ public class UnitSkillManager : MonoBehaviour
 
     int SkillDamageInit()
     {
-        //��ų ������ ������ ��������.
+        //스킬 데미지 데이터 가져오기.
         return 1;
     }
 
@@ -132,10 +136,10 @@ public class UnitSkillManager : MonoBehaviour
             skillCooldown_Cur = skillCooldown;
             switch (SkillCode)
             {
-                //�� ���
+                //낫 찍기
                 case 101:
-                    //������ �տ� �ִ� �� ���� ���� ���� ��� 5 �������� ���� ������ ���Ѵ�. ġ��Ÿ�� 5% ����. ġ��Ÿ �ߵ� �� ��� ȿ��
-                    // �˺���� ���� ó��. ���ȸ� �ٸ���.
+                    //낫으로 앞에 있는 한 명의 적을 세게 찍어 5 데미지의 관통 공격을 가한다. 치명타율 5% 증가. 치명타 발동 시 충격 효과
+                    // 검베기와 같은 처리. 스탯만 다르게.
                     if (TargetEnemy == null)
                     {
                         return;
@@ -143,7 +147,7 @@ public class UnitSkillManager : MonoBehaviour
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     break;
 
-                //����
+                //연사
                 case 102:
                     if (TargetEnemy == null)
                     {
@@ -152,42 +156,40 @@ public class UnitSkillManager : MonoBehaviour
 
                     StartCoroutine(DoubleShot());
 
-                    IEnumerator DoubleShot() // 2���� �ڷ�ƾ
+                    IEnumerator DoubleShot() // 2연사 코루틴
                     {
                         Debug.Log("Double shot 1");
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
-                        // ���� �ð� �� �� ��° �Ѿ� �߻�
+                        // 지연 시간 후 두 번째 총알 발사
                         yield return new WaitForSeconds(0.5f);
                         Debug.Log("Double shot 2");
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                     }
                     break;
-                //�ָ�����
+                //멀리베기
                 case 201:
-                    //â�� �޸� ������ �ָ� �ִ� ���� ���� 7 �������� ���� ������ ���Ѵ�. ġ��Ÿ�� 10% ����. ġ��Ÿ �ߵ� �� ���� ȿ��
-                    //��ų�� ����Ҷ��� �Ÿ� ������ ���� �ؾ��Ұ� ����. -> �þ߹���? ��ȹ�ʰ� �̾߱Ⱑ �ʿ��Ұ� ����.
+                    //창에 달린 낫으로 멀리 있는 적을 베어 7 데미지의 베기 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 출혈 효과
+                    //스킬을 사용할때만 거리 측정을 따로 해야할것 같음. -> 시야범위? 기획쪽과 이야기가 필요할것 같음.
 
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Slash, UnitDebuff.Bleed);
 
                     break;
-                //����ġ��
+                //방패치기
                 case 202:
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                //����ź ��ô
+                //수류탄 투척
                 case 203:
-                    //����ź�� ���� ���� ���� �ִ� ��� ������ 10 �������� �м� ������ ���Ѵ�. ġ��Ÿ�� 10% ����. ġ��Ÿ �ߵ� �� ���� ȿ��
-                    //�� ��ġ�� ����ϰ� ����. ���ִ� ĭ�� �������� �ٶ󺸴� ���� ��ĭ �տ� ���� Ʈ���� ������Ʈ�� ��ġ�ϴ� ������.
-                    //��, �̸� ��ġ �Ǿ��ִ����� �������� ����.
+                    //수류탄을 던져 범위 내에 있는 모든 적에게 10 데미지의 분쇄 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 기절 효과
+                    //덫 설치와 비슷하게 구현. 서있는 칸을 기준으로 바라보는 방향 몇칸 앞에 공격 트리거 오브젝트를 설치하는 식으로.
+                    //단, 미리 배치 되어있는지는 고려하지 않음.
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                //���� ��ġ
+                //곰덫 설치
                 case 204:
-                    //���ִ� ĭ�� �������� �ٶ󺸴� ���� 2ĭ �տ� �浣�� ��ġ�Ͽ� �������� �� ���� ������ 5 �������� ���� ������ ���Ѵ�. ġ��Ÿ���� 5% ����. ġ��Ÿ �ߵ� �� �ӹ� ȿ��.
-                    //�̹� ��ġ�� �浣�� �ߵ��Ǳ� ���� �ش� ��ų�� �ٽ� ����Ѵٸ�, ������ ��ġ�� �浣�� �μ����� �ش� ��ų�� �ߵ��Ǿ� ���� �浣�� ��ġ�Ѵ�.
-                    //-> �� ��ġ �����ؼ� ��ȹ���̶� �̾߱⸦ �ؾ��� �ʿ䰡 �־��.
+                    //서있는 칸을 기준으로 바라보는 방향 2칸 앞에 꿩덫을 설치하여 지나가는 한 명의 적에게 5 데미지의 베기 공격을 가한다. 치명타율이 5% 증가. 치명타 발동 시 속박 효과.
+                    //이미 설치된 꿩덫이 발동되기 전에 해당 스킬을 다시 사용한다면, 이전에 설치된 꿩덫이 부서지고 해당 스킬이 발동되어 새로 꿩덫을 설치한다.
+                    //-> 덫 설치 관련해서 기획쪽이랑 이야기를 해야할 필요가 있어보임.
 
                     if (SetObject != null)
                     {
@@ -197,35 +199,35 @@ public class UnitSkillManager : MonoBehaviour
                     }
 
                     float CurAngle = gameObject.transform.eulerAngles.y;
-                    Debug.Log("���� ����: " + CurAngle);
+                    Debug.Log("현재 각도: " + CurAngle);
                     Vector2 CurCellPos = UnitCtrl.unitPos;
                     Vector2[] TargetCells = new Vector2[3];
 
-                    // ������ ���� x, y �������� ����
+                    // 각도에 따라 x, y 오프셋을 설정
                     Vector2[] directionOffsets;
-                    if (CurAngle <= 45 || CurAngle > 315)       // ����
+                    if (CurAngle <= 45 || CurAngle > 315)       // 북쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
-                    else if (CurAngle <= 135 && CurAngle > 45)   // ����
+                    else if (CurAngle <= 135 && CurAngle > 45)   // 동쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
                     }
-                    else if (CurAngle <= 225 && CurAngle > 135)  // ����
+                    else if (CurAngle <= 225 && CurAngle > 135)  // 남쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
                     }
-                    else if (CurAngle > 225 && CurAngle <= 315) // ����
+                    else if (CurAngle > 225 && CurAngle <= 315) // 서쪽
                     {
                         directionOffsets = new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
                     }
                     else
                     {
-                        Debug.LogError("�� ��ġ ���� ���� ��� ����.");
+                        Debug.LogError("덫 설치 관련 각도 계산 오류.");
                         directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
 
-                    // TargetCells�� ������ �����Ͽ� ��ǥ ���
+                    // TargetCells에 오프셋 적용하여 좌표 계산
                     for (int i = 0; i < 3; i++)
                     {
                         TargetCells[i] = CurCellPos + directionOffsets[i];
@@ -249,7 +251,7 @@ public class UnitSkillManager : MonoBehaviour
                     if (TargetCellIdx.Count > 0)
                     {
                         TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
-                        Debug.Log("���� : " + TargetCellIdxFinal);
+                        Debug.Log("난수 : " + TargetCellIdxFinal);
                         int TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
                         Vector3 TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
 
@@ -257,27 +259,27 @@ public class UnitSkillManager : MonoBehaviour
                         {
                             TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
 
-                            Debug.Log(TargetCellFinal + "�� ���� ��ġ�� �õ��մϴ�.");
+                            Debug.Log(TargetCellFinal + "번 셀에 설치를 시도합니다.");
                             if (GridManager.GetTilePlaceable(TargetCellFinalWorldPos))
                             {
-                                Debug.Log("�ش� ���� ��ġ�� ���� �մϴ�.");
+                                Debug.Log("해당 셀에 설치가 가능 합니다.");
                                 TargetCellWorldPos = TargetCellFinalWorldPos;
                                 break;
                             }
                             else
                             {
-                                Debug.Log("�ش� ���� ��ġ�� �Ұ��� �մϴ�.");
+                                Debug.Log("해당 셀에 설치가 불가능 합니다.");
                                 TargetCellIdx.RemoveAt(TargetCellIdxFinal);
                                 if (TargetCellIdx.Count == 0)
                                 {
-                                    Debug.Log("��� ��ġ �Ұ�. ��ų ��Ÿ���� �ʱ�ȭ�մϴ�.");
+                                    Debug.Log("모두 설치 불가. 스킬 쿨타임을 초기화합니다.");
                                     skillCooldown_Cur = 0;
                                     return;
                                 }
                                 else
                                 {
                                     TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
-                                    Debug.Log("���ο� ���� : " + TargetCellIdxFinal);
+                                    Debug.Log("새로운 난수 : " + TargetCellIdxFinal);
                                     TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
                                     continue;
                                 }
@@ -286,7 +288,7 @@ public class UnitSkillManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("��� ��ġ �Ұ�. ��ų ��Ÿ���� �ʱ�ȭ�մϴ�.");
+                        Debug.Log("모두 설치 불가. 스킬 쿨타임을 초기화합니다.");
                         skillCooldown_Cur = 0;
                         return;
                     }
@@ -317,10 +319,10 @@ public class UnitSkillManager : MonoBehaviour
     {
         switch (SkillCode)
         {
-            //�� ����
+            //검 베기
             case 101:
                 break;
-            //Ȱ ���
+            //활 쏘기
             case 102:
                 if (Bow != null)
                 {

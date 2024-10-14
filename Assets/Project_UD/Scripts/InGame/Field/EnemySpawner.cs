@@ -147,7 +147,7 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log(new Vector3(X, 0, Y));
         GameObject Obj = Instantiate(Test_Enemy);
         Obj.transform.position = new Vector3(X, 0, Y);
-        Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+        //Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
         return Obj;
     }

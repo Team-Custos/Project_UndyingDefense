@@ -604,11 +604,11 @@ public class Ingame_UIManager : MonoBehaviour
         UnitUpgrade1Btn.onClick.RemoveAllListeners();
         UnitUpgrade1Btn.onClick.AddListener(() =>
         {
-            if (upgradeOptions.Count > 0)
-            {
-                // 업그레이드 수행
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[0]);
-            }
+            //if (upgradeOptions.Count > 0)
+            //{
+            //    // 업그레이드 수행
+            //    unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[0]);
+            //}
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
         });
@@ -620,7 +620,7 @@ public class Ingame_UIManager : MonoBehaviour
             if (upgradeOptions.Count > 1)
             {
                 // 두 번째 업그레이드 수행
-                unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[1]);
+               // unitUpgradeManager.PerformUpgrade(unit, upgradeOptions[1]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
