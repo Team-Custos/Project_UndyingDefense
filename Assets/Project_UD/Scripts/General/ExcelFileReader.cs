@@ -18,7 +18,7 @@ public class ExcelFileReader : MonoBehaviour
         }
 
         List<UnitDataManager.UnitData> unitDatas = ReadCSV(filePath);
-        //unitDataManager.SetUnitData(unitDatas);
+        unitDataManager.SetUnitData(unitDatas);
     }
 
 

@@ -26,7 +26,7 @@ public class Ingame_UnitData : ScriptableObject
     public float attackRange = 0;
     public AudioClip[] attackSound;
 
-    // �߰�
+    // 추가
     public float globalTime;
     public string g_SkillName;
     public string s_SkillName;
