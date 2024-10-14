@@ -199,7 +199,7 @@ public class UnitDebuffManager : MonoBehaviour
                         EndSFX = debuffData[i].EndSFX,
                     });
                     StartSFX = debuffData[i].StartSFX;
-                    unitCtrl.soundManager.PlaySFX(StartSFX);
+                    unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, StartSFX);
                 }
             }
             
@@ -209,6 +209,7 @@ public class UnitDebuffManager : MonoBehaviour
     // 디버프 제거
     private void RemoveDebuff(UnitCurDebuff debuff)
     {
+        unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, debuff.EndSFX);
         activeDebuffs.Remove(debuff);
     }
 

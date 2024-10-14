@@ -13,7 +13,9 @@ public class ATTACKEDSOUND
 
 public class UnitSoundManager : MonoBehaviour
 {
-    AudioSource SFX;
+    public AudioSource ATTACK_SFX;
+    public AudioSource HIT_SFX;
+    public AudioSource DEBUFF_SFX;
 
     [Header("====ATTACK_SFX====")]
     public AudioClip ATK_SLASH;
@@ -25,7 +27,7 @@ public class UnitSoundManager : MonoBehaviour
 
     void Awake()
     {
-        SFX = GetComponent<AudioSource>();
+
     }
 
     // Start is called before the first frame update
@@ -40,7 +42,7 @@ public class UnitSoundManager : MonoBehaviour
         
     }
 
-    public void PlaySFX(AudioClip SFX2Play)
+    public void PlaySFX(AudioSource SFX,AudioClip SFX2Play)
     {
         SFX.clip = SFX2Play;
         SFX.Play();

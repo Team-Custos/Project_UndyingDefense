@@ -608,7 +608,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 if (attackType == soundManager.HitSound[idx].type)
                 {
-                    soundManager.PlaySFX(soundManager.HitSound[idx].hitSoundCrit);
+                    soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSoundCrit);
                 }
             }
         }
@@ -619,7 +619,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 if (attackType == soundManager.HitSound[idx].type)
                 {
                     int HitSoundRandomNum = Random.Range(0, 2);
-                    soundManager.PlaySFX(soundManager.HitSound[idx].hitSound[HitSoundRandomNum]);
+                    soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSound[HitSoundRandomNum]);
                 }
             }
         }

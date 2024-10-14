@@ -94,7 +94,7 @@ public class UnitSkillManager : MonoBehaviour
                 int HitSoundRandomNum = Random.Range(0, 2);
                 AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
-                UnitCtrl.soundManager.PlaySFX(SFX2Play);
+                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX ,SFX2Play);
                 EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
             else
