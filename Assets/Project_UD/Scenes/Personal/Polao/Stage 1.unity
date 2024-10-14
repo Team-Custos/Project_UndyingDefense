@@ -1556,9 +1556,10 @@ GameObject:
   - component: {fileID: 122481045}
   - component: {fileID: 122481048}
   - component: {fileID: 122481047}
-  - component: {fileID: 122481046}
   - component: {fileID: 122481049}
+  - component: {fileID: 122481046}
   - component: {fileID: 122481050}
+  - component: {fileID: 122481051}
   m_Layer: 12
   m_Name: Base
   m_TagString: Base
@@ -1664,6 +1665,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbb5e0487acff04890e412230b39062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BaseHPMax: 100
+  BaseHPCur: 0
+  BaseHitSound:
+  - {fileID: 8300000, guid: 506352da888548c48b42d201b65c622f, type: 3}
+  - {fileID: 8300000, guid: d74318c2878e6ff4e814883614fdee63, type: 3}
 --- !u!54 &122481050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1691,6 +1697,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!82 &122481051
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122481044}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &122499157 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -4662,14 +4764,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 447005216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b660c63f05b657a4cae762bc24e9ff83, type: 3}
+  m_Script: {fileID: 11500000, guid: b23ff709df765ef45a685294a4486201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _width: 10
   _height: 5
   _tilePrefab: {fileID: 7111599022381917294, guid: cf16c39e35b497840b9a727ece7e63d3,
     type: 3}
-  TILEPARENT: {fileID: 0}
+  TILEPARENT: {fileID: 1515057053}
   Tiles_Obj: []
   mapGrid: {fileID: 1904682908}
   groundTilemap: {fileID: 1515057057}
@@ -7877,69 +7979,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 825525761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26a4859edec90ba478e71dfff924757e, type: 3}
+  m_Script: {fileID: 11500000, guid: b33248c0476996248a14613d556c697b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyTestModeBtn: {fileID: 0}
-  UnitSetModeText: {fileID: 0}
-  unitSpawnPanel: {fileID: 0}
-  unitSpawnBtn: []
-  unitSpawnBtnPanel: []
-  unitInfoPanel: {fileID: 0}
-  unitInfoImage: {fileID: 0}
-  levelImage: {fileID: 0}
-  levelText: {fileID: 0}
-  nameText: {fileID: 0}
-  gSkillImage: {fileID: 0}
-  gSkillText: {fileID: 0}
-  sSkillImage: {fileID: 0}
-  sSkillText: {fileID: 0}
-  hpImage: {fileID: 0}
-  hpText: {fileID: 0}
-  attackTypeImage: {fileID: 0}
-  attackTypeText: {fileID: 0}
-  defenseTypeImage: {fileID: 0}
-  defeneTypeText: {fileID: 0}
-  gSkillInfoText: {fileID: 0}
-  sSkillInfoText: {fileID: 0}
-  endGameBtn: {fileID: 0}
-  restartGameBtn: {fileID: 0}
-  pauseGameBtn: {fileID: 0}
-  slectedUnitOptionBox: {fileID: 0}
-  currentSelectedUnitOptionBox: {fileID: 0}
-  unitStateChageBtn: {fileID: 0}
-  FreeModeImage: {fileID: 0}
-  SiegeModeImage: {fileID: 0}
-  unitUpgradeMenuBox: {fileID: 0}
-  currentUpgradeMenu: {fileID: 0}
-  UnitUpgrade1Btn: {fileID: 0}
-  UnitUpgrade2Btn: {fileID: 0}
-  waveCount: 20
-  waveCountText: {fileID: 0}
-  waveStep: 0
-  waveStepText: {fileID: 0}
-  waveStartText: {fileID: 0}
-  waveResultPanel: {fileID: 0}
-  waveResultText: {fileID: 0}
-  reStartBtn: {fileID: 0}
-  menuBtn: {fileID: 0}
-  waveRewardText: {fileID: 0}
-  waveGoldImage: {fileID: 0}
-  waveGoldText: {fileID: 0}
-  isCurrentWaveFinshed: 0
-  isCurrentWaveSucceed: 0
-  nextWavBtn: {fileID: 0}
-  waveCheckBtn: {fileID: 0}
-  settingBtn: {fileID: 0}
-  settingCloseBtn: {fileID: 0}
-  settingPanel: {fileID: 0}
-  UnitStateChangeBox: {fileID: 0}
-  currentUnitStateChangeBox: {fileID: 0}
-  unitMoveUI: {fileID: 0}
-  curHaveGold: 0
-  curUnitHp: 0
-  unit: {fileID: 0}
+  EnemyTestModeBtn: {fileID: 39659760}
+  UnitSetModeText: {fileID: 128548080}
+  unitName: {fileID: 0}
+  unitType: {fileID: 0}
+  unitTier: {fileID: 0}
+  unitWeapon: {fileID: 0}
+  unitSkill: {fileID: 0}
+  unitDamage: {fileID: 0}
+  unitAttackType: {fileID: 0}
+  unitModeChangeBtn: {fileID: 0}
   unitUpgradeBtn: {fileID: 0}
+  endGameBtn: {fileID: 287665430}
+  restartGameBtn: {fileID: 287665430}
+  pauseGameBtn: {fileID: 1567758455}
+  unitSpawnPanel: {fileID: 499509645}
+  unitSpawnBtn: []
 --- !u!1 &826693390
 GameObject:
   m_ObjectHideFlags: 0
@@ -8392,11 +8450,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 856739623}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
+  m_Script: {fileID: 11500000, guid: 629d3f1caff0c0a42b716c2e1fab5cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 447005218}
-  unitStatusCtrl: {fileID: 0}
+  unitStatusCtrl: {fileID: 2006614620}
   Base: {fileID: 122481044}
   UnitSetMode: 0
   AllyUnitSetMode: 0
@@ -12063,12 +12121,6 @@ MonoBehaviour:
   Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
   enemyToSpawn: 0
-  poolSapwnPoint: []
-  waveCount: 10
-  monsterPerWave: 5
-  spawnInterval: 2
-  Test_EnemyA: {fileID: 0}
-  Test_EnemyB: {fileID: 0}
 --- !u!1001 &1398138505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16144,37 +16196,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 102bd3488a7f145408e5ad2e164a1621, type: 2}
   unitPrefab: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
-  spawnData:
-  - modelType: 0
-    spawnTime: 0
-    HP: 100
-    moveSpeed: 1
-    attackPoint: 1
-    attackSpeed: 1
-    skillCooldown: 3
-    critChanceRate: 30
-    sightRange: 4
-    attackRange: 2
-    generalSkill: 101
-    specialSkill: 101
-    unitType: 0
-    defenseType: 0
-    targetSelectType: 0
-  - modelType: 1
-    spawnTime: 0
-    HP: 100
-    moveSpeed: 1
-    attackPoint: 1
-    attackSpeed: 1
-    skillCooldown: 3
-    critChanceRate: 0
-    sightRange: 15
-    attackRange: 12
-    generalSkill: 102
-    specialSkill: 102
-    unitType: 1
-    defenseType: 0
-    targetSelectType: 0
   Test_Ally: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
   unitToSpawn: 0
@@ -17941,21 +17962,39 @@ MonoBehaviour:
   - name: 0
     stackLimit: 0
     duration: 3
+    tickDamage: 0
+    StartSFX: {fileID: 0}
+    EndSFX: {fileID: 0}
   - name: 1
     stackLimit: 3
     duration: 3
+    tickDamage: 1
+    StartSFX: {fileID: 8300000, guid: 7bb7b72e704a28b44984ca158ddffee6, type: 3}
+    EndSFX: {fileID: 8300000, guid: db942f4cdd2c2c54f9f418dbfa12997a, type: 3}
   - name: 5
     stackLimit: 3
     duration: 3
+    tickDamage: 3
+    StartSFX: {fileID: 8300000, guid: 4aef236f3dcbc3546ba22b55fedcb6b8, type: 3}
+    EndSFX: {fileID: 0}
   - name: 6
     stackLimit: 1
     duration: 5
+    tickDamage: 8
+    StartSFX: {fileID: 8300000, guid: e9165cf6470c8dd40b9ef16bd0dc620e, type: 3}
+    EndSFX: {fileID: 0}
   - name: 2
     stackLimit: 3
     duration: 3
+    tickDamage: 0
+    StartSFX: {fileID: 8300000, guid: d66912733e6f2e1439a75a47646aee82, type: 3}
+    EndSFX: {fileID: 0}
   - name: 3
     stackLimit: 1
     duration: 5
+    tickDamage: 0
+    StartSFX: {fileID: 8300000, guid: 35405c4b5b8965f4388870ede75534c3, type: 3}
+    EndSFX: {fileID: 8300000, guid: e9d3c2cf06bfbb04fb61db0fcf36b508, type: 3}
 --- !u!1001 &2007558587
 PrefabInstance:
   m_ObjectHideFlags: 0

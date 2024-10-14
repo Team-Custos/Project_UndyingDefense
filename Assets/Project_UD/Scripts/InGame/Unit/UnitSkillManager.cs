@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class UnitSkillManager : MonoBehaviour
 {
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
@@ -26,12 +24,6 @@ public class UnitSkillManager : MonoBehaviour
 
     int TargetCellIdxFinal = 0;
 
-    public Dictionary<int, UnitDebuff> GeneralSkillCodeToDebuff = new Dictionary<int, UnitDebuff>()
-    {
-        {101 , UnitDebuff.Bleed},
-        {102 , UnitDebuff.Bleed},
-    };
-
     private void Awake()
     {
         GridManager = GridManager.inst;
@@ -41,7 +33,7 @@ public class UnitSkillManager : MonoBehaviour
     {
         Vector3 TargetPos = TargetEnemy.transform.position;
 
-        //°ø°Ý Á¤º¸ °ü¸® (µ¥¹ÌÁö, Ä¡¸íÅ¸ È®·ü, °ø°Ý Å¸ÀÔ, µð¹öÇÁ(ÇÊ¿äÇÑ °æ¿ì))
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½))
         int damage = 0;
         AttackType attackType = AttackType.UnKnown;
         UnitDebuff debuff = UnitDebuff.None;
@@ -50,16 +42,16 @@ public class UnitSkillManager : MonoBehaviour
         {
             switch (SkillCode)
             {
-                //³´ º£±â
+                //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 case 101:
-                    //³´À¸·Î ¾Õ¿¡ ÀÖ´Â ÇÑ ¸íÀÇ ÀûÀ» º£¾î 5 µ¥¹ÌÁöÀÇ º£±â °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã ÃâÇ÷ È¿°ú
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
                     damage = 5;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
-                //È° ½î±â
+                //È° ï¿½ï¿½ï¿½
                 case 102:
-                    //È­»ìÀ» ½î¾Æ ÇÑ ¸íÀÇ Àû¿¡°Ô 5 µ¥¹ÌÁöÀÇ °üÅë °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã ÃâÇ÷ È¿°ú
+                    //È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
@@ -76,19 +68,19 @@ public class UnitSkillManager : MonoBehaviour
                         }
                     }
                     break;
-                //Ã¢ Âî¸£±â
+                //Ã¢ ï¿½î¸£ï¿½ï¿½
                 case 201:
                     damage = 7;
                     attackType = AttackType.Pierce;
                     debuff = UnitDebuff.Bleed;
                     break;
-                //¸ÁÄ¡ ³»·ÁÄ¡±â
+                //ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½
                 case 202:
                     damage = 7;
                     attackType = AttackType.Crush;
                     debuff = UnitDebuff.Dizzy;
                     break;
-                //¿±ÃÑ ½î±â
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 case 203:
                     damage = 7;
                     attackType = AttackType.Pierce;
@@ -99,6 +91,10 @@ public class UnitSkillManager : MonoBehaviour
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                int HitSoundRandomNum = Random.Range(0, 2);
+                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
+
+                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX ,SFX2Play);
                 EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
             else
@@ -116,7 +112,7 @@ public class UnitSkillManager : MonoBehaviour
 
     int SkillDamageInit()
     {
-        //½ºÅ³ µ¥¹ÌÁö µ¥ÀÌÅÍ °¡Á®¿À±â.
+        //ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
         return 1;
     }
 
@@ -136,10 +132,10 @@ public class UnitSkillManager : MonoBehaviour
             skillCooldown_Cur = skillCooldown;
             switch (SkillCode)
             {
-                //³´ Âï±â
+                //ï¿½ï¿½ ï¿½ï¿½ï¿½
                 case 101:
-                    //³´À¸·Î ¾Õ¿¡ ÀÖ´Â ÇÑ ¸íÀÇ ÀûÀ» ¼¼°Ô Âï¾î 5 µ¥¹ÌÁöÀÇ °üÅë °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸À² 5% Áõ°¡. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã Ãæ°Ý È¿°ú
-                    // °Ëº£±â¿Í °°Àº Ã³¸®. ½ºÅÈ¸¸ ´Ù¸£°Ô.
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ï¿½ï¿½ 5% ï¿½ï¿½ï¿½ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
+                    // ï¿½Ëºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½. ï¿½ï¿½ï¿½È¸ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½.
                     if (TargetEnemy == null)
                     {
                         return;
@@ -147,7 +143,7 @@ public class UnitSkillManager : MonoBehaviour
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     break;
 
-                //¿¬»ç
+                //ï¿½ï¿½ï¿½ï¿½
                 case 102:
                     if (TargetEnemy == null)
                     {
@@ -156,40 +152,42 @@ public class UnitSkillManager : MonoBehaviour
 
                     StartCoroutine(DoubleShot());
 
-                    IEnumerator DoubleShot() // 2¿¬»ç ÄÚ·çÆ¾
+                    IEnumerator DoubleShot() // 2ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾
                     {
                         Debug.Log("Double shot 1");
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
-                        // Áö¿¬ ½Ã°£ ÈÄ µÎ ¹øÂ° ÃÑ¾Ë ¹ß»ç
+                        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Â° ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½
                         yield return new WaitForSeconds(0.5f);
                         Debug.Log("Double shot 2");
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                     }
                     break;
-                //¸Ö¸®º£±â
+                //ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½
                 case 201:
-                    //Ã¢¿¡ ´Þ¸° ³´À¸·Î ¸Ö¸® ÀÖ´Â ÀûÀ» º£¾î 7 µ¥¹ÌÁöÀÇ º£±â °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸À² 10% Áõ°¡. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã ÃâÇ÷ È¿°ú
-                    //½ºÅ³À» »ç¿ëÇÒ¶§¸¸ °Å¸® ÃøÁ¤À» µû·Î ÇØ¾ßÇÒ°Í °°À½. -> ½Ã¾ß¹üÀ§? ±âÈ¹ÂÊ°ú ÀÌ¾ß±â°¡ ÇÊ¿äÇÒ°Í °°À½.
+                    //Ã¢ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¸ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 7 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ï¿½ï¿½ 10% ï¿½ï¿½ï¿½ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
+                    //ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½. -> ï¿½Ã¾ß¹ï¿½ï¿½ï¿½? ï¿½ï¿½È¹ï¿½Ê°ï¿½ ï¿½Ì¾ß±â°¡ ï¿½Ê¿ï¿½ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½.
 
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Slash, UnitDebuff.Bleed);
 
                     break;
-                //¹æÆÐÄ¡±â
+                //ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½
                 case 202:
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                //¼ö·ùÅº ÅõÃ´
+                //ï¿½ï¿½ï¿½ï¿½Åº ï¿½ï¿½Ã´
                 case 203:
-                    //¼ö·ùÅºÀ» ´øÁ® ¹üÀ§ ³»¿¡ ÀÖ´Â ¸ðµç Àû¿¡°Ô 10 µ¥¹ÌÁöÀÇ ºÐ¼â °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸À² 10% Áõ°¡. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã ±âÀý È¿°ú
-                    //µ£ ¼³Ä¡¿Í ºñ½ÁÇÏ°Ô ±¸Çö. ¼­ÀÖ´Â Ä­À» ±âÁØÀ¸·Î ¹Ù¶óº¸´Â ¹æÇâ ¸îÄ­ ¾Õ¿¡ °ø°Ý Æ®¸®°Å ¿ÀºêÁ§Æ®¸¦ ¼³Ä¡ÇÏ´Â ½ÄÀ¸·Î.
-                    //´Ü, ¹Ì¸® ¹èÄ¡ µÇ¾îÀÖ´ÂÁö´Â °í·ÁÇÏÁö ¾ÊÀ½.
+                    //ï¿½ï¿½ï¿½ï¿½Åºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 10 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ï¿½ï¿½ 10% ï¿½ï¿½ï¿½ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
+                    //ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½Ö´ï¿½ Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä­ ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+                    //ï¿½ï¿½, ï¿½Ì¸ï¿½ ï¿½ï¿½Ä¡ ï¿½Ç¾ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
                     TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
-                //°õµ£ ¼³Ä¡
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
                 case 204:
-                    //¼­ÀÖ´Â Ä­À» ±âÁØÀ¸·Î ¹Ù¶óº¸´Â ¹æÇâ 2Ä­ ¾Õ¿¡ ²æµ£À» ¼³Ä¡ÇÏ¿© Áö³ª°¡´Â ÇÑ ¸íÀÇ Àû¿¡°Ô 5 µ¥¹ÌÁöÀÇ º£±â °ø°ÝÀ» °¡ÇÑ´Ù. Ä¡¸íÅ¸À²ÀÌ 5% Áõ°¡. Ä¡¸íÅ¸ ¹ßµ¿ ½Ã ¼Ó¹Ú È¿°ú.
-                    //ÀÌ¹Ì ¼³Ä¡µÈ ²æµ£ÀÌ ¹ßµ¿µÇ±â Àü¿¡ ÇØ´ç ½ºÅ³À» ´Ù½Ã »ç¿ëÇÑ´Ù¸é, ÀÌÀü¿¡ ¼³Ä¡µÈ ²æµ£ÀÌ ºÎ¼­Áö°í ÇØ´ç ½ºÅ³ÀÌ ¹ßµ¿µÇ¾î »õ·Î ²æµ£À» ¼³Ä¡ÇÑ´Ù.
-                    //-> µ£ ¼³Ä¡ °ü·ÃÇØ¼­ ±âÈ¹ÂÊÀÌ¶û ÀÌ¾ß±â¸¦ ÇØ¾ßÇÒ ÇÊ¿ä°¡ ÀÖ¾îº¸ÀÓ.
+                    //ï¿½ï¿½ï¿½Ö´ï¿½ Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ 2Ä­ ï¿½Õ¿ï¿½ ï¿½æµ£ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 5 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. Ä¡ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ 5% ï¿½ï¿½ï¿½ï¿½. Ä¡ï¿½ï¿½Å¸ ï¿½ßµï¿½ ï¿½ï¿½ ï¿½Ó¹ï¿½ È¿ï¿½ï¿½.
+                    //ï¿½Ì¹ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½æµ£ï¿½ï¿½ ï¿½ßµï¿½ï¿½Ç±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½æµ£ï¿½ï¿½ ï¿½Î¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ßµï¿½ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½æµ£ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ñ´ï¿½.
+                    //-> ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½È¹ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½Ì¾ß±â¸¦ ï¿½Ø¾ï¿½ï¿½ï¿½ ï¿½Ê¿ä°¡ ï¿½Ö¾îº¸ï¿½ï¿½.
 
                     if (SetObject != null)
                     {
@@ -199,35 +197,35 @@ public class UnitSkillManager : MonoBehaviour
                     }
 
                     float CurAngle = gameObject.transform.eulerAngles.y;
-                    Debug.Log("ÇöÀç °¢µµ: " + CurAngle);
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: " + CurAngle);
                     Vector2 CurCellPos = UnitCtrl.unitPos;
                     Vector2[] TargetCells = new Vector2[3];
 
-                    // °¢µµ¿¡ µû¶ó x, y ¿ÀÇÁ¼ÂÀ» ¼³Á¤
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ x, y ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     Vector2[] directionOffsets;
-                    if (CurAngle <= 45 || CurAngle > 315)       // ºÏÂÊ
+                    if (CurAngle <= 45 || CurAngle > 315)       // ï¿½ï¿½ï¿½ï¿½
                     {
                         directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
-                    else if (CurAngle <= 135 && CurAngle > 45)   // µ¿ÂÊ
+                    else if (CurAngle <= 135 && CurAngle > 45)   // ï¿½ï¿½ï¿½ï¿½
                     {
                         directionOffsets = new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
                     }
-                    else if (CurAngle <= 225 && CurAngle > 135)  // ³²ÂÊ
+                    else if (CurAngle <= 225 && CurAngle > 135)  // ï¿½ï¿½ï¿½ï¿½
                     {
                         directionOffsets = new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
                     }
-                    else if (CurAngle > 225 && CurAngle <= 315) // ¼­ÂÊ
+                    else if (CurAngle > 225 && CurAngle <= 315) // ï¿½ï¿½ï¿½ï¿½
                     {
                         directionOffsets = new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
                     }
                     else
                     {
-                        Debug.LogError("µ£ ¼³Ä¡ °ü·Ã °¢µµ °è»ê ¿À·ù.");
+                        Debug.LogError("ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.");
                         directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
                     }
 
-                    // TargetCells¿¡ ¿ÀÇÁ¼Â Àû¿ëÇÏ¿© ÁÂÇ¥ °è»ê
+                    // TargetCellsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½
                     for (int i = 0; i < 3; i++)
                     {
                         TargetCells[i] = CurCellPos + directionOffsets[i];
@@ -251,7 +249,7 @@ public class UnitSkillManager : MonoBehaviour
                     if (TargetCellIdx.Count > 0)
                     {
                         TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
-                        Debug.Log("³­¼ö : " + TargetCellIdxFinal);
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ : " + TargetCellIdxFinal);
                         int TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
                         Vector3 TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
 
@@ -259,27 +257,27 @@ public class UnitSkillManager : MonoBehaviour
                         {
                             TargetCellFinalWorldPos = GridManager.mapGrid.CellToWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, (int)TargetCells[TargetCellFinal].y, 1));
 
-                            Debug.Log(TargetCellFinal + "¹ø ¼¿¿¡ ¼³Ä¡¸¦ ½ÃµµÇÕ´Ï´Ù.");
+                            Debug.Log(TargetCellFinal + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ãµï¿½ï¿½Õ´Ï´ï¿½.");
                             if (GridManager.GetTilePlaceable(TargetCellFinalWorldPos))
                             {
-                                Debug.Log("ÇØ´ç ¼¿¿¡ ¼³Ä¡°¡ °¡´É ÇÕ´Ï´Ù.");
+                                Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½.");
                                 TargetCellWorldPos = TargetCellFinalWorldPos;
                                 break;
                             }
                             else
                             {
-                                Debug.Log("ÇØ´ç ¼¿¿¡ ¼³Ä¡°¡ ºÒ°¡´É ÇÕ´Ï´Ù.");
+                                Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½.");
                                 TargetCellIdx.RemoveAt(TargetCellIdxFinal);
                                 if (TargetCellIdx.Count == 0)
                                 {
-                                    Debug.Log("¸ðµÎ ¼³Ä¡ ºÒ°¡. ½ºÅ³ ÄðÅ¸ÀÓÀ» ÃÊ±âÈ­ÇÕ´Ï´Ù.");
+                                    Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½Ò°ï¿½. ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Õ´Ï´ï¿½.");
                                     skillCooldown_Cur = 0;
                                     return;
                                 }
                                 else
                                 {
                                     TargetCellIdxFinal = Random.Range(0, TargetCellIdx.Count - 1);
-                                    Debug.Log("»õ·Î¿î ³­¼ö : " + TargetCellIdxFinal);
+                                    Debug.Log("ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ : " + TargetCellIdxFinal);
                                     TargetCellFinal = TargetCellIdx[TargetCellIdxFinal];
                                     continue;
                                 }
@@ -288,7 +286,7 @@ public class UnitSkillManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("¸ðµÎ ¼³Ä¡ ºÒ°¡. ½ºÅ³ ÄðÅ¸ÀÓÀ» ÃÊ±âÈ­ÇÕ´Ï´Ù.");
+                        Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½Ò°ï¿½. ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Õ´Ï´ï¿½.");
                         skillCooldown_Cur = 0;
                         return;
                     }
@@ -319,10 +317,10 @@ public class UnitSkillManager : MonoBehaviour
     {
         switch (SkillCode)
         {
-            //°Ë º£±â
+            //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             case 101:
                 break;
-            //È° ½î±â
+            //È° ï¿½ï¿½ï¿½
             case 102:
                 if (Bow != null)
                 {
