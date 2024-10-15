@@ -38,8 +38,11 @@ public class UnitUpgradeManager : MonoBehaviour
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // 업그레이드 실행
 =======
+=======
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
 
     // 실제 업그레이드를 수행하는 함수
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)

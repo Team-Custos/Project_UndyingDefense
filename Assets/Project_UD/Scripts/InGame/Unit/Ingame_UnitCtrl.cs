@@ -155,8 +155,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
         moveTargetPos = this.transform.position;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
         if(cur_modelType == 0)
         {
             unitCode = "1";
@@ -165,6 +168,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             unitCode = "2";
         }
+<<<<<<< HEAD
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
+=======
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
     }
 
