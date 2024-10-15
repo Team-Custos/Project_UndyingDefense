@@ -19,6 +19,7 @@ public enum UnitDebuff
 public class UnitDebuffData
 {
     public UnitDebuff name;
+    public bool Stackable;
     public int stackLimit;
     public float duration;
     public int tickDamage;
