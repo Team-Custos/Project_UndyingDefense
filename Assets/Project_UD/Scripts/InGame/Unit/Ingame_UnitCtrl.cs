@@ -157,6 +157,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 =======
@@ -173,6 +174,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
 =======
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
+=======
+
+>>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
 =======
 
 >>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
