@@ -158,11 +158,11 @@ public class UnitSkillManager : MonoBehaviour
 
                     IEnumerator DoubleShot() // 2연사 코루틴
                     {
-                       // Debug.Log("Double shot 1");
+                        Debug.Log("Double shot 1");
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                         // 지연 시간 후 두 번째 총알 발사
                         yield return new WaitForSeconds(0.5f);
-                        //Debug.Log("Double shot 2");
+                        Debug.Log("Double shot 2");
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                     }
                     break;

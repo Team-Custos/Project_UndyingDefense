@@ -9,7 +9,6 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField]
     private GameObject poolingObjectPrefab;
-    public int poolSize = 100;
 
     Queue<GameObject> poolingObjectQueue = new Queue<GameObject>();
 
@@ -51,14 +50,6 @@ public class ObjectPool : MonoBehaviour
             return newObj;
         }
     }
-
-    //public void Initialize(int initCount = poolSize)
-    //{
-    //    for (int i = 0; i < initCount; i++)
-    //    {
-    //        poolingObjectQueue.Enqueue(CreateNewObject());
-    //    }
-    //}
 
     public static void ReturnObject(GameObject obj)
     {

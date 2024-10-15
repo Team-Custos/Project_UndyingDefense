@@ -71,29 +71,23 @@ public class Ingame_UIManager : MonoBehaviour
     [Header("====Wave Menu UI====")]
     public float waveCount = 20;
     public Text waveCountText;
+    public int waveStep;
+    public Text waveStepText;
     public Text waveStartText;
-    public GameObject waveStartPanel;
     public GameObject waveResultPanel;
-    public Image waveResultImage;
     public Text waveResultText;
     public Button reStartBtn;
     public Button menuBtn;
     public Text waveRewardText;
     public Image waveGoldImage;
     public Text waveGoldText;
+    public bool isCurrentWaveFinshed;
     public bool isCurrentWaveSucceed;
     public Button nextWavBtn;
     public Button waveCheckBtn;
     public Button waveSkipBtn;
-    public bool isCountDownIng = false;
-    public Button waveRestartBtn = null;
-    public Button lobbybtn = null;
-    public GameObject waveStepSuccessPanel;
-
-
-
-    public Sprite waveWinImage;
-    public Sprite waveLoseImage;
+    public GameObject waveSuccessPanel;
+    public Button waveOkBtn;
 
     [Header("====Game Setting UI====")]
     public Button settingBtn;
@@ -157,8 +151,6 @@ public class Ingame_UIManager : MonoBehaviour
         unitDataManager = UnitDataManager.inst;
         inGameManager = InGameManager.inst;
         gameOrderSystem = GetComponent<GameOrderSystem>();
-
-
 
         // 저장된 커맨더 스킬 확인 용
         if (commanderSkillBtn != null)
@@ -254,6 +246,9 @@ public class Ingame_UIManager : MonoBehaviour
             });
         }
 
+        curHaveGold = 10000000;
+
+        isCurrentWaveFinshed = true;
 
         // 웨이브 카운트 스킵
         if (waveSkipBtn != null)
@@ -269,38 +264,96 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
 
+        if(waveOkBtn != null)
+        {
+            waveOkBtn.onClick.AddListener(() =>
+            {
+                Time.timeScale = 1.0f;
+                waveSuccessPanel.SetActive(false);
+            });
+        }
     }
 
+
+    public void UpdateSpawnButtonState(int index)
+    {
+        if (index >= 0 && index < unitSpawnBtn.Length)
+        {
+            unitSpawnBtn[index].interactable = false; // 버튼 비활성화
+            if (unitSpawnBtnPanel[index] != null)
+            {
+                unitSpawnBtnPanel[index].SetActive(true); // 패널 활성화
+                StartCoroutine(UnitSpawnCoolTime(index)); // 코루틴 실행
+            }
+        }
+    }
+
+    private IEnumerator UnitSpawnCoolTime(int index)
+    {
+        GameObject panel = unitSpawnBtnPanel[index];
+        RectTransform panelRect = panel.GetComponent<RectTransform>();
+
+        Vector2 originalSize = panelRect.sizeDelta;
+        Vector2 originalPosition = panelRect.anchoredPosition;
+
+        panelRect.pivot = new Vector2(0.5f, 0f);
+        panelRect.anchorMin = new Vector2(0.5f, 0f);
+        panelRect.anchorMax = new Vector2(0.5f, 0f);
+
+        float duration = 3f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+
+            float newHeight = Mathf.Lerp(originalSize.y, 0, progress);
+            panelRect.sizeDelta = new Vector2(originalSize.x, newHeight);
+
+            yield return null;
+        }
+
+        panel.SetActive(false);
+        panelRect.sizeDelta = originalSize;
+        panelRect.anchoredPosition = originalPosition; 
+
+        unitSpawnBtn[index].interactable = true;
+    }
+
+    public int GetButtonIndexByUnitCode(int unitCode)
+    {
+        for (int i = 0; i < unitSpawnBtn.Length; i++)
+        {
+            if (unitSpawnBtn[i].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode == unitCode)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     // Update is called once per frame
     void Update()
     {
         // 웨이브 카운트 다운 텍스트
-        if (waveCountText != null && isCountDownIng ) // 웨이브가 진행중이 아닐 때
+        if (waveCountText != null && isCurrentWaveFinshed)
         {
             waveCount -= Time.deltaTime;
-            if (waveCount >= 0 && isCountDownIng)
+            if (waveCount >= 0)
             {
+                waveStartText.gameObject.SetActive(false);
                 waveCountText.gameObject.SetActive(true);
                 waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveCount).ToString() + "초";
-                
             }
-            else if (waveCount < 0)
+            else if (waveCount < 0 && isCurrentWaveFinshed)
             {
-
-                waveStartText.text = EnemySpawner.inst.currentWave.ToString() + "차 침공 시작"; 
-                isCountDownIng = false;
-                EnemySpawner.inst.isWaveing = true;
+                isCurrentWaveFinshed = false;
                 waveCountText.gameObject.SetActive(false);
                 StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 1초의 지연 후 웨이브 시작
-                waveCount = 20;
             }
         }
 
-        if(BaseStatus.instance.BaseHPCur <= 0)
-        {
-            waveResultImage.sprite = waveLoseImage;
-        }
 
         if (UnitSetModeText != null)
         {
@@ -361,64 +414,6 @@ public class Ingame_UIManager : MonoBehaviour
     }
 
 
-    public void UpdateSpawnButtonState(int index)
-    {
-        if (index >= 0 && index < unitSpawnBtn.Length)
-        {
-            unitSpawnBtn[index].interactable = false; // 버튼 비활성화
-            if (unitSpawnBtnPanel[index] != null)
-            {
-                unitSpawnBtnPanel[index].SetActive(true); // 패널 활성화
-                StartCoroutine(UnitSpawnCoolTime(index)); // 코루틴 실행
-            }
-        }
-    }
-
-    private IEnumerator UnitSpawnCoolTime(int index)
-    {
-        GameObject panel = unitSpawnBtnPanel[index];
-        RectTransform panelRect = panel.GetComponent<RectTransform>();
-
-        Vector2 originalSize = panelRect.sizeDelta;
-        Vector2 originalPosition = panelRect.anchoredPosition;
-
-        panelRect.pivot = new Vector2(0.5f, 0f);
-        panelRect.anchorMin = new Vector2(0.5f, 0f);
-        panelRect.anchorMax = new Vector2(0.5f, 0f);
-
-        float duration = 3f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / duration;
-
-            float newHeight = Mathf.Lerp(originalSize.y, 0, progress);
-            panelRect.sizeDelta = new Vector2(originalSize.x, newHeight);
-
-            yield return null;
-        }
-
-        panel.SetActive(false);
-        panelRect.sizeDelta = originalSize;
-        panelRect.anchoredPosition = originalPosition;
-
-        unitSpawnBtn[index].interactable = true;
-    }
-
-    public int GetButtonIndexByUnitCode(int unitCode)
-    {
-        for (int i = 0; i < unitSpawnBtn.Length; i++)
-        {
-            if (unitSpawnBtn[i].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode == unitCode)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit, string newUnitCode)
     {
         if (selectedUnit == null)
@@ -432,23 +427,25 @@ public class Ingame_UIManager : MonoBehaviour
 
         if (unitData == null)
         {
-            Debug.LogError(" 유닛 데이터 없음");
+            Debug.LogError($"'{selectedUnit.unitName}' 유닛 데이터 없음");
             return;
         }
 
-        // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
-        levelText.text = $"{selectedUnit.level} 티어"; 
-        nameText.text = selectedUnit.name;             
-        gSkillText.text = unitData.g_SkillName;
-        sSkillText.text = unitData.s_SkillName;
+        // UI에 유닛 정보 업데이트
+        levelText.text = $"{selectedUnit.curLevel} 티어";
+        nameText.text = selectedUnit.unitName;
+        gSkillText.text = selectedUnit.gSkill;
+        sSkillText.text = selectedUnit.sSkill;
 
-        // HP 정보 업데이트
         curUnitHp = selectedUnit.HP;
-        hpText.text = $"{selectedUnit.HP} / {selectedUnit.HP}";
+        hpText.text = $"{selectedUnit.HP} / {selectedUnit.maxHp}";
 
-        // 방어 타입 정보 업데이트
         defeneTypeText.text = unitData.defenseType.ToString();
+
+        Debug.Log($"'{unitData.name}' 유닛 정보 업데이트 성공");
     }
+
+
 
     void EndGame()
     {
@@ -580,11 +577,9 @@ public class Ingame_UIManager : MonoBehaviour
 
         UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
         Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
-        
+
         // 업그레이드 옵션 가져오기
         List<string> upgradeOptions = unitUpgradeManager.GetUpgradeOptions(unit.unitCode);
-
-        Debug.Log(upgradeOptions);
 
         if (upgradeOptions == null || upgradeOptions.Count == 0)
         {
@@ -595,7 +590,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
         // 3티어인 경우 버튼 하나만 생성
-        if (unit.level == 3)
+        if (unit.curLevel == 3)
         {
             UnitUpgrade2Btn.gameObject.SetActive(false);
 
@@ -706,7 +701,7 @@ public class Ingame_UIManager : MonoBehaviour
 
     void ShowWaveResultPanel()
     {
-        if (!EnemySpawner.inst.isWaveing == true)
+        if (isCurrentWaveFinshed == true)
         {
             waveResultPanel.gameObject.SetActive(true);
 
@@ -732,21 +727,5 @@ public class Ingame_UIManager : MonoBehaviour
             baseHpBar.fillAmount = (float)BaseStatus.instance.BaseHPCur / (float)BaseStatus.instance.BaseHPMax;
             baseHpTxt.text = BaseStatus.instance.BaseHPCur + " / " + BaseStatus.instance.BaseHPMax;
         }
-    }
-
-    public void ShowUI(GameObject uiElement, float duration)
-    {
-        if (uiElement != null)
-        {
-            uiElement.SetActive(true);  // UI 요소 활성화
-            StartCoroutine(HideUIAfterDelay(uiElement, duration));  // 일정 시간 후 비활성화
-        }
-    }
-
-    // 일정 시간이 지나면 UI 요소를 비활성화하는 코루틴
-    IEnumerator HideUIAfterDelay(GameObject uiElement, float delay)
-    {
-        yield return new WaitForSeconds(delay);  // 지정된 시간만큼 대기
-        uiElement.SetActive(false);  // UI 요소 비활성화
     }
 }

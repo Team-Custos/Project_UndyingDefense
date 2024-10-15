@@ -121,12 +121,10 @@ public class UnitDataManager : MonoBehaviour
         Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
 
         // ╦егн
-        //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
-        //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
-        //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
+        ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
+        ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
+        ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
         //ingameUnitData.modelType = unitData.Number;
-
-
         ingameUnitData.maxHP = unitData.Hp;
         ingameUnitData.mental = unitData.Mental;
         ingameUnitData.moveSpeed = unitData.MoveSpeed;
@@ -143,7 +141,6 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.level = unitData.Level;
         ingameUnitData.cost = unitData.Cost;
         ingameUnitData.name = unitData.Name;
-
 
         return ingameUnitData;
     }
