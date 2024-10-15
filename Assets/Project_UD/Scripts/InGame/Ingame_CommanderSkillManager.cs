@@ -11,7 +11,7 @@ public enum SkillType
 };
 
 [Serializable]
-public class CommanderSkillData
+public class SkillData
 {
     public SkillType type;
     public int SkillCode;
@@ -23,9 +23,7 @@ public class CommanderSkillData
 
 public class Ingame_CommanderSkillManager : MonoBehaviour
 {
-    public CommanderSkillData[] Order_SkillData;
-    public CommanderSkillData[] Surpport_SkillData;
-    public CommanderSkillData[] Morale_SkillData;
+    public SkillData[] skillData;
 
 
     // Start is called before the first frame update

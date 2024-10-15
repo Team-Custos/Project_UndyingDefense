@@ -70,10 +70,10 @@ public class UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
-            // ì—‘ì…€ ë°ì´í„°ë¥¼ ë”•ì…”ë„ˆë¦¬ì— ì €ì¥
+            // ¿¢¼¿ µ¥ÀÌÅÍ¸¦ µñ¼Å³Ê¸®¿¡ ÀúÀå
             unitDataDictionary[unitData.UnitCode] = unitData;
 
-            // ìŠ¤í¬ë¦½í„°ë¸” ì˜¤ë¸Œì íŠ¸ë¡œ ë§¤í•‘
+            // ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®·Î ¸ÅÇÎ
             Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
         }
     }
@@ -88,7 +88,7 @@ public class UnitDataManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("ë°ì´í„° ì—†ìŒ");
+            Debug.Log("µ¥ÀÌÅÍ ¾øÀ½");
             return null;
         }
     }
@@ -115,16 +115,18 @@ public class UnitDataManager : MonoBehaviour
     }
 
 
-    // ì—‘ì…€ ë°ì´í„°ë¥¼ ìŠ¤í¬ë¦½í„°ë¸” ì˜¤ë¸Œì íŠ¸ì— ë§¤í•‘í•˜ëŠ” í•¨ìˆ˜
+    // ¿¢¼¿ µ¥ÀÌÅÍ¸¦ ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®¿¡ ¸ÅÇÎÇÏ´Â ÇÔ¼ö
     public Ingame_UnitData CreateUnitDataObject(UnitData unitData)
     {
         Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
 
-        // ë§¤í•‘
+        // ¸ÅÇÎ
         //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
         //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
         //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
         //ingameUnitData.modelType = unitData.Number;
+
+
         ingameUnitData.maxHP = unitData.Hp;
         ingameUnitData.mental = unitData.Mental;
         ingameUnitData.moveSpeed = unitData.MoveSpeed;
@@ -132,7 +134,7 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.critChanceRate = unitData.CritRate;
         ingameUnitData.generalSkillCode = unitData.g_Skil;
         ingameUnitData.specialSkillCode = unitData.s_Skill;
-        ingameUnitData.weaponCooldown = unitData.GlobalTime; 
+        ingameUnitData.weaponCooldown = unitData.GlobalTime;
         ingameUnitData.sightRange = unitData.SightRange;
         ingameUnitData.attackRange = unitData.AttackRange;
         ingameUnitData.unitCode = unitData.UnitCode;
@@ -141,6 +143,7 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.level = unitData.Level;
         ingameUnitData.cost = unitData.Cost;
         ingameUnitData.name = unitData.Name;
+
 
         return ingameUnitData;
     }
