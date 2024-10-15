@@ -36,11 +36,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
-    
     UnitModelSwapManager ModelSwap;
     public UnitSoundManager soundManager;
-    public Animator animator;
-
     
     [Header("====Status====")]
     public AllyMode Ally_Mode;
@@ -83,10 +80,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
-    public string gSkill;
-    public string sSkill;
     public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
 
     
     void OnMouseDown()
@@ -119,7 +116,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         UnitSkill = GetComponentInChildren<UnitSkillManager>();
-        
     }
 
     // Start is called before the first frame update
@@ -132,15 +128,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
             Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            
         }
 
         SpawnDelay = true;
 
         targetBase = InGameManager.inst.Base;
-        maxHp = unitData.maxHP;
         HP = unitData.maxHP;
-        
+        maxHp = unitData.maxHP;
 
         Ally_Mode = AllyMode.Siege;
 
@@ -160,6 +154,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
+        if(cur_modelType == 0)
+        {
+            unitCode = "1";
+        }
+        else if(cur_modelType == 1)
+        {
+            unitCode = "2";
+        }
     }
 
 
@@ -174,10 +176,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     void Update()
     {
         CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
-        if (CurVisualModelAnimator != null)
-        {
-            CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
-        }
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
@@ -215,7 +213,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             //Debug.Log(this.gameObject.name + " Destroyed");
             Destroy(this.gameObject);
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)
@@ -240,7 +237,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.B) && isSelected)
             {
-                debuffManager.AddDebuff(UnitDebuff.Dizzy);
+                debuffManager.AddDebuff(UnitDebuff.Bleed);
             }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))

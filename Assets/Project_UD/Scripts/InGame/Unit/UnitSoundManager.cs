@@ -17,15 +17,37 @@ public class UnitSoundManager : MonoBehaviour
     public AudioSource HIT_SFX;
     public AudioSource DEBUFF_SFX;
 
+    [Header("====ATTACK_SFX====")]
+    public AudioClip ATK_SLASH;
+    public AudioClip ATK_CRUSH;
+    public AudioClip ATK_PIERCE;
+
     [Header("====ATTACKED_SFX====")]
     public ATTACKEDSOUND[] HitSound;
+
+    void Awake()
+    {
+
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 
     public void PlaySFX(AudioSource SFX,AudioClip SFX2Play)
     {
         SFX.clip = SFX2Play;
         SFX.Play();
 
-        //Ïû¨ÏÉùÏ§ëÏùºÎïå Ïã§ÌñâÏó¨Î∂Ä ÌåêÎã®?
+        //¿Áª˝¡ﬂ¿œ∂ß Ω««‡ø©∫Œ ∆«¥‹?
         if (!SFX.isPlaying)
         {
             
