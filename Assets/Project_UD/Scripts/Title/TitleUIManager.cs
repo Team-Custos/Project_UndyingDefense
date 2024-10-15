@@ -22,7 +22,7 @@ public class TitleUIManager : MonoBehaviour
 
         if (GameStartBtn != null)
         {
-            GameStartBtn.onClick.AddListener(() => LoadScene("LobbyScene"));
+            GameStartBtn.onClick.AddListener(() => LoadScene("LobbyScene_LoPol"));
         }
     }
 

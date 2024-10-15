@@ -15,6 +15,8 @@ public class Ingame_UnitData : ScriptableObject
     public int mental = 1;
     public float moveSpeed;
 
+    public AnimatorOverrideController overrideController;
+
     [Header("====Attack====")]
     public int attackPoint = 1;
     public int critChanceRate;
@@ -25,5 +27,14 @@ public class Ingame_UnitData : ScriptableObject
     public float sightRange = 0;
     public float attackRange = 0;
     public AudioClip[] attackSound;
+
+    // �߰�
+    public float globalTime;
+    public string g_SkillName;
+    public string s_SkillName;
+    public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
 
 }

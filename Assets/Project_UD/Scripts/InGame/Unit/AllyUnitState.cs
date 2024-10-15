@@ -112,8 +112,9 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        //Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
         allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
+
     }
 
     void Move_Update()
@@ -141,6 +142,7 @@ public class AllyUnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
+        Debug.Log("dddd");
         Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
 
     }
@@ -191,7 +193,6 @@ public class AllyUnitState : MonoBehaviour
     }
 
     
-
 
 
 }

@@ -133,9 +133,9 @@ public class GameOrderSystem : MonoBehaviour
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
 
-                    //Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
-                    //Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
-                    //Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
+                    Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
+                    Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                    Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
 
                 }
                 else

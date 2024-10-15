@@ -6,6 +6,12 @@ public class BaseStatus : MonoBehaviour
     public int BaseHPMax = 0;
     public int BaseHPCur = 0;
 
+    public static BaseStatus instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     AudioSource audioSource;
     public AudioClip[] BaseHitSound;
 
@@ -22,7 +28,12 @@ public class BaseStatus : MonoBehaviour
     {
         if (BaseHPCur <= 0)
         {
-            //ÆÐ¹èÃ³¸®
+            BaseHPCur = 0;
+
+            Time.timeScale = 0.0f;
+
+            //ï¿½Ð¹ï¿½Ã³ï¿½ï¿½
+            Ingame_UIManager.instance.waveResultPanel.SetActive(true);
         }
         
     }

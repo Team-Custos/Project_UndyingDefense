@@ -4,20 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LobbySceneManager : MonoBehaviour
-{
-    public Button unitDeckButton = null;
-    public GameObject unitDeckPanel = null;
-
+{ 
     // Start is called before the first frame update
-    void Start()
-    {
-        unitDeckPanel.SetActive(false);
-
-        if (unitDeckButton != null)
-        {
-            unitDeckButton.onClick.AddListener(_OnOffUnitDeckPanel);
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -25,12 +13,4 @@ public class LobbySceneManager : MonoBehaviour
 
     }
 
-    void _OnOffUnitDeckPanel()
-    {
-        if (unitDeckPanel != null)
-        {
-            bool isActive = unitDeckPanel.activeSelf;
-            unitDeckPanel.SetActive(!isActive);
-        }
-    }
 }

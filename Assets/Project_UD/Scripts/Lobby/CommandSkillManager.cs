@@ -83,7 +83,7 @@ public class CommandSkillManager : MonoBehaviour
             skillDataDictionary[skillData.SkillID] = skillData;
         }
 
-        ShowSkillData();
+        //ShowSkillData();
     }
 
 
