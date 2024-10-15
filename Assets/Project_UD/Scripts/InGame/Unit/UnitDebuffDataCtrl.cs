@@ -9,7 +9,7 @@ public enum UnitDebuff
     Bleed,
     Dizzy,
     Stun,
-    Tied,
+    Trapped,
     Burn,
     Inferno,
     Poison
@@ -19,8 +19,12 @@ public enum UnitDebuff
 public class UnitDebuffData
 {
     public UnitDebuff name;
+    public bool Stackable;
     public int stackLimit;
     public float duration;
+    public int tickDamage;
+    public AudioClip StartSFX;
+    public AudioClip EndSFX;
 }
 
 public class UnitDebuffDataCtrl : MonoBehaviour

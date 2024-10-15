@@ -7,7 +7,9 @@ public class InGameManager : MonoBehaviour
 {
     public static InGameManager inst;
     public GridManager gridManager;
-    public UnitDebuffDataCtrl unitStatusCtrl;
+    public UnitDebuffDataCtrl unitDebuffData;
+
+    public CommanderSkillData[] CurCommanderSkill;
 
     public GameObject Base;
    
@@ -21,12 +23,6 @@ public class InGameManager : MonoBehaviour
         inst = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -38,7 +34,7 @@ public class InGameManager : MonoBehaviour
 
         if (UnitSetMode && AllyUnitSetMode)
         {
-            // Å¸ÀÏ »ö»ó ¾÷µ¥ÀÌÆ®
+            // íƒ€ì¼ ìƒ‰ìƒ ì—…ë°ì´íŠ¸
             GridTile[] allTiles = FindObjectsOfType<GridTile>();
             foreach (var tile in allTiles)
             {
@@ -47,7 +43,7 @@ public class InGameManager : MonoBehaviour
         }
         else
         {
-            // Å¸ÀÏ »ö»ó ¾÷µ¥ÀÌÆ®
+            // íƒ€ì¼ ìƒ‰ìƒ ì—…ë°ì´íŠ¸
             GridTile[] allTiles = FindObjectsOfType<GridTile>();
             foreach (var tile in allTiles)
             {
@@ -77,7 +73,7 @@ public class InGameManager : MonoBehaviour
     }
 
 
-    // ÀúÀåµÈ Ä¿¸Ç´õ ½ºÅ³ ºÒ·¯¿À±â
+    // ì €ì¥ëœ ì»¤ë§¨ë” ìŠ¤í‚¬ ë¶ˆëŸ¬ì˜¤ê¸°
     public Dictionary<string, string> LoadCommandSkillList()
     {
         Dictionary<string, string> loadedSkills = new Dictionary<string, string>();
@@ -90,14 +86,14 @@ public class InGameManager : MonoBehaviour
 
             foreach (string skillID in skillIDs)
             {
-                string skillName = PlayerPrefs.GetString(skillID, "ÀÌ¸§ ¾øÀ½");
+                string skillName = PlayerPrefs.GetString(skillID, "ì´ë¦„ ì—†ìŒ");
                 loadedSkills.Add(skillID, skillName);
             }
         }
 
         if (loadedSkills.Count == 0)
         {
-            Debug.LogWarning("ºÒ·¯¿Â ½ºÅ³ÀÌ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ë¶ˆëŸ¬ì˜¨ ìŠ¤í‚¬ì´ ì—†ìŠµë‹ˆë‹¤.");
         }
 
         return loadedSkills;

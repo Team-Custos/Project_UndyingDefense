@@ -1,13 +1,18 @@
+using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class UnitCurDebuff
 {
-    public UnitDebuff name;      // µð¹öÇÁ ÀÌ¸§
-    public int stack;            // µð¹öÇÁ ½ºÅÃ
-    public float duration;       // µð¹öÇÁ ÀüÃ¼ Áö¼Ó ½Ã°£
-    public float currentTime;    // µð¹öÇÁ ÇöÀç ³²Àº ½Ã°£
+    public UnitDebuff name;      // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
+    public int stack;            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float duration;       // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public float currentTime;    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public int tickDamage;//Æ½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public AudioClip StartSFX;
+    public AudioClip EndSFX;
 }
 
 public class UnitDebuffManager : MonoBehaviour
@@ -15,76 +20,201 @@ public class UnitDebuffManager : MonoBehaviour
     UnitDebuffData[] debuffData;
 
     [SerializeField]
-    public List<UnitCurDebuff> activeDebuffs = new List<UnitCurDebuff>(); // ÇöÀç À¯´ÖÀÇ µð¹öÇÁ ¸ñ·Ï
+    public List<UnitCurDebuff> activeDebuffs = new List<UnitCurDebuff>(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+    public Ingame_UnitCtrl unitCtrl;
+    float tickInterval = 1;
+    float tickInterval_cur = 0;
 
     private void Awake()
     {
-        debuffData = InGameManager.inst.unitStatusCtrl.debuffDatas;
+        debuffData = InGameManager.inst.unitDebuffData.debuffDatas;
     }
 
-    // ¸Å ÇÁ·¹ÀÓ µð¹öÇÁ ¾÷µ¥ÀÌÆ®
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     void Update()
     {
-        for (int i = activeDebuffs.Count - 1; i >= 0; i--) // ¸®½ºÆ® ¿ª¼øÀ¸·Î ¼øÈ¸ (»èÁ¦ ½Ã ¿À·ù ¹æÁö)
+        for (int activeDebuffIdx = activeDebuffs.Count - 1; activeDebuffIdx >= 0; activeDebuffIdx--) // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         {
-            activeDebuffs[i].currentTime -= Time.deltaTime;
+            activeDebuffs[activeDebuffIdx].currentTime -= Time.deltaTime;
 
-            // µð¹öÇÁ ½Ã°£ÀÌ ³¡³­ °æ¿ì
-            if (activeDebuffs[i].currentTime <= 0)
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+            if (activeDebuffs[activeDebuffIdx].currentTime <= 0)
             {
-                RemoveDebuff(activeDebuffs[i]);
+                RemoveDebuff(activeDebuffs[activeDebuffIdx]);
+            }
+            else
+            {
+                if (activeDebuffs.Count > 0)
+                {
+                    DebuffUpdate();
+                }
+            }
+        }        
+    }
+
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+    void DebuffUpdate()
+    {
+        for (int debuffDataIdx = 0; debuffDataIdx < debuffData.Length - 1; debuffDataIdx++)
+        {
+            if (debuffDataIdx >= activeDebuffs.Count)
+            {
+                break;
+            }
+
+            if (activeDebuffs[debuffDataIdx].currentTime > 0)
+            {
+                switch (activeDebuffs[debuffDataIdx].name)
+                {
+                    case UnitDebuff.Dizzy://3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½ 20%, ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ 20% ï¿½ï¿½ï¿½ï¿½. ï¿½Ö´ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÃµÈ´ï¿½. 4ï¿½ï¿½ ï¿½ï¿½ï¿½Ã½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ßµï¿½ï¿½È´ï¿½.
+                        if (activeDebuffs[debuffDataIdx].stack >= 4)
+                        {
+                            RemoveDebuff(activeDebuffs[debuffDataIdx]);
+                            AddDebuff(UnitDebuff.Stun);
+                        }
+                        else
+                        {
+                            unitCtrl.cur_moveSpeed = unitCtrl.cur_moveSpeed * 0.8f;
+                            unitCtrl.cur_attackSpeed = unitCtrl.cur_attackSpeed * 0.8f;
+                        }
+                        break;
+                    case UnitDebuff.Stun://5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½àµ¿ ï¿½Ò°ï¿½
+                        unitCtrl.unActable = true;
+                        break;
+                    case UnitDebuff.Trapped://5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Ò°ï¿½
+                        unitCtrl.cur_moveSpeed = 0;
+                        break;
+                    case UnitDebuff.Poison: //3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ 20% ï¿½ï¿½ï¿½ï¿½
+                        unitCtrl.cur_moveSpeed = unitCtrl.cur_moveSpeed * 0.8f;
+                        unitCtrl.cur_attackSpeed = unitCtrl.cur_attackSpeed * 0.8f;
+                        break;
+                    case UnitDebuff.Bleed: //3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ 1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+                        int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
+
+                        if(activeDebuffs[debuffDataIdx].currentTime > 0)
+                        {
+                            tickInterval_cur -= Time.deltaTime;
+                            if (tickInterval_cur <= 0)
+                            {
+                                unitCtrl.HP -= finalDamage;
+                                tickInterval_cur = tickInterval;
+                            }
+                        }
+                        break;
+                    case UnitDebuff.Burn: //3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ 3 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½Ö´ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÃµÈ´ï¿½. 4ï¿½ï¿½ ï¿½ï¿½ï¿½Ã½ï¿½ È­ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ßµï¿½ï¿½È´ï¿½.
+                        if (activeDebuffs[debuffDataIdx].stack >= 4)
+                        {
+                            RemoveDebuff(activeDebuffs[debuffDataIdx]);
+                            AddDebuff(UnitDebuff.Inferno);
+                        }
+                        while (activeDebuffs[debuffDataIdx].currentTime > 0)
+                        {
+                            tickInterval_cur -= Time.deltaTime;
+                            if (tickInterval_cur <= 0)
+                            {
+                                unitCtrl.HP -= activeDebuffs[debuffDataIdx].tickDamage;
+                                tickInterval_cur = tickInterval;
+                            }
+                        }
+
+                        break;
+                    case UnitDebuff.Inferno: //5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ 8 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. 50% È®ï¿½ï¿½ï¿½ï¿½ 10m ï¿½Ý°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¿ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ñ´ï¿½.
+                        while (activeDebuffs[debuffDataIdx].currentTime > 0)
+                        {
+                            tickInterval_cur -= Time.deltaTime;
+                            if (tickInterval_cur <= 0)
+                            {
+                                unitCtrl.HP -= activeDebuffs[debuffDataIdx].tickDamage;
+                                tickInterval_cur = tickInterval;
+                            }
+                        }
+                        break;
+                }
+            }
+            else // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½È­.
+            {
+                switch (activeDebuffs[debuffDataIdx].name)
+                {
+                    case UnitDebuff.Dizzy://3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½ 20%, ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ 20% ï¿½ï¿½ï¿½ï¿½. ï¿½Ö´ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÃµÈ´ï¿½. 4ï¿½ï¿½ ï¿½ï¿½ï¿½Ã½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ßµï¿½ï¿½È´ï¿½.
+                        unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                        break;
+                    case UnitDebuff.Stun://5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½àµ¿ ï¿½Ò°ï¿½
+                        unitCtrl.unActable = false;
+                        break;
+                    case UnitDebuff.Trapped://5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Ò°ï¿½
+                        unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
+                        break;
+                    case UnitDebuff.Poison: //3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ 20% ï¿½ï¿½ï¿½ï¿½
+                        unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                        break;
+                    case UnitDebuff.Bleed:
+                        break;
+                    case UnitDebuff.Burn:
+                        break;
+                    case UnitDebuff.Inferno:
+                        break;
+                }
             }
         }
 
-        //µð¹öÇÁ ½ÇÇà ÇÔ¼ö ±¸ÇöÇØ¾ßÇÔ.
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½.
     }
 
-    // µð¹öÇÁ Ãß°¡ ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½Ô¼ï¿½
     public void AddDebuff(UnitDebuff debuff)
     {
+        AudioClip StartSFX;
+
         if (debuffData == null)
         {
             Debug.LogError("debuffData is null. Check the source of debuffData.");
             return;
         }
 
-
         for (int i = 0; i < debuffData.Length; i++)
         {
-            if (debuff == debuffData[i].name) // ÀÌ¹Ì ÇØ´ç µð¹öÇÁ°¡ ÀÖ´ÂÁö È®ÀÎ
+            if (debuff == debuffData[i].name) // ï¿½Ì¹ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
             {
                 UnitCurDebuff existingDebuff = activeDebuffs.Find(d => d.name == debuffData[i].name);
-
-                if (existingDebuff != null) // µð¹öÇÁ°¡ ÀÌ¹Ì ÀÖÀ¸¸é ½Ã°£ ÃÊ±âÈ­ ¹× ½ºÅÃ Áõ°¡
+                if (existingDebuff != null) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 {
                     existingDebuff.currentTime = debuffData[i].duration;
-                    if (existingDebuff.stack < debuffData[i].stackLimit)
+                    if (debuffData[i].Stackable && existingDebuff.stack <= debuffData[i].stackLimit)
                     {
                         existingDebuff.stack++;
                     }
                 }
-                else //¾øÀ» °æ¿ì »õ·Î¿î µð¹öÇÁ Ãß°¡
+                else //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
                 {
                     activeDebuffs.Add(new UnitCurDebuff
                     {
                         name = debuffData[i].name,
                         stack = 1,
                         duration = debuffData[i].duration,
-                        currentTime = debuffData[i].duration
+                        currentTime = debuffData[i].duration,
+                        tickDamage = debuffData[i].tickDamage,
+                        StartSFX = debuffData[i].StartSFX,
+                        EndSFX = debuffData[i].EndSFX,
                     });
-
+                    StartSFX = debuffData[i].StartSFX;
+                    unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, StartSFX);
                 }
             }
+            
         }
     }
 
-    // µð¹öÇÁ Á¦°Å
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void RemoveDebuff(UnitCurDebuff debuff)
     {
+        unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, debuff.EndSFX);
         activeDebuffs.Remove(debuff);
     }
 
-    // Æ¯Á¤ µð¹öÇÁ Ã£±â ÇÔ¼ö
+    // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½Ô¼ï¿½
     public bool HasDebuff(UnitDebuff debuff)
     {
         return activeDebuffs.Exists(d => d.name == debuff);

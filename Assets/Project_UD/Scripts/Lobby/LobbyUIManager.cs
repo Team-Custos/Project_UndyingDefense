@@ -45,12 +45,8 @@ public class LobbyUIManager : MonoBehaviour
     "lead_morale101", "lead_morale102", "lead_morale103"
     };
 
-
-
     private const int maxSkillDeckSize = 3;
 
-    public ParticleSystem buttonParticleEffect;
-    public Button particleBtn;
 
     private CommandSkillManager commandSkillManager;
     private List<CommandSkillManager.SkillData> commandSkillDeckList = new List<CommandSkillManager.SkillData>();
@@ -70,23 +66,8 @@ public class LobbyUIManager : MonoBehaviour
         {
             if (battleStartBtn != null)
             {
-                
-                battleStartBtn.onClick.AddListener(() =>
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
-                    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 2");
 
-                    //if (commandSkillDeckList.Count < maxSkillDeckSize)
-                    //{
-                    //    //StartCoroutine(FadeUI(saveErrorMessgePanel, true));
-                    //    //saveErrorMessgePanel.SetActive(true);
-                    //}
-                    //else
-                    //{
-                    //    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
-                    //    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1");
-                    //}
-                });
+                battleStartBtn.onClick.AddListener(() => SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1"));
             }
         }
 
@@ -95,27 +76,14 @@ public class LobbyUIManager : MonoBehaviour
         {
             stageStartBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                ShowUI(localSituationPanel);
+                ShowUI(localSituationPanel);  
             });
-
-        }
-
-        if(particleBtn != null)
-        {
-            particleBtn.onClick.AddListener(() =>
-            {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                PlayParticleEffect();
-            });
-
         }
 
         if (localSituationPanelCloseBtn != null)
         {
             localSituationPanelCloseBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 HideUI(localSituationPanel);  
             });
         }
@@ -124,7 +92,6 @@ public class LobbyUIManager : MonoBehaviour
         {
             commandSkillPanelCloseBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 HideUI(commandSkillPanel);  
                 ShowUI(localSituationPanel);
             });
@@ -134,7 +101,6 @@ public class LobbyUIManager : MonoBehaviour
         {
             commandSkillResetBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 HideUI(localSituationPanel);
                 ShowUI(commandSkillPanel);  
 
@@ -158,12 +124,7 @@ public class LobbyUIManager : MonoBehaviour
             if (commandSkillEquipBtn[i] != null)
             {
                 int buttonIndex = i;
-
-                commandSkillEquipBtn[buttonIndex].onClick.AddListener(() =>
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
-                    AddCommandSkill(buttonIndex);
-                });
+                commandSkillEquipBtn[buttonIndex].onClick.AddListener(() => AddCommandSkill(buttonIndex));
             }
         }
 
@@ -173,12 +134,7 @@ public class LobbyUIManager : MonoBehaviour
             if (commandSkillClearBtn[i] != null)
             {
                 int buttonIndex = i;
-
-                commandSkillClearBtn[buttonIndex].onClick.AddListener(() =>
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
-                    RemoveCommandSkill(buttonIndex);
-                });
+                commandSkillClearBtn[buttonIndex].onClick.AddListener(() => RemoveCommandSkill(buttonIndex));
             }
         }
 
@@ -186,7 +142,6 @@ public class LobbyUIManager : MonoBehaviour
         {
             showCommandSkillListBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 ShowCommandSkillList();
             });
         }
@@ -201,20 +156,11 @@ public class LobbyUIManager : MonoBehaviour
                 {
                     skillData.Add(skill.SkillID, skill.SkillName);
                 }
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+
                 SaveCommandSkillList(skillData); 
             });
         }
 
-
-        //if(saveErrorMessgeBtn != null)
-        //{
-        //    saveErrorMessgeBtn.onClick.AddListener(() =>
-        //    {
-        //        StartCoroutine(FadeUI(saveErrorMessgePanel, false));
-        //        saveErrorMessgePanel.SetActive(false);
-        //    });
-        //}
     }
 
     // 스킬 장착 기능 및 UI 업데이트
@@ -272,16 +218,7 @@ public class LobbyUIManager : MonoBehaviour
     // 스킬 제거 기능 및 UI 업데이트
     private void RemoveCommandSkill(int deckIndex)
     {
-        // 인덱스 범위 검증
-        if (deckIndex < 0 || deckIndex >= commandSkillDeckListImage.Length)
-        {
-            Debug.LogWarning("덱 인덱스가 잘못되었습니다.");
-            return;
-        }
-
         int skillIndex = CommandSkillDeckIndex[deckIndex];
-
-        // 해당 덱이 비어 있는지 확인 (skillIndex == -1이 아니고, 덱 인덱스도 올바른지 확인)
         if (skillIndex != -1 && deckIndex >= 0 && deckIndex < commandSkillDeckList.Count)
         {
             Debug.Log($"{commandSkillDeckList[deckIndex].SkillName} 제거");
@@ -298,7 +235,7 @@ public class LobbyUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("잘못된 버튼 인덱스 또는 덱이 비어 있습니다.");
+            Debug.LogWarning("잘못된 버튼 인덱스");
         }
     }
 
@@ -326,24 +263,18 @@ public class LobbyUIManager : MonoBehaviour
         UserDataModel.instance.skillIDs.Clear();
         List<string> skillIDs = new List<string>();
 
-        foreach(var skill in skillData)
+        foreach (var entry in skillData)
         {
-            skillIDs.Add(skill.Key);
+            // 스킬 ID와 이름을 각각 PlayerPrefs에 저장
+            PlayerPrefs.SetString(entry.Key, entry.Value);
+            skillIDs.Add(entry.Key);
+            UserDataModel.instance.skillIDs.Add(entry.Key);
         }
 
+        // 모든 스킬 ID 리스트를 저장 (나중에 불러올 때 사용)
+        PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
 
-        //foreach (var entry in skillData)
-        //{
-        //    // 스킬 ID와 이름을 각각 PlayerPrefs에 저장
-        //    PlayerPrefs.SetString(entry.Key, entry.Value);
-        //    skillIDs.Add(entry.Key);
-        //    UserDataModel.instance.skillIDs.Add(entry.Key);
-        //}
-
-        //// 모든 스킬 ID 리스트를 저장 (나중에 불러올 때 사용)
-        //PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
-
-        //PlayerPrefs.Save(); // 저장
+        PlayerPrefs.Save(); // 저장
 
         Debug.Log("커맨더 스킬 저장");
     }
@@ -400,63 +331,6 @@ public class LobbyUIManager : MonoBehaviour
     public void HideUI(RectTransform ui)
     {
         StartCoroutine(AnimateUI(ui, false, 0.3f)); // 작아지면서 사라지는 연출
-    }
-
-    private void PlayParticleEffect()
-    {
-        if (buttonParticleEffect != null)
-        {
-            buttonParticleEffect.Play();  // 파티클 효과 실행
-        }
-    }
-
-
-    // 페이드 인/아웃을 위한 코루틴 함수
-    public IEnumerator FadeUI(GameObject uiElement, bool isFadeIn, float duration = 0.5f)
-    {
-        CanvasGroup canvasGroup = uiElement.GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
-        {
-            canvasGroup = uiElement.AddComponent<CanvasGroup>();
-        }
-
-        float startAlpha;
-        float endAlpha;
-
-        if (isFadeIn)
-        {
-            startAlpha = 0; 
-            endAlpha = 1;   
-        }
-        else
-        {
-            startAlpha = 1; 
-            endAlpha = 0;   
-        }
-
-        float time = 0f;
-
-        // 애니메이션 진행 시간에 따라 alpha 값을 변화
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, time / duration);
-            yield return null;
-        }
-
-        canvasGroup.alpha = endAlpha;
-
-        if (!isFadeIn)
-        {
-            canvasGroup.blocksRaycasts = true;
-            uiElement.SetActive(false);
-        }
-        else
-        {
-            canvasGroup.blocksRaycasts = false;
-            uiElement.SetActive(true); 
-        }
     }
 
 }

@@ -45,7 +45,7 @@ public class AllyUnitState : MonoBehaviour
     #region Idle State
     void Idle_Enter()
     {
-        //Debug.Log("Idle Enter");
+        Debug.Log("Idle Enter");
     }
 
     void Idle_Update()
@@ -64,7 +64,7 @@ public class AllyUnitState : MonoBehaviour
     #region Attack State
     void Attack_Enter()
     {
-        //Debug.Log("Attack_Enter");
+        Debug.Log("Attack_Enter");
         allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
     }
 
@@ -121,6 +121,8 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
+            navAgent.speed = UnitCtrl.cur_moveSpeed;
+
             navAgent.SetDestination(UnitCtrl.moveTargetPos);
             navAgent.stoppingDistance = 0;
 

@@ -70,10 +70,10 @@ public class UnitDataManager : MonoBehaviour
     {
         foreach (var unitData in unitDataList)
         {
-            // ¿¢¼¿ µ¥ÀÌÅÍ¸¦ µñ¼Å³Ê¸®¿¡ ÀúÀå
+            // ì—‘ì…€ ë°ì´í„°ë¥¼ ë”•ì…”ë„ˆë¦¬ì— ì €ì¥
             unitDataDictionary[unitData.UnitCode] = unitData;
 
-            // ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®·Î ¸ÅÇÎ
+            // ìŠ¤í¬ë¦½í„°ë¸” ì˜¤ë¸Œì íŠ¸ë¡œ ë§¤í•‘
             Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
         }
     }
@@ -88,7 +88,7 @@ public class UnitDataManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("µ¥ÀÌÅÍ ¾øÀ½");
+            Debug.Log("ë°ì´í„° ì—†ìŒ");
             return null;
         }
     }
@@ -115,18 +115,16 @@ public class UnitDataManager : MonoBehaviour
     }
 
 
-    // ¿¢¼¿ µ¥ÀÌÅÍ¸¦ ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®¿¡ ¸ÅÇÎÇÏ´Â ÇÔ¼ö
+    // ì—‘ì…€ ë°ì´í„°ë¥¼ ìŠ¤í¬ë¦½í„°ë¸” ì˜¤ë¸Œì íŠ¸ì— ë§¤í•‘í•˜ëŠ” í•¨ìˆ˜
     public Ingame_UnitData CreateUnitDataObject(UnitData unitData)
     {
         Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
 
-        // ¸ÅÇÎ
+        // ë§¤í•‘
         //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
         //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
         //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
         //ingameUnitData.modelType = unitData.Number;
-
-
         ingameUnitData.maxHP = unitData.Hp;
         ingameUnitData.mental = unitData.Mental;
         ingameUnitData.moveSpeed = unitData.MoveSpeed;
@@ -143,7 +141,6 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.level = unitData.Level;
         ingameUnitData.cost = unitData.Cost;
         ingameUnitData.name = unitData.Name;
-
 
         return ingameUnitData;
     }
