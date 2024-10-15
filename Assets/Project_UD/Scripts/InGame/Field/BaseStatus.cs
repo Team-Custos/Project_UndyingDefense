@@ -30,10 +30,9 @@ public class BaseStatus : MonoBehaviour
         {
             BaseHPCur = 0;
 
-            Time.timeScale = 0.0f;
-
-            //�й�ó��
             Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Debug.Log("�й�");
+            Time.timeScale = 0.0f;
         }
         
     }
