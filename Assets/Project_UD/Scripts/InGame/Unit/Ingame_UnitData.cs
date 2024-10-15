@@ -28,6 +28,7 @@ public class Ingame_UnitData : ScriptableObject
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     // 추가
     public float globalTime;
 =======
@@ -36,6 +37,10 @@ public class Ingame_UnitData : ScriptableObject
 =======
     // �߰�
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
+=======
+    // 추가
+    public float globalTime;
+>>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
     public string g_SkillName;
     public string s_SkillName;
     public string unitCode;
