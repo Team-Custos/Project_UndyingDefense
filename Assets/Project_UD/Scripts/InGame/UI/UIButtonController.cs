@@ -1,71 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public enum ButtonState
-    {
-        Default,
-        Hovered,
-        Clicked,
-        ClickedAfter,
-        Disabled
-    }
-
-    public Image buttonImage;
-    public Color defaultColor = new Color(1f, 0.5f, 0f);
-    public Color hoveredColor = new Color(1f, 0.8f, 0.6f);
-    public Color clickedColor = Color.yellow;
-    public Color disabledColor = Color.gray;
-    public float animationDuration = 0.2f;
-
-    private ButtonState currentState = ButtonState.Default;
-
-
     public RectTransform buttonRectTransform;
     public Text buttonText;
-    public Vector3 pressedScale = new Vector3(1.2f, 1.2f, 1f);
+    public Vector3 pressedScale = new Vector3(0.9f, 0.9f, 1f);
     public Vector3 normalScale = Vector3.one;
     public float scaleDuration = 0.1f;
-    public float textScaleFactor = 1.2f; 
+    public float textScaleFactor = 1.2f;
 
     private Vector3 originalTextScale;
 
     private void Start()
     {
-        // ÃÊ±â ÅØ½ºÆ® Å©±â ÀúÀå
+        // ì´ˆê¸° í…ìŠ¤íŠ¸ í¬ê¸° ì €ì¥
         if (buttonText != null)
         {
             originalTextScale = buttonText.transform.localScale;
         }
+
+        buttonRectTransform.localScale = normalScale;
     }
 
-    // ¹öÆ°ÀÌ ´­·ÈÀ» ¶§
+    // ë²„íŠ¼ì´ ëˆŒë ¸ì„ ë•Œ
     public void OnPointerDown(PointerEventData eventData)
     {
-        // ¹öÆ° Å©±â¿Í ÅØ½ºÆ® Å©±â È®´ë
+        // ë²„íŠ¼ í¬ê¸°ë¥¼ ì‘ê²Œ ë§Œë“¦
         StartCoroutine(ScaleButton(pressedScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale * textScaleFactor));
+            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // í…ìŠ¤íŠ¸ í¬ê¸°ë„ ì¤„ì„
         }
     }
 
-    // ¹öÆ°¿¡¼­ ¸¶¿ì½º¸¦ ¶ÃÀ» ¶§
+
+    // ë²„íŠ¼ì—ì„œ ë§ˆìš°ìŠ¤ë¥¼ ë—ì„ ë•Œ
     public void OnPointerUp(PointerEventData eventData)
     {
-        // ¹öÆ° Å©±â¿Í ÅØ½ºÆ® Å©±â¸¦ ¿ø·¡´ë·Î µÇµ¹¸²
+        // ë²„íŠ¼ í¬ê¸°ë¥¼ ì›ë˜ëŒ€ë¡œ ë˜ëŒë¦¼
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale));
+            StartCoroutine(ScaleText(originalTextScale));  // í…ìŠ¤íŠ¸ í¬ê¸°ë„ ì›ë˜ëŒ€ë¡œ ë˜ëŒë¦¼
         }
     }
 
-    // ¹öÆ° Å©±â º¯°æ ÄÚ·çÆ¾
+    // ë²„íŠ¼ í¬ê¸° ë³€ê²½ ì½”ë£¨í‹´
     private IEnumerator ScaleButton(Vector3 targetScale)
     {
         Vector3 currentScale = buttonRectTransform.localScale;
@@ -81,7 +66,7 @@ public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUp
         buttonRectTransform.localScale = targetScale;
     }
 
-    // ÅØ½ºÆ® Å©±â º¯°æ ÄÚ·çÆ¾
+    // í…ìŠ¤íŠ¸ í¬ê¸° ë³€ê²½ ì½”ë£¨í‹´
     private IEnumerator ScaleText(Vector3 targetScale)
     {
         Vector3 currentScale = buttonText.transform.localScale;
@@ -97,80 +82,6 @@ public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUp
         buttonText.transform.localScale = targetScale;
     }
 
-    // ¹öÆ° »óÅÂ¿¡ µû¸¥ »ö»ó º¯°æ
-    public void ChangeButtonState(ButtonState newState)
-    {
-        currentState = newState;
-        switch (currentState)
-        {
-            case ButtonState.Default:
-                StartCoroutine(ChangeColor(defaultColor));
-                break;
-            case ButtonState.Hovered:
-                StartCoroutine(ChangeColor(hoveredColor));
-                break;
-            case ButtonState.Clicked:
-                StartCoroutine(ChangeColor(clickedColor));
-                break;
-            case ButtonState.ClickedAfter:
-                StartCoroutine(ChangeColor(defaultColor));
-                break;
-            case ButtonState.Disabled:
-                StartCoroutine(ChangeColor(disabledColor));
-                break;
-        }
-    }
-
-    // »ö»ó º¯°æ ÄÚ·çÆ¾
-    private IEnumerator ChangeColor(Color targetColor)
-    {
-        Color initialColor = buttonImage.color;
-        float time = 0f;
-
-        while (time < animationDuration)
-        {
-            time += Time.deltaTime;
-            //buttonImage.color = Color.Lerp(initialColor, targetColor, time / animationDuration);
-            yield return null;
-        }
-
-        buttonImage.color = targetColor; // ÃÖÁ¾ »ö»ó Àû¿ë
-    }
-
-
-    // ¸¶¿ì½º°¡ ¹öÆ° À§·Î ¿Ã¶ó¿Ã ¶§ È£Ãâ
-    public void OnPointerEnter()
-    {
-        if (currentState != ButtonState.Disabled)
-            ChangeButtonState(ButtonState.Hovered);
-    }
-
-    // ¸¶¿ì½º°¡ ¹öÆ°¿¡¼­ ¹ş¾î³¯ ¶§ È£Ãâ
-    public void OnPointerExit()
-    {
-        if (currentState != ButtonState.Disabled)
-            ChangeButtonState(ButtonState.Default);
-    }
-
-    // ¹öÆ°ÀÌ Å¬¸¯µÉ ¶§ È£Ãâ
-    public void OnPointerClick()
-    {
-        if (currentState != ButtonState.Disabled)
-            ChangeButtonState(ButtonState.Clicked);
-    }
-
-    // ¹öÆ° ºñÈ°¼ºÈ­
-    public void DisableButton()
-    {
-        ChangeButtonState(ButtonState.Disabled);
-    }
-
-
-    // ¹öÆ° È°¼ºÈ­
-    public void EnableButton()
-    {
-        ChangeButtonState(ButtonState.Default);
-    }
 
 
 }

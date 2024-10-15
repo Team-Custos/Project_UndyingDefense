@@ -27,7 +27,7 @@ public class LobbyUIManager : MonoBehaviour
     public Image[] commandSkillList = null;
     public Button[] commandSkillEquipBtn = null;
     public Image commandSkillInfoImage = null;
-    public Text commandSkillInfoScriptTxt = null; 
+    public Text commandSkillInfoScriptTxt = null;
     public Button[] commandSkillClearBtn = null;
     public Button commandkSkillSaveBtn = null;
 
@@ -45,11 +45,18 @@ public class LobbyUIManager : MonoBehaviour
     "lead_morale101", "lead_morale102", "lead_morale103"
     };
 
+    public GameObject[] optionPanel;
+    public Button[] optionBtn;
+
     private const int maxSkillDeckSize = 3;
 
+    public ParticleSystem buttonParticleEffect;
+    public Button particleBtn;
 
     private CommandSkillManager commandSkillManager;
     private List<CommandSkillManager.SkillData> commandSkillDeckList = new List<CommandSkillManager.SkillData>();
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -62,29 +69,57 @@ public class LobbyUIManager : MonoBehaviour
         isCommandSkillDeckEmpty = new bool[commandSkillDeckListImage.Length];
         CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
-        if(battleStartBtn != null)
+        if (battleStartBtn != null)
         {
             if (battleStartBtn != null)
             {
 
-                battleStartBtn.onClick.AddListener(() => SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1"));
+                battleStartBtn.onClick.AddListener(() =>
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+                    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 2");
+
+                    //if (commandSkillDeckList.Count < maxSkillDeckSize)
+                    //{
+                    //    //StartCoroutine(FadeUI(saveErrorMessgePanel, true));
+                    //    //saveErrorMessgePanel.SetActive(true);
+                    //}
+                    //else
+                    //{
+                    //    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+                    //    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1");
+                    //}
+                });
             }
         }
 
-        // UI ÆÇ³Ú On / Off
+        // UI íŒë„¬ On / Off
         if (stageStartBtn != null)
         {
             stageStartBtn.onClick.AddListener(() =>
             {
-                ShowUI(localSituationPanel);  
+                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                ShowUI(localSituationPanel);
             });
+
+        }
+
+        if (particleBtn != null)
+        {
+            particleBtn.onClick.AddListener(() =>
+            {
+                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                PlayParticleEffect();
+            });
+
         }
 
         if (localSituationPanelCloseBtn != null)
         {
             localSituationPanelCloseBtn.onClick.AddListener(() =>
             {
-                HideUI(localSituationPanel);  
+                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                HideUI(localSituationPanel);
             });
         }
 
@@ -92,7 +127,8 @@ public class LobbyUIManager : MonoBehaviour
         {
             commandSkillPanelCloseBtn.onClick.AddListener(() =>
             {
-                HideUI(commandSkillPanel);  
+                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                HideUI(commandSkillPanel);
                 ShowUI(localSituationPanel);
             });
         }
@@ -101,15 +137,16 @@ public class LobbyUIManager : MonoBehaviour
         {
             commandSkillResetBtn.onClick.AddListener(() =>
             {
+                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 HideUI(localSituationPanel);
-                ShowUI(commandSkillPanel);  
+                ShowUI(commandSkillPanel);
 
             });
         }
-        // UI ÆÇ³Ú On/Off
+        // UI íŒë„¬ On/Off
 
 
-        // ÃÊ±âÈ­: µ¦ ºñ¿ì±â
+        // ì´ˆê¸°í™”: ë± ë¹„ìš°ê¸°
         for (int i = 0; i < isCommandSkillDeckEmpty.Length; i++)
         {
             isCommandSkillDeckEmpty[i] = true;
@@ -118,30 +155,41 @@ public class LobbyUIManager : MonoBehaviour
 
         isCommandSkillSelect = new bool[commandSkillList.Length];
 
-        // ½ºÅ³ ÀåÂø ¹öÆ°¿¡ ´ëÇÑ ¸®½º³Ê Ãß°¡
+        // ìŠ¤í‚¬ ì¥ì°© ë²„íŠ¼ì— ëŒ€í•œ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€
         for (int i = 0; i < commandSkillEquipBtn.Length; i++)
         {
             if (commandSkillEquipBtn[i] != null)
             {
                 int buttonIndex = i;
-                commandSkillEquipBtn[buttonIndex].onClick.AddListener(() => AddCommandSkill(buttonIndex));
+
+                commandSkillEquipBtn[buttonIndex].onClick.AddListener(() =>
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
+                    AddCommandSkill(buttonIndex);
+                });
             }
         }
 
-        // ½ºÅ³ Á¦°Å ¹öÆ°¿¡ ´ëÇÑ ¸®½º³Ê Ãß°¡
+        // ìŠ¤í‚¬ ì œê±° ë²„íŠ¼ì— ëŒ€í•œ ë¦¬ìŠ¤ë„ˆ ì¶”ê°€
         for (int i = 0; i < commandSkillClearBtn.Length; i++)
         {
             if (commandSkillClearBtn[i] != null)
             {
                 int buttonIndex = i;
-                commandSkillClearBtn[buttonIndex].onClick.AddListener(() => RemoveCommandSkill(buttonIndex));
+
+                commandSkillClearBtn[buttonIndex].onClick.AddListener(() =>
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
+                    RemoveCommandSkill(buttonIndex);
+                });
             }
         }
 
-        if(showCommandSkillListBtn != null)
+        if (showCommandSkillListBtn != null)
         {
             showCommandSkillListBtn.onClick.AddListener(() =>
             {
+                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 ShowCommandSkillList();
             });
         }
@@ -156,19 +204,52 @@ public class LobbyUIManager : MonoBehaviour
                 {
                     skillData.Add(skill.SkillID, skill.SkillName);
                 }
-
-                SaveCommandSkillList(skillData); 
+                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                SaveCommandSkillList(skillData);
             });
         }
 
+
+        for (int i = 0; i < optionBtn.Length; i++)
+        {
+            int index = i;  // ë‚´ë¶€ì—ì„œ ì‚¬ìš©í•˜ê¸° ìœ„í•´ ë¡œì»¬ ë³€ìˆ˜ë¡œ ì¸ë±ìŠ¤ë¥¼ ì €ì¥
+            optionBtn[i].onClick.AddListener(() => TogglePanel(index));
+        }
+
+        // ì‹œì‘ ì‹œ ëª¨ë“  íŒ¨ë„ì„ ë¹„í™œì„±í™”
     }
 
-    // ½ºÅ³ ÀåÂø ±â´É ¹× UI ¾÷µ¥ÀÌÆ®
+    // í•˜ë‚˜ì˜ íŒ¨ë„ë§Œ ì¼œê³  ë‚˜ë¨¸ì§€ëŠ” ë„ëŠ” í•¨ìˆ˜
+    private void TogglePanel(int index)
+    {
+        // ë§Œì•½ ì„ íƒëœ íŒ¨ë„ì´ ì´ë¯¸ ì¼œì ¸ ìˆìœ¼ë©´ ë„ê¸°
+        if (optionPanel[index].activeSelf)
+        {
+            optionPanel[index].SetActive(false);
+        }
+        else
+        {
+            // ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ëª¨ë“  íŒ¨ë„ì„ ë„ê³  ì„ íƒí•œ íŒ¨ë„ë§Œ ì¼œê¸°
+            HideAllPanels();
+            optionPanel[index].SetActive(true);
+        }
+    }
+
+    // ëª¨ë“  íŒ¨ë„ì„ ë¹„í™œì„±í™”í•˜ëŠ” í•¨ìˆ˜
+    private void HideAllPanels()
+    {
+        foreach (var panel in optionPanel)
+        {
+            panel.SetActive(false);
+        }
+    }
+
+    // ìŠ¤í‚¬ ì¥ì°© ê¸°ëŠ¥ ë° UI ì—…ë°ì´íŠ¸
     private void AddCommandSkill(int buttonIndex)
     {
         if (commandSkillDeckList.Count >= maxSkillDeckSize)
         {
-            Debug.Log("½ºÅ³ °³¼ö ÃÊ°ú");
+            Debug.Log("ìŠ¤í‚¬ ê°œìˆ˜ ì´ˆê³¼");
             return;
         }
 
@@ -178,14 +259,14 @@ public class LobbyUIManager : MonoBehaviour
 
             if (commandSkillDeckList.Exists(skill => skill.SkillID == skillID))
             {
-                Debug.Log("½ºÅ³ Áßº¹");
+                Debug.Log("ìŠ¤í‚¬ ì¤‘ë³µ");
                 return;
             }
 
             if (commandSkillManager.skillDataDictionary.TryGetValue(skillID, out CommandSkillManager.SkillData skill))
             {
                 commandSkillDeckList.Add(skill);
-                Debug.Log($"Command Skill {skill.SkillName} Ãß°¡µÊ");
+                Debug.Log($"Command Skill {skill.SkillName} ì¶”ê°€ë¨");
 
                 for (int i = 0; i < commandSkillDeckListImage.Length; i++)
                 {
@@ -205,26 +286,35 @@ public class LobbyUIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"{skillID} ½ºÅ³ ¾øÀ½");
+                Debug.LogWarning($"{skillID} ìŠ¤í‚¬ ì—†ìŒ");
             }
         }
         else
         {
-            Debug.LogWarning("Àß¸øµÈ ÀÎµ¦½º");
+            Debug.LogWarning("ì˜ëª»ëœ ì¸ë±ìŠ¤");
         }
     }
 
 
-    // ½ºÅ³ Á¦°Å ±â´É ¹× UI ¾÷µ¥ÀÌÆ®
+    // ìŠ¤í‚¬ ì œê±° ê¸°ëŠ¥ ë° UI ì—…ë°ì´íŠ¸
     private void RemoveCommandSkill(int deckIndex)
     {
+        // ì¸ë±ìŠ¤ ë²”ìœ„ ê²€ì¦
+        if (deckIndex < 0 || deckIndex >= commandSkillDeckListImage.Length)
+        {
+            Debug.LogWarning("ë± ì¸ë±ìŠ¤ê°€ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.");
+            return;
+        }
+
         int skillIndex = CommandSkillDeckIndex[deckIndex];
+
+        // í•´ë‹¹ ë±ì´ ë¹„ì–´ ìˆëŠ”ì§€ í™•ì¸ (skillIndex == -1ì´ ì•„ë‹ˆê³ , ë± ì¸ë±ìŠ¤ë„ ì˜¬ë°”ë¥¸ì§€ í™•ì¸)
         if (skillIndex != -1 && deckIndex >= 0 && deckIndex < commandSkillDeckList.Count)
         {
-            Debug.Log($"{commandSkillDeckList[deckIndex].SkillName} Á¦°Å");
+            Debug.Log($"{commandSkillDeckList[deckIndex].SkillName} ì œê±°");
             commandSkillDeckList.RemoveAt(deckIndex);
 
-            // UI ¾÷µ¥ÀÌÆ®
+            // UI ì—…ë°ì´íŠ¸
             commandSkillDeckListImage[deckIndex].sprite = emptyDeckImageSprite;
             commandSkillDeckListImage[deckIndex].color = emptyDeckImageColor;
             isCommandSkillDeckEmpty[deckIndex] = true;
@@ -235,7 +325,7 @@ public class LobbyUIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Àß¸øµÈ ¹öÆ° ÀÎµ¦½º");
+            Debug.LogWarning("ì˜ëª»ëœ ë²„íŠ¼ ì¸ë±ìŠ¤ ë˜ëŠ” ë±ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
         }
     }
 
@@ -244,7 +334,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         if (commandSkillDeckList.Count > 0)
         {
-            Debug.Log("ÇöÀç ÀåÂøµÈ Command Skills:");
+            Debug.Log("í˜„ì¬ ì¥ì°©ëœ Command Skills:");
             for (int i = 0; i < commandSkillDeckList.Count; i++)
             {
                 var skill = commandSkillDeckList[i];
@@ -253,84 +343,147 @@ public class LobbyUIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Command Skill ¾øÀ½");
+            Debug.Log("Command Skill ì—†ìŒ");
         }
     }
 
-    // Ä¿¸Ç´õ ½ºÅ³ ÀúÀå
+    // ì»¤ë§¨ë” ìŠ¤í‚¬ ì €ì¥
     public void SaveCommandSkillList(Dictionary<string, string> skillData)
     {
         UserDataModel.instance.skillIDs.Clear();
         List<string> skillIDs = new List<string>();
 
-        foreach (var entry in skillData)
+        foreach (var skill in skillData)
         {
-            // ½ºÅ³ ID¿Í ÀÌ¸§À» °¢°¢ PlayerPrefs¿¡ ÀúÀå
-            PlayerPrefs.SetString(entry.Key, entry.Value);
-            skillIDs.Add(entry.Key);
-            UserDataModel.instance.skillIDs.Add(entry.Key);
+            skillIDs.Add(skill.Key);
         }
 
-        // ¸ğµç ½ºÅ³ ID ¸®½ºÆ®¸¦ ÀúÀå (³ªÁß¿¡ ºÒ·¯¿Ã ¶§ »ç¿ë)
-        PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
 
-        PlayerPrefs.Save(); // ÀúÀå
+        //foreach (var entry in skillData)
+        //{
+        //    // ìŠ¤í‚¬ IDì™€ ì´ë¦„ì„ ê°ê° PlayerPrefsì— ì €ì¥
+        //    PlayerPrefs.SetString(entry.Key, entry.Value);
+        //    skillIDs.Add(entry.Key);
+        //    UserDataModel.instance.skillIDs.Add(entry.Key);
+        //}
 
-        Debug.Log("Ä¿¸Ç´õ ½ºÅ³ ÀúÀå");
+        //// ëª¨ë“  ìŠ¤í‚¬ ID ë¦¬ìŠ¤íŠ¸ë¥¼ ì €ì¥ (ë‚˜ì¤‘ì— ë¶ˆëŸ¬ì˜¬ ë•Œ ì‚¬ìš©)
+        //PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
+
+        //PlayerPrefs.Save(); // ì €ì¥
+
+        Debug.Log("ì»¤ë§¨ë” ìŠ¤í‚¬ ì €ì¥");
     }
 
 
 
-    // ÆĞ³ÎÀÇ Å©±â¸¦ Á¶ÀıÇÏ´Â ÄÚ·çÆ¾
+    // íŒ¨ë„ì˜ í¬ê¸°ë¥¼ ì¡°ì ˆí•˜ëŠ” ì½”ë£¨í‹´
     public IEnumerator AnimateUI(RectTransform ui, bool isActive, float duration = 0.3f)
     {
-        // ÆĞ³ÎÀÇ Áß½ÉÀ» È­¸é Áß¾ÓÀ¸·Î ¼³Á¤ (ÇÇ¹ş°ú ¾ŞÄ¿¸¦ Áß¾ÓÀ¸·Î)
+        // íŒ¨ë„ì˜ ì¤‘ì‹¬ì„ í™”ë©´ ì¤‘ì•™ìœ¼ë¡œ ì„¤ì • (í”¼ë²—ê³¼ ì•µì»¤ë¥¼ ì¤‘ì•™ìœ¼ë¡œ)
         ui.pivot = new Vector2(0.5f, 0.5f);
         ui.anchorMin = new Vector2(0.5f, 0.5f);
         ui.anchorMax = new Vector2(0.5f, 0.5f);
 
-        // ½ÃÀÛ Å©±â¿Í ³¡ Å©±â ¼³Á¤
+        // ì‹œì‘ í¬ê¸°ì™€ ë í¬ê¸° ì„¤ì •
         Vector3 startScale = ui.localScale;
         Vector3 endScale;
 
-        // isActive¿¡ µû¶ó Å©±â ¼³Á¤
+        // isActiveì— ë”°ë¼ í¬ê¸° ì„¤ì •
         if (isActive)
         {
-            endScale = Vector3.one;  // (1, 1, 1) Å©±â·Î È°¼ºÈ­
+            endScale = Vector3.one;  // (1, 1, 1) í¬ê¸°ë¡œ í™œì„±í™”
         }
         else
         {
-            endScale = Vector3.zero; // (0, 0, 0) Å©±â·Î ºñÈ°¼ºÈ­
+            endScale = Vector3.zero; // (0, 0, 0) í¬ê¸°ë¡œ ë¹„í™œì„±í™”
         }
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÌ¸Ó
+        // ì• ë‹ˆë©”ì´ì…˜ íƒ€ì´ë¨¸
         float time = 0f;
 
         while (time < duration)
         {
             time += Time.deltaTime;
-            // Å©±â¸¦ ¼­¼­È÷ º¯È­½ÃÅ´
+            // í¬ê¸°ë¥¼ ì„œì„œíˆ ë³€í™”ì‹œí‚´
             ui.localScale = Vector3.Lerp(startScale, endScale, time / duration);
             yield return null;
         }
 
-        // ÃÖÁ¾ Å©±â ¼³Á¤
+        // ìµœì¢… í¬ê¸° ì„¤ì •
         ui.localScale = endScale;
-        // ³¡³µÀ» ¶§ ÆĞ³ÎÀÇ È°¼º/ºñÈ°¼º ¼³Á¤
+        // ëë‚¬ì„ ë•Œ íŒ¨ë„ì˜ í™œì„±/ë¹„í™œì„± ì„¤ì •
         ui.gameObject.SetActive(isActive);
     }
 
-    // ÆĞ³ÎÀ» È°¼ºÈ­ÇÏ´Â ÇÔ¼ö
+    // íŒ¨ë„ì„ í™œì„±í™”í•˜ëŠ” í•¨ìˆ˜
     public void ShowUI(RectTransform ui)
     {
-        ui.gameObject.SetActive(true); // ¸ÕÀú È°¼ºÈ­
-        StartCoroutine(AnimateUI(ui, true, 0.3f)); // Ä¿Áö¸é¼­ ³ªÅ¸³ª´Â ¿¬Ãâ
+        ui.gameObject.SetActive(true); // ë¨¼ì € í™œì„±í™”
+        StartCoroutine(AnimateUI(ui, true, 0.3f)); // ì»¤ì§€ë©´ì„œ ë‚˜íƒ€ë‚˜ëŠ” ì—°ì¶œ
     }
 
-    // ÆĞ³ÎÀ» ºñÈ°¼ºÈ­ÇÏ´Â ÇÔ¼ö
+    // íŒ¨ë„ì„ ë¹„í™œì„±í™”í•˜ëŠ” í•¨ìˆ˜
     public void HideUI(RectTransform ui)
     {
-        StartCoroutine(AnimateUI(ui, false, 0.3f)); // ÀÛ¾ÆÁö¸é¼­ »ç¶óÁö´Â ¿¬Ãâ
+        StartCoroutine(AnimateUI(ui, false, 0.3f)); // ì‘ì•„ì§€ë©´ì„œ ì‚¬ë¼ì§€ëŠ” ì—°ì¶œ
+    }
+
+    private void PlayParticleEffect()
+    {
+        if (buttonParticleEffect != null)
+        {
+            buttonParticleEffect.Play();  // íŒŒí‹°í´ íš¨ê³¼ ì‹¤í–‰
+        }
+    }
+
+
+    // í˜ì´ë“œ ì¸/ì•„ì›ƒì„ ìœ„í•œ ì½”ë£¨í‹´ í•¨ìˆ˜
+    public IEnumerator FadeUI(GameObject uiElement, bool isFadeIn, float duration = 0.5f)
+    {
+        CanvasGroup canvasGroup = uiElement.GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = uiElement.AddComponent<CanvasGroup>();
+        }
+
+        float startAlpha;
+        float endAlpha;
+
+        if (isFadeIn)
+        {
+            startAlpha = 0;
+            endAlpha = 1;
+        }
+        else
+        {
+            startAlpha = 1;
+            endAlpha = 0;
+        }
+
+        float time = 0f;
+
+        // ì• ë‹ˆë©”ì´ì…˜ ì§„í–‰ ì‹œê°„ì— ë”°ë¼ alpha ê°’ì„ ë³€í™”
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, time / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = endAlpha;
+
+        if (!isFadeIn)
+        {
+            canvasGroup.blocksRaycasts = true;
+            uiElement.SetActive(false);
+        }
+        else
+        {
+            canvasGroup.blocksRaycasts = false;
+            uiElement.SetActive(true);
+        }
     }
 
 }

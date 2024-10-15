@@ -41,8 +41,8 @@ public class CommandSkillManager : MonoBehaviour
         public int DamageBlock;
         public string TargetSelectTypeChange;
 
-        public SkillData(int number, string skillID, string skillName, string skillScript, string skillType, int coolTime, string targetType, 
-                         string skillCastType, string traceType, string areaShape, int areaLength, int areaWidth, string damageType, int baseDamage, 
+        public SkillData(int number, string skillID, string skillName, string skillScript, string skillType, int coolTime, string targetType,
+                         string skillCastType, string traceType, string areaShape, int areaLength, int areaWidth, string damageType, int baseDamage,
                          int damagePs, string linkID1, string linkID2, int time, int speedChange, int criRateChange, int attackSpeed, int mentalChange,
                          int hpRengen, int damageBlock, string targetSelectTypeChange)
         {
@@ -95,7 +95,7 @@ public class CommandSkillManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("½ºÅ³ µ¥ÀÌÅÍ ¾øÀ½");
+            Debug.Log("Â½ÂºÃ…Â³ ÂµÂ¥Ã€ÃŒÃ…Ã Â¾Ã¸Ã€Â½");
             return null;
         }
     }

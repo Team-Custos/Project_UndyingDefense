@@ -83,12 +83,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
-    public string gSkill;
-    public string sSkill;
     public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
 
-    
+
     void OnMouseDown()
     {
         if (Ingame_UIManager.instance != null)
@@ -119,6 +119,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         UnitSkill = GetComponentInChildren<UnitSkillManager>();
+
+        if(this.unitData.name == "사냥꾼")
+        {
+            this.unitCode = "2";
+        }
+        else if(this.unitData.name == "민병")
+        {
+            this.unitCode = "1";
+        }
         
     }
 
@@ -159,7 +168,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         moveTargetPos = this.transform.position;
-
 
     }
 
@@ -211,8 +219,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (HP <= 0)
         {
-            Debug.Log(this.gameObject.name + " Destroyed");
+            ObjectPool.ReturnObject(this.gameObject);
+            EnemySpawner.inst.OnMonsterDead(this.gameObject);
+
             Destroy(this.gameObject);
+            Debug.Log(this.gameObject.name + " Destroyed");
 
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
@@ -617,7 +628,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage;
+        HP -= Damage *1000 ;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {
