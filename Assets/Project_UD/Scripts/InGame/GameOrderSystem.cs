@@ -45,15 +45,15 @@ public class GameOrderSystem : MonoBehaviour
             //타일 클릭했을때
             if (clickedObj.tag == CONSTANT.TAG_TILE)
             {
-                //if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
-                //{
-                //    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
-                //}
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
 
-                //if (Ingame_UIManager.instance.currentUpgradeMenu != null)
-                //{
-                //    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
-                //}
+                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                }
                 GridTile GridTile = clickedObj.GetComponent<GridTile>();
                 //Debug.Log("클릭한 그리드 좌표 : " + GridTile.GridPos + ", 배치 가능 여부 : " + GridTile.isPlaceable);
 

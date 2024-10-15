@@ -24,16 +24,14 @@ public class BaseStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (BaseHPCur <= 0)
+        if(BaseHPCur <= 0)
         {
             BaseHPCur = 0;
 
-            Time.timeScale = 0.0f;
-
-            //패배처리
             Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Debug.Log("패배");
+            Time.timeScale = 0.0f;
         }
-        
     }
 
     public void ReceiveDamage(int Damage)

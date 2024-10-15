@@ -79,10 +79,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
-    public string gSkill;
-    public string sSkill;
     public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
 
     void OnMouseDown()
     {
@@ -149,7 +149,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-
+        if(cur_modelType == 0)
+        {
+            unitCode = "1";
+        }
+        else if(cur_modelType == 1)
+        {
+            unitCode = "2";
+        }
     }
 
 
@@ -196,10 +203,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (HP <= 0)
         {
-            Debug.Log(this.gameObject.name + " Destroyed");
+            ObjectPool.ReturnObject(this.gameObject);
+            EnemySpawner.inst.OnMonsterDead(this.gameObject);
+            //Debug.Log(this.gameObject.name + " Destroyed");
             Destroy(this.gameObject);
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)
@@ -487,9 +495,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 if (targetEnemy != null)
                 {
-                    Debug.Log("SkillCode : " + unitData.generalSkillCode);
-                    Debug.Log("targetEnemy." + targetEnemy.name);
-                    Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
+                    //Debug.Log("SkillCode : " + unitData.generalSkillCode);
+                    //Debug.Log("targetEnemy." + targetEnemy.name);
+                    //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
@@ -601,14 +609,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
         HP -= Damage;
         if (Random.Range(1, 101) <= Crit)
         {
-            Debug.Log("Critical Hit!");
+            //Debug.Log("Critical Hit!");
             debuffManager.AddDebuff(Crit2Debuff);
         }
 
 
         if (hpBar != null)
         {
-
             hpBar.fillAmount = (float)HP / (float)maxHp;
         }
     }
