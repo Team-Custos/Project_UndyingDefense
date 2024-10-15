@@ -26,16 +26,14 @@ public class BaseStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (BaseHPCur <= 0)
+        if(BaseHPCur <= 0)
         {
             BaseHPCur = 0;
 
-            Time.timeScale = 0.0f;
-
-            //�й�ó��
             Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Debug.Log("�й�");
+            Time.timeScale = 0.0f;
         }
-        
     }
 
     public void ReceiveDamage(int Damage)
