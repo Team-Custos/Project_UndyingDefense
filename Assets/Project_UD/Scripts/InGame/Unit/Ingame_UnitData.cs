@@ -15,6 +15,8 @@ public class Ingame_UnitData : ScriptableObject
     public int mental = 1;
     public float moveSpeed;
 
+    public AnimatorOverrideController overrideController;
+
     [Header("====Attack====")]
     public int attackPoint = 1;
     public int critChanceRate;
@@ -26,50 +28,8 @@ public class Ingame_UnitData : ScriptableObject
     public float attackRange = 0;
     public AudioClip[] attackSound;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // 추가
+    // �߰�
     public float globalTime;
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // 추가
-    public float globalTime;
->>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
-=======
-    // 추가
-    public float globalTime;
->>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
-=======
-    // �߰�
->>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
     public string g_SkillName;
     public string s_SkillName;
     public string unitCode;

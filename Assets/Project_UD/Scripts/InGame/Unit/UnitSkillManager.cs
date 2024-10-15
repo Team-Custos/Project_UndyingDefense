@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class UnitSkillManager : MonoBehaviour
 {
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
@@ -25,12 +23,6 @@ public class UnitSkillManager : MonoBehaviour
     public GameObject SetObject = null;
 
     int TargetCellIdxFinal = 0;
-
-    public Dictionary<int, UnitDebuff> GeneralSkillCodeToDebuff = new Dictionary<int, UnitDebuff>()
-    {
-        {101 , UnitDebuff.Bleed},
-        {102 , UnitDebuff.Bleed},
-    };
 
     private void Awake()
     {
@@ -99,6 +91,10 @@ public class UnitSkillManager : MonoBehaviour
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                int HitSoundRandomNum = Random.Range(0, 2);
+                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
+
+                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
                 EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
             else
@@ -159,10 +155,12 @@ public class UnitSkillManager : MonoBehaviour
                     IEnumerator DoubleShot() // 2연사 코루틴
                     {
                         Debug.Log("Double shot 1");
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                         // 지연 시간 후 두 번째 총알 발사
                         yield return new WaitForSeconds(0.5f);
                         Debug.Log("Double shot 2");
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                     }
                     break;

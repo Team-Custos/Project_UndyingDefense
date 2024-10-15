@@ -28,7 +28,7 @@ public class UnitDebuffManager : MonoBehaviour
 
     private void Awake()
     {
-        debuffData = InGameManager.inst.unitStatusCtrl.debuffDatas;
+        debuffData = InGameManager.inst.unitDebuffData.debuffDatas;
     }
 
     // �� ������ ����� ������Ʈ
@@ -47,14 +47,14 @@ public class UnitDebuffManager : MonoBehaviour
             {
                 if (activeDebuffs.Count > 0)
                 {
-                    debuffUpdate();
+                    DebuffUpdate();
                 }
             }
         }        
     }
 
     //����� �� ���� �Լ�
-    void debuffUpdate()
+    void DebuffUpdate()
     {
         for (int debuffDataIdx = 0; debuffDataIdx < debuffData.Length - 1; debuffDataIdx++)
         {
@@ -182,7 +182,7 @@ public class UnitDebuffManager : MonoBehaviour
                 if (existingDebuff != null) // ������� �̹� ������ �ð� �ʱ�ȭ �� ���� ����
                 {
                     existingDebuff.currentTime = debuffData[i].duration;
-                    if (existingDebuff.stack < debuffData[i].stackLimit)
+                    if (debuffData[i].Stackable && existingDebuff.stack <= debuffData[i].stackLimit)
                     {
                         existingDebuff.stack++;
                     }
