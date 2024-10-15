@@ -125,10 +125,13 @@ public class UnitDataManager : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
         ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
         ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
 =======
+=======
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
 =======
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
         //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
@@ -146,6 +149,8 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
 >>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
         //ingameUnitData.modelType = unitData.Number;
+
+
         ingameUnitData.maxHP = unitData.Hp;
         ingameUnitData.mental = unitData.Mental;
         ingameUnitData.moveSpeed = unitData.MoveSpeed;
@@ -162,6 +167,7 @@ public class UnitDataManager : MonoBehaviour
         ingameUnitData.level = unitData.Level;
         ingameUnitData.cost = unitData.Cost;
         ingameUnitData.name = unitData.Name;
+
 
         return ingameUnitData;
     }

@@ -80,10 +80,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
-    public string gSkill;
-    public string sSkill;
     public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
 
     
     void OnMouseDown()
@@ -158,8 +158,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
+=======
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
 =======
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
         if(cur_modelType == 0)
@@ -171,6 +174,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             unitCode = "2";
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
 =======
 >>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
@@ -180,6 +184,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 =======
 
 >>>>>>> parent of 48d20c1 (Merge branch 'LoPol' into Release)
+=======
+>>>>>>> parent of 98fb097 (Merge branch 'Release' of https://github.com/Team-Custos/Project_UndyingDefense into Release)
     }
 
 
@@ -229,7 +235,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Debug.Log(this.gameObject.name + " Destroyed");
             Destroy(this.gameObject);
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)
