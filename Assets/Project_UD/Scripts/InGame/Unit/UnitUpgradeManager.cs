@@ -56,16 +56,17 @@ public class UnitUpgradeManager : MonoBehaviour
         {
             // 유닛의 데이터를 새로운 데이터로 업데이트
 
-            selectedUnit.unitData.g_SkillName = upgradedUnitData.g_SkillName;
-            selectedUnit.unitData.s_SkillName = upgradedUnitData.s_SkillName;
-            selectedUnit.unitData.unitCode = upgradedUnitData.UnitCode;
+            selectedUnit.gSkillName = upgradedUnitData.g_SkillName;
+            selectedUnit.sSkillName = upgradedUnitData.s_SkillName;
+            selectedUnit.unitCode = upgradedUnitData.UnitCode;
 
             selectedUnit.level = upgradedUnitData.Level;
             selectedUnit.cost = upgradedUnitData.Cost;
             selectedUnit.name = upgradedUnitData.Name;
             selectedUnit.unitCode = upgradedUnitData.UnitCode;
             selectedUnit.HP = upgradedUnitData.Hp;
-            //selectedUnit.unitCode = upgradedUnitData.UnitCode;
+
+            Debug.Log("업그레이드 성공");
 
             // UI 업데이트
             Ingame_UIManager.instance.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);

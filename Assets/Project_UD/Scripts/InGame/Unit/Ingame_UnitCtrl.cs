@@ -87,6 +87,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public int level;
     public int cost;
     public string name;
+    public string gSkillName;
+    public string sSkillName;
+    // 수정 예정
+    public string defenstype;
 
 
     void OnMouseDown()
@@ -120,15 +124,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         UnitSkill = GetComponentInChildren<UnitSkillManager>();
 
-        if(this.unitData.name == "사냥꾼")
-        {
-            this.unitCode = "2";
-        }
-        else if(this.unitData.name == "민병")
-        {
-            this.unitCode = "1";
-        }
-        
     }
 
     // Start is called before the first frame update
@@ -169,6 +164,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
+
+        if(unitData.unitCode == "1")
+        {
+            unitCode = "1";
+        }
+        else if(unitData.unitCode ==  "2")
+        {
+            unitCode = "2";
+        }
     }
 
 

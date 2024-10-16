@@ -406,7 +406,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
         // UnitDataManager에서 새로운 유닛 데이터를 불러옴
-        Ingame_UnitData unitData = selectedUnit.unitData;
+        Ingame_UnitCtrl unitData = selectedUnit;
 
         if (unitData == null)
         {
@@ -417,15 +417,15 @@ public class Ingame_UIManager : MonoBehaviour
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
         levelText.text = $"{selectedUnit.level} 티어";
         nameText.text = selectedUnit.name;
-        gSkillText.text = unitData.g_SkillName;
-        sSkillText.text = unitData.s_SkillName;
+        gSkillText.text = selectedUnit.gSkillName;
+        sSkillText.text = selectedUnit.sSkillName;
 
         // HP 정보 업데이트
         curUnitHp = selectedUnit.HP;
         hpText.text = $"{selectedUnit.HP} / {selectedUnit.HP}";
 
         // 방어 타입 정보 업데이트
-        defeneTypeText.text = unitData.defenseType.ToString();
+        defeneTypeText.text = selectedUnit.defenstype;
     }
 
     void EndGame()
@@ -562,7 +562,7 @@ public class Ingame_UIManager : MonoBehaviour
 
 
         // 업그레이드 옵션 가져오기
-        List<string> upgradeOptions = UnitUpgradeManager.Instance.GetUpgradeOptions(unit.unitData.unitCode);
+        List<string> upgradeOptions = UnitUpgradeManager.Instance.GetUpgradeOptions(unit.unitCode);
 
         if (upgradeOptions == null || upgradeOptions.Count == 0)
         {

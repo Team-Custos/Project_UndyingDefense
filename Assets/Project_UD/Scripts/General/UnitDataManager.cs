@@ -74,7 +74,7 @@ public class UnitDataManager : MonoBehaviour
             unitDataDictionary[unitData.UnitCode] = unitData;
 
             // 스크립터블 오브젝트로 매핑
-            Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
+            //Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
         }
     }
 
@@ -116,37 +116,37 @@ public class UnitDataManager : MonoBehaviour
 
 
     // 엑셀 데이터를 스크립터블 오브젝트에 매핑하는 함수
-    public Ingame_UnitData CreateUnitDataObject(UnitData EunitData)
-    {
-        Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
+    //public Ingame_UnitData CreateUnitDataObject(UnitData EunitData)
+    //{
+    //    Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
 
-        // 매핑
-        //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
-        //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
-        //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
-        //ingameUnitData.modelType = unitData.Number;
-
-
-        ingameUnitData.maxHP = EunitData.Hp;
-        ingameUnitData.mental = EunitData.Mental;
-        ingameUnitData.moveSpeed = EunitData.MoveSpeed;
-        //ingameUnitData.attackPoint = unitData.AttackSpeed;
-        ingameUnitData.critChanceRate = EunitData.CritRate;
-        ingameUnitData.generalSkillCode = EunitData.g_Skil;
-        ingameUnitData.specialSkillCode = EunitData.s_Skill;
-        ingameUnitData.weaponCooldown = EunitData.GlobalTime;
-        ingameUnitData.sightRange = EunitData.SightRange;
-        ingameUnitData.attackRange = EunitData.AttackRange;
-        ingameUnitData.unitCode = EunitData.UnitCode;
-        ingameUnitData.s_SkillName = EunitData.s_SkillName;
-        ingameUnitData.g_SkillName = EunitData.g_SkillName;
-        ingameUnitData.level = EunitData.Level;
-        ingameUnitData.cost = EunitData.Cost;
-        ingameUnitData.name = EunitData.Name;
+    //    // 매핑
+    //    //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
+    //    //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
+    //    //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
+    //    //ingameUnitData.modelType = unitData.Number;
 
 
-        return ingameUnitData;
-    }
+    //    //ingameUnitData.maxHP = EunitData.Hp;
+    //    //ingameUnitData.mental = EunitData.Mental;
+    //    //ingameUnitData.moveSpeed = EunitData.MoveSpeed;
+    //    ////ingameUnitData.attackPoint = unitData.AttackSpeed;
+    //    //ingameUnitData.critChanceRate = EunitData.CritRate;
+    //    //ingameUnitData.generalSkillCode = EunitData.g_Skil;
+    //    //ingameUnitData.specialSkillCode = EunitData.s_Skill;
+    //    //ingameUnitData.weaponCooldown = EunitData.GlobalTime;
+    //    //ingameUnitData.sightRange = EunitData.SightRange;
+    //    //ingameUnitData.attackRange = EunitData.AttackRange;
+    //    //ingameUnitData.unitCode = EunitData.UnitCode;
+    //    //ingameUnitData.s_SkillName = EunitData.s_SkillName;
+    //    //ingameUnitData.g_SkillName = EunitData.g_SkillName;
+    //    //ingameUnitData.level = EunitData.Level;
+    //    //ingameUnitData.cost = EunitData.Cost;
+    //    //ingameUnitData.name = EunitData.Name;
+
+
+    //    return ingameUnitData;
+    //}
 
 
 }
