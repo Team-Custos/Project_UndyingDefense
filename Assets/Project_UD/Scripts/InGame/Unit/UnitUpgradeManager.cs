@@ -36,7 +36,7 @@ public class UnitUpgradeManager : MonoBehaviour
 
 
 
-    // 실제 업그레이드를 수행하는 함수
+    // 실제 업그레이드를 수행하는 함수 -> 원래 로폴님 작업.
     public void PerformUpgrade(Ingame_UnitCtrl selectedUnit, string unitCode)
     {
         // UnitDataManager에서 업그레이드된 유닛 데이터를 가져옴
@@ -70,6 +70,6 @@ public class UnitUpgradeManager : MonoBehaviour
             Debug.LogError("업그레이드 실패: 업그레이드할 유닛 데이터를 찾을 수 없습니다.");
         }
     }
-
-
 }
+
+

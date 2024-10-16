@@ -5,7 +5,9 @@ using UnityEngine;
 
 public enum UnitType
 {
-    Warrior,
+    MinByeong,
+    Hunter,
+    SpearMan,
     Archer,
 }
 

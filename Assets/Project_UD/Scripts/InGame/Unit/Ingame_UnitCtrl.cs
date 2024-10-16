@@ -37,7 +37,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
     
-    UnitModelSwapManager ModelSwap;
+    UnitModelSwapManager ModelSwapManager;
     public UnitSoundManager soundManager;
     public Animator animator;
 
@@ -99,7 +99,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     private void Awake()
     {
-        ModelSwap = UnitModelSwapManager.inst;
+        ModelSwapManager = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
         if (soundManager == null)
         {
@@ -127,11 +127,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
-            Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
-            Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
             
         }
 
@@ -170,15 +170,33 @@ public class Ingame_UnitCtrl : MonoBehaviour
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
     }
 
+    public void ModelSwap()
+    {
+        if (unitData.modelType != cur_modelType)
+        {
+            Destroy(VisualModel.GetChild(0).gameObject);
+            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+
+            cur_modelType = unitData.modelType;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
-        if (CurVisualModelAnimator != null)
-        {
-            CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
-        }
+        //if (CurVisualModelAnimator != null)
+        //{
+        //    CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
+        //}
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
@@ -188,20 +206,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
 
         //모델 변경
-        if (unitData.modelType != cur_modelType)
-        {
-            Destroy(VisualModel.GetChild(0).gameObject);
-            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-            {
-                Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
-            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            {
-                Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
-
-            cur_modelType = unitData.modelType;
-        }
+        ModelSwap();
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);

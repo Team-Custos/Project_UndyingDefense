@@ -70,6 +70,9 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Update()
     {
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
+
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null)
         {
             if (UnitCtrl.targetEnemy != null)
@@ -97,7 +100,8 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Exit()
     {
-        Debug.Log("Attack_Exit");
+        Debug.Log("Attack_Exit"); 
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         //UnitCtrl.targetEnemy = null;
         //UnitCtrl.isEnemyInRange = false;
     }
@@ -113,12 +117,12 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInSight = false;
 
         Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
-
     }
 
     void Move_Update()
     {
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.speed = UnitCtrl.cur_moveSpeed;
@@ -143,8 +147,8 @@ public class AllyUnitState : MonoBehaviour
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
         Debug.Log("dddd");
-        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false);
-
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false); 
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
     }
     #endregion
 
