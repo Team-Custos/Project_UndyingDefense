@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using static UnitDataManager;
 
@@ -12,98 +9,144 @@ public class UnitDataManager : MonoBehaviour
 
     void Awake()
     {
-        if (inst == null)
-        {
-            inst = this;
-        }
-        else if (inst != this)
-        {
-            Destroy(gameObject);
-        }
+        inst = this;
     }
 
     public class UnitData
     {
+        public int Number;
+        public string ID;
         public string Name;
-        public string Type;
-        public int Tier;
-        public string Weapon;
-        public string SkillType;
-        public string Skill;
-        public string Description;
-        public string AttackType;
-        public int Damage;
-        public int TargetCount;
-        public string HitShape;
+        public int Level;
+        public int Cost;
+        public int Hp;
+        public int AttackSpeed;
+        public string DefenseType;
+        public float GlobalTime;
+        public int Mental;
+        public int MoveSpeed;
+        public int SightRange;
+        public int AttackRange;
+        public string TargetSelectType;
         public int CritRate;
-        public string CritEffect1;
-        public string CritEffect2;
+        public int g_Skil;
+        public string g_SkillName;
+        public int s_Skill;
+        public string s_SkillName;
+        public string UnitCode;
 
-        public UnitData(string name, string type, int tier, string weapon, string skillType, string skill, string description, string attackType, int damage, int targetCount, string hitShape, int critRate, string critEffect1, string critEffect2)
+        public UnitData(int number, string id, string name, int level, int cost, int hp, int attackSpeed, string defenseType, float globalTime, int mental, int moveSpeed,
+                        int sightRange, int attackRange, string targetSelectType, int critRate, int g_skill, string g_skillName, int s_skill, string s_skillName, string unitCdoe)
         {
+            Number = number;
+            ID = id;
             Name = name;
-            Type = type;
-            Tier = tier;
-            Weapon = weapon;
-            SkillType = skillType;
-            Skill = skill;
-            Description = description;
-            AttackType = attackType;
-            Damage = damage;
-            TargetCount = targetCount;
-            HitShape = hitShape;
+            Level = level;
+            Cost = cost;
+            Hp = hp;
+            AttackSpeed = attackSpeed;
+            DefenseType = defenseType;
+            GlobalTime = globalTime;
+            Mental = mental;
+            MoveSpeed = moveSpeed;
+            SightRange = sightRange;
+            AttackRange = attackRange;
+            TargetSelectType = targetSelectType;
             CritRate = critRate;
-            CritEffect1 = critEffect1;
-            CritEffect2 = critEffect2;
+            g_Skil = g_skill;
+            g_SkillName = g_skillName;
+            s_Skill = s_skill;
+            s_SkillName = s_skillName;
+            UnitCode = unitCdoe;
         }
     }
 
 
-    private Dictionary<string, UnitData> unitDataDictionary = new Dictionary<string, UnitData>();
+    public Dictionary<string, UnitData> unitDataDictionary = new Dictionary<string, UnitData>();
 
 
-    void Start()
-    {
-
-    }
 
     public void SetUnitData(List<UnitData> unitDataList)
     {
         foreach (var unitData in unitDataList)
         {
-            unitDataDictionary[unitData.Name] = unitData;
-        }
+            // 엑셀 데이터를 딕셔너리에 저장
+            unitDataDictionary[unitData.UnitCode] = unitData;
 
-        ShowUnitData();
+            // 스크립터블 오브젝트로 매핑
+            //Ingame_UnitData ingameUnitData = CreateUnitDataObject(unitData);
+        }
     }
 
 
-    public UnitData GetUnitData(string unitName)
+    public UnitData GetUnitData(string unitCode)
     {
-        if (unitDataDictionary.TryGetValue(unitName, out UnitData unitData))
+
+        if (unitDataDictionary.TryGetValue(unitCode, out UnitData unitData))
         {
             return unitData;
         }
         else
         {
-            Debug.Log("������ ����");
+            Debug.Log("데이터 없음");
             return null;
         }
     }
 
+    public bool DoesUnitExist(string unitCode)
+    {
+        return unitDataDictionary.ContainsKey(unitCode);
+    }
 
     public void ShowUnitData()
     {
         foreach (var unitdata in unitDataDictionary)
         {
-            var unitName = unitdata.Key;
+            var unitCode = unitdata.Key;
             var unitData = unitdata.Value;
-            Debug.Log($"Name: {unitName}, Class: {unitData.Type}, Tier: {unitData.Tier}, Weapon: {unitData.Weapon}, SkillType: {unitData.SkillType}," +
-                      $" Skill: {unitData.Skill}, Description: {unitData.Description}, AttackType: {unitData.AttackType}, Damage: {unitData.Damage}, " +
-                      $"TargetCount: {unitData.TargetCount}, HitShape: {unitData.HitShape}, CritRate: {unitData.CritRate}, CritEffect1: {unitData.CritEffect1}," +
-                      $" CritEffect2: {unitData.CritEffect2}");
+            Debug.Log($"Code : {unitCode}, Number : {unitData.Number}, ID : {unitData.ID} , Name : {unitData.Name}, Level : {unitData.Level}, Cost :{unitData.Cost} " +
+                      $"HP : {unitData.Hp}, AttackSpeed : {unitData.AttackSpeed}, DefenseType : {unitData.DefenseType}, GlobalTime : {unitData.GlobalTime} " +
+                      $"Mental : {unitData.Mental}, MoveSpeed : {unitData.MoveSpeed}, SightRange : {unitData.SightRange},AttackRange : {unitData.AttackRange} " +
+                      $"TargetSelectType : {unitData.TargetSelectType}, crtiRate : {unitData.CritRate}, g_Skill : {unitData.g_Skil}, g_SkillName : {unitData.g_SkillName}" +
+                      $"s_Skill : {unitData.s_Skill}, s_SkillName : {unitData.s_SkillName}");
+
         }
 
     }
+
+
+    // 엑셀 데이터를 스크립터블 오브젝트에 매핑하는 함수
+    //public Ingame_UnitData CreateUnitDataObject(UnitData EunitData)
+    //{
+    //    Ingame_UnitData ingameUnitData = ScriptableObject.CreateInstance<Ingame_UnitData>();
+
+    //    // 매핑
+    //    //ingameUnitData.unitType = (UnitType)System.Enum.Parse(typeof(UnitType), unitData.ID);
+    //    //ingameUnitData.defenseType = (DefenseType)System.Enum.Parse(typeof(DefenseType), unitData.DefenseType);
+    //    //ingameUnitData.targetSelectType = (TargetSelectType)System.Enum.Parse(typeof(TargetSelectType), unitData.TargetSelectType);
+    //    //ingameUnitData.modelType = unitData.Number;
+
+
+    //    //ingameUnitData.maxHP = EunitData.Hp;
+    //    //ingameUnitData.mental = EunitData.Mental;
+    //    //ingameUnitData.moveSpeed = EunitData.MoveSpeed;
+    //    ////ingameUnitData.attackPoint = unitData.AttackSpeed;
+    //    //ingameUnitData.critChanceRate = EunitData.CritRate;
+    //    //ingameUnitData.generalSkillCode = EunitData.g_Skil;
+    //    //ingameUnitData.specialSkillCode = EunitData.s_Skill;
+    //    //ingameUnitData.weaponCooldown = EunitData.GlobalTime;
+    //    //ingameUnitData.sightRange = EunitData.SightRange;
+    //    //ingameUnitData.attackRange = EunitData.AttackRange;
+    //    //ingameUnitData.unitCode = EunitData.UnitCode;
+    //    //ingameUnitData.s_SkillName = EunitData.s_SkillName;
+    //    //ingameUnitData.g_SkillName = EunitData.g_SkillName;
+    //    //ingameUnitData.level = EunitData.Level;
+    //    //ingameUnitData.cost = EunitData.Cost;
+    //    //ingameUnitData.name = EunitData.Name;
+
+
+    //    return ingameUnitData;
+    //}
+
 
 }

@@ -15,7 +15,7 @@ public class BowCtrl : MonoBehaviour
         arrow_Obj.transform.SetPositionAndRotation(this.ShootPos.position, this.transform.rotation);
         AttackCtrl arrowCtrl = arrow_Obj.GetComponent<AttackCtrl>();
 
-        //¿©±â¼­ NullReferenceException ¿À·ù ¹ß»ý. ¿ÖÁö?????
+        //ï¿½ï¿½ï¿½â¼­ NullReferenceException ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½. ï¿½ï¿½ï¿½ï¿½?????
         //arrowCtrl.isEnemyAttack = isEnemyAttack;
     }
 }

@@ -1,9 +1,9 @@
 using System.Collections;
-using UnityEditor.SearchService;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
+using static UnitDataManager;
 
 public enum DefenseType
 {
@@ -36,8 +36,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public Ingame_UnitData unitData;
     UnitDebuffManager debuffManager;
-    UnitModelSwapManager ModelSwap;
+    
+    UnitModelSwapManager ModelSwapManager;
     public UnitSoundManager soundManager;
+    public Animator animator;
+
     
     [Header("====Status====")]
     public AllyMode Ally_Mode;
@@ -54,6 +57,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float cur_moveSpeed = 1;
     public float cur_attackSpeed = 1;
     public bool unActable = false;
+
+    public int maxHp;
+    public Image hpBar;
 
     [Header("====AI====")]
     bool SpawnDelay = true;
@@ -77,19 +83,27 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitName;
+    public string unitCode;
+    public int level;
+    public int cost;
+    public string name;
+    public string gSkillName;
+    public string sSkillName;
+    // 수정 예정
+    public string defenstype;
+
 
     void OnMouseDown()
     {
         if (Ingame_UIManager.instance != null)
         {
-            Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
+            //Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
         }
     }
 
     private void Awake()
     {
-        ModelSwap = UnitModelSwapManager.inst;
+        ModelSwapManager = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
         if (soundManager == null)
         {
@@ -109,6 +123,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         UnitSkill = GetComponentInChildren<UnitSkillManager>();
+
     }
 
     // Start is called before the first frame update
@@ -116,17 +131,20 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
-            Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
-            Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            
         }
 
         SpawnDelay = true;
 
         targetBase = InGameManager.inst.Base;
+        maxHp = unitData.maxHP;
         HP = unitData.maxHP;
+        
 
         Ally_Mode = AllyMode.Siege;
 
@@ -146,7 +164,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-        
+
+        if(unitData.unitCode == "1")
+        {
+            unitCode = "1";
+        }
+        else if(unitData.unitCode ==  "2")
+        {
+            unitCode = "2";
+        }
     }
 
 
@@ -156,45 +182,59 @@ public class Ingame_UnitCtrl : MonoBehaviour
         Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
     }
 
+    public void ModelSwap()
+    {
+        if (unitData.modelType != cur_modelType)
+        {
+            Destroy(VisualModel.GetChild(0).gameObject);
+            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            }
+
+            cur_modelType = unitData.modelType;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
+        //if (CurVisualModelAnimator != null)
+        //{
+        //    CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
+        //}
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-        GridManager.inst.SetTilePlaceable(this.transform.position,false,false);
+        GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
 
 
         //모델 변경
-        if (unitData.modelType != cur_modelType)
-        {
-            Destroy(VisualModel.GetChild(0).gameObject);
-            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-            {
-                Instantiate(ModelSwap.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
-            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            {
-                Instantiate(ModelSwap.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
-
-            cur_modelType = unitData.modelType;
-        }
+        ModelSwap();
 
         Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
-        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);        
+        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
 
         NavAgent.speed = unitData.moveSpeed;
 
         if (HP <= 0)
         {
-            Debug.Log(this.gameObject.name + " Destroyed");
+            ObjectPool.ReturnObject(this.gameObject);
+            EnemySpawner.inst.OnMonsterDead(this.gameObject);
+
             Destroy(this.gameObject);
+            Debug.Log(this.gameObject.name + " Destroyed");
+
+            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)
@@ -214,12 +254,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-                
+
             }
 
             if (Input.GetKeyDown(KeyCode.B) && isSelected)
             {
-                debuffManager.AddDebuff(UnitDebuff.Bleed);
+                debuffManager.AddDebuff(UnitDebuff.Dizzy);
             }
 
             if (isSelected && Input.GetKeyDown(KeyCode.Q))
@@ -251,7 +291,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
-                        
+
                         IEnumerator ModeChangeDelayCoroutine()
                         {
                             NavAgent.enabled = false;
@@ -268,7 +308,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                         //NavAgent.updatePosition = false;
 
                         NavObstacle.enabled = false;
-                        
+
                         IEnumerator ModeChangeDelayCoroutine()
                         {
                             yield return new WaitForEndOfFrame();
@@ -491,7 +531,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("targetEnemy." + targetEnemy.name);
                     Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
-                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy,unitData.weaponCooldown , true);
+                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -501,7 +541,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
         }
     }
-    
 
 
     private void OnCollisionEnter(Collision collision)
@@ -623,5 +662,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
             }
         }
+
+
+        if (hpBar != null)
+        {
+
+            hpBar.fillAmount = (float)HP / (float)maxHp;
+        }
     }
+
+    
 }

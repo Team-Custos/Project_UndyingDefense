@@ -50,7 +50,7 @@ public class UnitDeckManager : MonoBehaviour
 
         for (int i = 0; i < unitListButton.Length; i++)
         {
-            
+
             if (unitListButton[i] != null)
             {
                 int unitIndex = i;
@@ -81,14 +81,14 @@ public class UnitDeckManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void _addUnitToDeck(int unitIndex)
     {
         if (isUnitSelect[unitIndex])
         {
-            Debug.Log("À¯´Ö Áßº¹");
+            Debug.Log("Ã€Â¯Â´Ã– ÃÃŸÂºÂ¹");
             return;
         }
 

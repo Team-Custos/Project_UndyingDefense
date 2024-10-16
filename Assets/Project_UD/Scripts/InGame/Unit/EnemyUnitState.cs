@@ -19,6 +19,8 @@ public class EnemyUnitState : MonoBehaviour
     Ingame_UnitCtrl UnitCtrl;
     NavMeshAgent navAgent;
 
+    Animator EnemyAnimator;
+
     Vector3 previousNavDestination;
 
     private void Start()
@@ -34,6 +36,7 @@ public class EnemyUnitState : MonoBehaviour
 
     private void Update()
     {
+        EnemyAnimator = UnitCtrl.CurVisualModelAnimator;
         fsm.Driver.Update.Invoke();
     }
 
@@ -43,16 +46,25 @@ public class EnemyUnitState : MonoBehaviour
         Debug.Log("Enemy Idle Enter");
         
     }
+
+    void Idle_Update()
+    {
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+    }
+
     #endregion
 
     #region Attack State
     void Attack_Enter()
     {
-        Debug.Log("Enemy Attack_Enter");
+        //Debug.Log("Enemy Attack_Enter");
     }
 
     void Attack_Update()
     {
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
         UnitCtrl.Unit_Attack();
     }
 
@@ -60,22 +72,26 @@ public class EnemyUnitState : MonoBehaviour
     {
         UnitCtrl.targetEnemy = null;
         UnitCtrl.isEnemyInRange = false;
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
     }
     #endregion
 
     #region Move State
     void Move_Enter()
     {
-        Debug.Log("Enemy Move_Enter");
+        //Debug.Log("Enemy Move_Enter");
         UnitCtrl.isEnemyInRange = false;
         //navAgent.isStopped = false;
 
         UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
         UnitCtrl.enemy_isPathBlocked = false;
+        
     }
 
     void Move_Update()
     {
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         navAgent.speed = UnitCtrl.cur_moveSpeed;
 
         SearchPath();
@@ -96,7 +112,7 @@ public class EnemyUnitState : MonoBehaviour
             {
                 if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)
                 {
-                    //Debug.Log("∏Ò«• ∫¥ªÁ∫∏¥Ÿ «ˆ¿Á ≈∏∞Ÿ ¿ßƒ°∞° ¥ı ∏ÿ.");
+                    //Debug.Log("Î™©Ìëú Î≥ëÏÇ¨Î≥¥Îã§ ÌòÑÏû¨ ÌÉÄÍ≤ü ÏúÑÏπòÍ∞Ä Îçî Î©à.");
                     UnitCtrl.enemy_isPathBlocked = false;
                     return;
                 }
@@ -119,10 +135,11 @@ public class EnemyUnitState : MonoBehaviour
     void Move_Exit()
     {
         navAgent.SetDestination(transform.position);
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
         //navAgent.isStopped = true;
     }
 
-    void SearchPath()//±Ê√£±‚
+    void SearchPath()//Í∏∏Ï∞æÍ∏∞
     {
         StartCoroutine(DestinationValidCheck());
         IEnumerator DestinationValidCheck()
@@ -130,21 +147,21 @@ public class EnemyUnitState : MonoBehaviour
             yield return new WaitUntil(() => { return !navAgent.pathPending; });
 
             int cornerCount = navAgent.path.corners.Length;
-            //Debug.Log("∏Ì∑… πﬁ¿∫ ∏Ò«• ¡ˆ¡° ¿ßƒ° : " + UnitCtrl.moveTargetBasePos);
+            //Debug.Log("Î™ÖÎ†π Î∞õÏùÄ Î™©Ìëú ÏßÄÏ†ê ÏúÑÏπò : " + UnitCtrl.moveTargetBasePos);
 
             Vector3 navDestination = new Vector3(navAgent.path.corners[cornerCount - 1].x, 0, navAgent.path.corners[cornerCount - 1].z);
 
-            //Debug.Log("∞ËªÍ µ» ∏∂¡ˆ∏∑ ∏Ò«• ¡ˆ¡° ¿ßƒ° : " + navDestination);
-            //Debug.Log("∞≈∏Æ : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
+            //Debug.Log("Í≥ÑÏÇ∞ Îêú ÎßàÏßÄÎßâ Î™©Ìëú ÏßÄÏ†ê ÏúÑÏπò : " + navDestination);
+            //Debug.Log("Í±∞Î¶¨ : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
 
             if (Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x) <= UnitCtrl.unitData.attackRange)
             {
-                //Debug.Log("∏Ò«• ¡ˆ¡°¿∏∑Œ ¿Ãµø«“ ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+                //Debug.Log("Î™©Ìëú ÏßÄÏ†êÏúºÎ°ú Ïù¥ÎèôÌï† Ïàò ÏûàÏäµÎãàÎã§.");
                 UnitCtrl.enemy_isPathBlocked = false;
             }
             else
             {
-                //Debug.Log("∏Ò«• ¡ˆ¡°¿∏∑Œ ¿Ãµø«“ºˆ¥¬ æ¯¡ˆ∏∏ ¡ﬂ∞£ ¡ˆ¡°±Ó¡¯ ∞• ºˆ ¿÷Ω¿¥œ¥Ÿ.");
+                //Debug.Log("Î™©Ìëú ÏßÄÏ†êÏúºÎ°ú Ïù¥ÎèôÌï†ÏàòÎäî ÏóÜÏßÄÎßå Ï§ëÍ∞Ñ ÏßÄÏ†êÍπåÏßÑ Í∞à Ïàò ÏûàÏäµÎãàÎã§.");
                 UnitCtrl.enemy_isPathBlocked = true;
             }
             previousNavDestination = navDestination;

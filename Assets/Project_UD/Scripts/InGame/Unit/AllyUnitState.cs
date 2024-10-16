@@ -21,6 +21,7 @@ public class AllyUnitState : MonoBehaviour
     public StateMachine<UnitState, StateDriverUnity> fsm;
     
     Ingame_UnitCtrl UnitCtrl;
+    Ingame_UIManager UnitUIManager;
     NavMeshAgent navAgent;
     Animator allyAnimator;
 
@@ -45,7 +46,6 @@ public class AllyUnitState : MonoBehaviour
     void Idle_Enter()
     {
         Debug.Log("Idle Enter");
-        
     }
 
     void Idle_Update()
@@ -57,7 +57,7 @@ public class AllyUnitState : MonoBehaviour
 
     void Idle_Exit()
     {
-        Debug.Log("Idle Exit");
+        //Debug.Log("Idle Exit");
     }
     #endregion
 
@@ -70,6 +70,9 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Update()
     {
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
+
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null)
         {
             if (UnitCtrl.targetEnemy != null)
@@ -97,7 +100,8 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Exit()
     {
-        Debug.Log("Attack_Exit");
+        Debug.Log("Attack_Exit"); 
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         //UnitCtrl.targetEnemy = null;
         //UnitCtrl.isEnemyInRange = false;
     }
@@ -106,17 +110,19 @@ public class AllyUnitState : MonoBehaviour
     #region Move State
     void Move_Enter()
     {
-        Debug.Log("Move_Enter");
+        //Debug.Log("Move_Enter");
         
         navAgent.isStopped = false;
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
     }
 
     void Move_Update()
     {
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.speed = UnitCtrl.cur_moveSpeed;
@@ -139,12 +145,17 @@ public class AllyUnitState : MonoBehaviour
     void Move_Exit()
     {
         navAgent.SetDestination(transform.position);
+        navAgent.isStopped = true;
+        Debug.Log("dddd");
+        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false); 
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
     }
     #endregion
 
     void Chase_Enter()
     {
-        
+        Debug.Log("Chase_Enter");
+        navAgent.isStopped = false;
     }
 
     void Chase_Update()
@@ -171,6 +182,7 @@ public class AllyUnitState : MonoBehaviour
 
     void Chase_Exit()
     {
+        Debug.Log("Chase_Exit");
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.SetDestination(transform.position);
@@ -185,7 +197,6 @@ public class AllyUnitState : MonoBehaviour
     }
 
     
-
 
 
 }

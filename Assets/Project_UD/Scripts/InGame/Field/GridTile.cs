@@ -53,14 +53,27 @@ public class GridTile : MonoBehaviour
 
         if (showPlacementColors)
         {
-            if (!isPlaceable)
-            {
-                MeshR.material.color = colorOccupied;
-            }
-            else if (!mouseHover)
+            if(mouseHover && isPlaceable)
             {
                 MeshR.material.color = colorAvailable;
             }
+            else if(mouseHover && !isPlaceable)
+            {
+                MeshR.material.color = colorOccupied;
+            }
+            else if(!mouseHover)
+            {
+                MeshR.material.color = colorDefault;
+            }
+
+            //if (!isPlaceable)
+            //{
+            //    MeshR.material.color = colorOccupied;
+            //}
+            //else if (!mouseHover)
+            //{
+            //    MeshR.material.color = colorAvailable;
+            //}
         }
         else
         {
@@ -78,7 +91,7 @@ public class GridTile : MonoBehaviour
     private void OnMouseOver()
     {
         mouseHover = true;
-        MeshR.material.color = colorHighlit;
+        //MeshR.material.color = colorHighlit;
     }
 
     private void OnMouseExit()
@@ -93,7 +106,7 @@ public class GridTile : MonoBehaviour
         }
         else
         {
-            MeshR.material.color = colorAvailable;
+            //MeshR.material.color = colorAvailable;
         }
     }
 
