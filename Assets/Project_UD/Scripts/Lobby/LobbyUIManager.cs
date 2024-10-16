@@ -77,7 +77,7 @@ public class LobbyUIManager : MonoBehaviour
                 battleStartBtn.onClick.AddListener(() =>
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
-                    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 2");
+                    SceneManager.LoadSceneAsync(2);
 
                     //if (commandSkillDeckList.Count < maxSkillDeckSize)
                     //{

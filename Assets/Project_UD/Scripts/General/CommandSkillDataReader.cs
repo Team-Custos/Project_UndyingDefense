@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting.FullSerializer;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnitDataManager;
 
@@ -31,14 +30,14 @@ public class CommandSkillDataReader : MonoBehaviour
 
         if (csvCDData == null)
         {
-            Debug.Log("ÆÄÀÏ ¾øÀ½");
+            Debug.Log("íŒŒì¼ ì—†ìŒ");
             return skillDatas;
         }
 
         StringReader reader = new StringReader(csvCDData.text);
         bool endOfFile = false;
 
-        // Ã¹ ÁÙ °Ç³Ê ¶ç±â
+        // ì²« ì¤„ ê±´ë„ˆ ë„ê¸°
         reader.ReadLine();
 
         while (!endOfFile)

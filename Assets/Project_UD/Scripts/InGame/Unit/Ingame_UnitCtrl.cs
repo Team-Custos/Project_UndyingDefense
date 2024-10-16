@@ -637,7 +637,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage *1000 ;
+        HP -= Damage;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {
