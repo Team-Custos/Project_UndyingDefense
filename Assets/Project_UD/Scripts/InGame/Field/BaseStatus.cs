@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseStatus : MonoBehaviour
@@ -12,15 +13,12 @@ public class BaseStatus : MonoBehaviour
     {
         instance = this;
     }
-    AudioSource audioSource;
-    public AudioClip[] BaseHitSound;
 
 
     // Start is called before the first frame update
     void Start()
     {
         BaseHPCur = BaseHPMax;
-        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,12 +28,10 @@ public class BaseStatus : MonoBehaviour
         {
             BaseHPCur = 0;
 
-            Time.timeScale = 0.0f;
-
-            //�й�ó��
             Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Debug.Log("종료");
+            Time.timeScale = 0.0f;
         }
-        
     }
 
     public void ReceiveDamage(int Damage)
@@ -51,16 +47,11 @@ public class BaseStatus : MonoBehaviour
 
         StartCoroutine(HitEffect());
 
-
-        int HitSoundRandomNum = Random.Range(0, 2);
-        audioSource.clip = BaseHitSound[HitSoundRandomNum];
-        audioSource.Play();
-            
         BaseHPCur -= Damage;
 
-       
+
     }
 
-   
+
 
 }

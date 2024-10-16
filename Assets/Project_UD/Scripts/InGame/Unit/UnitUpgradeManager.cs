@@ -6,70 +6,76 @@ using static UnitDataManager;
 
 public class UnitUpgradeManager : MonoBehaviour
 {
+    public static UnitUpgradeManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public List<string> GetUpgradeOptions(string unitCode)
     {
+
         List<string> upgradeOptions = new List<string>();
 
         string option1 = unitCode + "1";
         string option2 = unitCode + "2";
 
+
         if (UnitDataManager.inst.DoesUnitExist(option1))
         {
             upgradeOptions.Add(option1);
-            Debug.Log($"Option 1: {option1} 추가됨");
         }
 
         if (UnitDataManager.inst.DoesUnitExist(option2))
         {
             upgradeOptions.Add(option2);
-            Debug.Log($"Option 2: {option2} 추가됨");
         }
+
+        Debug.Log(option1);
+        Debug.Log(option2);
+
 
         if (upgradeOptions.Count == 0)
         {
-            Debug.LogError("업그레이드 가능한 옵션이 없습니다.");
+            return upgradeOptions;
         }
+
 
         return upgradeOptions;
     }
 
 
 
-    // 실제 업그레이드를 수행하는 함수 -> 원래 로폴님 작업.
+
+    // 실제 업그레이드를 수행하는 함수
     public void PerformUpgrade(Ingame_UnitCtrl selectedUnit, string unitCode)
     {
-        // UnitDataManager에서 업그레이드된 유닛 데이터를 가져옴
-        UnitData upgradedUnitData = UnitDataManager.inst.GetUnitData(unitCode);
-
-        if (upgradedUnitData != null)
+        // Dictionary에서 unitCode로 업그레이드된 유닛 데이터를 가져옴
+        if (UnitDataManager.inst.unitDataDictionary.TryGetValue(unitCode, out UnitData upgradedUnitData))
         {
             // 유닛의 데이터를 새로운 데이터로 업데이트
-            selectedUnit.unitData.maxHP = upgradedUnitData.Hp;
-            selectedUnit.unitData.critChanceRate = upgradedUnitData.CritRate;
-            selectedUnit.unitData.generalSkillCode = upgradedUnitData.g_Skil;
-            selectedUnit.unitData.specialSkillCode = upgradedUnitData.s_Skill;
-            selectedUnit.unitData.moveSpeed = upgradedUnitData.MoveSpeed;
-            selectedUnit.unitData.sightRange = upgradedUnitData.SightRange;
-            selectedUnit.unitData.attackRange = upgradedUnitData.AttackRange;
-            selectedUnit.unitData.g_SkillName = upgradedUnitData.g_SkillName;
-            selectedUnit.unitData.s_SkillName = upgradedUnitData.s_SkillName;
-            selectedUnit.unitData.level = upgradedUnitData.Level;
-            selectedUnit.unitData.cost = upgradedUnitData.Cost;
-            selectedUnit.unitData.name = upgradedUnitData.Name;
 
+            selectedUnit.gSkillName = upgradedUnitData.g_SkillName;
+            selectedUnit.sSkillName = upgradedUnitData.s_SkillName;
+            selectedUnit.unitCode = upgradedUnitData.UnitCode;
+
+            selectedUnit.level = upgradedUnitData.Level;
+            selectedUnit.cost = upgradedUnitData.Cost;
+            selectedUnit.name = upgradedUnitData.Name;
+            selectedUnit.unitCode = upgradedUnitData.UnitCode;
             selectedUnit.HP = upgradedUnitData.Hp;
 
-            Debug.Log($"{selectedUnit.unitName} 유닛이 {upgradedUnitData.Name}으로 업그레이드되었습니다.");
+            Debug.Log("업그레이드 성공");
 
-            // UI를 업데이트하여 새 데이터를 반영
-            Ingame_UIManager.instance.UpdateUnitInfoPanel(selectedUnit, unitCode);
+            // UI 업데이트
+            Ingame_UIManager.instance.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);
         }
         else
         {
-            Debug.LogError("업그레이드 실패: 업그레이드할 유닛 데이터를 찾을 수 없습니다.");
+            Debug.LogError("업그레이드 실패");
         }
     }
+
+
 }
-
-

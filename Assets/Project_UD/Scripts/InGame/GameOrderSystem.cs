@@ -136,7 +136,6 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit, AllyUnit.unitCode);
-
                 }
                 else
                 {
