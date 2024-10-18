@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using static UnitDataManager;
+using static UnitExcelDataManager;
 
 public class CommandSkillDataReader : MonoBehaviour
 {

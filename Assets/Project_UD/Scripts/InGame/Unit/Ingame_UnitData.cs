@@ -29,12 +29,13 @@ public class Ingame_UnitData : ScriptableObject
     public AudioClip[] attackSound;
 
     // 추가
-    public float globalTime;
+    public string unitCode;
     public string g_SkillName;
     public string s_SkillName;
-    public string unitCode;
     public int level;
     public int cost;
     public string name;
+    public string g_SkillInfo;
+    public string s_SkillInfo;
 
 }

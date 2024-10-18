@@ -5,16 +5,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerExitHandler
 {
     public RectTransform buttonRectTransform;
     public Text buttonText;
+    public GameObject textPaenl;
     public Vector3 pressedScale = new Vector3(0.9f, 0.9f, 1f);
     public Vector3 normalScale = Vector3.one;
     public float scaleDuration = 0.1f;
     public float textScaleFactor = 1.2f;
 
     private Vector3 originalTextScale;
+    private Vector3 originalTextPaenlScale;
+
 
     private void Start()
     {
@@ -24,29 +27,44 @@ public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUp
             originalTextScale = buttonText.transform.localScale;
         }
 
+        if (textPaenl != null)
+        {
+            originalTextPaenlScale = textPaenl.transform.localScale;
+        }
+
         buttonRectTransform.localScale = normalScale;
     }
 
-    // 버튼이 눌렸을 때
-    public void OnPointerDown(PointerEventData eventData)
+    // 버튼 호버링
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        // 버튼 크기를 작게 만듦
+        // 버튼 크기 zmrp
         StartCoroutine(ScaleButton(pressedScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // 텍스트 크기도 줄임
+            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // 버튼 텍스트
+            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // 버튼 텍스 판텔
         }
     }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
 
-    // 버튼에서 마우스를 뗐을 때
-    public void OnPointerUp(PointerEventData eventData)
+    }
+
+
+    // 버튼 클릭
+    public void OnPointerDown(PointerEventData eventData)
     {
         // 버튼 크기를 원래대로 되돌림
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
         {
             StartCoroutine(ScaleText(originalTextScale));  // 텍스트 크기도 원래대로 되돌림
+        }
+        if (buttonText != null)
+        {
+            StartCoroutine(ScaleText(originalTextPaenlScale));  // 텍스트 크기도 원래대로 되돌림
         }
     }
 
@@ -69,6 +87,22 @@ public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUp
     // 텍스트 크기 변경 코루틴
     private IEnumerator ScaleText(Vector3 targetScale)
     {
+        Vector3 currentScale = textPaenl.transform.localScale;
+        float time = 0f;
+
+        while (time < scaleDuration)
+        {
+            time += Time.deltaTime;
+            textPaenl.transform.localScale = Vector3.Lerp(currentScale, targetScale, time / scaleDuration);
+            yield return null;
+        }
+
+        buttonText.transform.localScale = targetScale;
+    }
+
+
+    private IEnumerator ScalePanel(Vector3 targetScale)
+    {
         Vector3 currentScale = buttonText.transform.localScale;
         float time = 0f;
 
@@ -81,7 +115,6 @@ public class UIButtonController : MonoBehaviour, IPointerDownHandler, IPointerUp
 
         buttonText.transform.localScale = targetScale;
     }
-
 
 
 }

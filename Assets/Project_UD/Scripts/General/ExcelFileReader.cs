@@ -6,41 +6,40 @@ using UnityEngine;
 public class ExcelFileReader : MonoBehaviour
 {
 
-    public string filePath = "240820 UD_charData";
-    public UnitDataManager unitDataManager;
+    public string filePath = "charData";
+    public UnitExcelDataManager unitExcelDataManager;
 
     // Update is called once per frame
     void Start()
     {
-        if (unitDataManager == null)
+        if (unitExcelDataManager == null)
         {
-            unitDataManager = GetComponent<UnitDataManager>();
+            unitExcelDataManager = GetComponent<UnitExcelDataManager>();
         }
 
-        List<UnitDataManager.UnitData> unitDatas = ReadCSV(filePath);
-        unitDataManager.SetUnitData(unitDatas);
+        List<UnitExcelDataManager.UnitExcelData> unitExcelDatas = ReadCSV(filePath);
+        unitExcelDataManager.SetUnitData(unitExcelDatas);
     }
 
 
-    List<UnitDataManager.UnitData> ReadCSV(string fileName)
+    List<UnitExcelDataManager.UnitExcelData> ReadCSV(string fileName)
     {
-        List<UnitDataManager.UnitData> unitDatas = new List<UnitDataManager.UnitData>();
+        List<UnitExcelDataManager.UnitExcelData> unitExcelDatas = new List<UnitExcelDataManager.UnitExcelData>();
         TextAsset csvData = Resources.Load<TextAsset>(fileName);
 
         if (csvData == null)
         {
-            Debug.Log("ÆÄÀÏ ¾øÀ½");
-            return unitDatas;
+            Debug.Log("íŒŒì¼ ì—†ìŒ");
+            return unitExcelDatas;
         }
 
 
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
 
-        // Ã¹ µÎÁÙ ¾ÈÀÐÀ½
+        // ì²« ë‘ì¤„ ì•ˆì½ìŒ
         reader.ReadLine();
         reader.ReadLine();
-
         while (!endOfFile)
         {
             string dataString = reader.ReadLine();
@@ -52,74 +51,35 @@ public class ExcelFileReader : MonoBehaviour
 
             var dataValues = dataString.Split(',');
 
-            if (dataValues.Length >= 19)
+            if (dataValues.Length < 7 || string.IsNullOrWhiteSpace(dataString))
             {
-                if (!int.TryParse(dataValues[0], out int number))
-                {
-                    number = 0;
-                }
-                string id = dataValues[1];
-                string name = dataValues[2];
-                if (!int.TryParse(dataValues[3], out int level))
-                {
-                    level = 0;
-                }
-                if (!int.TryParse(dataValues[4], out int cost))
-                {
-                    cost = 0;
-                }
-                if (!int.TryParse(dataValues[5], out int hp))
-                {
-                    hp = 0;
-                }
-                if (!int.TryParse(dataValues[6], out int attackSpeed))
-                {
-                    attackSpeed = 0;
-                }
-                string defenseType = dataValues[7];
-                if (!float.TryParse(dataValues[8],out float globalTime))
-                {
-                    globalTime = 0;
-                }
-                if (!int.TryParse(dataValues[9], out int mental))
-                {
-                    mental = 0;
-                }
-                if (!int.TryParse(dataValues[10], out int moveSpeed))
-                {
-                    moveSpeed = 0;
-                }
-                if (!int.TryParse(dataValues[11], out int sightRange))
-                {
-                    sightRange = 0;
-                }
-                if (!int.TryParse(dataValues[12], out int attackRange))
-                {
-                    attackRange = 0;
-                }
-                string targetSelectType = dataValues[13];
-                if (!int.TryParse(dataValues[14], out int critRate))
-                {
-                    critRate = 0;
-                }
-                if (!int.TryParse(dataValues[15], out int g_skill))
-                {
-                    g_skill = 0;
-                }
-                string g_skillName = dataValues[16];
-                if (!int.TryParse(dataValues[17], out int s_skill))
-                {
-                    s_skill = 0;
-                }
-                string s_skillName = dataValues[18];
-                string unitCode = dataValues[19];
-
-                UnitDataManager.UnitData unitData = new UnitDataManager.UnitData(number, id, name, level, cost, hp, attackSpeed, defenseType, 
-                    globalTime, mental, moveSpeed, sightRange, attackRange, targetSelectType, critRate, g_skill, g_skillName, s_skill, s_skillName, unitCode);
-                unitDatas.Add(unitData);
+                continue; // ë°ì´í„°ê°€ ìœ íš¨í•˜ì§€ ì•Šìœ¼ë©´ ë‹¤ìŒìœ¼ë¡œ ê±´ë„ˆëœ€
             }
+
+            string unitCode = dataValues[0];
+            string name = dataValues[1];
+            if (!int.TryParse(dataValues[2], out int level))
+            {
+                level = 0;
+            }
+            if (!int.TryParse(dataValues[3], out int cost))
+            {
+                cost = 0;
+            }
+            string g_SkillName = dataValues[4];
+            string s_SkillName = dataValues[5];
+            string g_SkillInfo = dataValues[6];
+            string s_SkillInfo = dataValues[7];
+
+
+            UnitExcelDataManager.UnitExcelData unitData = new UnitExcelDataManager.UnitExcelData(unitCode, name, level, cost, g_SkillName, s_SkillName,
+                                                              g_SkillInfo, s_SkillInfo);
+            unitExcelDatas.Add(unitData);
         }
-        return unitDatas;
+
+        return unitExcelDatas;
     }
+
+
 
 }

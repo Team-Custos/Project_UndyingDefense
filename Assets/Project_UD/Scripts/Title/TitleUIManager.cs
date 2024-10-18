@@ -87,8 +87,8 @@ public class TitleUIManager : MonoBehaviour
         yield return StartCoroutine(ScaleUp(backgroundPanel));
 
         // 2번 타이틀 텍스트
-        yield return new WaitForSeconds(delayBetweenAnimations);
-        yield return StartCoroutine(ScaleUp(titleText));
+        //yield return new WaitForSeconds(delayBetweenAnimations);
+        //yield return StartCoroutine(ScaleUp(titleText));
 
         // 3번 게임 버튼
         yield return new WaitForSeconds(delayBetweenAnimations);

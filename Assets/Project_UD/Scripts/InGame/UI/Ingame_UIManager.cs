@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEngine.UI.CanvasScaler;
-using static UnitDataManager;
+using static UnitExcelDataManager;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening.Core.Easing;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ public class Ingame_UIManager : MonoBehaviour
     public static Ingame_UIManager instance;
 
     private UnitSpawnManager unitSpawnManager;
-    private UnitDataManager unitDataManager;
+    private UnitExcelDataManager unitDataManager;
     private GameOrderSystem gameOrderSystem;
     private InGameManager inGameManager;
 
@@ -133,7 +133,7 @@ public class Ingame_UIManager : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        unitDataManager = UnitDataManager.inst;
+        unitDataManager = UnitExcelDataManager.inst;
         inGameManager = InGameManager.inst;
         gameOrderSystem = GetComponent<GameOrderSystem>();
 
@@ -425,7 +425,7 @@ public class Ingame_UIManager : MonoBehaviour
         hpText.text = $"{selectedUnit.HP} / {selectedUnit.HP}";
 
         // 방어 타입 정보 업데이트
-        defeneTypeText.text = selectedUnit.defenstype;
+        //defeneTypeText.text = selectedUnit.defenstype;
     }
 
     void EndGame()
@@ -590,7 +590,7 @@ public class Ingame_UIManager : MonoBehaviour
             if (upgradeOptions.Count > 0)
             {
                 // 업그레이드 수행
-                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[0]);
+                //UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[0]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
@@ -603,7 +603,7 @@ public class Ingame_UIManager : MonoBehaviour
             if (upgradeOptions.Count > 1)
             {
                 // 두 번째 업그레이드 수행
-                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[1]);
+                //UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[1]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
