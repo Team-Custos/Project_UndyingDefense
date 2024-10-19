@@ -29,15 +29,15 @@ public class InGame_VirtualCamManager : MonoBehaviour
 
     void CameraMove()
     {
-        // Ä«¸Ş¶ó ÀÌµ¿
-        // W, A, S, D Å° ÀÔ·Â
+        // ì¹´ë©”ë¼ ì´ë™
+        // W, A, S, D í‚¤ ì…ë ¥
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput);
         cameraPivot.position += moveDirection * moveSpeed * Time.deltaTime;
 
-        // Ä«¸Ş¶ó È¸Àü
+        // ì¹´ë©”ë¼ íšŒì „ -> ì¹´ë©”ë¼ íšŒì „ ê¸°ëŠ¥ ì‚­ì œ
         Vector3 currentRotation = virtualCamera.transform.eulerAngles;
 
         if (Input.GetKey(KeyCode.Q))
@@ -45,7 +45,7 @@ public class InGame_VirtualCamManager : MonoBehaviour
             currentRotation.y -= rotationSpeed * Time.deltaTime;
         }
 
-        // E Å°·Î YÃà È¸Àü Áõ°¡
+        // E í‚¤ë¡œ Yì¶• íšŒì „ ì¦ê°€
         if (Input.GetKey(KeyCode.E))
         {
             currentRotation.y += rotationSpeed * Time.deltaTime;

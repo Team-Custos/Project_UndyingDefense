@@ -28,7 +28,7 @@ public class BaseStatus : MonoBehaviour
         {
             BaseHPCur = 0;
 
-            Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Ingame_WaveUIManager.instance.waveResultPanel.SetActive(true);
             Debug.Log("종료");
             Time.timeScale = 0.0f;
         }

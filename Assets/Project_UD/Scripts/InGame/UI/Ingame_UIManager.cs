@@ -67,27 +67,6 @@ public class Ingame_UIManager : MonoBehaviour
     public Button UnitUpgrade1Btn;
     public Button UnitUpgrade2Btn;
 
-    [Header("====Wave Menu UI====")]
-    public float waveCount = 20;
-    public Text waveCountText;
-    public Text waveStartText;
-    public GameObject waveStartPanel;
-    public GameObject waveResultPanel;
-    public Image waveResultImage;
-    public Text waveResultText;
-    public bool isCurrentWaveSucceed;
-    public Button nextWavBtn;
-    public Button waveCheckBtn;
-    public Button waveSkipBtn;
-    public bool isCountDownIng = false;
-    public Button waveRestartBtn = null;
-    public Button lobbybtn = null;
-    public GameObject waveStepSuccessPanel;
-
-
-
-    public Sprite waveWinImage;
-    public Sprite waveLoseImage;
 
     [Header("====Game Setting UI====")]
     public Button settingBtn;
@@ -103,9 +82,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Image baseHpBar;
     public Text baseHpTxt;
 
-    public int curHaveGold;
     public int curUnitHp;
-
 
     private AllyMode allyMode;
 
@@ -198,23 +175,7 @@ public class Ingame_UIManager : MonoBehaviour
             pauseGameBtn.onClick.AddListener(PauseGame);
         }
 
-        if (nextWavBtn != null)
-        {
-            nextWavBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 0.0f;
-                waveResultPanel.gameObject.SetActive(true);
-                if (waveCheckBtn != null)
-                {
-                    waveCheckBtn.onClick.AddListener(() =>
-                    {
-                        waveResultPanel.gameObject.SetActive(false);
-                        Time.timeScale = 1.0f;
-                    });
-                }
-                //EnemySpawner.inst.NextWave();
-            });
-        }
+        
 
 
         if (settingBtn != null)
@@ -234,18 +195,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
 
-        // 웨이브 카운트 스킵
-        if (waveSkipBtn != null)
-        {
-            waveSkipBtn.onClick.AddListener(() =>
-            {
-                waveCount = 0; // 버튼 클릭 시 카운트를 0으로 설정
-                waveCountText.text = "적군 침공까지 0초"; // 즉시 0으로 카운트 표시
-                //StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 바로 1초 후 웨이브 시작
-                waveCountText.gameObject.SetActive(false);
-            });
-
-        }
+        
 
 
     }
@@ -254,32 +204,6 @@ public class Ingame_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 웨이브 카운트 다운 텍스트
-        if (waveCountText != null && isCountDownIng) // 웨이브가 진행중이 아닐 때
-        {
-            waveCount -= Time.deltaTime;
-            if (waveCount >= 0 && isCountDownIng)
-            {
-                waveCountText.gameObject.SetActive(true);
-                waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveCount).ToString() + "초";
-
-            }
-            else if (waveCount < 0)
-            {
-                waveStartText.text = EnemySpawner.inst.currentWave.ToString() + "차 침공 시작";
-                isCountDownIng = false;
-                EnemySpawner.inst.isWaveing = true;
-                waveCountText.gameObject.SetActive(false);
-                StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 1초의 지연 후 웨이브 시작
-                waveCount = 20;
-            }
-        }
-
-        if (BaseStatus.instance.BaseHPCur <= 0)
-        {
-            waveResultImage.sprite = waveLoseImage;
-        }
-
         if (UnitSetModeText != null)
         {
             if (InGameManager.inst.UnitSetMode)
@@ -325,17 +249,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
 
-        if (waveStartText.gameObject.activeSelf == true)
-        {
-            float coolTime = 3.0f;
-
-            coolTime -= Time.deltaTime;
-
-            if (coolTime < 0)
-            {
-                waveStartText.gameObject.SetActive(false);
-            }
-        }
+        
     }
 
 
@@ -641,42 +555,52 @@ public class Ingame_UIManager : MonoBehaviour
         selectedUnit = unit;
     }
 
-    public void ShowMoveUI(GameObject unit, bool show)
-    {
 
+    // 유닛의 상태에 따른 ui표시(이동, 시즈)
+    public void ShowUnitStateUI(GameObject unit, bool move, bool siege)
+    {
         if (unit == null)
         {
             return;
         }
 
+        // 서로 다른 캔버스에서 각각의 이미지 찾아오기
         Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+        Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
 
-
-        if (unitMoveImageTransform == null)
+        // 정확한 null 체크
+        if (unitMoveImageTransform == null || unitSiegeImageTransform == null)
         {
+            Debug.Log("dfdfefe");
             return;
         }
 
         GameObject unitMoveImage = unitMoveImageTransform.gameObject;
-        unitMoveImage.SetActive(show);
+        GameObject unitSiegeImage = unitSiegeImageTransform.gameObject;
 
-        if (show)
+        // UI 상태 설정
+        unitMoveImage.SetActive(move);
+        unitSiegeImage.SetActive(siege);
+
+        // 이동 상태일 때의 UI 설정 (moveImage의 캔버스 설정)
+        if (move)
         {
             Canvas canvas = unitMoveImage.GetComponentInParent<Canvas>();
             if (canvas != null && canvas.renderMode == RenderMode.WorldSpace)
             {
                 RectTransform rectTransform = unitMoveImage.GetComponent<RectTransform>();
                 rectTransform.sizeDelta = new Vector2(1.0f, 1.0f);
-
-                //rectTransform.position = unit.transform.position + new Vector3(0, 3.0f, 0);
-                //rectTransform.rotation = Quaternion.Euler(new Vector3(60, 0, 0));
-                //rectTransform.rotation = Quaternion.identity;
             }
         }
-
-        if (unitMoveUI != null)
+        // 공성 상태일 때의 UI 설정 (siegeImage의 캔버스 설정)
+        else if (siege)
         {
-            unitMoveUI.SetActive(show);
+            Canvas canvas2 = unitSiegeImage.GetComponent<Canvas>();
+            if (canvas2 != null && canvas2.renderMode == RenderMode.WorldSpace)
+            {
+                RectTransform rectTransform = unitSiegeImage.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(2.0f, 2.0f);
+            }
         }
     }
 
@@ -694,19 +618,5 @@ public class Ingame_UIManager : MonoBehaviour
         }
     }
 
-    public void ShowUI(GameObject uiElement, float duration)
-    {
-        if (uiElement != null)
-        {
-            uiElement.SetActive(true);  // UI 요소 활성화
-            StartCoroutine(HideUIAfterDelay(uiElement, duration));  // 일정 시간 후 비활성화
-        }
-    }
-
-    // 일정 시간이 지나면 UI 요소를 비활성화하는 코루틴
-    IEnumerator HideUIAfterDelay(GameObject uiElement, float delay)
-    {
-        yield return new WaitForSeconds(delay);  // 지정된 시간만큼 대기
-        uiElement.SetActive(false);  // UI 요소 비활성화
-    }
+    
 }

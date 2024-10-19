@@ -151,7 +151,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (isWaveing)
         {
-            Ingame_UIManager.instance.ShowUI(Ingame_UIManager.instance.waveStartPanel, 1.5f);
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 1.5f);
 
             Debug.Log($"Wave {currentWave} 시작");
 
@@ -205,6 +205,7 @@ public class EnemySpawner : MonoBehaviour
             enemyObj.transform.rotation = Quaternion.identity;
             enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
             activeMonsters.Add(enemyObj);
+            Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         }
 
     }
@@ -238,7 +239,7 @@ public class EnemySpawner : MonoBehaviour
         // 10차 웨이브 이전까지만 성공 패널을 표시
         if (currentWave < waveCount)
         {
-            Ingame_UIManager.instance.ShowUI(Ingame_UIManager.instance.waveStepSuccessPanel, 3.0f);
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
 
             yield return new WaitForSeconds(3.0f);
 
@@ -247,14 +248,14 @@ public class EnemySpawner : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
 
-        Ingame_UIManager.instance.isCountDownIng = true;
+        Ingame_WaveUIManager.instance.isCountDownIng = true;
 
         // 마지막 웨이브(10차 웨이브)가 끝났을 때
         if (currentWave == waveCount && activeMonsters.Count <= 0)
         {
-            Ingame_UIManager.instance.waveResultImage.sprite = Ingame_UIManager.instance.waveWinImage;
+            Ingame_WaveUIManager.instance.waveResultImage.sprite = Ingame_WaveUIManager.instance.waveWinImage;
 
-            Ingame_UIManager.instance.waveResultPanel.SetActive(true);
+            Ingame_WaveUIManager.instance.waveResultPanel.SetActive(true);
 
             Debug.Log("웨이브 종료");
             Time.timeScale = 0.0f;

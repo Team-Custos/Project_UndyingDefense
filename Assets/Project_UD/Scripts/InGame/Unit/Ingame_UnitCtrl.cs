@@ -270,6 +270,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             // Change 상태일 때는 다른 행동을 하지 않음
             if (Ally_Mode == AllyMode.Change)
             {
+                Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
+
                 if (unitStateChangeTime > 0)
                 {
                     unitStateChangeTime -= Time.deltaTime;
@@ -327,6 +329,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             //시즈모드일때
             else if (Ally_Mode == AllyMode.Siege)
             {
+                Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
+
                 UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
                 if (targetEnemy == null && !isEnemyInSight)
                 {
@@ -347,6 +351,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
+
                 UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
                 if (haveToMovePosition)
                 {

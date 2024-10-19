@@ -63,6 +63,7 @@ public class GameOrderSystem : MonoBehaviour
                     {
                         UnitSpawnManager SpawnMgr = UnitSpawnManager.inst;
                         GridTile.currentPlacedUnit = SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
+                        //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(GridTile.transform, true);
                         //GridTile.isPlaceable = false;
                         InGameManager.inst.UnitSetMode = false;
                         InGameManager.inst.AllyUnitSetMode = false;

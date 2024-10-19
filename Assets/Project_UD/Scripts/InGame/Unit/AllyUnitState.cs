@@ -116,7 +116,7 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
+        Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, true, false);
     }
 
     void Move_Update()
@@ -139,16 +139,19 @@ public class AllyUnitState : MonoBehaviour
                 return;
             }
         }
-
     }
 
     void Move_Exit()
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-        Debug.Log("dddd");
-        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false); 
+        
+        Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
+        
+        
         allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
+
+        
     }
     #endregion
 
