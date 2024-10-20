@@ -207,7 +207,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
         //if (CurVisualModelAnimator != null)
         //{
-        //    CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
+        CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
         //}
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정

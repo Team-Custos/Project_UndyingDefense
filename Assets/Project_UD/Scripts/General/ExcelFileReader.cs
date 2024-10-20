@@ -29,7 +29,7 @@ public class ExcelFileReader : MonoBehaviour
 
         if (csvData == null)
         {
-            Debug.Log("ÆÄÀÏ ¾øÀ½");
+            Debug.Log("íŒŒì¼ ì—†ìŒ");
             return unitDatas;
         }
 
@@ -37,7 +37,7 @@ public class ExcelFileReader : MonoBehaviour
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
 
-        // Ã¹ µÎÁÙ ¾ÈÀĞÀ½
+        // ì²« ë‘ì¤„ ì•ˆì½ìŒ
         reader.ReadLine();
         reader.ReadLine();
 

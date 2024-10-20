@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 
@@ -26,6 +27,8 @@ public class UnitSpawnManager : MonoBehaviour
 
     public Transform SpawnPos;
 
+  
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +45,9 @@ public class UnitSpawnManager : MonoBehaviour
                 unit.unitStateChangeTime -= Time.deltaTime;
             }
         }
+
+        
+
     }
 
     //유닛 소환
@@ -55,6 +61,7 @@ public class UnitSpawnManager : MonoBehaviour
         Obj.transform.position = new Vector3(X, 0, Y);
         //Obj.GetComponent<UD_Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
+        
 
         return Obj;
     }

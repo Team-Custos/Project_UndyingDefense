@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Pool;
 
 [System.Serializable]
@@ -56,6 +57,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject Test_Enemy;
 
     public int enemyToSpawn = 0;
+    int AutoPriorityIndex = 0;
 
     public Transform[] poolSapwnPoint;
 
@@ -144,6 +146,11 @@ public class EnemySpawner : MonoBehaviour
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+
+        Obj.GetComponent<NavMeshAgent>().avoidancePriority = AutoPriorityIndex;
+        Debug.Log(Obj.name + "Priority : " + Obj.GetComponent<NavMeshAgent>().avoidancePriority);
+        AutoPriorityIndex++;
+
         return Obj;
     }
 
@@ -194,7 +201,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // 몬스터 생성
-    void SpawnEnemy(int enemyType)
+    public void SpawnEnemy(int enemyType)
     {
         Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
         GameObject enemyObj = ObjectPool.GetObject();
@@ -204,9 +211,12 @@ public class EnemySpawner : MonoBehaviour
             enemyObj.transform.position = spawnPos.position;
             enemyObj.transform.rotation = Quaternion.identity;
             enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+            //enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = AutoPriorityIndex;
+            //Debug.Log(enemyObj.name + "Priority : " + enemyObj.GetComponent<NavMeshAgent>().avoidancePriority);
+            //AutoPriorityIndex++;
+
             activeMonsters.Add(enemyObj);
         }
-
     }
 
     // 몬스터 죽음 처리
