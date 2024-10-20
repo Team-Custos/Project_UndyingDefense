@@ -3,7 +3,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+
 using static UnitExcelDataManager;
+using static UnitDataManager;
 
 public enum DefenseType
 {
@@ -89,6 +91,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public string name;
     public string gSkillName;
     public string sSkillName;
+
+    // 수정 예정
+    public string defenstype;
+
 
 
     void OnMouseDown()
