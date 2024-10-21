@@ -9,7 +9,9 @@ using UnityEngine.Tilemaps;
 
 public class GameOrderSystem : MonoBehaviour
 {
-    InGameManager GAMEMANAGER;
+    public static GameOrderSystem instance;
+
+     InGameManager GAMEMANAGER;
 
     public GameObject clickedObj = null;
     public GameObject selectedUnit = null;
@@ -18,6 +20,11 @@ public class GameOrderSystem : MonoBehaviour
     public Vector3 clickedWorldPos = Vector3.zero;
 
     public GameObject clickedPosIndicator = null;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -45,15 +52,15 @@ public class GameOrderSystem : MonoBehaviour
             //타일 클릭했을때
             if (clickedObj.tag == CONSTANT.TAG_TILE)
             {
-                //if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
-                //{
-                //    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
-                //}
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
 
-                //if (Ingame_UIManager.instance.currentUpgradeMenu != null)
-                //{
-                //    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
-                //}
+                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                }
                 GridTile GridTile = clickedObj.GetComponent<GridTile>();
                 //Debug.Log("클릭한 그리드 좌표 : " + GridTile.GridPos + ", 배치 가능 여부 : " + GridTile.isPlaceable);
 
@@ -146,23 +153,51 @@ public class GameOrderSystem : MonoBehaviour
             //적 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_ENEMY)
             {
-                Ingame_UnitCtrl Enemy = clickedObj.GetComponent<Ingame_UnitCtrl>();
-                Enemy.isSelected = !Enemy.isSelected;
+                Ingame_UnitCtrl EnemyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
-                if (selectedUnit != null)
+                Ingame_UnitCtrl[] allEnemies = FindObjectsOfType<Ingame_UnitCtrl>();
+                foreach (var enemy in allEnemies)
                 {
-                    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
-                    AllyUnit.isSelected = false;
-                    AllyUnit.targetEnemy = clickedObj.gameObject;
+                    enemy.isSelected = false;
+                }
 
-                    if (AllyUnit.Ally_Mode == AllyMode.Free)
-                    {
-                        AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
-                    }
-                    Enemy.isSelected = false;
+                EnemyUnit.isSelected = !EnemyUnit.isSelected;
 
+                if (EnemyUnit.isSelected)
+                {
+                    selectedUnit = EnemyUnit.gameObject;
+                }
+                else
+                {
                     selectedUnit = null;
                 }
+
+                // 선택된 아군이 적을 목표로 설정
+                if (selectedUnit != null && selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
+                {
+                    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                    AllyUnit.targetEnemy = EnemyUnit.gameObject;
+                    AllyUnit.moveTargetPos = new Vector3(EnemyUnit.transform.position.x, 0, EnemyUnit.transform.position.z);
+                }
+
+
+                //Ingame_UnitCtrl Enemy = clickedObj.GetComponent<Ingame_UnitCtrl>();
+                //Enemy.isSelected = !Enemy.isSelected;
+
+                //if (selectedUnit != null)
+                //{
+                //    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                //    AllyUnit.isSelected = false;
+                //    AllyUnit.targetEnemy = clickedObj.gameObject;
+
+                //    if (AllyUnit.Ally_Mode == AllyMode.Free)
+                //    {
+                //        AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
+                //    }
+                //    Enemy.isSelected = false;
+
+                //    selectedUnit = null;
+                //}
             }
             //지형 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_GROUND)

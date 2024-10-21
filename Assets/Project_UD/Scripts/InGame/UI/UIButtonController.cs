@@ -1,70 +1,91 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerExitHandler
+public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerExitHandler, IPointerUpHandler
 {
     public RectTransform buttonRectTransform;
     public Text buttonText;
-    public GameObject textPaenl;
+    public GameObject textPanel;
+    public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f); 
     public Vector3 pressedScale = new Vector3(0.9f, 0.9f, 1f);
     public Vector3 normalScale = Vector3.one;
     public float scaleDuration = 0.1f;
-    public float textScaleFactor = 1.2f;
 
     private Vector3 originalTextScale;
-    private Vector3 originalTextPaenlScale;
-
+    private Vector3 originalTextPanelScale;
 
     private void Start()
     {
-        // 초기 텍스트 크기 저장
         if (buttonText != null)
         {
             originalTextScale = buttonText.transform.localScale;
         }
 
-        if (textPaenl != null)
+        if (textPanel != null)
         {
-            originalTextPaenlScale = textPaenl.transform.localScale;
+            originalTextPanelScale = textPanel.transform.localScale;
         }
 
         buttonRectTransform.localScale = normalScale;
     }
 
-    // 버튼 호버링
+    // 버튼 호버링 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // 버튼 크기 zmrp
-        StartCoroutine(ScaleButton(pressedScale));
+        // 호버링 시 버튼, 텍스트, 패널 크기 증가
+        StartCoroutine(ScaleButton(hoverScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // 버튼 텍스트
-            StartCoroutine(ScaleText(originalTextScale * 0.9f));  // 버튼 텍스 판텔
+            StartCoroutine(ScaleText(originalTextScale * 1.1f));
+        }
+        if (textPanel != null)
+        {
+            StartCoroutine(ScalePanel(originalTextPanelScale * 1.1f));
         }
     }
 
+    // 버튼에서 마우스가 벗어났을 때
     public void OnPointerExit(PointerEventData eventData)
     {
-
-    }
-
-
-    // 버튼 클릭
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // 버튼 크기를 원래대로 되돌림
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale));  // 텍스트 크기도 원래대로 되돌림
+            StartCoroutine(ScaleText(originalTextScale));
         }
+        if (textPanel != null)
+        {
+            StartCoroutine(ScalePanel(originalTextPanelScale)); 
+        }
+    }
+
+    // 버튼 클릭 시 호출
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        
+        StartCoroutine(ScaleButton(pressedScale));  
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextPaenlScale));  // 텍스트 크기도 원래대로 되돌림
+            StartCoroutine(ScaleText(pressedScale));
+        }
+        if (textPanel != null)
+        {
+            StartCoroutine(ScalePanel(pressedScale));
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // 클릭을 떼면 원래 크기로 돌아감
+        StartCoroutine(ScaleButton(normalScale));
+        if (buttonText != null)
+        {
+            StartCoroutine(ScaleText(originalTextScale)); 
+        }
+        if (textPanel != null)
+        {
+            StartCoroutine(ScalePanel(originalTextPanelScale));
         }
     }
 
@@ -87,22 +108,6 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     // 텍스트 크기 변경 코루틴
     private IEnumerator ScaleText(Vector3 targetScale)
     {
-        Vector3 currentScale = textPaenl.transform.localScale;
-        float time = 0f;
-
-        while (time < scaleDuration)
-        {
-            time += Time.deltaTime;
-            textPaenl.transform.localScale = Vector3.Lerp(currentScale, targetScale, time / scaleDuration);
-            yield return null;
-        }
-
-        buttonText.transform.localScale = targetScale;
-    }
-
-
-    private IEnumerator ScalePanel(Vector3 targetScale)
-    {
         Vector3 currentScale = buttonText.transform.localScale;
         float time = 0f;
 
@@ -116,5 +121,19 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         buttonText.transform.localScale = targetScale;
     }
 
+    // 패널 크기 변경 코루틴
+    private IEnumerator ScalePanel(Vector3 targetScale)
+    {
+        Vector3 currentScale = textPanel.transform.localScale;
+        float time = 0f;
 
+        while (time < scaleDuration)
+        {
+            time += Time.deltaTime;
+            textPanel.transform.localScale = Vector3.Lerp(currentScale, targetScale, time / scaleDuration);
+            yield return null;
+        }
+
+        textPanel.transform.localScale = targetScale;
+    }
 }
