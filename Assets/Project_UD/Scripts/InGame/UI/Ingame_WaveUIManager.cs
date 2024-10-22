@@ -9,6 +9,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
 
     public float waveCount = 20;
     public Text waveCountText;
+    public GameObject waveCountTextPanel;
     public Text waveStartText;
     public GameObject waveStartPanel;
     public GameObject waveResultPanel;
@@ -23,6 +24,8 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public GameObject waveStepSuccessPanel;
     public Sprite waveWinImage;
     public Sprite waveLoseImage;
+
+    public float fadeDuration = 0.3f;
 
     private void Awake()
     {
@@ -39,8 +42,10 @@ public class Ingame_WaveUIManager : MonoBehaviour
             {
                 waveCount = 0; // 버튼 클릭 시 카운트를 0으로 설정
                 waveCountText.text = "적군 침공까지 0초"; // 즉시 0으로 카운트 표시
-                //StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 바로 1초 후 웨이브 시작
-                waveCountText.gameObject.SetActive(false);
+                                                   //StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 바로 1초 후 웨이브 시작
+
+                waveCountTextPanel.SetActive(false);
+                //waveCountText.gameObject.SetActive(false);
             });
 
         }
@@ -55,7 +60,8 @@ public class Ingame_WaveUIManager : MonoBehaviour
             waveCount -= Time.deltaTime;
             if (waveCount >= 0 && isCountDownIng)
             {
-                waveCountText.gameObject.SetActive(true);
+                waveCountTextPanel.SetActive(true);
+                //waveCountText.gameObject.SetActive(true);
                 waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveCount).ToString() + "초";
 
             }
@@ -64,7 +70,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
                 waveStartText.text = EnemySpawner.inst.currentWave.ToString() + "차 침공 시작";
                 isCountDownIng = false;
                 EnemySpawner.inst.isWaveing = true;
-                waveCountText.gameObject.SetActive(false);
+                waveCountTextPanel.SetActive(false);
                 StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 1초의 지연 후 웨이브 시작
                 waveCount = 20;
             }
@@ -117,4 +123,51 @@ public class Ingame_WaveUIManager : MonoBehaviour
         yield return new WaitForSeconds(delay);  // 지정된 시간만큼 대기
         uiElement.SetActive(false);  // UI 요소 비활성화
     }
+
+
+
+    // UI를 켜는 함수 (Fade In)
+    public void FadeInUI(CanvasGroup canvasGroup)
+    {
+        StartCoroutine(FadeUI(canvasGroup, 0, 1)); // alpha를 0에서 1로 전환 (Fade In)
+    }
+
+    // UI를 끄는 함수 (Fade Out)
+    public void FadeOutUI(CanvasGroup canvasGroup)
+    {
+        StartCoroutine(FadeUI(canvasGroup, 1, 0)); // alpha를 1에서 0으로 전환 (Fade Out)
+    }
+
+    // 페이드 애니메이션 코루틴
+    private IEnumerator FadeUI(CanvasGroup canvasGroup, float startAlpha, float endAlpha)
+    {
+        float elapsed = 0f;
+
+        // 초기 alpha 설정
+        canvasGroup.alpha = startAlpha;
+
+        // alpha 값을 서서히 변화시킴
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        // 최종 alpha 값 설정
+        canvasGroup.alpha = endAlpha;
+
+        // 페이드 아웃 시 상호작용 차단 (선택 사항)
+        if (endAlpha == 0)
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+        else
+        {
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
+    }
+
 }

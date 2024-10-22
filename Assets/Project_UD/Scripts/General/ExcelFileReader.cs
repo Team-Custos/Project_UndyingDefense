@@ -19,6 +19,8 @@ public class ExcelFileReader : MonoBehaviour
 
         List<UnitExcelDataManager.UnitExcelData> unitExcelDatas = ReadCSV(filePath);
         unitExcelDataManager.SetUnitData(unitExcelDatas);
+
+        //PrintAllUnitData(unitExcelDatas);
     }
 
 
@@ -33,7 +35,6 @@ public class ExcelFileReader : MonoBehaviour
             return unitExcelDatas;
         }
 
-
         StringReader reader = new StringReader(csvData.text);
         bool endOfFile = false;
 
@@ -42,6 +43,7 @@ public class ExcelFileReader : MonoBehaviour
         reader.ReadLine();
         while (!endOfFile)
         {
+
             string dataString = reader.ReadLine();
             if (dataString == null)
             {
@@ -78,6 +80,16 @@ public class ExcelFileReader : MonoBehaviour
         }
 
         return unitExcelDatas;
+    }
+
+    void PrintAllUnitData(List<UnitExcelDataManager.UnitExcelData> unitExcelDatas)
+    {
+        foreach (var unitData in unitExcelDatas)
+        {
+            Debug.Log($"Code: {unitData.unitCode}, Name: {unitData.name}, Level: {unitData.level}, Cost: {unitData.cost}, " +
+                      $"g_Skill: {unitData.g_SkillName}, g_SkillInfo: {unitData.g_SkillInfo}, " +
+                      $"s_Skill: {unitData.s_SkillName}, s_SkillInfo: {unitData.s_SkillInfo}");
+        }
     }
 
 

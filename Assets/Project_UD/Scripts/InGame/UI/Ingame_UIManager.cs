@@ -235,14 +235,14 @@ public class Ingame_UIManager : MonoBehaviour
 
         BaseHP();
 
-        if (selectedUnit != null)
-        {
-            unitInfoPanel.SetActive(true);
-        }
-        else
-        {
-            unitInfoPanel.SetActive(false);
-        }
+        //if (selectedUnit != null)
+        //{
+        //    unitInfoPanel.SetActive(true);
+        //}
+        //else
+        //{
+        //    unitInfoPanel.SetActive(false);
+        //}
 
         // UI 유닛 따라가기
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
@@ -254,7 +254,7 @@ public class Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
 
-        ShowUnitClickUI();
+        //ShowUnitClickUI();
     }
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
@@ -322,14 +322,13 @@ public class Ingame_UIManager : MonoBehaviour
         return -1;
     }
 
-    public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit, string newUnitCode)
+    public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit)
     {
         if (selectedUnit == null)
         {
             Debug.LogError("선택된 유닛이 null입니다.");
             return;
         }
-
         // UnitDataManager에서 새로운 유닛 데이터를 불러옴
         Ingame_UnitCtrl unitData = selectedUnit;
 
@@ -340,17 +339,18 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
-        levelText.text = $"{selectedUnit.level} 티어";
-        nameText.text = selectedUnit.name;
-        gSkillText.text = selectedUnit.gSkillName;
-        sSkillText.text = selectedUnit.sSkillName;
+        levelText.text = selectedUnit.unitData.level + "티어";
+        nameText.text = selectedUnit.unitData.name;
+        gSkillText.text = selectedUnit.unitData.g_SkillName;
+        sSkillText.text = selectedUnit.unitData.s_SkillName;
+        defeneTypeText.text = selectedUnit.unitData.defenseType.ToString();
+        gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
+        sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
 
         // HP 정보 업데이트
         curUnitHp = selectedUnit.HP;
         hpText.text = $"{selectedUnit.HP} / {selectedUnit.HP}";
 
-        // 방어 타입 정보 업데이트
-        //defeneTypeText.text = selectedUnit.defenstype;
     }
 
     
@@ -359,6 +359,12 @@ public class Ingame_UIManager : MonoBehaviour
     {
         if (unit.Ally_Mode == AllyMode.Change)
         {
+            return;
+        }
+
+        if(unit.tag == CONSTANT.TAG_ENEMY)
+        {
+            Debug.Log("Fefee");
             return;
         }
 
@@ -460,7 +466,7 @@ public class Ingame_UIManager : MonoBehaviour
 
 
         // 업그레이드 옵션 가져오기
-        List<string> upgradeOptions = UnitUpgradeManager.Instance.GetUpgradeOptions(unit.unitCode);
+        List<string> upgradeOptions = UnitUpgradeManager.Instance.GetUpgradeOptions(unit.unitData.unitCode);
 
         if (upgradeOptions == null || upgradeOptions.Count == 0)
         {
@@ -471,7 +477,7 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
         // 3티어인 경우 버튼 하나만 생성
-        if (unit.level == 3)
+        if (unit.unitData.level == 3)
         {
             UnitUpgrade2Btn.gameObject.SetActive(false);
 
@@ -488,7 +494,7 @@ public class Ingame_UIManager : MonoBehaviour
             if (upgradeOptions.Count > 0)
             {
                 // 업그레이드 수행
-                //UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[0]);
+                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[0]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
@@ -501,7 +507,7 @@ public class Ingame_UIManager : MonoBehaviour
             if (upgradeOptions.Count > 1)
             {
                 // 두 번째 업그레이드 수행
-                //UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[1]);
+                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[1]);
             }
             Destroy(currentUpgradeMenu);
             currentUpgradeMenu = null;
@@ -545,7 +551,6 @@ public class Ingame_UIManager : MonoBehaviour
             return;
         }
 
-        
         Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
         Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
 
@@ -563,20 +568,34 @@ public class Ingame_UIManager : MonoBehaviour
     }
 
 
-    void ShowUnitClickUI()
+    public void ShowUnitClickUI(Ingame_UnitCtrl unit)
     {
+        SetSelectedUnit(unit);
 
         // 선택된 유닛의 HP UI 표시
-        Transform unitHpImageTransform = GameOrderSystem.instance.selectedUnit.transform.Find("Canvas/ClickUI");
-        if (unitHpImageTransform != null)
+        if (selectedUnit != null)
         {
-            GameObject unitHpImage = unitHpImageTransform.gameObject;
+            Transform selectedUnitClickUITransform = selectedUnit.transform.Find("Canvas2/ClickUI");
+            Transform selectedUnitHpTransform = selectedUnit.transform.Find("Canvas/HP_Back");
 
-            // 유닛이 선택된 경우 HP UI 표시
-            unitHpImage.SetActive(true);
+            if (selectedUnitClickUITransform != null && selectedUnitHpTransform)
+            {
+                GameObject unitHpImage = selectedUnitClickUITransform.gameObject;
+                GameObject unitClickImage = selectedUnitHpTransform.gameObject;
+
+                if(selectedUnit.isSelected)
+                {
+                    unitClickImage.SetActive(true);
+                    unitHpImage.SetActive(true);
+                }
+                else
+                {
+                    unitClickImage.SetActive(false);
+                    unitHpImage.SetActive(false);
+                }
+            }
         }
     }
-
 
 
 
