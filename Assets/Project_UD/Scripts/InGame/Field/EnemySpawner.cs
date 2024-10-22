@@ -151,7 +151,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (isWaveing)
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 1.5f);
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
 
             Debug.Log($"Wave {currentWave} 시작");
 
