@@ -57,11 +57,10 @@ public class UnitSkillManager : MonoBehaviour
                     {
                         Bow.transform.LookAt(TargetPos);
                         Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
-
+                    }
                         attackType = AttackType.Pierce;
                         damage = 5;
                         debuff = UnitDebuff.Bleed;
-                    }
                     break;
                 //창 찌르기
                 case 201:
