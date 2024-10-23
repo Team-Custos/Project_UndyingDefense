@@ -1171,6 +1171,7 @@ MonoBehaviour:
     tickDamage: 0
     StartSFX: {fileID: 0}
     EndSFX: {fileID: 0}
+    startParticle: {fileID: 0}
   - name: 1
     Stackable: 1
     stackLimit: 3
@@ -1178,6 +1179,7 @@ MonoBehaviour:
     tickDamage: 1
     StartSFX: {fileID: 8300000, guid: 7bb7b72e704a28b44984ca158ddffee6, type: 3}
     EndSFX: {fileID: 8300000, guid: db942f4cdd2c2c54f9f418dbfa12997a, type: 3}
+    startParticle: {fileID: 0}
   - name: 5
     Stackable: 1
     stackLimit: 3
@@ -1185,6 +1187,7 @@ MonoBehaviour:
     tickDamage: 3
     StartSFX: {fileID: 8300000, guid: 4aef236f3dcbc3546ba22b55fedcb6b8, type: 3}
     EndSFX: {fileID: 0}
+    startParticle: {fileID: 0}
   - name: 6
     Stackable: 0
     stackLimit: 1
@@ -1192,6 +1195,7 @@ MonoBehaviour:
     tickDamage: 8
     StartSFX: {fileID: 8300000, guid: e9165cf6470c8dd40b9ef16bd0dc620e, type: 3}
     EndSFX: {fileID: 0}
+    startParticle: {fileID: 0}
   - name: 2
     Stackable: 1
     stackLimit: 3
@@ -1199,6 +1203,7 @@ MonoBehaviour:
     tickDamage: 0
     StartSFX: {fileID: 8300000, guid: d66912733e6f2e1439a75a47646aee82, type: 3}
     EndSFX: {fileID: 0}
+    startParticle: {fileID: 0}
   - name: 3
     Stackable: 0
     stackLimit: 1
@@ -1206,6 +1211,7 @@ MonoBehaviour:
     tickDamage: 0
     StartSFX: {fileID: 8300000, guid: 35405c4b5b8965f4388870ede75534c3, type: 3}
     EndSFX: {fileID: 8300000, guid: e9d3c2cf06bfbb04fb61db0fcf36b508, type: 3}
+    startParticle: {fileID: 0}
 --- !u!1001 &23181472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5193,7 +5199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53e3e28e1a51de43b85959571a3d1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseHPMax: 250
+  BaseHPMax: 10
   BaseHPCur: 0
 --- !u!82 &122481052
 AudioSource:
@@ -17267,6 +17273,7 @@ Transform:
   - {fileID: 1904282612}
   - {fileID: 1615164033}
   - {fileID: 1987169381}
+  - {fileID: 1252782138}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &475068739
@@ -46521,6 +46528,50 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 766906167}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1252782137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1252782138}
+  - component: {fileID: 1252782139}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1252782138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252782137}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 472590888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1252782139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252782137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1735403d00f5e346b2f594f323e2066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1253565467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -73885,6 +73936,8 @@ MonoBehaviour:
     type: 3}
   enemySummonEffect: {fileID: 2445413358602306477, guid: dcce45007a1f6dc45ac59f7ea246b804,
     type: 3}
+  AttackVFX: []
+  AttackCritVFX: []
 --- !u!4 &1991222122 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
