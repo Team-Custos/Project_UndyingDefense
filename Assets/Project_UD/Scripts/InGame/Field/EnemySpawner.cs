@@ -151,7 +151,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (isWaveing)
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 1.5f);
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
 
             Debug.Log($"Wave {currentWave} 시작");
 
@@ -175,22 +175,46 @@ public class EnemySpawner : MonoBehaviour
     // 웨이브에 따른 몬스터 생성 코루틴
     IEnumerator SpawnMonstersForWave()
     {
-        int monstersToSpawn;
+        //int monstersToSpawn;
+
+        //if (currentWave <= 2)
+        //{
+        //    monstersToSpawn = 5; // 현재 웨이브가 1 또는 2일 경우, 5마리의 몬스터를 생성
+        //}
+        //else
+        //{
+        //    monstersToSpawn = 10; // 현재 웨이브가 3 이상일 경우, 10마리의 몬스터를 생성
+        //}
+
+        //for (int i = 0; i < monstersToSpawn; i++)
+        //{
+        //    SpawnEnemy(1);
+        //    yield return new WaitForSeconds(spawnInterval);  // 한 마리씩 생성
+        //}
+
+        int monstersToSpawn = 5;
 
         if (currentWave <= 2)
         {
-            monstersToSpawn = 5; // 현재 웨이브가 1 또는 2일 경우, 5마리의 몬스터를 생성
+            // 웨이브 1~2: 5마리의 기본 몬스터 생성
+            for (int i = 0; i < monstersToSpawn; i++)
+            {
+                SpawnEnemy(0);
+                yield return new WaitForSeconds(spawnInterval);
+            }
         }
         else
         {
-            monstersToSpawn = 10; // 현재 웨이브가 3 이상일 경우, 10마리의 몬스터를 생성
+            int totalMonstersToSpawn = monstersToSpawn * 2;
+
+            for (int i = 0; i < totalMonstersToSpawn; i++)
+            {
+                int randomType = Random.Range(0, 2);
+                SpawnEnemy(randomType); 
+                yield return new WaitForSeconds(spawnInterval);
+            }
         }
 
-        for (int i = 0; i < monstersToSpawn; i++)
-        {
-            SpawnEnemy(1);
-            yield return new WaitForSeconds(spawnInterval);  // 한 마리씩 생성
-        }
     }
 
     // 몬스터 생성
@@ -203,9 +227,29 @@ public class EnemySpawner : MonoBehaviour
         {
             enemyObj.transform.position = spawnPos.position;
             enemyObj.transform.rotation = Quaternion.identity;
-            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+
+            // enemyType에 따라 unitData.modelType을 설정하여 모델 변경
+            if (enemyType == 0)
+            {
+                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[0];
+                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 0;  
+            }
+            else if (enemyType == 1)
+            {
+                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[1];
+                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 1;  
+            }
+
             activeMonsters.Add(enemyObj);
+            enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
             Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
+
+
+            //enemyObj.transform.position = spawnPos.position;
+            //enemyObj.transform.rotation = Quaternion.identity;
+            //enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+            //activeMonsters.Add(enemyObj);
+            //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         }
 
     }
@@ -253,9 +297,7 @@ public class EnemySpawner : MonoBehaviour
         // 마지막 웨이브(10차 웨이브)가 끝났을 때
         if (currentWave == waveCount && activeMonsters.Count <= 0)
         {
-            Ingame_WaveUIManager.instance.waveResultImage.sprite = Ingame_WaveUIManager.instance.waveWinImage;
-
-            Ingame_WaveUIManager.instance.waveResultPanel.SetActive(true);
+            Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
 
             Debug.Log("웨이브 종료");
             Time.timeScale = 0.0f;

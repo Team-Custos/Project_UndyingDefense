@@ -38,20 +38,20 @@ public class InGame_VirtualCamManager : MonoBehaviour
         cameraPivot.position += moveDirection * moveSpeed * Time.deltaTime;
 
         // 카메라 회전 -> 카메라 회전 기능 삭제
-        Vector3 currentRotation = virtualCamera.transform.eulerAngles;
+        //Vector3 currentRotation = virtualCamera.transform.eulerAngles;
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            currentRotation.y -= rotationSpeed * Time.deltaTime;
-        }
+        //if (Input.GetKey(KeyCode.Q))
+        //{
+        //    currentRotation.y -= rotationSpeed * Time.deltaTime;
+        //}
 
-        // E 키로 Y축 회전 증가
-        if (Input.GetKey(KeyCode.E))
-        {
-            currentRotation.y += rotationSpeed * Time.deltaTime;
-        }
+        //// E 키로 Y축 회전 증가
+        //if (Input.GetKey(KeyCode.E))
+        //{
+        //    currentRotation.y += rotationSpeed * Time.deltaTime;
+        //}
 
-        virtualCamera.transform.eulerAngles = new Vector3(45, currentRotation.y, 0);
+        //virtualCamera.transform.eulerAngles = new Vector3(45, currentRotation.y, 0);
     }
 
     void CameraZoom()

@@ -15,7 +15,6 @@ public class UnitUpgradeManager : MonoBehaviour
 
     public List<string> GetUpgradeOptions(string unitCode)
     {
-
         List<string> upgradeOptions = new List<string>();
 
         string option1 = unitCode + "1";
@@ -48,34 +47,33 @@ public class UnitUpgradeManager : MonoBehaviour
 
 
 
-    // 실제 업그레이드를 수행하는 함수
-    //public void PerformUpgrade(Ingame_UnitCtrl selectedUnit, string unitCode)
-    //{
-    //    // Dictionary에서 unitCode로 업그레이드된 유닛 데이터를 가져옴
-    //    if (UnitExcelDataManager.inst.unitDataDictionary.TryGetValue(unitCode, out UnitData upgradedUnitData))
-    //    {
-    //        // 유닛의 데이터를 새로운 데이터로 업데이트
+    //실제 업그레이드를 수행하는 함수
+    public void PerformUpgrade(Ingame_UnitCtrl selectedUnit, string unitCode)
+    {
+        // Dictionary에서 unitCode로 업그레이드된 유닛 데이터를 가져옴
+        if (UnitExcelDataManager.inst.unitDataDictionary.TryGetValue(unitCode, out UnitExcelData upgradedUnitData))
+        {
+            // 유닛의 데이터를 새로운 데이터로 업데이트
 
-    //        selectedUnit.gSkillName = upgradedUnitData.g_SkillName;
-    //        selectedUnit.sSkillName = upgradedUnitData.s_SkillName;
-    //        selectedUnit.unitCode = upgradedUnitData.UnitCode;
+            selectedUnit.unitData.unitCode = upgradedUnitData.unitCode;
+            selectedUnit.unitData.g_SkillName = upgradedUnitData.g_SkillName;
+            selectedUnit.unitData.g_SkillName = upgradedUnitData.s_SkillName;
 
-    //        selectedUnit.level = upgradedUnitData.Level;
-    //        selectedUnit.cost = upgradedUnitData.Cost;
-    //        selectedUnit.name = upgradedUnitData.Name;
-    //        selectedUnit.unitCode = upgradedUnitData.UnitCode;
-    //        selectedUnit.HP = upgradedUnitData.Hp;
+            selectedUnit.unitData.level = upgradedUnitData.level;
+            selectedUnit.unitData.cost = upgradedUnitData.cost;
+            selectedUnit.name = upgradedUnitData.name;
+            //selectedUnit.HP = upgradedUnitData.;
 
-    //        Debug.Log("업그레이드 성공");
+            Debug.Log("업그레이드 성공");
 
-    //        // UI 업데이트
-    //        Ingame_UIManager.instance.UpdateUnitInfoPanel(selectedUnit, selectedUnit.unitCode);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("업그레이드 실패");
-    //    }
-    //}
+            // UI 업데이트
+            Ingame_UIManager.instance.UpdateUnitInfoPanel(selectedUnit);
+        }
+        else
+        {
+            Debug.LogError("업그레이드 실패");
+        }
+    }
 
 
 }

@@ -48,6 +48,13 @@ public class LobbyUIManager : MonoBehaviour
     public GameObject[] optionPanel;
     public Button[] optionBtn;
 
+    public GameObject HelpUsePanel;
+    public GameObject HelpArrPanel;
+    public Button HelpCloseBtn;
+    public Button HelpUseBtn;
+    public Button HelpArrBtn;
+
+
     private const int maxSkillDeckSize = 3;
 
     public ParticleSystem buttonParticleEffect;
@@ -209,7 +216,6 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-
         for (int i = 0; i < optionBtn.Length; i++)
         {
             int index = i;  // 내부에서 사용하기 위해 로컬 변수로 인덱스를 저장
@@ -217,6 +223,10 @@ public class LobbyUIManager : MonoBehaviour
         }
 
         // 시작 시 모든 패널을 비활성화
+
+        HelpCloseBtn.onClick.AddListener(CloseHelpPanel);
+        HelpUseBtn.onClick.AddListener(OpenHelpUsePanel);
+        HelpArrBtn.onClick.AddListener(OpenHelpArrPanel);
     }
 
     // 하나의 패널만 켜고 나머지는 끄는 함수
@@ -233,6 +243,25 @@ public class LobbyUIManager : MonoBehaviour
             HideAllPanels();
             optionPanel[index].SetActive(true);
         }
+    }
+
+    void CloseHelpPanel()
+    {
+        optionPanel[0].SetActive(false);
+    }
+
+    // HelpUsePanel을 열고 HelpArrPanel을 닫는 함수
+    void OpenHelpUsePanel()
+    {
+        HelpUsePanel.SetActive(true);
+        HelpArrPanel.SetActive(false);
+    }
+
+    // HelpArrPanel을 열고 HelpUsePanel을 닫는 함수
+    void OpenHelpArrPanel()
+    {
+        HelpArrPanel.SetActive(true);
+        HelpUsePanel.SetActive(false);
     }
 
     // 모든 패널을 비활성화하는 함수
@@ -378,7 +407,7 @@ public class LobbyUIManager : MonoBehaviour
 
 
     // 패널의 크기를 조절하는 코루틴
-    public IEnumerator AnimateUI(RectTransform ui, bool isActive, float duration = 0.3f)
+    public IEnumerator AnimateUI(RectTransform ui, bool isActive, float duration = 0.2f)
     {
         // 패널의 중심을 화면 중앙으로 설정 (피벗과 앵커를 중앙으로)
         ui.pivot = new Vector2(0.5f, 0.5f);
@@ -420,13 +449,13 @@ public class LobbyUIManager : MonoBehaviour
     public void ShowUI(RectTransform ui)
     {
         ui.gameObject.SetActive(true); // 먼저 활성화
-        StartCoroutine(AnimateUI(ui, true, 0.3f)); // 커지면서 나타나는 연출
+        StartCoroutine(AnimateUI(ui, true, 0.2f)); // 커지면서 나타나는 연출
     }
 
     // 패널을 비활성화하는 함수
     public void HideUI(RectTransform ui)
     {
-        StartCoroutine(AnimateUI(ui, false, 0.3f)); // 작아지면서 사라지는 연출
+        StartCoroutine(AnimateUI(ui, false, 0.2f)); // 작아지면서 사라지는 연출
     }
 
     private void PlayParticleEffect()
@@ -439,7 +468,7 @@ public class LobbyUIManager : MonoBehaviour
 
 
     // 페이드 인/아웃을 위한 코루틴 함수
-    public IEnumerator FadeUI(GameObject uiElement, bool isFadeIn, float duration = 0.5f)
+    public IEnumerator FadeUI(GameObject uiElement, bool isFadeIn, float duration = 0.2f)
     {
         CanvasGroup canvasGroup = uiElement.GetComponent<CanvasGroup>();
 

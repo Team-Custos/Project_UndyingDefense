@@ -65,7 +65,7 @@ public class UnitExcelDataManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("데이터 없음");
+            //Debug.Log("데이터 없음");
             return null;
         }
     }
@@ -87,8 +87,6 @@ public class UnitExcelDataManager : MonoBehaviour
         }
 
     }
-
-
 
 
 }

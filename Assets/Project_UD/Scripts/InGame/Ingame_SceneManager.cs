@@ -28,16 +28,28 @@ public class Ingame_SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Ingame_WaveUIManager.instance.waveRestartBtn != null)
+        if (Ingame_WaveUIManager.instance.winWaveRestartBtn != null)
         {
+            Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(RestartCurrentScene);
             Time.timeScale = 1.0f;
-            Ingame_WaveUIManager.instance.waveRestartBtn.onClick.AddListener(RestartCurrentScene);
         }
 
-        if (Ingame_WaveUIManager.instance.lobbybtn != null)
+        if (Ingame_WaveUIManager.instance.Winlobbybtn != null)
         {
+            Ingame_WaveUIManager.instance.Winlobbybtn.onClick.AddListener(GoToLobby);
             Time.timeScale = 1.0f;
-            Ingame_WaveUIManager.instance.lobbybtn.onClick.AddListener(GoToLobby);
+        }
+
+        if (Ingame_WaveUIManager.instance.loseWaveRestartBtn != null)
+        {
+            Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(RestartCurrentScene);
+            Time.timeScale = 1.0f;
+        }
+
+        if (Ingame_WaveUIManager.instance.loselobbybtn != null)
+        {
+            Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(GoToLobby);
+            Time.timeScale = 1.0f;
         }
     }
 

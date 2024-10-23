@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public enum DefenseType
@@ -26,6 +27,7 @@ public enum TargetSelectType
 
 public class Ingame_UnitCtrl : MonoBehaviour
 {
+
     [HideInInspector] public AllyUnitState Ally_State;
     [HideInInspector] public EnemyUnitState Enemy_State;
     [HideInInspector] public NavMeshObstacle NavObstacle;
@@ -50,7 +52,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public GameObject Selected_Particle;
     public bool isSelected = false;
     public int cur_modelType;
-    public int curLevel = 1;
     public int HP;
     public float cur_moveSpeed = 1;
     public float cur_attackSpeed = 1;
@@ -81,12 +82,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime;
     public AllyMode previousAllyMode;
 
-    public string unitCode;
-    public int level;
-    public int cost;
-    public string name;
-    public string gSkillName;
-    public string sSkillName;
+    //public string unitCode;
+    //public int level;
+    //public int cost;
+    //public string name;
+    //public string gSkillName;
+    //public string sSkillName;
+    //public string gSkillInfo;
+    //public string sSkillInfo;
 
     // 수정 예정
     public string defenstype;
@@ -103,6 +106,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     private void Awake()
     {
+
         ModelSwapManager = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
         if (soundManager == null)
@@ -172,14 +176,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         moveTargetPos = this.transform.position;
 
 
-        if(unitData.unitCode == "1")
-        {
-            unitCode = "1";
-        }
-        else if(unitData.unitCode ==  "2")
-        {
-            unitCode = "2";
-        }
+
+        //UpdateUnitDataFromExcel(unitData);
     }
 
 
@@ -206,6 +204,40 @@ public class Ingame_UnitCtrl : MonoBehaviour
             cur_modelType = unitData.modelType;
         }
     }
+
+    // 오브젝트 풀에 소환되는 모델 swap 용
+    public void PoolModelSwap()
+    {
+        //기존 모델 비활성화
+        if (VisualModel.childCount > 0)
+        {
+            for (int i = 0; i < VisualModel.childCount; i++)
+            {
+                VisualModel.GetChild(i).gameObject.SetActive(false); // 모든 자식 모델 비활성화
+            }
+        }
+
+        GameObject modelToActivate = null;
+
+        // 필요한 모델을 활성화
+        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        {
+            modelToActivate = ModelSwapManager.AllyModel[unitData.modelType]; 
+        }
+        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        {
+            modelToActivate = ModelSwapManager.EnemyModel[unitData.modelType];
+        }
+
+        if (modelToActivate != null)
+        {
+            //modelToActivate.transform.SetParent(VisualModel, false);
+            modelToActivate.SetActive(true);
+        }
+
+        cur_modelType = unitData.modelType;
+    }
+
 
 
     // Update is called once per frame
@@ -273,7 +305,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
             // Change 상태일 때는 다른 행동을 하지 않음
             if (Ally_Mode == AllyMode.Change)
             {
+
                 Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
+
 
                 if (unitStateChangeTime > 0)
                 {
@@ -681,5 +715,18 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    
+    //public void UpdateUnitDataFromExcel(Ingame_UnitData unitData)
+    //{
+    //    UnitExcelData excelData = UnitExcelDataManager.inst.GetUnitData(unitData.unitCode);
+
+    //    if (excelData != null)
+    //    {
+    //        unitData.name = excelData.name;
+    //        unitData.level = excelData.level;
+    //        unitData.g_SkillName = excelData.g_SkillName;
+    //        unitData.s_SkillName = excelData.s_SkillName;
+    //        unitData.g_SkillInfo = excelData.g_SkillInfo;
+    //        unitData.s_SkillInfo = excelData.s_SkillInfo;
+    //    }
+    //}
 }
