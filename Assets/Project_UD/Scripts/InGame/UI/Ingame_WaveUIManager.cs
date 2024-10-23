@@ -12,18 +12,18 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public GameObject waveCountTextPanel;
     public Text waveStartText;
     public GameObject waveStartPanel;
-    public GameObject waveResultPanel;
-    public Image waveResultImage;
+    public GameObject waveResultWinPanel;
+    public GameObject waveResultLosePanel;
     public Text waveResultText;
     public bool isCurrentWaveSucceed;
     public Button nextWavBtn;
     public Button waveCountSkipBtn;
     public bool isCountDownIng = false;
-    public Button waveRestartBtn = null;
-    public Button lobbybtn = null;
+    public Button winWaveRestartBtn = null;
+    public Button Winlobbybtn = null;
+    public Button loseWaveRestartBtn = null;
+    public Button loselobbybtn = null;
     public GameObject waveStepSuccessPanel;
-    public Sprite waveWinImage;
-    public Sprite waveLoseImage;
 
     public float fadeDuration = 0.3f;
 
@@ -90,7 +90,8 @@ public class Ingame_WaveUIManager : MonoBehaviour
         // 웨이브 실패시 이미지 설정
         if (BaseStatus.instance.BaseHPCur <= 0)
         {
-            waveResultImage.sprite = waveLoseImage;
+            waveResultLosePanel.SetActive(true);
+            Time.timeScale = 0.0f;
         }
 
         // 웨이브 시작 표시 

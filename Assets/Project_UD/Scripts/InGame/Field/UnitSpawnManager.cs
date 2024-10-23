@@ -36,13 +36,13 @@ public class UnitSpawnManager : MonoBehaviour
     void Update()
     {
         Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
-        foreach (Ingame_UnitCtrl unit in allUnits)
-        {
-            if (unit.unitStateChangeTime > 0)
-            {
-                unit.unitStateChangeTime -= Time.deltaTime;
-            }
-        }
+        //foreach (Ingame_UnitCtrl unit in allUnits)
+        //{
+        //    if (unit.unitStateChangeTime > 0)
+        //    {
+        //        unit.unitStateChangeTime -= Time.deltaTime;
+        //    }
+        //}
     }
 
     //유닛 소환

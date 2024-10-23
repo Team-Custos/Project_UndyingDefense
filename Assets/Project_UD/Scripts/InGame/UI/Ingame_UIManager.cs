@@ -10,6 +10,7 @@ using static UnitExcelDataManager;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening.Core.Easing;
 using System.Threading.Tasks;
+using Unity.Burst.CompilerServices;
 
 public class Ingame_UIManager : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class Ingame_UIManager : MonoBehaviour
     public Text defeneTypeText;
     public Text gSkillInfoText;
     public Text sSkillInfoText;
+    public Sprite enemyArcherImage;
+    public Sprite enenmyWarriorImage;
+    public Sprite allyImage;
 
     [Header("====Game Option====")]
     public Button endGameBtn;
@@ -201,9 +205,10 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
 
-        
 
 
+        unitSpawnBtn[2].interactable = false;
+        unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -255,6 +260,8 @@ public class Ingame_UIManager : MonoBehaviour
         }
 
         //ShowUnitClickUI();
+
+        UpdateUnitInfoPanel(selectedUnit);
     }
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
@@ -326,7 +333,6 @@ public class Ingame_UIManager : MonoBehaviour
     {
         if (selectedUnit == null)
         {
-            Debug.LogError("선택된 유닛이 null입니다.");
             return;
         }
         // UnitDataManager에서 새로운 유닛 데이터를 불러옴
@@ -334,7 +340,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         if (unitData == null)
         {
-            Debug.LogError(" 유닛 데이터 없음");
             return;
         }
 
@@ -347,9 +352,21 @@ public class Ingame_UIManager : MonoBehaviour
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
 
+        if(selectedUnit.tag == CONSTANT.TAG_UNIT)
+        {
+            unitInfoImage.sprite = allyImage;
+        }
+        else if(selectedUnit.unitData.unitCode == "80")
+        {
+            unitInfoImage.sprite = enenmyWarriorImage;
+        }
+        else if(selectedUnit.unitData.unitCode == "81")
+        {
+            unitInfoImage.sprite = enemyArcherImage;
+        }
+
         // HP 정보 업데이트
-        curUnitHp = selectedUnit.HP;
-        hpText.text = $"{selectedUnit.HP} / {selectedUnit.HP}";
+        hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
 
     }
 
@@ -362,13 +379,7 @@ public class Ingame_UIManager : MonoBehaviour
             return;
         }
 
-        if(unit.tag == CONSTANT.TAG_ENEMY)
-        {
-            Debug.Log("Fefee");
-            return;
-        }
-
-
+        
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
         if (slectedUnitOptionBox != null)
@@ -377,9 +388,17 @@ public class Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox = null;
         }
 
+        //SetSelectedUnit(unit);
+
+        if (unit.tag == CONSTANT.TAG_ENEMY)
+        {
+            Debug.Log("Fefee");
+            return;
+        }
+
         currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
 
-        SetSelectedUnit(unit);
+        
 
         GameObject canvas = GameObject.Find("Canvas");
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
@@ -434,7 +453,7 @@ public class Ingame_UIManager : MonoBehaviour
                 }
 
 
-                CreateUpgradeMenu(unit);
+                //CreateUpgradeMenu(unit);
             });
         }
 

@@ -148,7 +148,7 @@ public class GameOrderSystem : MonoBehaviour
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
-                    if(AllyUnit.tag == CONSTANT.TAG_UNIT)
+                    if(selectedUnit.tag == CONSTANT.TAG_UNIT)
                     {
                         Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     }
@@ -164,11 +164,21 @@ public class GameOrderSystem : MonoBehaviour
             //적 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_ENEMY)
             {
-                Ingame_UnitCtrl Enemy = clickedObj.GetComponent<Ingame_UnitCtrl>();
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
+
+                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                }
+
+                Ingame_UnitCtrl Enemy = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
                 // 모든 유닛의 선택 해제
-                Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
-                foreach (var unit in allUnits)
+                Ingame_UnitCtrl[] allEnemys = FindObjectsOfType<Ingame_UnitCtrl>();
+                foreach (var unit in allEnemys)
                 {
                     unit.isSelected = false;
                     Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
@@ -179,6 +189,7 @@ public class GameOrderSystem : MonoBehaviour
                 if (Enemy.isSelected)
                 {
                     selectedUnit = Enemy.gameObject;
+                    
 
                     // 선택된 적의 UI 업데이트
                     Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
@@ -188,7 +199,7 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
 
-                if (selectedUnit != null)
+                if (selectedUnit != null && selectedUnit.tag == CONSTANT.TAG_UNIT)
                 {
                     Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
@@ -203,7 +214,8 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
 
-                //Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                Ingame_UIManager.instance.UpdateUnitInfoPanel(Enemy);
             }
             //else if (clickedObj.tag == CONSTANT.TAG_ENEMY)
             //{

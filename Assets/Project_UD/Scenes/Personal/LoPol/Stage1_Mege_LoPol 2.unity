@@ -2499,7 +2499,7 @@ GameObject:
   - component: {fileID: 60381828}
   - component: {fileID: 60381827}
   m_Layer: 5
-  m_Name: WaveMainBtn
+  m_Name: WaveLobbyBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5193,7 +5193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53e3e28e1a51de43b85959571a3d1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseHPMax: 10
+  BaseHPMax: 250
   BaseHPCur: 0
 --- !u!82 &122481052
 AudioSource:
@@ -13147,7 +13147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &357855419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14953,7 +14953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &413653600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14995,7 +14995,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5c093b2dcc6174e4a8e9b4fe95017b5c, type: 3}
-    m_FontSize: 30
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -29582,6 +29582,9 @@ MonoBehaviour:
   defeneTypeText: {fileID: 1498065477}
   gSkillInfoText: {fileID: 2023290499}
   sSkillInfoText: {fileID: 911918490}
+  enemyArcherImage: {fileID: 21300000, guid: 93798c12ada9f5c4989c90c18a5c082a, type: 3}
+  enenmyWarriorImage: {fileID: 21300000, guid: c35e38ead5d649141b02dc1e9df088dc, type: 3}
+  allyImage: {fileID: 21300000, guid: 7cdfeb503f287e649b240369106f1d1d, type: 3}
   endGameBtn: {fileID: 1463860153}
   restartGameBtn: {fileID: 287665430}
   pauseGameBtn: {fileID: 1567758455}
@@ -33388,7 +33391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &911918489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33631,7 +33634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &921613507
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37407,7 +37410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -42.6, y: 21.7}
+  m_AnchoredPosition: {x: -50.6, y: 21.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1010813516
@@ -37432,7 +37435,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5c093b2dcc6174e4a8e9b4fe95017b5c, type: 3}
-    m_FontSize: 30
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -48200,7 +48203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264.2, y: -71.5}
+  m_AnchoredPosition: {x: 212.8, y: -106.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1298284309
@@ -55879,7 +55882,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5c093b2dcc6174e4a8e9b4fe95017b5c, type: 3}
-    m_FontSize: 30
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -60811,18 +60814,18 @@ MonoBehaviour:
   waveCountTextPanel: {fileID: 410259739}
   waveStartText: {fileID: 820895973}
   waveStartPanel: {fileID: 981937344}
-  waveResultPanel: {fileID: 924597567}
-  waveResultImage: {fileID: 511566395}
+  waveResultWinPanel: {fileID: 924597567}
+  waveResultLosePanel: {fileID: 723932964}
   waveResultText: {fileID: 0}
   isCurrentWaveSucceed: 0
   nextWavBtn: {fileID: 880101276}
   waveCountSkipBtn: {fileID: 491667568}
   isCountDownIng: 1
-  waveRestartBtn: {fileID: 540306852}
-  lobbybtn: {fileID: 1779134251}
+  winWaveRestartBtn: {fileID: 540306852}
+  Winlobbybtn: {fileID: 1779134251}
+  loseWaveRestartBtn: {fileID: 507611885}
+  loselobbybtn: {fileID: 60381827}
   waveStepSuccessPanel: {fileID: 708053652}
-  waveWinImage: {fileID: 21300000, guid: aaf7dbdb7ea208e4a8498d05ff20604e, type: 3}
-  waveLoseImage: {fileID: 21300000, guid: 57f68926d4fd73e49999a2eb3589c963, type: 3}
   fadeDuration: 0.3
 --- !u!4 &1620690370 stripped
 Transform:
@@ -65539,7 +65542,7 @@ GameObject:
   - component: {fileID: 1779134252}
   - component: {fileID: 1779134251}
   m_Layer: 5
-  m_Name: WaveMainBtn
+  m_Name: WaveLobbyBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69343,7 +69346,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1859106224
 RectTransform:
   m_ObjectHideFlags: 0
@@ -71307,7 +71310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 261.4, y: 43}
+  m_AnchoredPosition: {x: 205.7, y: 24.2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1909528400
@@ -73176,7 +73179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1961968237
 RectTransform:
   m_ObjectHideFlags: 0
@@ -74607,7 +74610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2023290498
 RectTransform:
   m_ObjectHideFlags: 0
