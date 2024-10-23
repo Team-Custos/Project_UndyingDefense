@@ -28,7 +28,7 @@ public class Ingame_SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Ingame_WaveUIManager.instance.winWaveRestartBtn != null)
+        if (Ingame_WaveUIManager.instance.  winWaveRestartBtn != null)
         {
             Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(RestartCurrentScene);
             Time.timeScale = 1.0f;
