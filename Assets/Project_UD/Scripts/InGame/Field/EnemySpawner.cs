@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Pool;
 
 [System.Serializable]
@@ -68,6 +69,8 @@ public class EnemySpawner : MonoBehaviour
     public bool isWaveing = false;
 
     public List<GameObject> activeMonsters = new List<GameObject>();
+
+    int enemypriority = 0;
 
 
     private void Awake()
@@ -244,6 +247,9 @@ public class EnemySpawner : MonoBehaviour
             enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
             Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
 
+            enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
+
+            enemypriority++;
 
             //enemyObj.transform.position = spawnPos.position;
             //enemyObj.transform.rotation = Quaternion.identity;

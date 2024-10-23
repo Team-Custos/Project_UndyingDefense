@@ -243,6 +243,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hpBar != null)
+        {
+            hpBar.fillAmount = (float)HP / (float)maxHp;
+        }
+
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
@@ -561,7 +566,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if (enemy_isBaseInRange)
             {
-                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetBase, unitData.weaponCooldown, true);
+                UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetBase, unitData.weaponCooldown, true);
             }
             else
             {
@@ -571,7 +576,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("targetEnemy." + targetEnemy.name);
                     //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
-                    UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
+                    UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
                 else if (targetEnemy == null)
                 {
@@ -705,13 +710,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
             }
             Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, false);
-        }
-
-
-        if (hpBar != null)
-        {
-
-            hpBar.fillAmount = (float)HP / (float)maxHp;
         }
     }
 

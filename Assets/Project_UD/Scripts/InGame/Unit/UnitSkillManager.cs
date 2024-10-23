@@ -7,28 +7,29 @@ public class UnitSkillManager : MonoBehaviour
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
     { };
 
-    public List<int> TargetCellIdx = new List<int>();
+    public List<int> TargetCellIdx = new List<int>(); //
 
-    public GameObject Bow;
-    public GameObject Granade;
+    //필요한 프리팹들
+    public GameObject Bow; //활
+    public GameObject Granade; //수류탄
+    public GameObject Trap; //곰덫
 
-    public GameObject Trap;
+    float weaponCooldown_Cur = 0;//현재 일반공격 쿨타임
+    float skillCooldown_Cur = 0;//현재 특수 스킬 쿨타임
 
-    float weaponCooldown_Cur = 0;
-    float skillCooldown_Cur = 0;
+    public Ingame_UnitCtrl UnitCtrl; //자기 자신 스크립트 불러올 때 사용.
+    GridManager GridManager;//설치형 스킬에 필요한 위치 불러올 그리드.
 
-    public Ingame_UnitCtrl UnitCtrl;
-    GridManager GridManager;
+    public GameObject SetObject = null; //현재 설치한 오브젝트
 
-    public GameObject SetObject = null;
-
-    int TargetCellIdxFinal = 0;
+    int TargetCellIdxFinal = 0;//최종적으로 설치될 위치의 셀.
 
     private void Awake()
     {
         GridManager = GridManager.inst;
     }
 
+    //아군 병사 일반 스킬
     public void UnitGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
         Vector3 TargetPos = TargetEnemy.transform.position;
@@ -40,7 +41,9 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
-            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);//쿨타임이 돌면 공격 애니메이션 실행.
+
+            //공격의 상세 스텟 설정.
             switch (SkillCode)
             {
                 //낫 베기
@@ -58,9 +61,9 @@ public class UnitSkillManager : MonoBehaviour
                         Bow.transform.LookAt(TargetPos);
                         Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
                     }
-                        attackType = AttackType.Pierce;
-                        damage = 5;
-                        debuff = UnitDebuff.Bleed;
+                    attackType = AttackType.Pierce;
+                    damage = 5;
+                    debuff = UnitDebuff.Bleed;
                     break;
                 //창 찌르기
                 case 201:
@@ -82,6 +85,7 @@ public class UnitSkillManager : MonoBehaviour
                     break;
             }
 
+            //타겟이 적인가?
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
@@ -91,12 +95,8 @@ public class UnitSkillManager : MonoBehaviour
                 UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
                 EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
-            else
-            {
-                BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-            }
-            weaponCooldown_Cur = weaponCooldown;
+
+            weaponCooldown_Cur = weaponCooldown; //쿨타임 초기화.
         }
         else
         {
@@ -104,13 +104,14 @@ public class UnitSkillManager : MonoBehaviour
         }
     }
 
+    //스킬 데미지 초기화.
     int SkillDamageInit()
     {
         //스킬 데미지 데이터 가져오기.
         return 10;
     }
 
-
+    //아군 병사 특별 스킬
     public void UnitSpecialSkill(int SkillCode, float skillCooldown)
     {
         int SkillDamage = SkillDamageInit();
@@ -157,7 +158,7 @@ public class UnitSkillManager : MonoBehaviour
                         }
                         else
                         {
-                            if((TargetEnemy != null && UnitCtrl.isEnemyInRange))
+                            if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
                             {
                                 UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
                                 Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
@@ -215,7 +216,6 @@ public class UnitSkillManager : MonoBehaviour
                         attackCtrl.Type = AttackType.Crush;
                         attackCtrl.Debuff2Add = UnitDebuff.Stun;
                     }
-                    //TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
                 //곰덫 설치
                 case 204:
@@ -347,21 +347,60 @@ public class UnitSkillManager : MonoBehaviour
 
     }
 
-    public void EnemyGeneralSkill(int SkillCode, Vector3 TargetPos)
+    //적군 일반 스킬
+    public void EnemyGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {
-        switch (SkillCode)
+        Vector3 TargetPos = TargetEnemy.transform.position;
+
+        //공격 정보 관리 (데미지, 치명타 확률, 공격 타입, 디버프(필요한 경우))
+        int damage = 0;
+        AttackType attackType = AttackType.UnKnown;
+        UnitDebuff debuff = UnitDebuff.None;
+
+        if (weaponCooldown_Cur <= 0)
         {
-            //검 베기
-            case 101:
-                break;
-            //활 쏘기
-            case 102:
-                if (Bow != null)
-                {
-                    Bow.transform.LookAt(TargetPos);
-                    Bow.GetComponent<BowCtrl>().ArrowShoot(true);
-                }
-                break;
+            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+            switch (SkillCode)
+            {
+                //검 베기
+                case 101:
+                    damage = 5;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+                //활 쏘기
+                case 102:
+                    if (Bow != null)
+                    {
+                        Bow.transform.LookAt(TargetPos);
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(true);
+                    }
+                    damage = 5;
+                    attackType = AttackType.Pierce;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+            }
+
+            if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                int HitSoundRandomNum = Random.Range(0, 2);
+                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
+
+                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
+                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+            }
+            else
+            {
+                BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
+                BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+            }
+
+            weaponCooldown_Cur = weaponCooldown;
+        }
+        else
+        {
+            weaponCooldown_Cur -= Time.deltaTime;
         }
     }
 }

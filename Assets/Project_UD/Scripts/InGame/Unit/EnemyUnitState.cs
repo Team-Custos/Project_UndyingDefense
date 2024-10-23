@@ -50,7 +50,7 @@ public class EnemyUnitState : MonoBehaviour
     void Idle_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
+        //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
     }
 
     #endregion
@@ -64,7 +64,7 @@ public class EnemyUnitState : MonoBehaviour
     void Attack_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
+        //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
         UnitCtrl.Unit_Attack();
     }
 
@@ -72,7 +72,7 @@ public class EnemyUnitState : MonoBehaviour
     {
         UnitCtrl.targetEnemy = null;
         UnitCtrl.isEnemyInRange = false;
-        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
+        //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
     }
     #endregion
 
@@ -89,7 +89,7 @@ public class EnemyUnitState : MonoBehaviour
     void Move_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
-        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
+        //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
         navAgent.speed = UnitCtrl.cur_moveSpeed;
 
         SearchPath();

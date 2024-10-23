@@ -22,7 +22,7 @@ public class Ingame_SceneManager : MonoBehaviour
     // 로비 씬으로 이동
     public void GoToLobby()
     {
-        SceneManager.LoadSceneAsync("LobbyScene_LoPol");  // 비동기적으로 로비 씬 로드
+        SceneManager.LoadSceneAsync(1);  // 비동기적으로 로비 씬 로드
     }
 
     // Start is called before the first frame update
