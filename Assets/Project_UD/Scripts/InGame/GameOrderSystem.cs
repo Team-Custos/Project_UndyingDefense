@@ -148,7 +148,7 @@ public class GameOrderSystem : MonoBehaviour
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
-                    if(selectedUnit.tag == CONSTANT.TAG_UNIT)
+                    if (selectedUnit.tag == CONSTANT.TAG_UNIT)
                     {
                         Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     }
@@ -189,7 +189,7 @@ public class GameOrderSystem : MonoBehaviour
                 if (Enemy.isSelected)
                 {
                     selectedUnit = Enemy.gameObject;
-                    
+
 
                     // 선택된 적의 UI 업데이트
                     Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
@@ -262,6 +262,7 @@ public class GameOrderSystem : MonoBehaviour
             }
         }
     }
+
 
 
     private void OnSecondaryButtonOrder()
