@@ -10,7 +10,7 @@ public class UnitSkillManager : MonoBehaviour
     public List<int> TargetCellIdx = new List<int>();
 
     public GameObject Bow;
-    public GameObject Sword;
+    public GameObject Granade;
 
     public GameObject Trap;
 
@@ -40,6 +40,7 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
+            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
             switch (SkillCode)
             {
                 //낫 베기
@@ -55,17 +56,11 @@ public class UnitSkillManager : MonoBehaviour
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(isEnemyAttack);
-                        if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-                        {
-                            Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                            EnemyCtrl.ReceivePhysicalDamage(UnitCtrl.unitData.attackPoint, UnitCtrl.unitData.critChanceRate, AttackType.Pierce, UnitDebuff.Bleed);
-                        }
-                        else
-                        {
-                            BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                            BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
-                        }
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+
+                        attackType = AttackType.Pierce;
+                        damage = 5;
+                        debuff = UnitDebuff.Bleed;
                     }
                     break;
                 //창 찌르기
@@ -113,7 +108,7 @@ public class UnitSkillManager : MonoBehaviour
     int SkillDamageInit()
     {
         //스킬 데미지 데이터 가져오기.
-        return 1;
+        return 10;
     }
 
 
@@ -136,52 +131,92 @@ public class UnitSkillManager : MonoBehaviour
                 case 101:
                     //낫으로 앞에 있는 한 명의 적을 세게 찍어 5 데미지의 관통 공격을 가한다. 치명타율 5% 증가. 치명타 발동 시 충격 효과
                     // 검베기와 같은 처리. 스탯만 다르게.
-                    if (TargetEnemy == null)
+                    if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
                     {
-                        return;
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     }
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     break;
 
                 //연사
                 case 102:
-                    if (TargetEnemy == null)
+                    if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                     {
+                        StopCoroutine(DoubleShot());
                         return;
                     }
-
-                    StartCoroutine(DoubleShot());
+                    else
+                    {
+                        StartCoroutine(DoubleShot());
+                    }
 
                     IEnumerator DoubleShot() // 2연사 코루틴
                     {
                         Debug.Log("Double shot 1");
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
-                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                        if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
+                        {
+                            StopCoroutine(DoubleShot());
+                        }
+                        else
+                        {
+                            if((TargetEnemy != null && UnitCtrl.isEnemyInRange))
+                            {
+                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+                                Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
+                                Bow.GetComponent<BowCtrl>().ArrowShoot(false);
+                                TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                            }
+                        }
                         // 지연 시간 후 두 번째 총알 발사
                         yield return new WaitForSeconds(0.5f);
                         Debug.Log("Double shot 2");
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(false);
-                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                        if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
+                        {
+                            StopCoroutine(DoubleShot());
+                        }
+                        else
+                        {
+                            if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
+                            {
+                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+                                Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
+                                Bow.GetComponent<BowCtrl>().ArrowShoot(false);
+                                TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
+                            }
+                        }
                     }
                     break;
                 //멀리베기
                 case 201:
                     //창에 달린 낫으로 멀리 있는 적을 베어 7 데미지의 베기 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 출혈 효과
                     //스킬을 사용할때만 거리 측정을 따로 해야할것 같음. -> 시야범위? 기획쪽과 이야기가 필요할것 같음.
-
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Slash, UnitDebuff.Bleed);
-
+                    if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
+                    {
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Slash, UnitDebuff.Bleed);
+                    }
                     break;
                 //방패치기
                 case 202:
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
+                    if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
+                    {
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
+                    }
                     break;
                 //수류탄 투척
                 case 203:
                     //수류탄을 던져 범위 내에 있는 모든 적에게 10 데미지의 분쇄 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 기절 효과
                     //덫 설치와 비슷하게 구현. 서있는 칸을 기준으로 바라보는 방향 몇칸 앞에 공격 트리거 오브젝트를 설치하는 식으로.
                     //단, 미리 배치 되어있는지는 고려하지 않음.
-                    TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
+
+                    if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
+                    {
+                        GameObject Granade_Obj = Instantiate(Granade);
+                        Granade_Obj.transform.position = TargetEnemy.transform.position;
+                        AttackCtrl attackCtrl = Granade_Obj.GetComponent<AttackCtrl>();
+                        attackCtrl.Damage = SkillDamage;
+                        attackCtrl.Type = AttackType.Crush;
+                        attackCtrl.Debuff2Add = UnitDebuff.Stun;
+                    }
+                    //TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 10, AttackType.Crush, UnitDebuff.Stun);
                     break;
                 //곰덫 설치
                 case 204:

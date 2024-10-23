@@ -25,6 +25,7 @@ public class UnitDebuffData
     public int tickDamage;
     public AudioClip StartSFX;
     public AudioClip EndSFX;
+    public ParticleSystem startParticle;
 }
 
 public class UnitDebuffDataCtrl : MonoBehaviour

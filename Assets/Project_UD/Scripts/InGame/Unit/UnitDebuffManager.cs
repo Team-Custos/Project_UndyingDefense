@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -18,9 +19,12 @@ public class UnitCurDebuff
 public class UnitDebuffManager : MonoBehaviour
 {
     UnitDebuffData[] debuffData;
+    public GameObject DebuffParticleParent;
+
 
     [SerializeField]
     public List<UnitCurDebuff> activeDebuffs = new List<UnitCurDebuff>(); // ���� ������ ����� ���
+    public GameObject[] Debuff_OBJ;
 
     public Ingame_UnitCtrl unitCtrl;
     float tickInterval = 1;
@@ -38,19 +42,19 @@ public class UnitDebuffManager : MonoBehaviour
         {
             activeDebuffs[activeDebuffIdx].currentTime -= Time.deltaTime;
 
-            // ����� �ð��� ���� ���
-            if (activeDebuffs[activeDebuffIdx].currentTime <= 0)
+            if (activeDebuffs.Count > 0)
             {
-                RemoveDebuff(activeDebuffs[activeDebuffIdx]);
-            }
-            else
-            {
-                if (activeDebuffs.Count > 0)
+                // ����� �ð��� ���� ���
+                if (activeDebuffs[activeDebuffIdx].currentTime <= 0)
+                {
+                    RemoveDebuff(activeDebuffs[activeDebuffIdx]);
+                }
+                else
                 {
                     DebuffUpdate();
                 }
             }
-        }        
+        }
     }
 
     //����� �� ���� �Լ�
@@ -92,7 +96,7 @@ public class UnitDebuffManager : MonoBehaviour
                     case UnitDebuff.Bleed: //3�� ���� �ʴ� 1 �������� ������. ������ ���� ������ �������� 2�� ����� �����Ѵ�.
                         int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
 
-                        if(activeDebuffs[debuffDataIdx].currentTime > 0)
+                        if (activeDebuffs[debuffDataIdx].currentTime > 0)
                         {
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
@@ -201,16 +205,18 @@ public class UnitDebuffManager : MonoBehaviour
                     });
                     StartSFX = debuffData[i].StartSFX;
                     unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, StartSFX);
-                }
-            }
-            
+                    Debuff_OBJ[(int)debuff].SetActive(true);
+                }    
+            } 
         }
     }
 
+            
     // ����� ����
     private void RemoveDebuff(UnitCurDebuff debuff)
     {
         unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, debuff.EndSFX);
+
         switch (debuff.name)
         {
             case UnitDebuff.Dizzy://3�� ���� �̵� �ӵ� 20%, ���� �ӵ� 20% ����. �ִ� 3������ ���õȴ�. 4�� ���ý� ���� ȿ���� �ߵ��ȴ�.
@@ -234,6 +240,9 @@ public class UnitDebuffManager : MonoBehaviour
             case UnitDebuff.Inferno:
                 break;
         }
+
+        Debuff_OBJ[(int)debuff.name].SetActive(false);
+
         activeDebuffs.Remove(debuff);
     }
 

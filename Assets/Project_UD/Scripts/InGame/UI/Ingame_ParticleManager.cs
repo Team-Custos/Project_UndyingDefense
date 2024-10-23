@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ingame_ParticleManager : MonoBehaviour
@@ -9,22 +10,13 @@ public class Ingame_ParticleManager : MonoBehaviour
     public ParticleSystem allySummonEffect;
     public ParticleSystem enemySummonEffect;
 
+    public ParticleSystem[] AttackVFX;
+    public ParticleSystem[] AttackCritVFX;
+
 
     private void Awake()
     {
         Instance = this;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void PlaySummonParticleEffect(Transform tr, bool isAlly)
@@ -42,6 +34,26 @@ public class Ingame_ParticleManager : MonoBehaviour
         }
 
         ParticleSystem effectInstance = Instantiate(summonEffect, tr.position, tr.rotation);
+
+        effectInstance.Play();
+
+        Destroy(effectInstance.gameObject, effectInstance.main.duration);
+    }
+
+    public void PlayAttackedParticleEffect(Transform AttackedUnit, AttackType attackType, bool Crit)
+    {
+        ParticleSystem Effect;
+
+        if (Crit)
+        {
+            Effect = AttackCritVFX[(int)attackType];
+        }
+        else
+        {
+            Effect = AttackVFX[(int)attackType];
+        }
+
+        ParticleSystem effectInstance = Instantiate(Effect, AttackedUnit);
 
         effectInstance.Play();
 

@@ -19,4 +19,12 @@ public class ArrowCtrl : MonoBehaviour
     {
         transform.Translate(Vector3.forward * speed * 0.5f);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

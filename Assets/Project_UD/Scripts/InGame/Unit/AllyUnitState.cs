@@ -38,7 +38,7 @@ public class AllyUnitState : MonoBehaviour
 
     private void Update()
     {
-        allyAnimator = UnitCtrl.CurVisualModelAnimator;
+        allyAnimator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
         fsm.Driver.Update.Invoke();
     }
 
@@ -50,8 +50,6 @@ public class AllyUnitState : MonoBehaviour
 
     void Idle_Update()
     {
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         UnitCtrl.SearchEnemy();
     }
 
@@ -65,14 +63,10 @@ public class AllyUnitState : MonoBehaviour
     void Attack_Enter()
     {
         Debug.Log("Attack_Enter");
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
     }
 
     void Attack_Update()
     {
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
-
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null)
         {
             if (UnitCtrl.targetEnemy != null)
@@ -101,7 +95,6 @@ public class AllyUnitState : MonoBehaviour
     void Attack_Exit()
     {
         Debug.Log("Attack_Exit"); 
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
         //UnitCtrl.targetEnemy = null;
         //UnitCtrl.isEnemyInRange = false;
     }
@@ -117,13 +110,10 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInSight = false;
 
         Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, true, false);
-        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, true);
     }
 
     void Move_Update()
     {
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
             navAgent.speed = UnitCtrl.cur_moveSpeed;
@@ -146,10 +136,7 @@ public class AllyUnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position);
         navAgent.isStopped = true;
-        Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
-        Debug.Log("dddd");
-        Ingame_UIManager.instance.ShowMoveUI(this.gameObject, false); 
-        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
+        Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false); 
     }
     #endregion
 

@@ -5,17 +5,20 @@ using UnityEngine;
 public class BowCtrl : MonoBehaviour
 {
     public GameObject Arrow;
-    public Transform ShootPos;
+    //public Transform ShootPos;
 
     float ShootCooldown_Cur = 0;
 
     public void ArrowShoot(bool isEnemyAttack)
     {
         GameObject arrow_Obj = Instantiate(Arrow);
-        arrow_Obj.transform.SetPositionAndRotation(this.ShootPos.position, this.transform.rotation);
-        AttackCtrl arrowCtrl = arrow_Obj.GetComponent<AttackCtrl>();
+        if(arrow_Obj != null)
+        {
+            arrow_Obj.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            AttackCtrl arrowCtrl = arrow_Obj.GetComponent<AttackCtrl>();
 
-        //���⼭ NullReferenceException ���� �߻�. ����?????
-        //arrowCtrl.isEnemyAttack = isEnemyAttack;
+            //여기서 NullReferenceException 오류 발생. 왜지?????
+            //arrowCtrl.isEnemyAttack = isEnemyAttack;
+        }
     }
 }

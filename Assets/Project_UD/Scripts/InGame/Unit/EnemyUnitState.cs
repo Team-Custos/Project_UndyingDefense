@@ -36,7 +36,7 @@ public class EnemyUnitState : MonoBehaviour
 
     private void Update()
     {
-        EnemyAnimator = UnitCtrl.CurVisualModelAnimator;
+        EnemyAnimator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
         fsm.Driver.Update.Invoke();
     }
 
@@ -50,7 +50,7 @@ public class EnemyUnitState : MonoBehaviour
     void Idle_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
     }
 
     #endregion
@@ -64,7 +64,7 @@ public class EnemyUnitState : MonoBehaviour
     void Attack_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, true);
+        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
         UnitCtrl.Unit_Attack();
     }
 
@@ -72,16 +72,14 @@ public class EnemyUnitState : MonoBehaviour
     {
         UnitCtrl.targetEnemy = null;
         UnitCtrl.isEnemyInRange = false;
-        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
     }
     #endregion
 
     #region Move State
     void Move_Enter()
     {
-        //Debug.Log("Enemy Move_Enter");
         UnitCtrl.isEnemyInRange = false;
-        //navAgent.isStopped = false;
 
         UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
         UnitCtrl.enemy_isPathBlocked = false;
@@ -91,7 +89,7 @@ public class EnemyUnitState : MonoBehaviour
     void Move_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
-        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_ATTACK, false);
+        EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
         navAgent.speed = UnitCtrl.cur_moveSpeed;
 
         SearchPath();

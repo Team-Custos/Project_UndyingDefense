@@ -1,11 +1,7 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
-using static UnitExcelDataManager;
-using static UnitDataManager;
 
 public enum DefenseType
 {
@@ -41,7 +37,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     
     UnitModelSwapManager ModelSwapManager;
     public UnitSoundManager soundManager;
-    public Animator animator;
+    
 
     
     [Header("====Status====")]
@@ -50,7 +46,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Vector2 unitPos = Vector2.zero;
 
     public Transform VisualModel;
-    public Animator CurVisualModelAnimator;
+    //public UnitAnimationParaCtrl AnimationCtrl;
     public GameObject Selected_Particle;
     public bool isSelected = false;
     public int cur_modelType;
@@ -147,7 +143,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         targetBase = InGameManager.inst.Base;
         maxHp = unitData.maxHP;
-        HP = unitData.maxHP;
+
+        //if()//삼계탕 특식 효과
+        {
+            maxHp = unitData.maxHP + 2;
+        }
+
+        HP = maxHp;
+        cur_moveSpeed = unitData.moveSpeed;
         
 
         Ally_Mode = AllyMode.Siege;
@@ -183,7 +186,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
+        //Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
     }
 
     public void ModelSwap()
@@ -208,18 +211,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CurVisualModelAnimator = VisualModel.GetComponentInChildren<Animator>();
-        //if (CurVisualModelAnimator != null)
-        //{
-        //    CurVisualModelAnimator.runtimeAnimatorController = unitData.overrideController;
-        //}
-
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
-
 
         //모델 변경
         ModelSwap();
@@ -258,7 +254,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else if (Ally_Mode == AllyMode.Siege)
             {
-
+                NavAgent.enabled = false;
+                NavObstacle.enabled = true;
             }
 
             if (Input.GetKeyDown(KeyCode.B) && isSelected)
@@ -491,7 +488,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else
         {
             GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch(unitData.attackRange, this.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+                sightRangeSensor.NearestObjectSearch(unitData.sightRange, this.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
 
             if (TargetObj != null)
             {
@@ -520,7 +517,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 Ally_State.fsm.ChangeState(UnitState.Search);
                 return;
             }
-            else
+            else if(isEnemyInRange)
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
                 UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
@@ -538,7 +535,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     Debug.Log("SkillCode : " + unitData.generalSkillCode);
                     Debug.Log("targetEnemy." + targetEnemy.name);
-                    Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
+                    //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
@@ -657,8 +654,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 if (attackType == soundManager.HitSound[idx].type)
                 {
                     soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSoundCrit);
+                    break;
                 }
             }
+            Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, true);
         }
         else //치명타 비적용시
         {
@@ -668,8 +667,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     int HitSoundRandomNum = Random.Range(0, 2);
                     soundManager.PlaySFX(soundManager.HIT_SFX, soundManager.HitSound[idx].hitSound[HitSoundRandomNum]);
+                    break;
                 }
             }
+            Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, false);
         }
 
 

@@ -10,6 +10,7 @@ public enum UnitType
     Hunter,
     SpearMan,
     Archer,
+    Gunner,
 }
 
 
