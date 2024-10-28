@@ -248,7 +248,6 @@ public class EnemySpawner : MonoBehaviour
 
             activeMonsters.Add(enemyObj);
             enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
-            Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
 
             enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
 

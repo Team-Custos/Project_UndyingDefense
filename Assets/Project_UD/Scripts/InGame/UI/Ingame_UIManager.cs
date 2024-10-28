@@ -425,9 +425,12 @@ public class Ingame_UIManager : MonoBehaviour
                 {
                     unit.previousAllyMode = unit.Ally_Mode;
                     unit.Ally_Mode = AllyMode.Change;
+                    Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(unit.transform, -0.8f);
 
                     DestroyUnitStateChangeBox();
                 }
+
+                
             });
         }
 
