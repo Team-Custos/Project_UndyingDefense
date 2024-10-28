@@ -24,6 +24,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public Button loseWaveRestartBtn = null;
     public Button loselobbybtn = null;
     public GameObject waveStepSuccessPanel;
+    public Text waveStepText;
 
     public float fadeDuration = 0.3f;
 
