@@ -5,16 +5,17 @@ using System.Linq;
 using UnityEngine;
 using WSWhitehouse.TagSelector;
 
+//이 스크립트는 공격 범위를 관리하기 위한 스크립트입니다.
 public class RangeCtrl : MonoBehaviour
 {
     [TagSelector] public string tagToSearch;
 
-    public float radius = 5;
+    public float radius = 5;//공격 범위 수치.
 
-    public List<GameObject> detectedObjects = new List<GameObject>();
-    public List<GameObject> ignoreList = new List<GameObject>();
+    public List<GameObject> detectedObjects = new List<GameObject>();//감지된 게임 오브젝트.
+    public List<GameObject> ignoreList = new List<GameObject>();//무시할 게임 오브젝트 (자기 자신 등)
 
-    public GameObject Obj_Nearest = null;
+    public GameObject Obj_Nearest = null; //가장 가까이 있는 오브젝트.
     
 
 
@@ -22,18 +23,19 @@ public class RangeCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<SphereCollider>().radius = radius;
+        GetComponent<SphereCollider>().radius = radius;//공격 범위를 콜라이더 반지름에 적용.
     }
 
-    public GameObject NearestObjectSearch(float attackRange, bool isParentEnemy)
+    public GameObject NearestObjectSearch(float attackRange, bool isParentEnemy)//가까이 있는 오브젝트를 검색.
     {
-        if (Obj_Nearest == null)
+        if (Obj_Nearest == null) //없어졌을경우.
         {
-            ListRefresh();
+            ListRefresh();//리스트 초기화.
         }
 
-        if (detectedObjects.Count > 0)
+        if (detectedObjects.Count > 0) //한 게임 오브젝트라도 탐지 되었을때,
         {
+            //가장 가까이 있는 오브젝트를 찾기 위한 정렬.
             Obj_Nearest = detectedObjects[0];
             float Obj_Distance_Nearest = Vector3.Distance(Obj_Nearest.transform.position, transform.position);
             if (detectedObjects.Count > 1)
@@ -59,7 +61,7 @@ public class RangeCtrl : MonoBehaviour
         
     }
 
-    public void ListRefresh()
+    public void ListRefresh()//리스트 초기화.
     {
         if (detectedObjects.Contains(Obj_Nearest))
         {
@@ -71,9 +73,10 @@ public class RangeCtrl : MonoBehaviour
     {
         if (other.transform.root.TryGetComponent(out Ingame_UnitCtrl unit))
         {
-            if (other.CompareTag(tagToSearch.ToString()))
+            if (other.CompareTag(tagToSearch.ToString()))//찾을 태그에 맞을 경우. (외부 스크립트 사용.)
             {
-                detectedObjects.Add(unit.gameObject);
+                unit.OnDestroyed += OnReceiveUnitDestroyed;
+                detectedObjects.Add(unit.gameObject); //리스트에 추가.
             }
             else return;
         }
@@ -83,12 +86,13 @@ public class RangeCtrl : MonoBehaviour
     {
         if (other.transform.root.TryGetComponent(out Ingame_UnitCtrl unit))
         {
-            if (other.CompareTag(tagToSearch))
+            if (other.CompareTag(tagToSearch))//찾을 태그에 맞을 경우. (외부 스크립트 사용.)
             {
-                detectedObjects.Remove(unit.gameObject);
+                unit.OnDestroyed -= OnReceiveUnitDestroyed;
+                detectedObjects.Remove(unit.gameObject);//리스트에서 삭제.
                 if (Obj_Nearest == unit.gameObject)
                 {
-                    Obj_Nearest = null;
+                    Obj_Nearest = null; //가까이 있는 오브젝트 변수를 초기화.
                 }
                 
             }
@@ -96,5 +100,8 @@ public class RangeCtrl : MonoBehaviour
         }
     }
 
-
+    private void OnReceiveUnitDestroyed(GameObject unitGameObject)
+    {
+        detectedObjects.Remove(unitGameObject);
+    }
 }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 아군 병사를 스폰시키기 위한 스크립트입니다.
 
-
-public enum UnitType
+public enum UnitType //병사의 종류.
 {
     MinByeong,
     Hunter,

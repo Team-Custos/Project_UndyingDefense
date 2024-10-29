@@ -5,14 +5,14 @@ using DG.Tweening;
 using UnityEngine.Tilemaps;
 using System;
 
-
+//ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ê·¸ë¦¬ë“œì™€ íƒ€ì¼ì„ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ìŠ¤í¬ë¦½íŠ¸ì…ë‹ˆë‹¤.
 public class GridManager : MonoBehaviour
 {
     public static GridManager inst;
 
     public int _width, _height;
 
-    [SerializeField] private GridTile _tilePrefab;
+    [SerializeField] private GridTile _tilePrefab; //íƒ€ì¼ í”„ë¦¬íŒ¹
 
     public Dictionary<Vector2, bool> _tiles = new Dictionary<Vector2, bool>
     { };
@@ -22,8 +22,8 @@ public class GridManager : MonoBehaviour
     public GridTile[] Tiles_Obj;
     int Tiles_idx;
 
-    public Grid mapGrid;
-    public Tilemap groundTilemap;
+    public Grid mapGrid; //íƒ€ì¼ë§µì„ í†µí•´ ì„ íƒí•œ íƒ€ì¼ì˜ ìµœì¢… ì›”ë“œ ì¢Œí‘œë¥¼ ê°€ì ¸ì˜¤ê¸°ìœ„í•œ ê·¸ë¦¬ë“œ.
+    public Tilemap groundTilemap; //íƒ€ì¼ ìœ„ì¹˜ë¥¼ ê°€ì§€ê³  ì˜¤ê¸°ìœ„í•œ íƒ€ì¼ë§µ
 
     public float tile_Offset;
 
@@ -38,55 +38,45 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
-
-    public Vector2 GetTilePos(Vector3 pos)
+    public Vector2 GetTilePos(Vector3 pos) //íƒ€ì¼ ì¢Œí‘œë¥¼ ë¶ˆëŸ¬ë‚´ê¸° ìœ„í•œ í•¨ìˆ˜.
     {
         Vector2 TilePos = new Vector2(groundTilemap.WorldToCell(pos).x, groundTilemap.WorldToCell(pos).y);
         return TilePos;
     }
 
-    public void SetTilePlaceable(Vector3 pos, bool SetManualMode, bool PlaceableToSetManual)
+    public void SetTilePlaceable(Vector3 pos, bool SetManualMode, bool PlaceableToSetManual) //íƒ€ì¼ì˜ ìœ ë‹› ë°°ì¹˜ ê°€ëŠ¥ì—¬ë¶€ë¥¼ ì„¤ì •í•˜ëŠ” í•¨ìˆ˜.
     {
         Vector3Int CurCellPos = groundTilemap.WorldToCell(pos);
         Vector3 CurCellWorldPos = new Vector3 (groundTilemap.GetCellCenterWorld(CurCellPos).x,0,groundTilemap.GetCellCenterWorld(CurCellPos).z);
 
         Vector3 CurUnitWorldPos = new Vector3(pos.x, 0, pos.z);
 
-        //Debug.Log("ÇöÀç ¹èÄ¡ °¡´É ¿©ºÎ : " + _tiles[CurCellPos]);
-        //Debug.Log("ÇöÀç À§Ä¡ÇÑ Å¸ÀÏÀÇ ±×¸®µå ÁÂÇ¥ : " + CurCellPos);
-        //Debug.Log("ÇöÀç À§Ä¡ÇÑ Å¸ÀÏÀÇ ¿ùµå ÁÂÇ¥ : " + CurCellWorldPos);
+        //Debug.Log("í˜„ì¬ ë°°ì¹˜ ê°€ëŠ¥ ì—¬ë¶€ : " + _tiles[CurCellPos]);
+        //Debug.Log("í˜„ì¬ ìœ„ì¹˜í•œ íƒ€ì¼ì˜ ê·¸ë¦¬ë“œ ì¢Œí‘œ : " + CurCellPos);
+        //Debug.Log("í˜„ì¬ ìœ„ì¹˜í•œ íƒ€ì¼ì˜ ì›”ë“œ ì¢Œí‘œ : " + CurCellWorldPos);
 
-        // À¯´Ö°ú Å¸ÀÏÀÇ Áß½É °£ÀÇ °Å¸® °è»ê (x¿Í z¸¸ ºñ±³)
+        // ìœ ë‹›ê³¼ íƒ€ì¼ì˜ ì¤‘ì‹¬ ê°„ì˜ ê±°ë¦¬ ê³„ì‚° (xì™€ zë§Œ ë¹„êµ)
         float distanceX = Mathf.Abs(CurCellWorldPos.x - CurUnitWorldPos.x);
         float distanceZ = Mathf.Abs(CurCellWorldPos.z - CurUnitWorldPos.z);
 
         //Debug.Log(new Vector2(distanceX,distanceZ));
 
-        if (SetManualMode == true)//Á÷Á¢ ¼³Á¤ÇÒ°æ¿ì
+        if (SetManualMode == true)//ì§ì ‘ ì„¤ì •í• ê²½ìš°
         {
             _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = PlaceableToSetManual;
             return;
         }
         else
         {
-            // Å¸ÀÏ Áß½É°ú À¯´Ö À§Ä¡ÀÇ x ¹× z °Å¸® Â÷ÀÌ¸¦ ÀÌ¿ëÇÏ¿© ¹èÄ¡ °¡´É ¿©ºÎ¸¦ ÆÇ´Ü
+            // íƒ€ì¼ ì¤‘ì‹¬ê³¼ ìœ ë‹› ìœ„ì¹˜ì˜ x ë° z ê±°ë¦¬ ì°¨ì´ë¥¼ ì´ìš©í•˜ì—¬ ë°°ì¹˜ ê°€ëŠ¥ ì—¬ë¶€ë¥¼ íŒë‹¨
             if (distanceX > 0.95f || distanceZ > 0.95f)
             {
-                // Å¸ÀÏ°ú À¯´ÖÀÌ °°Àº À§Ä¡¿¡ ÀÖ´Ù°í ÆÇ´Ü - ¹èÄ¡ °¡´É
+                // íƒ€ì¼ê³¼ ìœ ë‹›ì´ ê°™ì€ ìœ„ì¹˜ì— ìˆë‹¤ê³  íŒë‹¨ - ë°°ì¹˜ ê°€ëŠ¥
                 _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = true;
             }
             else
             {
-                // Å¸ÀÏ°ú À¯´ÖÀÌ ÃæºĞÈ÷ °¡±îÀÌ ÀÖÁö ¾ÊÀ½ - ¹èÄ¡ ºÒ°¡
+                // íƒ€ì¼ê³¼ ìœ ë‹›ì´ ì¶©ë¶„íˆ ê°€ê¹Œì´ ìˆì§€ ì•ŠìŒ - ë°°ì¹˜ ë¶ˆê°€
                 _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
             }
         }
@@ -94,7 +84,7 @@ public class GridManager : MonoBehaviour
         
     }
 
-    public bool GetTilePlaceable(Vector3 WorldPosToFind)
+    public bool GetTilePlaceable(Vector3 WorldPosToFind) //íƒ€ì¼ì˜ ìœ ë‹› ë°°ì¹˜ ê°€ëŠ¥ ì—¬ë¶€ë¥¼ íŒë‹¨í•˜ëŠ” í•¨ìˆ˜.
     {
         Vector3Int CellPos = groundTilemap.WorldToCell(WorldPosToFind);
         if (_tiles.ContainsKey(new Vector2(CellPos.x, CellPos.y)))
@@ -108,7 +98,7 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public bool IsTilesAllOff()
+    public bool IsTilesAllOff()//ëª¨ë“  íƒ€ì¼ì˜ ì„ íƒ í•´ì œ.
     {
         if (Tiles_Obj[Tiles_idx].GetComponent<GridTile>().Selected)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 화살 오브젝트를 관리하기 위한 스크립트입니다.
 public class ArrowCtrl : MonoBehaviour
 {
     public int Atk = 1;

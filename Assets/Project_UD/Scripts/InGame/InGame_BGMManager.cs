@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//이 스크립트는 인게임의 배경음악을 관리하기 위한 스크립트입니다.
 public class InGame_BGMManager : MonoBehaviour
 {
     public AudioClip[] BGM;

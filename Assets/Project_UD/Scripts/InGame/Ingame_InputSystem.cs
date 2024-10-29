@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//이 스크립트는 인게임 조작을 관리하기 위한 스크립트입니다.
+
 public class Ingame_InputSystem : MonoBehaviour
 {
-
     public static Ingame_InputSystem Instance { get; private set; }
 
     public float AxisX = 0;

@@ -1,12 +1,12 @@
 using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+
+//이 스크립트는 플레이어의 조작 이벤트를 위한 스크립트입니다.
 
 public class GameOrderSystem : MonoBehaviour
 {
@@ -14,13 +14,12 @@ public class GameOrderSystem : MonoBehaviour
 
      InGameManager GAMEMANAGER;
 
-    public GameObject clickedObj = null;
-    public GameObject selectedUnit = null;
+    public GameObject clickedObj = null; //클릭한 오브젝트
+    public GameObject selectedUnit = null; //선택한 유닛 (아군, 적군)
 
+    public Vector3 clickedWorldPos = Vector3.zero; //클릭한 지점의 월드 좌표.
 
-    public Vector3 clickedWorldPos = Vector3.zero;
-
-    public GameObject clickedPosIndicator = null;
+    public GameObject clickedPosIndicator = null; //클릭한 지점을 표시하기 위한 오브젝트 (삭제 예정)
 
     private void Awake()
     {
@@ -38,7 +37,7 @@ public class GameOrderSystem : MonoBehaviour
         Ingame_InputSystem.Instance.OnPrimaryPerformed -= OnPrimaryButtonOrder;
     }
 
-    private void OnPrimaryButtonOrder()
+    private void OnPrimaryButtonOrder()//마우스 왼쪽 클릭 이벤트 처리 함수
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -190,7 +189,6 @@ public class GameOrderSystem : MonoBehaviour
                 {
                     selectedUnit = Enemy.gameObject;
 
-
                     // 선택된 적의 UI 업데이트
                     Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
                 }
@@ -265,7 +263,7 @@ public class GameOrderSystem : MonoBehaviour
 
 
 
-    private void OnSecondaryButtonOrder()
+    private void OnSecondaryButtonOrder() //마우스 오른쪽 클릭 이벤트 처리 함수.
     {
         //To do : Secondary Button Event
 

@@ -12,6 +12,8 @@ using DG.Tweening.Core.Easing;
 using System.Threading.Tasks;
 using Unity.Burst.CompilerServices;
 
+//이 스크립트는 인게임의 전반적인 UI를 관리하기 위한 스크립트입니다.
+
 public class Ingame_UIManager : MonoBehaviour
 {
     public static Ingame_UIManager instance;

@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 인게임 내에서 이루어진 전반적인 것을 관리하기 위한 스크립트입니다.
+
 public class InGameManager : MonoBehaviour
 {
     public static InGameManager inst;
-    public GridManager gridManager;
-    public UnitDebuffDataCtrl unitDebuffData;
+    public GridManager gridManager;//그리드 관리
+    public UnitDebuffDataCtrl unitDebuffData;//유닛의 디버프의 기본정보 관리.
 
-    public CommanderSkillData[] CurCommanderSkill;
+    public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
-    public GameObject Base;
+    public GameObject Base;//성 오브젝트.
    
-
+    //디버그용으로 사용할 유닛 설치가능 상태.
     public bool UnitSetMode = false;
     public bool AllyUnitSetMode = false;
     public bool EnemyUnitSetMode = false;
@@ -30,6 +32,15 @@ public class InGameManager : MonoBehaviour
         {
             UnitSetMode = !UnitSetMode;
             EnemyUnitSetMode = !EnemyUnitSetMode;
+        }
+
+        if (Input.GetKeyDown(KeyCode.O) || Input.GetKey(KeyCode.O))
+        {
+            Time.timeScale = 3f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
 
         if (UnitSetMode && AllyUnitSetMode)
@@ -54,7 +65,7 @@ public class InGameManager : MonoBehaviour
 
     }
 
-    public void AllUnitSelectOff()
+    public void AllUnitSelectOff()//모든 유닛들의 선택 해제.
     {
         Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
         foreach (var unit in allUnit)
@@ -63,7 +74,7 @@ public class InGameManager : MonoBehaviour
         }
     }
 
-    public void AllTileSelectOff()
+    public void AllTileSelectOff()//모든 타일의 선택 해제.
     {
         GridTile[] allTiles = FindObjectsOfType<GridTile>();
         foreach (var tile in allTiles)

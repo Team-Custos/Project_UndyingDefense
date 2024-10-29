@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
+//ì¹´ë©”ë¼ ì¡°ì‘ì„ ìœ„í•œ ìŠ¤í¬ë¦½íŠ¸. (ì‚­ì œ ì˜ˆì •.)
 public class Ingame_CamManager : MonoBehaviour
 {
     Ingame_InputSystem inputSystem;
@@ -12,9 +14,9 @@ public class Ingame_CamManager : MonoBehaviour
 
     public float moveSpeed = 2;
 
-    private bool _userMoveInput; // ÇöÀç Á¶ÀÛÀ» ÇÏ°íÀÖ´ÂÁö È®ÀÎÀ» À§ÇÑ º¯¼ö
-    private Vector3 _startPosition;  // ÀÔ·Â ½ÃÀÛ À§Ä¡¸¦ ±â¾ï
-    private Vector3 _directionForce; // Á¶ÀÛÀ» ¸ØÃèÀ»¶§ ¼­¼­È÷ °¨¼ÓÇÏ¸é¼­ ÀÌµ¿ ½ÃÅ°±â 
+    private bool _userMoveInput; // í˜„ì¬ ì¡°ì‘ì„ í•˜ê³ ìˆëŠ”ì§€ í™•ì¸ì„ ìœ„í•œ ë³€ìˆ˜
+    private Vector3 _startPosition;  // ì…ë ¥ ì‹œì‘ ìœ„ì¹˜ë¥¼ ê¸°ì–µ
+    private Vector3 _directionForce; // ì¡°ì‘ì„ ë©ˆì·„ì„ë•Œ ì„œì„œíˆ ê°ì†í•˜ë©´ì„œ ì´ë™ ì‹œí‚¤ê¸° 
 
 
     // Start is called before the first frame update
@@ -88,7 +90,7 @@ public class Ingame_CamManager : MonoBehaviour
     }
     private void UpdateCameraPosition()
     {
-        // ÀÌµ¿ ¼öÄ¡°¡ ¾øÀ¸¸é ¾Æ¹«°Íµµ ¾ÈÇÔ
+        // ì´ë™ ìˆ˜ì¹˜ê°€ ì—†ìœ¼ë©´ ì•„ë¬´ê²ƒë„ ì•ˆí•¨
         if (_directionForce == Vector3.zero)
         {
             return;

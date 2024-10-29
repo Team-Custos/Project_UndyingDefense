@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
 
+//이 스크립트는 적군을 스폰시키기 위한 스크립트입니다.
+
 [System.Serializable]
 
 public class EnemySpawnData

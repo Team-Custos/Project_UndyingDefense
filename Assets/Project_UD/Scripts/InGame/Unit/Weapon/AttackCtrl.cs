@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum AttackType
+//이 스크립트는 공격 판정 트리거를 위한 스크립트입니다.
+public enum AttackType //공격 속성
 {
     Pierce = 0,
     Slash = 1,
@@ -12,7 +13,7 @@ public enum AttackType
     UnKnown = 99,
 }
 
-public enum AttackMethod
+public enum AttackMethod //공격 방식
 {
     Arrow,
     Granade,
@@ -25,9 +26,9 @@ public class AttackCtrl : MonoBehaviour
 
     public AttackType Type;
     public UnitDebuff Debuff2Add;
-    public int Damage = 1;
-    public float moveSpeed = 1f;
-    public float Crit = 0;
+    public int Damage = 1; //데미지
+    public float moveSpeed = 1f;//(이동할 경우) 이동 속도
+    public float Crit = 0;//치명타 확률
     public bool isEnemyAttack = false;
 
     // Start is called before the first frame update

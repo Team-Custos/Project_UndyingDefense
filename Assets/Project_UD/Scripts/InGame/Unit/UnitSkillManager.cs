@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 유닛의 스킬들을 관리하기 위한 스크립트입니다. (아군, 적군 통합.)
+
 public class UnitSkillManager : MonoBehaviour
 {
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>

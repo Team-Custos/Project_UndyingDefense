@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 배치된 그리트 타일을 관리하기 위한 스크립트입니다.
 public class GridTile : MonoBehaviour
 {
     InGameManager GAMEMANAGER;

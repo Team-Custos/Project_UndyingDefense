@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 기본 데이터를 관리하기 위한 스크립트입니다. (스크립터블 오브젝트 사용.)
+
 [CreateAssetMenu(fileName = "UnitData", menuName = "Scriptable Object/UnitData", order = int.MaxValue)]
 public class Ingame_UnitData : ScriptableObject
 {                                                                 

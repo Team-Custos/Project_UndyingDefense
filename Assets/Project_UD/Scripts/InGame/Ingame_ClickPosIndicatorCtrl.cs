@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//클릭한 좌표를 나타내기위한 오브젝트를 관리하는 스크립트(삭제 예정.)
 public class Ingame_ClickPosIndicatorCtrl : MonoBehaviour
 {
     public float showHideTime = 0;

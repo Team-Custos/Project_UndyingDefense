@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//이 스크립트는 지휘관의 스킬 데이터를 관리하기 위한 스크립트입니다.
+
 public enum SkillType
 {
     order,

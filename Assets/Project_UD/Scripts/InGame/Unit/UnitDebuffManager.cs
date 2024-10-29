@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//이 스크립트는 유닛의 현재 디버프를 관리하기 위한 스크립트입니다.
+
 [System.Serializable]
 public class UnitCurDebuff
 {

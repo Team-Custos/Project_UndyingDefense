@@ -1,24 +1,25 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
-public enum DefenseType
+//이 스크립트는 유닛의 전반적인 상태와 행동을 관리하기 위한 스크립트입니다. (아군과 적군 통합.)
+public enum DefenseType //유닛의 방어속성.
 {
     cloth,
     metal,
     leather
 }
 
-public enum AllyMode
+public enum AllyMode//아군의 모드.
 {
     Siege,
     Free,
     Change
 }
 
-public enum TargetSelectType
+public enum TargetSelectType//유닛의 타겟 선정 방식.
 {
     Nearest,
     LowestHP,
@@ -34,11 +35,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public NavMeshAgent NavAgent;
     [HideInInspector] public UnitSkillManager UnitSkill;
 
-    public Ingame_UnitData unitData;
-    UnitDebuffManager debuffManager;
+    public Ingame_UnitData unitData; //유닛의 데이터 (스크립터블 오브젝트.)
+    UnitDebuffManager debuffManager; //디버프 관리.
     
-    UnitModelSwapManager ModelSwapManager;
-    public UnitSoundManager soundManager;
+    UnitModelSwapManager ModelSwapManager; //유닛의 모델 관리.
+    public UnitSoundManager soundManager; //유닛의 SFX 관리.
     
 
     
@@ -46,41 +47,42 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public AllyMode Ally_Mode;
 
     public Vector2 unitPos = Vector2.zero;
+    public Quaternion unitDefaultRotation;
 
-    public Transform VisualModel;
+    public Transform VisualModel; //모델 변경을 위한 오브젝트.
     //public UnitAnimationParaCtrl AnimationCtrl;
-    public GameObject Selected_Particle;
-    public bool isSelected = false;
-    public int cur_modelType;
-    public int HP;
-    public float cur_moveSpeed = 1;
-    public float cur_attackSpeed = 1;
-    public bool unActable = false;
+    public GameObject Selected_Particle; //선택 여부를 위한 효과.
+    public bool isSelected = false; //선택 여부.
+    public int cur_modelType; //현재 적용된 모델.
+    public int HP; //유닛의 현재 체력.
+    public float cur_moveSpeed = 1;//유닛의 현재 이동속도. (디버프로 인한 속도 관리를 위함.)
+    public float cur_attackSpeed = 1;//유닛의 현재 공격속도. (디버프로 인한 속도 관리를 위함.)
+    public bool unActable = false;//행동할 수 없는가?
 
-    public int maxHp;
-    public Image hpBar;
+    public int maxHp;//최대 체력.
+    public Image hpBar;//유닛의 체력 바.
 
     [Header("====AI====")]
     bool SpawnDelay = true;
 
-    public GameObject targetBase;
+    public GameObject targetBase; //적군을 위한 성의 위치.
 
-    public Vector3 moveTargetBasePos;
-    public Vector3 moveTargetPos;
-    public bool haveToMovePosition = false;
-    public GameObject targetEnemy = null;
-    public RangeCtrl sightRangeSensor;
+    public Vector3 moveTargetBasePos; //성으로 가기위한 목적지 좌표.
+    public Vector3 moveTargetPos;//목적지 좌표.
+    public bool haveToMovePosition = false; //모든 행동을 무시하고 이동해야 하는가?
+    public GameObject targetEnemy = null;//현재 타겟 유닛.
+    public RangeCtrl sightRangeSensor;//시야범위 센서.
 
-    public bool isEnemyInSight = false;
-    public bool isEnemyInRange = false;
-    public bool enemy_isBaseInRange = false;
-    public bool enemy_isPathBlocked = false;
+    public bool isEnemyInSight = false;//적이 시야 범위 내에 있는가?
+    public bool isEnemyInRange = false;//적이 공격 범위 내에 있는가?
+    public bool enemy_isBaseInRange = false;//성이 공격 범위 내에 있는가? (적군 전용)
+    public bool enemy_isPathBlocked = false;//성까지 가는 길이 막혀있는가? (적군 전용)
 
-    public GameObject findEnemyRange = null;
-    public GameObject Bow = null;
+    public GameObject findEnemyRange = null; //시야범위
+    public GameObject Bow = null; //활 오브젝트
 
-    public float unitStateChangeTime;
-    public AllyMode previousAllyMode;
+    public float unitStateChangeTime; //유닛의 모드를 변경할때의 대기 시간.
+    public AllyMode previousAllyMode; //유닛의 마지막으로 설정된 모드.
 
     //public string unitCode;
     //public int level;
@@ -93,6 +95,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     // 수정 예정
     public string defenstype;
+
+    public System.Action<GameObject> OnDestroyed;
+
+
+    public Quaternion defaultTargetRotation;
 
 
 
@@ -133,6 +140,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.rotation = unitDefaultRotation;
+        defaultTargetRotation = unitDefaultRotation;
+
+        //유닛 스폰시 모델 설정.
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
             Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
@@ -140,24 +151,23 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
             Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            
         }
 
         SpawnDelay = true;
 
-        targetBase = InGameManager.inst.Base;
-        maxHp = unitData.maxHP;
+        targetBase = InGameManager.inst.Base; //성 오브젝트.
+        maxHp = unitData.maxHP;//유닛의 최대체력 변수 초기화.
 
         //if()//삼계탕 특식 효과
-        {
-            maxHp = unitData.maxHP + 2;
-        }
+        //{
+        //    maxHp = unitData.maxHP + 2;
+        //}
 
-        HP = maxHp;
-        cur_moveSpeed = unitData.moveSpeed;
+        HP = maxHp; //최대체력의 최종 변수로 현재 체력을 초기화.
+        cur_moveSpeed = unitData.moveSpeed;//현재 이동 속도를 데이터의 이동속도로 초기화.
         
 
-        Ally_Mode = AllyMode.Siege;
+        Ally_Mode = AllyMode.Siege;//시즈모드로 스폰.
 
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
@@ -187,7 +197,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //Gizmos.DrawWireSphere(findEnemyRange.transform.position, unitData.attackRange + 0.5f);
     }
 
-    public void ModelSwap()
+    public void ModelSwap()//모델 변경 함수.
     {
         if (unitData.modelType != cur_modelType)
         {
@@ -257,33 +267,47 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //모델 변경
         ModelSwap();
 
-        Selected_Particle.SetActive(isSelected);
+        Selected_Particle.SetActive(isSelected); // 선택 효과 설정.
         //findEnemyRange.SetActive(isSelected);
-        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
+        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);//성의 좌표 초기화.
 
-        NavAgent.speed = unitData.moveSpeed;
+        NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
         if (HP <= 0)
         {
-            ObjectPool.ReturnObject(this.gameObject);
+            ObjectPool.ReturnObject(this.gameObject);//로폴님께 이 함수가 왜 필요한지 상의 필요.
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
 
+            //this.gameObject.SetActive(false);
+            
+            OnDestroyed?.Invoke(gameObject);
+
             Destroy(this.gameObject);
+
             Debug.Log(this.gameObject.name + " Destroyed");
 
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
-        if (Input.GetKeyDown(KeyCode.H) && isSelected)
+        if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
             Destroy(this.gameObject);
         }
 
+        
 
         #region 아군 제어
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         {
+            if (!isEnemyInSight)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, defaultTargetRotation, Time.deltaTime * 2f);
+                VisualModel.transform.rotation = Quaternion.Slerp(transform.rotation, defaultTargetRotation, Time.deltaTime * 2f); 
+            }
+
             sightRangeSensor.radius = unitData.sightRange;
+
+            //유닛의 모드에따라 활성화할 컴포넌트를 설정.
             if (Ally_Mode == AllyMode.Free)
             {
                 NavObstacle.enabled = false;
@@ -295,12 +319,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 NavObstacle.enabled = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.B) && isSelected)
+            if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
             {
                 debuffManager.AddDebuff(UnitDebuff.Dizzy);
             }
 
-            if (isSelected && Input.GetKeyDown(KeyCode.Q))
+            if (isSelected && Input.GetKeyDown(KeyCode.Q))//디버그용. 삭제 예정.
             {
                 previousAllyMode = Ally_Mode;
                 //isSelected = false;
@@ -310,7 +334,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             // Change 상태일 때는 다른 행동을 하지 않음
             if (Ally_Mode == AllyMode.Change)
             {
-
                 Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
 
 
@@ -329,7 +352,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
-                    InGameManager.inst.AllUnitSelectOff();
+                    InGameManager.inst.AllUnitSelectOff(); //모든 유닛의 선택 해제.
+
+                    //유닛의 모드 변경.
                     if (previousAllyMode == AllyMode.Free)
                     {
                         Ally_Mode = AllyMode.Siege;
@@ -373,39 +398,44 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
 
-                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
-                if (targetEnemy == null && !isEnemyInSight)
+                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
+                if (targetEnemy == null && !isEnemyInSight)//적군이 시야 범위 내에 없을경우.
                 {
-                    SearchEnemy();
+                    SearchEnemy();//적 탐색
                 }
+                
 
-                if (targetEnemy != null && !haveToMovePosition)
+                if (targetEnemy != null && !haveToMovePosition) // 타겟 적군이 있을 경우.
                 {
                     float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-                    isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
+                    isEnemyInRange = (distanceToEnemy <= unitData.attackRange);//적군이 유닛 공격 범위 내에 있는가?
 
                     if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
                     {
                         Ally_State.fsm.ChangeState(UnitState.Attack);
                     }
                 }
+                else
+                {
+                    isEnemyInRange = false;
+                }
             }
             //프리모드일때
             else if (Ally_Mode == AllyMode.Free)
             {
-
-                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);
-                if (haveToMovePosition)
+                UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
+                if (haveToMovePosition)//모든 행동을 무시하고 이동해야하는가?
                 {
                     targetEnemy = null;
                     Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
 
-                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)
+                    if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)//목적지에 도착할떄까지
                     {
-                        Ally_State.fsm.ChangeState(UnitState.Move);
+                        Ally_State.fsm.ChangeState(UnitState.Move);//이동 상태 설정.
                     }
                     else
                     {
+                        //초기화 후 상태 변경.
                         haveToMovePosition = false;
                         this.transform.position = moveTargetPos;
                         Ally_State.fsm.ChangeState(UnitState.Idle);
@@ -413,21 +443,24 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
-                    SearchEnemy();
+                    SearchEnemy();//적 탐색.
 
                     if (targetEnemy != null)
                     {
                         isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= unitData.attackRange);
-                        //TODO : 이동하려는 칸에 적이 있을경우 시야범위 안에 들어오면 추격 모드로 변경.
+                    }
+                    else
+                    {
+                        isEnemyInRange = false;
                     }
 
                     if (targetEnemy != null && !haveToMovePosition)
                     {
-                        if (isEnemyInSight)
+                        if (isEnemyInSight)//시야 범위 내에 있는가?
                         {
                             haveToMovePosition = false;
 
-                            if (isEnemyInRange)
+                            if (isEnemyInRange)//공격 범위 내에 있는가?
                             {
                                 moveTargetPos = this.transform.position;
                                 Ally_State.fsm.ChangeState(UnitState.Attack);
@@ -463,14 +496,22 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
 
             enemy_isBaseInRange =
-            (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange);
+            (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange); //성이 적군의 공격 범위 내에 있는지 판단.
 
-            if (unActable)
+            sightRangeSensor.radius = unitData.sightRange;
+
+            if (this.gameObject.activeSelf)
+            {
+                Enemy_State.SearchPath();
+            }
+            
+
+            if (unActable)//행동 불가 상태인가?
             {
                 return;
             }
 
-            if (enemy_isPathBlocked)
+            if (enemy_isPathBlocked)//길이 막혀있는가?
             {
                 if (targetEnemy != null && !enemy_isBaseInRange)//병사 발견시
                 {
@@ -485,6 +526,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                         }
                         else
                         {
+                            VisualModel.transform.rotation = transform.rotation;
                             Enemy_State.fsm.ChangeState(EnemyState.Move);
                         }
                     }
@@ -501,6 +543,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
                 else
                 {
+                    VisualModel.transform.rotation = transform.rotation;
                     Enemy_State.fsm.ChangeState(EnemyState.Move);
                 }
 
@@ -508,6 +551,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (!isEnemyInRange && !enemy_isBaseInRange)
             {
+                VisualModel.transform.rotation = transform.rotation;
                 Enemy_State.fsm.ChangeState(EnemyState.Move);
             }
         }
@@ -566,6 +610,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if (enemy_isBaseInRange)
             {
+                VisualModel.transform.LookAt(targetBase.transform.position);
                 UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetBase, unitData.weaponCooldown, true);
             }
             else
@@ -576,6 +621,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("targetEnemy." + targetEnemy.name);
                     //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
+                    VisualModel.transform.LookAt(targetEnemy.transform.position);
                     UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
                 }
                 else if (targetEnemy == null)
