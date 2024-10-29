@@ -5,15 +5,15 @@ using UnityEngine.EventSystems;
 
 public class Ingame_ImageHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public GameObject SkillInfoPanel;
+    public GameObject skillInfoPanel;
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SkillInfoPanel.SetActive(false);
+        skillInfoPanel.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SkillInfoPanel.SetActive(true);
+        skillInfoPanel.SetActive(true);
     }
 }

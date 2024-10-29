@@ -64,7 +64,6 @@ public class UnitSpawnManager : MonoBehaviour
     // 유닛 생성시 3초 딜레이 추가 및 파티클 생성
     public GameObject UnitSpawn(int unitType, float X, float Y)
     {
-        // 임시 GameObject를 만들어 Transform을 활용
         GameObject tempObject = new GameObject("TempTransform");
         tempObject.transform.position = new Vector3(X, 0, Y);
 

@@ -275,6 +275,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (HP <= 0)
         {
+            HP = 0;
+
             ObjectPool.ReturnObject(this.gameObject);//로폴님께 이 함수가 왜 필요한지 상의 필요.
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
 

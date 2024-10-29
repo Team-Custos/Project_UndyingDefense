@@ -83,7 +83,11 @@ public class LobbyUIManager : MonoBehaviour
 
                 battleStartBtn.onClick.AddListener(() =>
                 {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+                    if(GlobalSoundManager.instance != null)
+                    {
+                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+                    }
+                    
                     SceneManager.LoadSceneAsync(2);
 
                     //if (commandSkillDeckList.Count < maxSkillDeckSize)
@@ -171,7 +175,10 @@ public class LobbyUIManager : MonoBehaviour
 
                 commandSkillEquipBtn[buttonIndex].onClick.AddListener(() =>
                 {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
+                    if (GlobalSoundManager.instance != null)
+                    {
+                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
+                    }
                     AddCommandSkill(buttonIndex);
                 });
             }
@@ -186,7 +193,10 @@ public class LobbyUIManager : MonoBehaviour
 
                 commandSkillClearBtn[buttonIndex].onClick.AddListener(() =>
                 {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
+                    if (GlobalSoundManager.instance != null)
+                    {
+                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
+                    }
                     RemoveCommandSkill(buttonIndex);
                 });
             }
@@ -196,7 +206,10 @@ public class LobbyUIManager : MonoBehaviour
         {
             showCommandSkillListBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
                 ShowCommandSkillList();
             });
         }
@@ -211,8 +224,13 @@ public class LobbyUIManager : MonoBehaviour
                 {
                     skillData.Add(skill.SkillID, skill.SkillName);
                 }
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                SaveCommandSkillList(skillData);
+
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                //SaveCommandSkillList(skillData);
             });
         }
 

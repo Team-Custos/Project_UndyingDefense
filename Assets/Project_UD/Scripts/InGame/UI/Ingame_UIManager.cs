@@ -77,6 +77,8 @@ public class Ingame_UIManager : MonoBehaviour
     public Button settingBtn;
     public Button settingCloseBtn;
     public GameObject settingPanel;
+    public Button settingReStartBtn;
+    public Button settingLobbyBtn;
 
     [Header("====Unit GamoeObject====")]
     public GameObject UnitStateChangeBox;
@@ -87,12 +89,10 @@ public class Ingame_UIManager : MonoBehaviour
     public Image baseHpBar;
     public Text baseHpTxt;
 
-    public int curUnitHp;
 
-    private AllyMode allyMode;
+
 
     private Ingame_UnitCtrl selectedUnit;
-    private Ingame_UnitCtrl previousSelectedUnit;
 
     public Button unitUpgradeBtn;
 
@@ -195,6 +195,7 @@ public class Ingame_UIManager : MonoBehaviour
             settingBtn.onClick.AddListener(() =>
             {
                 settingPanel.gameObject.SetActive(true);
+                Time.timeScale = 0.0f;
             });
         }
 
@@ -203,6 +204,7 @@ public class Ingame_UIManager : MonoBehaviour
             settingCloseBtn.onClick.AddListener(() =>
             {
                 settingPanel.gameObject.SetActive(false);
+                Time.timeScale = 1.0f;
             });
         }
 
@@ -425,9 +427,12 @@ public class Ingame_UIManager : MonoBehaviour
                 {
                     unit.previousAllyMode = unit.Ally_Mode;
                     unit.Ally_Mode = AllyMode.Change;
+                    Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(unit.transform, -0.8f);
 
                     DestroyUnitStateChangeBox();
                 }
+
+                
             });
         }
 

@@ -32,7 +32,10 @@ public class TitleUIManager : MonoBehaviour
         {
             gameStartBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
                 LoadScene("LobbyScene_LoPol");
             });
 
@@ -42,7 +45,10 @@ public class TitleUIManager : MonoBehaviour
         {
             gameEndBtn.onClick.AddListener(() =>
             {
-                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
                 EndGame();
             });
         }

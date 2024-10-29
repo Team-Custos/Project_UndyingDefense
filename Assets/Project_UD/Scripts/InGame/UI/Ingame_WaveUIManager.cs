@@ -14,7 +14,6 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public GameObject waveStartPanel;
     public GameObject waveResultWinPanel;
     public GameObject waveResultLosePanel;
-    public Text waveResultText;
     public bool isCurrentWaveSucceed;
     public Button nextWavBtn;
     public Button waveCountSkipBtn;
@@ -24,12 +23,51 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public Button loseWaveRestartBtn = null;
     public Button loselobbybtn = null;
     public GameObject waveStepSuccessPanel;
+    public Text waveStepText;
 
     public float fadeDuration = 0.3f;
 
     private void Awake()
     {
         instance = this;
+
+        // Resources 폴더에서 프리팹 로드
+        GameObject canvasWavePrefab = Resources.Load<GameObject>("Canvas_wave");
+        if (canvasWavePrefab != null)
+        {
+            // 프리팹을 인스턴스화하고 현재 오브젝트의 자식으로 추가
+            GameObject canvasInstance = Instantiate(canvasWavePrefab, transform);
+            Ingame_WaveUIManager instance = canvasInstance.GetComponent<Ingame_WaveUIManager>();
+
+            //UI 요소 연결 작업
+
+            waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
+            waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
+
+            waveStartPanel = canvasInstance.transform.Find("WaveStartPanel").gameObject;
+            waveStartText = waveStartPanel.transform.Find("WaveStartText").GetComponent<Text>();
+
+            waveCountTextPanel = canvasInstance.transform.Find("WaveCountTextPanel").gameObject;
+            waveCountText = waveCountTextPanel.transform.Find("WaveCountText").GetComponent<Text>();
+            waveCountSkipBtn = waveCountText.transform.Find("WaveCountSkipBtn").GetComponent<Button>();
+
+            waveResultWinPanel = canvasInstance.transform.Find("WaveResultWinPanel").gameObject;
+            winWaveRestartBtn = waveResultWinPanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
+            Winlobbybtn = waveResultWinPanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
+
+            waveResultLosePanel = canvasInstance.transform.Find("WaveResultLosePanel").gameObject;
+            loseWaveRestartBtn = waveResultLosePanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
+            loselobbybtn = waveResultLosePanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
+
+            waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
+            waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
+        }
+        else
+        {
+            Debug.Log("프리팹을 찾을 수 없습니다: Canvas_wave");
+        }
+
+
     }
 
     // Start is called before the first frame update
@@ -42,7 +80,6 @@ public class Ingame_WaveUIManager : MonoBehaviour
             {
                 waveCount = 0; // 버튼 클릭 시 카운트를 0으로 설정
                 waveCountText.text = "적군 침공까지 0초"; // 즉시 0으로 카운트 표시
-                                                   //StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 바로 1초 후 웨이브 시작
 
                 waveCountTextPanel.SetActive(false);
                 //waveCountText.gameObject.SetActive(false);

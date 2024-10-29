@@ -160,6 +160,9 @@ public class EnemySpawner : MonoBehaviour
 
             Debug.Log($"Wave {currentWave} 시작");
 
+            Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
+            Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
+
             // 몬스터 스폰
             yield return StartCoroutine(SpawnMonstersForWave());
 
@@ -247,7 +250,6 @@ public class EnemySpawner : MonoBehaviour
 
             activeMonsters.Add(enemyObj);
             enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
-            Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
 
             enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
 
@@ -292,6 +294,8 @@ public class EnemySpawner : MonoBehaviour
         if (currentWave < waveCount)
         {
             Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
+
+            Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
 
             yield return new WaitForSeconds(3.0f);
 

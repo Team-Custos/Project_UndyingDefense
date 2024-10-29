@@ -51,6 +51,18 @@ public class Ingame_SceneManager : MonoBehaviour
             Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(GoToLobby);
             Time.timeScale = 1.0f;
         }
+
+        if(Ingame_UIManager.instance.settingLobbyBtn != null)
+        {
+            Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(GoToLobby);
+            Time.timeScale = 1.0f;
+        }
+
+        if (Ingame_UIManager.instance.settingReStartBtn != null)
+        {
+            Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(RestartCurrentScene);
+            Time.timeScale = 1.0f;
+        }
     }
 
     // Update is called once per frame
