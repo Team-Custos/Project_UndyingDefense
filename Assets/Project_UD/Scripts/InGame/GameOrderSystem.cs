@@ -68,7 +68,7 @@ public class GameOrderSystem : MonoBehaviour
                 GridTile GridTile = clickedObj.GetComponent<GridTile>();
                 //Debug.Log("클릭한 그리드 좌표 : " + GridTile.GridPos + ", 배치 가능 여부 : " + GridTile.isPlaceable);
 
-                if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable)
+                if (GAMEMANAGER.UnitSetMode && GridTile.isPlaceable) // 배치 상태이고 배치 가능한 타일을 클릭
                 {
                     if (GAMEMANAGER.AllyUnitSetMode)//아군 배치
                     {
@@ -107,6 +107,7 @@ public class GameOrderSystem : MonoBehaviour
                         selectedUnit = null;
                     }
 
+                    GridTile.Selected = false;
                 }
                 if (selectedUnit != null)
                 {
@@ -123,6 +124,7 @@ public class GameOrderSystem : MonoBehaviour
 
                     selectedUnit = null;
                 }
+
             }
             //유닛 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_UNIT)
@@ -133,7 +135,7 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allUnit)
                 {
                     unit.isSelected = false;
-                    Ingame_UIManager.instance.ShowUnitClickUI(unit);
+                    //Ingame_UIManager.instance.ShowUnitClickUI(unit);
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
@@ -148,11 +150,8 @@ public class GameOrderSystem : MonoBehaviour
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
-                    if (selectedUnit.tag == CONSTANT.TAG_UNIT)
-                    {
-                        Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
-                    }
-                    //Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
+                    
+                    Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
                 }
@@ -181,7 +180,7 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allEnemys)
                 {
                     unit.isSelected = false;
-                    Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
+                    //Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
                 }
 
                 Enemy.isSelected = !Enemy.isSelected;
@@ -240,11 +239,11 @@ public class GameOrderSystem : MonoBehaviour
             //지형 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_GROUND)
             {
-                if (clickedPosIndicator != null)
-                {
-                    clickedPosIndicator.transform.position = clickedWorldPos;
-                    clickedPosIndicator.SetActive(true);
-                }
+                //if (clickedPosIndicator != null)
+                //{
+                //    clickedPosIndicator.transform.position = clickedWorldPos;
+                //    clickedPosIndicator.SetActive(true);
+                //}
 
                 if (selectedUnit != null)
                 {

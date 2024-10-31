@@ -39,7 +39,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
             GameObject canvasInstance = Instantiate(canvasWavePrefab, transform);
             Ingame_WaveUIManager instance = canvasInstance.GetComponent<Ingame_WaveUIManager>();
 
-            //UI 요소 연결 작업
+            //UI 요소 연결 작업 -> 수정 필요, Find 말고 캔버스 프리팹에 스크립트 사용예정
 
             waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
             waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;

@@ -257,7 +257,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //모델 변경
         ModelSwap();
 
-        Selected_Particle.SetActive(isSelected);
+        //Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);
 
@@ -267,13 +267,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             HP = 0;
 
-            ObjectPool.ReturnObject(this.gameObject);
+            
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
+            //ObjectPool.ReturnObject(this.gameObject);
 
             Destroy(this.gameObject);
             Debug.Log(this.gameObject.name + " Destroyed");
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected)

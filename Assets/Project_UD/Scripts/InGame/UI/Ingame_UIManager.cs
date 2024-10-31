@@ -30,6 +30,7 @@ public class Ingame_UIManager : MonoBehaviour
     public GameObject unitSpawnPanel;
     public Button[] unitSpawnBtn;
     public GameObject[] unitSpawnBtnPanel;
+    private int currentSelectedIndex = -1; // 현재 선택된 버튼의 인덱스 (-1은 선택 없음 의미)
 
     [Header("====UnitInfoPanel====")]
     public GameObject unitInfoPanel;
@@ -148,11 +149,17 @@ public class Ingame_UIManager : MonoBehaviour
                 int idx = ii;
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
-                    UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
-                    InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
-                    InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
-
-                    DestroyUnitStateChangeBox();
+                    // 현재 선택된 버튼이 동일한 버튼인 경우, 대기 모드 해제
+                    if (currentSelectedIndex == idx)
+                    {
+                        ExitUnitSpawnMode();
+                    }
+                    // 다른 버튼을 눌렀을 경우, 이전 대기 모드 해제하고 새로 진입
+                    else
+                    {
+                        ExitUnitSpawnMode();
+                        EnterUnitSpawnMode(idx);
+                    }
                 });
             }
         }
@@ -264,6 +271,33 @@ public class Ingame_UIManager : MonoBehaviour
         //ShowUnitClickUI();
 
         UpdateUnitInfoPanel(selectedUnit);
+    }
+
+    void EnterUnitSpawnMode(int idx)
+    {
+        // 선택된 버튼 인덱스를 현재 인덱스로 설정
+        currentSelectedIndex = idx;
+
+        // 유닛 스폰 설정
+        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+        InGameManager.inst.UnitSetMode = true;
+        InGameManager.inst.AllyUnitSetMode = true;
+
+        // 기타 필요한 초기화 작업 수행
+        DestroyUnitStateChangeBox();
+    }
+
+    void ExitUnitSpawnMode()
+    {
+        // 선택된 버튼 인덱스를 초기화 (-1로 설정)
+        currentSelectedIndex = -1;
+
+        // 유닛 대기 모드 해제
+        InGameManager.inst.UnitSetMode = false;
+        InGameManager.inst.AllyUnitSetMode = false;
+
+        // 기타 필요한 종료 작업 수행
+        DestroyUnitStateChangeBox();
     }
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
@@ -616,6 +650,7 @@ public class Ingame_UIManager : MonoBehaviour
                 {
                     unitClickImage.SetActive(false);
                     unitHpImage.SetActive(false);
+                    Debug.Log("fefnefoefe");
                 }
             }
         }

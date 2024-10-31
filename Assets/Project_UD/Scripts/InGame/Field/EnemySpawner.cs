@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
     {
         inst = this;
 
-        ObjectPool.Instance.Intialize(100);
+        ObjectPool.Instance.Intialize(20);
     }
 
     private void Start()
