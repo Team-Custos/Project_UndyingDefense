@@ -36,7 +36,7 @@ public class UnitSpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
+        //Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
         //foreach (Ingame_UnitCtrl unit in allUnits)
         //{
         //    if (unit.unitStateChangeTime > 0)
@@ -69,6 +69,7 @@ public class UnitSpawnManager : MonoBehaviour
 
         Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform, true);
 
+
         StartCoroutine(SpawnUnitAfterDelay(unitType, X, Y, tempObject));
         return null;
     }
@@ -86,4 +87,6 @@ public class UnitSpawnManager : MonoBehaviour
 
         yield return Obj;
     }
+
+
 }

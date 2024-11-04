@@ -268,6 +268,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             HP = 0;
 
             
+
+
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
             //ObjectPool.ReturnObject(this.gameObject);
 

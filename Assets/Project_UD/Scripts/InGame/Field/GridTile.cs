@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GridTile : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class GridTile : MonoBehaviour
     public Color32 colorOccupied = Color.red; // 유닛이 있는 타일 색상
     public Color32 colorAvailable = Color.green; // 유닛이 없는 타일 색상
     public bool showPlacementColors = false;
+    private bool isTileSelected = false; // 프리모드 유닛 이동시 지정된 타일 색상
 
     void Start()
     {
@@ -50,18 +52,30 @@ public class GridTile : MonoBehaviour
     {
         UpdateTilePlaceable();
 
-
+        // 타일 색상 설정
+        if (isTileSelected) // 유닛이 이동할 타일로 지정된 경우
+        {
+            MeshR.material.color = colorSelected;
+            isTileSelected = false;
+        }
         if (showPlacementColors)
         {
-            if(mouseHover && isPlaceable)
+            if (mouseHover && isPlaceable)
             {
+                // 마우스가 UI 위에 있는지 확인
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // UI 위에 있을 경우 이벤트 무시
+                    return;
+                }
+
                 MeshR.material.color = colorAvailable;
             }
-            else if(mouseHover && !isPlaceable)
+            else if (mouseHover && !isPlaceable)
             {
                 MeshR.material.color = colorOccupied;
             }
-            else if(!mouseHover)
+            else if (!mouseHover)
             {
                 MeshR.material.color = colorDefault;
             }
@@ -91,7 +105,6 @@ public class GridTile : MonoBehaviour
     private void OnMouseOver()
     {
         mouseHover = true;
-        //MeshR.material.color = colorHighlit;
     }
 
     private void OnMouseExit()
@@ -99,14 +112,11 @@ public class GridTile : MonoBehaviour
         //    mouseHover = false;
         //    GetComponent<MeshRenderer>().material.color = colorDefault;
 
+
         mouseHover = false;
         if (!showPlacementColors)
         {
             MeshR.material.color = colorDefault;
-        }
-        else
-        {
-            //MeshR.material.color = colorAvailable;
         }
     }
 
@@ -125,5 +135,16 @@ public class GridTile : MonoBehaviour
     public void ShowPlacementColors(bool show)
     {
         showPlacementColors = show;
+    }
+
+    public void SelectedTile(bool selected)
+    {
+        isTileSelected = selected;
+
+        if (!selected)
+        {
+            // 선택 해제 시 기본 색상으로 즉시 변경
+            MeshR.material.color = colorDefault;
+        }
     }
 }

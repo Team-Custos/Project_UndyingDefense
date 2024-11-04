@@ -40,12 +40,18 @@ public class GameOrderSystem : MonoBehaviour
 
     private void OnPrimaryButtonOrder()
     {
+        // UI가 클릭되었는지 우선 확인
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            // UI가 클릭된 경우 다른 이벤트가 발생하지 않도록 즉시 반환
+            return;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit) && (Input.GetMouseButtonDown(0)))
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
 
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
@@ -74,8 +80,7 @@ public class GameOrderSystem : MonoBehaviour
                     {
                         UnitSpawnManager SpawnMgr = UnitSpawnManager.inst;
                         GridTile.currentPlacedUnit = SpawnMgr.UnitSpawn(SpawnMgr.unitToSpawn, GridTile.transform.position.x, GridTile.transform.position.z);
-                        //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(GridTile.transform, true);
-                        //GridTile.isPlaceable = false;
+
                         InGameManager.inst.UnitSetMode = false;
                         InGameManager.inst.AllyUnitSetMode = false;
                     }
@@ -100,6 +105,13 @@ public class GameOrderSystem : MonoBehaviour
 
                         if (AllyUnit.Ally_Mode == AllyMode.Free)
                         {
+                            if (GridTile.isPlaceable == false)
+                            {
+                                return;
+                            }
+
+                            GridTile.SelectedTile(true);
+
                             AllyUnit.moveTargetPos = GridTile.transform.position;
                             AllyUnit.targetEnemy = null;
                             AllyUnit.haveToMovePosition = true;

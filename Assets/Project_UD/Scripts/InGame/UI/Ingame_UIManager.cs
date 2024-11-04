@@ -149,17 +149,28 @@ public class Ingame_UIManager : MonoBehaviour
                 int idx = ii;
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
-                    // 현재 선택된 버튼이 동일한 버튼인 경우, 대기 모드 해제
-                    if (currentSelectedIndex == idx)
+                    if(InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
                     {
-                        ExitUnitSpawnMode();
+                        // 현재 선택된 버튼이 동일한 버튼인 경우, 대기 모드 해제
+                        if (currentSelectedIndex == idx)
+                        {
+                            ExitUnitSpawnMode();
+                        }
+                        // 다른 버튼을 눌렀을 경우, 이전 대기 모드 해제하고 새로 진입
+                        else
+                        {
+                            ExitUnitSpawnMode();
+                            EnterUnitSpawnMode(idx);
+                        }
                     }
-                    // 다른 버튼을 눌렀을 경우, 이전 대기 모드 해제하고 새로 진입
-                    else
+                    else if(!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
                     {
-                        ExitUnitSpawnMode();
-                        EnterUnitSpawnMode(idx);
+                        currentSelectedIndex = idx; // 현재 선택된 버튼의 인덱스 저장
+                        InGameManager.inst.UnitSetMode = true;
+                        InGameManager.inst.AllyUnitSetMode = true;
                     }
+
+                    
                 });
             }
         }
@@ -273,6 +284,7 @@ public class Ingame_UIManager : MonoBehaviour
         UpdateUnitInfoPanel(selectedUnit);
     }
 
+
     void EnterUnitSpawnMode(int idx)
     {
         // 선택된 버튼 인덱스를 현재 인덱스로 설정
@@ -283,20 +295,22 @@ public class Ingame_UIManager : MonoBehaviour
         InGameManager.inst.UnitSetMode = true;
         InGameManager.inst.AllyUnitSetMode = true;
 
-        // 기타 필요한 초기화 작업 수행
         DestroyUnitStateChangeBox();
     }
 
+    // 유닛 생성 상태에서 동일한 버튼을 누르면 상태해제를 위한 함수
     void ExitUnitSpawnMode()
     {
-        // 선택된 버튼 인덱스를 초기화 (-1로 설정)
-        currentSelectedIndex = -1;
-
-        // 유닛 대기 모드 해제
         InGameManager.inst.UnitSetMode = false;
         InGameManager.inst.AllyUnitSetMode = false;
 
-        // 기타 필요한 종료 작업 수행
+        // 선택된 버튼 인덱스를 초기화
+        currentSelectedIndex = -1;
+
+        // 유닛 대기 모드 해제
+        //InGameManager.inst.UnitSetMode = false;
+        //InGameManager.inst.AllyUnitSetMode = false;
+
         DestroyUnitStateChangeBox();
     }
 
