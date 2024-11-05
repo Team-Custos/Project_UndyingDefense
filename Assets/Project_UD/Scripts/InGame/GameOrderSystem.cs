@@ -40,9 +40,8 @@ public class GameOrderSystem : MonoBehaviour
     private void OnPrimaryButtonOrder()//마우스 왼쪽 클릭 이벤트 처리 함수
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit) && (Input.GetMouseButtonDown(0)))
+        if (Physics.Raycast(ray, out RaycastHit hit) && (Input.GetMouseButtonDown(0)))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
@@ -50,7 +49,7 @@ public class GameOrderSystem : MonoBehaviour
             clickedWorldPos = hit.point;
 
             //타일 클릭했을때
-            if (clickedObj.tag == CONSTANT.TAG_TILE)
+            if (clickedObj.CompareTag(CONSTANT.TAG_TILE))
             {
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
@@ -80,8 +79,8 @@ public class GameOrderSystem : MonoBehaviour
                     }
                     else if (GAMEMANAGER.EnemyUnitSetMode)// 적 배치
                     {
-                        EnemySpawner SpawnMgr = EnemySpawner.inst;
-                        GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1, GridTile.transform.position.x, GridTile.transform.position.z);
+                        //EnemySpawner SpawnMgr = EnemySpawner.inst;
+                        //GridTile.currentPlacedUnit = SpawnMgr.EnemySpawn(1, GridTile.transform.position.x, GridTile.transform.position.z);
                         //GridTile.isPlaceable = false;
                         InGameManager.inst.UnitSetMode = false;
                         InGameManager.inst.EnemyUnitSetMode = false;
@@ -124,7 +123,7 @@ public class GameOrderSystem : MonoBehaviour
                 }
             }
             //유닛 클릭했을 때
-            else if (clickedObj.tag == CONSTANT.TAG_UNIT)
+            else if (clickedObj.CompareTag(CONSTANT.TAG_UNIT))
             {
                 Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
@@ -136,7 +135,7 @@ public class GameOrderSystem : MonoBehaviour
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
-                if (AllyUnit.isSelected && AllyUnit.tag == CONSTANT.TAG_UNIT)
+                if (AllyUnit.isSelected && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
                 {
                     selectedUnit = AllyUnit.gameObject;
 
@@ -147,7 +146,7 @@ public class GameOrderSystem : MonoBehaviour
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
-                    if (selectedUnit.tag == CONSTANT.TAG_UNIT)
+                    if (selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
                     {
                         Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     }
@@ -161,7 +160,7 @@ public class GameOrderSystem : MonoBehaviour
                 }
             }
             //적 클릭했을 때
-            else if (clickedObj.tag == CONSTANT.TAG_ENEMY)
+            else if (clickedObj.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
@@ -197,11 +196,11 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
 
-                if (selectedUnit != null && selectedUnit.tag == CONSTANT.TAG_UNIT)
+                if (selectedUnit != null && selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
                 {
                     Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
-                    AllyUnit.targetEnemy = clickedObj.gameObject;
+                    AllyUnit.targetEnemy = clickedObj;
 
                     if (AllyUnit.Ally_Mode == AllyMode.Free)
                     {
@@ -236,7 +235,7 @@ public class GameOrderSystem : MonoBehaviour
             //    }
             //}
             //지형 클릭했을 때
-            else if (clickedObj.tag == CONSTANT.TAG_GROUND)
+            else if (clickedObj.CompareTag(CONSTANT.TAG_GROUND))
             {
                 if (clickedPosIndicator != null)
                 {

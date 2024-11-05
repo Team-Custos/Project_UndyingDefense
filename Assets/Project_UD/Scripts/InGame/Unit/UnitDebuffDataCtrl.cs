@@ -19,14 +19,14 @@ public enum UnitDebuff
 [Serializable]
 public class UnitDebuffData
 {
-    public UnitDebuff name;
-    public bool Stackable;
-    public int stackLimit;
-    public float duration;
-    public int tickDamage;
-    public AudioClip StartSFX;
-    public AudioClip EndSFX;
-    public ParticleSystem startParticle;
+    public UnitDebuff name; //이름
+    public bool Stackable; //스택 가능 여부
+    public int stackLimit; //스택 최대 수
+    public float duration; //지속 시간
+    public int tickDamage; //틱 데미지
+    public AudioClip StartSFX; //효과 시작시 SFX
+    public AudioClip EndSFX; //효과 종료시 SFX
+    public ParticleSystem startParticle; //효과 시작시 VFX
 }
 
 public class UnitDebuffDataCtrl : MonoBehaviour

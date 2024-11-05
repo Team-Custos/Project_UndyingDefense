@@ -5,9 +5,6 @@ using UnityEngine;
 public class BowCtrl : MonoBehaviour
 {
     public GameObject Arrow;
-    //public Transform ShootPos;
-
-    float ShootCooldown_Cur = 0;
 
     public void ArrowShoot(bool isEnemyAttack)
     {

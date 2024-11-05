@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,9 +10,12 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField]
     private GameObject poolingObjectPrefab;
-    public int poolSize = 100;
+    public int poolSize;
 
     Queue<GameObject> poolingObjectQueue = new Queue<GameObject>();
+
+    public event Action<GameObject> OnObjectReturned;
+
 
     void Awake()
     {
@@ -31,6 +35,7 @@ public class ObjectPool : MonoBehaviour
         var newObj = Instantiate(poolingObjectPrefab);
         newObj.gameObject.SetActive(false);
         newObj.transform.SetParent(transform);
+        newObj.transform.localPosition = new Vector3(0, 0, 0);
         return newObj;
     }
 
@@ -52,18 +57,13 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    //public void Initialize(int initCount = poolSize)
-    //{
-    //    for (int i = 0; i < initCount; i++)
-    //    {
-    //        poolingObjectQueue.Enqueue(CreateNewObject());
-    //    }
-    //}
-
     public static void ReturnObject(GameObject obj)
     {
         obj.gameObject.SetActive(false);
         obj.transform.SetParent(Instance.transform);
+        obj.transform.localPosition = new Vector3(0, 0, 0);
         Instance.poolingObjectQueue.Enqueue(obj);
+        // 오브젝트 반환 시 이벤트 호출
+        Instance.OnObjectReturned?.Invoke(obj);
     }
 }

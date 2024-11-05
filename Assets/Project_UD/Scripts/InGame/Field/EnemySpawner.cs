@@ -38,7 +38,7 @@ public class EnemySpawnData
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner inst;
-    ObjectPool objectPool;
+    //ObjectPool objectPool;
     public List<Ingame_UnitData> enemyDatas;
 
     GridManager gridManager;
@@ -67,19 +67,17 @@ public class EnemySpawner : MonoBehaviour
     public float spawnInterval = 2.0f;
 
     public int currentWave = 1;
-    private int spawnedMonsterCount = 0;
     public bool isWaveing = false;
 
     public List<GameObject> activeMonsters = new List<GameObject>();
 
     int enemypriority = 0;
 
-
     private void Awake()
     {
         inst = this;
 
-        ObjectPool.Instance.Intialize(100);
+        ObjectPool.Instance.Intialize(ObjectPool.Instance.poolSize);
     }
 
     private void Start()
@@ -90,7 +88,6 @@ public class EnemySpawner : MonoBehaviour
         gridHeight = gridManager._height;
 
         spawnPoint = new Transform[gridHeight];
-
 
         StartCoroutine(StartWaveWithDelay(1f));
     }
@@ -120,37 +117,18 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-
-
-
-        //timer += Time.deltaTime;
-        ////level = Mathf.FloorToInt(Game_Manager.instance.gameTime / 10f);
-
-        //if (level >= spawnData.Length - 1)
-        //{
-        //    level = spawnData.Length - 1;
-        //}
-
-        //if (timer > spawnData[level].spawnTime)
-        //{
-        //    timer = 0;
-        //    //EnemySpawn();
-        //}
-
-
-
     }
 
-    //적 소환
-    public GameObject EnemySpawn(int enemyType, float X, float Y)
-    {
-        Debug.Log(new Vector3(X, 0, Y));
-        GameObject Obj = Instantiate(Test_Enemy);
-        Obj.transform.position = new Vector3(X, 0, Y);
-        Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-        Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
-        return Obj;
-    }
+    ////적 소환
+    //public GameObject EnemySpawn(int enemyType, float X, float Y)
+    //{
+    //    Debug.Log(new Vector3(X, 0, Y));
+    //    GameObject Obj = Instantiate(Test_Enemy);
+    //    Obj.transform.position = new Vector3(X, 0, Y);
+    //    Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+    //    Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+    //    return Obj;
+    //}
 
     public IEnumerator WaveSystem()
     {
@@ -183,23 +161,6 @@ public class EnemySpawner : MonoBehaviour
     // 웨이브에 따른 몬스터 생성 코루틴
     IEnumerator SpawnMonstersForWave()
     {
-        //int monstersToSpawn;
-
-        //if (currentWave <= 2)
-        //{
-        //    monstersToSpawn = 5; // 현재 웨이브가 1 또는 2일 경우, 5마리의 몬스터를 생성
-        //}
-        //else
-        //{
-        //    monstersToSpawn = 10; // 현재 웨이브가 3 이상일 경우, 10마리의 몬스터를 생성
-        //}
-
-        //for (int i = 0; i < monstersToSpawn; i++)
-        //{
-        //    SpawnEnemy(1);
-        //    yield return new WaitForSeconds(spawnInterval);  // 한 마리씩 생성
-        //}
-
         int monstersToSpawn = 5;
 
         if (currentWave <= 2)
@@ -247,6 +208,7 @@ public class EnemySpawner : MonoBehaviour
                 enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[1];
                 enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 1;  
             }
+            enemyObj.GetComponent<Ingame_UnitCtrl>().StatsInit();
 
             activeMonsters.Add(enemyObj);
             enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
@@ -254,12 +216,6 @@ public class EnemySpawner : MonoBehaviour
             enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
 
             enemypriority++;
-
-            //enemyObj.transform.position = spawnPos.position;
-            //enemyObj.transform.rotation = Quaternion.identity;
-            //enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
-            //activeMonsters.Add(enemyObj);
-            //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         }
 
     }

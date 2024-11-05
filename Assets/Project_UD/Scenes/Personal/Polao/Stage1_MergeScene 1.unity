@@ -5275,7 +5275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53e3e28e1a51de43b85959571a3d1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseHPMax: 5
+  BaseHPMax: 500
   BaseHPCur: 0
 --- !u!82 &122481052
 AudioSource:
@@ -9162,6 +9162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4125376702232472132, guid: 2267d910915aeee4893ea351126b82c5,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125376702232472132, guid: 2267d910915aeee4893ea351126b82c5,
+        type: 3}
       propertyPath: m_LocalScale.z
       value: 15
       objectReference: {fileID: 0}
@@ -9173,12 +9178,12 @@ PrefabInstance:
     - target: {fileID: 4125376702232472132, guid: 2267d910915aeee4893ea351126b82c5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.539999
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 4125376702232472132, guid: 2267d910915aeee4893ea351126b82c5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 31.840002
+      value: 31.75
       objectReference: {fileID: 0}
     - target: {fileID: 4125376702232472132, guid: 2267d910915aeee4893ea351126b82c5,
         type: 3}
@@ -14666,103 +14671,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 375879647}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &376812680
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 376812684}
-  - component: {fileID: 376812683}
-  - component: {fileID: 376812682}
-  - component: {fileID: 376812685}
-  m_Layer: 0
-  m_Name: ClickPosIndicator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!23 &376812682
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376812680}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &376812683
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376812680}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &376812684
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376812680}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4408935, y: 1.8585985, z: -0.22837989}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &376812685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 376812680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bfd567d97975dc4999f80300a799aa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showHideTime: 3
 --- !u!4 &378344005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -18455,25 +18363,25 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 856739624}
+  - {fileID: 698307674}
   - {fileID: 927719981}
   - {fileID: 1166344172}
+  - {fileID: 1368154823}
   - {fileID: 447005217}
   - {fileID: 1832086055}
   - {fileID: 1391571423}
-  - {fileID: 1368154823}
   - {fileID: 2131315957}
-  - {fileID: 70126124}
   - {fileID: 825525762}
+  - {fileID: 1615164033}
+  - {fileID: 70126124}
   - {fileID: 754875855}
   - {fileID: 1553022671}
-  - {fileID: 1026660962}
-  - {fileID: 1415704159}
   - {fileID: 354275767}
   - {fileID: 20072020}
-  - {fileID: 1904282612}
-  - {fileID: 1615164033}
   - {fileID: 1987169381}
-  - {fileID: 698307674}
+  - {fileID: 1415704159}
+  - {fileID: 1904282612}
+  - {fileID: 1026660962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &475068739
@@ -31366,12 +31274,13 @@ MonoBehaviour:
   settingBtn: {fileID: 0}
   settingCloseBtn: {fileID: 0}
   settingPanel: {fileID: 0}
+  settingReStartBtn: {fileID: 0}
+  settingLobbyBtn: {fileID: 0}
   UnitStateChangeBox: {fileID: 0}
   currentUnitStateChangeBox: {fileID: 0}
   unitMoveUI: {fileID: 0}
   baseHpBar: {fileID: 785434097}
   baseHpTxt: {fileID: 1070936548}
-  curUnitHp: 0
   unitUpgradeBtn: {fileID: 0}
   clickUI: {fileID: 0}
   commanderSkillBtn: {fileID: 1086185040}
@@ -32915,6 +32824,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4723005251974472129, guid: 2267d910915aeee4893ea351126b82c5,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33076,6 +32990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 447005218}
   unitDebuffData: {fileID: 20072021}
+  objectPool: {fileID: 0}
   CurCommanderSkill: []
   Base: {fileID: 122481044}
   UnitSetMode: 0
@@ -33994,7 +33909,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 8576
+    m_Bits: 10496
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -34016,7 +33931,7 @@ Transform:
   m_GameObject: {fileID: 877068171}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.55, z: 28.7}
+  m_LocalPosition: {x: 0, y: 5.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40355,7 +40270,7 @@ Transform:
   m_GameObject: {fileID: 1026660961}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.1, y: 0, z: 61.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40375,7 +40290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolingObjectPrefab: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
-  poolSize: 100
+  poolSize: 10
 --- !u!1001 &1027066182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55013,7 +54928,7 @@ MonoBehaviour:
   clickedObj: {fileID: 0}
   selectedUnit: {fileID: 0}
   clickedWorldPos: {x: 0, y: 0, z: 0}
-  clickedPosIndicator: {fileID: 376812680}
+  clickedPosIndicator: {fileID: 0}
 --- !u!4 &1370596068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -65515,14 +65430,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1883f678a89c5da43bb9a7d59365817a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCount: 20
+  waveCount: 99
   waveCountText: {fileID: 1949717415}
   waveCountTextPanel: {fileID: 1464677208}
   waveStartText: {fileID: 1140428471}
   waveStartPanel: {fileID: 1609727533}
   waveResultWinPanel: {fileID: 1709337977}
   waveResultLosePanel: {fileID: 297781728}
-  waveResultText: {fileID: 760648351}
   isCurrentWaveSucceed: 0
   nextWavBtn: {fileID: 880101276}
   waveCountSkipBtn: {fileID: 562709255}
@@ -65532,6 +65446,7 @@ MonoBehaviour:
   loseWaveRestartBtn: {fileID: 1788869829}
   loselobbybtn: {fileID: 290875741}
   waveStepSuccessPanel: {fileID: 1856450999}
+  waveStepText: {fileID: 0}
   fadeDuration: 0.3
 --- !u!1001 &1615883927
 PrefabInstance:
@@ -80236,7 +80151,7 @@ GameObject:
   - component: {fileID: 1987169381}
   - component: {fileID: 1987169382}
   m_Layer: 0
-  m_Name: ParticleSystem
+  m_Name: UnitParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80271,8 +80186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allySummonEffect: {fileID: 4836510788474775732, guid: 448225e25995b3840ac9785680bc5239,
     type: 3}
-  enemySummonEffect: {fileID: 2445413358602306477, guid: dcce45007a1f6dc45ac59f7ea246b804,
-    type: 3}
+  modeChangeEffect: {fileID: 0}
+  unitSpawnDeckEffect: {fileID: 0}
   AttackVFX:
   - {fileID: 4071659716065605158, guid: 793553492a2c03744a98ee959355f704, type: 3}
   - {fileID: 6509706080284087790, guid: 18d3e2c69d62c5f4680d6b0d900ca31b, type: 3}
@@ -85302,7 +85217,6 @@ SceneRoots:
   - {fileID: 633104417}
   - {fileID: 1555955064}
   - {fileID: 1249955021}
-  - {fileID: 376812684}
   - {fileID: 2547543}
   - {fileID: 1889340050}
   - {fileID: 1852803596}

@@ -50,7 +50,13 @@ public class AllyUnitState : MonoBehaviour
 
     void Idle_Update()
     {
-        UnitCtrl.SearchEnemy(); //적군 탐색.
+        allyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+
+        if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+        }
     }
 
     void Idle_Exit()
@@ -93,7 +99,7 @@ public class AllyUnitState : MonoBehaviour
         }
         else //시야범위에 적군이 없거나 있었던 적군이 없어질 경우
         {
-            UnitCtrl.sightRangeSensor.ListRefresh();//시야 범위 센서의 리스트를 새로 고침.
+            UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
             fsm.ChangeState(UnitState.Search);//탐색 상태로 변경.
         }
     }
@@ -189,6 +195,17 @@ public class AllyUnitState : MonoBehaviour
     {
         Debug.Log("Search_Enter");
         UnitCtrl.haveToMovePosition = false;
+        
+    }
+
+    void Search_Update()
+    {
+        if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+        }
+
         UnitCtrl.SearchEnemy();//적군 탐색.
     }
 

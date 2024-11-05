@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//이 스크립트는 씬을 관리하기 위한 스크립트입니다.
+
 public class Ingame_SceneManager : MonoBehaviour
 {
     public void _nextScene(int sceneIdx)
@@ -63,11 +65,5 @@ public class Ingame_SceneManager : MonoBehaviour
             Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(RestartCurrentScene);
             Time.timeScale = 1.0f;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

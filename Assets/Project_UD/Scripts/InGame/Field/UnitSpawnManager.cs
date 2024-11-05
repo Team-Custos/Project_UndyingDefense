@@ -34,17 +34,17 @@ public class UnitSpawnManager : MonoBehaviour
         inst = this;
     }
     // Update is called once per frame
-    void Update()
-    {
-        Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
-        //foreach (Ingame_UnitCtrl unit in allUnits)
-        //{
-        //    if (unit.unitStateChangeTime > 0)
-        //    {
-        //        unit.unitStateChangeTime -= Time.deltaTime;
-        //    }
-        //}
-    }
+    //void Update()
+    //{
+    //    //Ingame_UnitCtrl[] allUnits = FindObjectsOfType<Ingame_UnitCtrl>();
+    //    //foreach (Ingame_UnitCtrl unit in allUnits)
+    //    //{
+    //    //    if (unit.unitStateChangeTime > 0)
+    //    //    {
+    //    //        unit.unitStateChangeTime -= Time.deltaTime;
+    //    //    }
+    //    //}
+    //}
 
     //유닛 소환
     //public GameObject UnitSpawn(int unitType, float X, float Y)
@@ -67,7 +67,7 @@ public class UnitSpawnManager : MonoBehaviour
         GameObject tempObject = new GameObject("TempTransform");
         tempObject.transform.position = new Vector3(X, 0, Y);
 
-        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform, true);
+        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform);
 
         StartCoroutine(SpawnUnitAfterDelay(unitType, X, Y, tempObject));
         return null;

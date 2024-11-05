@@ -19,7 +19,6 @@ public class Ingame_UIManager : MonoBehaviour
     public static Ingame_UIManager instance;
 
     private UnitSpawnManager unitSpawnManager;
-    private UnitExcelDataManager unitDataManager;
     private InGameManager inGameManager;
 
     private Camera mainCamera;
@@ -117,7 +116,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
-        unitDataManager = UnitExcelDataManager.inst;
         inGameManager = InGameManager.inst;
 
 
@@ -194,7 +192,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingBtn.onClick.AddListener(() =>
             {
-                settingPanel.gameObject.SetActive(true);
+                settingPanel.SetActive(true);
                 Time.timeScale = 0.0f;
             });
         }
@@ -203,7 +201,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingCloseBtn.onClick.AddListener(() =>
             {
-                settingPanel.gameObject.SetActive(false);
+                settingPanel.SetActive(false);
                 Time.timeScale = 1.0f;
             });
         }
@@ -356,7 +354,7 @@ public class Ingame_UIManager : MonoBehaviour
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
 
-        if(selectedUnit.tag == CONSTANT.TAG_UNIT)
+        if(selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
         {
             unitInfoImage.sprite = allyImage;
         }
@@ -394,7 +392,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         //SetSelectedUnit(unit);
 
-        if (unit.tag == CONSTANT.TAG_ENEMY)
+        if (unit.CompareTag(CONSTANT.TAG_ENEMY))
         {
             Debug.Log("Fefee");
             return;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//이 스크립트는 유닛의 VFX를 관리하는 스크립트 입니다.
+
 public class Ingame_ParticleManager : MonoBehaviour
 {
     public static Ingame_ParticleManager Instance;
@@ -24,7 +26,7 @@ public class Ingame_ParticleManager : MonoBehaviour
 
     // 기존 적 소환 이펙트를 유닛 모드 전환 이펙트로 사용
     // 추후 적 소환 이펙트 추가 예정
-    public void PlaySummonParticleEffect(Transform tr, bool isAlly)
+    public void PlaySummonParticleEffect(Transform tr)
     {
         ParticleSystem effectInstance = Instantiate(allySummonEffect, tr.position, tr.rotation);
 

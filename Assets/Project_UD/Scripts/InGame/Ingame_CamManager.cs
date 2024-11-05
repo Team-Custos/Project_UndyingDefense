@@ -31,10 +31,6 @@ public class Ingame_CamManager : MonoBehaviour
         MouseMove();
         KeyboardMove();
         ZoomCamera();
-
-
-
-
     }
 
     private void MoveCamera(float xInput, float zInput)

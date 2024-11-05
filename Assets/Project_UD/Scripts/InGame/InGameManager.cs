@@ -11,6 +11,8 @@ public class InGameManager : MonoBehaviour
     public GridManager gridManager;//그리드 관리
     public UnitDebuffDataCtrl unitDebuffData;//유닛의 디버프의 기본정보 관리.
 
+    public ObjectPool objectPool;
+
     public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
     public GameObject Base;//성 오브젝트.

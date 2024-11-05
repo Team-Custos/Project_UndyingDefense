@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Linq;
 
 //이 스크립트는 적군 병사들의 행동패턴을 관리하기 위한 함수입니다. (FSM 시스템 외부 스크립트 사용.)
 
@@ -20,10 +21,13 @@ public class EnemyUnitState : MonoBehaviour
 
     Ingame_UnitCtrl UnitCtrl;//이 병사.
     NavMeshAgent navAgent;//병사의 길찾기 및 이동을 위한 NavMeshAgent.
+    NavMeshObstacle navObstacle;
 
     Animator EnemyAnimator;//병사 모델의 애니메이션을 관리하기 위한 애니메이터.
 
     Vector3 previousNavDestination;//병사의 길찾기를 위한 가장 최근의 목적지 좌표.
+
+    public List<Transform> destinations;
 
     private void Start()
     {
@@ -31,6 +35,7 @@ public class EnemyUnitState : MonoBehaviour
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
+        navObstacle = this.GetComponent<NavMeshObstacle>();
 
         previousNavDestination = this.transform.position;
     }
@@ -64,6 +69,9 @@ public class EnemyUnitState : MonoBehaviour
 
     void Attack_Update()
     {
+        navAgent.enabled = false;
+        navObstacle.enabled = true;
+
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
         UnitCtrl.Unit_Attack(); //아군 병사 공격.
@@ -85,16 +93,23 @@ public class EnemyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
 
         UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
-        UnitCtrl.enemy_isPathBlocked = false; 
+        UnitCtrl.enemy_isPathBlocked = false;
+        
     }
 
     void Move_Update()
     {
+        navObstacle.enabled = false;
+        navAgent.enabled = true;
+
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
         navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
-        SearchPath();//길 찾기.
+        if (navAgent.enabled == true)
+        {
+            SearchPath();//길 찾기.
+        }
 
         if (UnitCtrl.enemy_isBaseInRange)//공격 범위에 성이 있을 경우
         {
@@ -128,19 +143,22 @@ public class EnemyUnitState : MonoBehaviour
                 }
             }
         }
-
-        
     }
 
     void Move_Exit()
     {
         navAgent.SetDestination(transform.position);//정지.
-        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);        
         //navAgent.isStopped = true;
     }
 
     public void SearchPath()//길찾기
     {
+        if (navAgent == false)
+        {
+            return;
+        }
+
         StartCoroutine(DestinationValidCheck());
         IEnumerator DestinationValidCheck()//현재 길이 막혀있는지 판단.
         {

@@ -29,17 +29,6 @@ public class Ingame_InputSystem : MonoBehaviour
         Instance = this;
     }
 
-    void OnDestroy()
-    {
-        //Instance = null;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     private void Update()
     {
@@ -72,7 +61,6 @@ public class Ingame_InputSystem : MonoBehaviour
 
         AxisX = Input.GetAxisRaw("Horizontal");
         AxisY = Input.GetAxisRaw("Vertical");
-
     }
 
 }

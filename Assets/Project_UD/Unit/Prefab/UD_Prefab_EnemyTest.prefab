@@ -323,6 +323,7 @@ GameObject:
   - component: {fileID: 3507718054080957470}
   - component: {fileID: 177187010158202050}
   - component: {fileID: 7392330528148723124}
+  - component: {fileID: 3357163366158094927}
   m_Layer: 8
   m_Name: UD_Prefab_EnemyTest
   m_TagString: Enemy
@@ -375,6 +376,7 @@ MonoBehaviour:
   soundManager: {fileID: 8380448265939572467}
   Ally_Mode: 0
   unitPos: {x: 0, y: 0}
+  unitDefaultRotation: {x: 0, y: 0, z: 0, w: 0}
   VisualModel: {fileID: 2645198757363902989}
   Selected_Particle: {fileID: 1472806401541577732}
   isSelected: 0
@@ -400,6 +402,7 @@ MonoBehaviour:
   unitStateChangeTime: 0
   previousAllyMode: 0
   defenstype: 
+  defaultTargetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &4011954945190882346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +524,22 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!208 &3357163366158094927
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4121165819109045414}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4218788642562929304
 GameObject:
   m_ObjectHideFlags: 0

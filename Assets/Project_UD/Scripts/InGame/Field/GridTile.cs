@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//이 스크립트는 배치된 그리트 타일을 관리하기 위한 스크립트입니다.
+//이 스크립트는 배치된 그리트 타일 오브텍트를 관리하기 위한 스크립트입니다.
 public class GridTile : MonoBehaviour
 {
     InGameManager GAMEMANAGER;
@@ -66,15 +66,6 @@ public class GridTile : MonoBehaviour
             {
                 MeshR.material.color = colorDefault;
             }
-
-            //if (!isPlaceable)
-            //{
-            //    MeshR.material.color = colorOccupied;
-            //}
-            //else if (!mouseHover)
-            //{
-            //    MeshR.material.color = colorAvailable;
-            //}
         }
         else
         {
@@ -92,14 +83,10 @@ public class GridTile : MonoBehaviour
     private void OnMouseOver()
     {
         mouseHover = true;
-        //MeshR.material.color = colorHighlit;
     }
 
     private void OnMouseExit()
     {
-        //    mouseHover = false;
-        //    GetComponent<MeshRenderer>().material.color = colorDefault;
-
         mouseHover = false;
         if (!showPlacementColors)
         {

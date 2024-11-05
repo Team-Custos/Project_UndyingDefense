@@ -6,10 +6,7 @@ using UnityEngine;
 
 public class UnitSkillManager : MonoBehaviour
 {
-    public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool>
-    { };
-
-    public List<int> TargetCellIdx = new List<int>(); //
+    
 
     //필요한 프리팹들
     public GameObject Bow; //활
@@ -21,14 +18,22 @@ public class UnitSkillManager : MonoBehaviour
 
     public Ingame_UnitCtrl UnitCtrl; //자기 자신 스크립트 불러올 때 사용.
     GridManager GridManager;//설치형 스킬에 필요한 위치 불러올 그리드.
+    Animator unitAnimator;
 
     public GameObject SetObject = null; //현재 설치한 오브젝트
-
+    public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool> { };
+    public List<int> TargetCellIdx = new List<int>(); //
     int TargetCellIdxFinal = 0;//최종적으로 설치될 위치의 셀.
 
     private void Awake()
     {
         GridManager = GridManager.inst;
+    }
+        
+
+    private void Update()
+    {
+        unitAnimator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
     }
 
     //아군 병사 일반 스킬
@@ -88,7 +93,7 @@ public class UnitSkillManager : MonoBehaviour
             }
 
             //타겟이 적인가?
-            if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && TargetEnemy.activeSelf)
             {
                 Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
                 int HitSoundRandomNum = Random.Range(0, 2);
@@ -107,7 +112,7 @@ public class UnitSkillManager : MonoBehaviour
     }
 
     //스킬 데미지 초기화.
-    int SkillDamageInit()
+    int SpecialSkillDamageInit()
     {
         //스킬 데미지 데이터 가져오기.
         return 10;
@@ -116,7 +121,7 @@ public class UnitSkillManager : MonoBehaviour
     //아군 병사 특별 스킬
     public void UnitSpecialSkill(int SkillCode, float skillCooldown)
     {
-        int SkillDamage = SkillDamageInit();
+        int SkillDamage = SpecialSkillDamageInit();
         Ingame_UnitCtrl TargetEnemy = null;
 
         if (UnitCtrl.targetEnemy != null)
@@ -345,8 +350,6 @@ public class UnitSkillManager : MonoBehaviour
         {
             skillCooldown_Cur -= Time.deltaTime;
         }
-
-
     }
 
     //적군 일반 스킬
@@ -361,7 +364,7 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
-            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+            unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
             switch (SkillCode)
             {
                 //검 베기

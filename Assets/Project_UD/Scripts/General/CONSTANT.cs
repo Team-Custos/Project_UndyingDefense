@@ -6,7 +6,6 @@ public static class CONSTANT
 {
     //이 클래스는 자주 사용하는 상수를 정리한 클래스입니다.
 
-
     public static string TAG_UNIT = "Unit"; //아군 병사 태그
     public static string TAG_ENEMY = "Enemy"; //적군 태그
     public static string TAG_TILE = "Tile"; //그리드 타일 태그

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //이 스크립트는 성을 관리 하기위한 스크립트입니다.
-
 public class BaseStatus : MonoBehaviour
 {
     public int BaseHPMax = 0;
@@ -29,9 +28,6 @@ public class BaseStatus : MonoBehaviour
         if (BaseHPCur <= 0)
         {
             BaseHPCur = 0;
-
-            //Ingame_WaveUIManager.instance.waveResultPanel.SetActive(true);
-            //Time.timeScale = 0.0f;
         }
     }
 
@@ -49,10 +45,5 @@ public class BaseStatus : MonoBehaviour
         StartCoroutine(HitEffect());
 
         BaseHPCur -= Damage;
-
-
     }
-
-
-
 }

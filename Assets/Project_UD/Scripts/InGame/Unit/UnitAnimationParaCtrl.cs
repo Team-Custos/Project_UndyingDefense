@@ -9,6 +9,10 @@ public class UnitAnimationParaCtrl : MonoBehaviour
     public Ingame_UnitCtrl unitCtrl;
     public Animator animator;
 
+    private void Start()
+    {
+        animator = unitCtrl.VisualModel.GetComponentInChildren<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
