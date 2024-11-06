@@ -218,40 +218,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    // 오브젝트 풀에 소환되는 모델 swap 용
-    public void PoolModelSwap()
-    {
-        //기존 모델 비활성화
-        if (VisualModel.childCount > 0)
-        {
-            for (int i = 0; i < VisualModel.childCount; i++)
-            {
-                VisualModel.GetChild(i).gameObject.SetActive(false); // 모든 자식 모델 비활성화
-            }
-        }
-
-        GameObject modelToActivate = null;
-
-        // 필요한 모델을 활성화
-        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        {
-            modelToActivate = ModelSwapManager.AllyModel[unitData.modelType]; 
-        }
-        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-        {
-            modelToActivate = ModelSwapManager.EnemyModel[unitData.modelType];
-        }
-
-        if (modelToActivate != null)
-        {
-            //modelToActivate.transform.SetParent(VisualModel, false);
-            modelToActivate.SetActive(true);
-        }
-
-        cur_modelType = unitData.modelType;
-    }
-
-
 
     // Update is called once per frame
     void Update()
@@ -270,7 +236,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //모델 변경
         ModelSwap();
 
-        Selected_Particle.SetActive(isSelected); // 선택 효과 설정.
+        //Selected_Particle.SetActive(isSelected);
         //findEnemyRange.SetActive(isSelected);
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);//성의 좌표 초기화.
 
@@ -280,7 +246,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             HP = 0;
 
-            ObjectPool.ReturnObject(this.gameObject);
+            
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
 
             OnDisable?.Invoke(gameObject);
@@ -291,7 +257,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             Debug.Log(this.gameObject.name + " Destroyed");
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
@@ -741,7 +706,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage;
+        HP -= Damage * 100;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {

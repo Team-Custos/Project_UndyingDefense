@@ -69,7 +69,9 @@ public class UnitSpawnManager : MonoBehaviour
 
         Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform);
 
+
         StartCoroutine(SpawnUnitAfterDelay(unitType, X, Y, tempObject));
+        Debug.Log(unitType);
         return null;
     }
 
@@ -86,4 +88,6 @@ public class UnitSpawnManager : MonoBehaviour
 
         yield return Obj;
     }
+
+
 }

@@ -31,6 +31,7 @@ public class Ingame_UIManager : MonoBehaviour
     public GameObject unitSpawnPanel;
     public Button[] unitSpawnBtn;
     public GameObject[] unitSpawnBtnPanel;
+    private int currentSelectedIndex = -1; // 현재 선택된 버튼의 인덱스 (-1은 선택 없음 의미)
 
     [Header("====UnitInfoPanel====")]
     public GameObject unitInfoPanel;
@@ -264,6 +265,36 @@ public class Ingame_UIManager : MonoBehaviour
         //ShowUnitClickUI();
 
         UpdateUnitInfoPanel(selectedUnit);
+    }
+
+
+    void EnterUnitSpawnMode(int idx)
+    {
+        // 선택된 버튼 인덱스를 현재 인덱스로 설정
+        currentSelectedIndex = idx;
+
+        // 유닛 스폰 설정
+        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+        InGameManager.inst.UnitSetMode = true;
+        InGameManager.inst.AllyUnitSetMode = true;
+
+        DestroyUnitStateChangeBox();
+    }
+
+    // 유닛 생성 상태에서 동일한 버튼을 누르면 상태해제를 위한 함수
+    void ExitUnitSpawnMode()
+    {
+        InGameManager.inst.UnitSetMode = false;
+        InGameManager.inst.AllyUnitSetMode = false;
+
+        // 선택된 버튼 인덱스를 초기화
+        currentSelectedIndex = -1;
+
+        // 유닛 대기 모드 해제
+        //InGameManager.inst.UnitSetMode = false;
+        //InGameManager.inst.AllyUnitSetMode = false;
+
+        DestroyUnitStateChangeBox();
     }
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
@@ -612,10 +643,11 @@ public class Ingame_UIManager : MonoBehaviour
                     unitClickImage.SetActive(true);
                     unitHpImage.SetActive(true);
                 }
-                else
+                else if(selectedUnit == null)
                 {
                     unitClickImage.SetActive(false);
                     unitHpImage.SetActive(false);
+                    Debug.Log("fefnefoefe");
                 }
             }
         }

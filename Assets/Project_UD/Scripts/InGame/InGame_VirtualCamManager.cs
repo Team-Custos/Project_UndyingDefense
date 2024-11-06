@@ -30,11 +30,36 @@ public class InGame_VirtualCamManager : MonoBehaviour
     void CameraMove()
     {
         // 카메라 이동
-        // W, A, S, D 키 입력
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 moveDirection = Vector3.zero;
 
-        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput);
+        if (Input.GetKey(KeyCode.W))
+        {
+            // W 키를 누르면 Z 증가, X 증가
+            moveDirection += new Vector3(1, 0, 1);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            // S 키를 누르면 Z 감소, X 감소
+            moveDirection += new Vector3(-1, 0, -1);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            // D 키를 누르면 X 증가, Z 감소
+            moveDirection += new Vector3(1, 0, -1);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            // A 키를 누르면 X 감소, Z 증가
+            moveDirection += new Vector3(-1, 0, 1);
+        }
+
+        // 이동 벡터를 정규화하여 일정한 속도로 이동
+        if (moveDirection != Vector3.zero)
+        {
+            moveDirection.Normalize();
+        }
+
+        // 카메라 피벗 이동
         cameraPivot.position += moveDirection * moveSpeed * Time.deltaTime;
 
         // 카메라 회전 -> 카메라 회전 기능 삭제
