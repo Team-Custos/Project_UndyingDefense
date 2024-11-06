@@ -36,7 +36,6 @@ public class EnemySpawnData
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner inst;
-    ObjectPool objectPool;
     public List<Ingame_UnitData> enemyDatas;
 
     GridManager gridManager;
@@ -76,8 +75,6 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         inst = this;
-
-        ObjectPool.Instance.Intialize(20);
     }
 
     private void Start()
@@ -120,23 +117,6 @@ public class EnemySpawner : MonoBehaviour
         }
 
 
-
-        //timer += Time.deltaTime;
-        ////level = Mathf.FloorToInt(Game_Manager.instance.gameTime / 10f);
-
-        //if (level >= spawnData.Length - 1)
-        //{
-        //    level = spawnData.Length - 1;
-        //}
-
-        //if (timer > spawnData[level].spawnTime)
-        //{
-        //    timer = 0;
-        //    //EnemySpawn();
-        //}
-
-
-
     }
 
     //적 소환
@@ -155,112 +135,70 @@ public class EnemySpawner : MonoBehaviour
         if (isWaveing)
         {
             Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
-
             Debug.Log($"Wave {currentWave} 시작");
 
             Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
             Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
 
-            // 몬스터 스폰
             yield return StartCoroutine(SpawnMonstersForWave());
-
-            //OnMonsterDead(monster)
-
-            // 모든 몬스터가 죽었는지 확인
             yield return StartCoroutine(CheckAllMonstersDead());
 
             currentWave++;
-
-
             isWaveing = false;
-
-            //StartCoroutine(StartNextWaveCountdown()); // 다음 웨이브 카운트다운 시작
         }
     }
 
     // 웨이브에 따른 몬스터 생성 코루틴
     IEnumerator SpawnMonstersForWave()
     {
-        //int monstersToSpawn;
+        int monstersToSpawn;
 
-        //if (currentWave <= 2)
-        //{
-        //    monstersToSpawn = 5; // 현재 웨이브가 1 또는 2일 경우, 5마리의 몬스터를 생성
-        //}
-        //else
-        //{
-        //    monstersToSpawn = 10; // 현재 웨이브가 3 이상일 경우, 10마리의 몬스터를 생성
-        //}
-
-        //for (int i = 0; i < monstersToSpawn; i++)
-        //{
-        //    SpawnEnemy(1);
-        //    yield return new WaitForSeconds(spawnInterval);  // 한 마리씩 생성
-        //}
-
-        int monstersToSpawn = 5;
-
+        // 현재 웨이브가 1~2일 때는 5마리의 몬스터 생성
         if (currentWave <= 2)
         {
-            // 웨이브 1~2: 5마리의 기본 몬스터 생성
+            monstersToSpawn = 5;
             for (int i = 0; i < monstersToSpawn; i++)
             {
-                SpawnEnemy(0);
+                SpawnEnemy(0); // 기본 몬스터 타입으로 생성
                 yield return new WaitForSeconds(spawnInterval);
             }
         }
+        // 3 웨이브 이상에서는 10마리의 몬스터를 두종류로 랜덤하게 생성
         else
         {
-            int totalMonstersToSpawn = monstersToSpawn * 2;
-
-            for (int i = 0; i < totalMonstersToSpawn; i++)
+            monstersToSpawn = 10;
+            for (int i = 0; i < monstersToSpawn; i++)
             {
-                int randomType = Random.Range(0, 2);
-                SpawnEnemy(randomType); 
+                int randomType = Random.Range(0, 2); // 0 또는 1의 몬스터 타입을 랜덤으로 선택
+                SpawnEnemy(randomType);
                 yield return new WaitForSeconds(spawnInterval);
             }
         }
-
     }
 
     // 몬스터 생성
     void SpawnEnemy(int enemyType)
     {
         Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
-        GameObject enemyObj = ObjectPool.GetObject();
+        GameObject enemyObj = Instantiate(Test_Enemy, spawnPos.position, Quaternion.identity);
 
-        if (enemyObj != null)
+        if (enemyType == 0)
         {
-            enemyObj.transform.position = spawnPos.position;
-            enemyObj.transform.rotation = Quaternion.identity;
-
-            // enemyType에 따라 unitData.modelType을 설정하여 모델 변경
-            if (enemyType == 0)
-            {
-                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[0];
-                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 0;  
-            }
-            else if (enemyType == 1)
-            {
-                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[1];
-                enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 1;  
-            }
-
-            activeMonsters.Add(enemyObj);
-            enemyObj.GetComponent<Ingame_UnitCtrl>().PoolModelSwap();
-
-            enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
-
-            enemypriority++;
-
-            //enemyObj.transform.position = spawnPos.position;
-            //enemyObj.transform.rotation = Quaternion.identity;
-            //enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
-            //activeMonsters.Add(enemyObj);
-            //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
+            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[0];
+            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 0;
+        }
+        else if (enemyType == 1)
+        {
+            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[1];
+            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 1;
         }
 
+        activeMonsters.Add(enemyObj);
+        enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
+
+        enemypriority++;
     }
+
 
     // 몬스터 죽음 처리
     public void OnMonsterDead(GameObject monster)
@@ -268,35 +206,29 @@ public class EnemySpawner : MonoBehaviour
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            ObjectPool.ReturnObject(monster); // 오브젝트를 풀로 반환
+            Destroy(monster);
         }
     }
 
     public IEnumerator StartWaveWithDelay(float delay)
     {
-        yield return new WaitForSeconds(delay); // 1초 대기
-        StartCoroutine(WaveSystem());  // 웨이브 시작
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(WaveSystem());
     }
 
     // 몬스터가 모두 죽었는지 확인
     IEnumerator CheckAllMonstersDead()
     {
-        // 몬스터가 모두 죽을 때까지 대기
         while (activeMonsters.Count > 0)
         {
             yield return null;
         }
 
-
-        // 10차 웨이브 이전까지만 성공 패널을 표시
         if (currentWave < waveCount)
         {
             Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
-
             Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
-
             yield return new WaitForSeconds(3.0f);
-
             Debug.Log("모든 몬스터가 죽었습니다. 다음 웨이브를 준비합니다.");
         }
 
@@ -304,18 +236,16 @@ public class EnemySpawner : MonoBehaviour
 
         Ingame_WaveUIManager.instance.isCountDownIng = true;
 
-        // 마지막 웨이브(10차 웨이브)가 끝났을 때
         if (currentWave == waveCount && activeMonsters.Count <= 0)
         {
             Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
-
             Debug.Log("웨이브 종료");
             Time.timeScale = 0.0f;
         }
     }
+
+
     // 다음 웨이브 카운트다운 시작
-
-
     public void NextWave()
     {
         if (isWaveing)
@@ -326,13 +256,11 @@ public class EnemySpawner : MonoBehaviour
 
         Debug.Log("다음 웨이브로 넘어갑니다.");
 
-        // 현재 활성화된 모든 몬스터 제거
         foreach (var monster in activeMonsters)
         {
             Destroy(monster);
         }
 
-        // 몬스터 리스트 초기화
         activeMonsters.Clear();
 
         if (!isWaveing && currentWave < waveCount)
@@ -340,5 +268,5 @@ public class EnemySpawner : MonoBehaviour
             StartCoroutine(WaveSystem());
         }
     }
-
 }
+

@@ -205,40 +205,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    // 오브젝트 풀에 소환되는 모델 swap 용
-    public void PoolModelSwap()
-    {
-        //기존 모델 비활성화
-        if (VisualModel.childCount > 0)
-        {
-            for (int i = 0; i < VisualModel.childCount; i++)
-            {
-                VisualModel.GetChild(i).gameObject.SetActive(false); // 모든 자식 모델 비활성화
-            }
-        }
-
-        GameObject modelToActivate = null;
-
-        // 필요한 모델을 활성화
-        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        {
-            modelToActivate = ModelSwapManager.AllyModel[unitData.modelType]; 
-        }
-        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-        {
-            modelToActivate = ModelSwapManager.EnemyModel[unitData.modelType];
-        }
-
-        if (modelToActivate != null)
-        {
-            //modelToActivate.transform.SetParent(VisualModel, false);
-            modelToActivate.SetActive(true);
-        }
-
-        cur_modelType = unitData.modelType;
-    }
-
-
 
     // Update is called once per frame
     void Update()
@@ -268,10 +234,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             HP = 0;
 
             
-
-
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
-            //ObjectPool.ReturnObject(this.gameObject);
 
             Destroy(this.gameObject);
             Debug.Log(this.gameObject.name + " Destroyed");
@@ -686,7 +649,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage;
+        HP -= Damage * 100;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {

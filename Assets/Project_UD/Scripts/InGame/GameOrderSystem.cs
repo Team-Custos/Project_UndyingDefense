@@ -69,6 +69,7 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
 
+
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
 
                 GridTile GridTile = clickedObj.GetComponent<GridTile>();
@@ -141,13 +142,19 @@ public class GameOrderSystem : MonoBehaviour
             //유닛 클릭했을 때
             else if (clickedObj.tag == CONSTANT.TAG_UNIT)
             {
+                if (GAMEMANAGER.UnitSetMode && GAMEMANAGER.AllyUnitSetMode)
+                {
+                    GAMEMANAGER.UnitSetMode = false;
+                    GAMEMANAGER.AllyUnitSetMode = false;
+                }
+
                 Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
                 Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
                 foreach (var unit in allUnit)
                 {
                     unit.isSelected = false;
-                    //Ingame_UIManager.instance.ShowUnitClickUI(unit);
+                    Ingame_UIManager.instance.ShowUnitClickUI(unit);
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
@@ -192,7 +199,7 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allEnemys)
                 {
                     unit.isSelected = false;
-                    //Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
+                    Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
                 }
 
                 Enemy.isSelected = !Enemy.isSelected;

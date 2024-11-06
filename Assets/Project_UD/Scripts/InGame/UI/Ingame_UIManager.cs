@@ -149,6 +149,7 @@ public class Ingame_UIManager : MonoBehaviour
                 int idx = ii;
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
+                    
                     if(InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
                     {
                         // 현재 선택된 버튼이 동일한 버튼인 경우, 대기 모드 해제
@@ -292,6 +293,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         // 유닛 스폰 설정
         UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+        Debug.Log(idx);
         InGameManager.inst.UnitSetMode = true;
         InGameManager.inst.AllyUnitSetMode = true;
 
@@ -660,7 +662,7 @@ public class Ingame_UIManager : MonoBehaviour
                     unitClickImage.SetActive(true);
                     unitHpImage.SetActive(true);
                 }
-                else
+                else if(selectedUnit == null)
                 {
                     unitClickImage.SetActive(false);
                     unitHpImage.SetActive(false);

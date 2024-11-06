@@ -73,6 +73,13 @@ public class GridTile : MonoBehaviour
             }
             else if (mouseHover && !isPlaceable)
             {
+                // 마우스가 UI 위에 있는지 확인
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // UI 위에 있을 경우 이벤트 무시
+                    return;
+                }
+
                 MeshR.material.color = colorOccupied;
             }
             else if (!mouseHover)
