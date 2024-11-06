@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class Ingame_ParticleManager : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class Ingame_ParticleManager : MonoBehaviour
     public ParticleSystem[] AttackVFX;
     public ParticleSystem[] AttackCritVFX;
 
+    public ParticleSystem allySelectEffect;    // 아군 유닛 선택 이펙트
+    public ParticleSystem enemySeletEffect;    // 적 유닛 선택 이펙트
+
+    public ParticleSystem allySiegeEffect;     // 아군 유닛 시즈모드 이펙트
 
     private void Awake()
     {
@@ -62,5 +67,11 @@ public class Ingame_ParticleManager : MonoBehaviour
         modeChangeInstance.Play();
 
         Destroy(modeChangeInstance.gameObject, modeChangeInstance.main.duration);
+    }
+
+    public void PlayUnitSelectEffect(Transform tr, bool isAlly)
+    {
+        // 아군, 적군에 따른 이펙트 구분
+
     }
 }

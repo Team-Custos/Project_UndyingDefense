@@ -17856,6 +17856,94 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1001 &488321323
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6430430827356602697, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_Name
+      value: vfx_selectAlly
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2fb44afe5954ddc4a9daa3700e001e97, type: 3}
 --- !u!4 &491132934 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715339102936940861, guid: d7a6ae1a8e38f734aaf7062a393e2116,
@@ -76255,6 +76343,12 @@ MonoBehaviour:
   - {fileID: 4075899321981394723, guid: 40e99ae53a977f240b9ca5ca35aaa6d9, type: 3}
   - {fileID: 516829267387349542, guid: 635b9e75de5453244b70f09ec3944d45, type: 3}
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
+  allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+    type: 3}
+  enemySeletEffect: {fileID: 3074663040978982663, guid: b653727dee6067d489d3e72f817cec61,
+    type: 3}
+  allySiegeEffect: {fileID: 842759819059242878, guid: 4017b4afadc2f2345b0c00b76a892687,
+    type: 3}
 --- !u!4 &1989869922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5776924312427068499, guid: 57bf2a0c77ab8934ebf442761b07d011,
@@ -81353,3 +81447,4 @@ SceneRoots:
   - {fileID: 1889340050}
   - {fileID: 1852803596}
   - {fileID: 511252055}
+  - {fileID: 488321323}

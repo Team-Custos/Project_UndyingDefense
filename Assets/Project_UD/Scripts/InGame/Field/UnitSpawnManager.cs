@@ -71,6 +71,7 @@ public class UnitSpawnManager : MonoBehaviour
 
 
         StartCoroutine(SpawnUnitAfterDelay(unitType, X, Y, tempObject));
+        Debug.Log(unitType);
         return null;
     }
 

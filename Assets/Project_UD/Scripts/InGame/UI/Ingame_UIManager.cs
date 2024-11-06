@@ -149,29 +149,11 @@ public class Ingame_UIManager : MonoBehaviour
                 int idx = ii;
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
-                    
-                    if(InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
-                    {
-                        // 현재 선택된 버튼이 동일한 버튼인 경우, 대기 모드 해제
-                        if (currentSelectedIndex == idx)
-                        {
-                            ExitUnitSpawnMode();
-                        }
-                        // 다른 버튼을 눌렀을 경우, 이전 대기 모드 해제하고 새로 진입
-                        else
-                        {
-                            ExitUnitSpawnMode();
-                            EnterUnitSpawnMode(idx);
-                        }
-                    }
-                    else if(!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
-                    {
-                        currentSelectedIndex = idx; // 현재 선택된 버튼의 인덱스 저장
-                        InGameManager.inst.UnitSetMode = true;
-                        InGameManager.inst.AllyUnitSetMode = true;
-                    }
+                    UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+                    InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
+                    InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
 
-                    
+                    DestroyUnitStateChangeBox();
                 });
             }
         }
@@ -293,7 +275,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         // 유닛 스폰 설정
         UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
-        Debug.Log(idx);
         InGameManager.inst.UnitSetMode = true;
         InGameManager.inst.AllyUnitSetMode = true;
 
