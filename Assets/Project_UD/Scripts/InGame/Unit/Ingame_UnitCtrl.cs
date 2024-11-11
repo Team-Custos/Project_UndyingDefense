@@ -319,7 +319,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         // Change 상태일 때는 다른 행동을 하지 않음
         if (Ally_Mode == AllyMode.Change)
         {
-            Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
+            //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
 
 
             if (unitStateChangeTime > 0)
@@ -381,7 +381,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //시즈모드일때
         else if (Ally_Mode == AllyMode.Siege)
         {
-            Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
+            //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
 
             UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
             if (targetEnemy == null || sightRangeSensor.detectedObjects.Count <= 0)//적군이 시야 범위 내에 없을경우.
@@ -706,7 +706,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage * 100;
+        HP -= Damage * 1;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {

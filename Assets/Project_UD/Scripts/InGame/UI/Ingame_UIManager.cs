@@ -403,8 +403,6 @@ public class Ingame_UIManager : MonoBehaviour
 
     }
 
-    
-
     public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)
     {
         if (unit.Ally_Mode == AllyMode.Change)
@@ -412,7 +410,6 @@ public class Ingame_UIManager : MonoBehaviour
             return;
         }
 
-        
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
         if (slectedUnitOptionBox != null)
@@ -421,17 +418,9 @@ public class Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox = null;
         }
 
-        //SetSelectedUnit(unit);
-
-        if (unit.CompareTag(CONSTANT.TAG_ENEMY))
-        {
-            Debug.Log("Fefee");
-            return;
-        }
+        SetSelectedUnit(unit);
 
         currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
-
-        
 
         GameObject canvas = GameObject.Find("Canvas");
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
@@ -445,6 +434,7 @@ public class Ingame_UIManager : MonoBehaviour
         unitStateChageBtn = currentSelectedUnitOptionBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
         // 업그레이드 버튼
         unitUpgradeBtn = currentSelectedUnitOptionBox.transform.Find("UnitUpgradeBtn").GetComponent<Button>();
+
 
         // 모드 전환 버튼
         if (unitStateChageBtn != null)
@@ -460,8 +450,6 @@ public class Ingame_UIManager : MonoBehaviour
 
                     DestroyUnitStateChangeBox();
                 }
-
-                
             });
         }
 
@@ -488,13 +476,22 @@ public class Ingame_UIManager : MonoBehaviour
                     currentSelectedUnitOptionBox = null;
                 }
 
-
                 //CreateUpgradeMenu(unit);
             });
         }
-
-
     }
+
+
+    // 유닛의 상태에 따른 버튼 비활성화를 위한 코드 (Move, Chase시)
+    public void SetUnitButtonsInteractable(bool interactable)
+    {
+        if (unitStateChageBtn != null)
+            unitStateChageBtn.interactable = interactable;
+
+        if (unitUpgradeBtn != null)
+            unitUpgradeBtn.interactable = interactable;
+    }
+
 
     private void CreateUpgradeMenu(Ingame_UnitCtrl unit)
     {
@@ -599,59 +596,59 @@ public class Ingame_UIManager : MonoBehaviour
 
 
     // 유닛의 상태에 따른 ui표시(이동, 시즈 ,HP)
-    public void ShowUnitStateUI(GameObject unit, bool move, bool siege)
-    {
-        if (unit == null)
-        {
-            return;
-        }
+    //public void ShowUnitStateUI(GameObject unit, bool move, bool siege)
+    //{
+    //    if (unit == null)
+    //    {
+    //        return;
+    //    }
 
-        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
-        Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
+    //    Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+    //    Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
 
-        if (unitMoveImageTransform == null || unitSiegeImageTransform == null)
-        {
-            return;
-        }
+    //    if (unitMoveImageTransform == null || unitSiegeImageTransform == null)
+    //    {
+    //        return;
+    //    }
 
-        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
-        GameObject unitSiegeImage = unitSiegeImageTransform.gameObject;
+    //    GameObject unitMoveImage = unitMoveImageTransform.gameObject;
+    //    GameObject unitSiegeImage = unitSiegeImageTransform.gameObject;
         
-        // UI 상태 설정
-        unitMoveImage.SetActive(move);
-        unitSiegeImage.SetActive(siege);
-    }
+    //    // UI 상태 설정
+    //    unitMoveImage.SetActive(move);
+    //    unitSiegeImage.SetActive(siege);
+    //}
 
 
-    public void ShowUnitClickUI(Ingame_UnitCtrl unit)
-    {
-        SetSelectedUnit(unit);
+    //public void ShowUnitClickUI(Ingame_UnitCtrl unit)
+    //{
+    //    SetSelectedUnit(unit);
 
-        // 선택된 유닛의 HP UI 표시
-        if (selectedUnit != null)
-        {
-            Transform selectedUnitClickUITransform = selectedUnit.transform.Find("Canvas2/ClickUI");
-            Transform selectedUnitHpTransform = selectedUnit.transform.Find("Canvas/HP_Back");
+    //    // 선택된 유닛의 HP UI 표시
+    //    if (selectedUnit != null)
+    //    {
+    //        Transform selectedUnitClickUITransform = selectedUnit.transform.Find("Canvas2/ClickUI");
+    //        Transform selectedUnitHpTransform = selectedUnit.transform.Find("Canvas/HP_Back");
 
-            if (selectedUnitClickUITransform != null && selectedUnitHpTransform)
-            {
-                GameObject unitHpImage = selectedUnitClickUITransform.gameObject;
-                GameObject unitClickImage = selectedUnitHpTransform.gameObject;
+    //        if (selectedUnitClickUITransform != null && selectedUnitHpTransform)
+    //        {
+    //            GameObject unitHpImage = selectedUnitClickUITransform.gameObject;
+    //            GameObject unitClickImage = selectedUnitHpTransform.gameObject;
 
-                if(selectedUnit.isSelected)
-                {
-                    unitClickImage.SetActive(true);
-                    unitHpImage.SetActive(true);
-                }
-                else if(selectedUnit == null)
-                {
-                    unitClickImage.SetActive(false);
-                    unitHpImage.SetActive(false);
-                    Debug.Log("fefnefoefe");
-                }
-            }
-        }
-    }
+    //            if(selectedUnit.isSelected)
+    //            {
+    //                unitClickImage.SetActive(true);
+    //                unitHpImage.SetActive(true);
+    //            }
+    //            else if(selectedUnit == null)
+    //            {
+    //                unitClickImage.SetActive(false);
+    //                unitHpImage.SetActive(false);
+    //                Debug.Log("fefnefoefe");
+    //            }
+    //        }
+    //    }
+    //}
 
 
 

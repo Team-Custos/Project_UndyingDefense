@@ -30,11 +30,13 @@ public class GameOrderSystem : MonoBehaviour
     {
         GAMEMANAGER = InGameManager.inst;
         Ingame_InputSystem.Instance.OnPrimaryPerformed += OnPrimaryButtonOrder;
+        Ingame_InputSystem.Instance.OnSecondaryPerformed += OnSecondaryButtonOrder; // 오른쪽 클릭 이벤트 추가
     }
 
     private void OnDestroy()
     {
         Ingame_InputSystem.Instance.OnPrimaryPerformed -= OnPrimaryButtonOrder;
+        Ingame_InputSystem.Instance.OnSecondaryPerformed -= OnSecondaryButtonOrder; // 오른쪽 클릭 이벤트 제거
     }
 
     private void OnPrimaryButtonOrder()//마우스 왼쪽 클릭 이벤트 처리 함수
@@ -97,26 +99,27 @@ public class GameOrderSystem : MonoBehaviour
                     GAMEMANAGER.AllTileSelectOff();
                     GridTile.Selected = !GridTile.Selected;
 
-                    if (selectedUnit != null)
-                    {
-                        Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
-                        AllyUnit.isSelected = false;
+                    //if (selectedUnit != null)
+                    //{
+                    //    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                    //    AllyUnit.isSelected = false;
 
-                        if (AllyUnit.Ally_Mode == AllyMode.Free)
-                        {
-                            if (GridTile.isPlaceable == false)
-                            {
-                                return;
-                            }
+                        //if (AllyUnit.Ally_Mode == AllyMode.Free)
+                        //{
+                        //    if (GridTile.isPlaceable == false)
+                        //    {
+                        //        return;
+                        //    }
 
-                            GridTile.SelectedTile(true);
+                        //    GridTile.SelectedTile(true);
+                        //    Debug.Log("Fefe");
 
-                            AllyUnit.moveTargetPos = GridTile.transform.position;
-                            AllyUnit.targetEnemy = null;
-                            AllyUnit.haveToMovePosition = true;
-                        }
+                        //    AllyUnit.moveTargetPos = GridTile.transform.position;
+                        //    AllyUnit.targetEnemy = null;
+                        //    AllyUnit.haveToMovePosition = true;
+                        //}
                         selectedUnit = null;
-                    }
+                    // }
 
                     GridTile.Selected = false;
                 }
@@ -127,11 +130,11 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
 
-                    if (AllyUnit.Ally_Mode == AllyMode.Free)
-                    {
-                        AllyUnit.haveToMovePosition = true;
-                        AllyUnit.moveTargetPos = new Vector3(GridTilePos.x, 0, GridTilePos.z);
-                    }
+                    //    if (AllyUnit.Ally_Mode == AllyMode.Free)
+                    //    {
+                    //        AllyUnit.haveToMovePosition = true;
+                    //        AllyUnit.moveTargetPos = new Vector3(GridTilePos.x, 0, GridTilePos.z);
+                    //    }
 
                     selectedUnit = null;
                 }
@@ -152,7 +155,7 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allUnit)
                 {
                     unit.isSelected = false;
-                    Ingame_UIManager.instance.ShowUnitClickUI(unit);
+                    //Ingame_UIManager.instance.ShowUnitClickUI(unit);
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
@@ -160,7 +163,7 @@ public class GameOrderSystem : MonoBehaviour
                 {
                     selectedUnit = AllyUnit.gameObject;
 
-                    Ingame_UIManager.instance.ShowUnitClickUI(AllyUnit);
+                    //Ingame_UIManager.instance.ShowUnitClickUI(AllyUnit);
 
                     if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
@@ -197,7 +200,7 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allEnemys)
                 {
                     unit.isSelected = false;
-                    Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
+                    //Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
                 }
 
                 Enemy.isSelected = !Enemy.isSelected;
@@ -207,7 +210,7 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = Enemy.gameObject;
 
                     // 선택된 적의 UI 업데이트
-                    Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
+                    //Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
                 }
                 else
                 {
@@ -284,10 +287,54 @@ public class GameOrderSystem : MonoBehaviour
     {
         //To do : Secondary Button Event
 
+        if (selectedUnit != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit) && Input.GetMouseButtonDown(1))
+            {
+                GameObject clickedObj = hit.collider.gameObject;
+
+                // 타일을 오른쪽 클릭하여 유닛을 이동
+                if (clickedObj.CompareTag(CONSTANT.TAG_TILE))
+                {
+                    GridTile gridTile = clickedObj.GetComponent<GridTile>();
+
+                    if (gridTile.isPlaceable) // 타일이 배치 가능할 때
+                    {
+                        Ingame_UnitCtrl allyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                        allyUnit.isSelected = false;
+
+                        if (allyUnit.Ally_Mode == AllyMode.Free)
+                        {
+                            allyUnit.moveTargetPos = gridTile.transform.position;
+                            allyUnit.targetEnemy = null;
+                            allyUnit.haveToMovePosition = true;
+
+                            gridTile.SelectedTile(true); // 타일 선택 효과
+                            Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                        }
+
+                        selectedUnit = null; // 이동 후 선택 해제
+                    }
+                }
+                else if (clickedObj.CompareTag(CONSTANT.TAG_GROUND)) // 지형 클릭 시
+                {
+                    Ingame_UnitCtrl allyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                    allyUnit.isSelected = false;
+
+                    if (allyUnit.Ally_Mode == AllyMode.Free)
+                    {
+                        allyUnit.haveToMovePosition = true;
+                        allyUnit.moveTargetPos = new Vector3(hit.point.x, 0, hit.point.z);
+                    }
+
+                    selectedUnit = null;
+                }
+            }
 
 
+        }
 
     }
-
-    
 }

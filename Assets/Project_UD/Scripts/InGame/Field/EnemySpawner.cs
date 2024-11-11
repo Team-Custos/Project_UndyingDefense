@@ -116,16 +116,16 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    ////적 소환
-    //public GameObject EnemySpawn(int enemyType, float X, float Y)
-    //{
-    //    Debug.Log(new Vector3(X, 0, Y));
-    //    GameObject Obj = Instantiate(Test_Enemy);
-    //    Obj.transform.position = new Vector3(X, 0, Y);
-    //    Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
-    //    Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
-    //    return Obj;
-    //}
+    //적 소환
+    public GameObject EnemySpawn(int enemyType, float X, float Y)
+    {
+        Debug.Log(new Vector3(X, 0, Y));
+        GameObject Obj = Instantiate(Test_Enemy);
+        Obj.transform.position = new Vector3(X, 0, Y);
+        Obj.GetComponent<Ingame_UnitCtrl>().unitPos = new Vector2(X, Y);
+        Obj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
+        return Obj;
+    }
 
     public IEnumerator WaveSystem()
     {
@@ -160,14 +160,27 @@ public class EnemySpawner : MonoBehaviour
                 yield return new WaitForSeconds(spawnInterval);
             }
         }
-        // 3 웨이브 이상에서는 10마리의 몬스터를 두종류로 랜덤하게 생성
         else
         {
-            monstersToSpawn = 10;
-            for (int i = 0; i < monstersToSpawn; i++)
+            int monsterType0Count = 0;
+            int monsterType1Count = 0;
+
+            // 두 종류의 몬스터가 각각 5마리씩 생성될 때까지 반복
+            while (monsterType0Count < 5 || monsterType1Count < 5)
             {
                 int randomType = Random.Range(0, 2); // 0 또는 1의 몬스터 타입을 랜덤으로 선택
-                SpawnEnemy(randomType);
+
+                if (randomType == 0 && monsterType0Count < 5)
+                {
+                    SpawnEnemy(0);
+                    monsterType0Count++;
+                }
+                else if (randomType == 1 && monsterType1Count < 5)
+                {
+                    SpawnEnemy(1);
+                    monsterType1Count++;
+                }
+
                 yield return new WaitForSeconds(spawnInterval);
             }
         }
