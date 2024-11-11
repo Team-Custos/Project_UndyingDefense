@@ -236,8 +236,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //모델 변경
         ModelSwap();
 
-        //Selected_Particle.SetActive(isSelected);
-        //findEnemyRange.SetActive(isSelected);
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);//성의 좌표 초기화.
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
@@ -263,8 +261,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        
 
         #region 아군 제어
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
@@ -430,13 +426,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-                if (sightRangeSensor.detectedObjects.Count <= 0)
+                if (targetEnemy == null || sightRangeSensor.detectedObjects.Count <= 0)
                 {
                     isEnemyInSight = false;
-                    targetEnemy = null;
+                    Ally_State.fsm.ChangeState(UnitState.Idle);
+                    SearchEnemy();
                 }
 
-                if (targetEnemy != null && targetEnemy.activeSelf)
+                if (targetEnemy != null)
                 {
                     isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= unitData.attackRange);
                 }
