@@ -220,6 +220,7 @@ public class UnitSkillManager : MonoBehaviour
                         Granade_Obj.transform.position = TargetEnemy.transform.position;
                         AttackCtrl attackCtrl = Granade_Obj.GetComponent<AttackCtrl>();
                         attackCtrl.Damage = SkillDamage;
+                        attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
                         attackCtrl.Type = AttackType.Crush;
                         attackCtrl.Debuff2Add = UnitDebuff.Stun;
                     }
@@ -338,6 +339,8 @@ public class UnitSkillManager : MonoBehaviour
 
                         //GridManager.mapGrid.GetCellCenterWorld(new Vector3Int((int)TargetCells[TargetCellFinal].x, 1, (int)TargetCells[TargetCellFinal].y));
                         SetObject = Instantiate(Trap);
+                        AttackCtrl attackCtrl = SetObject.GetComponent<AttackCtrl>();
+                        attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
                         SetObject.transform.position = new Vector3(CellWorldPosFinal.x, -1, CellWorldPosFinal.z);
                         GridManager.SetTilePlaceable(TargetCellWorldPos, true, false);
                         TargetCellPlaceable.Clear();

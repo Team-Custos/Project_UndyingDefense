@@ -142,14 +142,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
         defaultTargetRotation = unitDefaultRotation;
 
         //유닛 스폰시 모델 설정.
-        if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        {
-            Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-        }
-        else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-        {
-            Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-        }
+        Instantiate(unitData.modelPrefab, VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+
+        //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        //{
+        //    Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+           
+        //}
+        //else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        //{
+        //    Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+        //}
 
         SpawnDelay = true;
 
@@ -202,19 +205,23 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public void ModelSwap()//모델 변경 함수.
     {
-        if (unitData.modelType != cur_modelType)
+        if (unitData.modelPrefab.name != VisualModel.GetChild(0).gameObject.name)
         {
             Destroy(VisualModel.GetChild(0).gameObject);
-            if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-            {
-                Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
-            else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            {
-                Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            }
+            GameObject CurModel = Instantiate(unitData.modelPrefab, VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
 
-            cur_modelType = unitData.modelType;
+            CurModel.name = unitData.modelPrefab.name;
+
+            //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            //{
+            //    Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            //}
+            //else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            //{
+            //    Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            //}
+
+            //cur_modelType = unitData.modelType;
         }
     }
 
@@ -243,8 +250,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (HP <= 0)
         {
             HP = 0;
-
-            
             EnemySpawner.inst.OnMonsterDead(this.gameObject);
 
             OnDisable?.Invoke(gameObject);
@@ -703,7 +708,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Crit = 100;
         }
 
-        HP -= Damage * 100;
+        HP -= Damage;
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {

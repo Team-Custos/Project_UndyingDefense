@@ -22,6 +22,8 @@ public enum AttackMethod //공격 방식
 
 public class AttackCtrl : MonoBehaviour
 {
+    public Animator ModelAnimator;
+
     public AttackMethod MethodType;
 
     public AttackType Type;
@@ -66,18 +68,29 @@ public class AttackCtrl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (this.MethodType == AttackMethod.Granade)
+        if (other.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         {
-            if (other.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            {
-                Ingame_UnitCtrl EnemyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
+            Ingame_UnitCtrl EnemyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
 
+            if (this.MethodType == AttackMethod.Granade)
+            {
                 if (EnemyCtrl != null)
                 {
                     Debug.Log("Granade Hit!");
-                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit, Type, Debuff2Add);
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit+10, Type, Debuff2Add);
+                }
+            }
+            else if (this.MethodType == AttackMethod.Trap)
+            {
+                if (EnemyCtrl != null)
+                {
+                    Debug.Log("Trap Hit!");
+                    ModelAnimator.SetTrigger("TrapTriggered");
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit+10, Type, Debuff2Add);
+                    Destroy(this.gameObject,5f);
                 }
             }
         }
+        
     }
 }

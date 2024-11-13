@@ -12,7 +12,8 @@ public class Ingame_UnitData : ScriptableObject
     public DefenseType defenseType;                               
     public TargetSelectType targetSelectType;                     
                                                                   
-    public int modelType;                                         
+    public int modelType;
+    public GameObject modelPrefab;
     public int maxHP;                                             
     public int mental = 1;                                        
     public float moveSpeed;                                       

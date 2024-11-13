@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ade45e10dea540893707ad93ea072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetCellIdx: 
   Bow: {fileID: 6920284489904662650}
   Granade: {fileID: 0}
   Trap: {fileID: 0}
   UnitCtrl: {fileID: 1211345596767314744}
   SetObject: {fileID: 0}
+  TargetCellIdx: 
 --- !u!1 &1277920915999584873
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,11 +148,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041ce2edeec9e6244b85f64eb7ec9e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitCtrl: {fileID: 0}
   tagToSearch: Unit
   radius: 3
   detectedObjects: []
   ignoreList: []
   Obj_Nearest: {fileID: 0}
+  RangeCollider: {fileID: 0}
 --- !u!135 &5798471212453393595
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -452,6 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2b5d0666112e5245830000adfa8bcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destinations: []
 --- !u!136 &3507718054080957470
 CapsuleCollider:
   m_ObjectHideFlags: 0
