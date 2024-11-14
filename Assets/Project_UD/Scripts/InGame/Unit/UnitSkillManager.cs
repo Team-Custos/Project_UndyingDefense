@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnitDataManager;
 
 //이 스크립트는 유닛의 스킬들을 관리하기 위한 스크립트입니다. (아군, 적군 통합.)
 
 public class UnitSkillManager : MonoBehaviour
 {
-    
-
     //필요한 프리팹들
     public GameObject Bow; //활
     public GameObject Granade; //수류탄
     public GameObject Trap; //곰덫
 
-    float weaponCooldown_Cur = 0;//현재 일반공격 쿨타임
-    float skillCooldown_Cur = 0;//현재 특수 스킬 쿨타임
+    public bool attackStop = false;
+    public float weaponCooldown_Cur = 0;//현재 일반공격 쿨타임
+    public float skillCooldown_Cur = 0;//현재 특수 스킬 쿨타임
 
     public Ingame_UnitCtrl UnitCtrl; //자기 자신 스크립트 불러올 때 사용.
     GridManager GridManager;//설치형 스킬에 필요한 위치 불러올 그리드.
@@ -48,7 +48,8 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
-            UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);//쿨타임이 돌면 공격 애니메이션 실행.
+            Animator animator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
+            animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);//쿨타임이 돌면 공격 애니메이션 실행.
 
             //공격의 상세 스텟 설정.
             switch (SkillCode)
@@ -105,9 +106,12 @@ public class UnitSkillManager : MonoBehaviour
 
             weaponCooldown_Cur = weaponCooldown; //쿨타임 초기화.
         }
-        else
+        else 
         {
-            weaponCooldown_Cur -= Time.deltaTime;
+            if (!attackStop)
+            {
+                weaponCooldown_Cur -= Time.deltaTime;
+            } 
         }
     }
 
@@ -174,7 +178,7 @@ public class UnitSkillManager : MonoBehaviour
                             }
                         }
                         // 지연 시간 후 두 번째 총알 발사
-                        yield return new WaitForSeconds(0.5f);
+                        yield return new WaitForSeconds(UnitCtrl.unitData.weaponCooldown * 0.5f);
                         //Debug.Log("Double shot 2");
                         if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                         {

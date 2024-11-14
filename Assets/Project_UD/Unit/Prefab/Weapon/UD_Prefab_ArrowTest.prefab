@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.07, y: 0, z: 6.44}
-  m_LocalScale: {x: 1.9999999, y: 1.9999999, z: 1.9999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8462500469413093967}
-  m_Mesh: {fileID: 9079043524481812986, guid: 97d15c3a529c5c042866282e4a990527, type: 3}
+  m_Mesh: {fileID: 9079043524481812986, guid: eab4efda44dcf404f9727d8c6e0022ea, type: 3}
 --- !u!23 &3166612255250759096
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8578991229988381114, guid: 97d15c3a529c5c042866282e4a990527, type: 3}
+  - {fileID: 8578991229988381114, guid: eab4efda44dcf404f9727d8c6e0022ea, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Atk: 1
-  speed: 1
+  speed: 5
   isEnemyAttack: 0
