@@ -47,7 +47,7 @@ public class GridManager : MonoBehaviour
     public void SetTilePlaceable(Vector3 pos, bool SetManualMode, bool PlaceableToSetManual) //타일의 유닛 배치 가능여부를 설정하는 함수.
     {
         Vector3Int CurCellPos = groundTilemap.WorldToCell(pos);
-        Vector3 CurCellWorldPos = new Vector3 (groundTilemap.GetCellCenterWorld(CurCellPos).x,0,groundTilemap.GetCellCenterWorld(CurCellPos).z);
+        Vector3 CurCellWorldPos = new Vector3(groundTilemap.GetCellCenterWorld(CurCellPos).x, 0, groundTilemap.GetCellCenterWorld(CurCellPos).z);
 
         Vector3 CurUnitWorldPos = new Vector3(pos.x, 0, pos.z);
 
@@ -81,7 +81,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        
+
     }
 
     public bool GetTilePlaceable(Vector3 WorldPosToFind) //타일의 유닛 배치 가능 여부를 판단하는 함수.

@@ -150,7 +150,7 @@ public class EnemySpawner : MonoBehaviour
     {
         int monstersToSpawn;
 
-        // 현재 웨이브가 1~2일 때는 5마리의 몬스터 생성
+        // 현재 웨이브가 1~2일 때는 5마리의 기본 몬스터 생성
         if (currentWave <= 2)
         {
             monstersToSpawn = 5;
@@ -165,10 +165,9 @@ public class EnemySpawner : MonoBehaviour
             int monsterType0Count = 0;
             int monsterType1Count = 0;
 
-            // 두 종류의 몬스터가 각각 5마리씩 생성될 때까지 반복
             while (monsterType0Count < 5 || monsterType1Count < 5)
             {
-                int randomType = Random.Range(0, 2); // 0 또는 1의 몬스터 타입을 랜덤으로 선택
+                int randomType = Random.Range(0, 2);
 
                 if (randomType == 0 && monsterType0Count < 5)
                 {
@@ -179,6 +178,11 @@ public class EnemySpawner : MonoBehaviour
                 {
                     SpawnEnemy(1);
                     monsterType1Count++;
+                }
+                // 두 타입이 모두 5마리에 도달한 경우 루프를 종료
+                if (monsterType0Count >= 5 && monsterType1Count >= 5)
+                {
+                    break;
                 }
 
                 yield return new WaitForSeconds(spawnInterval);
@@ -210,7 +214,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    // 몬스터 죽음 처리
+    //몬스터 죽음 처리
     public void OnMonsterDead(GameObject monster)
     {
         if (activeMonsters.Contains(monster))

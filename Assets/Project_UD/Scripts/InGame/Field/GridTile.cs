@@ -104,6 +104,28 @@ public class GridTile : MonoBehaviour
     private void OnMouseOver()
     {
         mouseHover = true;
+
+        // 유닛이 프리모드시 이동가능한 타일 색 설정
+        if (GameOrderSystem.instance.selectedUnit != null &&
+        GameOrderSystem.instance.selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
+        {
+            // 마우스가 UI 위에 있는지 확인
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                // UI 위에 있을 경우 이벤트 무시
+                return;
+            }
+
+            // 이동 가능할 때 파란색으로, 불가능할 때 붉은색으로 표시
+            if (isPlaceable)
+            {
+                MeshR.material.color = colorSelected;
+            }
+            else
+            {
+                MeshR.material.color = colorOccupied;
+            }
+        }
     }
 
     private void OnMouseExit()

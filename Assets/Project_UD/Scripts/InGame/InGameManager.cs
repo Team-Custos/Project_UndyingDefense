@@ -22,6 +22,8 @@ public class InGameManager : MonoBehaviour
     public bool AllyUnitSetMode = false;
     public bool EnemyUnitSetMode = false;
 
+    public bool isGamePause;
+
     private void Awake()
     {
         inst = this;
@@ -42,8 +44,18 @@ public class InGameManager : MonoBehaviour
         }
         else
         {
-            Time.timeScale = 1f;
+            if (isGamePause)
+            {
+                Time.timeScale = 0.0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
         }
+
+        
+
 
         if (UnitSetMode && AllyUnitSetMode)
         {

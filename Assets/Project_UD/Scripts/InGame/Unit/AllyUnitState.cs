@@ -46,7 +46,6 @@ public class AllyUnitState : MonoBehaviour
     void Idle_Enter()
     {
         Debug.Log("Idle Enter");
-        Ingame_UIManager.instance.SetUnitButtonsInteractable(true);
     }
 
     void Idle_Update()
@@ -125,7 +124,7 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInSight = false;
 
         //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, true, false);
-        Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
+        //Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
     }
 
     void Move_Update()
@@ -147,7 +146,7 @@ public class AllyUnitState : MonoBehaviour
             }
         }
 
-        Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
+        //Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
     }
 
     void Move_Exit()
@@ -162,7 +161,6 @@ public class AllyUnitState : MonoBehaviour
     {
         Debug.Log("Chase_Enter");
         navAgent.isStopped = false;
-        Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
     }
 
     void Chase_Update()
@@ -186,7 +184,6 @@ public class AllyUnitState : MonoBehaviour
             
         }
 
-        Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
     }
 
     void Chase_Exit()
