@@ -34,12 +34,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
     [HideInInspector] public NavMeshAgent NavAgent;
     [HideInInspector] public UnitSkillManager UnitSkill;
 
+
     public Ingame_UnitData unitData; //유닛의 데이터 (스크립터블 오브젝트.)
     UnitDebuffManager debuffManager; //디버프 관리.
-    
+
     UnitModelSwapManager ModelSwapManager; //유닛의 모델 관리.
     public UnitSoundManager soundManager; //유닛의 SFX 관리.
-    
+
+    private GridTile currentTile;
+
     [Header("====Status====")]
     public AllyMode Ally_Mode;
 
@@ -138,6 +141,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentTile = GetComponentInParent<GridTile>();
+
         transform.rotation = unitDefaultRotation;
         defaultTargetRotation = unitDefaultRotation;
 
@@ -166,7 +171,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         HP = maxHp; //최대체력의 최종 변수로 현재 체력을 초기화.
         cur_moveSpeed = unitData.moveSpeed;//현재 이동 속도를 데이터의 이동속도로 초기화.
-        
+
 
         Ally_Mode = AllyMode.Siege;//시즈모드로 스폰.
 
@@ -254,11 +259,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             OnDisable?.Invoke(gameObject);
 
-            this.gameObject.SetActive(false);
-
-            //Destroy(this.gameObject);
 
             Debug.Log(this.gameObject.name + " Destroyed");
+           
 
         }
 
@@ -282,6 +285,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         #endregion
 
     }
+
 
     void AllyCtrl()
     {
@@ -320,7 +324,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         // Change 상태일 때는 다른 행동을 하지 않음
         if (Ally_Mode == AllyMode.Change)
         {
-            Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
+            //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
 
 
             if (unitStateChangeTime > 0)
@@ -382,7 +386,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //시즈모드일때
         else if (Ally_Mode == AllyMode.Siege)
         {
-            Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
+            haveToMovePosition = false;
+            //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
 
             UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
             if (targetEnemy == null || sightRangeSensor.detectedObjects.Count <= 0)//적군이 시야 범위 내에 없을경우.
@@ -407,6 +412,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isEnemyInRange = false;
             }
+
         }
         //프리모드일때
         else if (Ally_Mode == AllyMode.Free)
@@ -582,7 +588,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 Ally_State.fsm.ChangeState(UnitState.Search);
                 return;
             }
-            else if(isEnemyInRange)
+            else if (isEnemyInRange)
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
                 UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
