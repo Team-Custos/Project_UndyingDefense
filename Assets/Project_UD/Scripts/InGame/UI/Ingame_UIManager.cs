@@ -59,7 +59,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Button endGameBtn;
     public Button restartGameBtn;
     public Button pauseGameBtn;
-    private bool isPasue = false;
+    private bool isPause = false;
 
     [Header("====UnitOptionMenu====")]
     public GameObject slectedUnitOptionBox;         // 업그레이드 and 모드 변경 판넬
@@ -681,15 +681,15 @@ public class Ingame_UIManager : MonoBehaviour
 
     void PauseGame()
     {
-        if (isPasue == false)
+        if (isPause == false)
         {
             Time.timeScale = 0.0f;
-            isPasue = true;
+            isPause = true;
         }
         else
         {
             Time.timeScale = 1.0f;
-            isPasue = false;
+            isPause = false;
         }
 
     }

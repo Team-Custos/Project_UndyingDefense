@@ -194,6 +194,7 @@ public class EnemySpawner : MonoBehaviour
         enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;
 
         enemypriority++;
+        enemyObj.name = Test_Enemy.name + enemypriority.ToString();
     }
 
 

@@ -553,7 +553,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else
         {
             GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch(unitData.sightRange, this.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+                sightRangeSensor.NearestObjectSearch();
 
             if (TargetObj != null)
             {

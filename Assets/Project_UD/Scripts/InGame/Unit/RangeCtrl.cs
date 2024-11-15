@@ -31,7 +31,7 @@ public class RangeCtrl : MonoBehaviour
         RangeCollider.radius = radius;//공격 범위를 콜라이더 반지름에 적용.
     }
 
-    public GameObject NearestObjectSearch(float attackRange, bool isParentEnemy)//가까이 있는 오브젝트를 검색.
+    public GameObject NearestObjectSearch()//가까이 있는 오브젝트를 검색.
     {
         if (Obj_Nearest == null) //없어졌을경우.
         {
@@ -52,6 +52,8 @@ public class RangeCtrl : MonoBehaviour
 
                     if (Obj_Distance_Nearest > Obj_Distance)
                     {
+                        //Obj_Nearest = detectedObjects[i];
+
                         if (detectedObjects[i].activeInHierarchy == false && detectedObjects.Contains(detectedObjects[i]))
                         {
                             detectedObjects.Remove(detectedObjects[i]);

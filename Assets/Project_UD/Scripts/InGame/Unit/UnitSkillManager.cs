@@ -144,6 +144,7 @@ public class UnitSkillManager : MonoBehaviour
                     // 검베기와 같은 처리. 스탯만 다르게.
                     if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
                     {
+                        unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_SPECIAL);
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     }
                     break;

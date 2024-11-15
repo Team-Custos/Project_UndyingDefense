@@ -16,6 +16,7 @@ public static class CONSTANT
     public static string ANITRIGGER_DEAD = "IsDead";
     public static string ANIBOOL_RUN = "IsRunning";
     public static string ANITRIGGER_ATTACK = "AttackTrigger";
+    public static string ANITRIGGER_SPECIAL = "SpecialTrigger";
 
 
 }

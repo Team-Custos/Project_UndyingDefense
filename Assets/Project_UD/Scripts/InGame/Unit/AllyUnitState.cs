@@ -57,6 +57,8 @@ public class AllyUnitState : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
             UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
+
+        UnitCtrl.SearchEnemy();
     }
 
     void Idle_Exit()
@@ -73,6 +75,8 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Update()
     {
+        UnitCtrl.targetEnemy = UnitCtrl.sightRangeSensor.NearestObjectSearch();
+
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null) //유닛의 시야 범위에 적군이 있는가?
         {
             if (UnitCtrl.targetEnemy != null)//타겟 적군이 있는가?
