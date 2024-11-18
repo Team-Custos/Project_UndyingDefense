@@ -123,8 +123,7 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, true, false);
-        //Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
+        Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, true);
     }
 
     void Move_Update()
@@ -153,7 +152,7 @@ public class AllyUnitState : MonoBehaviour
     {
         navAgent.SetDestination(transform.position); //NavmeshAgent를 정지시키기 위한 목적지 설정.
         navAgent.isStopped = true; //멈춤 상태로 변경.
-        //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false); 
+        Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, false); 
     }
     #endregion
 

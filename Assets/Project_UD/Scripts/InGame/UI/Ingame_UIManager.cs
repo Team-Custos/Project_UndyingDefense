@@ -644,63 +644,45 @@ public class Ingame_UIManager : MonoBehaviour
         }
     }
 
+
+
+
     
+    public void ShowUnitMoveUI(GameObject unit, bool move)
+    {
+        if (unit == null)
+        {
+            return;
+        }
+
+        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+
+        if (unitMoveImageTransform == null)
+        {
+            return;
+        }
+
+        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
+
+        unitMoveImage.SetActive(move);
+    }
 
 
-    // 유닛의 상태에 따른 ui표시(이동, 시즈 ,HP)
-    //public void ShowUnitStateUI(GameObject unit, bool move, bool siege)
-    //{
-    //    if (unit == null)
-    //    {
-    //        return;
-    //    }
+    public void ShowUnitClickUI(Ingame_UnitCtrl unit, bool show)
+    {
+        if (unit == null) return;
 
-    //    Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
-    //    Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
+        // 선택된 유닛의 HP UI 활성화/비활성화
+        Transform hpUITransform = unit.transform.Find("Canvas/HP_Back");
+        if (hpUITransform)
+        {
+            GameObject hpUI = hpUITransform.gameObject;
+            hpUI.SetActive(show);
+        }
 
-    //    if (unitMoveImageTransform == null || unitSiegeImageTransform == null)
-    //    {
-    //        return;
-    //    }
-
-    //    GameObject unitMoveImage = unitMoveImageTransform.gameObject;
-    //    GameObject unitSiegeImage = unitSiegeImageTransform.gameObject;
-        
-    //    // UI 상태 설정
-    //    unitMoveImage.SetActive(move);
-    //    unitSiegeImage.SetActive(siege);
-    //}
-
-
-    //public void ShowUnitClickUI(Ingame_UnitCtrl unit)
-    //{
-    //    SetSelectedUnit(unit);
-
-    //    // 선택된 유닛의 HP UI 표시
-    //    if (selectedUnit != null)
-    //    {
-    //        Transform selectedUnitClickUITransform = selectedUnit.transform.Find("Canvas2/ClickUI");
-    //        Transform selectedUnitHpTransform = selectedUnit.transform.Find("Canvas/HP_Back");
-
-    //        if (selectedUnitClickUITransform != null && selectedUnitHpTransform)
-    //        {
-    //            GameObject unitHpImage = selectedUnitClickUITransform.gameObject;
-    //            GameObject unitClickImage = selectedUnitHpTransform.gameObject;
-
-    //            if(selectedUnit.isSelected)
-    //            {
-    //                unitClickImage.SetActive(true);
-    //                unitHpImage.SetActive(true);
-    //            }
-    //            else if(selectedUnit == null)
-    //            {
-    //                unitClickImage.SetActive(false);
-    //                unitHpImage.SetActive(false);
-    //                Debug.Log("fefnefoefe");
-    //            }
-    //        }
-    //    }
-    //}
+        // 선택 상태 동기화
+        unit.isSelected = show;
+    }
 
 
 

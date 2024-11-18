@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -250,7 +251,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
             HP = 0;
 
 
-            EnemySpawner.inst.OnMonsterDead(this.gameObject); // 몬스터 파괴 포함
+            Vector3 unitPosition = this.transform.position;
+            GridManager.inst.SetTilePlaceable(unitPosition, true, true);
+
+            if (this.tag == CONSTANT.TAG_ENEMY)
+            {
+                EnemySpawner.inst.OnMonsterDead(this.gameObject); // 몬스터 파괴
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
 
             OnDisable?.Invoke(gameObject);
 
@@ -320,7 +331,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (Ally_Mode == AllyMode.Change)
         {
             //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
-
+            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
 
             if (unitStateChangeTime > 0)
             {
@@ -381,6 +392,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //시즈모드일때
         else if (Ally_Mode == AllyMode.Siege)
         {
+            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, true);
+
             haveToMovePosition = false;
             //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
 
@@ -412,6 +425,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //프리모드일때
         else if (Ally_Mode == AllyMode.Free)
         {
+            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
+
             UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
             if (haveToMovePosition)//모든 행동을 무시하고 이동해야하는가?
             {

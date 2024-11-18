@@ -4184,12 +4184,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!4 &92736370 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-    type: 3}
-  m_PrefabInstance: {fileID: 1184786138}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &94231257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -9073,7 +9067,6 @@ RectTransform:
   m_Children:
   - {fileID: 1260035316}
   - {fileID: 1565232313}
-  - {fileID: 92736370}
   m_Father: {fileID: 590253402}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -46645,74 +46638,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!1001 &1184786138
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 209794468}
-    m_Modifications:
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3441015390969867322, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7949469587828600435, guid: 84a57be2e2136d6408e001cf90c77158,
-        type: 3}
-      propertyPath: m_Name
-      value: FXP_Mouse_LineGlow
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 84a57be2e2136d6408e001cf90c77158, type: 3}
 --- !u!1001 &1186706735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77583,7 +77508,7 @@ MonoBehaviour:
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
   allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
-  enemySeletEffect: {fileID: 3074663040978982663, guid: b653727dee6067d489d3e72f817cec61,
+  enemySelectEffect: {fileID: 3074663040978982663, guid: b653727dee6067d489d3e72f817cec61,
     type: 3}
   allySiegeEffect: {fileID: 842759819059242878, guid: 4017b4afadc2f2345b0c00b76a892687,
     type: 3}

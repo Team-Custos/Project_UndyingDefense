@@ -134,6 +134,8 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
 
+                    Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
+
                     //    if (AllyUnit.Ally_Mode == AllyMode.Free)
                     //    {
                     //        AllyUnit.haveToMovePosition = true;
@@ -169,6 +171,9 @@ public class GameOrderSystem : MonoBehaviour
 
                     //Ingame_UIManager.instance.ShowUnitClickUI(AllyUnit);
 
+                    // 파티클 제거
+                    Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
+
                     if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
@@ -178,6 +183,10 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
+
+                    // 선택된 유닛이 아군인지 적군인지 확인하여 파티클 재생
+                    bool isAlly = clickedObj.CompareTag(CONSTANT.TAG_UNIT);
+                    Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, isAlly);
                 }
                 else
                 {
@@ -233,8 +242,14 @@ public class GameOrderSystem : MonoBehaviour
                     }
                     Enemy.isSelected = false;
 
+                    // 파티클 제거
+                    Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
+
                     selectedUnit = null;
                 }
+
+                // 파티클 재생
+                Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, false);
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                 Ingame_UIManager.instance.UpdateUnitInfoPanel(Enemy);
