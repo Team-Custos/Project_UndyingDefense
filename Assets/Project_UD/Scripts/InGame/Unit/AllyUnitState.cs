@@ -12,7 +12,8 @@ public enum UnitState //유닛의 상태
     Attack,
     Search,
     Chase,
-    Move
+    Move,
+    Dead
 }
 
 public class AllyUnitState : MonoBehaviour
@@ -70,6 +71,7 @@ public class AllyUnitState : MonoBehaviour
     #region Attack State (병사가 공격할 때)
     void Attack_Enter()
     {
+        UnitCtrl.UnitSkill.UnitGeneralSkillCooldownInit();
         Debug.Log("Attack_Enter");
     }
 
@@ -170,6 +172,9 @@ public class AllyUnitState : MonoBehaviour
     void Chase_Update()
     {
         //Debug.Log("Chase_Update");
+        if (UnitCtrl.isAttacking)
+        { return; }
+
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position); //타겟 적군과의 거리.
 
@@ -217,7 +222,15 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.SearchEnemy();//적군 탐색.
     }
 
-    
+    void Dead_Enter()
+    {
+        
+    }
+
+    void Dead_Update()
+    {
+        
+    }
 
 
 }

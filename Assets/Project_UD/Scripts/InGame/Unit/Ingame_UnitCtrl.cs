@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -61,6 +60,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public int maxHp;//최대 체력.
     public Image hpBar;//유닛의 체력 바.
+    public bool isDead = false;//유닛이 죽었는가?
+
+    public bool isAttacking = false;
 
     [Header("====AI====")]
     bool SpawnDelay = true;
@@ -75,6 +77,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public bool isEnemyInSight = false;//적이 시야 범위 내에 있는가?
     public bool isEnemyInRange = false;//적이 공격 범위 내에 있는가?
+    float isEnemyInRangeDelay = 0.7f;
+    float isEnemyInRangeDelay_Cur = 0;
+
+
     public bool enemy_isBaseInRange = false;//성이 공격 범위 내에 있는가? (적군 전용)
     public bool enemy_isPathBlocked = false;//성까지 가는 길이 막혀있는가? (적군 전용)
 
@@ -232,7 +238,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (hpBar != null)
         {
@@ -240,7 +246,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-        GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+       
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
@@ -252,17 +258,24 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
-        if (HP <= 0)
+        if (HP <= 0 && !isDead)
         {
             HP = 0;
-            EnemySpawner.inst.OnMonsterDead(this.gameObject);
-
-            OnDisable?.Invoke(gameObject);
-
+            if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+            }
+            else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                isDead = true;
+            }
 
             Debug.Log(this.gameObject.name + " Destroyed");
-           
-
+            return;
+        }
+        else
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
@@ -283,12 +296,18 @@ public class Ingame_UnitCtrl : MonoBehaviour
             EnemyCtrl();
         }
         #endregion
-
     }
 
 
     void AllyCtrl()
     {
+        if (isDead)
+        {
+            Ally_State.fsm.ChangeState(UnitState.Dead);
+            return;
+        }
+
+
         if (targetEnemy != null && targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
         {
             sightRangeSensor.ListTargetDelete(targetEnemy);
@@ -425,6 +444,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                 if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)//목적지에 도착할떄까지
                 {
+                    //VisualModel.transform.rotation = Quaternion.identity;
                     Ally_State.fsm.ChangeState(UnitState.Move);//이동 상태 설정.
                 }
                 else
@@ -446,7 +466,22 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                 if (targetEnemy != null)
                 {
-                    isEnemyInRange = (Vector3.Distance(transform.position, targetEnemy.transform.position) <= unitData.attackRange);
+                    float distance = Vector3.Distance(transform.position, targetEnemy.transform.position);
+
+                    if (distance <= unitData.attackRange)
+                    {
+                        isEnemyInRange = true;
+                        isEnemyInRangeDelay_Cur = 0;
+                    }
+                    else if (isEnemyInRange)
+                    {
+                        isEnemyInRangeDelay_Cur += Time.deltaTime;
+
+                        if (isEnemyInRangeDelay_Cur >= isEnemyInRangeDelay)
+                        {
+                            isEnemyInRange = false;
+                        }
+                    }
                 }
                 else
                 {
@@ -464,7 +499,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                             moveTargetPos = this.transform.position;
                             Ally_State.fsm.ChangeState(UnitState.Attack);
                         }
-                        else
+                        else if(!isAttacking)
                         {
                             Ally_State.fsm.ChangeState(UnitState.Chase);
                         }

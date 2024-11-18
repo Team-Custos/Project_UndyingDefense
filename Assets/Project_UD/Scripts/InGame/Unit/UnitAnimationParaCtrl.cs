@@ -8,6 +8,7 @@ public class UnitAnimationParaCtrl : MonoBehaviour
 {
     public Ingame_UnitCtrl unitCtrl;
     public Animator animator;
+    bool isDead = false;
 
     private void Start()
     {
@@ -19,9 +20,13 @@ public class UnitAnimationParaCtrl : MonoBehaviour
     {
         animator = unitCtrl.VisualModel.GetComponentInChildren<Animator>();
 
-        if (unitCtrl.HP <= 0)
+        if (unitCtrl.HP <= 0 && unitCtrl.isDead)
         {
-            animator.SetTrigger(CONSTANT.ANITRIGGER_DEAD);
+            if (!isDead)
+            {
+                isDead = true;
+                animator.SetTrigger(CONSTANT.ANITRIGGER_DEAD);
+            }
         }
 
         animator.SetBool(CONSTANT.ANIBOOL_RUN, unitCtrl.haveToMovePosition);

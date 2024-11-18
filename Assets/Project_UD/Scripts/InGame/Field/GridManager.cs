@@ -61,7 +61,7 @@ public class GridManager : MonoBehaviour
 
         //Debug.Log(new Vector2(distanceX,distanceZ));
 
-        if (SetManualMode == true)//직접 설정할경우
+        if (SetManualMode == true)//직접 설정할경우(덫 설치 같은 설치형 특수 스킬에 필요.)
         {
             _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = PlaceableToSetManual;
             return;

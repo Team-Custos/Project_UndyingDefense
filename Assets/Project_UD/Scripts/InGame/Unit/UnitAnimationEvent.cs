@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitAttackAnimationEvent : MonoBehaviour
+public class UnitAnimationEvent : MonoBehaviour
 {
-    public void AttackStart()
+    public void Start()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        UnitSkillManager unitSkill = unitCtrl.UnitSkill;
+    }
+
+
+    public void BowAttackStart()
     {
         Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
         UnitSkillManager unitSkill = unitCtrl.UnitSkill;
@@ -13,11 +20,19 @@ public class UnitAttackAnimationEvent : MonoBehaviour
         unitSkill.weaponCooldown_Cur = unitSkill.weaponCooldown_Cur = unitCtrl.cur_attackSpeed;
     }
 
-    public void AttackEnd()
+    public void BowAttackEnd()
     {
         UnitSkillManager unitSkill = this.GetComponentInParent<Ingame_UnitCtrl>().UnitSkill;
 
         unitSkill.attackStop = false;
         unitSkill.weaponCooldown_Cur = 0;
     }
+
+    public void DeadEnd()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        Destroy(unitCtrl.gameObject,2f);
+        GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
+    }
+
 }

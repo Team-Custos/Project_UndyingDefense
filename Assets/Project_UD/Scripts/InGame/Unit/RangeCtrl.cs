@@ -29,6 +29,7 @@ public class RangeCtrl : MonoBehaviour
     void Update()
     {
         RangeCollider.radius = radius;//공격 범위를 콜라이더 반지름에 적용.
+        NearestObjectSearch();
     }
 
     public GameObject NearestObjectSearch()//가까이 있는 오브젝트를 검색.

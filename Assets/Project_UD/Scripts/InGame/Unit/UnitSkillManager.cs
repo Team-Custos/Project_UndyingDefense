@@ -36,6 +36,12 @@ public class UnitSkillManager : MonoBehaviour
         unitAnimator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
     }
 
+    public void UnitGeneralSkillCooldownInit()
+    {
+        weaponCooldown_Cur = 0;
+    }
+
+
     //아군 병사 일반 스킬
     public void UnitGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
     {

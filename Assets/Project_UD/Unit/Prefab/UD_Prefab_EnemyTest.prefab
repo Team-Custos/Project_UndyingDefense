@@ -392,6 +392,8 @@ MonoBehaviour:
   unActable: 0
   maxHp: 0
   hpBar: {fileID: 6398619272885375839}
+  isDead: 0
+  isAttacking: 0
   targetBase: {fileID: 0}
   moveTargetBasePos: {x: 0, y: 0, z: 0}
   moveTargetPos: {x: 0, y: 0, z: 0}
@@ -524,7 +526,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1

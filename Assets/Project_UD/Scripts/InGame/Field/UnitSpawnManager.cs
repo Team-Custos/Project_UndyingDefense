@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 //이 스크립트는 아군 병사를 스폰시키기 위한 스크립트입니다.
 
@@ -27,6 +29,8 @@ public class UnitSpawnManager : MonoBehaviour
     public int unitToSpawn = 0;
 
     public Transform SpawnPos;
+
+    int unitPriority = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -83,6 +87,10 @@ public class UnitSpawnManager : MonoBehaviour
         GameObject Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
+
+        Obj.GetComponent<NavMeshAgent>().avoidancePriority = unitPriority % 50;
+        unitPriority++;
+
 
         Destroy(tempObject);
 

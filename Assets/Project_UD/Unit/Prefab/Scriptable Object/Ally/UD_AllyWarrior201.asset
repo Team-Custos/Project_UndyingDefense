@@ -16,9 +16,10 @@ MonoBehaviour:
   defenseType: 1
   targetSelectType: 0
   modelType: 2
+  modelPrefab: {fileID: 0}
   maxHP: 150
   mental: 1
-  moveSpeed: 1
+  moveSpeed: 2
   overrideController: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
   attackPoint: 1
   critChanceRate: 50
@@ -31,9 +32,10 @@ MonoBehaviour:
   attackSound:
   - {fileID: 8300000, guid: c4b110176e912ec468fe285d581c321f, type: 3}
   - {fileID: 8300000, guid: 591a9af67ca9d544782235582d61294b, type: 3}
-  unitCode: 11
+  globalTime: 0
   g_SkillName: "\uCC3D \uCC0C\uB974\uAE30"
   s_SkillName: "\uBA40\uB9AC \uBCA0\uAE30"
+  unitCode: 11
   level: 2
   cost: 150
   name: "\uCC3D\uBCD1"
