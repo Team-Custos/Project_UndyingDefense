@@ -71,11 +71,14 @@ public class UnitSpawnManager : MonoBehaviour
         GameObject tempObject = new GameObject("TempTransform");
         tempObject.transform.position = new Vector3(X, 0, Y);
 
+        // 파티클 생성
         Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform);
 
+        // 파티클 생성 시 타일을 배치 불가능으로 설정
+        GridManager.inst.SetTilePlaceable(tempObject.transform.position, true, false);
 
         StartCoroutine(SpawnUnitAfterDelay(unitType, X, Y, tempObject));
-        //Debug.Log(unitType);
+
         return null;
     }
 
@@ -84,18 +87,19 @@ public class UnitSpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3.0f);
 
+        // 유닛 생성
         GameObject Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
 
+        //NavMeshAgent Priority 설정.
         Obj.GetComponent<NavMeshAgent>().avoidancePriority = unitPriority % 50;
         unitPriority++;
-
-
+        // 유닛이 생성된 후 타일 상태를 갱신 (배치 불가능 유지)
+        GridManager.inst.SetTilePlaceable(Obj.transform.position, true, false);
         Destroy(tempObject);
 
         yield return Obj;
     }
-
 
 }

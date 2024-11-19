@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
+using static UnityEngine.UI.CanvasScaler;
 
 //이 스크립트는 유닛의 VFX를 관리하는 스크립트 입니다.
 
@@ -19,15 +21,32 @@ public class Ingame_ParticleManager : MonoBehaviour
     public ParticleSystem[] AttackCritVFX;
 
     public ParticleSystem allySelectEffect;    // 아군 유닛 선택 이펙트
-    public ParticleSystem enemySeletEffect;    // 적 유닛 선택 이펙트
+    public ParticleSystem enemySelectEffect;    // 적 유닛 선택 이펙트
 
     public ParticleSystem allySiegeEffect;     // 아군 유닛 시즈모드 이펙트
+
+    private Dictionary<GameObject, ParticleSystem> activeEffects = new Dictionary<GameObject, ParticleSystem>();
 
     private void Awake()
     {
         Instance = this;
     }
 
+    private void Update()
+    {
+        // 활성화된 파티클의 위치를 지속적으로 업데이트
+        //foreach (var entry in activeEffects)
+        //{
+        //    GameObject unit = entry.Key;
+        //    ParticleSystem effect = entry.Value;
+
+        //    if (unit != null && effect != null)
+        //    {
+        //        // 유닛 위치를 따라가도록 파티클 위치를 업데이트
+        //        effect.transform.position = unit.transform.position + new Vector3(0, -0.9f, 0);
+        //    }
+        //}
+    }
 
     // 기존 적 소환 이펙트를 유닛 모드 전환 이펙트로 사용
     // 추후 적 소환 이펙트 추가 예정
@@ -71,9 +90,48 @@ public class Ingame_ParticleManager : MonoBehaviour
         Destroy(modeChangeInstance.gameObject, modeChangeInstance.main.duration);
     }
 
-    public void PlayUnitSelectEffect(Transform tr, bool isAlly)
-    {
-        // 아군, 적군에 따른 이펙트 구분
 
+
+    private Dictionary<GameObject, ParticleSystem> siegeEffects = new Dictionary<GameObject, ParticleSystem>();
+
+    public void PlaySiegeModeEffect(GameObject unit, bool isSiege)
+    {
+        if (allySiegeEffect == null)
+        {
+            Debug.LogError("allySiegeEffect is not assigned.");
+            return;
+        }
+
+        if (isSiege)
+        {
+            if (!siegeEffects.ContainsKey(unit))
+            {
+                // 파티클 인스턴스 생성 및 저장
+                ParticleSystem instance = Instantiate(allySiegeEffect, unit.transform);
+                instance.transform.localPosition = new Vector3(0, -0.89f, 0);
+                siegeEffects[unit] = instance;
+            }
+
+            // 파티클 활성화
+            ParticleSystem effect = siegeEffects[unit];
+            if (!effect.gameObject.activeSelf)
+            {
+                effect.gameObject.SetActive(true);
+                effect.Play();
+            }
+        }
+        else
+        {
+            // Siege 모드가 아닐 경우 파티클 비활성화
+            if (siegeEffects.ContainsKey(unit))
+            {
+                ParticleSystem effect = siegeEffects[unit];
+                if (effect.gameObject.activeSelf)
+                {
+                    effect.Stop();
+                    effect.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }

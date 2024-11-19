@@ -10,11 +10,10 @@ public class InGameManager : MonoBehaviour
     public UnitDebuffDataCtrl unitDebuffData;//유닛의 디버프의 기본정보 관리.
     public int gold = 0;//현재 가지고 있는 골드의 양.
 
-    public ObjectPool objectPool;
-
     public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
     public GameObject Base;//성 오브젝트.
+    public int gold = 0;
    
     //디버그용으로 사용할 유닛 설치가능 상태.
     public bool UnitSetMode = false;

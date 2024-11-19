@@ -98,41 +98,43 @@ public class GameOrderSystem : MonoBehaviour
                 //        InGameManager.inst.EnemyUnitSetMode = false;
                 //    }
                 //}
-                if (GridTile.currentPlacedUnit == null)
+                //if (GridTile.currentPlacedUnit == null)
+                //{
+                //    GAMEMANAGER.AllTileSelectOff();
+                //    GridTile.Selected = !GridTile.Selected;
+
+                //    //if (selectedUnit != null)
+                //    //{
+                //    //    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                //    //    AllyUnit.isSelected = false;
+
+                //        //if (AllyUnit.Ally_Mode == AllyMode.Free)
+                //        //{
+                //        //    if (GridTile.isPlaceable == false)
+                //        //    {
+                //        //        return;
+                //        //    }
+
+                //        //    GridTile.SelectedTile(true);
+                //        //    Debug.Log("Fefe");
+
+                //        //    AllyUnit.moveTargetPos = GridTile.transform.position;
+                //        //    AllyUnit.targetEnemy = null;
+                //        //    AllyUnit.haveToMovePosition = true;
+                //        //}
+                //        selectedUnit = null;
+                //    // }
+
+                //    GridTile.Selected = false;
+                //}
+                if (selectedUnit != null) // 유닛이 선택된 상태에서 타일을 누르면 유닛 선택 해제
                 {
-                    GAMEMANAGER.AllTileSelectOff();
-                    GridTile.Selected = !GridTile.Selected;
-
-                    //if (selectedUnit != null)
-                    //{
-                    //    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
-                    //    AllyUnit.isSelected = false;
-
-                        //if (AllyUnit.Ally_Mode == AllyMode.Free)
-                        //{
-                        //    if (GridTile.isPlaceable == false)
-                        //    {
-                        //        return;
-                        //    }
-
-                        //    GridTile.SelectedTile(true);
-                        //    Debug.Log("Fefe");
-
-                        //    AllyUnit.moveTargetPos = GridTile.transform.position;
-                        //    AllyUnit.targetEnemy = null;
-                        //    AllyUnit.haveToMovePosition = true;
-                        //}
-                        selectedUnit = null;
-                    // }
-
-                    GridTile.Selected = false;
-                }
-                if (selectedUnit != null)
-                {
-                    Vector3 GridTilePos = GridTile.transform.position;
+                    //Vector3 GridTilePos = GridTile.transform.position;
 
                     Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
                     AllyUnit.isSelected = false;
+
+                    //Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
 
                     //    if (AllyUnit.Ally_Mode == AllyMode.Free)
                     //    {
@@ -159,7 +161,6 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allUnit)
                 {
                     unit.isSelected = false;
-                    //Ingame_UIManager.instance.ShowUnitClickUI(unit);
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
@@ -168,6 +169,9 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = AllyUnit.gameObject;
 
                     //Ingame_UIManager.instance.ShowUnitClickUI(AllyUnit);
+
+                    // 파티클 제거
+                    //Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
 
                     if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
@@ -178,6 +182,10 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
+
+                    // 선택된 유닛이 아군인지 적군인지 확인하여 파티클 재생
+                    bool isAlly = clickedObj.CompareTag(CONSTANT.TAG_UNIT);
+                    //Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, isAlly);
                 }
                 else
                 {
@@ -233,8 +241,10 @@ public class GameOrderSystem : MonoBehaviour
                     }
                     Enemy.isSelected = false;
 
+
                     selectedUnit = null;
                 }
+
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                 Ingame_UIManager.instance.UpdateUnitInfoPanel(Enemy);

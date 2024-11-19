@@ -88,6 +88,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Image baseHpBar;
     public Text baseHpTxt;
 
+    public Text goldTxt;
 
     // 소환 버튼 선택 효과 이미지 (추후 파티클로 대체)
     public Image[] selectedBtnEffectImage;
@@ -284,15 +285,15 @@ public class Ingame_UIManager : MonoBehaviour
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
-            screenPos.x += 100;
-            screenPos.y -= 50;
+            screenPos.x += 40;
+            screenPos.y -= 20;
 
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
 
-        //ShowUnitClickUI();
 
-        //UpdateUnitInfoPanel(selectedUnit);
+
+
 
 
         if (!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
@@ -302,6 +303,7 @@ public class Ingame_UIManager : MonoBehaviour
             selectedBtnEffectImage[1].gameObject.SetActive(false);
         }
 
+        
     }
 
 
@@ -420,13 +422,14 @@ public class Ingame_UIManager : MonoBehaviour
         {
             return;
         }
-        // UnitDataManager에서 새로운 유닛 데이터를 불러옴
+
         Ingame_UnitCtrl unitData = selectedUnit;
 
         if (unitData == null)
         {
             return;
         }
+
 
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
         levelText.text = selectedUnit.unitData.level + "티어";
@@ -450,8 +453,12 @@ public class Ingame_UIManager : MonoBehaviour
             unitInfoImage.sprite = enemyArcherImage;
         }
 
+        if (selectedUnit.HP <= 0)
+            selectedUnit.HP = 0;
+
         // HP 정보 업데이트
         hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
+
 
     }
 
@@ -644,63 +651,30 @@ public class Ingame_UIManager : MonoBehaviour
         }
     }
 
+
+
+
     
+    public void ShowUnitMoveUI(GameObject unit, bool move)
+    {
+        if (unit == null)
+        {
+            return;
+        }
+
+        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
+
+        if (unitMoveImageTransform == null)
+        {
+            return;
+        }
+
+        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
+
+        unitMoveImage.SetActive(move);
+    }
 
 
-    // 유닛의 상태에 따른 ui표시(이동, 시즈 ,HP)
-    //public void ShowUnitStateUI(GameObject unit, bool move, bool siege)
-    //{
-    //    if (unit == null)
-    //    {
-    //        return;
-    //    }
-
-    //    Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
-    //    Transform unitSiegeImageTransform = unit.transform.Find("Canvas2/UnitSiegeImage");
-
-    //    if (unitMoveImageTransform == null || unitSiegeImageTransform == null)
-    //    {
-    //        return;
-    //    }
-
-    //    GameObject unitMoveImage = unitMoveImageTransform.gameObject;
-    //    GameObject unitSiegeImage = unitSiegeImageTransform.gameObject;
-        
-    //    // UI 상태 설정
-    //    unitMoveImage.SetActive(move);
-    //    unitSiegeImage.SetActive(siege);
-    //}
-
-
-    //public void ShowUnitClickUI(Ingame_UnitCtrl unit)
-    //{
-    //    SetSelectedUnit(unit);
-
-    //    // 선택된 유닛의 HP UI 표시
-    //    if (selectedUnit != null)
-    //    {
-    //        Transform selectedUnitClickUITransform = selectedUnit.transform.Find("Canvas2/ClickUI");
-    //        Transform selectedUnitHpTransform = selectedUnit.transform.Find("Canvas/HP_Back");
-
-    //        if (selectedUnitClickUITransform != null && selectedUnitHpTransform)
-    //        {
-    //            GameObject unitHpImage = selectedUnitClickUITransform.gameObject;
-    //            GameObject unitClickImage = selectedUnitHpTransform.gameObject;
-
-    //            if(selectedUnit.isSelected)
-    //            {
-    //                unitClickImage.SetActive(true);
-    //                unitHpImage.SetActive(true);
-    //            }
-    //            else if(selectedUnit == null)
-    //            {
-    //                unitClickImage.SetActive(false);
-    //                unitHpImage.SetActive(false);
-    //                Debug.Log("fefnefoefe");
-    //            }
-    //        }
-    //    }
-    //}
 
 
 

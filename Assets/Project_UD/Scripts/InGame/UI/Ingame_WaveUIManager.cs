@@ -60,7 +60,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
             loselobbybtn = waveResultLosePanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
 
             waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
-            waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
+            //waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
         }
         else
         {
