@@ -285,7 +285,7 @@ public class Ingame_UIManager : MonoBehaviour
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
-            screenPos.x += 40;
+            screenPos.x += 100;
             screenPos.y -= 20;
 
             currentSelectedUnitOptionBox.transform.position = screenPos;
@@ -485,7 +485,7 @@ public class Ingame_UIManager : MonoBehaviour
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
         RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
         screenPos.x += 100;
-        screenPos.y -= 50;
+        screenPos.y -= 20;
 
         rectTransform.position = screenPos;
 

@@ -137,6 +137,7 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log($"Wave {currentWave} 시작");
 
             Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
+            Ingame_WaveUIManager.instance.curWaveStepText.text = "웨이브 " + currentWave;
             Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
 
             yield return StartCoroutine(SpawnMonstersForWave());

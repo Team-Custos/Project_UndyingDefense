@@ -13,7 +13,6 @@ public class InGameManager : MonoBehaviour
     public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
     public GameObject Base;//성 오브젝트.
-    public int gold = 0;
    
     //디버그용으로 사용할 유닛 설치가능 상태.
     public bool UnitSetMode = false;

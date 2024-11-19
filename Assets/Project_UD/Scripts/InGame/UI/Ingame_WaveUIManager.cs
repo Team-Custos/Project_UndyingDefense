@@ -24,6 +24,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public Button loselobbybtn = null;
     public GameObject waveStepSuccessPanel;
     public Text waveStepText;
+    public Text curWaveStepText;
 
     public float fadeDuration = 0.3f;
 
@@ -60,7 +61,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
             loselobbybtn = waveResultLosePanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
 
             waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
-            //waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
+            curWaveStepText = waveStepText.transform.Find("WaveStepText2").GetComponent<Text>();
         }
         else
         {

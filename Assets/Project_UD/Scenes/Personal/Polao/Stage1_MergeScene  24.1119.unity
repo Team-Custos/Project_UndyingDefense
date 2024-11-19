@@ -21573,7 +21573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &572921569
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24343,7 +24343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &636566295
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30753,6 +30753,7 @@ MonoBehaviour:
   unitMoveUI: {fileID: 0}
   baseHpBar: {fileID: 567817879}
   baseHpTxt: {fileID: 139754857}
+  goldTxt: {fileID: 1763999848}
   selectedBtnEffectImage:
   - {fileID: 820189611}
   - {fileID: 118121076}
@@ -32391,7 +32392,6 @@ MonoBehaviour:
   gridManager: {fileID: 447005218}
   unitDebuffData: {fileID: 20072021}
   gold: 0
-  objectPool: {fileID: 0}
   CurCommanderSkill: []
   Base: {fileID: 122481044}
   UnitSetMode: 0
@@ -36257,7 +36257,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &959445839
 RectTransform:
@@ -55199,6 +55199,7 @@ MonoBehaviour:
   spawnInterval: 2
   currentWave: 1
   isWaveing: 0
+  waveRewardGold: 0
   activeMonsters: []
 --- !u!1001 &1393067389
 PrefabInstance:
@@ -63896,6 +63897,7 @@ MonoBehaviour:
   loselobbybtn: {fileID: 0}
   waveStepSuccessPanel: {fileID: 0}
   waveStepText: {fileID: 0}
+  curWaveStepText: {fileID: 0}
   fadeDuration: 0.3
 --- !u!1001 &1615883927
 PrefabInstance:
@@ -68621,7 +68623,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1,000
+  m_Text: 0
 --- !u!222 &1763999849
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -75001,7 +75003,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1904682907
 Transform:
   m_ObjectHideFlags: 0
@@ -77584,8 +77586,7 @@ MonoBehaviour:
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
   allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
-  enemySeletEffect: {fileID: 3074663040978982663, guid: b653727dee6067d489d3e72f817cec61,
-    type: 3}
+  enemySelectEffect: {fileID: 0}
   allySiegeEffect: {fileID: 842759819059242878, guid: 4017b4afadc2f2345b0c00b76a892687,
     type: 3}
 --- !u!4 &1989869922 stripped
