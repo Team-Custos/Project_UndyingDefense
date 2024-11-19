@@ -518,7 +518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3961934430961091941
 RectTransform:
   m_ObjectHideFlags: 0
@@ -594,6 +594,7 @@ GameObject:
   - component: {fileID: 4696365295856789269}
   - component: {fileID: 8998368861794295244}
   - component: {fileID: 8992190711229780274}
+  - component: {fileID: 8732050625370369156}
   m_Layer: 8
   m_Name: UD_Prefab_UnitTest
   m_TagString: Unit
@@ -672,6 +673,7 @@ MonoBehaviour:
   Bow: {fileID: 803691724125410477}
   unitStateChangeTime: 3
   previousAllyMode: 0
+  enmeyRewardGold: 10
   defenstype: 
   defaultTargetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &8403840662373176137
@@ -812,6 +814,20 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &8732050625370369156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4121165819109045414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423550f24d9d8634a8491ba2669383d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selecteParticle: {fileID: 7850659529774023156}
+  unitHp: {fileID: 3249280027046007378}
 --- !u!1 &4709767767462538913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,6 +1745,12 @@ PrefabInstance:
 --- !u!4 &6345683667875265625 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7916829341328833764, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877141864846491837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7850659529774023156 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6430430827356602697, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
   m_PrefabInstance: {fileID: 3877141864846491837}
   m_PrefabAsset: {fileID: 0}

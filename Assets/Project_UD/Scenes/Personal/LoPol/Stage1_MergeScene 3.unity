@@ -4419,7 +4419,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 150 / 150
+  m_Text: 
 --- !u!222 &100013217
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30746,6 +30746,7 @@ MonoBehaviour:
   unitMoveUI: {fileID: 0}
   baseHpBar: {fileID: 567817879}
   baseHpTxt: {fileID: 139754857}
+  goldTxt: {fileID: 1763999848}
   selectedBtnEffectImage:
   - {fileID: 820189611}
   - {fileID: 118121076}
@@ -32383,9 +32384,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 447005218}
   unitDebuffData: {fileID: 20072021}
-  objectPool: {fileID: 0}
   CurCommanderSkill: []
   Base: {fileID: 122481044}
+  gold: 0
   UnitSetMode: 0
   AllyUnitSetMode: 0
   EnemyUnitSetMode: 0
@@ -55123,6 +55124,7 @@ MonoBehaviour:
   spawnInterval: 2
   currentWave: 1
   isWaveing: 0
+  waveRewardGold: 0
   activeMonsters: []
 --- !u!1001 &1393067389
 PrefabInstance:
@@ -64227,7 +64229,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -46, y: 14.6}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1629280238
 MonoBehaviour:
@@ -68545,7 +68547,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1,000
+  m_Text: 0
 --- !u!222 &1763999849
 CanvasRenderer:
   m_ObjectHideFlags: 0

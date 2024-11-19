@@ -90,44 +90,7 @@ public class Ingame_ParticleManager : MonoBehaviour
         Destroy(modeChangeInstance.gameObject, modeChangeInstance.main.duration);
     }
 
-    private ParticleSystem activeEffect; // 현재 활성화된 파티클
 
-    public void PlayUnitSelectEffect(GameObject unit, bool isAlly)
-    {
-        if (unit == null) return;
-
-        // 기존 활성화된 파티클 제거
-        if (activeEffect != null)
-        {
-            activeEffect.Stop();
-            Destroy(activeEffect.gameObject);
-            activeEffect = null;
-        }
-
-        // 아군과 적군에 따라 적절한 이펙트 선택
-        ParticleSystem prefab = isAlly ? allySelectEffect : enemySelectEffect;
-
-        if (prefab != null)
-        {
-            // 새로운 파티클 생성
-            activeEffect = Instantiate(prefab, unit.transform);
-
-            // 로컬 위치 설정
-            activeEffect.transform.localPosition = new Vector3(0, -0.9f, 0);
-
-            // 파티클 실행
-            activeEffect.Play();
-        }
-    }
-
-    public void StopUnitSelectEffect(GameObject unit)
-    {
-        if (activeEffects.ContainsKey(unit))
-        {
-            Destroy(activeEffects[unit].gameObject); // 파티클 오브젝트 제거
-            activeEffects.Remove(unit);
-        }
-    }
 
     private Dictionary<GameObject, ParticleSystem> siegeEffects = new Dictionary<GameObject, ParticleSystem>();
 

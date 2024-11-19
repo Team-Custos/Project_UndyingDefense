@@ -88,6 +88,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Image baseHpBar;
     public Text baseHpTxt;
 
+    public Text goldTxt;
 
     // 소환 버튼 선택 효과 이미지 (추후 파티클로 대체)
     public Image[] selectedBtnEffectImage;
@@ -284,15 +285,15 @@ public class Ingame_UIManager : MonoBehaviour
         if (selectedUnit != null && currentSelectedUnitOptionBox != null)
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
-            screenPos.x += 100;
-            screenPos.y -= 50;
+            screenPos.x += 40;
+            screenPos.y -= 20;
 
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
 
-        //ShowUnitClickUI();
 
-        //UpdateUnitInfoPanel(selectedUnit);
+
+
 
 
         if (!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
@@ -302,6 +303,7 @@ public class Ingame_UIManager : MonoBehaviour
             selectedBtnEffectImage[1].gameObject.SetActive(false);
         }
 
+        
     }
 
 
@@ -420,13 +422,14 @@ public class Ingame_UIManager : MonoBehaviour
         {
             return;
         }
-        // UnitDataManager에서 새로운 유닛 데이터를 불러옴
+
         Ingame_UnitCtrl unitData = selectedUnit;
 
         if (unitData == null)
         {
             return;
         }
+
 
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
         levelText.text = selectedUnit.unitData.level + "티어";
@@ -450,8 +453,12 @@ public class Ingame_UIManager : MonoBehaviour
             unitInfoImage.sprite = enemyArcherImage;
         }
 
+        if (selectedUnit.HP <= 0)
+            selectedUnit.HP = 0;
+
         // HP 정보 업데이트
         hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
+
 
     }
 
@@ -668,21 +675,6 @@ public class Ingame_UIManager : MonoBehaviour
     }
 
 
-    public void ShowUnitClickUI(Ingame_UnitCtrl unit, bool show)
-    {
-        if (unit == null) return;
-
-        // 선택된 유닛의 HP UI 활성화/비활성화
-        Transform hpUITransform = unit.transform.Find("Canvas/HP_Back");
-        if (hpUITransform)
-        {
-            GameObject hpUI = hpUITransform.gameObject;
-            hpUI.SetActive(show);
-        }
-
-        // 선택 상태 동기화
-        unit.isSelected = show;
-    }
 
 
 

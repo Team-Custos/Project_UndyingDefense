@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -85,6 +86,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public float unitStateChangeTime; //유닛의 모드를 변경할때의 대기 시간.
     public AllyMode previousAllyMode; //유닛의 마지막으로 설정된 모드.
 
+    public int enmeyRewardGold = 10; // 적 처치시 보상
+
     //public string unitCode;
     //public int level;
     //public int cost;
@@ -103,10 +106,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (Ingame_UIManager.instance != null)
-        {
-            //Ingame_UIManager.instance.UpdateUnitInfoPanel(this.unitName);
-        }
+
     }
 
     private void Awake()
@@ -233,6 +233,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             hpBar.fillAmount = (float)HP / (float)maxHp;
         }
 
+
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
@@ -251,19 +252,21 @@ public class Ingame_UnitCtrl : MonoBehaviour
             HP = 0;
 
 
-            Vector3 unitPosition = this.transform.position;
-            GridManager.inst.SetTilePlaceable(unitPosition, true, true);
 
             if (this.tag == CONSTANT.TAG_ENEMY)
             {
                 EnemySpawner.inst.OnMonsterDead(this.gameObject); // 몬스터 파괴
+
+
+                InGameManager.inst.gold += enmeyRewardGold;
+                Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
+
             }
             else
             {
                 Destroy(this.gameObject);
             }
 
-            OnDisable?.Invoke(gameObject);
 
 
             Debug.Log(this.gameObject.name + " Destroyed");
@@ -290,6 +293,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
         #endregion
 
+
+        
     }
 
 

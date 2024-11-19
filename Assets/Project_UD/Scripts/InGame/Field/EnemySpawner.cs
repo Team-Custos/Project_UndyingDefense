@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -67,6 +68,7 @@ public class EnemySpawner : MonoBehaviour
 
     public int currentWave = 1;
     public bool isWaveing = false;
+    public int waveRewardGold = 0;
 
     public List<GameObject> activeMonsters = new List<GameObject>();
 
@@ -150,6 +152,8 @@ public class EnemySpawner : MonoBehaviour
     {
         int monstersToSpawn;
 
+        waveRewardGold = 500;
+
         // 현재 웨이브가 1~2일 때는 5마리의 기본 몬스터 생성
         if (currentWave <= 2)
         {
@@ -168,6 +172,8 @@ public class EnemySpawner : MonoBehaviour
             while (monsterType0Count < 5 || monsterType1Count < 5)
             {
                 int randomType = Random.Range(0, 2);
+
+                Debug.Log(randomType);
 
                 if (randomType == 0 && monsterType0Count < 5)
                 {
@@ -241,9 +247,13 @@ public class EnemySpawner : MonoBehaviour
         if (currentWave < waveCount)
         {
             Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
+            InGameManager.inst.gold += waveRewardGold;
+            Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
             yield return new WaitForSeconds(3.0f);
             Debug.Log("모든 몬스터가 죽었습니다. 다음 웨이브를 준비합니다.");
+            
+            
         }
 
         yield return new WaitForSeconds(1.0f);
