@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 //이 스크립트는 인게임 내에서 이루어진 전반적인 것을 관리하기 위한 스크립트입니다.
@@ -13,6 +14,7 @@ public class InGameManager : MonoBehaviour
     public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
     public GameObject Base;//성 오브젝트.
+    public NavMeshSurface NavMeshSurface;
    
     //디버그용으로 사용할 유닛 설치가능 상태.
     public bool UnitSetMode = false;
@@ -75,6 +77,12 @@ public class InGameManager : MonoBehaviour
 
 
     }
+
+    public void UpdateNavMeshSurface()
+    {
+        NavMeshSurface.UpdateNavMesh(NavMeshSurface.navMeshData);
+    }
+
 
     public void AllUnitSelectOff()//모든 유닛들의 선택 해제.
     {

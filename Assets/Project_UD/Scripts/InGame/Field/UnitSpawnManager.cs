@@ -93,7 +93,7 @@ public class UnitSpawnManager : MonoBehaviour
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
 
         //NavMeshAgent Priority 설정.
-        Obj.GetComponent<NavMeshAgent>().avoidancePriority = unitPriority % 50;
+        Obj.GetComponent<NavMeshAgent>().avoidancePriority = (unitPriority % 50) + 50;
         unitPriority++;
         // 유닛이 생성된 후 타일 상태를 갱신 (배치 불가능 유지)
         GridManager.inst.SetTilePlaceable(Obj.transform.position, true, false);

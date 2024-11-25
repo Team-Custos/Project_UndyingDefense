@@ -29,6 +29,11 @@ public class RangeCtrl : MonoBehaviour
     void Update()
     {
         RangeCollider.radius = radius;//공격 범위를 콜라이더 반지름에 적용.
+        if (detectedObjects.Count <= 0)
+        {
+            Obj_Nearest = null;
+        }
+
         NearestObjectSearch();
     }
 
@@ -49,21 +54,27 @@ public class RangeCtrl : MonoBehaviour
             {
                 for (int i = 1; i < detectedObjects.Count - 1; i++) //정렬.
                 {
-                    float Obj_Distance = Vector3.Distance(detectedObjects[i].transform.position, transform.position);
-
-                    if (Obj_Distance_Nearest > Obj_Distance)
+                    if (detectedObjects[i] != null)
                     {
-                        //Obj_Nearest = detectedObjects[i];
+                        float Obj_Distance = Vector3.Distance(detectedObjects[i].transform.position, transform.position);
+                        if (Obj_Distance_Nearest > Obj_Distance)
+                        {
+                            //Obj_Nearest = detectedObjects[i];
 
-                        if (detectedObjects[i].activeInHierarchy == false && detectedObjects.Contains(detectedObjects[i]))
-                        {
-                            detectedObjects.Remove(detectedObjects[i]);
-                            continue;
+                            if (detectedObjects[i].activeInHierarchy == false && detectedObjects.Contains(detectedObjects[i]))
+                            {
+                                detectedObjects.Remove(detectedObjects[i]);
+                                continue;
+                            }
+                            else
+                            {
+                                Obj_Nearest = detectedObjects[i];
+                            }
                         }
-                        else
-                        {
-                            Obj_Nearest = detectedObjects[i];
-                        }
+                    }
+                    else
+                    {
+                        continue;
                     }
                 }
             }

@@ -77,6 +77,12 @@ public class AllyUnitState : MonoBehaviour
 
     void Attack_Update()
     {
+        if (UnitCtrl.haveToMovePosition)
+        {
+            fsm.ChangeState(UnitState.Move);
+            return;
+        }
+
         UnitCtrl.targetEnemy = UnitCtrl.sightRangeSensor.NearestObjectSearch();
 
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null) //유닛의 시야 범위에 적군이 있는가?
@@ -174,6 +180,11 @@ public class AllyUnitState : MonoBehaviour
         if (UnitCtrl.isAttacking)
         { return; }
 
+        if (UnitCtrl.haveToMovePosition)
+        {
+            fsm.ChangeState(UnitState.Move);
+        }
+
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position); //타겟 적군과의 거리.
 
@@ -230,6 +241,4 @@ public class AllyUnitState : MonoBehaviour
     {
         
     }
-
-
 }

@@ -76,8 +76,9 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -5448925333414837949}
   - {fileID: 2828208716744663121}
+  - {fileID: 261063066834698233}
   - {fileID: -3363718498048398398}
-  m_RendererFeatureMap: 43812e66478761b451a03ae8d7d03f27c22b6a07d9ab51d1
+  m_RendererFeatureMap: 43812e66478761b451a03ae8d7d03f27f9ffa7e2797b9f03c22b6a07d9ab51d1
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -120,6 +121,42 @@ MonoBehaviour:
   m_CopyDepthMode: 1
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &261063066834698233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a6e508fac2950468004d04cff676ce, type: 3}
+  m_Name: ScreenSpaceOutlines
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  renderPassEvent: 500
+  outlinesLayerMask:
+    serializedVersion: 2
+    m_Bits: 1048576
+  outlinesOccluderLayerMask:
+    serializedVersion: 2
+    m_Bits: 2097152
+  outlineSettings:
+    outlineColor: {r: 1, g: 1, b: 1, a: 1}
+    outlineScale: 0.5
+    depthThreshold: 1.5
+    robertsCrossMultiplier: 0
+    normalThreshold: 1
+    steepAngleThreshold: 0.2
+    steepAngleMultiplier: 25
+  viewSpaceNormalsTextureSettings:
+    colorFormat: 0
+    depthBufferBits: 16
+    filterMode: 0
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    perObjectData: 0
+    enableDynamicBatching: 0
+    enableInstancing: 0
 --- !u!114 &2828208716744663121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +177,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 64
+        m_Bits: 1048576
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 66b443541eadcc549b4e925ff12c3b03, type: 2}
     overrideMaterialPassIndex: 0

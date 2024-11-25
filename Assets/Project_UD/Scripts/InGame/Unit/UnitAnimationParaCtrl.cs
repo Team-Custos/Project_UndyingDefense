@@ -29,6 +29,6 @@ public class UnitAnimationParaCtrl : MonoBehaviour
             }
         }
 
-        animator.SetBool(CONSTANT.ANIBOOL_RUN, unitCtrl.haveToMovePosition);
+        animator.SetBool(CONSTANT.ANIBOOL_RUN, unitCtrl.NavAgent.velocity != Vector3.zero);
     }
 }

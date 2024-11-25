@@ -321,17 +321,20 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         sightRangeSensor.radius = unitData.sightRange;
 
-        //유닛의 모드에따라 활성화할 컴포넌트를 설정.
-        if (Ally_Mode == AllyMode.Free)
-        {
-            NavObstacle.enabled = false;
-            NavAgent.enabled = true;
-        }
-        else if (Ally_Mode == AllyMode.Siege)
-        {
-            NavAgent.enabled = false;
-            NavObstacle.enabled = true;
-        }
+        ////유닛의 모드에따라 활성화할 컴포넌트를 설정.
+        //if (Ally_Mode == AllyMode.Free)
+        //{
+        //    NavObstacle.enabled = false;
+        //    if (NavObstacle.enabled == false)
+        //    {
+        //        NavAgent.enabled = true;
+        //    }
+        //}
+        //else if (Ally_Mode == AllyMode.Siege)
+        //{
+        //    NavAgent.enabled = false;
+        //    NavObstacle.enabled = true;
+        //}
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
@@ -376,11 +379,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     IEnumerator ModeChangeDelayCoroutine()
                     {
                         NavAgent.enabled = false;
-                        this.transform.rotation = new Quaternion(0, 0, 0, 0);
+                        this.transform.rotation = unitDefaultRotation;
                         yield return new WaitForSeconds(0.5f);
                     }
                     StartCoroutine(ModeChangeDelayCoroutine());
 
+                    NavObstacle.carving = true;
                     NavObstacle.enabled = true;
                     SearchEnemy();
                 }
@@ -388,13 +392,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     //NavAgent.updatePosition = false;
 
-                    NavObstacle.enabled = false;
-
                     IEnumerator ModeChangeDelayCoroutine()
                     {
-                        yield return new WaitForEndOfFrame();
-                        yield return new WaitForEndOfFrame();
-
+                        NavObstacle.carving = false;
+                        NavObstacle.enabled = false;
+                        yield return new WaitForSeconds(0.5f);
                         NavAgent.enabled = true;
                     }
                     StartCoroutine(ModeChangeDelayCoroutine());
@@ -501,8 +503,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     if (isEnemyInSight)//시야 범위 내에 있는가?
                     {
-                        haveToMovePosition = false;
-
                         if (isEnemyInRange)//공격 범위 내에 있는가?
                         {
                             moveTargetPos = this.transform.position;
