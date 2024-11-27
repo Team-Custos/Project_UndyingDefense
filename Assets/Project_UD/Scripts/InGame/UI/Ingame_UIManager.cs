@@ -457,9 +457,7 @@ public class Ingame_UIManager : MonoBehaviour
             selectedUnit.HP = 0;
 
         // HP 정보 업데이트
-        hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
-
-
+        //hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
     }
 
     public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)

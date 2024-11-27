@@ -264,6 +264,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (HP <= 0 && !isDead)
         {
             HP = 0;
+
+            //if(Ingame_UIManager.instance.unitInfoPanel.activeSelf)
+            //{
+            //    Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
+            //}
+
             
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
@@ -276,11 +282,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 isDead = true;
             }
             Debug.Log(this.gameObject.name + " Destroyed");
+
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
+
             return;
         }
         else
         {
             GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+
         }
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
@@ -301,6 +311,21 @@ public class Ingame_UnitCtrl : MonoBehaviour
             EnemyCtrl();
         }
         #endregion
+
+        if(this.gameObject == GameOrderSystem.instance.selectedUnit)
+        {
+            if (HP <= 0)
+            {
+                HP = 0;
+                Ingame_UIManager.instance.hpText.text = 0 + " / " + maxHp;
+            }
+            else
+            {
+                Ingame_UIManager.instance.hpText.text = HP + " / " + maxHp;
+            }
+
+
+        }
     }
 
 

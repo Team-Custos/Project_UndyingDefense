@@ -14,10 +14,15 @@ public class InGame_VirtualCamManager : MonoBehaviour
     public float zoomMin = 5.0f;
     public float zoomMax = 20.0f;
 
+    public float xMax = 30.0f;
+    public float xMin = -40.0f;
+    public float zMax = 4.5f;
+    public float zMin = -25.0f;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -62,6 +67,12 @@ public class InGame_VirtualCamManager : MonoBehaviour
         // 카메라 피벗 이동
         cameraPivot.position += moveDirection * moveSpeed * Time.deltaTime;
 
+        // 이동 범위 제한
+        float clampedX = Mathf.Clamp(cameraPivot.position.x, xMin, xMax);
+        float clampedZ = Mathf.Clamp(cameraPivot.position.z, zMin, zMax);
+        cameraPivot.position = new Vector3(clampedX, cameraPivot.position.y, clampedZ);
+
+
         // 카메라 회전 -> 카메라 회전 기능 삭제
         //Vector3 currentRotation = virtualCamera.transform.eulerAngles;
 
@@ -82,8 +93,8 @@ public class InGame_VirtualCamManager : MonoBehaviour
     void CameraZoom()
     {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        
-        if(scrollInput != 0)
+
+        if (scrollInput != 0)
         {
             float currentFov = virtualCamera.m_Lens.FieldOfView;
             currentFov -= scrollInput * zoomSpeed * 100f * Time.deltaTime;
