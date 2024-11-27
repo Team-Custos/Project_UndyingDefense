@@ -163,6 +163,7 @@ public class GameOrderSystem : MonoBehaviour
                     unit.isSelected = false;
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
+                AllyUnit.DrawOutline(AllyUnit.isSelected);
 
                 if (AllyUnit.isSelected && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
                 {

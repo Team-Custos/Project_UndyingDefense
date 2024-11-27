@@ -73,7 +73,10 @@ public class UnitSkillManager : MonoBehaviour
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
-                        Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+                        if (!attackStop)
+                        {
+                            Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
+                        }
                     }
                     attackType = AttackType.Pierce;
                     damage = 5;
@@ -107,7 +110,10 @@ public class UnitSkillManager : MonoBehaviour
                 AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
                 UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
-                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                if (!attackStop)
+                {
+                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                }
             }
 
             weaponCooldown_Cur = weaponCooldown; //쿨타임 초기화.

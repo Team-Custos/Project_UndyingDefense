@@ -40,20 +40,31 @@ public class UnitDebuffManager : MonoBehaviour
     // �� ������ ����� ������Ʈ
     void Update()
     {
-        for (int activeDebuffIdx = activeDebuffs.Count - 1; activeDebuffIdx >= 0; activeDebuffIdx--) // ����Ʈ �������� ��ȸ (���� �� ���� ����)
+        if (unitCtrl.isDead)
         {
-            activeDebuffs[activeDebuffIdx].currentTime -= Time.deltaTime;
-
             if (activeDebuffs.Count > 0)
             {
-                // ����� �ð��� ���� ���
-                if (activeDebuffs[activeDebuffIdx].currentTime <= 0)
+                activeDebuffs.Clear();
+                DebuffParticleParent.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int activeDebuffIdx = activeDebuffs.Count - 1; activeDebuffIdx >= 0; activeDebuffIdx--) // ����Ʈ �������� ��ȸ (���� �� ���� ����)
+            {
+                activeDebuffs[activeDebuffIdx].currentTime -= Time.deltaTime;
+
+                if (activeDebuffs.Count > 0)
                 {
-                    RemoveDebuff(activeDebuffs[activeDebuffIdx]);
-                }
-                else
-                {
-                    DebuffUpdate();
+                    // ����� �ð��� ���� ���
+                    if (activeDebuffs[activeDebuffIdx].currentTime <= 0)
+                    {
+                        RemoveDebuff(activeDebuffs[activeDebuffIdx]);
+                    }
+                    else
+                    {
+                        DebuffUpdate();
+                    }
                 }
             }
         }

@@ -12,6 +12,10 @@ public static class CONSTANT
     public static string TAG_GROUND = "Ground"; //지형 태그
     public static string TAG_BASE = "Base"; //성 태그
     public static string TAG_ATTACK = "Attack"; //공격 판정 태그
+    public static string TAG_DEAD_UNIT = "DeadUnit";//유닛이 죽음 상태를 나타내기위한 태그.
+
+    public static string LAYER_DRAW_OUTLINE = "DrawOutline";
+    public static string LAYER_IGNORE_OUTLINE = "IgnoreOutline";
 
     public static string ANITRIGGER_DEAD = "IsDead";
     public static string ANIBOOL_RUN = "IsRunning";
