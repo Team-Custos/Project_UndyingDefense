@@ -295,7 +295,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
-            Destroy(this.gameObject);
+            if(this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+            }
+            else 
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         #region 아군 제어

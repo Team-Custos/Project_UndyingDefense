@@ -20,6 +20,9 @@ public class TitleUIManager : MonoBehaviour
     public float animationDuration = 0.5f; // 연출 지속 시간
     public float delayBetweenAnimations = 0.2f; // 각 ui delay 시간
 
+    float elapsedTime = 0f;
+    public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,13 +72,29 @@ public class TitleUIManager : MonoBehaviour
         progressText.text = "0%";
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        operation.allowSceneActivation = false; // 씬 자동 활성화 방지
 
-        while (!operation.isDone)
+        float elapsedTime = 0f;
+        float totalTime = 3f; // 프로그래스바 연출 시간
+
+        while (elapsedTime < totalTime)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            elapsedTime += Time.deltaTime;
+            float progress = Mathf.Clamp01(elapsedTime / totalTime);
+
             progressImage.fillAmount = progress;
             progressText.text = Mathf.RoundToInt(progress * 100f) + "%";
 
+            yield return null;
+        }
+
+        // 프로그래스바 연출이 끝난 후 실제 씬 로드 완료 여부 체크
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true; // 씬 활성화
+            }
             yield return null;
         }
 

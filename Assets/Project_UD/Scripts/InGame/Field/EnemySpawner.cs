@@ -27,7 +27,6 @@ public class EnemySpawnData
     public UnitType unitType;
     public DefenseType defenseType;
     public TargetSelectType targetSelectType;
-
 }
 
 //public enum EnemyType
@@ -73,6 +72,8 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> activeMonsters = new List<GameObject>();
 
     int enemypriority = 0;
+
+    public bool isBaseAttackPerWave;  // 웨이브에 Base가 공격당했는지 확인
 
     private void Awake()
     {
@@ -133,6 +134,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (isWaveing)
         {
+            isBaseAttackPerWave = false; // 웨이브 시작 시 초기화
             Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
             Debug.Log($"Wave {currentWave} 시작");
 
@@ -294,5 +296,16 @@ public class EnemySpawner : MonoBehaviour
             StartCoroutine(WaveSystem());
         }
     }
+
+    // Base 공격 확인 함수
+    public void OnBaseAttacked()
+    {
+        if (!isBaseAttackPerWave) // 현재 웨이브에서 Base가 공격 당했다면
+        {
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel,3.0f);
+            isBaseAttackPerWave = true;
+        }
+    }
+
 }
 

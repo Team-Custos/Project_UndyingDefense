@@ -45,5 +45,7 @@ public class BaseStatus : MonoBehaviour
         StartCoroutine(HitEffect());
 
         BaseHPCur -= Damage;
+
+        EnemySpawner.inst.OnBaseAttacked(); // Base 공격 알림
     }
 }

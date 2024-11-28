@@ -51,7 +51,6 @@ public class GameOrderSystem : MonoBehaviour
 
         if(selectedUnit == null)
         {
-            //Debug.Log("Fefe");
             Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
         }
 
