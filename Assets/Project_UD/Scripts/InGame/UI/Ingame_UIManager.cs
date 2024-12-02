@@ -105,6 +105,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Button commanderSkillBtn;
 
 
+
     private void Awake()
     {
         instance = this;
@@ -239,8 +240,6 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-        unitSpawnBtn[2].interactable = false;
-        unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -303,7 +302,8 @@ public class Ingame_UIManager : MonoBehaviour
             selectedBtnEffectImage[1].gameObject.SetActive(false);
         }
 
-        
+
+        goldTxt.text = InGameManager.inst.gold.ToString();
     }
 
 

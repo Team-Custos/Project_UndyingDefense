@@ -24,6 +24,7 @@ public class InGameManager : MonoBehaviour
     private void Awake()
     {
         inst = this;
+
     }
 
     // Update is called once per frame

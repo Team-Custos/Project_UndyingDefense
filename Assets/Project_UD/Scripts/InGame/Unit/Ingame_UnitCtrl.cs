@@ -283,7 +283,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             Debug.Log(this.gameObject.name + " Destroyed");
 
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
+            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
             return;
         }
