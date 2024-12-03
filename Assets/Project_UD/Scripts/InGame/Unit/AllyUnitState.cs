@@ -234,13 +234,11 @@ public class AllyUnitState : MonoBehaviour
 
     void Dead_Enter()
     {
-       
+        
     }
 
     void Dead_Update()
     {
-        navAgent.velocity = Vector3.zero;
-        navAgent.enabled = false;
-        this.gameObject.tag = CONSTANT.TAG_DEAD_UNIT;
+        
     }
 }

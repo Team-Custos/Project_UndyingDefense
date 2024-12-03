@@ -238,28 +238,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    public void DrawOutline(bool DrawLineOn)
-    {
-        if (DrawLineOn)
-        {
-            ChangeLayer(VisualModel.gameObject, CONSTANT.LAYER_DRAW_OUTLINE);
-        }
-        else
-        {
-            ChangeLayer(VisualModel.gameObject, CONSTANT.LAYER_IGNORE_OUTLINE);
-        }
-    }
-
-    void ChangeLayer(GameObject Obj, string Layer)
-    {
-        Obj.layer = LayerMask.NameToLayer(Layer);
-
-        foreach (Transform child in VisualModel.transform)
-        {
-            ChangeLayer(child.gameObject, Layer);
-        }
-    }
-
 
     // Update is called once per frame
     void FixedUpdate()
@@ -278,7 +256,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         //모델 변경
         ModelSwap();
-        //DrawOutline(isSelected);
 
         moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);//성의 좌표 초기화.
 
@@ -287,18 +264,16 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (HP <= 0 && !isDead)
         {
             HP = 0;
-
+            
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 EnemySpawner.inst.OnMonsterDead(this.gameObject);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
-                isDead = true;
             }
             else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
                 isDead = true;
-                this.gameObject.tag = CONSTANT.TAG_DEAD_UNIT;
             }
             Debug.Log(this.gameObject.name + " Destroyed");
             return;
@@ -311,7 +286,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
             Destroy(this.gameObject);
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
         }
 
         #region 아군 제어
@@ -367,12 +341,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
             debuffManager.AddDebuff(UnitDebuff.Dizzy);
         }
 
-        //if (isSelected && Input.GetKeyDown(KeyCode.Q))//디버그용. 삭제 예정.
-        //{
-        //    previousAllyMode = Ally_Mode;
-        //    //isSelected = false;
-        //    Ally_Mode = AllyMode.Change;
-        //}
+        if (isSelected && Input.GetKeyDown(KeyCode.Q))//디버그용. 삭제 예정.
+        {
+            previousAllyMode = Ally_Mode;
+            //isSelected = false;
+            Ally_Mode = AllyMode.Change;
+        }
 
         // Change 상태일 때는 다른 행동을 하지 않음
         if (Ally_Mode == AllyMode.Change)
@@ -549,12 +523,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     }
     void EnemyCtrl()
     {
-        if (isDead)
-        {
-            Enemy_State.fsm.ChangeState(EnemyState.Dead);
-            return;
-        }
-
         if (SpawnDelay)
         {
             IEnumerator SpawnDelayCoroutine()
@@ -622,6 +590,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
     }
+
+
 
     public void SearchEnemy()
     {

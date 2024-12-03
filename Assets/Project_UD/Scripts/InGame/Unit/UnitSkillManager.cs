@@ -73,10 +73,7 @@ public class UnitSkillManager : MonoBehaviour
                     if (Bow != null && Bow.GetComponent<BowCtrl>() != null)
                     {
                         Bow.transform.LookAt(TargetPos);
-                        if (!attackStop)
-                        {
-                            Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
-                        }
+                        Bow.GetComponent<BowCtrl>().ArrowShoot(UnitCtrl.gameObject.CompareTag(CONSTANT.TAG_ENEMY));
                     }
                     attackType = AttackType.Pierce;
                     damage = 5;
@@ -110,10 +107,7 @@ public class UnitSkillManager : MonoBehaviour
                 AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
                 UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
-                if (!attackStop)
-                {
-                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
-                }
+                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
             }
 
             weaponCooldown_Cur = weaponCooldown; //쿨타임 초기화.
@@ -388,13 +382,13 @@ public class UnitSkillManager : MonoBehaviour
             switch (SkillCode)
             {
                 //검 베기
-                case 101:
+                case 102:
                     damage = 5;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
                 //활 쏘기
-                case 102:
+                case 103:
                     if (Bow != null)
                     {
                         Bow.transform.LookAt(TargetPos);

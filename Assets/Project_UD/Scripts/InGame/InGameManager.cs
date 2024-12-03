@@ -78,6 +78,11 @@ public class InGameManager : MonoBehaviour
 
     }
 
+    public void UpdateNavMeshSurface()
+    {
+        NavMeshSurface.UpdateNavMesh(NavMeshSurface.navMeshData);
+    }
+
 
     public void AllUnitSelectOff()//모든 유닛들의 선택 해제.
     {

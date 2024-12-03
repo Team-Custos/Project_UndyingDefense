@@ -11,8 +11,7 @@ public enum EnemyState//적군 유닛의 상태.
 {
     Idle,
     Attack,
-    Move,
-    Dead
+    Move
 }
 
 
@@ -209,16 +208,6 @@ public class EnemyUnitState : MonoBehaviour
 
     #endregion
 
-    void Dead_Enter()
-    {
 
-    }
-
-    void Dead_Update()
-    {
-        navAgent.velocity = Vector3.zero;
-        navAgent.enabled = false;
-        this.gameObject.tag = CONSTANT.TAG_DEAD_UNIT;
-    }
 
 }
