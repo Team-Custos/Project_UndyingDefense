@@ -10,9 +10,12 @@ public class BaseStatus : MonoBehaviour
 
     public static BaseStatus instance;
 
+    public BoxCollider baseBoxCollider;
+
     private void Awake()
     {
         instance = this;
+        baseBoxCollider = GetComponent<BoxCollider>();
     }
 
 
@@ -29,6 +32,11 @@ public class BaseStatus : MonoBehaviour
         {
             BaseHPCur = 0;
         }
+    }
+
+    public Vector3 GetNearestPosition(Vector3 from)
+    {
+        return baseBoxCollider.ClosestPointOnBounds(from);
     }
 
     public void ReceiveDamage(int Damage)//성이 데미지 받았을때의 함수

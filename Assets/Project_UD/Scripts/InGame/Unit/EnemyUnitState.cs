@@ -57,6 +57,7 @@ public class EnemyUnitState : MonoBehaviour
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
+        SearchPath();
     }
 
     #endregion
@@ -72,9 +73,22 @@ public class EnemyUnitState : MonoBehaviour
         navAgent.enabled = false;
         navObstacle.enabled = true;
 
+        //if (UnitCtrl.enemy_isPathBlocked)
+        //{
+        //    EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
+        //    //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
+        //    UnitCtrl.Unit_Attack(); //아군 병사 공격.
+        //}
+        //else
+        //{
+        //    fsm.ChangeState(EnemyState.Move);
+        //}
+
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
         UnitCtrl.Unit_Attack(); //아군 병사 공격.
+
+        SearchPath();
     }
 
     void Attack_Exit()
@@ -95,6 +109,8 @@ public class EnemyUnitState : MonoBehaviour
         UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
         UnitCtrl.enemy_isPathBlocked = false;
         
+        SearchPath();
+
     }
 
     void Move_Update()
@@ -105,6 +121,7 @@ public class EnemyUnitState : MonoBehaviour
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, true);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
         navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
+        UnitCtrl.moveTargetPos = UnitCtrl.moveTargetBasePos;
 
         if (navAgent.enabled == true)
         {
@@ -116,6 +133,7 @@ public class EnemyUnitState : MonoBehaviour
             fsm.ChangeState(EnemyState.Attack); //공격 상태로 변경.
             return; //후에 빠져나옴.
         }
+        
 
         navAgent.SetDestination(UnitCtrl.moveTargetPos);//이동 목적지 설정.
 
@@ -142,6 +160,10 @@ public class EnemyUnitState : MonoBehaviour
                     return;
                 }
             }
+            else
+            {
+                SearchPath();
+            }
         }
     }
 
@@ -160,23 +182,23 @@ public class EnemyUnitState : MonoBehaviour
         }
 
         NavMeshPath calcaulatedPath = new NavMeshPath();
-        if (NavMesh.CalculatePath(transform.position, BaseStatus.instance.transform.position, NavMesh.AllAreas, calcaulatedPath))
+        if (NavMesh.CalculatePath(transform.position, UnitCtrl.moveTargetBasePos, NavMesh.AllAreas, calcaulatedPath))
         {
             if (calcaulatedPath.status != NavMeshPathStatus.PathComplete)
             {
                 Debug.Log("Can not Find Path");
-                UnitCtrl.enemy_isPathBlocked = false;
+                UnitCtrl.enemy_isPathBlocked = true;
             }
             else
             {
                 Debug.Log("Find Path Success");
-                UnitCtrl.enemy_isPathBlocked = true;
+                UnitCtrl.enemy_isPathBlocked = false;
             }
         }
         else
         {
             Debug.Log("Can not Find Path");
-            UnitCtrl.enemy_isPathBlocked = false;
+            UnitCtrl.enemy_isPathBlocked = true;
         }
 
         //StartCoroutine(DestinationValidCheck());

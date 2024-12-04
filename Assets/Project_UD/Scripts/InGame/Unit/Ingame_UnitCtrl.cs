@@ -108,6 +108,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public string defenstype;
 
     public System.Action<GameObject> OnDisable;
+    public System.Action<Ingame_UnitCtrl> OnUnitDead;
 
     public Quaternion defaultTargetRotation;
 
@@ -257,32 +258,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //모델 변경
         ModelSwap();
 
-        moveTargetBasePos = new Vector3(targetBase.transform.position.x, this.transform.position.y, this.transform.position.z);//성의 좌표 초기화.
+        Vector3 targetPosition = BaseStatus.instance.GetNearestPosition(transform.position);
+        moveTargetBasePos = targetPosition;//성의 좌표 초기화.
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
-        if (HP <= 0 && !isDead)
-        {
-            HP = 0;
-            
-            if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            {
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
-                InGameManager.inst.gold += enmeyRewardGold;
-                Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
-            }
-            else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
-            {
-                isDead = true;
-            }
-            Debug.Log(this.gameObject.name + " Destroyed");
-            return;
-        }
-        else
-        {
-            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
-        }
-
+      
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
             Destroy(this.gameObject);
@@ -659,6 +640,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 else if (targetEnemy == null)
                 {
                     Debug.Log("경로 다시 검색...");
+                    Enemy_State.SearchPath();
                     Enemy_State.fsm.ChangeState(EnemyState.Move);
                 }
             }
@@ -759,6 +741,31 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         HP -= Damage;
+
+        if (HP <= 0 && !isDead)
+        {
+            HP = 0;
+
+            if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                InGameManager.inst.gold += enmeyRewardGold;
+                Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
+            }
+            else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                isDead = true;
+            }
+
+            OnUnitDead?.Invoke(this);
+
+            Debug.Log(this.gameObject.name + " Destroyed");
+            return;
+        }
+        else
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+        }
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
         {

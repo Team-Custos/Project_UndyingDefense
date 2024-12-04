@@ -104,12 +104,12 @@ public class RangeCtrl : MonoBehaviour
                 if (detectedObjects.Contains(unit.gameObject) == false)
                 {
                     detectedObjects.Add(unit.gameObject); //리스트에 추가.
+                    unit.OnUnitDead += RemoveDetectedUnit;
                 }
             }
             else return;
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
@@ -122,10 +122,17 @@ public class RangeCtrl : MonoBehaviour
                     Obj_Nearest = null; //가까이 있는 오브젝트 변수를 초기화.
                     unitCtrl.targetEnemy = null;
                 }
+
+                unit.OnUnitDead -= RemoveDetectedUnit;
                 ListTargetDelete(unit.gameObject);//리스트에서 삭제.
             }
             else return;
         }
+    }
+
+    private void RemoveDetectedUnit(Ingame_UnitCtrl ctrl)
+    {
+        ListTargetDelete(ctrl.gameObject);
     }
 
 }
