@@ -25,6 +25,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public GameObject waveStepSuccessPanel;
     public Text waveStepText;
     public Text curWaveStepText;
+    public GameObject waveWarnningPanel;
 
     public float fadeDuration = 0.3f;
 
@@ -62,6 +63,8 @@ public class Ingame_WaveUIManager : MonoBehaviour
 
             waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
             curWaveStepText = waveStepText.transform.Find("WaveStepText2").GetComponent<Text>();
+
+            waveWarnningPanel = canvasInstance.transform.Find("WaveWarnningPanel").gameObject;
         }
         else
         {

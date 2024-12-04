@@ -43,6 +43,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     UnitModelSwapManager ModelSwapManager; //유닛의 모델 관리.
     public UnitSoundManager soundManager; //유닛의 SFX 관리.
 
+    UnitUICtrl unitUiCtrl;
+
     private GridTile currentTile;
 
     [Header("====Status====")]
@@ -151,6 +153,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     void Start()
     {
         currentTile = GetComponentInParent<GridTile>();
+
+        unitUiCtrl = GetComponent<UnitUICtrl>();
 
         transform.rotation = unitDefaultRotation;
         defaultTargetRotation = unitDefaultRotation;
@@ -264,9 +268,53 @@ public class Ingame_UnitCtrl : MonoBehaviour
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
       
+        // if (HP <= 0 && !isDead)
+        // {
+        //     HP = 0;
+
+        //     //if(Ingame_UIManager.instance.unitInfoPanel.activeSelf)
+        //     //{
+        //     //    Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
+        //     //}
+
+            
+        //     if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        //     {
+        //         Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
+        //         EnemySpawner.inst.OnMonsterDead(this.gameObject);
+        //         InGameManager.inst.gold += enmeyRewardGold;
+        //         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
+        //     }
+        //     else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        //     {
+        //         isDead = true;
+        //     }
+        //     Debug.Log(this.gameObject.name + " Destroyed");
+
+        //     GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상태 최신화 (배치 가능)
+
+        //     return;
+        // }
+        // else if(HP <=0 && isDead)
+        // {
+        //     GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+        // }
+        // else
+        // {
+        //     GridManager.inst.SetTilePlaceable(this.transform.position, false, false);  // 유닛이 차지하는 타일 배치 상태 최신화(배치 불가능)
+
+        // }
+
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
-            Destroy(this.gameObject);
+            if(this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+            }
+            else 
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         #region 아군 제어
@@ -282,6 +330,21 @@ public class Ingame_UnitCtrl : MonoBehaviour
             EnemyCtrl();
         }
         #endregion
+
+        if(this.gameObject == GameOrderSystem.instance.selectedUnit)
+        {
+            if (HP <= 0)
+            {
+                HP = 0;
+                Ingame_UIManager.instance.hpText.text = 0 + " / " + maxHp;
+            }
+            else
+            {
+                Ingame_UIManager.instance.hpText.text = HP + " / " + maxHp;
+            }
+
+
+        }
     }
 
 

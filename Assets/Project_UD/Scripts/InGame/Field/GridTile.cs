@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //이 스크립트는 배치된 그리트 타일 오브텍트를 관리하기 위한 스크립트입니다.
 public class GridTile : MonoBehaviour
@@ -64,9 +65,16 @@ public class GridTile : MonoBehaviour
             if (mouseHover && isPlaceable)
             {
                 // 마우스가 UI 위에 있는지 확인
-                if (EventSystem.current.IsPointerOverGameObject())
+                //if (EventSystem.current.IsPointerOverGameObject())
+                //{
+                //    // UI 위에 있을 경우 이벤트 무시
+                //    return;
+                //}
+
+                // 마우스가 특정 UI 위에 있는지 확인 (특정 UI만 무시)
+                if (IsPointerOverSpecificUI())
                 {
-                    // UI 위에 있을 경우 이벤트 무시
+                    // 특정 UI 위에 있을 경우 이벤트 무시
                     return;
                 }
 
@@ -110,9 +118,16 @@ public class GridTile : MonoBehaviour
         GameOrderSystem.instance.selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
         {
             // 마우스가 UI 위에 있는지 확인
-            if (EventSystem.current.IsPointerOverGameObject())
+            //if (EventSystem.current.IsPointerOverGameObject())
+            //{
+            //    // UI 위에 있을 경우 이벤트 무시
+            //    return;
+            //}
+
+            // 마우스가 특정 UI 위에 있는지 확인 (특정 UI만 무시)
+            if (IsPointerOverSpecificUI())
             {
-                // UI 위에 있을 경우 이벤트 무시
+                // 특정 UI 위에 있을 경우 이벤트 무시
                 return;
             }
 
@@ -127,6 +142,7 @@ public class GridTile : MonoBehaviour
             }
         }
     }
+
 
     private void OnMouseExit()
     {
@@ -167,5 +183,30 @@ public class GridTile : MonoBehaviour
             // 선택 해제 시 기본 색상으로 즉시 변경
             MeshR.material.color = colorDefault;
         }
+    }
+
+
+    private bool IsPointerOverSpecificUI()
+    {
+        // PointerEventData 생성
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        // Raycast를 통해 현재 마우스 포지션의 UI 요소 감지
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+        foreach (RaycastResult result in raycastResults)
+        {
+            // 특정 UI 요소만 무시하고자 할 때 사용
+            if (result.gameObject.CompareTag("UI"))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

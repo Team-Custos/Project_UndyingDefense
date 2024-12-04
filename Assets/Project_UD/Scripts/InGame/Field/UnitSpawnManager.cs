@@ -68,11 +68,13 @@ public class UnitSpawnManager : MonoBehaviour
     // 유닛 생성시 3초 딜레이 추가 및 파티클 생성
     public GameObject UnitSpawn(int unitType, float X, float Y)
     {
+        InGameManager.inst.gold -= UnitSpawnManager.inst.unitDatas[unitType].cost;
+
         GameObject tempObject = new GameObject("TempTransform");
-        tempObject.transform.position = new Vector3(X, 0, Y);
+        tempObject.transform.position = new Vector3(X,- 0.9f, Y);
 
         // 파티클 생성
-        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform);
+        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform, true);
 
         // 파티클 생성 시 타일을 배치 불가능으로 설정
         GridManager.inst.SetTilePlaceable(tempObject.transform.position, true, false);
@@ -91,6 +93,8 @@ public class UnitSpawnManager : MonoBehaviour
         GameObject Obj = Instantiate(Test_Ally);
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
+
+        
 
         //NavMeshAgent Priority 설정.
         Obj.GetComponent<NavMeshAgent>().avoidancePriority = (unitPriority % 50) + 50;

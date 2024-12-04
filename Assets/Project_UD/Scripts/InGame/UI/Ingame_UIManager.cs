@@ -105,6 +105,7 @@ public class Ingame_UIManager : MonoBehaviour
     public Button commanderSkillBtn;
 
 
+
     private void Awake()
     {
         instance = this;
@@ -239,8 +240,6 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-        unitSpawnBtn[2].interactable = false;
-        unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -303,7 +302,8 @@ public class Ingame_UIManager : MonoBehaviour
             selectedBtnEffectImage[1].gameObject.SetActive(false);
         }
 
-        
+
+        goldTxt.text = InGameManager.inst.gold.ToString();
     }
 
 
@@ -457,9 +457,7 @@ public class Ingame_UIManager : MonoBehaviour
             selectedUnit.HP = 0;
 
         // HP 정보 업데이트
-        hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
-
-
+        //hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
     }
 
     public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)

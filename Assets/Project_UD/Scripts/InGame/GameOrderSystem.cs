@@ -49,6 +49,11 @@ public class GameOrderSystem : MonoBehaviour
             return;
         }
 
+        if(selectedUnit == null)
+        {
+            Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit) && (Input.GetMouseButtonDown(0)))
