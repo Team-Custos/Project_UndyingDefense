@@ -38264,7 +38264,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: 0e8cd4a05d437c541ac11bccbbf4a011,
         type: 3}
       propertyPath: m_Name
-      value: GridTile_3EnemySpawner
+      value: GridTile_EnemySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -42827,7 +42827,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: 0e8cd4a05d437c541ac11bccbbf4a011,
         type: 3}
       propertyPath: m_Name
-      value: GridTile_1EnemySpawner
+      value: GridTile_EnemySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -43505,6 +43505,109 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1108746922}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1109219008
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1418221404897559999, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221404940195520, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.7490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545792, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -41.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545798, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405132545799, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: m_Name
+      value: vfx_enemy_spawn_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405379227765, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221405487396873, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.6509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221406335143712, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418221406550044299, guid: 8f9cf371637172b4996178f3f8f75936,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8f9cf371637172b4996178f3f8f75936, type: 3}
 --- !u!4 &1110180358 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -55201,9 +55304,9 @@ MonoBehaviour:
     type: 3}
   enemyToSpawn: 0
   poolSapwnPoint:
-  - {fileID: 1097068206}
+  - {fileID: 2005882644}
+  - {fileID: 1497830957}
   - {fileID: 1811652448}
-  - {fileID: 994623281}
   waveCount: 10
   monsterPerWave: 5
   spawnInterval: 2
@@ -58620,7 +58723,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: 0e8cd4a05d437c541ac11bccbbf4a011,
         type: 3}
       propertyPath: m_Name
-      value: GridTile_EnemySpawner
+      value: GridTile_2EnemySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -70729,7 +70832,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: 0e8cd4a05d437c541ac11bccbbf4a011,
         type: 3}
       propertyPath: m_Name
-      value: GridTile_2EnemySpawner
+      value: GridTile_3EnemySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -77584,7 +77687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15122b57f1d507541b0d484f24e0c704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allySummonEffect: {fileID: 4836510788474775732, guid: 448225e25995b3840ac9785680bc5239,
+  allySummonEffect: {fileID: 4084045715847604344, guid: 5ed8aaf122a0b2847957c6dd53a59133,
+    type: 3}
+  enemeySummonEffect: {fileID: 3318205575424167203, guid: c8f9b26cd4bec544ea39a8d2f78f08e0,
     type: 3}
   modeChangeEffect: {fileID: 8844220393683860033, guid: dc68d7ed3bed50f49bfdf0311e5bf35f,
     type: 3}
@@ -77597,10 +77702,14 @@ MonoBehaviour:
   - {fileID: 853575959399141184, guid: e4c60472dfabb034183283198f15f922, type: 3}
   - {fileID: 516829267387349542, guid: 635b9e75de5453244b70f09ec3944d45, type: 3}
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
-  allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+  allySelectEffect: {fileID: 3478824122546897687, guid: ae331dc76c8518243a626a1017f15e78,
     type: 3}
   enemySelectEffect: {fileID: 0}
-  allySiegeEffect: {fileID: 842759819059242878, guid: 4017b4afadc2f2345b0c00b76a892687,
+  allySiegeEffect: {fileID: 5528497158527789445, guid: 750d2fac26edfe1469d107be1ff4ef6f,
+    type: 3}
+  spawnCoinEffect: {fileID: 7363310065621503760, guid: 65ee9279357dd1140a3216c9cc47caf4,
+    type: 3}
+  enemyGhostEffect: {fileID: 8925381408423502869, guid: eafc95c38b6bf3c44ae0574383a50fbb,
     type: 3}
 --- !u!4 &1989869922 stripped
 Transform:
@@ -78235,7 +78344,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: 0e8cd4a05d437c541ac11bccbbf4a011,
         type: 3}
       propertyPath: m_Name
-      value: GridTile_EnemySpawner
+      value: GridTile_1EnemySpawner
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -82520,3 +82629,4 @@ SceneRoots:
   - {fileID: 1852803596}
   - {fileID: 959445839}
   - {fileID: 588367418}
+  - {fileID: 1109219008}

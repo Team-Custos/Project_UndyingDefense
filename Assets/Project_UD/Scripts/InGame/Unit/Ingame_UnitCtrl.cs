@@ -43,6 +43,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     UnitModelSwapManager ModelSwapManager; //유닛의 모델 관리.
     public UnitSoundManager soundManager; //유닛의 SFX 관리.
 
+    UnitUICtrl unitUiCtrl;
+
     private GridTile currentTile;
 
     [Header("====Status====")]
@@ -150,6 +152,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
     void Start()
     {
         currentTile = GetComponentInParent<GridTile>();
+
+        unitUiCtrl = GetComponent<UnitUICtrl>();
 
         transform.rotation = unitDefaultRotation;
         defaultTargetRotation = unitDefaultRotation;
@@ -273,6 +277,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
+                Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
                 EnemySpawner.inst.OnMonsterDead(this.gameObject);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
@@ -283,13 +288,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             Debug.Log(this.gameObject.name + " Destroyed");
 
-            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상태 최신화 (배치 가능)
 
             return;
         }
+        else if(HP <=0 && isDead)
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+        }
         else
         {
-            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);  // 유닛이 차지하는 타일 배치 상태 최신화(배치 불가능)
 
         }
 

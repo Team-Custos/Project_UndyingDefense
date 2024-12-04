@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 using static UnityEngine.UI.CanvasScaler;
@@ -13,6 +15,8 @@ public class Ingame_ParticleManager : MonoBehaviour
     public static Ingame_ParticleManager Instance;
 
     public ParticleSystem allySummonEffect; // 유닛 소환 이펙트
+    public ParticleSystem enemeySummonEffect; // 적 유닛 소환 이펙트
+
     public ParticleSystem modeChangeEffect; // 유닛 모드 전환 이펙트 
 
     public ParticleSystem unitSpawnDeckEffect; // 유닛 소환 모드시 덱에 나타나는 이펙트
@@ -24,6 +28,10 @@ public class Ingame_ParticleManager : MonoBehaviour
     public ParticleSystem enemySelectEffect;    // 적 유닛 선택 이펙트
 
     public ParticleSystem allySiegeEffect;     // 아군 유닛 시즈모드 이펙트
+
+
+    public GameObject spawnCoinEffect;         // 적 유닛 사망 후 코인 생성 이펙트
+    public GameObject enemyGhostEffect;        // 적 사망 후 유령 이펙트
 
     private Dictionary<GameObject, ParticleSystem> activeEffects = new Dictionary<GameObject, ParticleSystem>();
 
@@ -50,13 +58,23 @@ public class Ingame_ParticleManager : MonoBehaviour
 
     // 기존 적 소환 이펙트를 유닛 모드 전환 이펙트로 사용
     // 추후 적 소환 이펙트 추가 예정
-    public void PlaySummonParticleEffect(Transform tr)
+    public void PlaySummonParticleEffect(Transform tr, bool isAlly = true)
     {
-        ParticleSystem effectInstance = Instantiate(allySummonEffect, tr.position, tr.rotation);
+        ParticleSystem summonEffect;
 
-        effectInstance.Play();
+        if (isAlly)
+        {
+            summonEffect = Instantiate(allySummonEffect, tr.position, tr.rotation);
+        }
+        else
+        {
+            summonEffect = Instantiate(enemeySummonEffect, tr.position, tr.rotation);
+        }
 
-        Destroy(effectInstance.gameObject, effectInstance.main.duration);
+
+        summonEffect.Play();
+
+        Destroy(summonEffect.gameObject, summonEffect.main.duration);
     }
 
     public void PlayAttackedParticleEffect(Transform AttackedUnit, AttackType attackType, bool Crit)
@@ -134,4 +152,65 @@ public class Ingame_ParticleManager : MonoBehaviour
             }
         }
     }
+
+
+    //public void EnemyDeathEffect(Transform enemyPos)
+    //{
+    //    StartCoroutine(PlayEnemyDeathEffects(enemyPos));
+    //}
+
+    //private IEnumerator PlayEnemyDeathEffects(Transform enemyPos)
+    //{
+    //    GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
+    //    coinPrefab.transform.position = enemyPos.position;
+
+    //    Debug.Log(enemyPos.position);
+
+    //    yield return new WaitForSeconds(0.5f);
+
+    //    GameObject ghostPrefab = Instantiate(enemyDeathEffect as GameObject);
+    //    ghostPrefab.transform.position = enemyPos.position;
+
+    //    Debug.Log(enemyPos.position);
+
+    //    Destroy(coinPrefab, 1.0f);
+    //    Destroy(ghostPrefab, 1.0f);
+    //}
+
+    public void EnemyDeathEffect(Transform enemyPos)
+    {
+        StartCoroutine(PlayEnemyDeathEffects(enemyPos));
+    }
+
+    // 적 유닛이 죽은 후 생성되는 프리팹 이펙트(유령, 골드), 두 이펙트 간 텀을 두기 위해 코루틴 사용
+    private IEnumerator PlayEnemyDeathEffects(Transform enemyPos)
+    {
+        GameObject ghostPrefab = Instantiate(enemyGhostEffect as GameObject);
+        ghostPrefab.transform.position = enemyPos.transform.position;
+        Destroy(ghostPrefab, 1.0f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
+        coinPrefab.transform.position = ghostPrefab.transform.position + new Vector3(0, 1.0f, 0);
+        Destroy(coinPrefab, 1.0f);
+    }
+
+
+    //public void EnemyDeathEffect(Transform enemyPos)
+    //{
+    //    GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
+
+
+    //    coinPrefab.transform.position = enemyPos.position;
+
+    //    GameObject ghostPrefab = Instantiate(enemyDeathEffect as GameObject);
+
+    //    ghostPrefab.transform.position = enemyPos.position;
+
+    //    Destroy(ghostPrefab, 1.0f);
+
+    //    Destroy(coinPrefab, 1.0f);
+
+    //}
 }

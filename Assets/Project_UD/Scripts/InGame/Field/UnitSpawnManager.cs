@@ -71,10 +71,10 @@ public class UnitSpawnManager : MonoBehaviour
         InGameManager.inst.gold -= UnitSpawnManager.inst.unitDatas[unitType].cost;
 
         GameObject tempObject = new GameObject("TempTransform");
-        tempObject.transform.position = new Vector3(X, 0, Y);
+        tempObject.transform.position = new Vector3(X,- 0.9f, Y);
 
         // 파티클 생성
-        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform);
+        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(tempObject.transform, true);
 
         // 파티클 생성 시 타일을 배치 불가능으로 설정
         GridManager.inst.SetTilePlaceable(tempObject.transform.position, true, false);

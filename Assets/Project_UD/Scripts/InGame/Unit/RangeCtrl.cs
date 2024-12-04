@@ -49,6 +49,9 @@ public class RangeCtrl : MonoBehaviour
             {
                 for (int i = 1; i < detectedObjects.Count - 1; i++) //정렬.
                 {
+                    if (detectedObjects[i].transform == null)
+                        continue;
+
                     float Obj_Distance = Vector3.Distance(detectedObjects[i].transform.position, transform.position);
 
                     if (Obj_Distance_Nearest > Obj_Distance)

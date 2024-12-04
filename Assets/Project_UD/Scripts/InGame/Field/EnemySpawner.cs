@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -203,6 +204,10 @@ public class EnemySpawner : MonoBehaviour
     void SpawnEnemy(int enemyType)
     {
         Transform spawnPos = poolSapwnPoint[Random.Range(0, poolSapwnPoint.Length)];
+        Vector3 newPosition = spawnPos.position;
+        newPosition.y = -0.9f;
+        spawnPos.position = newPosition;
+        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         GameObject enemyObj = Instantiate(Test_Enemy, spawnPos.position, Quaternion.identity);
 
         if (enemyType == 0)
