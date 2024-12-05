@@ -18,9 +18,13 @@ public class UnitSoundManager : MonoBehaviour
     public AudioSource ATTACK_SFX;//공격 사운드를 재생할 컴포넌트
     public AudioSource HIT_SFX;//피격 사운드를 재생할 컴포넌트
     public AudioSource DEBUFF_SFX;//디버프 사운드를 재생할 컴포넌트
+    public AudioSource DEAD_SFX;//사망 사운드를 재생할 컴포넌트
 
     [Header("====ATTACKED_SFX====")]
     public ATTACKEDSOUND[] HitSound;
+
+    [Header("====DEAD_SFX====")]
+    public AudioClip[] DeadSound;
 
     public void PlaySFX(AudioSource SFX,AudioClip SFX2Play)
     {

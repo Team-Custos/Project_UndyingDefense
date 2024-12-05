@@ -57,7 +57,6 @@ public class EnemyUnitState : MonoBehaviour
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
         //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, false);
-        SearchPath();
     }
 
     #endregion

@@ -10,6 +10,11 @@ public class UnitAnimationEvent : MonoBehaviour
         UnitSkillManager unitSkill = unitCtrl.UnitSkill;
     }
 
+    public void SpawnWarcryEnd()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        unitCtrl.SpawnIdleEnd = true;
+    }
 
     public void BowAttackStart()
     {

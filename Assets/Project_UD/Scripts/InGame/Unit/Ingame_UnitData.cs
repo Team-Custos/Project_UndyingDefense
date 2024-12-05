@@ -28,8 +28,10 @@ public class Ingame_UnitData : ScriptableObject
     public float weaponCooldown = 0;                             
     public float skillCooldown = 0;                               
     public float sightRange = 0;                                  
-    public float attackRange = 0;                                 
-    public AudioClip[] attackSound;                               
+    public float attackRange = 0;                   
+    public AudioClip[] attackSound;
+
+    public AnimationClip[] tauntAniClip;
                                                                   
     // 추가                                                        
     public float globalTime;                                       

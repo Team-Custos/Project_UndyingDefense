@@ -71,6 +71,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     [Header("====AI====")]
     bool SpawnDelay = true;
+    public bool SpawnIdleEnd = false;
 
     public GameObject targetBase; //적군을 위한 성의 위치.
 
@@ -579,6 +580,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
             SpawnDelay = false;
         }
 
+        if (!SpawnIdleEnd)
+        {
+            Enemy_State.fsm.ChangeState(EnemyState.Idle);
+            return;
+        }
+
         enemy_isBaseInRange =
         (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange); //성이 적군의 공격 범위 내에 있는지 판단.
 
@@ -805,9 +812,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         HP -= Damage;
 
-        if (HP <= 0 && !isDead)
+        if (HP <= 0 && !isDead)//사망판정
         {
             HP = 0;
+
+            soundManager.PlaySFX(soundManager.DEAD_SFX, soundManager.DeadSound[Random.Range(0, soundManager.DeadSound.Length)]);
 
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
