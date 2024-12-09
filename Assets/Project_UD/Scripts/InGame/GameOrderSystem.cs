@@ -374,6 +374,7 @@ public class GameOrderSystem : MonoBehaviour
 
                         if (allyUnit.Ally_Mode == AllyMode.Free)
                         {
+                            Ingame_ParticleManager.Instance.ShowUnitMoveIndicator(gridTile.transform);
                             allyUnit.moveTargetPos = gridTile.transform.position;
                             allyUnit.targetEnemy = null;
                             allyUnit.haveToMovePosition = true;

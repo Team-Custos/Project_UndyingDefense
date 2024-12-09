@@ -29,9 +29,14 @@ public class Ingame_ParticleManager : MonoBehaviour
 
     public ParticleSystem allySiegeEffect;     // 아군 유닛 시즈모드 이펙트
 
+    public GameObject siegeEffect;
+
 
     public GameObject spawnCoinEffect;         // 적 유닛 사망 후 코인 생성 이펙트
     public GameObject enemyGhostEffect;        // 적 사망 후 유령 이펙트
+
+    public GameObject unitMoveIndicator;       // 유닛이 이동하는 곳을 알려주는 이펙트
+    private GameObject currentMoveIndicator = null;
 
     private Dictionary<GameObject, ParticleSystem> activeEffects = new Dictionary<GameObject, ParticleSystem>();
 
@@ -60,21 +65,24 @@ public class Ingame_ParticleManager : MonoBehaviour
     // 추후 적 소환 이펙트 추가 예정
     public void PlaySummonParticleEffect(Transform tr, bool isAlly = true)
     {
-        ParticleSystem summonEffect;
+        //ParticleSystem summonEnemyEffect;
+        ParticleSystem smmonAllyEffect;
 
         if (isAlly)
         {
-            summonEffect = Instantiate(allySummonEffect, tr.position, tr.rotation);
+            smmonAllyEffect = Instantiate(allySummonEffect, tr.position, tr.rotation);
+            smmonAllyEffect.Play();
+            Destroy(smmonAllyEffect.gameObject, smmonAllyEffect.main.duration);
         }
-        else
-        {
-            summonEffect = Instantiate(enemeySummonEffect, tr.position, tr.rotation);
-        }
+        //else
+        //{
+        //    summonEnemyEffect = Instantiate(enemeySummonEffect, tr.position, tr.rotation);
+        //    summonEnemyEffect.Play();
+        //    Destroy(summonEnemyEffect.gameObject, summonEnemyEffect.main.duration - 3.5f) ;
+        //}
 
 
-        summonEffect.Play();
 
-        Destroy(summonEffect.gameObject, summonEffect.main.duration);
     }
 
     public void PlayAttackedParticleEffect(Transform AttackedUnit, AttackType attackType, bool Crit)
@@ -153,29 +161,7 @@ public class Ingame_ParticleManager : MonoBehaviour
         }
     }
 
-
-    //public void EnemyDeathEffect(Transform enemyPos)
-    //{
-    //    StartCoroutine(PlayEnemyDeathEffects(enemyPos));
-    //}
-
-    //private IEnumerator PlayEnemyDeathEffects(Transform enemyPos)
-    //{
-    //    GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
-    //    coinPrefab.transform.position = enemyPos.position;
-
-    //    Debug.Log(enemyPos.position);
-
-    //    yield return new WaitForSeconds(0.5f);
-
-    //    GameObject ghostPrefab = Instantiate(enemyDeathEffect as GameObject);
-    //    ghostPrefab.transform.position = enemyPos.position;
-
-    //    Debug.Log(enemyPos.position);
-
-    //    Destroy(coinPrefab, 1.0f);
-    //    Destroy(ghostPrefab, 1.0f);
-    //}
+    
 
     public void EnemyDeathEffect(Transform enemyPos)
     {
@@ -197,20 +183,20 @@ public class Ingame_ParticleManager : MonoBehaviour
     }
 
 
-    //public void EnemyDeathEffect(Transform enemyPos)
-    //{
-    //    GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
+    // 유닛이 이동할 곳을 알려주는 오브젝트 생성
+    public void ShowUnitMoveIndicator(Transform moveTr)
+    {
+        if (currentMoveIndicator != null)
+        {
+            Destroy(currentMoveIndicator);
+        }
 
+        currentMoveIndicator = Instantiate(unitMoveIndicator as GameObject);
 
-    //    coinPrefab.transform.position = enemyPos.position;
+        Vector3 newPosition = moveTr.position;
+        newPosition.y += 1.0f;  // y축 위치 조정
+        currentMoveIndicator.transform.position = newPosition;
 
-    //    GameObject ghostPrefab = Instantiate(enemyDeathEffect as GameObject);
-
-    //    ghostPrefab.transform.position = enemyPos.position;
-
-    //    Destroy(ghostPrefab, 1.0f);
-
-    //    Destroy(coinPrefab, 1.0f);
-
-    //}
+        Destroy(currentMoveIndicator, 1.0f);
+    }
 }

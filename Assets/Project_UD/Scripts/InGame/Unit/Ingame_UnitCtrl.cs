@@ -280,7 +280,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
-      
+
         // if (HP <= 0 && !isDead)
         // {
         //     HP = 0;
@@ -290,7 +290,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //     //    Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
         //     //}
 
-            
+
         //     if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
         //     {
         //         Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
@@ -309,6 +309,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //     return;
         // }
          
+
+        GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
@@ -401,7 +403,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (Ally_Mode == AllyMode.Change)
         {
             //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
-            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
+            //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
+            unitUiCtrl.OnOffSiegeEffect(false);
 
             if (unitStateChangeTime > 0)
             {
@@ -461,7 +464,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //시즈모드일때
         else if (Ally_Mode == AllyMode.Siege)
         {
-            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, true);
+            //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, true);
+            unitUiCtrl.OnOffSiegeEffect(true);
 
             haveToMovePosition = false;
             //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, true);
@@ -494,7 +498,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //프리모드일때
         else if (Ally_Mode == AllyMode.Free)
         {
-            Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
+            //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
+            unitUiCtrl.OnOffSiegeEffect(false);
 
             UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
             if (haveToMovePosition)//모든 행동을 무시하고 이동해야하는가?
@@ -844,6 +849,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else if (HP <= 0 && isDead)
         {
             GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+
         }
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시
