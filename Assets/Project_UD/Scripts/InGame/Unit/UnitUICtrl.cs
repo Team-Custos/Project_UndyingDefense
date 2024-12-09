@@ -14,10 +14,20 @@ public class UnitUICtrl : MonoBehaviour
     public float effectDuration = 2.0f;
     public Image unitHp;
 
+    private Vector3 originalScale; // 유닛 원래 크기
+    private Vector3 originalPosition; // 유닛 원래 위치
+
+    public GameObject siegeEffect;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        originalScale = transform.localScale; // 원래 크기 저장
+        originalPosition = transform.position; // 원래 위치 저장
+
+
         PlaySummonEffect();
     }
 
@@ -47,21 +57,25 @@ public class UnitUICtrl : MonoBehaviour
     {
         if (spawnEffect != null)
         {
-            // 소환 효과 활성화
-            spawnEffect.SetActive(true);
+            //spawnEffect.SetActive(true);
 
-            // 코루틴 시작
             StartCoroutine(DisableSummonEffectAfterDelay(effectDuration));
         }
     }
 
     private IEnumerator DisableSummonEffectAfterDelay(float delay)
     {
-        // 지정된 시간만큼 대기
+        yield return new WaitForSeconds(1.0f);
+
+        spawnEffect.SetActive(true);
+
         yield return new WaitForSeconds(delay);
 
-        // 소환 효과 비활성화
         spawnEffect.SetActive(false);
     }
 
+    public void OnOffSiegeEffect(bool isSiege = true)
+    {
+        siegeEffect.SetActive(isSiege);
+    }
 }

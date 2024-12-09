@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class GridTile : MonoBehaviour
     InGameManager GAMEMANAGER;
 
     GridManager GridMgr;
+
 
     public bool Selected = false;
     public Vector2 GridPos = Vector2.zero;
@@ -35,6 +37,7 @@ public class GridTile : MonoBehaviour
     {
         GAMEMANAGER = InGameManager.inst;
         GridMgr = GridManager.inst;
+
 
         MeshR = GetComponent<MeshRenderer>();
         Selected = false;
@@ -62,6 +65,7 @@ public class GridTile : MonoBehaviour
         }
         if (showPlacementColors)
         {
+
             if (mouseHover && isPlaceable)
             {
                 // 마우스가 UI 위에 있는지 확인
@@ -78,7 +82,8 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MeshR.material.color = colorAvailable;
+                //MeshR.material.color = colorAvailable;
+                MouseCursorManager.instance.SetFingerCursor();
             }
             else if (mouseHover && !isPlaceable)
             {
@@ -89,7 +94,10 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MeshR.material.color = colorOccupied;
+                MouseCursorManager.instance.SetFingerRedCursor();
+                //MeshR.material.color = colorOccupied;
+                
+                
             }
             else if (!mouseHover)
             {
@@ -106,6 +114,16 @@ public class GridTile : MonoBehaviour
             {
                 MeshR.material.color = colorDefault;
             }
+
+            //마우스가 UI 위에 있는지 확인
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                // UI 위에 있을 경우 이벤트 무시
+                return;
+            }
+
+             MouseCursorManager.instance.SetDefaultCursor();  // ui위가 아니고 배치 상태가 아닐때 커서를 기본 상태로
+            
         }
     }
 
@@ -134,10 +152,12 @@ public class GridTile : MonoBehaviour
             // 이동 가능할 때 파란색으로, 불가능할 때 붉은색으로 표시
             if (isPlaceable)
             {
+                MouseCursorManager.instance.SetFingerCursor();
                 MeshR.material.color = colorSelected;
             }
             else
             {
+                MouseCursorManager.instance.SetFingerRedCursor();
                 MeshR.material.color = colorOccupied;
             }
         }

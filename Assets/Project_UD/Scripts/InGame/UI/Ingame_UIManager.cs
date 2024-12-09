@@ -239,7 +239,8 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-
+        unitSpawnBtn[2].interactable = false;
+        unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -524,6 +525,8 @@ public class Ingame_UIManager : MonoBehaviour
         // 업그레이드 버튼
         if (unitUpgradeBtn != null)
         {
+            unitUpgradeBtn.interactable = false;
+
             unitUpgradeBtn.onClick.RemoveAllListeners();
             unitUpgradeBtn.onClick.AddListener(() =>
             {
