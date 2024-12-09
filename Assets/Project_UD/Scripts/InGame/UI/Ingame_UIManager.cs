@@ -53,8 +53,9 @@ public class Ingame_UIManager : MonoBehaviour
     public Text sSkillInfoText;
     public Sprite enemyArcherImage;
     public Sprite enenmyWarriorImage;
-    public Sprite allyImage;
-
+    public Sprite minByeongImage;
+    public Sprite hunterImage;
+    
     [Header("====Game Option====")]
     public Button endGameBtn;
     public Button restartGameBtn;
@@ -441,9 +442,13 @@ public class Ingame_UIManager : MonoBehaviour
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
 
-        if(selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
+        if(selectedUnit.unitData.unitCode == "1")
         {
-            unitInfoImage.sprite = allyImage;
+            unitInfoImage.sprite = minByeongImage;
+        }
+        else if(selectedUnit.unitData.unitCode == "2")
+        {
+            unitInfoImage.sprite = hunterImage;
         }
         else if(selectedUnit.unitData.unitCode == "80")
         {

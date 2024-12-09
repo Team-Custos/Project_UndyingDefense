@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class WaveData
+public class ObjectPool
 {
     public int charactor;
 
@@ -13,7 +13,7 @@ public class WaveData
 
 public class WaveSystemManager : MonoBehaviour
 {
-    public WaveData[] data;
+    public ObjectPool[] data;
 
     [Header("====WaveData====")]
     public int waveMax = 10;

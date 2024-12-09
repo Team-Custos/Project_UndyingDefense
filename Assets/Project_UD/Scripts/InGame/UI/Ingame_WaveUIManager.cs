@@ -92,6 +92,14 @@ public class Ingame_WaveUIManager : MonoBehaviour
         }
     }
 
+    public void StartNextWaveCountdown(float startTimeFromData)
+    {
+        // WaveData에서 가져온 waveStartTime을 런타임용 waveCount에 복사
+        waveCount = startTimeFromData;
+        isCountDownIng = true;
+        waveCountTextPanel.SetActive(true);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -112,7 +120,9 @@ public class Ingame_WaveUIManager : MonoBehaviour
                 isCountDownIng = false;
                 EnemySpawner.inst.isWaveing = true;
                 waveCountTextPanel.SetActive(false);
-                StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 1초의 지연 후 웨이브 시작
+               
+
+                StartCoroutine(EnemySpawner.inst.RunWave());
                 waveCount = 20;
             }
         }
