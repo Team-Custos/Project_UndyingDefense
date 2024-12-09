@@ -8,6 +8,8 @@ public class InGameManager : MonoBehaviour
 {
     public static InGameManager inst;
     public GridManager gridManager;//그리드 관리
+    public InGame_VirtualCamManager camManager;//카메라 관리
+
     public UnitDebuffDataCtrl unitDebuffData;//유닛의 디버프의 기본정보 관리.
     public int gold = 0;//현재 가지고 있는 골드의 양.
 

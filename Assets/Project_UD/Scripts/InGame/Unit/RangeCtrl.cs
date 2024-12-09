@@ -133,6 +133,7 @@ public class RangeCtrl : MonoBehaviour
     private void RemoveDetectedUnit(Ingame_UnitCtrl ctrl)
     {
         ListTargetDelete(ctrl.gameObject);
+        GridManager.inst.SetTilePlaceable(ctrl.transform.position, true, true);
     }
 
 }

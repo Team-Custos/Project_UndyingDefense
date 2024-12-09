@@ -2,11 +2,16 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class InGame_VirtualCamManager : MonoBehaviour
 {
     public CinemachineVirtualCamera virtualCamera;
     public Transform cameraPivot;
+    public Vector3 UnitToLookAt_Offset;
+
+    public bool isCameraMoving = false;
+
 
     public float moveSpeed = 10.0f;
     public float rotationSpeed = 100.0f;
@@ -63,6 +68,7 @@ public class InGame_VirtualCamManager : MonoBehaviour
         {
             moveDirection.Normalize();
         }
+
 
         // 카메라 피벗 이동
         cameraPivot.position += moveDirection * moveSpeed * Time.deltaTime;

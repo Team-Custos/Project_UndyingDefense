@@ -23,6 +23,7 @@ public class Ingame_InputSystem : MonoBehaviour
     public System.Action OnPrimaryPerformed;
     public System.Action OnSecondaryPerformed;
     public System.Action OnWheelButtonPerformed;
+    
 
     private void Awake()
     {
@@ -33,6 +34,18 @@ public class Ingame_InputSystem : MonoBehaviour
     private void Update()
     {
         _inputInit();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GameObject selectedUnit = GameOrderSystem.instance.selectedUnit;
+            Transform CameraPivot = InGameManager.inst.camManager.cameraPivot;
+
+            if (selectedUnit != null)
+            {
+                CameraPivot.position =
+                    new Vector3(selectedUnit.transform.position.x, CameraPivot.position.y, selectedUnit.transform.position.z);
+            }
+        }
     }
 
     void _inputInit()
@@ -62,5 +75,4 @@ public class Ingame_InputSystem : MonoBehaviour
         AxisX = Input.GetAxisRaw("Horizontal");
         AxisY = Input.GetAxisRaw("Vertical");
     }
-
 }

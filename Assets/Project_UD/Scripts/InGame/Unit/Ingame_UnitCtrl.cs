@@ -244,6 +244,18 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (HP <= 0 && isDead)
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+        }
+        else
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);  // 유닛이 차지하는 타일 배치 상태 최신화(배치 불가능)
+        }
+    }
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -296,15 +308,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         //     return;
         // }
-        // else if(HP <=0 && isDead)
-        // {
-        //     GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
-        // }
-        // else
-        // {
-        //     GridManager.inst.SetTilePlaceable(this.transform.position, false, false);  // 유닛이 차지하는 타일 배치 상태 최신화(배치 불가능)
-
-        // }
+         
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
@@ -840,11 +844,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else if (HP <= 0 && isDead)
         {
             GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
-
-        }
-        else
-        {
-            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
         }
 
         if (Random.Range(1, 101) <= Crit)//치명타 적용시

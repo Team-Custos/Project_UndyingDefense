@@ -58,9 +58,10 @@ public class GameOrderSystem : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit) && (Input.GetMouseButtonDown(0)))
         {
-
             clickedObj = hit.collider.gameObject;
             clickedWorldPos = hit.point;
+
+            Transform CameraPivot = InGameManager.inst.camManager.cameraPivot;
 
             //타일 클릭했을때
             if (clickedObj.CompareTag(CONSTANT.TAG_TILE))
@@ -190,7 +191,7 @@ public class GameOrderSystem : MonoBehaviour
 
                     // 선택된 유닛이 아군인지 적군인지 확인하여 파티클 재생
                     bool isAlly = clickedObj.CompareTag(CONSTANT.TAG_UNIT);
-                    //Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, isAlly);
+                    //Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, isAlly);                    
                 }
                 else
                 {
@@ -302,6 +303,12 @@ public class GameOrderSystem : MonoBehaviour
 
                     selectedUnit = null;
                 }
+            }
+
+            if (selectedUnit != null)
+            {
+                CameraPivot.position = 
+                    new Vector3(selectedUnit.transform.position.x, CameraPivot.position.y, selectedUnit.transform.position.z);
             }
         }
     }

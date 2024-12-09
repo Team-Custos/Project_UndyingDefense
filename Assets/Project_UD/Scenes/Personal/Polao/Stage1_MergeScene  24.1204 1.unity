@@ -32430,6 +32430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 447005218}
+  camManager: {fileID: 927719980}
   unitDebuffData: {fileID: 20072021}
   gold: 500
   CurCommanderSkill: []
@@ -35115,6 +35116,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 633104416}
   cameraPivot: {fileID: 1555955064}
+  UnitToLookAt_Offset: {x: 0, y: 0, z: 0}
+  isCameraMoving: 0
   moveSpeed: 20
   rotationSpeed: 50
   zoomSpeed: 25
