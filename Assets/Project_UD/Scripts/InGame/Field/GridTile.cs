@@ -82,8 +82,7 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MeshR.material.color = colorAvailable;
-                //MouseCursorManager.instance.InteractiveCursor();
+               // MeshR.material.color = colorAvailable;
             }
             else if (mouseHover && !isPlaceable)    // 배치 상태이고 배치 불가능한 타일
             {
@@ -94,8 +93,7 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MeshR.material.color = colorOccupied;
-                //MouseCursorManager.instance.UnInteractiveCursor();
+                //MeshR.material.color = colorOccupied;
 
 
             }
@@ -108,7 +106,7 @@ public class GridTile : MonoBehaviour
         {
             if (Selected)
             {
-                MeshR.material.color = colorSelected;
+                //MeshR.material.color = colorSelected;
             }
             else if (!mouseHover)
             {
@@ -150,13 +148,11 @@ public class GridTile : MonoBehaviour
             // 이동 가능할 때 파란색으로, 불가능할 때 붉은색으로 표시
             if (isPlaceable)
             {
-                MeshR.material.color = colorSelected;
-                //MouseCursorManager.instance.InteractiveCursor();
+               // MeshR.material.color = colorSelected;
             }
             else
             {
-                MeshR.material.color = colorOccupied;
-                //MouseCursorManager.instance.UnInteractiveCursor();
+                //MeshR.material.color = colorOccupied;
             }
         }
     }
@@ -174,7 +170,6 @@ public class GridTile : MonoBehaviour
             MeshR.material.color = colorDefault;
         }
 
-        //MouseCursorManager.instance.SetDefaultCursor();
     }
 
 

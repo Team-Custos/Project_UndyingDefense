@@ -5,17 +5,11 @@ using UnityEngine.EventSystems;
 
 public class MouseCursorManager : MonoBehaviour
 {
-    public static MouseCursorManager instance;
 
     public Texture2D defaultArrowCursor;        // 기본 커서
     public Texture2D greenArrowCursor;          // 배치 가능 또는 상호작용 가능 ui
     public Texture2D redArrowCursor;            // 배치 불가능 또는 상호작용 불가능 ui
     public Texture2D fingerCursor;              // 상호 작용 가능 커서
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     void Start()
     {
@@ -26,17 +20,25 @@ public class MouseCursorManager : MonoBehaviour
 
     private void Update()
     {
+        // UI 위에 있는지 확인
+        string uiTag = GetPointerOverUITag();
+
+        if (uiTag == "InteractiveUi")
+        {
+            InteractiveCursor(); // 상호작용 가능한 UI 커서
+            return;
+        }
+        else if (uiTag == "UnInteractiveUi")
+        {
+            UnInteractiveCursor(); // 상호작용 불가능한 UI 커서
+            return;
+        }
+
         // Ray를 사용하여 마우스 위치에 있는 오브젝트 확인
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
 
-            // 마우스가 UI 위에 있는지 확인
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                // UI 위에 있을 경우 이벤트 무시
-                InteractiveCursor();
-            }
 
             if (hit.collider.tag == CONSTANT.TAG_UNIT || hit.collider.tag == CONSTANT.TAG_ENEMY)
             {
@@ -105,6 +107,33 @@ public class MouseCursorManager : MonoBehaviour
     public void UnInteractiveCursor()
     {
         Cursor.SetCursor(redArrowCursor, Vector2.zero, CursorMode.Auto);
+    }
+
+
+    // UI 위에 있는지 확인
+    private string GetPointerOverUITag()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject.CompareTag("InteractiveUi"))
+            {
+                return "InteractiveUi";
+            }
+            else if (result.gameObject.CompareTag("UnInteractiveUi"))
+            {
+                return "UnInteractiveUi";
+            }
+        }
+
+        return null; // UI 위에 있지 않음
     }
 
 
