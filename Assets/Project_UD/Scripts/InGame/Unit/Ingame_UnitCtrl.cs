@@ -323,7 +323,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else 
             {
                 Destroy(this.gameObject);
+                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
             }
+
+            Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
         }
 
         #region 아군 제어
@@ -440,6 +443,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                     NavObstacle.carving = true;
                     NavObstacle.enabled = true;
+                    SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_toSiege);
+
                     SearchEnemy();
                 }
                 else if (previousAllyMode == AllyMode.Siege)
@@ -459,6 +464,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                     Ally_Mode = AllyMode.Free;
                     //NavAgent.updatePosition = true;
+
+                    SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_toFree);
                 }
                 unitStateChangeTime = 3;
             }
@@ -839,6 +846,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
                 isDead = true;
+                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+            }
+
+            if(this.gameObject == GameOrderSystem.instance.selectedUnit)
+            {
+                Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
             }
 
             OnUnitDead?.Invoke(this);

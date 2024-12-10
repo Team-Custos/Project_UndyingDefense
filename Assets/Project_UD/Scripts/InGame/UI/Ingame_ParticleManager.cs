@@ -72,6 +72,7 @@ public class Ingame_ParticleManager : MonoBehaviour
         {
             smmonAllyEffect = Instantiate(allySummonEffect, tr.position, tr.rotation);
             smmonAllyEffect.Play();
+            SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_allySummon);
             Destroy(smmonAllyEffect.gameObject, smmonAllyEffect.main.duration);
         }
         //else
@@ -179,6 +180,8 @@ public class Ingame_ParticleManager : MonoBehaviour
 
         GameObject coinPrefab = Instantiate(spawnCoinEffect as GameObject);
         coinPrefab.transform.position = ghostPrefab.transform.position + new Vector3(0, 1.0f, 0);
+        SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_coinDrop);
+
         Destroy(coinPrefab, 1.0f);
     }
 

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UnitUICtrl : MonoBehaviour
+public class UnitUICtrl: MonoBehaviour
 {
 
     public GameObject selecteParticle;
@@ -19,7 +20,18 @@ public class UnitUICtrl : MonoBehaviour
 
     public GameObject siegeEffect;
 
+    private void OnMouseOver()
+    {
+        MouseCursorManager.instance.isDefaultCursor = false;
+        MouseCursorManager.instance.SetFingerCursor();
+    }
 
+
+    private void OnMouseExit()
+    {
+        MouseCursorManager.instance.isDefaultCursor = true;
+        MouseCursorManager.instance.SetDefaultCursor();
+    }
 
     // Start is called before the first frame update
     void Start()

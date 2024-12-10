@@ -12,6 +12,7 @@ public class BaseStatus : MonoBehaviour
 
     public BoxCollider baseBoxCollider;
 
+
     private void Awake()
     {
         instance = this;
@@ -28,10 +29,15 @@ public class BaseStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (BaseHPCur <= 0)
-        {
-            BaseHPCur = 0;
-        }
+        //if (BaseHPCur <= 0 && !isBaseHpZero)
+        //{
+        //    Debug.Log("Base HP reached 0.");
+        //    isBaseHpZero = true; // 플래그 설정을 먼저 수행
+        //    BaseHPCur = 0;
+        //    Time.timeScale = 0.0f;
+        //    SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
+        //    Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
+        //}
     }
 
     public Vector3 GetNearestPosition(Vector3 from)
@@ -53,6 +59,14 @@ public class BaseStatus : MonoBehaviour
         StartCoroutine(HitEffect());
 
         BaseHPCur -= Damage;
+
+        if (BaseHPCur <= 0)
+        {
+            InGameManager.inst.isGamePause = true;
+            BaseHPCur = 0;
+            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
+            Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
+        }
 
         EnemySpawner.inst.OnBaseAttacked(); // Base 공격 알림
     }

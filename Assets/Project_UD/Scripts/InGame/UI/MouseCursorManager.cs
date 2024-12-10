@@ -6,13 +6,12 @@ public class MouseCursorManager : MonoBehaviour
 {
     public static MouseCursorManager instance;
 
-    public Texture2D defaultCursor;         // 기본 커서 이미지
-    public Texture2D uiCursor;              // 상호작용 ui 전용 이미지(버튼 등)
-    public Texture2D fingerCursor;          // 유닛 배치(가능) 시킬때 사용하는 이미지
-    public Texture2D fingerRedCursor;       // 배치, 이동 불가능 타일 표시 이미지
+    public Texture2D defaultArrowCursor;        // 기본 커서
+    public Texture2D greenArrowCursor;          // 배치 가능 또는 상호작용 가능 ui
+    public Texture2D redArrowCursor;            // 배치 불가능 또는 상호작용 불가능 ui
+    public Texture2D fingerCursor;              // 상호 작용 가능 커서
 
-    // 커서 중심점
-    public Vector2 hotspot = Vector2.zero;
+    public bool isDefaultCursor;
 
     private void Awake()
     {
@@ -25,37 +24,33 @@ public class MouseCursorManager : MonoBehaviour
         SetDefaultCursor();
     }
 
-    
 
-    public void SetUiCursor()
+    private void Update()
     {
-        Cursor.SetCursor(uiCursor, hotspot, CursorMode.Auto);
+        if(isDefaultCursor)
+        {
+            SetDefaultCursor();
+        }
     }
 
     public void SetDefaultCursor()
     {
-        Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(defaultArrowCursor, Vector2.zero, CursorMode.Auto);
     }
-
     public void SetFingerCursor()
     {
         Cursor.SetCursor(fingerCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    public void SetFingerRedCursor()
+    public void InteractiveCursor()
     {
-        Cursor.SetCursor(fingerRedCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(greenArrowCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    void OnMouseEnter()
+    public void UnInteractiveCursor()
     {
-        // 특정 UI나 오브젝트 위로 마우스가 올라갈 때 커서 변경
-        SetUiCursor();
+        Cursor.SetCursor(redArrowCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    void OnMouseExit()
-    {
-        // 마우스가 벗어날 때 기본 커서로 변경
-        SetDefaultCursor();
-    }
+
 }

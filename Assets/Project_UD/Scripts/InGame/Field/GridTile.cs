@@ -63,10 +63,10 @@ public class GridTile : MonoBehaviour
             MeshR.material.color = colorSelected;
             isTileSelected = false;
         }
-        if (showPlacementColors)
+        if (showPlacementColors)        // 배치 상태
         {
 
-            if (mouseHover && isPlaceable)
+            if (mouseHover && isPlaceable)  // 배치 상태이고 배치 가능한 타일이면
             {
                 // 마우스가 UI 위에 있는지 확인
                 //if (EventSystem.current.IsPointerOverGameObject())
@@ -82,10 +82,10 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                //MeshR.material.color = colorAvailable;
-                MouseCursorManager.instance.SetFingerCursor();
+                MeshR.material.color = colorAvailable;
+                MouseCursorManager.instance.InteractiveCursor();
             }
-            else if (mouseHover && !isPlaceable)
+            else if (mouseHover && !isPlaceable)    // 배치 상태이고 배치 불가능한 타일
             {
                 // 마우스가 UI 위에 있는지 확인
                 if (EventSystem.current.IsPointerOverGameObject())
@@ -94,17 +94,17 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MouseCursorManager.instance.SetFingerRedCursor();
-                //MeshR.material.color = colorOccupied;
-                
-                
+                MeshR.material.color = colorOccupied;
+                MouseCursorManager.instance.UnInteractiveCursor();
+
+
             }
-            else if (!mouseHover)
+            else if (!mouseHover)   // 배치 상태이지만 마우스 로 호버링 안된 타일
             {
                 MeshR.material.color = colorDefault;
             }
         }
-        else
+        else  // 배치 아닌 상태
         {
             if (Selected)
             {
@@ -122,8 +122,6 @@ public class GridTile : MonoBehaviour
                 return;
             }
 
-             MouseCursorManager.instance.SetDefaultCursor();  // ui위가 아니고 배치 상태가 아닐때 커서를 기본 상태로
-            
         }
     }
 
@@ -152,13 +150,13 @@ public class GridTile : MonoBehaviour
             // 이동 가능할 때 파란색으로, 불가능할 때 붉은색으로 표시
             if (isPlaceable)
             {
-                MouseCursorManager.instance.SetFingerCursor();
                 MeshR.material.color = colorSelected;
+                MouseCursorManager.instance.InteractiveCursor();
             }
             else
             {
-                MouseCursorManager.instance.SetFingerRedCursor();
                 MeshR.material.color = colorOccupied;
+                MouseCursorManager.instance.UnInteractiveCursor();
             }
         }
     }

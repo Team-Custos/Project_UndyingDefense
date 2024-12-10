@@ -154,6 +154,8 @@ public class GameOrderSystem : MonoBehaviour
             //유닛 클릭했을 때
             else if (clickedObj.CompareTag(CONSTANT.TAG_UNIT))
             {
+                SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_select);
+
                 if (GAMEMANAGER.UnitSetMode && GAMEMANAGER.AllyUnitSetMode)
                 {
                     GAMEMANAGER.UnitSetMode = false;
@@ -200,6 +202,8 @@ public class GameOrderSystem : MonoBehaviour
             //적 클릭했을 때
             else if (clickedObj.CompareTag(CONSTANT.TAG_ENEMY))
             {
+                SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_select);
+
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
                     Ingame_UIManager.instance.DestroyUnitStateChangeBox();
@@ -334,6 +338,11 @@ public class GameOrderSystem : MonoBehaviour
 
                             InGameManager.inst.UnitSetMode = false;
                             InGameManager.inst.AllyUnitSetMode = false;
+
+                            SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignAble);
+
+                            
+                            MouseCursorManager.instance.isDefaultCursor = true;
                         }
                         else if (GAMEMANAGER.EnemyUnitSetMode) // 적군 배치
                         {
@@ -342,7 +351,12 @@ public class GameOrderSystem : MonoBehaviour
                             InGameManager.inst.EnemyUnitSetMode = false;
                         }
 
+
                         selectedUnit = null; // 배치 후 선택 해제
+                    }
+                    else
+                    {
+                        SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignUnable);
                     }
                 }
             }
@@ -372,11 +386,17 @@ public class GameOrderSystem : MonoBehaviour
                             allyUnit.targetEnemy = null;
                             allyUnit.haveToMovePosition = true;
 
+                            SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignAble);
+
                             gridTile.SelectedTile(true); // 타일 선택 효과
                             Ingame_UIManager.instance.DestroyUnitStateChangeBox();
                         }
 
                         selectedUnit = null; // 이동 후 선택 해제
+                    }
+                    else
+                    {
+                        SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignUnable);
                     }
                 }
                 else if (clickedObj.CompareTag(CONSTANT.TAG_GROUND)) // 지형 클릭 시

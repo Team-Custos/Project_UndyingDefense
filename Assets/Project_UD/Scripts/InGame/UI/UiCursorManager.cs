@@ -14,7 +14,7 @@ public class UiCursorManager : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        cursorManager.SetUiCursor();
+        cursorManager.InteractiveCursor();
     }
 
     public void OnPointerExit(PointerEventData eventData)

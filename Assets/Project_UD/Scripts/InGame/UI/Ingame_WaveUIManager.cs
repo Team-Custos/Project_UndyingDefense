@@ -82,6 +82,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
         {
             waveCountSkipBtn.onClick.AddListener(() =>
             {
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 waveCount = 0; // 버튼 클릭 시 카운트를 0으로 설정
                 waveCountText.text = "적군 침공까지 0초"; // 즉시 0으로 카운트 표시
 
@@ -139,11 +140,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
         //}
 
         // 웨이브 실패시 이미지 설정
-        if (BaseStatus.instance.BaseHPCur <= 0)
-        {
-            waveResultLosePanel.SetActive(true);
-            Time.timeScale = 0.0f;
-        }
+        
 
         // 웨이브 시작 표시 
         if (waveStartText.gameObject.activeSelf == true)

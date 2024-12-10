@@ -105,7 +105,7 @@ public class EnemySpawner : MonoBehaviour
         //    Debug.LogError("첫 웨이브 데이터가 없습니다.");
         //}
 
-        Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
+        Ingame_WaveUIManager.instance.StartNextWaveCountdown(100f);
     }
 
     // Update is called once per frame
@@ -162,6 +162,8 @@ public class EnemySpawner : MonoBehaviour
         Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
         Debug.Log($"Wave {currentWave} 시작");
 
+        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
+
         // 몬스터 스폰 순서 결정
         List<int> spawnOrder = new List<int>();
         foreach (var info in currentData.monsterSpawnInfos)
@@ -197,10 +199,19 @@ public class EnemySpawner : MonoBehaviour
         Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
         Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
 
+        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
+
         // 웨이브 클리어 보상 지급
         InGameManager.inst.gold += currentData.reward;
         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
         Debug.Log($"[Wave {currentWave}] 클리어! 보상 {currentData.reward} 획득");
+
+        if(currentData.waveNumber == 10)
+        {
+            Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
+            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
+            InGameManager.inst.isGamePause = true;
+        }
 
         yield return new WaitForSeconds(4.0f);
 
@@ -215,11 +226,7 @@ public class EnemySpawner : MonoBehaviour
         {
             Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
             Ingame_WaveUIManager.instance.waveCountTextPanel.SetActive(true);
-        }
-        else
-        {
-            Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
-            Time.timeScale = 0.0f;
+            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
         }
     }
 
@@ -311,7 +318,7 @@ public class EnemySpawner : MonoBehaviour
         Vector3 newPosition = spawnPos.position;
         newPosition.y = -0.9f;
         spawnPos.position = newPosition;
-        Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
+        //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         GameObject enemyObj = Instantiate(Test_Enemy, spawnPos.position, Quaternion.identity);
 
         if (enemyType == 0)
@@ -330,6 +337,8 @@ public class EnemySpawner : MonoBehaviour
 
         enemypriority++;
         enemyObj.name = Test_Enemy.name + enemypriority.ToString();
+
+        SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_enemySpawn);
     }
 
 

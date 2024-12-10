@@ -94,7 +94,7 @@ public class UnitSpawnManager : MonoBehaviour
         Obj.transform.position = new Vector3(X, 0, Y);
         Obj.GetComponent<Ingame_UnitCtrl>().unitData = unitDatas[unitType];
 
-        
+        SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_allySpawn);
 
         //NavMeshAgent Priority 설정.
         Obj.GetComponent<NavMeshAgent>().avoidancePriority = (unitPriority % 50) + 50;
