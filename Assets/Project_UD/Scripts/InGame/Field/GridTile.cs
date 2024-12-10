@@ -83,7 +83,7 @@ public class GridTile : MonoBehaviour
                 }
 
                 MeshR.material.color = colorAvailable;
-                MouseCursorManager.instance.InteractiveCursor();
+                //MouseCursorManager.instance.InteractiveCursor();
             }
             else if (mouseHover && !isPlaceable)    // 배치 상태이고 배치 불가능한 타일
             {
@@ -95,7 +95,7 @@ public class GridTile : MonoBehaviour
                 }
 
                 MeshR.material.color = colorOccupied;
-                MouseCursorManager.instance.UnInteractiveCursor();
+                //MouseCursorManager.instance.UnInteractiveCursor();
 
 
             }
@@ -133,12 +133,12 @@ public class GridTile : MonoBehaviour
         if (GameOrderSystem.instance.selectedUnit != null &&
         GameOrderSystem.instance.selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
         {
-            // 마우스가 UI 위에 있는지 확인
-            //if (EventSystem.current.IsPointerOverGameObject())
-            //{
-            //    // UI 위에 있을 경우 이벤트 무시
-            //    return;
-            //}
+            //마우스가 UI 위에 있는지 확인
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                // UI 위에 있을 경우 이벤트 무시
+                return;
+            }
 
             // 마우스가 특정 UI 위에 있는지 확인 (특정 UI만 무시)
             if (IsPointerOverSpecificUI())
@@ -151,12 +151,12 @@ public class GridTile : MonoBehaviour
             if (isPlaceable)
             {
                 MeshR.material.color = colorSelected;
-                MouseCursorManager.instance.InteractiveCursor();
+                //MouseCursorManager.instance.InteractiveCursor();
             }
             else
             {
                 MeshR.material.color = colorOccupied;
-                MouseCursorManager.instance.UnInteractiveCursor();
+                //MouseCursorManager.instance.UnInteractiveCursor();
             }
         }
     }
@@ -173,6 +173,8 @@ public class GridTile : MonoBehaviour
         {
             MeshR.material.color = colorDefault;
         }
+
+        //MouseCursorManager.instance.SetDefaultCursor();
     }
 
 

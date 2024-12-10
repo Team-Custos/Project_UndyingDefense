@@ -22,15 +22,13 @@ public class UnitUICtrl: MonoBehaviour
 
     private void OnMouseOver()
     {
-        MouseCursorManager.instance.isDefaultCursor = false;
-        MouseCursorManager.instance.SetFingerCursor();
+        //MouseCursorManager.instance.SetFingerCursor();
     }
 
 
     private void OnMouseExit()
     {
-        MouseCursorManager.instance.isDefaultCursor = true;
-        MouseCursorManager.instance.SetDefaultCursor();
+        //MouseCursorManager.instance.SetDefaultCursor();
     }
 
     // Start is called before the first frame update

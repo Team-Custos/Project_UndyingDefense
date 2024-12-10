@@ -342,7 +342,6 @@ public class GameOrderSystem : MonoBehaviour
                             SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignAble);
 
                             
-                            MouseCursorManager.instance.isDefaultCursor = true;
                         }
                         else if (GAMEMANAGER.EnemyUnitSetMode) // 적군 배치
                         {
