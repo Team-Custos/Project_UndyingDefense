@@ -8,6 +8,7 @@ using UnityEngine;
 public class Ingame_InputSystem : MonoBehaviour
 {
     public static Ingame_InputSystem Instance { get; private set; }
+    public UnitSpawnManager spawnManager;
 
     public float AxisX = 0;
     public float AxisY = 0;
@@ -28,12 +29,24 @@ public class Ingame_InputSystem : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        
+
     }
 
     // Update is called once per frame
     private void Update()
     {
         _inputInit();
+        HotKey();
+        
+    }
+
+    void HotKey()
+    {
+        InGameManager.inst.FasterTimeScale = 
+            Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E);
+
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -46,7 +59,22 @@ public class Ingame_InputSystem : MonoBehaviour
                     new Vector3(selectedUnit.transform.position.x, CameraPivot.position.y, selectedUnit.transform.position.z);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
+            InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
+            spawnManager.unitToSpawn = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
+            InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
+            spawnManager.unitToSpawn = 1;
+        }
     }
+
 
     void _inputInit()
     {

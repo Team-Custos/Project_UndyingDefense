@@ -23,6 +23,7 @@ public class InGameManager : MonoBehaviour
     public bool AllyUnitSetMode = false;
     public bool EnemyUnitSetMode = false;
 
+    public bool FasterTimeScale = false;
     public bool isGamePause;
 
     private void Awake()
@@ -40,7 +41,7 @@ public class InGameManager : MonoBehaviour
             EnemyUnitSetMode = !EnemyUnitSetMode;
         }
 
-        if (Input.GetKeyDown(KeyCode.O) || Input.GetKey(KeyCode.O))
+        if (FasterTimeScale)
         {
             Time.timeScale = 3f;
         }

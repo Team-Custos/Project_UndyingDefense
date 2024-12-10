@@ -14,11 +14,11 @@ public class UiCursorManager : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        cursorManager.SetUiCursor();
+        //cursorManager.SetUiCursor();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        cursorManager.SetDefaultCursor();
+        //cursorManager.SetDefaultCursor();
     }
 }

@@ -32439,6 +32439,7 @@ MonoBehaviour:
   UnitSetMode: 0
   AllyUnitSetMode: 0
   EnemyUnitSetMode: 0
+  FasterTimeScale: 0
   isGamePause: 0
 --- !u!1001 &858771693
 PrefabInstance:
@@ -46104,6 +46105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7498d8045ac00f49895b55ee2d6a477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnManager: {fileID: 1832086056}
   AxisX: 0
   AxisY: 0
   IsPressedPrimaryButton: 0
@@ -77590,9 +77592,12 @@ MonoBehaviour:
   enemySelectEffect: {fileID: 0}
   allySiegeEffect: {fileID: 3478824122546897687, guid: ae331dc76c8518243a626a1017f15e78,
     type: 3}
+  siegeEffect: {fileID: 0}
   spawnCoinEffect: {fileID: 7363310065621503760, guid: 65ee9279357dd1140a3216c9cc47caf4,
     type: 3}
   enemyGhostEffect: {fileID: 8925381408423502869, guid: eafc95c38b6bf3c44ae0574383a50fbb,
+    type: 3}
+  unitMoveIndicator: {fileID: 5517855318596113237, guid: c99a6c8c9bf0c714a8d6622869d8c340,
     type: 3}
 --- !u!4 &1989869922 stripped
 Transform:

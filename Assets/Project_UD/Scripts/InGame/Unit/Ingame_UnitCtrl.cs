@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 //이 스크립트는 유닛의 전반적인 상태와 행동을 관리하기 위한 스크립트입니다. (아군과 적군 통합.)
 public enum DefenseType //유닛의 방어속성.
@@ -114,12 +115,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public System.Action<Ingame_UnitCtrl> OnUnitDead;
 
     public Quaternion defaultTargetRotation;
-
-    void OnMouseDown()
-    {
-
-    }
-
     private void Awake()
     {
         ModelSwapManager = UnitModelSwapManager.inst;
@@ -392,11 +387,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
             debuffManager.AddDebuff(UnitDebuff.Dizzy);
         }
 
-        if (isSelected && Input.GetKeyDown(KeyCode.Q))//디버그용. 삭제 예정.
+        if (isSelected && Input.GetKeyDown(KeyCode.Z))//선택된 유닛의 모드 변경. 디버그용. 삭제 예정.
         {
             previousAllyMode = Ally_Mode;
-            //isSelected = false;
             Ally_Mode = AllyMode.Change;
+            Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(transform, -0.8f);
+
+            Ingame_UIManager.instance.DestroyUnitStateChangeBox();
         }
 
         // Change 상태일 때는 다른 행동을 하지 않음
