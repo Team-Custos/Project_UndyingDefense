@@ -164,10 +164,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //유닛 스폰시 모델 설정.
         Instantiate(unitData.modelPrefab, VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
 
-        //Transform childTransform = VisualModel.transform.GetChild(0);
-
-
-        //StartCoroutine(ScaleChildObject(childTransform));
 
         //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
         //{
@@ -216,7 +212,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         moveTargetPos = this.transform.position;
 
-
+        // 초기 모델 설정 후 크기 애니메이션 적용
+        if (VisualModel.childCount > 0)
+        {
+            Transform initialModel = VisualModel.GetChild(0);
+            StartCoroutine(ScaleAnimation(initialModel));
+        }
 
         //UpdateUnitDataFromExcel(unitData);
     }
@@ -236,6 +237,10 @@ public class Ingame_UnitCtrl : MonoBehaviour
             GameObject CurModel = Instantiate(unitData.modelPrefab, VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
 
             CurModel.name = unitData.modelPrefab.name;
+
+
+            // 스케일 애니메이션 시작
+            StartCoroutine(ScaleAnimation(CurModel.transform));
 
             //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
             //{
@@ -898,33 +903,42 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
 
 
-    private IEnumerator ScaleChildObject(Transform childTransform)
+    // 스케일 애니메이션 코루틴 : 유닛 생성시 모델의 크기가 70% -> 100% 되게 연출 0.5초간
+    private IEnumerator ScaleAnimation(Transform modelTransform)
     {
-        // 여기서 Lerp를 사용한 스케일 애니메이션 혹은 기존 로직 적용
-        Vector3 originalScale = childTransform.localScale;
+        if (modelTransform == null)
+        {
+            yield break;
+        }
 
+        Vector3 originalScale = modelTransform.localScale;
 
-        // 초기 축소
-        childTransform.localScale = originalScale * 0.7f;
+        // 초기 스케일을 70%로 축소
+        modelTransform.localScale = originalScale * 0.7f;
 
-
-        float duration = 0.5f;
+        float duration = 0.5f; // 애니메이션 지속 시간
         float elapsed = 0f;
-        Vector3 startScale = childTransform.localScale;
 
         while (elapsed < duration)
         {
+            if (modelTransform == null)
+            {
+                yield break;
+            }
+
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            childTransform.localScale = Vector3.Lerp(startScale, originalScale, t);
+            float t = Mathf.Clamp01(elapsed / duration);
+            modelTransform.localScale = Vector3.Lerp(modelTransform.localScale, originalScale, t);
+
             yield return null;
         }
 
-        childTransform.localScale = originalScale;
+        // 최종 스케일 설정
+        modelTransform.localScale = originalScale;
 
-        Vector3 pos = childTransform.position;
-        pos.y = 0.6f;
-        childTransform.position = pos;
+        // 위치 재조정 (필요 시)
+        Vector3 pos = modelTransform.position;
+        modelTransform.position = pos;
 
     }
 }

@@ -76,41 +76,42 @@ public class LobbyUIManager : MonoBehaviour
         isCommandSkillDeckEmpty = new bool[commandSkillDeckListImage.Length];
         CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
-        if (battleStartBtn != null)
-        {
-            if (battleStartBtn != null)
-            {
+        //if (battleStartBtn != null)
+        //{
+        //    if (battleStartBtn != null)
+        //    {
 
-                battleStartBtn.onClick.AddListener(() =>
-                {
-                    if(GlobalSoundManager.instance != null)
-                    {
-                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
-                    }
+        //        battleStartBtn.onClick.AddListener(() =>
+        //        {
+        //            if(GlobalSoundManager.instance != null)
+        //            {
+        //                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+        //            }
                     
-                    SceneManager.LoadSceneAsync(2);
+        //            SceneManager.LoadSceneAsync(2);
 
-                    //if (commandSkillDeckList.Count < maxSkillDeckSize)
-                    //{
-                    //    //StartCoroutine(FadeUI(saveErrorMessgePanel, true));
-                    //    //saveErrorMessgePanel.SetActive(true);
-                    //}
-                    //else
-                    //{
-                    //    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
-                    //    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1");
-                    //}
-                });
-            }
-        }
+        //            //if (commandSkillDeckList.Count < maxSkillDeckSize)
+        //            //{
+        //            //    //StartCoroutine(FadeUI(saveErrorMessgePanel, true));
+        //            //    //saveErrorMessgePanel.SetActive(true);
+        //            //}
+        //            //else
+        //            //{
+        //            //    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+        //            //    SceneManager.LoadSceneAsync("Stage1_Mege_LoPol 1");
+        //            //}
+        //        });
+        //    }
+        //}
 
         // UI 판넬 On / Off
         if (stageStartBtn != null)
         {
             stageStartBtn.onClick.AddListener(() =>
             {
+                SceneManager.LoadSceneAsync(2);
                 //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                ShowUI(localSituationPanel);
+                //ShowUI(localSituationPanel);
             });
 
         }
@@ -140,7 +141,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 HideUI(commandSkillPanel);
-                ShowUI(localSituationPanel);
+                //ShowUI(localSituationPanel);
             });
         }
 

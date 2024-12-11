@@ -20,23 +20,9 @@ public class UnitUICtrl: MonoBehaviour
 
     public GameObject siegeEffect;
 
-    private void OnMouseOver()
-    {
-        //MouseCursorManager.instance.SetFingerCursor();
-    }
-
-
-    private void OnMouseExit()
-    {
-        //MouseCursorManager.instance.SetDefaultCursor();
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        originalScale = transform.localScale; // 원래 크기 저장
-        originalPosition = transform.position; // 원래 위치 저장
-
 
         PlaySummonEffect();
     }
@@ -88,4 +74,5 @@ public class UnitUICtrl: MonoBehaviour
     {
         siegeEffect.SetActive(isSiege);
     }
+
 }
