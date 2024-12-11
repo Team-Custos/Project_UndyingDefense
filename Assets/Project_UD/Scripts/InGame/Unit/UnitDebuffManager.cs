@@ -38,7 +38,7 @@ public class UnitDebuffManager : MonoBehaviour
     }
 
     // �� ������ ����� ������Ʈ
-    void Update()
+    void FixedUpdate()
     {
         for (int activeDebuffIdx = activeDebuffs.Count - 1; activeDebuffIdx >= 0; activeDebuffIdx--) // ����Ʈ �������� ��ȸ (���� �� ���� ����)
         {
@@ -103,7 +103,9 @@ public class UnitDebuffManager : MonoBehaviour
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
                             {
-                                unitCtrl.HP -= finalDamage;
+                                unitCtrl.ReceiveTickDamage(finalDamage);
+
+                                //unitCtrl.HP -= finalDamage;
                                 tickInterval_cur = tickInterval;
                             }
                         }
@@ -119,7 +121,9 @@ public class UnitDebuffManager : MonoBehaviour
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
                             {
-                                unitCtrl.HP -= activeDebuffs[debuffDataIdx].tickDamage;
+                                unitCtrl.ReceiveTickDamage(activeDebuffs[debuffDataIdx].tickDamage);
+
+                                //unitCtrl.HP -= activeDebuffs[debuffDataIdx].tickDamage;
                                 tickInterval_cur = tickInterval;
                             }
                         }
@@ -131,7 +135,8 @@ public class UnitDebuffManager : MonoBehaviour
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
                             {
-                                unitCtrl.HP -= activeDebuffs[debuffDataIdx].tickDamage;
+                                unitCtrl.ReceiveTickDamage(activeDebuffs[debuffDataIdx].tickDamage);
+
                                 tickInterval_cur = tickInterval;
                             }
                         }

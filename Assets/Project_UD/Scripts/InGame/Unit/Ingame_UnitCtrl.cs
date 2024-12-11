@@ -762,7 +762,50 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     }
 
-    //물리적 데미지
+    //틱 데미지용 함수.
+    public void ReceiveTickDamage(int Damage = 1)
+    {
+        HP -= Damage;
+
+        if (HP <= 0 && !isDead)//사망판정
+        {
+            HP = 0;
+
+            soundManager.PlaySFX(soundManager.DEAD_SFX, soundManager.DeadSound[Random.Range(0, soundManager.DeadSound.Length)]);
+
+            if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            {
+                Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                InGameManager.inst.gold += enmeyRewardGold;
+                Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
+            }
+            else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            {
+                isDead = true;
+                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+            }
+
+            if (this.gameObject == GameOrderSystem.instance.selectedUnit)
+            {
+                Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
+            }
+
+            OnUnitDead?.Invoke(this);
+
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상
+
+            Debug.Log(this.gameObject.name + " Destroyed");
+            return;
+        }
+        else if (HP <= 0 && isDead)
+        {
+            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+
+        }
+    }
+
+    //물리적 데미지용 함수.(이 이외에는 절대 사용하지 말 것.)
     public void ReceivePhysicalDamage(int Damage = 1, float Crit = 0, AttackType attackType = AttackType.UnKnown, UnitDebuff Crit2Debuff = UnitDebuff.None)
     {
         if (unitData.defenseType == DefenseType.cloth)
