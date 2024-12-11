@@ -9,6 +9,7 @@ using System.Linq;
 public class LobbyUIManager : MonoBehaviour
 {
     public Button stageStartBtn = null;
+    public Button stageStart2Btn = null;
 
     [Header("===== Local Situation UI ====")]
     public RectTransform localSituationPanel = null;
@@ -45,8 +46,6 @@ public class LobbyUIManager : MonoBehaviour
     "lead_morale101", "lead_morale102", "lead_morale103"
     };
 
-    public GameObject[] optionPanel;
-    public Button[] optionBtn;
 
     public GameObject HelpUsePanel;
     public GameObject HelpArrPanel;
@@ -64,6 +63,55 @@ public class LobbyUIManager : MonoBehaviour
     private List<CommandSkillManager.SkillData> commandSkillDeckList = new List<CommandSkillManager.SkillData>();
 
 
+    [Header("==================")]
+
+
+    // 도움말 ui
+    public Button lobbyHelpBtn;
+    public Button lobbyHelpCloseBtn;
+    public GameObject lobbyHelpPanel;
+
+    public GameObject[] operatePanel;
+
+    public Button operateRightBtn;
+    public Button operateLeftBtn;
+
+    private int currentIndex = 0;     // 현재 활성화된 패널 인덱스
+    public float slideDuration = 0.5f; // 슬라이드 애니메이션 지속 시간
+
+    public Button lobbySettingBtn;
+    public Button settingCloseBtn;
+    public Button endGameBtn;
+    public GameObject lobbySettingPanel;
+
+    public Sprite currentTabImage;
+    public Sprite noneTabImage;
+
+    public Button helpManulBtn;
+    public Button helpAttributeBtn;
+    public GameObject helpManulPanel;
+    public GameObject helpAttributePanel;
+
+    public GameObject helpManulPanel1;
+    public GameObject helpAttributePanel1;
+
+
+    private Image helpManulBtnImage;
+    private Image helpAttributeBtnImage;
+
+    private bool isManulTrue;
+
+
+    public GameObject loadingPanel;
+    public Image progressImage;
+    public Text progressText;
+
+    public float animationDuration = 0.5f; // 연출 지속 시간
+    public float delayBetweenAnimations = 0.2f; // 각 ui delay 시간
+
+    float elapsedTime = 0f;
+    public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +124,122 @@ public class LobbyUIManager : MonoBehaviour
         isCommandSkillDeckEmpty = new bool[commandSkillDeckListImage.Length];
         CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
+        // 설정 창 on/off
+        if(lobbySettingBtn != null)
+        {
+
+            lobbySettingBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                lobbySettingPanel.SetActive(true);
+            });
+        }
+
+        if(settingCloseBtn != null)
+        {
+
+            settingCloseBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                lobbySettingPanel.SetActive(false);
+            });
+        }
+
+        if(endGameBtn != null)
+        {
+
+            endGameBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+
+                EndGame();
+            });
+        }
+
+
+        if (lobbyHelpBtn != null)
+        {
+            lobbyHelpBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                lobbyHelpPanel.SetActive(true);
+            });
+        }
+
+        if (HelpCloseBtn != null)
+        {
+            
+            HelpCloseBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                lobbyHelpPanel.SetActive(false);
+            });
+        }
+
+        helpManulBtnImage = helpManulBtn.GetComponent<Image>();
+        helpAttributeBtnImage = helpAttributeBtn.GetComponent<Image>();
+
+
+        isManulTrue = true;
+
+        if (helpManulBtn != null)
+        {
+            helpManulBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                isManulTrue = true;
+                helpManulBtnImage.sprite = currentTabImage;
+                helpAttributeBtnImage.sprite = noneTabImage;
+                helpManulPanel.SetActive(true);
+                helpAttributePanel.SetActive(false);
+            });
+        }
+        
+        
+        if (helpAttributeBtn != null)
+        {
+
+            helpAttributeBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                isManulTrue = false;
+                helpManulBtnImage.sprite = noneTabImage;
+                helpAttributeBtnImage.sprite = currentTabImage;
+                helpManulPanel.SetActive(false);
+                helpAttributePanel.SetActive(true);
+            });
+        }
+
+
+
         //if (battleStartBtn != null)
         //{
         //    if (battleStartBtn != null)
@@ -87,7 +251,7 @@ public class LobbyUIManager : MonoBehaviour
         //            {
         //                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
         //            }
-                    
+
         //            SceneManager.LoadSceneAsync(2);
 
         //            //if (commandSkillDeckList.Count < maxSkillDeckSize)
@@ -109,8 +273,14 @@ public class LobbyUIManager : MonoBehaviour
         {
             stageStartBtn.onClick.AddListener(() =>
             {
-                SceneManager.LoadSceneAsync(2);
-                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                //SceneManager.LoadSceneAsync(2);
+
+                LoadScene(2);
+
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
+                }
                 //ShowUI(localSituationPanel);
             });
 
@@ -235,39 +405,152 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-        for (int i = 0; i < optionBtn.Length; i++)
+        //for (int i = 0; i < optionBtn.Length; i++)
+        //{
+        //    int index = i;  // 내부에서 사용하기 위해 로컬 변수로 인덱스를 저장
+        //    optionBtn[i].onClick.AddListener(() => TogglePanel(index));
+        //}
+
+        //// 시작 시 모든 패널을 비활성화
+
+        //HelpCloseBtn.onClick.AddListener(CloseHelpPanel);
+        //HelpUseBtn.onClick.AddListener(OpenHelpUsePanel);
+        //HelpArrBtn.onClick.AddListener(OpenHelpArrPanel);
+
+
+
+        // 초기 패널 설정
+        for (int i = 0; i < operatePanel.Length; i++)
         {
-            int index = i;  // 내부에서 사용하기 위해 로컬 변수로 인덱스를 저장
-            optionBtn[i].onClick.AddListener(() => TogglePanel(index));
+            if (i == currentIndex)
+                operatePanel[i].SetActive(true);
+            else
+                operatePanel[i].SetActive(false);
         }
 
-        // 시작 시 모든 패널을 비활성화
+        // 버튼 클릭 이벤트 연결
+        operateRightBtn.onClick.AddListener(() =>
+        {
+            if (GlobalSoundManager.instance != null)
+            {
+                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+            }
 
-        HelpCloseBtn.onClick.AddListener(CloseHelpPanel);
-        HelpUseBtn.onClick.AddListener(OpenHelpUsePanel);
-        HelpArrBtn.onClick.AddListener(OpenHelpArrPanel);
+            SlideRight();
+        });
+
+        operateLeftBtn.onClick.AddListener(() =>
+        {
+            if (GlobalSoundManager.instance != null)
+            {
+                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+            }
+
+            SlideLeft();
+        });
+
+        UpdateButtonInteractivity();
     }
 
-    // 하나의 패널만 켜고 나머지는 끄는 함수
-    private void TogglePanel(int index)
+
+    private void Update()
     {
-        // 만약 선택된 패널이 이미 켜져 있으면 끄기
-        if (optionPanel[index].activeSelf)
+        if(isManulTrue)
         {
-            optionPanel[index].SetActive(false);
+            helpManulBtnImage.sprite = currentTabImage;
+            helpAttributeBtnImage.sprite = noneTabImage;
+
         }
         else
         {
-            // 그렇지 않으면 모든 패널을 끄고 선택한 패널만 켜기
-            HideAllPanels();
-            optionPanel[index].SetActive(true);
+            helpManulBtnImage.sprite = noneTabImage;
+            helpAttributeBtnImage.sprite = currentTabImage;
         }
     }
 
-    void CloseHelpPanel()
+    void SlideRight()
     {
-        optionPanel[0].SetActive(false);
+        if (currentIndex < operatePanel.Length - 1)
+        {
+            StartCoroutine(SlidePanels(currentIndex, currentIndex + 1, Vector2.right));
+            currentIndex++;
+            UpdateButtonInteractivity();
+        }
     }
+
+    void SlideLeft()
+    {
+        if (currentIndex > 0)
+        {
+            StartCoroutine(SlidePanels(currentIndex, currentIndex - 1, Vector2.left));
+            currentIndex--;
+            UpdateButtonInteractivity();
+        }
+    }
+
+    void UpdateButtonInteractivity()
+    {
+        operateLeftBtn.interactable = currentIndex > 0;
+        operateRightBtn.interactable = currentIndex < operatePanel.Length - 1;
+    }
+
+    IEnumerator SlidePanels(int fromIndex, int toIndex, Vector2 direction)
+    {
+        GameObject fromPanel = operatePanel[fromIndex];
+        GameObject toPanel = operatePanel[toIndex];
+
+        // 현재 y 위치 저장
+        float yPositionFrom = fromPanel.transform.localPosition.y;
+        float yPositionTo = toPanel.transform.localPosition.y;
+
+        // 활성화할 패널을 슬라이드 방향으로 화면 밖에 위치시킴
+        Vector2 offScreenPosition = new Vector2(direction.x * Screen.width, 0);
+        toPanel.transform.localPosition = new Vector2(direction.x * Screen.width, yPositionTo);
+        toPanel.SetActive(true);
+
+        float elapsed = 0f;
+        while (elapsed < slideDuration)
+        {
+            float t = elapsed / slideDuration;
+            fromPanel.transform.localPosition = Vector2.Lerp(
+                new Vector2(0, yPositionFrom),
+                new Vector2(-offScreenPosition.x, yPositionFrom),
+                t
+            );
+            toPanel.transform.localPosition = Vector2.Lerp(
+                new Vector2(offScreenPosition.x, yPositionTo),
+                new Vector2(0, yPositionTo),
+                t
+            );
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        fromPanel.transform.localPosition = new Vector2(-offScreenPosition.x, yPositionFrom);
+        toPanel.transform.localPosition = new Vector2(0, yPositionTo);
+        fromPanel.SetActive(false);
+    }
+
+    // 하나의 패널만 켜고 나머지는 끄는 함수
+    //private void TogglePanel(int index)
+    //{
+    //    // 만약 선택된 패널이 이미 켜져 있으면 끄기
+    //    if (optionPanel[index].activeSelf)
+    //    {
+    //        optionPanel[index].SetActive(false);
+    //    }
+    //    else
+    //    {
+    //        // 그렇지 않으면 모든 패널을 끄고 선택한 패널만 켜기
+    //        HideAllPanels();
+    //        optionPanel[index].SetActive(true);
+    //    }
+    //}
+
+    //void CloseHelpPanel()
+    //{
+    //    optionPanel[0].SetActive(false);
+    //}
 
     // HelpUsePanel을 열고 HelpArrPanel을 닫는 함수
     void OpenHelpUsePanel()
@@ -284,13 +567,13 @@ public class LobbyUIManager : MonoBehaviour
     }
 
     // 모든 패널을 비활성화하는 함수
-    private void HideAllPanels()
-    {
-        foreach (var panel in optionPanel)
-        {
-            panel.SetActive(false);
-        }
-    }
+    //private void HideAllPanels()
+    //{
+    //    foreach (var panel in optionPanel)
+    //    {
+    //        panel.SetActive(false);
+    //    }
+    //}
 
     // 스킬 장착 기능 및 UI 업데이트
     private void AddCommandSkill(int buttonIndex)
@@ -533,5 +816,68 @@ public class LobbyUIManager : MonoBehaviour
             uiElement.SetActive(true);
         }
     }
+
+
+    void EndGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+    }
+
+    public void LoadScene(int sceneNumber)
+    {
+        StartCoroutine(LobbyLoadSceneAsyncCorutine(sceneNumber));
+    }
+
+    private IEnumerator LobbyLoadSceneAsyncCorutine(int sceneIdx)
+    {
+
+        // 로딩 패널 활성화
+        if (loadingPanel != null)
+        {
+            loadingPanel.SetActive(true);
+            Debug.Log("로딩 패널 활성화됨");
+        }
+
+        // 씬 로딩 시작
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIdx);
+        operation.allowSceneActivation = false; // 씬 자동 전환 방지
+        Debug.Log("씬 로딩 시작");
+
+        while (!operation.isDone)
+        {
+            // 로딩 진행도 (0.0 ~ 1.0)
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            if (progressImage != null)
+                progressImage.fillAmount = progress;
+
+            if (progressText != null)
+                progressText.text = (progress * 100f).ToString("F0") + "%";
+
+
+
+
+            // 로딩이 90% 이상일 때 (Unity는 실제 로딩 완료 시점이 0.9임)
+            if (operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
+
+        // 씬 로딩 완료 후 로딩 패널 비활성화
+        if (loadingPanel != null)
+        {
+            loadingPanel.SetActive(false);
+            Debug.Log("로딩 패널 비활성화됨");
+        }
+
+        Debug.Log("씬 로드 완료");
+    }
+
 
 }

@@ -12,6 +12,8 @@ public class BaseStatus : MonoBehaviour
 
     public BoxCollider baseBoxCollider;
 
+    public InGame_BGMManager bGMManager;
+
 
     private void Awake()
     {
@@ -64,6 +66,12 @@ public class BaseStatus : MonoBehaviour
         {
             InGameManager.inst.isGamePause = true;
             BaseHPCur = 0;
+
+            if(bGMManager != null)
+            {
+                bGMManager.PauseBGM();
+            }
+
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
             Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
         }
