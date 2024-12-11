@@ -82,6 +82,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
         {
             waveCountSkipBtn.onClick.AddListener(() =>
             {
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 waveCount = 0; // 버튼 클릭 시 카운트를 0으로 설정
                 waveCountText.text = "적군 침공까지 0초"; // 즉시 0으로 카운트 표시
 
@@ -90,6 +91,14 @@ public class Ingame_WaveUIManager : MonoBehaviour
             });
 
         }
+    }
+
+    public void StartNextWaveCountdown(float startTimeFromData)
+    {
+        // WaveData에서 가져온 waveStartTime을 런타임용 waveCount에 복사
+        waveCount = startTimeFromData;
+        isCountDownIng = true;
+        waveCountTextPanel.SetActive(true);
     }
 
     // Update is called once per frame
@@ -112,7 +121,9 @@ public class Ingame_WaveUIManager : MonoBehaviour
                 isCountDownIng = false;
                 EnemySpawner.inst.isWaveing = true;
                 waveCountTextPanel.SetActive(false);
-                StartCoroutine(EnemySpawner.inst.StartWaveWithDelay(1f)); // 1초의 지연 후 웨이브 시작
+               
+
+                StartCoroutine(EnemySpawner.inst.RunWave());
                 waveCount = 20;
             }
         }
@@ -129,11 +140,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
         //}
 
         // 웨이브 실패시 이미지 설정
-        if (BaseStatus.instance.BaseHPCur <= 0)
-        {
-            waveResultLosePanel.SetActive(true);
-            Time.timeScale = 0.0f;
-        }
+        
 
         // 웨이브 시작 표시 
         if (waveStartText.gameObject.activeSelf == true)

@@ -1,23 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseCursorManager : MonoBehaviour
 {
-    public static MouseCursorManager instance;
 
-    public Texture2D defaultCursor;         // 기본 커서 이미지
-    public Texture2D uiCursor;              // 상호작용 ui 전용 이미지(버튼 등)
-    public Texture2D fingerCursor;          // 유닛 배치(가능) 시킬때 사용하는 이미지
-    public Texture2D fingerRedCursor;       // 배치, 이동 불가능 타일 표시 이미지
-
-    // 커서 중심점
-    public Vector2 hotspot = Vector2.zero;
-
-    private void Awake()
-    {
-        instance = this;
-    }
+    public Texture2D defaultArrowCursor;        // 기본 커서
+    public Texture2D greenArrowCursor;          // 배치 가능 또는 상호작용 가능 ui
+    public Texture2D redArrowCursor;            // 배치 불가능 또는 상호작용 불가능 ui
+    public Texture2D fingerCursor;              // 상호 작용 가능 커서
 
     void Start()
     {
@@ -25,37 +17,124 @@ public class MouseCursorManager : MonoBehaviour
         SetDefaultCursor();
     }
 
-    
 
-    public void SetUiCursor()
+    private void Update()
     {
-        Cursor.SetCursor(uiCursor, hotspot, CursorMode.Auto);
+        // UI 위에 있는지 확인
+        string uiTag = GetPointerOverUITag();
+
+        if (uiTag == "InteractiveUi")
+        {
+            InteractiveCursor(); // 상호작용 가능한 UI 커서
+            return;
+        }
+        else if (uiTag == "UnInteractiveUi")
+        {
+            UnInteractiveCursor(); // 상호작용 불가능한 UI 커서
+            return;
+        }
+
+        // Ray를 사용하여 마우스 위치에 있는 오브젝트 확인
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+
+
+            if (hit.collider.tag == CONSTANT.TAG_UNIT || hit.collider.tag == CONSTANT.TAG_ENEMY)
+            {
+                SetFingerCursor();
+            }
+            else if (hit.collider.tag == CONSTANT.TAG_TILE)
+            {
+
+                SetDefaultCursor();
+
+                if (InGameManager.inst.UnitSetMode)
+                {
+                    // GridTile 컴포넌트 가져오기
+                    GridTile gridTile = hit.collider.GetComponent<GridTile>();
+                    if (gridTile != null && gridTile.IsPlaceable())
+                    {
+                        // 배치 가능한 타일일 때 커서 변경
+                        InteractiveCursor();
+                    }
+                    else
+                    {
+                        // 배치 불가능한 타일일 때 기본 커서로 설정
+                        UnInteractiveCursor();
+
+                    }
+                }
+                else if (GameOrderSystem.instance.selectedUnit != null &&
+                         GameOrderSystem.instance.selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
+                {
+                    // GridTile 컴포넌트 가져오기
+                    GridTile gridTile = hit.collider.GetComponent<GridTile>();
+                    if (gridTile != null && gridTile.IsPlaceable())
+                    {
+                        // 배치 가능한 타일일 때 커서 변경
+                        InteractiveCursor();
+                    }
+                    else
+                    {
+                        // 배치 불가능한 타일일 때 기본 커서로 설정
+                        UnInteractiveCursor();
+
+                    }
+                }
+            }
+            else
+            {
+                SetDefaultCursor();
+            }
+        }
     }
 
     public void SetDefaultCursor()
     {
-        Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(defaultArrowCursor, Vector2.zero, CursorMode.Auto);
     }
-
     public void SetFingerCursor()
     {
         Cursor.SetCursor(fingerCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    public void SetFingerRedCursor()
+    public void InteractiveCursor()
     {
-        Cursor.SetCursor(fingerRedCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(greenArrowCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    void OnMouseEnter()
+    public void UnInteractiveCursor()
     {
-        // 특정 UI나 오브젝트 위로 마우스가 올라갈 때 커서 변경
-        SetUiCursor();
+        Cursor.SetCursor(redArrowCursor, Vector2.zero, CursorMode.Auto);
     }
 
-    void OnMouseExit()
+
+    // UI 위에 있는지 확인
+    private string GetPointerOverUITag()
     {
-        // 마우스가 벗어날 때 기본 커서로 변경
-        SetDefaultCursor();
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject.CompareTag("InteractiveUi"))
+            {
+                return "InteractiveUi";
+            }
+            else if (result.gameObject.CompareTag("UnInteractiveUi"))
+            {
+                return "UnInteractiveUi";
+            }
+        }
+
+        return null; // UI 위에 있지 않음
     }
+
+
 }

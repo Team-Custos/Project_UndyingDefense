@@ -53,8 +53,9 @@ public class Ingame_UIManager : MonoBehaviour
     public Text sSkillInfoText;
     public Sprite enemyArcherImage;
     public Sprite enenmyWarriorImage;
-    public Sprite allyImage;
-
+    public Sprite minByeongImage;
+    public Sprite hunterImage;
+    
     [Header("====Game Option====")]
     public Button endGameBtn;
     public Button restartGameBtn;
@@ -123,12 +124,6 @@ public class Ingame_UIManager : MonoBehaviour
         inGameManager = InGameManager.inst;
 
 
-        if(GameOrderSystem.instance.selectedUnit != null)
-        {
-            clickUITransform = GameOrderSystem.instance.selectedUnit.transform.Find("Canvas/ClickUI");
-            clickUI = clickUITransform.gameObject;
-        }
-
 
         // 저장된 커맨더 스킬 확인 용
         if (commanderSkillBtn != null)
@@ -157,6 +152,16 @@ public class Ingame_UIManager : MonoBehaviour
                         //유닛 생성모드일때 다른 버튼을 누르면 그 버튼에 해당되는 유닛 생성
                     }
 
+                    if(idx == 0 || idx == 1)
+                    {
+                        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+                    }
+                    else
+                    {
+                        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_unableClick);
+                        return;
+                    }
+                    
                     // 유닛 스폰 로직
                     UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
                     InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode; 
@@ -203,6 +208,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         if (endGameBtn != null)
         {
+
             endGameBtn.onClick.AddListener(EndGame);
         }
 
@@ -223,6 +229,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingBtn.onClick.AddListener(() =>
             {
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 settingPanel.SetActive(true);
                 InGameManager.inst.isGamePause = true;
             });
@@ -232,6 +239,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingCloseBtn.onClick.AddListener(() =>
             {
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
                 settingPanel.SetActive(false);
                 InGameManager.inst.isGamePause = false;
             });
@@ -239,8 +247,8 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-        unitSpawnBtn[2].interactable = false;
-        unitSpawnBtn[3].interactable = false;
+        //unitSpawnBtn[2].interactable = false;
+        //unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -441,9 +449,13 @@ public class Ingame_UIManager : MonoBehaviour
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
 
-        if(selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
+        if(selectedUnit.unitData.unitCode == "1")
         {
-            unitInfoImage.sprite = allyImage;
+            unitInfoImage.sprite = minByeongImage;
+        }
+        else if(selectedUnit.unitData.unitCode == "2")
+        {
+            unitInfoImage.sprite = hunterImage;
         }
         else if(selectedUnit.unitData.unitCode == "80")
         {
@@ -707,10 +719,12 @@ public class Ingame_UIManager : MonoBehaviour
     {
         if (InGameManager.inst.isGamePause == false)
         {
+            SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_pause);
             InGameManager.inst.isGamePause = true;
         }
         else
         {
+            SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
             InGameManager.inst.isGamePause = false;
         }
 

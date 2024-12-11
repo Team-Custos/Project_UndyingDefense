@@ -68,9 +68,10 @@ public class GridTile : MonoBehaviour
             MeshR.material.color = colorSelected;
             isTileSelected = false;
         }
-        if (showPlacementColors)
+        if (showPlacementColors)        // 배치 상태
         {
-            if (mouseHover && isPlaceable)
+
+            if (mouseHover && isPlaceable)  // 배치 상태이고 배치 가능한 타일이면
             {
                 // 마우스가 UI 위에 있는지 확인
                 //if (EventSystem.current.IsPointerOverGameObject())
@@ -86,10 +87,9 @@ public class GridTile : MonoBehaviour
                     return;
                 }
 
-                MeshR.material.color = colorAvailable;
-                //MouseCursorManager.instance.SetFingerCursor();
+               // MeshR.material.color = colorAvailable;
             }
-            else if (mouseHover && !isPlaceable)
+            else if (mouseHover && !isPlaceable)    // 배치 상태이고 배치 불가능한 타일
             {
                 // 마우스가 UI 위에 있는지 확인
                 //if (EventSystem.current.IsPointerOverGameObject())
@@ -98,21 +98,20 @@ public class GridTile : MonoBehaviour
                 //    return;
                 //}
 
-                //MouseCursorManager.instance.SetFingerRedCursor();
-                MeshR.material.color = colorOccupied;
-                
-                
+                //MeshR.material.color = colorOccupied;
+
+
             }
-            else if (!mouseHover)
+            else if (!mouseHover)   // 배치 상태이지만 마우스 로 호버링 안된 타일
             {
                 MeshR.material.color = colorDefault;
             }
         }
-        else
+        else  // 배치 아닌 상태
         {
             if (Selected)
             {
-                MeshR.material.color = colorSelected;
+                //MeshR.material.color = colorSelected;
             }
             else if (!mouseHover)
             {
@@ -126,8 +125,6 @@ public class GridTile : MonoBehaviour
                 return;
             }
 
-             //MouseCursorManager.instance.SetDefaultCursor();  // ui위가 아니고 배치 상태가 아닐때 커서를 기본 상태로
-            
         }
     }
 
@@ -139,12 +136,12 @@ public class GridTile : MonoBehaviour
         if (GameOrderSystem.instance.selectedUnit != null &&
         GameOrderSystem.instance.selectedUnit.GetComponent<Ingame_UnitCtrl>().Ally_Mode == AllyMode.Free)
         {
-            // 마우스가 UI 위에 있는지 확인
-            //if (EventSystem.current.IsPointerOverGameObject())
-            //{
-            //    // UI 위에 있을 경우 이벤트 무시
-            //    return;
-            //}
+            //마우스가 UI 위에 있는지 확인
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                // UI 위에 있을 경우 이벤트 무시
+                return;
+            }
 
             // 마우스가 특정 UI 위에 있는지 확인 (특정 UI만 무시)
             if (IsPointerOverSpecificUI())
@@ -156,13 +153,11 @@ public class GridTile : MonoBehaviour
             // 이동 가능할 때 파란색으로, 불가능할 때 붉은색으로 표시
             if (isPlaceable)
             {
-                //MouseCursorManager.instance.SetFingerCursor();
-                MeshR.material.color = colorSelected;
+               // MeshR.material.color = colorSelected;
             }
             else
             {
-                //MouseCursorManager.instance.SetFingerRedCursor();
-                MeshR.material.color = colorOccupied;
+                //MeshR.material.color = colorOccupied;
             }
         }
     }
@@ -179,6 +174,7 @@ public class GridTile : MonoBehaviour
         {
             MeshR.material.color = colorDefault;
         }
+
     }
 
 

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UnitUICtrl : MonoBehaviour
+public class UnitUICtrl: MonoBehaviour
 {
 
     public GameObject selecteParticle;
@@ -19,14 +20,9 @@ public class UnitUICtrl : MonoBehaviour
 
     public GameObject siegeEffect;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
-        originalScale = transform.localScale; // 원래 크기 저장
-        originalPosition = transform.position; // 원래 위치 저장
-
 
         PlaySummonEffect();
     }
@@ -78,4 +74,5 @@ public class UnitUICtrl : MonoBehaviour
     {
         siegeEffect.SetActive(isSiege);
     }
+
 }
