@@ -303,7 +303,6 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-
         if (!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
         {
             // 현재 사용되는 버튼이 두개라서 for문 사용 안함
@@ -313,6 +312,25 @@ public class Ingame_UIManager : MonoBehaviour
 
 
         goldTxt.text = InGameManager.inst.gold.ToString();
+
+
+        if (unitSpawnBtn[0].interactable)
+        {
+            unitSpawnBtn[0].tag = "InteractiveUi";
+        }
+        else
+        {
+            unitSpawnBtn[0].tag = "UnInteractiveUi";
+        }
+
+        if (unitSpawnBtn[1].interactable)
+        {
+            unitSpawnBtn[1].tag = "InteractiveUi";
+        }
+        else
+        {
+            unitSpawnBtn[1].tag = "UnInteractiveUi";
+        }
     }
 
 

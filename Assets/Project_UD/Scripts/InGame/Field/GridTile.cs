@@ -57,15 +57,15 @@ public class GridTile : MonoBehaviour
     {
         UpdateTilePlaceable();
 
-        if (mouseHover)
-        {
-            MeshR.material.color = colorSelected;
-        }
+        //if (mouseHover)
+        //{
+        //    MeshR.material.color = colorSelected;
+        //}
 
         // 타일 색상 설정
         if (isTileSelected) // 유닛이 이동할 타일로 지정된 경우
         {
-            MeshR.material.color = colorSelected;
+            //MeshR.material.color = colorSelected;
             isTileSelected = false;
         }
         if (showPlacementColors)        // 배치 상태
