@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
-using static UnityEngine.UI.CanvasScaler;
 
 //이 스크립트는 유닛의 전반적인 상태와 행동을 관리하기 위한 스크립트입니다. (아군과 적군 통합.)
 public enum DefenseType //유닛의 방어속성.

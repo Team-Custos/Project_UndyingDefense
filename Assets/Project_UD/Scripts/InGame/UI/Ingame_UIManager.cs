@@ -146,34 +146,46 @@ public class Ingame_UIManager : MonoBehaviour
 
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
-                    if(InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+                    // 현재 버튼이 활성화된 상태인지 확인
+                    if (UnitSpawnManager.inst.unitToSpawn == unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode
+                        && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
                     {
-                        //유닛 생성모드일때 다른 버튼을 누르면 그 버튼에 해당되는 유닛 생성
-                    }
+                        // 동일한 버튼을 다시 눌렀다면 소환 상태를 해제
+                        InGameManager.inst.UnitSetMode = false;
+                        InGameManager.inst.AllyUnitSetMode = false;
 
-                    if(idx == 0 || idx == 1)
-                    {
-                        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+                        // 버튼 효과 초기화
+                        UpdateButtonEffect(-1); // 모든 버튼 비활성화
                     }
                     else
                     {
-                        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_unableClick);
-                        return;
+                        // 다른 버튼을 눌렀거나 새로운 소환 상태 설정
+                        InGameManager.inst.UnitSetMode = true;
+                        InGameManager.inst.AllyUnitSetMode = true;
+
+                        if (idx == 0 || idx == 1)
+                        {
+                            SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+                        }
+                        else
+                        {
+                            SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_unableClick);
+                            return;
+                        }
+
+                        // 유닛 스폰 로직
+                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+
+                        // 이미지 상태 변경 로직
+                        UpdateButtonEffect(idx);
+
+                        // 기타 로직
+                        DestroyUnitStateChangeBox();
                     }
-                    
-                    // 유닛 스폰 로직
-                    UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
-                    InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode; 
-                    InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
-
-                    // 이미지 상태 변경 로직
-                    UpdateButtonEffect(idx);
-
-                    // 기타 로직
-                    DestroyUnitStateChangeBox();
                 });
             }
         }
+
 
 
         //for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
@@ -333,35 +345,35 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-    // 
-    void EnterUnitSpawnMode(int idx)
-    {
-        // 선택된 버튼 인덱스를 현재 인덱스로 설정
-        currentSelectedIndex = idx;
 
-        // 유닛 스폰 설정
-        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
-        InGameManager.inst.UnitSetMode = true;
-        InGameManager.inst.AllyUnitSetMode = true;
+    //void EnterUnitSpawnMode(int idx)
+    //{
+    //     선택된 버튼 인덱스를 현재 인덱스로 설정
+    //    currentSelectedIndex = idx;
 
-        DestroyUnitStateChangeBox();
-    }
+    //     유닛 스폰 설정
+    //    UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+    //    InGameManager.inst.UnitSetMode = true;
+    //    InGameManager.inst.AllyUnitSetMode = true;
+
+    //    DestroyUnitStateChangeBox();
+    //}
 
     // 유닛 생성 상태에서 동일한 버튼을 누르면 상태해제를 위한 함수
-    void ExitUnitSpawnMode()
-    {
-        InGameManager.inst.UnitSetMode = false;
-        InGameManager.inst.AllyUnitSetMode = false;
+    //void ExitUnitSpawnMode()
+    //{
+    //    InGameManager.inst.UnitSetMode = false;
+    //    InGameManager.inst.AllyUnitSetMode = false;
 
-        // 선택된 버튼 인덱스를 초기화
-        currentSelectedIndex = -1;
+    //     선택된 버튼 인덱스를 초기화
+    //    currentSelectedIndex = -1;
 
-        // 유닛 대기 모드 해제
-        //InGameManager.inst.UnitSetMode = false;
-        //InGameManager.inst.AllyUnitSetMode = false;
+    //     유닛 대기 모드 해제
+    //    InGameManager.inst.UnitSetMode = false;
+    //    InGameManager.inst.AllyUnitSetMode = false;
 
-        DestroyUnitStateChangeBox();
-    }
+    //    DestroyUnitStateChangeBox();
+    //}
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
     {
@@ -370,31 +382,37 @@ public class Ingame_UIManager : MonoBehaviour
 
 
     // 해당 인덱스에 맞는 이미지를 켜고 다른 이미지는 끄는 메서드
-    void UpdateButtonEffect(int activeIndex)
+    public void UpdateButtonEffect(int activeIndex)
     {
-        // 두 옵션이 모두 false인 경우 모든 이미지를 비활성화
-        if (InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+        for (int i = 0; i < selectedBtnEffectImage.Length; i++)
         {
-            // activeIndex와 일치하는 인덱스의 이미지만 켜고 나머지는 끔
-            for (int i = 0; i < selectedBtnEffectImage.Length; i++)
-            {
-                selectedBtnEffectImage[i].gameObject.SetActive(i == activeIndex);
-            }
+            // activeIndex가 -1이면 모든 버튼 비활성화, 아니면 선택된 버튼만 활성화
+            selectedBtnEffectImage[i].gameObject.SetActive(i == activeIndex);
         }
+
+        // 두 옵션이 모두 false인 경우 모든 이미지를 비활성화
+        //if (InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+        //{
+        //    // activeIndex와 일치하는 인덱스의 이미지만 켜고 나머지는 끔
+        //    for (int i = 0; i < selectedBtnEffectImage.Length; i++)
+        //    {
+        //        selectedBtnEffectImage[i].gameObject.SetActive(i == activeIndex);
+        //    }
+        //}
     }
 
-    public void UpdateSpawnButtonState(int index)
-    {
-        if (index >= 0 && index < unitSpawnBtn.Length)
-        {
-            unitSpawnBtn[index].interactable = false; // 버튼 비활성화
-            if (unitSpawnBtnPanel[index] != null)
-            {
-                unitSpawnBtnPanel[index].SetActive(true); // 패널 활성화
-                StartCoroutine(UnitSpawnCoolTime(index)); // 코루틴 실행
-            }
-        }
-    }
+    //public void UpdateSpawnButtonState(int index)
+    //{
+    //    if (index >= 0 && index < unitSpawnBtn.Length)
+    //    {
+    //        unitSpawnBtn[index].interactable = false; // 버튼 비활성화
+    //        if (unitSpawnBtnPanel[index] != null)
+    //        {
+    //            unitSpawnBtnPanel[index].SetActive(true); // 패널 활성화
+    //            StartCoroutine(UnitSpawnCoolTime(index)); // 코루틴 실행
+    //        }
+    //    }
+    //}
 
     private IEnumerator UnitSpawnCoolTime(int index)
     {
@@ -429,17 +447,17 @@ public class Ingame_UIManager : MonoBehaviour
         unitSpawnBtn[index].interactable = true;
     }
 
-    public int GetButtonIndexByUnitCode(int unitCode)
-    {
-        for (int i = 0; i < unitSpawnBtn.Length; i++)
-        {
-            if (unitSpawnBtn[i].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode == unitCode)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
+    //public int GetButtonIndexByUnitCode(int unitCode)
+    //{
+    //    for (int i = 0; i < unitSpawnBtn.Length; i++)
+    //    {
+    //        if (unitSpawnBtn[i].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode == unitCode)
+    //        {
+    //            return i;
+    //        }
+    //    }
+    //    return -1;
+    //}
 
     public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit)
     {

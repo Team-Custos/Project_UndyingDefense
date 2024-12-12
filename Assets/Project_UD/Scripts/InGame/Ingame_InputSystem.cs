@@ -24,13 +24,13 @@ public class Ingame_InputSystem : MonoBehaviour
     public System.Action OnPrimaryPerformed;
     public System.Action OnSecondaryPerformed;
     public System.Action OnWheelButtonPerformed;
-    
+
 
     private void Awake()
     {
         Instance = this;
 
-        
+
 
     }
 
@@ -39,12 +39,12 @@ public class Ingame_InputSystem : MonoBehaviour
     {
         _inputInit();
         HotKey();
-        
+
     }
 
     void HotKey()
     {
-        InGameManager.inst.FasterTimeScale = 
+        InGameManager.inst.FasterTimeScale =
             Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E);
 
 
@@ -62,16 +62,12 @@ public class Ingame_InputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
-            InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
-            spawnManager.unitToSpawn = 0;
+            ToggleUnitSpawnState(0); // 1번 단축키
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
-            InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
-            spawnManager.unitToSpawn = 1;
+            ToggleUnitSpawnState(1); // 2번 단축키
         }
     }
 
@@ -102,5 +98,31 @@ public class Ingame_InputSystem : MonoBehaviour
 
         AxisX = Input.GetAxisRaw("Horizontal");
         AxisY = Input.GetAxisRaw("Vertical");
+    }
+
+    // 소환 상태를 설정하는 메서드
+    void ToggleUnitSpawnState(int unitIndex)
+    {
+        // 같은 유닛이 이미 활성화되어 있는 경우: 소환 상태 해제
+        if (spawnManager.unitToSpawn == unitIndex && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+        {
+            InGameManager.inst.UnitSetMode = false;
+            InGameManager.inst.AllyUnitSetMode = false;
+
+            // 버튼 효과 초기화
+            Ingame_UIManager.instance.UpdateButtonEffect(-1); // 모든 버튼 비활성화
+        }
+        else
+        {
+            // 새로운 유닛 소환 상태 활성화
+            InGameManager.inst.UnitSetMode = true;
+            InGameManager.inst.AllyUnitSetMode = true;
+
+            // 선택한 유닛 설정
+            spawnManager.unitToSpawn = unitIndex;
+
+            // 버튼 효과 갱신
+            Ingame_UIManager.instance.UpdateButtonEffect(unitIndex);
+        }
     }
 }
