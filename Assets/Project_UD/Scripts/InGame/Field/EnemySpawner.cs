@@ -368,7 +368,6 @@ public class EnemySpawner : MonoBehaviour
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            Destroy(monster);
         }
     }
 

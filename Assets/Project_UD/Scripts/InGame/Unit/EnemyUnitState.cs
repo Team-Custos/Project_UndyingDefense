@@ -11,7 +11,8 @@ public enum EnemyState//적군 유닛의 상태.
 {
     Idle,
     Attack,
-    Move
+    Move,
+    Dead
 }
 
 
@@ -114,6 +115,7 @@ public class EnemyUnitState : MonoBehaviour
 
     void Move_Update()
     {
+
         navObstacle.enabled = false;
         navAgent.enabled = true;
 
@@ -171,6 +173,16 @@ public class EnemyUnitState : MonoBehaviour
         navAgent.SetDestination(transform.position);//정지.
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);        
         //navAgent.isStopped = true;
+    }
+
+    void Dead_Enter()
+    {
+
+    }
+
+    void Dead_Update()
+    {
+
     }
 
     public void SearchPath()//길찾기

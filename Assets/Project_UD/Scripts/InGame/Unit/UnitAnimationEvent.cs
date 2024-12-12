@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class UnitAnimationEvent : MonoBehaviour
@@ -36,7 +37,7 @@ public class UnitAnimationEvent : MonoBehaviour
     public void DeadEnd()
     {
         Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
-        Destroy(unitCtrl.gameObject,2f);
+        Destroy(unitCtrl.gameObject, 2f);
         GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
     }
 
