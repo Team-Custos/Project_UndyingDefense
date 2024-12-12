@@ -43,6 +43,10 @@ public class RangeCtrl : MonoBehaviour
         {
             ListTargetDelete(Obj_Nearest);//리스트 초기화.
         }
+        else if (Obj_Nearest.GetComponent<Ingame_UnitCtrl>().isDead)
+        {
+            ListTargetDelete(Obj_Nearest);
+        }
 
         if (detectedObjects.Count > 0) //한 게임 오브젝트라도 탐지 되었을때,
         {

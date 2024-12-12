@@ -594,6 +594,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
     }
     void EnemyCtrl()
     {
+        if (isDead)
+        {
+           Enemy_State.fsm.ChangeState(EnemyState.Dead);
+            return;
+        }
+
         if (SpawnDelay)
         {
             IEnumerator SpawnDelayCoroutine()
@@ -892,8 +898,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
-                Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
+                isDead = true;
                 EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
