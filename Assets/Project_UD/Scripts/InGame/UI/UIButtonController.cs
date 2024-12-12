@@ -8,7 +8,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     public RectTransform buttonRectTransform;
     public Text buttonText;
     public GameObject textPanel;
-    public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f); 
+    public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 pressedScale = new Vector3(0.9f, 0.9f, 1f);
     public Vector3 normalScale = Vector3.one;
     public float scaleDuration = 0.1f;
@@ -63,7 +63,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         }
         if (textPanel != null)
         {
-            StartCoroutine(ScalePanel(originalTextPanelScale)); 
+            StartCoroutine(ScalePanel(originalTextPanelScale));
         }
     }
 
@@ -73,7 +73,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         if (this.gameObject.tag == "UnInteractiveUi")
             return;
 
-        StartCoroutine(ScaleButton(pressedScale));  
+        StartCoroutine(ScaleButton(pressedScale));
         if (buttonText != null)
         {
             StartCoroutine(ScaleText(pressedScale));
@@ -93,7 +93,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
         {
-            StartCoroutine(ScaleText(originalTextScale)); 
+            StartCoroutine(ScaleText(originalTextScale));
         }
         if (textPanel != null)
         {

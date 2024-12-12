@@ -48,9 +48,10 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 RestartCurrentScene();
-                Time.timeScale = 1.0f;
+                
             });
         }
 
@@ -58,9 +59,9 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_WaveUIManager.instance.Winlobbybtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
                 GoToLobby();
-                Time.timeScale = 1.0f;
             });
         }
 
@@ -68,9 +69,9 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 RestartCurrentScene();
-                Time.timeScale = 1.0f;
             });
                 
         }
@@ -79,9 +80,9 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
                 GoToLobby();
-                Time.timeScale = 1.0f;
             });
             
         }
@@ -90,9 +91,9 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
                 GoToLobby();
-                Time.timeScale = 1.0f;
             });
 
 
@@ -102,9 +103,9 @@ public class Ingame_SceneManager : MonoBehaviour
         {
             Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(() =>
             {
+                Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 RestartCurrentScene();
-                Time.timeScale = 1.0f;
             });
 
         }
@@ -118,13 +119,11 @@ public class Ingame_SceneManager : MonoBehaviour
         if (loadingPanel != null)
         {
             loadingPanel.SetActive(true);
-            Debug.Log("로딩 패널 활성화됨");
         }
 
         // 씬 로딩 시작
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIdx);
         operation.allowSceneActivation = false; // 씬 자동 전환 방지
-        Debug.Log("씬 로딩 시작");
 
         while (!operation.isDone)
         {
@@ -152,9 +151,9 @@ public class Ingame_SceneManager : MonoBehaviour
         if (loadingPanel != null)
         {
             loadingPanel.SetActive(false);
-            Debug.Log("로딩 패널 비활성화됨");
         }
 
-        Debug.Log("씬 로드 완료");
     }
+
+
 }
