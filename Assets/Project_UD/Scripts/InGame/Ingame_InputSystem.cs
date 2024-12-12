@@ -62,11 +62,21 @@ public class Ingame_InputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            if (!Ingame_UIManager.instance.unitSpawnBtn[0].interactable)
+            {
+                return;
+            }
+
             ToggleUnitSpawnState(0); // 1번 단축키
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            if (!Ingame_UIManager.instance.unitSpawnBtn[1].interactable)
+            {
+                return;
+            }
+
             ToggleUnitSpawnState(1); // 2번 단축키
         }
     }
