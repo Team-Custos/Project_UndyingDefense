@@ -18,18 +18,18 @@ MonoBehaviour:
   modelType: 1
   modelPrefab: {fileID: 5873610994075858953, guid: 456d5c85d8f9e00458014e9bbf617dd6,
     type: 3}
-  maxHP: 100
+  maxHP: 200
   mental: 1
-  moveSpeed: 1
+  moveSpeed: 2
   overrideController: {fileID: 22100000, guid: b8de80c4779215549a544ea51401e234, type: 2}
   attackPoint: 1
-  critChanceRate: 30
+  critChanceRate: 10
   generalSkillCode: 103
   specialSkillCode: 0
-  weaponCooldown: 1
+  weaponCooldown: 2
   skillCooldown: 1
   sightRange: 200
-  attackRange: 12
+  attackRange: 8
   attackSound:
   - {fileID: 8300000, guid: 3f55e05070ed3784889d1eb0bba4c7c9, type: 3}
   - {fileID: 8300000, guid: 9b4df403f8d809e419a7026ae5855e3d, type: 3}
@@ -38,8 +38,9 @@ MonoBehaviour:
   g_SkillName: "\uD65C\uC3D8\uAE30"
   s_SkillName: "\uD65C\uC3D8\uAE30"
   unitCode: 81
-  level: 0
+  level: 1
   cost: 0
+  gold: 20
   name: "\uBC40\uD30C\uC774\uC5B4 \uD558\uC218\uC778"
   g_SkillInfo: "\uBC40\uD30C\uC774\uC5B4 \uD558\uC218\uC778 gSkill"
   s_SkillInfo: "\uBC40\uD30C\uC774\uC5B4 \uD558\uC218\uC778 sSkill"

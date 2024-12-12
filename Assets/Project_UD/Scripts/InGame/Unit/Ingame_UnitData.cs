@@ -39,7 +39,8 @@ public class Ingame_UnitData : ScriptableObject
     public string s_SkillName;                                    
     public string unitCode;                                       
     public int level;                                             
-    public int cost;                                              
+    public int cost;
+    public int gold;
     public string name;
     public string g_SkillInfo;
     public string s_SkillInfo;

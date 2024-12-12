@@ -214,6 +214,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         //UpdateUnitDataFromExcel(unitData);
+
+
+        enmeyRewardGold = this.unitData.gold;
     }
 
 
@@ -780,8 +783,11 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
+
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
                 EnemySpawner.inst.OnMonsterDead(this.gameObject);
+
+
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
