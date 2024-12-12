@@ -39,7 +39,7 @@ public class TitleUIManager : MonoBehaviour
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
-                LoadScene("LobbyScene_LoPol");
+                LoadScene(1);
             });
 
         }
@@ -59,19 +59,19 @@ public class TitleUIManager : MonoBehaviour
         StartCoroutine(PlayTitleSceneAnimation());
     }
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(int sceneNumber)
     {
-        StartCoroutine(LoadSceneAsync(sceneName));
+        StartCoroutine(LoadSceneAsync(sceneNumber));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName)
+    private IEnumerator LoadSceneAsync(int sceneNumber)
     {
         loadingPanel.SetActive(true);
 
         progressImage.fillAmount = 0f;
         progressText.text = "0%";
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneNumber);
         operation.allowSceneActivation = false; // 씬 자동 활성화 방지
 
         float elapsedTime = 0f;

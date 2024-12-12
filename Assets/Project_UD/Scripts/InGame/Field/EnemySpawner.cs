@@ -38,7 +38,10 @@ public class EnemySpawnData
 
 public class EnemySpawner : MonoBehaviour
 {
+    public InGame_BGMManager bgmManager;
+
     public WaveDataTable waveDataTable;
+
 
     public static EnemySpawner inst;
     public List<Ingame_UnitData> enemyDatas;
@@ -87,6 +90,7 @@ public class EnemySpawner : MonoBehaviour
     {
         gridManager = InGameManager.inst.gridManager;
 
+
         mobSpawnPosX = gridManager._width;
         gridHeight = gridManager._height;
 
@@ -105,7 +109,7 @@ public class EnemySpawner : MonoBehaviour
         //    Debug.LogError("첫 웨이브 데이터가 없습니다.");
         //}
 
-        Ingame_WaveUIManager.instance.StartNextWaveCountdown(100f);
+        Ingame_WaveUIManager.instance.StartNextWaveCountdown(20.0f);
     }
 
     // Update is called once per frame
@@ -164,6 +168,11 @@ public class EnemySpawner : MonoBehaviour
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
 
+        if(bgmManager  == null)
+        {
+            Debug.Log("fefe");
+        }
+
         // 몬스터 스폰 순서 결정
         List<int> spawnOrder = new List<int>();
         foreach (var info in currentData.monsterSpawnInfos)
@@ -196,8 +205,15 @@ public class EnemySpawner : MonoBehaviour
         
 
         // 웨이브 클리어 UI
-        Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
-        Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
+        if(currentData.waveNumber == 10)
+        {
+            yield return null;
+        }
+        else
+        {
+            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
+            Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
+        }
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
 
@@ -208,6 +224,10 @@ public class EnemySpawner : MonoBehaviour
 
         if(currentData.waveNumber == 10)
         {
+            if(bgmManager != null) 
+            {
+                bgmManager.PauseBGM();      // 웨이브 종료시 bgm은 끔
+            }
             Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
             InGameManager.inst.isGamePause = true;

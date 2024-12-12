@@ -18,6 +18,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
 
     private void Start()
     {
+
         if (buttonText != null)
         {
             originalTextScale = buttonText.transform.localScale;
@@ -34,6 +35,9 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     // 버튼 호버링 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (this.gameObject.tag == "UnInteractiveUi")
+            return;
+
         // 호버링 시 버튼, 텍스트, 패널 크기 증가
         StartCoroutine(ScaleButton(hoverScale));
         if (buttonText != null)
@@ -49,6 +53,9 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     // 버튼에서 마우스가 벗어났을 때
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (this.gameObject.tag == "UnInteractiveUi")
+            return;
+
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
         {
@@ -63,7 +70,9 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     // 버튼 클릭 시 호출
     public void OnPointerDown(PointerEventData eventData)
     {
-        
+        if (this.gameObject.tag == "UnInteractiveUi")
+            return;
+
         StartCoroutine(ScaleButton(pressedScale));  
         if (buttonText != null)
         {
@@ -77,6 +86,9 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (this.gameObject.tag == "UnInteractiveUi")
+            return;
+
         // 클릭을 떼면 원래 크기로 돌아감
         StartCoroutine(ScaleButton(normalScale));
         if (buttonText != null)
@@ -108,6 +120,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     // 텍스트 크기 변경 코루틴
     private IEnumerator ScaleText(Vector3 targetScale)
     {
+
         Vector3 currentScale = buttonText.transform.localScale;
         float time = 0f;
 

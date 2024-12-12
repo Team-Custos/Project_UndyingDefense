@@ -106,7 +106,6 @@ public class Ingame_UIManager : MonoBehaviour
     public Button commanderSkillBtn;
 
 
-
     private void Awake()
     {
         instance = this;
@@ -305,7 +304,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         if (!InGameManager.inst.UnitSetMode && !InGameManager.inst.AllyUnitSetMode)
         {
-            // 현재 사용되는 버튼이 두개라서 for문 사용 안함
             selectedBtnEffectImage[0].gameObject.SetActive(false);
             selectedBtnEffectImage[1].gameObject.SetActive(false);
         }
@@ -752,4 +750,6 @@ public class Ingame_UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+
 }
