@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 
 //이 스크립트는 유닛의 전반적인 상태와 행동을 관리하기 위한 스크립트입니다. (아군과 적군 통합.)
@@ -41,7 +37,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
     public Ingame_UnitData unitData; //유닛의 데이터 (스크립터블 오브젝트.)
     UnitDebuffManager debuffManager; //디버프 관리.
 
-    UnitModelSwapManager ModelSwapManager; //유닛의 모델 관리.
     public UnitSoundManager soundManager; //유닛의 SFX 관리.
 
     UnitUICtrl unitUiCtrl;
@@ -99,25 +94,12 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public int enmeyRewardGold = 10; // 적 처치시 보상
 
-    //public string unitCode;
-    //public int level;
-    //public int cost;
-    //public string name;
-    //public string gSkillName;
-    //public string sSkillName;
-    //public string gSkillInfo;
-    //public string sSkillInfo;
-
-    // 수정 예정
-    public string defenstype;
-
     public System.Action<GameObject> OnDisable;
     public System.Action<Ingame_UnitCtrl> OnUnitDead;
 
     public Quaternion defaultTargetRotation;
     private void Awake()
     {
-        ModelSwapManager = UnitModelSwapManager.inst;
         debuffManager = GetComponent<UnitDebuffManager>();
         if (soundManager == null)
         {
@@ -157,17 +139,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         //유닛 스폰시 모델 설정.
         Instantiate(unitData.modelPrefab, VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-
-
-        //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        //{
-        //    Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-
-        //}
-        //else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-        //{
-        //    Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-        //}
 
         SpawnDelay = true;
 
@@ -238,17 +209,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             // 스케일 애니메이션 시작
             StartCoroutine(ScaleAnimation(CurModel.transform));
-
-            //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-            //{
-            //    Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            //}
-            //else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-            //{
-            //    Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
-            //}
-
-            //cur_modelType = unitData.modelType;
         }
     }
 
@@ -287,36 +247,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         moveTargetBasePos = targetPosition;//성의 좌표 초기화.
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
-
-
-        // if (HP <= 0 && !isDead)
-        // {
-        //     HP = 0;
-
-        //     //if(Ingame_UIManager.instance.unitInfoPanel.activeSelf)
-        //     //{
-        //     //    Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
-        //     //}
-
-
-        //     if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
-        //     {
-        //         Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
-        //         EnemySpawner.inst.OnMonsterDead(this.gameObject);
-        //         InGameManager.inst.gold += enmeyRewardGold;
-        //         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
-        //     }
-        //     else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        //     {
-        //         isDead = true;
-        //     }
-        //     Debug.Log(this.gameObject.name + " Destroyed");
-
-        //     GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상태 최신화 (배치 가능)
-
-        //     return;
-        // }
-         
 
         GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
@@ -382,21 +312,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         sightRangeSensor.radius = unitData.sightRange;
-
-        ////유닛의 모드에따라 활성화할 컴포넌트를 설정.
-        //if (Ally_Mode == AllyMode.Free)
-        //{
-        //    NavObstacle.enabled = false;
-        //    if (NavObstacle.enabled == false)
-        //    {
-        //        NavAgent.enabled = true;
-        //    }
-        //}
-        //else if (Ally_Mode == AllyMode.Siege)
-        //{
-        //    NavAgent.enabled = false;
-        //    NavObstacle.enabled = true;
-        //}
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
@@ -718,7 +633,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else if (isEnemyInRange)
             {
                 VisualModel.transform.LookAt(targetEnemy.transform.position);
-                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, false);
+                UnitSkill.UnitGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.attackSpeed, false);
             }
         }
         else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY)) //적일때
@@ -726,7 +641,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             if (enemy_isBaseInRange)
             {
                 VisualModel.transform.LookAt(targetBase.transform.position);
-                UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetBase, unitData.weaponCooldown, true);
+                UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetBase, unitData.attackSpeed, true);
             }
             else
             {
@@ -737,7 +652,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     VisualModel.transform.LookAt(targetEnemy.transform.position);
-                    UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.weaponCooldown, true);
+                    UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.attackSpeed, true);
                 }
                 else if (targetEnemy == null)
                 {

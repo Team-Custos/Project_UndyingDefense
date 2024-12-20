@@ -82,7 +82,7 @@ public class UnitDebuffManager : MonoBehaviour
                         else
                         {
                             unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
-                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown * 0.8f;
+                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
                         }
                         break;
                     case UnitDebuff.Stun://5�� ���� �ൿ �Ұ�
@@ -93,7 +93,7 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: //3�� ���� �̵� �ӵ�, ���� �ӵ� 20% ����
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown * 0.8f;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
                         break;
                     case UnitDebuff.Bleed: //3�� ���� �ʴ� 1 �������� ������. ������ ���� ������ �������� 2�� ����� �����Ѵ�.
                         int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
@@ -149,7 +149,7 @@ public class UnitDebuffManager : MonoBehaviour
                 {
                     case UnitDebuff.Dizzy://3�� ���� �̵� �ӵ� 20%, ���� �ӵ� 20% ����. �ִ� 3������ ���õȴ�. 4�� ���ý� ���� ȿ���� �ߵ��ȴ�.
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                         break;
                     case UnitDebuff.Stun://5�� ���� �ൿ �Ұ�
                         unitCtrl.unActable = false;
@@ -159,7 +159,7 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: //3�� ���� �̵� �ӵ�, ���� �ӵ� 20% ����
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                         break;
                     case UnitDebuff.Bleed:
                         break;
@@ -228,7 +228,7 @@ public class UnitDebuffManager : MonoBehaviour
         {
             case UnitDebuff.Dizzy://3�� ���� �̵� �ӵ� 20%, ���� �ӵ� 20% ����. �ִ� 3������ ���õȴ�. 4�� ���ý� ���� ȿ���� �ߵ��ȴ�.
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                 break;
             case UnitDebuff.Stun://5�� ���� �ൿ �Ұ�
                 unitCtrl.unActable = false;
@@ -238,7 +238,7 @@ public class UnitDebuffManager : MonoBehaviour
                 break;
             case UnitDebuff.Poison: //3�� ���� �̵� �ӵ�, ���� �ӵ� 20% ����
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.weaponCooldown;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                 break;
             case UnitDebuff.Bleed:
                 break;

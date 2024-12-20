@@ -19,6 +19,10 @@ public class BaseStatus : MonoBehaviour
     {
         instance = this;
         baseBoxCollider = GetComponent<BoxCollider>();
+        if (baseBoxCollider == null)
+        {
+            Debug.LogError("BoxCollider가 없습니다.");
+        }
     }
 
 
@@ -31,15 +35,7 @@ public class BaseStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (BaseHPCur <= 0 && !isBaseHpZero)
-        //{
-        //    Debug.Log("Base HP reached 0.");
-        //    isBaseHpZero = true; // 플래그 설정을 먼저 수행
-        //    BaseHPCur = 0;
-        //    Time.timeScale = 0.0f;
-        //    SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
-        //    Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
-        //}
+
     }
 
     public Vector3 GetNearestPosition(Vector3 from)
@@ -49,33 +45,43 @@ public class BaseStatus : MonoBehaviour
 
     public void ReceiveDamage(int Damage)//성이 데미지 받았을때의 함수
     {
-        IEnumerator HitEffect()//피격 이펙트
-        {
-            this.GetComponent<MeshRenderer>().material.color = new Color32(255, 0, 0, 255);
-
-            yield return new WaitForSeconds(0.1f);
-
-            this.GetComponent<MeshRenderer>().material.color = new Color32(255, 255, 255, 255);
-        }
-
         StartCoroutine(HitEffect());
 
         BaseHPCur -= Damage;
 
         if (BaseHPCur <= 0)
         {
-            InGameManager.inst.isGamePause = true;
             BaseHPCur = 0;
-
-            if(bGMManager != null)
-            {
-                bGMManager.PauseBGM();
-            }
-
-            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
-            Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
+            OnBaseDestroyed();
         }
 
         EnemySpawner.inst.OnBaseAttacked(); // Base 공격 알림
+    }
+
+    private IEnumerator HitEffect()//피격 이펙트
+    {
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer == null)
+        {
+            Debug.LogError("MeshRenderer가 없습니다.");
+            yield break;
+        }
+
+        meshRenderer.material.color = new Color32(255, 0, 0, 255);
+        yield return new WaitForSeconds(0.1f);
+        meshRenderer.material.color = new Color32(255, 255, 255, 255);
+    }
+
+    private void OnBaseDestroyed()
+    {
+        InGameManager.inst.isGamePause = true;
+
+        if (bGMManager != null)
+        {
+            bGMManager.PauseBGM();
+        }
+
+        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
+        Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
     }
 }

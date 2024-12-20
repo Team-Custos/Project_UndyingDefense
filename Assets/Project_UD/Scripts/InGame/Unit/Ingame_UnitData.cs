@@ -25,7 +25,7 @@ public class Ingame_UnitData : ScriptableObject
     public int critChanceRate;                                    
     public int generalSkillCode = 101;                            
     public int specialSkillCode = 101;                            
-    public float weaponCooldown = 0;                             
+    public float attackSpeed = 0;                             
     public float skillCooldown = 0;                               
     public float sightRange = 0;                                  
     public float attackRange = 0;                   

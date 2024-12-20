@@ -77,7 +77,7 @@ public class UnitSkillManager : MonoBehaviour
                     }
                     attackType = AttackType.Pierce;
                     damage = 5;
-                    debuff = UnitDebuff.Bleed;
+                    debuff = UnitDebuff.Dizzy;
                     break;
                 //창 찌르기
                 case 201:
@@ -154,7 +154,6 @@ public class UnitSkillManager : MonoBehaviour
                         TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Dizzy);
                     }
                     break;
-
                 //연사
                 case 102:
                     if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
@@ -185,7 +184,7 @@ public class UnitSkillManager : MonoBehaviour
                             }
                         }
                         // 지연 시간 후 두 번째 총알 발사
-                        yield return new WaitForSeconds(UnitCtrl.unitData.weaponCooldown * 0.5f);
+                        yield return new WaitForSeconds(UnitCtrl.unitData.attackSpeed * 0.5f);
                         //Debug.Log("Double shot 2");
                         if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                         {
@@ -255,35 +254,13 @@ public class UnitSkillManager : MonoBehaviour
                     Vector2[] TargetCells = new Vector2[3];
 
                     // 각도에 따라 x, y 오프셋을 설정
-                    Vector2[] directionOffsets;
-                    if (CurAngle <= 45 || CurAngle > 315)       // 북쪽
-                    {
-                        directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
-                    }
-                    else if (CurAngle <= 135 && CurAngle > 45)   // 동쪽
-                    {
-                        directionOffsets = new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
-                    }
-                    else if (CurAngle <= 225 && CurAngle > 135)  // 남쪽
-                    {
-                        directionOffsets = new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
-                    }
-                    else if (CurAngle > 225 && CurAngle <= 315) // 서쪽
-                    {
-                        directionOffsets = new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
-                    }
-                    else
-                    {
-                        Debug.LogError("덫 설치 관련 각도 계산 오류.");
-                        directionOffsets = new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
-                    }
-
+                    Vector2[] directionOffsets = GetTargetCellPos(CurAngle);
+                    
                     // TargetCells에 오프셋 적용하여 좌표 계산
                     for (int i = 0; i < 3; i++)
                     {
                         TargetCells[i] = CurCellPos + directionOffsets[i];
                     }
-
 
                     Vector3 TargetCellWorldPos = Vector3.zero;
 
@@ -365,6 +342,23 @@ public class UnitSkillManager : MonoBehaviour
             skillCooldown_Cur -= Time.deltaTime;
         }
     }
+
+    Vector2[] GetTargetCellPos(float CurAngle)
+    {
+        if (CurAngle <= 45 || CurAngle > 315)       // 북쪽
+            return new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
+        else if (CurAngle <= 135 && CurAngle > 45)   // 동쪽
+            return new Vector2[] { new Vector2(2, 1), new Vector2(2, 0), new Vector2(2, -1) };
+        else if (CurAngle <= 225 && CurAngle > 135)  // 남쪽
+            return new Vector2[] { new Vector2(1, -2), new Vector2(0, -2), new Vector2(-1, -2) };
+        else if (CurAngle > 225 && CurAngle <= 315) // 서쪽
+            return new Vector2[] { new Vector2(-2, -1), new Vector2(-2, 0), new Vector2(-2, 1) };
+        else
+        {
+            Debug.LogError("덫 설치 관련 각도 계산 오류.");
+            return new Vector2[] { new Vector2(-1, 2), new Vector2(0, 2), new Vector2(1, 2) };
+        }
+    }    
 
     //적군 일반 스킬
     public void EnemyGeneralSkill(int SkillCode, GameObject TargetEnemy, float weaponCooldown, bool isEnemyAttack)
