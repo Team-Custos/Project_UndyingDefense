@@ -77,7 +77,7 @@ public class UnitSkillManager : MonoBehaviour
                     }
                     attackType = AttackType.Pierce;
                     damage = 5;
-                    debuff = UnitDebuff.Dizzy;
+                    debuff = UnitDebuff.Bleed;
                     break;
                 //창 찌르기
                 case 201:
@@ -87,7 +87,10 @@ public class UnitSkillManager : MonoBehaviour
                     break;
                 //망치 내려치기
                 case 202:
-                    damage = 7;
+                    //일단 감지된 오브젝트들을
+                    //유닛의 현재 위치와 각도 비교를 하여
+                    //45이상 135 이하인 오브젝트들만 처리하면?
+                    damage = 12;
                     attackType = AttackType.Crush;
                     debuff = UnitDebuff.Dizzy;
                     break;
