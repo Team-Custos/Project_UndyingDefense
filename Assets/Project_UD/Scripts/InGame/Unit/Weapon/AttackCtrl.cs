@@ -16,6 +16,7 @@ public enum AttackType //공격 속성
 public enum AttackMethod //공격 방식
 {
     Arrow,
+    AttackTrigger_Circle,
     Granade,
     Trap,
 }
@@ -40,7 +41,7 @@ public class AttackCtrl : MonoBehaviour
         {
             Destroy(gameObject, 3f);
         }
-        else if (MethodType == AttackMethod.Granade)
+        else if (MethodType == AttackMethod.Granade || MethodType == AttackMethod.AttackTrigger_Circle)
         {
             Destroy(gameObject, 0.1f);
         }
@@ -54,6 +55,9 @@ public class AttackCtrl : MonoBehaviour
         {
             case AttackMethod.Arrow:
                 transform.Translate(0.5f * moveSpeed * Vector3.forward);
+                break;
+            case AttackMethod.AttackTrigger_Circle:
+                
                 break;
             case AttackMethod.Granade:
 
@@ -77,7 +81,15 @@ public class AttackCtrl : MonoBehaviour
                 if (EnemyCtrl != null)
                 {
                     Debug.Log("Granade Hit!");
-                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit+10, Type, Debuff2Add);
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                }
+            }
+            else if (this.MethodType == AttackMethod.AttackTrigger_Circle)
+            {
+                if (EnemyCtrl != null)
+                {
+                    Debug.Log("CircleTrigger Hit!");
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                 }
             }
             else if (this.MethodType == AttackMethod.Trap)
@@ -86,8 +98,8 @@ public class AttackCtrl : MonoBehaviour
                 {
                     Debug.Log("Trap Hit!");
                     ModelAnimator.SetTrigger("TrapTriggered");
-                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit+10, Type, Debuff2Add);
-                    Destroy(this.gameObject,5f);
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                    Destroy(this.gameObject, 5f);
                 }
             }
         }

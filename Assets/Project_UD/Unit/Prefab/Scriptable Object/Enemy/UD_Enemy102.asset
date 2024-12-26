@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
+  m_Name: UD_Enemy102
+  m_EditorClassIdentifier: 
+  unitType: 0
+  defenseType: 0
+  targetSelectType: 0
+  modelType: 0
+  modelPrefab: {fileID: 242289790221605892, guid: b97e1d7a6563ab04082eab9041842ff4,
+    type: 3}
+  maxHP: 150
+  mental: 1
+  moveSpeed: 2
+  overrideController: {fileID: 22100000, guid: c3dc1e74c746a63468dc3b008779f3cb, type: 2}
+  attackPoint: 1
+  critChanceRate: 10
+  generalSkillCode: 102
+  specialSkillCode: 0
+  weaponCooldown: 1
+  skillCooldown: 5
+  sightRange: 200
+  attackRange: 3
+  attackSound:
+  - {fileID: 8300000, guid: c4b110176e912ec468fe285d581c321f, type: 3}
+  - {fileID: 8300000, guid: 591a9af67ca9d544782235582d61294b, type: 3}
+  tauntAniClip: []
+  globalTime: 0
+  g_SkillName: "\uBCA0\uAE30"
+  s_SkillName: "\uBCA0\uAE30"
+  unitCode: 80
+  level: 1
+  cost: 0
+  gold: 50
+  name: "\uAC1C\uCC99\uC790"
+  g_SkillInfo: "\uAC1C\uCC99\uC790 gSkill"
+  s_SkillInfo: "\uAC1C\uCC99\uC790 sSkill"

@@ -12,6 +12,8 @@ public class UnitSkillManager : MonoBehaviour
     public GameObject Granade; //수류탄
     public GameObject Trap; //곰덫
 
+    public GameObject AttackTrigger; //공격 트리거
+
     public bool attackStop = false;
     public float weaponCooldown_Cur = 0;//현재 일반공격 쿨타임
     public float skillCooldown_Cur = 0;//현재 특수 스킬 쿨타임
@@ -51,6 +53,7 @@ public class UnitSkillManager : MonoBehaviour
         int damage = 0;
         AttackType attackType = AttackType.UnKnown;
         UnitDebuff debuff = UnitDebuff.None;
+        bool AttackTargetPoint = true;
 
         if (weaponCooldown_Cur <= 0)
         {
@@ -87,9 +90,10 @@ public class UnitSkillManager : MonoBehaviour
                     break;
                 //망치 내려치기
                 case 202:
-                    damage = 7;
+                    damage = 12;
                     attackType = AttackType.Crush;
                     debuff = UnitDebuff.Dizzy;
+                    AttackTargetPoint = false;
                     break;
                 //엽총 쏘기
                 case 203:
@@ -99,16 +103,33 @@ public class UnitSkillManager : MonoBehaviour
                     break;
             }
 
-            //타겟이 적인가?
-            if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && TargetEnemy.activeSelf)
+            if (AttackTargetPoint)
             {
-                Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                int HitSoundRandomNum = Random.Range(0, 2);
-                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
+                //타겟이 적인가?
+                if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && TargetEnemy.activeSelf)
+                {
+                    Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                    int HitSoundRandomNum = Random.Range(0, 2);
+                    AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
-                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
-                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                    UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
+                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                }
             }
+            else
+            {
+                if (AttackTrigger != null)
+                {
+                    GameObject AttackTriggerObj = Instantiate(AttackTrigger);
+                    AttackCtrl attackCtrl = AttackTriggerObj.GetComponent<AttackCtrl>();
+                    attackCtrl.Damage = damage;
+                    attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
+                    attackCtrl.Type = attackType;
+                    attackCtrl.Debuff2Add = debuff;
+                }
+            }
+
+            
 
             weaponCooldown_Cur = weaponCooldown; //쿨타임 초기화.
         }
@@ -392,6 +413,16 @@ public class UnitSkillManager : MonoBehaviour
                     attackType = AttackType.Pierce;
                     debuff = UnitDebuff.Bleed;
                     break;
+                case 301:
+                    damage = 14;
+                    attackType = AttackType.Crush;
+                    debuff = UnitDebuff.Dizzy;
+                    break;
+                case 401:
+                    damage = 16;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
             }
 
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_UNIT))
@@ -406,7 +437,7 @@ public class UnitSkillManager : MonoBehaviour
             else
             {
                 BaseStatus BaseCtrl = TargetEnemy.GetComponent<BaseStatus>();
-                BaseCtrl.ReceiveDamage(UnitCtrl.unitData.attackPoint);
+                BaseCtrl.ReceiveDamage(UnitCtrl.unitData.level);
             }
 
             weaponCooldown_Cur = weaponCooldown;
