@@ -11,7 +11,6 @@ public enum UnitType //병사의 종류.
     MinByeong,
     Hunter,
     SpearMan,
-    HammerMan,
     Archer,
     Gunner,
 }

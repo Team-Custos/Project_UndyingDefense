@@ -82,6 +82,7 @@ public class RangeCtrl : MonoBehaviour
                     }
                 }
             }
+
             return Obj_Nearest;
         }
         else
@@ -89,12 +90,6 @@ public class RangeCtrl : MonoBehaviour
             return null;
         }
     }
-
-    public void GetObjectsInFan()
-    {
-        
-    }
-
 
     public void ListTargetDelete(GameObject latestTarget)//리스트 초기화.
     {
