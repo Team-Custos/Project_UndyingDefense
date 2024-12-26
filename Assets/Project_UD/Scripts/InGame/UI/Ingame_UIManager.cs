@@ -70,7 +70,15 @@ public class Ingame_UIManager : MonoBehaviour
     public GameObject unitUpgradeMenuBox;           // 유닛 업그레이드 메뉴 판넬
     public GameObject currentUpgradeMenu;           // 프리펩으로 생성될 업그레이드 판넬
     public Button UnitUpgrade1Btn;
+    public Text UnitUpgrade1Txt;
     public Button UnitUpgrade2Btn;
+    public Text UnitUpgrade2Txt;
+    public Button UnitUpgradeCloseeBtn;
+    public GameObject unitUpgradeMenuConfirmBox;
+    public GameObject currentunitUpgradeMenuConfirmBox;
+    public Button UpgradeCheckCloseBtn;
+    public Button UpgradeCheckOkBtn;
+    public Button UpgradeCheckCancleBtn;
 
 
     [Header("====Game Setting UI====")]
@@ -170,17 +178,18 @@ public class Ingame_UIManager : MonoBehaviour
                         else
                         {
                             SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_unableClick);
-                            return;
                         }
 
                         // 유닛 스폰 로직
                         UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
 
+
                         // 이미지 상태 변경 로직
                         UpdateButtonEffect(idx);
 
-                        // 기타 로직
                         DestroyUnitStateChangeBox();
+                        DestroyUnitUpgradeMenu();
+                        DestorypgradeMenuConfirmBox();
                     }
                 });
             }
@@ -310,6 +319,27 @@ public class Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox.transform.position = screenPos;
         }
 
+        if(selectedUnit != null && currentUpgradeMenu != null)
+        {
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
+            screenPos.x += 190;
+            screenPos.y += 10;
+
+
+            currentUpgradeMenu.transform.position = screenPos;
+        }
+
+
+        if (selectedUnit != null && currentunitUpgradeMenuConfirmBox != null)
+        {
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
+            screenPos.x += 190;
+            screenPos.y += 10;
+
+
+            currentunitUpgradeMenuConfirmBox.transform.position = screenPos;
+        }
+
 
 
 
@@ -318,6 +348,8 @@ public class Ingame_UIManager : MonoBehaviour
         {
             selectedBtnEffectImage[0].gameObject.SetActive(false);
             selectedBtnEffectImage[1].gameObject.SetActive(false);
+            selectedBtnEffectImage[2].gameObject.SetActive(false);
+            selectedBtnEffectImage[3].gameObject.SetActive(false);
         }
 
 
@@ -482,8 +514,10 @@ public class Ingame_UIManager : MonoBehaviour
         defeneTypeText.text = selectedUnit.unitData.defenseType.ToString();
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
+        gSkillImage.sprite = selectedUnit.unitData.g_SkillImage;
+        sSkillImage.sprite = selectedUnit.unitData.s_SkillImage;
 
-        if(selectedUnit.unitData.unitCode == "1")
+        if (selectedUnit.unitData.unitCode == "1")
         {
             unitInfoImage.sprite = minByeongImage;
         }
@@ -512,6 +546,11 @@ public class Ingame_UIManager : MonoBehaviour
         if (unit.Ally_Mode == AllyMode.Change)
         {
             return;
+        }
+
+        if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+        {
+            Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
         }
 
         Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
@@ -568,11 +607,18 @@ public class Ingame_UIManager : MonoBehaviour
             buttonImage.sprite = SiegeModeImage;
         }
 
+        if(unit.unitData.level >= 2)
+        {
+            unitUpgradeBtn.interactable = false;
+        }
+        else
+        {
+            unitUpgradeBtn.interactable = true;
+        }
+
         // 업그레이드 버튼
         if (unitUpgradeBtn != null)
         {
-            unitUpgradeBtn.interactable = false;
-
             unitUpgradeBtn.onClick.RemoveAllListeners();
             unitUpgradeBtn.onClick.AddListener(() =>
             {
@@ -582,7 +628,7 @@ public class Ingame_UIManager : MonoBehaviour
                     currentSelectedUnitOptionBox = null;
                 }
 
-                //CreateUpgradeMenu(unit);
+                CreateUpgradeMenu(unit);
             });
         }
     }
@@ -598,6 +644,8 @@ public class Ingame_UIManager : MonoBehaviour
     //        unitUpgradeBtn.interactable = interactable;
     //}
 
+
+    public string upgradeOption;
 
     private void CreateUpgradeMenu(Ingame_UnitCtrl unit)
     {
@@ -621,18 +669,13 @@ public class Ingame_UIManager : MonoBehaviour
         UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
         Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
 
+        UnitUpgrade1Txt = currentUpgradeMenu.transform.Find("UnitUpgrade1Txt").GetComponent<Text>();
+        UnitUpgrade1Txt.text = unit.unitData.upgrade1Cost.ToString();
+        UnitUpgrade2Txt = currentUpgradeMenu.transform.Find("UnitUpgrade2Txt").GetComponent<Text>();
+        UnitUpgrade2Txt.text = unit.unitData.upgrade2Cost.ToString();
 
+        UnitUpgradeCloseeBtn = currentUpgradeMenu.transform.Find("UpgradeCloseBtn").GetComponent<Button>();
 
-        // 업그레이드 옵션 가져오기
-        List<string> upgradeOptions = UnitUpgradeManager.Instance.GetUpgradeOptions(unit.unitData.unitCode);
-
-        if (upgradeOptions == null || upgradeOptions.Count == 0)
-        {
-            Debug.LogError("업그레이드 가능한 옵션이 없습니다.");
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
-            return;
-        }
 
         // 3티어인 경우 버튼 하나만 생성
         if (unit.unitData.level == 3)
@@ -645,36 +688,88 @@ public class Ingame_UIManager : MonoBehaviour
             unitUpgrade1Rect.anchoredPosition = new Vector2(unitUpgrade1Rect.anchoredPosition.x + 60, unitUpgrade1Rect.anchoredPosition.y);
         }
 
+
         // 첫 번째 업그레이드 옵션 버튼 
         UnitUpgrade1Btn.onClick.RemoveAllListeners();
         UnitUpgrade1Btn.onClick.AddListener(() =>
         {
-            if (upgradeOptions.Count > 0)
-            {
-                // 업그레이드 수행
-                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[0]);
-            }
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
+            upgradeOption = "1";
+
+            CreateUpgradeconfirmedMenu(selectedUnit);
+
+            //PerformUnitUpgrade("1");  // 첫 번째 업그레이드 경로
+
+            
+            DestroyUnitUpgradeMenu();
         });
 
-        // 두 번째 업그레이드 옵션 버튼 (2개 옵션이 있는 경우만)
         UnitUpgrade2Btn.onClick.RemoveAllListeners();
         UnitUpgrade2Btn.onClick.AddListener(() =>
         {
-            if (upgradeOptions.Count > 1)
-            {
-                // 두 번째 업그레이드 수행
-                UnitUpgradeManager.Instance.PerformUpgrade(unit, upgradeOptions[1]);
-            }
-            Destroy(currentUpgradeMenu);
-            currentUpgradeMenu = null;
+            upgradeOption = "2";
+
+            //PerformUnitUpgrade("2");  // 두 번째 업그레이드 경로
+
+            CreateUpgradeconfirmedMenu(selectedUnit);
+            DestroyUnitUpgradeMenu();
+        });
+
+
+        UnitUpgradeCloseeBtn.onClick.AddListener(() =>
+        {
+            DestroyUnitUpgradeMenu();
         });
 
     }
 
+    private void CreateUpgradeconfirmedMenu(Ingame_UnitCtrl unit)
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+
+        currentunitUpgradeMenuConfirmBox = Instantiate(unitUpgradeMenuConfirmBox, canvas.transform);
+
+        RectTransform rectTransform = currentunitUpgradeMenuConfirmBox.GetComponent<RectTransform>();
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
+        screenPos.x += 200;
+        rectTransform.position = screenPos;
+
+        UpgradeCheckCloseBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckCloseBtn").GetComponent<Button>();
+        UpgradeCheckOkBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckOkBtn").GetComponent<Button>();
+        UpgradeCheckCancleBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckCancleBtn").GetComponent<Button>();
 
 
+        UpgradeCheckCloseBtn.onClick.AddListener(() =>
+        {
+            Destroy(currentunitUpgradeMenuConfirmBox);
+        });
+
+        UpgradeCheckCancleBtn.onClick.AddListener(() =>
+        {
+            Destroy(currentunitUpgradeMenuConfirmBox);
+        });
+
+        UpgradeCheckOkBtn.onClick.AddListener(() =>
+        {
+            PerformUnitUpgrade(upgradeOption);
+            DestorypgradeMenuConfirmBox();
+        });
+    }
+
+
+
+    private void PerformUnitUpgrade(string upgradeOption)
+    {
+        if (selectedUnit != null)
+        {
+            UnitUpgradeManager.Instance.PerformUpgrade(selectedUnit, upgradeOption);
+        }
+        else
+        {
+            Debug.LogError("targetUnit이 설정되지 않았습니다!");
+        }
+
+        UpdateUnitInfoPanel(selectedUnit);
+    }
 
 
 
@@ -692,16 +787,29 @@ public class Ingame_UIManager : MonoBehaviour
     {
         if (currentUpgradeMenu != null)
         {
+
             Destroy(currentUpgradeMenu);
 
             currentUpgradeMenu = null;
         }
     }
 
+    public void DestorypgradeMenuConfirmBox()
+    {
+        if (currentunitUpgradeMenuConfirmBox != null)
+        {
+
+            Destroy(currentunitUpgradeMenuConfirmBox);
+
+            currentunitUpgradeMenuConfirmBox = null;
+        }
+    }
 
 
 
-    
+
+
+
     public void ShowUnitMoveUI(GameObject unit, bool move)
     {
         if (unit == null)

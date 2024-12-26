@@ -82,7 +82,11 @@ public class LobbyUIManager : MonoBehaviour
     public Button lobbySettingBtn;
     public Button settingCloseBtn;
     public Button endGameBtn;
+    public Button creditBtn;
     public GameObject lobbySettingPanel;
+
+    public GameObject creditPanel;
+    public Button creditCloseBtn;
 
     public Sprite currentTabImage;
     public Sprite noneTabImage;
@@ -452,6 +456,32 @@ public class LobbyUIManager : MonoBehaviour
         });
 
         UpdateButtonInteractivity();
+
+        if(creditBtn != null)
+        {
+            creditBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                creditPanel.SetActive(true);
+            });
+        }
+
+        if (creditCloseBtn != null)
+        {
+            creditCloseBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                creditPanel.SetActive(false);
+            });
+        }
     }
 
 

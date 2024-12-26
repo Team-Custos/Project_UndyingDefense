@@ -168,11 +168,6 @@ public class EnemySpawner : MonoBehaviour
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
 
-        if(bgmManager  == null)
-        {
-            Debug.Log("fefe");
-        }
-
         // 몬스터 스폰 순서 결정
         List<int> spawnOrder = new List<int>();
         foreach (var info in currentData.monsterSpawnInfos)
@@ -368,6 +363,7 @@ public class EnemySpawner : MonoBehaviour
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
+            Destroy(monster);
         }
     }
 
