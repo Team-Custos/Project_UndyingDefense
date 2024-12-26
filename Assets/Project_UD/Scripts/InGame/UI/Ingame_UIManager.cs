@@ -30,7 +30,6 @@ public class Ingame_UIManager : MonoBehaviour
     [Header("====UnitSpawnDeck====")]
     public GameObject unitSpawnPanel;
     public Button[] unitSpawnBtn;
-    public GameObject[] unitSpawnBtnPanel;
     private int currentSelectedIndex = -1; // 현재 선택된 버튼의 인덱스 (-1은 선택 없음 의미)
 
     [Header("====UnitInfoPanel====")]
@@ -109,9 +108,9 @@ public class Ingame_UIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        inGameManager = InGameManager.inst;
         unitSpawnManager = UnitSpawnManager.inst;
         unitSpawnBtn = unitSpawnPanel.GetComponentsInChildren<Button>();
-
     }
 
     // Start is called before the first frame update
@@ -119,9 +118,6 @@ public class Ingame_UIManager : MonoBehaviour
     {
 
         mainCamera = Camera.main;
-
-        inGameManager = InGameManager.inst;
-
 
 
         // 저장된 커맨더 스킬 확인 용
@@ -163,6 +159,9 @@ public class Ingame_UIManager : MonoBehaviour
                         InGameManager.inst.UnitSetMode = true;
                         InGameManager.inst.AllyUnitSetMode = true;
 
+                        // 유닛 스폰 로직
+                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+
                         if (idx == 0 || idx == 1)
                         {
                             SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
@@ -170,11 +169,7 @@ public class Ingame_UIManager : MonoBehaviour
                         else
                         {
                             SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_unableClick);
-                            return;
                         }
-
-                        // 유닛 스폰 로직
-                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
 
                         // 이미지 상태 변경 로직
                         UpdateButtonEffect(idx);
@@ -382,64 +377,6 @@ public class Ingame_UIManager : MonoBehaviour
         //    }
         //}
     }
-
-    //public void UpdateSpawnButtonState(int index)
-    //{
-    //    if (index >= 0 && index < unitSpawnBtn.Length)
-    //    {
-    //        unitSpawnBtn[index].interactable = false; // 버튼 비활성화
-    //        if (unitSpawnBtnPanel[index] != null)
-    //        {
-    //            unitSpawnBtnPanel[index].SetActive(true); // 패널 활성화
-    //            StartCoroutine(UnitSpawnCoolTime(index)); // 코루틴 실행
-    //        }
-    //    }
-    //}
-
-    private IEnumerator UnitSpawnCoolTime(int index)
-    {
-        GameObject panel = unitSpawnBtnPanel[index];
-        RectTransform panelRect = panel.GetComponent<RectTransform>();
-
-        Vector2 originalSize = panelRect.sizeDelta;
-        Vector2 originalPosition = panelRect.anchoredPosition;
-
-        panelRect.pivot = new Vector2(0.5f, 0f);
-        panelRect.anchorMin = new Vector2(0.5f, 0f);
-        panelRect.anchorMax = new Vector2(0.5f, 0f);
-
-        float duration = 3f;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = elapsedTime / duration;
-
-            float newHeight = Mathf.Lerp(originalSize.y, 0, progress);
-            panelRect.sizeDelta = new Vector2(originalSize.x, newHeight);
-
-            yield return null;
-        }
-
-        panel.SetActive(false);
-        panelRect.sizeDelta = originalSize;
-        panelRect.anchoredPosition = originalPosition;
-
-        unitSpawnBtn[index].interactable = true;
-    }
-
-    //public int GetButtonIndexByUnitCode(int unitCode)
-    //{
-    //    for (int i = 0; i < unitSpawnBtn.Length; i++)
-    //    {
-    //        if (unitSpawnBtn[i].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode == unitCode)
-    //        {
-    //            return i;
-    //        }
-    //    }
-    //    return -1;
-    //}
 
     public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit)
     {

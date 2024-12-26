@@ -29,9 +29,6 @@ public class Ingame_InputSystem : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
-
-
     }
 
     // Update is called once per frame
@@ -39,7 +36,6 @@ public class Ingame_InputSystem : MonoBehaviour
     {
         _inputInit();
         HotKey();
-
     }
 
     void HotKey()

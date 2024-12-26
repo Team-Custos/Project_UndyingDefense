@@ -6,17 +6,6 @@ using UnityEngine.UI;
 
 //이 스크립트는 아군 병사를 스폰시키기 위한 스크립트입니다.
 
-public enum UnitType //병사의 종류.
-{
-    MinByeong,
-    Hunter,
-    SpearMan,
-    HammerMan,
-    Archer,
-    Gunner,
-}
-
-
 public class UnitSpawnManager : MonoBehaviour
 {
     public List<Ingame_UnitData> unitDatas;
