@@ -390,6 +390,7 @@ public class UnitSkillManager : MonoBehaviour
         int damage = 0;
         AttackType attackType = AttackType.UnKnown;
         UnitDebuff debuff = UnitDebuff.None;
+        bool AttackTargetPoint = true;
 
         if (weaponCooldown_Cur <= 0)
         {
@@ -435,16 +436,36 @@ public class UnitSkillManager : MonoBehaviour
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
+                case 501:
+                    damage = 18;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Trapped;
+                    break;
             }
 
             if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
-                Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                int HitSoundRandomNum = Random.Range(0, 2);
-                AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
+                if (AttackTargetPoint)
+                {
+                    Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
+                    int HitSoundRandomNum = Random.Range(0, 2);
+                    AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
-                UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
-                EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                    UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
+                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                }
+                else
+                {
+                    if (AttackTrigger != null)
+                    {
+                        GameObject AttackTriggerObj = Instantiate(AttackTrigger, UnitCtrl.transform);
+                        AttackCtrl attackCtrl = AttackTriggerObj.GetComponent<AttackCtrl>();
+                        attackCtrl.Damage = damage;
+                        attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
+                        attackCtrl.Type = attackType;
+                        attackCtrl.Debuff2Add = debuff;
+                    }
+                }
             }
             else
             {

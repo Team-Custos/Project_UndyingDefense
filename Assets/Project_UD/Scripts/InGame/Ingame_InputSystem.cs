@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 //이 스크립트는 인게임 조작을 관리하기 위한 스크립트입니다.
 
@@ -43,6 +44,7 @@ public class Ingame_InputSystem : MonoBehaviour
         InGameManager.inst.FasterTimeScale =
             Input.GetKeyDown(KeyCode.E) || Input.GetKey(KeyCode.E);
 
+        Button[] unitSpawnBtn = Ingame_UIManager.instance.unitSpawnBtn;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -58,7 +60,7 @@ public class Ingame_InputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (!Ingame_UIManager.instance.unitSpawnBtn[0].interactable)
+            if (!unitSpawnBtn[0].interactable)
             {
                 return;
             }
@@ -68,15 +70,13 @@ public class Ingame_InputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (!Ingame_UIManager.instance.unitSpawnBtn[1].interactable)
+            if (!unitSpawnBtn[1].interactable)
             {
                 return;
             }
 
-            ToggleUnitSpawnState(1); // 2번 단축키
+            ToggleUnitSpawnState(UnitType.사냥꾼.GetHashCode()); // 2번 단축키
         }
-
-
     }
 
 
@@ -112,13 +112,13 @@ public class Ingame_InputSystem : MonoBehaviour
     void ToggleUnitSpawnState(int unitIndex)
     {
         // 같은 유닛이 이미 활성화되어 있는 경우: 소환 상태 해제
-        if (spawnManager.unitToSpawn == unitIndex && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+        if (spawnManager.unitToSpawn.GetHashCode() == unitIndex && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
         {
             InGameManager.inst.UnitSetMode = false;
             InGameManager.inst.AllyUnitSetMode = false;
 
             // 버튼 효과 초기화
-            Ingame_UIManager.instance.UpdateButtonEffect(-1); // 모든 버튼 비활성화
+            Ingame_UIManager.instance.UpdateButtonEffect(UnitType.None.GetHashCode()); // 모든 버튼 비활성화
         }
         else
         {
@@ -126,8 +126,8 @@ public class Ingame_InputSystem : MonoBehaviour
             InGameManager.inst.UnitSetMode = true;
             InGameManager.inst.AllyUnitSetMode = true;
 
-            // 선택한 유닛 설정
-            spawnManager.unitToSpawn = unitIndex;
+            //// 선택한 유닛 설정
+            //spawnManager.unitToSpawn = unitIndex;
 
             // 버튼 효과 갱신
             Ingame_UIManager.instance.UpdateButtonEffect(unitIndex);

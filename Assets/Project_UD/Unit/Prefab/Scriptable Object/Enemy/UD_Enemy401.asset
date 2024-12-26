@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
   m_Name: UD_Enemy401
   m_EditorClassIdentifier: 
+  unitType: 0
   defenseType: 1
   targetSelectType: 0
   level: 1
-  modelType: 0
   modelPrefab: {fileID: 4550107032931746501, guid: 2b65dd4083398fb47af6812d2bb34d57,
     type: 3}
   maxHP: 375
@@ -29,7 +29,7 @@ MonoBehaviour:
   attackSpeed: 3
   skillCooldown: 5
   sightRange: 200
-  attackRange: 3
+  attackRange: 5
   attackSound:
   - {fileID: 8300000, guid: 56f0668d9ecb81745886bc8b5f86fa18, type: 3}
   tauntAniClip: []

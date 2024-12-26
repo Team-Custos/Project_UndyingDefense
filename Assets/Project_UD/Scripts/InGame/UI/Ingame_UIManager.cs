@@ -143,7 +143,7 @@ public class Ingame_UIManager : MonoBehaviour
                 unitSpawnBtn[idx].onClick.AddListener(() =>
                 {
                     // 현재 버튼이 활성화된 상태인지 확인
-                    if (UnitSpawnManager.inst.unitToSpawn == unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode
+                    if (UnitSpawnManager.inst.unitToSpawn == unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().currentUnitType
                         && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
                     {
                         // 동일한 버튼을 다시 눌렀다면 소환 상태를 해제
@@ -151,7 +151,7 @@ public class Ingame_UIManager : MonoBehaviour
                         InGameManager.inst.AllyUnitSetMode = false;
 
                         // 버튼 효과 초기화
-                        UpdateButtonEffect(-1); // 모든 버튼 비활성화
+                        UpdateButtonEffect((int)UnitType.None); // 모든 버튼 비활성화
                     }
                     else
                     {
@@ -160,7 +160,7 @@ public class Ingame_UIManager : MonoBehaviour
                         InGameManager.inst.AllyUnitSetMode = true;
 
                         // 유닛 스폰 로직
-                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().currentUnitType;
 
                         if (idx == 0 || idx == 1)
                         {

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 //이 스크립트는 아군 병사를 스폰시키기 위한 스크립트입니다.
 
@@ -16,7 +15,7 @@ public class UnitSpawnManager : MonoBehaviour
 
     public GameObject Test_Ally;
 
-    public int unitToSpawn = 0;
+    public UnitType unitToSpawn;
 
     public Transform SpawnPos;
 

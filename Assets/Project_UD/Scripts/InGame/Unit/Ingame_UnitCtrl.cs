@@ -4,6 +4,18 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 //이 스크립트는 유닛의 전반적인 상태와 행동을 관리하기 위한 스크립트입니다. (아군과 적군 통합.)
+
+public enum UnitType //유닛의 종류.
+{
+    None = -1,
+    민병,
+    사냥꾼,
+    창병,
+    한량,
+    척후병,
+    포수,
+}
+
 public enum DefenseType //유닛의 방어속성.
 {
     cloth,

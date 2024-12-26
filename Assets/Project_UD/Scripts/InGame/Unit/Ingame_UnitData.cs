@@ -7,12 +7,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UnitData", menuName = "Scriptable Object/UnitData", order = int.MaxValue)]
 public class Ingame_UnitData : ScriptableObject
 {                                                                 
-    [Header("====General====")]                                                                       
+    [Header("====General====")]  
+    public UnitType unitType;
     public DefenseType defenseType;                               
     public TargetSelectType targetSelectType;
 
     public int level;
-    public int modelType;
     public GameObject modelPrefab;
     public int maxHP;                                             
     public int mental = 1;                                        

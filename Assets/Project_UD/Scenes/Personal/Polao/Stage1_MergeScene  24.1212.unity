@@ -9049,7 +9049,7 @@ MonoBehaviour:
   Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
   Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
   AbleToSpawn: 1
-  UnitCode: 0
+  currentUnitType: 0
 --- !u!114 &209794470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31267,11 +31267,6 @@ MonoBehaviour:
   UnitSetModeText: {fileID: 636566296}
   unitSpawnPanel: {fileID: 590253401}
   unitSpawnBtn: []
-  unitSpawnBtnPanel:
-  - {fileID: 1933860130}
-  - {fileID: 209794467}
-  - {fileID: 987585783}
-  - {fileID: 863933535}
   unitInfoPanel: {fileID: 778175405}
   unitInfoImage: {fileID: 790848758}
   levelImage: {fileID: 440713672}
@@ -33394,7 +33389,7 @@ MonoBehaviour:
   Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
   Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
   AbleToSpawn: 1
-  UnitCode: 4
+  currentUnitType: 4
 --- !u!114 &863933538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37317,7 +37312,7 @@ MonoBehaviour:
   Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
   Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
   AbleToSpawn: 1
-  UnitCode: 0
+  currentUnitType: 0
 --- !u!114 &965695042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38556,7 +38551,7 @@ MonoBehaviour:
   Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
   Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
   AbleToSpawn: 1
-  UnitCode: 1
+  currentUnitType: 1
 --- !u!114 &987585786
 MonoBehaviour:
   m_ObjectHideFlags: 0

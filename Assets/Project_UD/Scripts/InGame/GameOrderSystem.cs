@@ -341,7 +341,7 @@ public class GameOrderSystem : MonoBehaviour
                         if (GAMEMANAGER.AllyUnitSetMode) // 아군 배치
                         {
                             UnitSpawnManager spawnMgr = UnitSpawnManager.inst;
-                            gridTile.currentPlacedUnit = spawnMgr.UnitSpawn(spawnMgr.unitToSpawn, gridTile.transform.position.x, gridTile.transform.position.z);
+                            gridTile.currentPlacedUnit = spawnMgr.UnitSpawn(spawnMgr.unitToSpawn.GetHashCode(), gridTile.transform.position.x, gridTile.transform.position.z);
 
                             InGameManager.inst.UnitSetMode = false;
                             InGameManager.inst.AllyUnitSetMode = false;

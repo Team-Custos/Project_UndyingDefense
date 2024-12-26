@@ -148,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModelAnimator: {fileID: 0}
   MethodType: 1
+  Particle: {fileID: 0}
   Type: 2
   Debuff2Add: 2
   Damage: 12
@@ -162,6 +163,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8556152022676578444}
     m_Modifications:
+    - target: {fileID: 137383874733577664, guid: e3c2c91048e75b645a0a753f123c5336,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 337847468805045948, guid: e3c2c91048e75b645a0a753f123c5336,
         type: 3}
       propertyPath: m_LocalPosition.x

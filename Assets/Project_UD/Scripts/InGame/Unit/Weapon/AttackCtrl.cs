@@ -26,6 +26,7 @@ public class AttackCtrl : MonoBehaviour
     public Animator ModelAnimator;
 
     public AttackMethod MethodType;
+    public ParticleSystem Particle;
 
     public AttackType Type;
     public UnitDebuff Debuff2Add;

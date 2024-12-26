@@ -14,7 +14,7 @@ public class Ingame_UnitSpawnBtnStatus : MonoBehaviour
     public Color Color_ableToCost = Color.white;
 
     public bool AbleToSpawn = true;
-    public int UnitCode = 0;//현재 버튼으로 스폰 시킬 병사의 코드.
+    public UnitType currentUnitType = 0;//현재 버튼으로 스폰 시킬 병사.
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class Ingame_UnitSpawnBtnStatus : MonoBehaviour
 
     private void Update()
     {
-        button.interactable = (UnitSpawnManager.inst.unitDatas[UnitCode].cost <= InGameManager.inst.gold);
+        button.interactable = (UnitSpawnManager.inst.unitDatas[currentUnitType.GetHashCode()].cost <= InGameManager.inst.gold);
 
         if (button.interactable)
         {
@@ -36,7 +36,7 @@ public class Ingame_UnitSpawnBtnStatus : MonoBehaviour
             costText.color = Color_UnableToCost;
         }
 
-        costText.text = UnitSpawnManager.inst.unitDatas[UnitCode].cost.ToString();
+        costText.text = UnitSpawnManager.inst.unitDatas[currentUnitType.GetHashCode()].cost.ToString();
     }
 
 }
