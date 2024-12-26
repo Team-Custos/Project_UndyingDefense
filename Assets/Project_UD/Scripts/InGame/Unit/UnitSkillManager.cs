@@ -120,7 +120,7 @@ public class UnitSkillManager : MonoBehaviour
             {
                 if (AttackTrigger != null)
                 {
-                    GameObject AttackTriggerObj = Instantiate(AttackTrigger);
+                    GameObject AttackTriggerObj = Instantiate(AttackTrigger,UnitCtrl.transform);
                     AttackCtrl attackCtrl = AttackTriggerObj.GetComponent<AttackCtrl>();
                     attackCtrl.Damage = damage;
                     attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
@@ -396,20 +396,32 @@ public class UnitSkillManager : MonoBehaviour
             unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
             switch (SkillCode)
             {
-                //검 베기
-                case 102:
-                    damage = 5;
+                //햘퀴기
+                case 101:
+                    damage = 10;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
+                //검 베기
+                case 102:
+                    damage = 10;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+                //창 찌르기
+                case 201:
+                    damage = 12;
+                    attackType = AttackType.Pierce;
+                    debuff = UnitDebuff.Bleed;
+                    break;
                 //활 쏘기
-                case 103:
+                case 202:
                     if (Bow != null)
                     {
                         Bow.transform.LookAt(TargetPos);
                         Bow.GetComponent<BowCtrl>().ArrowShoot(true);
                     }
-                    damage = 5;
+                    damage = 6;
                     attackType = AttackType.Pierce;
                     debuff = UnitDebuff.Bleed;
                     break;

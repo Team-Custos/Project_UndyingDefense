@@ -10,35 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
-  m_Name: UD_Enemy301
+  m_Name: UD_Enemy201
   m_EditorClassIdentifier: 
-  defenseType: 2
+  unitType: 0
+  defenseType: 0
   targetSelectType: 0
   level: 1
   modelType: 0
-  modelPrefab: {fileID: 2743259540339794457, guid: 531b9602230267640b810b7241137da7,
+  modelPrefab: {fileID: 6605580031305847503, guid: aaad4cd17e30eae4192f94585ee49962,
     type: 3}
-  maxHP: 300
-  mental: 2
+  maxHP: 150
+  mental: 1
   moveSpeed: 2
-  overrideController: {fileID: 22100000, guid: e0a6a21c3d9e3644681ae6193e78e21b, type: 2}
+  overrideController: {fileID: 22100000, guid: 131b3cf0e7122ca4dbe49b264d4ef683, type: 2}
   attackPoint: 1
   critChanceRate: 10
-  generalSkillCode: 301
+  generalSkillCode: 201
   specialSkillCode: 0
-  attackSpeed: 3
+  attackSpeed: 1
   skillCooldown: 5
   sightRange: 200
   attackRange: 3
   attackSound:
-  - {fileID: 8300000, guid: d5445c616bac2df4d8c167f316e12e03, type: 3}
+  - {fileID: 8300000, guid: c4b110176e912ec468fe285d581c321f, type: 3}
+  - {fileID: 8300000, guid: 591a9af67ca9d544782235582d61294b, type: 3}
   tauntAniClip: []
   globalTime: 0
   g_SkillName: "\uBCA0\uAE30"
   s_SkillName: "\uBCA0\uAE30"
   unitCode: 80
   cost: 0
-  gold: 150
+  gold: 100
   name: "\uAC1C\uCC99\uC790"
   g_SkillInfo: "\uAC1C\uCC99\uC790 gSkill"
   s_SkillInfo: "\uAC1C\uCC99\uC790 sSkill"

@@ -186,24 +186,6 @@ public class Ingame_UIManager : MonoBehaviour
             }
         }
 
-
-
-        //for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
-        //{
-        //    if (unitSpawnBtn[ii] != null)
-        //    {
-        //        int idx = ii;
-        //        unitSpawnBtn[idx].onClick.AddListener(() =>
-        //        {
-        //            UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
-        //            InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
-        //            InGameManager.inst.AllyUnitSetMode = !InGameManager.inst.AllyUnitSetMode;
-
-        //            DestroyUnitStateChangeBox();
-        //        });
-        //    }
-        //}
-
         if (EnemyTestModeBtn != null)
         {
             EnemyTestModeBtn.onClick.AddListener(() =>

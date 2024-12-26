@@ -33385,12 +33385,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863933535}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99942df37b77a0d4fb2e0e6dc19cd139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  costText: {fileID: 0}
+  costText: {fileID: 1410323027}
   Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
   Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
   AbleToSpawn: 1
@@ -55929,40 +55929,13 @@ MonoBehaviour:
   bgmManager: {fileID: 1904282614}
   waveDataTable: {fileID: 11400000, guid: 1956f4a03b933404c88ac6a3bbe682f5, type: 2}
   enemyDatas:
+  - {fileID: 11400000, guid: 307c7bba30ed8fb43ab4178f5b226ea7, type: 2}
   - {fileID: 11400000, guid: a885cf8f44913724e8f0f15cdb6d069d, type: 2}
+  - {fileID: 11400000, guid: 978cffc0036dd364a840e2c34c2a4809, type: 2}
   - {fileID: 11400000, guid: a6d28e0ff2b5e3c4e9c87bf27f0428e1, type: 2}
   - {fileID: 11400000, guid: 486cf09239462a54d94b6aa8cd115e88, type: 2}
   - {fileID: 11400000, guid: 3e70587e3f5db544bb8c18baa4224489, type: 2}
   spawnPoint: []
-  spawnData:
-  - modelType: 0
-    spawnTime: 0
-    HP: 0
-    moveSpeed: 0
-    attackPoint: 0
-    attackSpeed: 0
-    critChanceRate: 0
-    sightRange: 0
-    attackRange: 0
-    generalSkill: 0
-    specialSkill: 0
-    unitType: 0
-    defenseType: 0
-    targetSelectType: 0
-  - modelType: 0
-    spawnTime: 0
-    HP: 0
-    moveSpeed: 0
-    attackPoint: 0
-    attackSpeed: 0
-    critChanceRate: 0
-    sightRange: 0
-    attackRange: 0
-    generalSkill: 0
-    specialSkill: 0
-    unitType: 0
-    defenseType: 0
-    targetSelectType: 0
   Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
   enemyToSpawn: 0
@@ -56509,7 +56482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1410323026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -73066,6 +73039,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 102bd3488a7f145408e5ad2e164a1621, type: 2}
   - {fileID: 11400000, guid: fbae3235d199a5b4992c5d42059d4d6b, type: 2}
   - {fileID: 11400000, guid: c6a2dd0d96851a047ac495bfe7b62993, type: 2}
+  - {fileID: 11400000, guid: 3352f409265f45b46a31bb76424e3841, type: 2}
   - {fileID: 11400000, guid: b1bc7e558feda7a41bb1977590a3f76b, type: 2}
   unitPrefab: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}

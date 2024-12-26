@@ -7,8 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UnitData", menuName = "Scriptable Object/UnitData", order = int.MaxValue)]
 public class Ingame_UnitData : ScriptableObject
 {                                                                 
-    [Header("====General====")]                                   
-    public UnitType unitType;                                     
+    [Header("====General====")]                                                                       
     public DefenseType defenseType;                               
     public TargetSelectType targetSelectType;
 

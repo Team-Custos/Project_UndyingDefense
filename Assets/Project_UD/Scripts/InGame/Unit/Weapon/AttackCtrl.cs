@@ -41,9 +41,13 @@ public class AttackCtrl : MonoBehaviour
         {
             Destroy(gameObject, 3f);
         }
-        else if (MethodType == AttackMethod.Granade || MethodType == AttackMethod.AttackTrigger_Circle)
+        else if (MethodType == AttackMethod.Granade)
         {
             Destroy(gameObject, 0.1f);
+        }
+        else if (MethodType == AttackMethod.AttackTrigger_Circle)
+        {
+            Destroy(gameObject, 0.9f);
         }
 
     }

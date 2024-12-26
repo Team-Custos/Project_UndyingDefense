@@ -5,28 +5,6 @@ using UnityEngine.AI;
 
 //이 스크립트는 적군을 스폰시키기 위한 스크립트입니다.
 
-[System.Serializable]
-
-public class EnemySpawnData
-{
-    public int modelType;
-    public float spawnTime;
-    public int HP;
-    public float moveSpeed;
-    public int attackPoint;
-    public float attackSpeed;
-    public int critChanceRate;
-
-    public float sightRange;
-    public float attackRange;
-
-    public int generalSkill;
-    public int specialSkill;
-    public UnitType unitType;
-    public DefenseType defenseType;
-    public TargetSelectType targetSelectType;
-}
-
 public class EnemySpawner : MonoBehaviour
 {
     public InGame_BGMManager bgmManager;
@@ -45,7 +23,6 @@ public class EnemySpawner : MonoBehaviour
     int pointidx = 0;
 
     public Transform[] spawnPoint;
-    public EnemySpawnData[] spawnData;
 
     bool isMobSpawnerPosSet = false;
 
@@ -244,16 +221,7 @@ public class EnemySpawner : MonoBehaviour
         //Ingame_ParticleManager.Instance.PlaySummonParticleEffect(spawnPos, false);
         GameObject enemyObj = Instantiate(Test_Enemy, spawnPos.position, Quaternion.identity);
 
-        if (enemyType == 0)
-        {
-            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[0];
-            //enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 0;
-        }
-        else if (enemyType == 1)
-        {
-            enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[1];
-            //enemyObj.GetComponent<Ingame_UnitCtrl>().unitData.modelType = 1;
-        }
+        enemyObj.GetComponent<Ingame_UnitCtrl>().unitData = enemyDatas[enemyType];
 
         activeMonsters.Add(enemyObj);
         enemyObj.GetComponent<NavMeshAgent>().avoidancePriority = enemypriority % 50;

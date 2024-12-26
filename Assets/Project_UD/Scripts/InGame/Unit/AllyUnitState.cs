@@ -239,6 +239,6 @@ public class AllyUnitState : MonoBehaviour
 
     void Dead_Update()
     {
-        
+        UnitCtrl.NavObstacle.enabled = false;
     }
 }
