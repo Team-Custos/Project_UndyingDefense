@@ -435,11 +435,13 @@ public class UnitSkillManager : MonoBehaviour
                     damage = 16;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
+                    AttackTargetPoint = false;
                     break;
                 case 501:
                     damage = 18;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Trapped;
+                    AttackTargetPoint = false;
                     break;
             }
 
@@ -452,13 +454,13 @@ public class UnitSkillManager : MonoBehaviour
                     AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
                     UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
-                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff);
+                    EnemyCtrl.ReceivePhysicalDamage(damage, UnitCtrl.unitData.critChanceRate, attackType, debuff,UnitCtrl.unitData.attackVFX);
                 }
                 else
                 {
                     if (AttackTrigger != null)
                     {
-                        GameObject AttackTriggerObj = Instantiate(AttackTrigger, UnitCtrl.transform);
+                        GameObject AttackTriggerObj = Instantiate(UnitCtrl.unitData.attackVFX, UnitCtrl.transform);
                         AttackCtrl attackCtrl = AttackTriggerObj.GetComponent<AttackCtrl>();
                         attackCtrl.Damage = damage;
                         attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;

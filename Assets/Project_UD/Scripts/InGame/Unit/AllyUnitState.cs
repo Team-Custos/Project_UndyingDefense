@@ -234,7 +234,7 @@ public class AllyUnitState : MonoBehaviour
 
     void Dead_Enter()
     {
-        
+        UnitCtrl.GetComponent<CapsuleCollider>().enabled = false;
     }
 
     void Dead_Update()

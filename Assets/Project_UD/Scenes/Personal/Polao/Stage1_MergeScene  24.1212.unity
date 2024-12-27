@@ -28105,6 +28105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8096a0c15a5464741a2fcb5b447f42e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allUnitData: []
+  isUpgrade: 0
 --- !u!1001 &755884107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31301,7 +31303,15 @@ MonoBehaviour:
     type: 3}
   currentUpgradeMenu: {fileID: 0}
   UnitUpgrade1Btn: {fileID: 0}
+  UnitUpgrade1Txt: {fileID: 0}
   UnitUpgrade2Btn: {fileID: 0}
+  UnitUpgrade2Txt: {fileID: 0}
+  UnitUpgradeCloseeBtn: {fileID: 0}
+  unitUpgradeMenuConfirmBox: {fileID: 0}
+  currentunitUpgradeMenuConfirmBox: {fileID: 0}
+  UpgradeCheckCloseBtn: {fileID: 0}
+  UpgradeCheckOkBtn: {fileID: 0}
+  UpgradeCheckCancleBtn: {fileID: 0}
   settingBtn: {fileID: 781776688}
   settingCloseBtn: {fileID: 1336381281}
   settingPanel: {fileID: 2074494430}
@@ -31316,9 +31326,12 @@ MonoBehaviour:
   selectedBtnEffectImage:
   - {fileID: 820189611}
   - {fileID: 118121076}
+  - {fileID: 118121076}
+  - {fileID: 118121076}
   unitUpgradeBtn: {fileID: 0}
   clickUI: {fileID: 0}
   commanderSkillBtn: {fileID: 0}
+  upgradeOption: 
 --- !u!1 &826693390
 GameObject:
   m_ObjectHideFlags: 0
@@ -55930,6 +55943,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a6d28e0ff2b5e3c4e9c87bf27f0428e1, type: 2}
   - {fileID: 11400000, guid: 486cf09239462a54d94b6aa8cd115e88, type: 2}
   - {fileID: 11400000, guid: 3e70587e3f5db544bb8c18baa4224489, type: 2}
+  - {fileID: 11400000, guid: 96cb2484ab6373c4fb2027a2744d57ba, type: 2}
   spawnPoint: []
   Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
     type: 3}
@@ -78652,6 +78666,7 @@ MonoBehaviour:
   - {fileID: 853575959399141184, guid: e4c60472dfabb034183283198f15f922, type: 3}
   - {fileID: 516829267387349542, guid: 635b9e75de5453244b70f09ec3944d45, type: 3}
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
+  EnemyAttackVFX: []
   allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
   enemySelectEffect: {fileID: 0}
@@ -78664,6 +78679,7 @@ MonoBehaviour:
     type: 3}
   unitMoveIndicator: {fileID: 5517855318596113237, guid: c99a6c8c9bf0c714a8d6622869d8c340,
     type: 3}
+  unitUpgradeEffect: {fileID: 0}
 --- !u!4 &1989869922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5776924312427068499, guid: 57bf2a0c77ab8934ebf442761b07d011,

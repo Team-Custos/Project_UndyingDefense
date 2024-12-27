@@ -40,6 +40,12 @@ public class UnitDebuffManager : MonoBehaviour
     // �� ������ ����� ������Ʈ
     void FixedUpdate()
     {
+        if (unitCtrl.isDead)
+        {
+            DebuffParticleParent.SetActive(false);
+            return;
+        }
+
         for (int activeDebuffIdx = activeDebuffs.Count - 1; activeDebuffIdx >= 0; activeDebuffIdx--) // ����Ʈ �������� ��ȸ (���� �� ���� ����)
         {
             activeDebuffs[activeDebuffIdx].currentTime -= Time.deltaTime;

@@ -135,13 +135,18 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     public void StatsInit()
     {
-        HP = unitData.maxHP;
+        maxHp = unitData.maxHP;//유닛의 최대체력 변수 초기화.
+        HP = maxHp; //최대체력의 최종 변수로 현재 체력을 초기화.
+        cur_moveSpeed = unitData.moveSpeed;//현재 이동 속도를 데이터의 이동속도로 초기화.
+        UnitSkill.AttackTrigger = unitData.attackVFX;
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        StatsInit();
+
         currentTile = GetComponentInParent<GridTile>();
 
         unitUiCtrl = GetComponent<UnitUICtrl>();
@@ -155,15 +160,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
         SpawnDelay = true;
 
         targetBase = InGameManager.inst.Base; //성 오브젝트.
-        maxHp = unitData.maxHP;//유닛의 최대체력 변수 초기화.
+        
 
         //if()//삼계탕 특식 효과
         //{
         //    maxHp = unitData.maxHP + 2;
         //}
 
-        HP = maxHp; //최대체력의 최종 변수로 현재 체력을 초기화.
-        cur_moveSpeed = unitData.moveSpeed;//현재 이동 속도를 데이터의 이동속도로 초기화.
+        
 
 
         Ally_Mode = AllyMode.Siege;//시즈모드로 스폰.
@@ -763,8 +767,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
     }
 
     //물리적 데미지용 함수.(이 이외에는 절대 사용하지 말 것.)
-    public void ReceivePhysicalDamage(int Damage = 1, float Crit = 0, AttackType attackType = AttackType.UnKnown, UnitDebuff Crit2Debuff = UnitDebuff.None)
+    public void ReceivePhysicalDamage(int Damage = 1, float Crit = 0, AttackType attackType = AttackType.UnKnown, UnitDebuff Crit2Debuff = UnitDebuff.None, GameObject SpecialAttackVFX = null)
     {
+        #region 데미지 계산
         if (unitData.defenseType == DefenseType.cloth)
         {
             if (attackType == AttackType.Slash)
@@ -833,6 +838,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             Crit = 100;
         }
+        #endregion
 
         HP -= Damage;
 
@@ -888,7 +894,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     break;
                 }
             }
-            Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, true);
+            if (SpecialAttackVFX != null)
+            {
+                Ingame_ParticleManager.Instance.PlayEnemyAttackedParticleEffect(transform, SpecialAttackVFX);
+            }
+            else
+            {
+                Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, true);
+            }
         }
         else //치명타 비적용시
         {
@@ -901,7 +914,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     break;
                 }
             }
-            Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, false);
+            if (SpecialAttackVFX != null)
+            {
+                Ingame_ParticleManager.Instance.PlayEnemyAttackedParticleEffect(transform, SpecialAttackVFX);
+            }
+            else
+            {
+                Ingame_ParticleManager.Instance.PlayAttackedParticleEffect(transform, attackType, false);
+            }
         }
     }
 

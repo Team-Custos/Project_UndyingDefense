@@ -31,12 +31,11 @@ public class Ingame_UnitData : ScriptableObject
     public float attackRange = 0;                   
     public AudioClip[] attackSound;
 
-    public AnimationClip[] tauntAniClip;
+    public GameObject attackVFX;
 
     // 추가
     [Header("============")]
-    public string name;
-    public int level;                                             
+    public string name;                                           
     public string unitCode;                                       
     public int cost;
     public int gold;

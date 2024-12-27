@@ -1,12 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
-using static UnityEngine.UI.CanvasScaler;
 
 //이 스크립트는 유닛의 VFX를 관리하는 스크립트 입니다.
 
@@ -23,6 +17,8 @@ public class Ingame_ParticleManager : MonoBehaviour
 
     public ParticleSystem[] AttackVFX;
     public ParticleSystem[] AttackCritVFX;
+
+    public ParticleSystem[] EnemyAttackVFX;
 
     public ParticleSystem allySelectEffect;    // 아군 유닛 선택 이펙트
     public ParticleSystem enemySelectEffect;    // 적 유닛 선택 이펙트
@@ -82,9 +78,6 @@ public class Ingame_ParticleManager : MonoBehaviour
         //    summonEnemyEffect.Play();
         //    Destroy(summonEnemyEffect.gameObject, summonEnemyEffect.main.duration - 3.5f) ;
         //}
-
-
-
     }
 
     public void PlayAttackedParticleEffect(Transform AttackedUnit, AttackType attackType, bool Crit)
@@ -106,6 +99,15 @@ public class Ingame_ParticleManager : MonoBehaviour
 
         Destroy(effectInstance.gameObject, effectInstance.main.duration);
     }
+
+    public void PlayEnemyAttackedParticleEffect(Transform AttackedUnit, GameObject VFX)
+    {
+        ParticleSystem Effect = VFX.GetComponent<ParticleSystem>();
+        ParticleSystem effectInstance = Instantiate(Effect, AttackedUnit);
+        effectInstance.Play();
+        Destroy(effectInstance.gameObject, effectInstance.main.duration);
+    }
+
 
     public void PlayUnitModeChangeParticleEffect(Transform tr, float ypos)
     {

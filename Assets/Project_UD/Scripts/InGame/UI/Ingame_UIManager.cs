@@ -180,7 +180,7 @@ public class Ingame_UIManager : MonoBehaviour
                         }
 
                         // 유닛 스폰 로직
-                        UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
+                        //UnitSpawnManager.inst.unitToSpawn = unitSpawnBtn[idx].GetComponent<Ingame_UnitSpawnBtnStatus>().UnitCode;
 
 
                         // 이미지 상태 변경 로직

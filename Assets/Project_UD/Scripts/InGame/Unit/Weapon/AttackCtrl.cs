@@ -33,7 +33,6 @@ public class AttackCtrl : MonoBehaviour
     public int Damage = 1; //데미지
     public float moveSpeed = 1f;//(이동할 경우) 이동 속도
     public float Crit = 0;//치명타 확률
-    public bool isEnemyAttack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,9 +47,9 @@ public class AttackCtrl : MonoBehaviour
         }
         else if (MethodType == AttackMethod.AttackTrigger_Circle)
         {
-            Destroy(gameObject, 0.9f);
+            Destroy(gameObject, Particle.main.duration);
         }
-
+        
     }
 
     // Update is called once per frame
@@ -62,10 +61,8 @@ public class AttackCtrl : MonoBehaviour
                 transform.Translate(0.5f * moveSpeed * Vector3.forward);
                 break;
             case AttackMethod.AttackTrigger_Circle:
-                
                 break;
             case AttackMethod.Granade:
-
                 break;
             case AttackMethod.Trap:
                 //CritPercentAdd = 5;
@@ -89,25 +86,28 @@ public class AttackCtrl : MonoBehaviour
                     EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                 }
             }
-            else if (this.MethodType == AttackMethod.AttackTrigger_Circle)
+        }
+        else if (other.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+        {
+            Ingame_UnitCtrl AllyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
+            if (this.MethodType == AttackMethod.AttackTrigger_Circle)
             {
-                if (EnemyCtrl != null)
+                if (AllyCtrl != null)
                 {
                     Debug.Log("CircleTrigger Hit!");
-                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                    AllyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                 }
             }
             else if (this.MethodType == AttackMethod.Trap)
             {
-                if (EnemyCtrl != null)
+                if (AllyCtrl != null)
                 {
                     Debug.Log("Trap Hit!");
                     ModelAnimator.SetTrigger("TrapTriggered");
-                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                    AllyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                     Destroy(this.gameObject, 5f);
                 }
             }
         }
-        
     }
 }

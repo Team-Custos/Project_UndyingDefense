@@ -66,29 +66,22 @@ public class EnemyUnitState : MonoBehaviour
     void Attack_Enter()
     {
         //Debug.Log("Enemy Attack_Enter");
+        navAgent.enabled = false;
+        navObstacle.enabled = true;
+        
     }
 
     void Attack_Update()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = true;
-
-        //if (UnitCtrl.enemy_isPathBlocked)
-        //{
-        //    EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        //    //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
-        //    UnitCtrl.Unit_Attack(); //아군 병사 공격.
-        //}
-        //else
-        //{
-        //    fsm.ChangeState(EnemyState.Move);
-        //}
-
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        //EnemyAnimator.SetBool(CONSTANT.ANITRIGGER_ATTACK, true);
-        UnitCtrl.Unit_Attack(); //아군 병사 공격.
-
-        SearchPath();
+        if (UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+        {
+            fsm.ChangeState(EnemyState.Move);
+        }
+        else
+        {
+            UnitCtrl.Unit_Attack(); //아군 병사 공격.
+        }
     }
 
     void Attack_Exit()
@@ -115,7 +108,6 @@ public class EnemyUnitState : MonoBehaviour
 
     void Move_Update()
     {
-
         navObstacle.enabled = false;
         navAgent.enabled = true;
 
@@ -187,9 +179,9 @@ public class EnemyUnitState : MonoBehaviour
 
     public void SearchPath()//길찾기
     {
-        if (navAgent == false)
+        if (navAgent.enabled == false)
         {
-            return;
+            navAgent.enabled = true;
         }
 
         NavMeshPath calcaulatedPath = new NavMeshPath();
@@ -211,32 +203,6 @@ public class EnemyUnitState : MonoBehaviour
             Debug.Log("Can not Find Path");
             UnitCtrl.enemy_isPathBlocked = true;
         }
-
-        //StartCoroutine(DestinationValidCheck());
-        //IEnumerator DestinationValidCheck()//현재 길이 막혀있는지 판단.
-        //{
-        //    yield return new WaitUntil(() => { return !navAgent.pathPending; });
-
-        //    int cornerCount = navAgent.path.corners.Length;
-        //    //Debug.Log("명령 받은 목표 지점 위치 : " + UnitCtrl.moveTargetBasePos);
-
-        //    Vector3 navDestination = new Vector3(navAgent.path.corners[cornerCount - 1].x, 0, navAgent.path.corners[cornerCount - 1].z);
-
-        //    //Debug.Log("계산 된 마지막 목표 지점 위치 : " + navDestination);
-        //    //Debug.Log("거리 : " + Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x));
-
-        //    if (Mathf.Abs(navDestination.x - UnitCtrl.moveTargetBasePos.x) <= UnitCtrl.unitData.attackRange)
-        //    {
-        //        //Debug.Log("목표 지점으로 이동할 수 있습니다.");
-        //        UnitCtrl.enemy_isPathBlocked = false;
-        //    }
-        //    else
-        //    {
-        //        //Debug.Log("목표 지점으로 이동할수는 없지만 중간 지점까진 갈 수 있습니다.");
-        //        UnitCtrl.enemy_isPathBlocked = true;
-        //    }
-        //    previousNavDestination = navDestination;
-        //}
     }
 
     #endregion
