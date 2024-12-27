@@ -47,6 +47,7 @@ public class UnitUpgradeManager : MonoBehaviour
         {
             targetUnit.SetUnitData(nextUnitData);
             targetUnit.ModelSwap();
+            targetUnit.StatsInit();
             Debug.Log($"업그레이드 성공! 새로운 유닛: {nextUnitData.name}");
         }
         else

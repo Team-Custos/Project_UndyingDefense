@@ -45,6 +45,7 @@ public class Ingame_UnitData : ScriptableObject
     public string s_SkillInfo;
     public Sprite g_SkillImage;
     public Sprite s_SkillImage;
+    public Sprite unitImage;
 
     [Header("====Upgrade Options====")]
     public List<string> upgradePaths;  // 업그레이드 가능 코드 리스트

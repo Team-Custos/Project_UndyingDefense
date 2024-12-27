@@ -430,6 +430,7 @@ public class Ingame_UIManager : MonoBehaviour
 
 
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
+        unitInfoImage.sprite = selectedUnit.unitData.unitImage;
         levelText.text = selectedUnit.unitData.level + "티어";
         nameText.text = selectedUnit.unitData.name;
         gSkillText.text = selectedUnit.unitData.g_SkillName;
@@ -439,23 +440,6 @@ public class Ingame_UIManager : MonoBehaviour
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
         gSkillImage.sprite = selectedUnit.unitData.g_SkillImage;
         sSkillImage.sprite = selectedUnit.unitData.s_SkillImage;
-
-        if (selectedUnit.unitData.unitCode == "1")
-        {
-            unitInfoImage.sprite = minByeongImage;
-        }
-        else if(selectedUnit.unitData.unitCode == "2")
-        {
-            unitInfoImage.sprite = hunterImage;
-        }
-        else if(selectedUnit.unitData.unitCode == "80")
-        {
-            unitInfoImage.sprite = enenmyWarriorImage;
-        }
-        else if(selectedUnit.unitData.unitCode == "81")
-        {
-            unitInfoImage.sprite = enemyArcherImage;
-        }
 
         if (selectedUnit.HP <= 0)
             selectedUnit.HP = 0;
@@ -611,6 +595,24 @@ public class Ingame_UIManager : MonoBehaviour
             unitUpgrade1Rect.anchoredPosition = new Vector2(unitUpgrade1Rect.anchoredPosition.x + 60, unitUpgrade1Rect.anchoredPosition.y);
         }
 
+
+        if(unit.unitData.upgrade1Cost > InGameManager.inst.gold)
+        {
+            UnitUpgrade1Btn.interactable = false;
+        }
+        else
+        {
+            UnitUpgrade1Btn.interactable = true;
+        }
+
+        if (unit.unitData.upgrade2Cost > InGameManager.inst.gold)
+        {
+            UnitUpgrade2Btn.interactable = false;
+        }
+        else
+        {
+            UnitUpgrade2Btn.interactable = true;
+        }
 
         // 첫 번째 업그레이드 옵션 버튼 
         UnitUpgrade1Btn.onClick.RemoveAllListeners();

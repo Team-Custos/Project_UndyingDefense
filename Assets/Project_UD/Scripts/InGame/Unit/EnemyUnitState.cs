@@ -74,9 +74,16 @@ public class EnemyUnitState : MonoBehaviour
     void Attack_Update()
     {
         EnemyAnimator.SetBool(CONSTANT.ANIBOOL_RUN, false);
-        if (UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+        if(!UnitCtrl.enemy_isBaseInRange)
         {
-            fsm.ChangeState(EnemyState.Move);
+            if (UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+            {
+                fsm.ChangeState(EnemyState.Move);
+            }
+            else
+            {
+                UnitCtrl.Unit_Attack(); //아군 병사 공격.
+            }
         }
         else
         {

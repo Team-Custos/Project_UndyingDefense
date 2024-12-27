@@ -15,10 +15,10 @@ MonoBehaviour:
   unitType: 2
   defenseType: 1
   targetSelectType: 0
-  modelType: 2
-  modelPrefab: {fileID: 533255473833402501, guid: 1c66bcea9f37f7b41a10cebcf5512a9f,
+  level: 2
+  modelPrefab: {fileID: 3541734987195385200, guid: c1941a46ac03f9341920cd184a121801,
     type: 3}
-  maxHP: 150
+  maxHP: 225
   mental: 1
   moveSpeed: 2
   overrideController: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
@@ -33,9 +33,8 @@ MonoBehaviour:
   attackSound:
   - {fileID: 8300000, guid: c4b110176e912ec468fe285d581c321f, type: 3}
   - {fileID: 8300000, guid: 591a9af67ca9d544782235582d61294b, type: 3}
-  tauntAniClip: []
+  attackVFX: {fileID: 0}
   name: "\uCC3D\uBCD1"
-  level: 2
   unitCode: 11
   cost: 150
   gold: 0
@@ -50,6 +49,7 @@ MonoBehaviour:
     \uCD9C\uD608 \uD6A8\uACFC"
   g_SkillImage: {fileID: 21300000, guid: acbcb3694eb244b4eb8df7555c66f387, type: 3}
   s_SkillImage: {fileID: 21300000, guid: 29a4428e3664fa94c96a223b480655fa, type: 3}
+  unitImage: {fileID: 21300000, guid: bfd155fb81283464ea321dc66afdec63, type: 3}
   upgradePaths:
   - 111
   - 112
