@@ -218,9 +218,22 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             CurModel.name = unitData.modelPrefab.name;
 
+            if(!UnitUpgradeManager.Instance.isUpgrade)
+            {
+                // 스케일 애니메이션 시작
+                StartCoroutine(ScaleAnimation(CurModel.transform));
+            }
 
-            // 스케일 애니메이션 시작
-            StartCoroutine(ScaleAnimation(CurModel.transform));
+            //if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT))
+            //{
+            //    Instantiate(ModelSwapManager.AllyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            //}
+            //else if (this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+            //{
+            //    Instantiate(ModelSwapManager.EnemyModel[unitData.modelType], VisualModel.transform.position + Vector3.down, this.transform.rotation, VisualModel);
+            //}
+
+            //cur_modelType = unitData.modelType;
         }
     }
 
@@ -252,8 +265,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
 
-        //모델 변경
-        ModelSwap();
+        //모델 변경 -> 업그레이드 시에만 호출
+        //ModelSwap();
 
         Vector3 targetPosition = BaseStatus.instance.GetNearestPosition(transform.position);
         moveTargetBasePos = targetPosition;//성의 좌표 초기화.
@@ -272,6 +285,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 Destroy(this.gameObject);
                 Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }
 
             Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
@@ -337,6 +352,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(transform, -0.8f);
 
             Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+            Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+            Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
         }
 
         // Change 상태일 때는 다른 행동을 하지 않음
@@ -722,6 +739,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }
 
             if (this.gameObject == GameOrderSystem.instance.selectedUnit)
@@ -835,6 +854,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }
 
             if(this.gameObject == GameOrderSystem.instance.selectedUnit)
@@ -923,5 +944,36 @@ public class Ingame_UnitCtrl : MonoBehaviour
         Vector3 pos = modelTransform.position;
         modelTransform.position = pos;
 
+    }
+
+
+
+    // 유닛 데이터 업데이트
+    public void SetUnitData(Ingame_UnitData newData)
+    {
+        if (newData != null)
+        {
+            unitData = newData;
+            ApplyUnitStats();
+        }
+        else
+        {
+            Debug.LogWarning("새 유닛 데이터가 없습니다!");
+        }
+    }
+
+    // 유닛 상태 초기화
+    private void ApplyUnitStats()
+    {
+        if (unitData != null)
+        {
+            maxHp = unitData.maxHP;
+            HP = unitData.maxHP;
+            Debug.Log($"유닛: {unitData.name}, 체력: {unitData.maxHP}, 공격력: {unitData.attackPoint}");
+        }
+        else
+        {
+            Debug.LogError("currentUnitData가 null입니다. 유닛 데이터가 없습니다.");
+        }
     }
 }

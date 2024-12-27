@@ -15,8 +15,9 @@ MonoBehaviour:
   unitType: 5
   defenseType: 0
   targetSelectType: 0
-  level: 0
-  modelPrefab: {fileID: 0}
+  modelType: 3
+  modelPrefab: {fileID: 3866201029681294639, guid: 747061efe390572479a54b97a8c7b81a,
+    type: 3}
   maxHP: 100
   mental: 1
   moveSpeed: 1.8
@@ -30,15 +31,26 @@ MonoBehaviour:
   sightRange: 12
   attackRange: 12
   attackSound:
-  - {fileID: 8300000, guid: 9f583b2d58b0883488a5fd967741f3fb, type: 3}
-  - {fileID: 8300000, guid: b020df0f4eaa2874fab3905306415ad2, type: 3}
+  - {fileID: 8300000, guid: 3f55e05070ed3784889d1eb0bba4c7c9, type: 3}
+  - {fileID: 8300000, guid: 9b4df403f8d809e419a7026ae5855e3d, type: 3}
   tauntAniClip: []
-  globalTime: 0
-  g_SkillName: 
-  s_SkillName: 
-  unitCode: 
-  cost: 500
+  name: "\uD3EC\uC218"
+  level: 2
+  unitCode: 22
+  cost: 200
   gold: 0
-  name: 
-  g_SkillInfo: 
-  s_SkillInfo: 
+  g_SkillName: "\uC5FD \uC3D8\uAE30"
+  s_SkillName: "\uC218\uB958\uD0C4 \uD22C\uCC99"
+  g_SkillInfo: "\uC5FD\uCD1D\uC744 \uC3D8\uC544 \uD55C \uBA85\uC758 \uC801\uC5D0\uAC8C
+    7 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9. \uCE58\uBA85\uD0C0 \uC2DC
+    \uCD9C\uD608 \uD6A8\uACFC"
+  s_SkillInfo: "\uC218\uB958\uD0C4\uC744 \uB358\uC838 \uC6D0\uD615 \uB0B4\uC758 \uC801\uC5D0\uAC8C
+    7 \uB370\uBBF8\uC9C0\uC758 \uBD84\uC1C4 \uACF5\uACA9. \uCE58\uBA85\uD0C0\uC728
+    10% \uC99D\uAC00. \uCE58\uBA85\uD0C0 \uC2DC \uAE30\uC808 \uD6A8\uACFC"
+  g_SkillImage: {fileID: 21300000, guid: 29203881cf983614f887c9f4d54f12a7, type: 3}
+  s_SkillImage: {fileID: 21300000, guid: 6905148c6986db646bac67fcd2d4dbf5, type: 3}
+  upgradePaths:
+  - 222
+  - 221
+  upgrade1Cost: 0
+  upgrade2Cost: 0

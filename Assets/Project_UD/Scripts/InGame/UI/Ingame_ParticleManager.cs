@@ -38,6 +38,8 @@ public class Ingame_ParticleManager : MonoBehaviour
     public GameObject unitMoveIndicator;       // 유닛이 이동하는 곳을 알려주는 이펙트
     private GameObject currentMoveIndicator = null;
 
+    public GameObject unitUpgradeEffect;       // 유닛 업그레이드 이펙트
+
     private Dictionary<GameObject, ParticleSystem> activeEffects = new Dictionary<GameObject, ParticleSystem>();
 
     private void Awake()
@@ -65,7 +67,6 @@ public class Ingame_ParticleManager : MonoBehaviour
     // 추후 적 소환 이펙트 추가 예정
     public void PlaySummonParticleEffect(Transform tr, bool isAlly = true)
     {
-        //ParticleSystem summonEnemyEffect;
         ParticleSystem smmonAllyEffect;
 
         if (isAlly)
@@ -201,5 +202,22 @@ public class Ingame_ParticleManager : MonoBehaviour
         currentMoveIndicator.transform.position = newPosition;
 
         Destroy(currentMoveIndicator, 1.0f);
+    }
+
+
+    public void UnitUpgradeEffect(Transform unitTr)
+    {
+        if(unitUpgradeEffect != null)
+        {
+            ParticleSystem upgradeEffect = Instantiate(unitUpgradeEffect).GetComponent<ParticleSystem>();
+
+            Vector3 newPosition = unitTr.position;
+            newPosition.y -= 0.9f;  // y축 위치 조정
+
+            upgradeEffect.transform.position = newPosition;
+
+            upgradeEffect.Play();
+            Destroy(upgradeEffect.gameObject, upgradeEffect.main.duration);
+        }
     }
 }

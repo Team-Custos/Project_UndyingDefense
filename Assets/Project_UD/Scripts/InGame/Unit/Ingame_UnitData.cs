@@ -32,16 +32,23 @@ public class Ingame_UnitData : ScriptableObject
     public AudioClip[] attackSound;
 
     public AnimationClip[] tauntAniClip;
-                                                                  
-    // 추가                                                        
-    public float globalTime;                                       
-    public string g_SkillName;                                    
-    public string s_SkillName;                                    
+
+    // 추가
+    [Header("============")]
+    public string name;
+    public int level;                                             
     public string unitCode;                                       
-                                           
     public int cost;
     public int gold;
-    public string name;
+    public string g_SkillName;                                    
+    public string s_SkillName;                                    
     public string g_SkillInfo;
     public string s_SkillInfo;
+    public Sprite g_SkillImage;
+    public Sprite s_SkillImage;
+
+    [Header("====Upgrade Options====")]
+    public List<string> upgradePaths;  // 업그레이드 가능 코드 리스트
+    public int upgrade1Cost;
+    public int upgrade2Cost;
 }                 

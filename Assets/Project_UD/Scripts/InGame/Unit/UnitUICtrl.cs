@@ -31,6 +31,7 @@ public class UnitUICtrl: MonoBehaviour
     void Update()
     {
         OnOffSelectedUnitUI();
+
     }
 
 
@@ -49,14 +50,17 @@ public class UnitUICtrl: MonoBehaviour
         }
     }
 
+
+    // 유닛 소환 이펙트, 업그레이드 이펙트
     void PlaySummonEffect()
     {
-        if (spawnEffect != null)
+        if (spawnEffect != null && !UnitUpgradeManager.Instance.isUpgrade)
         {
             //spawnEffect.SetActive(true);
 
             StartCoroutine(DisableSummonEffectAfterDelay(effectDuration));
         }
+
     }
 
     private IEnumerator DisableSummonEffectAfterDelay(float delay)

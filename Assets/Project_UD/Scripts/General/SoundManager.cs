@@ -15,7 +15,8 @@ public class SoundManager : MonoBehaviour
         sfx_select,                 //  캐릭터 선택
         sfx_toFree,                 //  시즈 모드에서 프리 모드로 전환
         sfx_toSiege,                //  프리 모드에서 시즈 모드로 전환
-        sfx_coinDrop                //  적 처치 후 엽전 획득
+        sfx_coinDrop,               //  적 처치 후 엽전 획득
+        sfx_upgrade                 //  유닛 업그레이드
     }
 
     public enum waveSfx

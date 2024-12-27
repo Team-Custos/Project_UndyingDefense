@@ -79,6 +79,11 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
 
+                if (Ingame_UIManager.instance.currentunitUpgradeMenuConfirmBox != null)
+                {
+                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+                }
+
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
 
@@ -186,7 +191,9 @@ public class GameOrderSystem : MonoBehaviour
                         Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
                         Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                     }
-                    
+
+                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+
                     Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
@@ -214,6 +221,12 @@ public class GameOrderSystem : MonoBehaviour
                 {
                     Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 }
+                
+                if (Ingame_UIManager.instance.currentunitUpgradeMenuConfirmBox != null)
+                {
+                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+                }
+
 
                 Ingame_UnitCtrl Enemy = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
@@ -286,7 +299,20 @@ public class GameOrderSystem : MonoBehaviour
                 InGameManager.inst.UnitSetMode = false;
                 InGameManager.inst.AllyUnitSetMode = false;
 
-                
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                }
+
+                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+                {
+                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                }
+
+                if (Ingame_UIManager.instance.currentunitUpgradeMenuConfirmBox != null)
+                {
+                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+                }
 
                 //if (clickedPosIndicator != null)
                 //{
@@ -396,6 +422,9 @@ public class GameOrderSystem : MonoBehaviour
 
                             gridTile.SelectedTile(true); // 타일 선택 효과
                             Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                            Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                            Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+
                         }
 
                         selectedUnit = null; // 이동 후 선택 해제
