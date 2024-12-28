@@ -9,7 +9,9 @@ public class MonsterSpawnInfo
 {
     public int monsterType; 
     public int repeatNum;      // 이 몬스터 타입을 몇 마리 소환할지
+    public bool isBoss;
 }
+
 
 [CreateAssetMenu(fileName = "WaveData", menuName = "Scriptable Object/WaveData", order = 1)]
 public class WaveData : ScriptableObject
@@ -21,6 +23,7 @@ public class WaveData : ScriptableObject
     public int reward;          // 웨이브 클리어 시 보상(골드)
 
     public List<MonsterSpawnInfo> monsterSpawnInfos; // 여러 몬스터 타입 및 repeatNum 정보
+
 
     public int TotalMonsterCount
     {

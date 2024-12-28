@@ -117,30 +117,48 @@ public class EnemySpawner : MonoBehaviour
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
 
-        // 몬스터 스폰 순서 결정
-        List<int> spawnOrder = new List<int>();
+        // 보스 몬스터, 일반 몬스터 분류
+        List<int> normalMonsterList = new List<int>();
+        List<int> bossMonsterList = new List<int>();
+
         foreach (var info in currentData.monsterSpawnInfos)
         {
-            for (int i = 0; i < info.repeatNum; i++)
+            if (!info.isBoss)
             {
-                spawnOrder.Add(info.monsterType);
+                // 일반 몬스터
+                for (int i = 0; i < info.repeatNum; i++)
+                {
+                    normalMonsterList.Add(info.monsterType);
+                }
+            }
+            else
+            {
+                // 보스 몬스터
+                for (int i = 0; i < info.repeatNum; i++)
+                {
+                    bossMonsterList.Add(info.monsterType);
+                }
             }
         }
 
-        // 랜덤 선택
-        for (int i = 0; i < spawnOrder.Count; i++)
-        {
-            int rand = Random.Range(0, spawnOrder.Count);
-            int temp = spawnOrder[i];
-            spawnOrder[i] = spawnOrder[rand];
-            spawnOrder[rand] = temp;
-        }
+        ShuffleList(normalMonsterList);
 
-        // interval 간격으로 스폰
-        foreach (int monsterTypeId in spawnOrder)
+        foreach (int monsterTypeId in normalMonsterList)
         {
             SpawnEnemy(monsterTypeId);
             yield return new WaitForSeconds(currentData.interval);
+        }
+
+
+        if (bossMonsterList.Count > 0)
+        {
+            ShuffleList(bossMonsterList);
+
+            foreach (int bossTypeId in bossMonsterList)
+            {
+                SpawnEnemy(bossTypeId);
+                yield return new WaitForSeconds(currentData.interval);
+            }
         }
 
         // 모든 몬스터 처치 대기
@@ -256,4 +274,15 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+
+    void ShuffleList(List<int> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            int temp = list[i];
+            list[i] = list[rand];
+            list[rand] = temp;
+        }
+    }
 }
