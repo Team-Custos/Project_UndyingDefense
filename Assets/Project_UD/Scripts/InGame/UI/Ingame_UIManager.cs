@@ -248,8 +248,8 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-        //unitSpawnBtn[2].interactable = false;
-        //unitSpawnBtn[3].interactable = false;
+        unitSpawnBtn[2].interactable = false;
+        unitSpawnBtn[3].interactable = false;
     }
 
 
@@ -329,8 +329,6 @@ public class Ingame_UIManager : MonoBehaviour
         {
             selectedBtnEffectImage[0].gameObject.SetActive(false);
             selectedBtnEffectImage[1].gameObject.SetActive(false);
-            selectedBtnEffectImage[2].gameObject.SetActive(false);
-            selectedBtnEffectImage[3].gameObject.SetActive(false);
         }
 
 
@@ -439,7 +437,17 @@ public class Ingame_UIManager : MonoBehaviour
         gSkillInfoText.text = selectedUnit.unitData.g_SkillInfo;
         sSkillInfoText.text = selectedUnit.unitData.s_SkillInfo;
         gSkillImage.sprite = selectedUnit.unitData.g_SkillImage;
-        sSkillImage.sprite = selectedUnit.unitData.s_SkillImage;
+
+        if(selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
+        {
+            sSkillImage.gameObject.SetActive(true);
+            sSkillImage.sprite = selectedUnit.unitData.s_SkillImage;
+        }
+        else
+        {
+            sSkillImage.gameObject.SetActive(false);
+        }
+
 
         if (selectedUnit.HP <= 0)
             selectedUnit.HP = 0;

@@ -65,7 +65,7 @@ public class Ingame_InputSystem : MonoBehaviour
                 return;
             }
 
-            ToggleUnitSpawnState(0); // 1번 단축키
+            ToggleUnitSpawnState((int)UnitType.민병); // 1번 단축키 index = 0
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -75,7 +75,7 @@ public class Ingame_InputSystem : MonoBehaviour
                 return;
             }
 
-            ToggleUnitSpawnState(UnitType.사냥꾼.GetHashCode()); // 2번 단축키
+            ToggleUnitSpawnState((int)UnitType.사냥꾼); // 2번 단축키 index = 1
         }
     }
 
@@ -112,13 +112,15 @@ public class Ingame_InputSystem : MonoBehaviour
     void ToggleUnitSpawnState(int unitIndex)
     {
         // 같은 유닛이 이미 활성화되어 있는 경우: 소환 상태 해제
-        if (spawnManager.unitToSpawn.GetHashCode() == unitIndex && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
+        if ((int)spawnManager.unitToSpawn == unitIndex && InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
         {
+
             InGameManager.inst.UnitSetMode = false;
             InGameManager.inst.AllyUnitSetMode = false;
 
+
             // 버튼 효과 초기화
-            Ingame_UIManager.instance.UpdateButtonEffect(UnitType.None.GetHashCode()); // 모든 버튼 비활성화
+            Ingame_UIManager.instance.UpdateButtonEffect((int)UnitType.None); // 모든 버튼 비활성화
         }
         else
         {
@@ -126,8 +128,8 @@ public class Ingame_InputSystem : MonoBehaviour
             InGameManager.inst.UnitSetMode = true;
             InGameManager.inst.AllyUnitSetMode = true;
 
-            //// 선택한 유닛 설정
-            //spawnManager.unitToSpawn = unitIndex;
+            /// 선택한 유닛 설정
+            spawnManager.unitToSpawn = (UnitType)unitIndex;
 
             // 버튼 효과 갱신
             Ingame_UIManager.instance.UpdateButtonEffect(unitIndex);
