@@ -346,7 +346,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
-            debuffManager.AddDebuff(UnitDebuff.Dizzy);
+            debuffManager.AddDebuff(UnitDebuff.Stun);
         }
 
         if (isSelected && Input.GetKeyDown(KeyCode.Z))//선택된 유닛의 모드 변경. 디버그용. 삭제 예정.
@@ -571,10 +571,22 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         sightRangeSensor.radius = unitData.sightRange;
 
+        if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
+        {
+            debuffManager.AddDebuff(UnitDebuff.Stun);
+        }
+
 
         if (unActable)//행동 불가 상태인가?
         {
+            cur_moveSpeed = 0;
+            Enemy_State.fsm.ChangeState(EnemyState.Idle);
             return;
+        }
+        else
+        {
+            cur_moveSpeed = unitData.moveSpeed;
+            Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
 
         if (enemy_isPathBlocked)//길이 막혀있는가?

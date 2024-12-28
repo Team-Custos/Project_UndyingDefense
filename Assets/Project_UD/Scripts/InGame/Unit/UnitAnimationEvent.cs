@@ -34,6 +34,22 @@ public class UnitAnimationEvent : MonoBehaviour
         unitSkill.weaponCooldown_Cur = 0;
     }
 
+    public void GunAttackStart()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        ParticleSystem GunAttack = unitCtrl.VisualModel.GetComponentInChildren<ParticleSystem>();
+        GunAttack.gameObject.SetActive(true);
+        GunAttack.Play();
+    }
+
+    public void GunAttackEnd()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        ParticleSystem GunAttack = unitCtrl.VisualModel.GetComponentInChildren<ParticleSystem>();
+        GunAttack.Stop();
+        GunAttack.gameObject.SetActive(false);
+    }
+
     public void GranadeAttackStart()
     {
         Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
