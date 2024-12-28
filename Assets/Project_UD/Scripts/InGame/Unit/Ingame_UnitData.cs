@@ -51,4 +51,6 @@ public class Ingame_UnitData : ScriptableObject
     public List<string> upgradePaths;  // 업그레이드 가능 코드 리스트
     public int upgrade1Cost;
     public int upgrade2Cost;
+    public Sprite uupgrade1Image;
+    public Sprite uupgrade2Image;
 }                 
