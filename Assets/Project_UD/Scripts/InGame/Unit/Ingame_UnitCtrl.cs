@@ -989,7 +989,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             maxHp = unitData.maxHP;
             HP = unitData.maxHP;
-            Debug.Log($"유닛: {unitData.name}, 체력: {unitData.maxHP}, 공격력: {unitData.attackPoint}");
         }
         else
         {
