@@ -43,7 +43,7 @@ public class AttackCtrl : MonoBehaviour
         }
         else if (MethodType == AttackMethod.Granade)
         {
-            Destroy(gameObject, 0.1f);
+            Destroy(gameObject, 1f);
         }
         else if (MethodType == AttackMethod.AttackTrigger_Circle)
         {
@@ -74,7 +74,7 @@ public class AttackCtrl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
+        if (other.gameObject.CompareTag(CONSTANT.TAG_ENEMY))//적군에게 닿았을 경우
         {
             Ingame_UnitCtrl EnemyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
 
@@ -86,28 +86,28 @@ public class AttackCtrl : MonoBehaviour
                     EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                 }
             }
-        }
-        else if (other.gameObject.CompareTag(CONSTANT.TAG_UNIT))
-        {
-            Ingame_UnitCtrl AllyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
-            if (this.MethodType == AttackMethod.AttackTrigger_Circle)
+            else if(this.MethodType == AttackMethod.AttackTrigger_Circle)
             {
-                if (AllyCtrl != null)
+                if (EnemyCtrl != null)
                 {
                     Debug.Log("CircleTrigger Hit!");
-                    AllyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                 }
             }
             else if (this.MethodType == AttackMethod.Trap)
             {
-                if (AllyCtrl != null)
+                if (EnemyCtrl != null)
                 {
                     Debug.Log("Trap Hit!");
                     ModelAnimator.SetTrigger("TrapTriggered");
-                    AllyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
+                    EnemyCtrl.ReceivePhysicalDamage(Damage, Crit + 10, Type, Debuff2Add);
                     Destroy(this.gameObject, 5f);
                 }
             }
+        }
+        else if (other.gameObject.CompareTag(CONSTANT.TAG_UNIT))//아군에게 닿았을 경우
+        {
+            Ingame_UnitCtrl AllyCtrl = other.gameObject.GetComponent<Ingame_UnitCtrl>();
         }
     }
 }

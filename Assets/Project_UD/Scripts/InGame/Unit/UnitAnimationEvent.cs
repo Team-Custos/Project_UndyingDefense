@@ -34,6 +34,23 @@ public class UnitAnimationEvent : MonoBehaviour
         unitSkill.weaponCooldown_Cur = 0;
     }
 
+    public void GranadeAttackStart()
+    {
+        Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();
+        UnitSkillManager unitSkill = unitCtrl.UnitSkill;
+        unitSkill.attackStop = true;
+        unitSkill.SpecialSkillStop = true;
+        unitSkill.weaponCooldown_Cur = unitSkill.weaponCooldown_Cur = unitCtrl.cur_attackSpeed;
+    }
+
+    public void GranadeAttackEnd()
+    {
+        UnitSkillManager unitSkill = this.GetComponentInParent<Ingame_UnitCtrl>().UnitSkill;
+        unitSkill.attackStop = false;
+        unitSkill.SpecialSkillStop = false;
+        unitSkill.weaponCooldown_Cur = 0;
+    }
+
     public void DeadEnd()
     {
         Ingame_UnitCtrl unitCtrl = this.GetComponentInParent<Ingame_UnitCtrl>();

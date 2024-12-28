@@ -15,6 +15,7 @@ public class UnitSkillManager : MonoBehaviour
     public GameObject AttackTrigger; //공격 트리거
 
     public bool attackStop = false;
+    public bool SpecialSkillStop = false;
     public float weaponCooldown_Cur = 0;//현재 일반공격 쿨타임
     public float skillCooldown_Cur = 0;//현재 특수 스킬 쿨타임
 
@@ -158,6 +159,11 @@ public class UnitSkillManager : MonoBehaviour
         if (UnitCtrl.targetEnemy != null)
         {
             TargetEnemy = UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>();
+            SpecialSkillStop = false;
+        }
+        else
+        {
+            SpecialSkillStop = true;
         }
 
         if (skillCooldown_Cur <= 0)
@@ -244,16 +250,14 @@ public class UnitSkillManager : MonoBehaviour
                     //수류탄을 던져 범위 내에 있는 모든 적에게 10 데미지의 분쇄 공격을 가한다. 치명타율 10% 증가. 치명타 발동 시 기절 효과
                     //덫 설치와 비슷하게 구현. 서있는 칸을 기준으로 바라보는 방향 몇칸 앞에 공격 트리거 오브젝트를 설치하는 식으로.
                     //단, 미리 배치 되어있는지는 고려하지 않음.
-
                     if (TargetEnemy != null && UnitCtrl.isEnemyInRange)
                     {
+                        Debug.Log("수류탄 투척");
+                        unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_SPECIAL);
                         GameObject Granade_Obj = Instantiate(Granade);
-                        Granade_Obj.transform.position = TargetEnemy.transform.position;
-                        AttackCtrl attackCtrl = Granade_Obj.GetComponent<AttackCtrl>();
-                        attackCtrl.Damage = SkillDamage;
-                        attackCtrl.Crit = UnitCtrl.unitData.critChanceRate;
-                        attackCtrl.Type = AttackType.Crush;
-                        attackCtrl.Debuff2Add = UnitDebuff.Stun;
+                        Granade_Obj.transform.position = UnitCtrl.transform.position;
+                        GranadeCtrl granade = Granade_Obj.GetComponent<GranadeCtrl>();
+                        granade.targetPos = TargetEnemy.transform.position;
                     }
                     break;
                 //곰덫 설치
@@ -360,7 +364,10 @@ public class UnitSkillManager : MonoBehaviour
         }
         else
         {
-            skillCooldown_Cur -= Time.deltaTime;
+            if (!SpecialSkillStop)
+            {
+                skillCooldown_Cur -= Time.deltaTime;
+            }
         }
     }
 
