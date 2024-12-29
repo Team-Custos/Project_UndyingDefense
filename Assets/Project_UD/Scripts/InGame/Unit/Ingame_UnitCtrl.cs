@@ -586,7 +586,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         else
         {
             cur_moveSpeed = unitData.moveSpeed;
-            Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
 
         if (enemy_isPathBlocked)//길이 막혀있는가?
@@ -743,11 +742,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
-
+                isDead = true;
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
                 EnemySpawner.inst.OnMonsterDead(this.gameObject);
-
-
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
@@ -863,8 +860,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
             if (gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
                 isDead = true;
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
+                EnemySpawner.inst.OnMonsterDead(this.gameObject);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }

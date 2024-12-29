@@ -73,5 +73,4 @@ public class UnitAnimationEvent : MonoBehaviour
         Destroy(unitCtrl.gameObject, 2f);
         GridManager.inst.SetTilePlaceable(this.transform.position, true, true);
     }
-
 }
