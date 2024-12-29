@@ -243,7 +243,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     private void Update()
     {
-        if (HP > 0 && !isDead)
+        if (HP > 0)
         {
             // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
             GridManager.inst.SetTilePlaceable(transform.position, false, false);
