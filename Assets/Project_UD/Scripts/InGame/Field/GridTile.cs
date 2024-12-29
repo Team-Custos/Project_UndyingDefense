@@ -98,7 +98,7 @@ public class GridTile : MonoBehaviour
                 //    return;
                 //}
 
-                //MeshR.material.color = colorOccupied;
+               //MeshR.material.color = colorOccupied;
 
 
             }

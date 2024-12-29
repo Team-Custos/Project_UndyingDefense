@@ -243,13 +243,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
     private void Update()
     {
-        if (HP <= 0 && isDead)
+        if (HP > 0 && !isDead)
         {
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+            // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
+            GridManager.inst.SetTilePlaceable(transform.position, false, false);
         }
         else
         {
-            GridManager.inst.SetTilePlaceable(this.transform.position, false, false);  // 유닛이 차지하는 타일 배치 상태 최신화(배치 불가능)
+            // 유닛이 죽었거나 체력이 0 이하라면, 해당 타일을 다시 배치 가능(true)로
+            GridManager.inst.SetTilePlaceable(transform.position, true, true);
         }
     }
 
@@ -263,8 +265,19 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
 
+        //if (HP > 0 && !isDead)
+        //{
+        //    // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
+        //    GridManager.inst.SetTilePlaceable(transform.position, false, false);
+        //}
+        //else
+        //{
+        //    // 유닛이 죽었거나 체력이 0 이하라면, 해당 타일을 다시 배치 가능(true)로
+        //    GridManager.inst.SetTilePlaceable(transform.position, true, true);
+        //}
+
         //유닛의 현재 위치에 따른 타일 배치 가능 설정
-       
+
 
         //유닛의 현재 위치에 따른 타일 위치 가져오기
         unitPos = GridManager.inst.GetTilePos(this.transform.position);
@@ -277,7 +290,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
 
-        GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
+        //GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
         if (Input.GetKeyDown(KeyCode.H) && isSelected) //선택된 유닛 삭제. 디버그용.
         {
@@ -294,6 +307,9 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
 
             Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
+
+            GridManager.inst.SetTilePlaceable(transform.position, true, true);
+
         }
 
         #region 아군 제어
@@ -763,14 +779,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             OnUnitDead?.Invoke(this);
 
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상
+            //GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상
 
             Debug.Log(this.gameObject.name + " Destroyed");
             return;
         }
         else if (HP <= 0 && isDead)
         {
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+            //GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
 
         }
     }
@@ -880,14 +896,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             OnUnitDead?.Invoke(this);
 
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상
+            //GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 적 유닛 죽은 타일 배치상
 
             Debug.Log(this.gameObject.name + " Destroyed");
             return;
         }
         else if (HP <= 0 && isDead)
         {
-            GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
+           // GridManager.inst.SetTilePlaceable(this.transform.position, true, true); // 아군 유닛 죽은 타일 배치상태 최신화(배치 가능)
 
         }
 

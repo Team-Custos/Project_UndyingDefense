@@ -580,9 +580,11 @@ public class Ingame_UIManager : MonoBehaviour
 
         UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
         Image upGrade1BtnImage = UnitUpgrade1Btn.GetComponent<Image>();
+        upGrade1BtnImage.sprite = unit.unitData.uupgrade1Image;
 
         UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
         Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
+        upGrade2BtnImage.sprite = unit.unitData.uupgrade2Image;
 
         UnitUpgrade1Txt = currentUpgradeMenu.transform.Find("UnitUpgrade1Txt").GetComponent<Text>();
         UnitUpgrade1Txt.text = unit.unitData.upgrade1Cost.ToString();
