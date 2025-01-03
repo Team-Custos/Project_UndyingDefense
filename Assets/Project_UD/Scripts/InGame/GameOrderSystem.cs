@@ -177,14 +177,10 @@ public class GameOrderSystem : MonoBehaviour
                 }
                 AllyUnit.isSelected = !AllyUnit.isSelected;
 
-                if (AllyUnit.isSelected && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
+                if (AllyUnit.isSelected) // && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
                 {
                     selectedUnit = AllyUnit.gameObject;
 
-                    //Ingame_UIManager.instance.ShowUnitClickUI(AllyUnit);
-
-                    // 파티클 제거
-                    //Ingame_ParticleManager.Instance.StopUnitSelectEffect(selectedUnit);
 
                     if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                     {
@@ -197,13 +193,11 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
                     Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
                     Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
-
-                    // 선택된 유닛이 아군인지 적군인지 확인하여 파티클 재생
-                    bool isAlly = clickedObj.CompareTag(CONSTANT.TAG_UNIT);
-                    //Ingame_ParticleManager.Instance.PlayUnitSelectEffect(clickedObj, isAlly);                    
+           
                 }
                 else
                 {
+                    AllyUnit.isSelected = true;
                     selectedUnit = null;
                 }
             }
@@ -235,7 +229,6 @@ public class GameOrderSystem : MonoBehaviour
                 foreach (var unit in allEnemys)
                 {
                     unit.isSelected = false;
-                    //Ingame_UIManager.instance.ShowUnitClickUI(unit); // UI 업데이트
                 }
 
                 Enemy.isSelected = !Enemy.isSelected;
@@ -244,8 +237,6 @@ public class GameOrderSystem : MonoBehaviour
                 {
                     selectedUnit = Enemy.gameObject;
 
-                    // 선택된 적의 UI 업데이트
-                    //Ingame_UIManager.instance.ShowUnitClickUI(Enemy);
                 }
                 else
                 {

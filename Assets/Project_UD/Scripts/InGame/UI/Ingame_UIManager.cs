@@ -23,6 +23,8 @@ public class Ingame_UIManager : MonoBehaviour
 
     private Camera mainCamera;
 
+    [SerializeField] private Canvas canvas;
+
     [Header("====Test UI====")]
     public Button EnemyTestModeBtn = null;
     public Text UnitSetModeText = null;
@@ -30,7 +32,6 @@ public class Ingame_UIManager : MonoBehaviour
     [Header("====UnitSpawnDeck====")]
     public GameObject unitSpawnPanel;
     public Button[] unitSpawnBtn;
-    private int currentSelectedIndex = -1; // 현재 선택된 버튼의 인덱스 (-1은 선택 없음 의미)
 
     [Header("====UnitInfoPanel====")]
     public GameObject unitInfoPanel;
@@ -44,16 +45,10 @@ public class Ingame_UIManager : MonoBehaviour
     public Text sSkillText;
     public Image hpImage;
     public Text hpText;
-    public Image attackTypeImage;
-    public Text attackTypeText;
     public Image defenseTypeImage;
     public Text defeneTypeText;
     public Text gSkillInfoText;
     public Text sSkillInfoText;
-    public Sprite enemyArcherImage;
-    public Sprite enenmyWarriorImage;
-    public Sprite minByeongImage;
-    public Sprite hunterImage;
     
     [Header("====Game Option====")]
     public Button endGameBtn;
@@ -69,9 +64,9 @@ public class Ingame_UIManager : MonoBehaviour
     public GameObject unitUpgradeMenuBox;           // 유닛 업그레이드 메뉴 판넬
     public GameObject currentUpgradeMenu;           // 프리펩으로 생성될 업그레이드 판넬
     public Button UnitUpgrade1Btn;
-    public Text UnitUpgrade1Txt;
+    //public Text UnitUpgrade1Txt;
     public Button UnitUpgrade2Btn;
-    public Text UnitUpgrade2Txt;
+    //public Text UnitUpgrade2Txt;
     public Button UnitUpgradeCloseeBtn;
     public GameObject unitUpgradeMenuConfirmBox;
     public GameObject currentunitUpgradeMenuConfirmBox;
@@ -388,7 +383,11 @@ public class Ingame_UIManager : MonoBehaviour
 
     public void SetSelectedUnit(Ingame_UnitCtrl unit)
     {
-        selectedUnit = unit;
+        if(unit.isSelected == true)
+        {
+
+            selectedUnit = unit;
+        }
     }
 
 
@@ -480,7 +479,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
 
-        GameObject canvas = GameObject.Find("Canvas");
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
         RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
         screenPos.x += 100;
@@ -488,11 +486,9 @@ public class Ingame_UIManager : MonoBehaviour
 
         rectTransform.position = screenPos;
 
-        // 모드 전환 버튼
-        unitStateChageBtn = currentSelectedUnitOptionBox.transform.Find("ChangeStateBtn").GetComponent<Button>();
-        // 업그레이드 버튼
-        unitUpgradeBtn = currentSelectedUnitOptionBox.transform.Find("UnitUpgradeBtn").GetComponent<Button>();
-
+        SelectedUnitOptionBox optionBox = currentSelectedUnitOptionBox.GetComponent<SelectedUnitOptionBox>();
+        unitStateChageBtn = optionBox.UnitStateChangeBtn;
+        unitUpgradeBtn = optionBox.UnitUpgradeBtn;
 
         // 모드 전환 버튼
         if (unitStateChageBtn != null)
@@ -500,6 +496,12 @@ public class Ingame_UIManager : MonoBehaviour
             unitStateChageBtn.onClick.RemoveAllListeners();
             unitStateChageBtn.onClick.AddListener(() =>
             {
+                //unit.previousAllyMode = unit.Ally_Mode;
+                //unit.Ally_Mode = AllyMode.Change;
+                //Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(unit.transform, -0.8f);
+
+                //DestroyUnitStateChangeBox();
+
                 if (unit.isSelected)
                 {
                     unit.previousAllyMode = unit.Ally_Mode;
@@ -549,50 +551,37 @@ public class Ingame_UIManager : MonoBehaviour
     }
 
 
-    // 유닛의 상태에 따른 버튼 비활성화를 위한 코드 (Move, Chase시)
-    //public void SetUnitButtonsInteractable(bool interactable)
-    //{
-    //    if (unitStateChageBtn != null)
-    //        unitStateChageBtn.interactable = interactable;
-
-    //    if (unitUpgradeBtn != null)
-    //        unitUpgradeBtn.interactable = interactable;
-    //}
 
 
     public string upgradeOption;
 
     private void CreateUpgradeMenu(Ingame_UnitCtrl unit)
     {
-        GameObject canvas = GameObject.Find("Canvas");
-        if (canvas == null)
-        {
-            Debug.LogError("Canvas를 찾을 수 없습니다.");
-            return;
-        }
 
         currentUpgradeMenu = Instantiate(unitUpgradeMenuBox, canvas.transform);
+
+        UpgradeMenu upgradeMenu = currentUpgradeMenu.GetComponent<UpgradeMenu>();
 
         RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
         Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
         screenPos.x += 200;
         rectTransform.position = screenPos;
 
-        UnitUpgrade1Btn = currentUpgradeMenu.transform.Find("UnitUpgrade1Btn").GetComponent<Button>();
-        Image upGrade1BtnImage = UnitUpgrade1Btn.GetComponent<Image>();
+        Image upGrade1BtnImage = upgradeMenu.unitUpgrade1Btn.GetComponent<Image>();
         upGrade1BtnImage.sprite = unit.unitData.uupgrade1Image;
 
-        UnitUpgrade2Btn = currentUpgradeMenu.transform.Find("UnitUpgrade2Btn").GetComponent<Button>();
-        Image upGrade2BtnImage = UnitUpgrade2Btn.GetComponent<Image>();
+        Image upGrade2BtnImage = upgradeMenu.unitUpgrade2Btn.GetComponent<Image>();
         upGrade2BtnImage.sprite = unit.unitData.uupgrade2Image;
 
-        UnitUpgrade1Txt = currentUpgradeMenu.transform.Find("UnitUpgrade1Txt").GetComponent<Text>();
+        Text UnitUpgrade1Txt = upgradeMenu.upgrade1Txt.GetComponent<Text>();
         UnitUpgrade1Txt.text = unit.unitData.upgrade1Cost.ToString();
-        UnitUpgrade2Txt = currentUpgradeMenu.transform.Find("UnitUpgrade2Txt").GetComponent<Text>();
+
+        Text UnitUpgrade2Txt = upgradeMenu.upgrade2Txt.GetComponent<Text>();
         UnitUpgrade2Txt.text = unit.unitData.upgrade2Cost.ToString();
 
-        UnitUpgradeCloseeBtn = currentUpgradeMenu.transform.Find("UpgradeCloseBtn").GetComponent<Button>();
-
+        UnitUpgrade1Btn = upgradeMenu.unitUpgrade1Btn;
+        UnitUpgrade2Btn = upgradeMenu.unitUpgrade2Btn;
+        UnitUpgradeCloseeBtn = upgradeMenu.closeBtn;
 
         // 3티어인 경우 버튼 하나만 생성
         if (unit.unitData.level == 3)
@@ -657,21 +646,22 @@ public class Ingame_UIManager : MonoBehaviour
 
     }
 
+    
+
     private void CreateUpgradeconfirmedMenu(Ingame_UnitCtrl unit)
     {
-        GameObject canvas = GameObject.Find("Canvas");
-
         currentunitUpgradeMenuConfirmBox = Instantiate(unitUpgradeMenuConfirmBox, canvas.transform);
+
+        UpgradeConfirmMenu confirmMenu = currentunitUpgradeMenuConfirmBox.GetComponent<UpgradeConfirmMenu>();
 
         RectTransform rectTransform = currentunitUpgradeMenuConfirmBox.GetComponent<RectTransform>();
         Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
         screenPos.x += 200;
         rectTransform.position = screenPos;
 
-        UpgradeCheckCloseBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckCloseBtn").GetComponent<Button>();
-        UpgradeCheckOkBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckOkBtn").GetComponent<Button>();
-        UpgradeCheckCancleBtn = currentunitUpgradeMenuConfirmBox.transform.Find("UpgradeCheckCancleBtn").GetComponent<Button>();
-
+        UpgradeCheckOkBtn = confirmMenu.confirmBtn;
+        UpgradeCheckCloseBtn = confirmMenu.cancelBtn;
+        UpgradeCheckCancleBtn = confirmMenu.closeBtn;
 
         UpgradeCheckCloseBtn.onClick.AddListener(() =>
         {

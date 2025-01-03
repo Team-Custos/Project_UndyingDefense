@@ -241,19 +241,19 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (HP > 0)
-        {
-            // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
-            GridManager.inst.SetTilePlaceable(transform.position, false, false);
-        }
-        else
-        {
-            // 유닛이 죽었거나 체력이 0 이하라면, 해당 타일을 다시 배치 가능(true)로
-            GridManager.inst.SetTilePlaceable(transform.position, true, true);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (HP > 0)
+    //    {
+    //        // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
+    //        GridManager.inst.SetTilePlaceable(transform.position, false, false);
+    //    }
+    //    else
+    //    {
+    //        // 0 이하라면, 해당 타일을 다시 배치 가능(true)로
+    //        GridManager.inst.SetTilePlaceable(transform.position, true, true);
+    //    }
+    //}
 
 
     // Update is called once per frame
@@ -262,6 +262,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (hpBar != null)
         {
             hpBar.fillAmount = (float)HP / (float)maxHp;
+        }
+
+        if (HP > 0)
+        {
+            // 유닛이 살아있다면, 해당 타일을 배치 불가(false)로
+            GridManager.inst.SetTilePlaceable(transform.position, false, false);
+        }
+        else
+        {
+            // 0 이하라면, 해당 타일을 다시 배치 가능(true)로
+            GridManager.inst.SetTilePlaceable(transform.position, true, true);
         }
 
 
@@ -296,7 +307,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if(this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                EnemySpawner.inst.OnMonsterDead(this.gameObject, 0.0f);
             }
             else 
             {
@@ -379,8 +390,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         // Change 상태일 때는 다른 행동을 하지 않음
         if (Ally_Mode == AllyMode.Change)
         {
-            //Ingame_UIManager.instance.ShowUnitStateUI(this.gameObject, false, false);
-            //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
             unitUiCtrl.OnOffSiegeEffect(false);
 
             if (unitStateChangeTime > 0)
@@ -398,7 +407,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-                InGameManager.inst.AllUnitSelectOff(); //모든 유닛의 선택 해제.
+                //InGameManager.inst.AllUnitSelectOff(); //모든 유닛의 선택 해제.
 
                 //유닛의 모드 변경.
                 if (previousAllyMode == AllyMode.Free)
@@ -760,7 +769,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                EnemySpawner.inst.OnMonsterDead(this.gameObject, 2.0f);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
@@ -877,7 +886,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                EnemySpawner.inst.OnMonsterDead(this.gameObject, 2.0f);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
@@ -1014,6 +1023,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             maxHp = unitData.maxHP;
             HP = unitData.maxHP;
+            cur_moveSpeed = unitData.moveSpeed;//현재 이동 속도를 데이터의 이동속도로 초기화.
+            UnitSkill.AttackTrigger = unitData.attackVFX;
         }
         else
         {

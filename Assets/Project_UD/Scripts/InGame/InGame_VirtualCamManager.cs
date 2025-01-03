@@ -24,10 +24,13 @@ public class InGame_VirtualCamManager : MonoBehaviour
     public float zMax = 4.5f;
     public float zMin = -25.0f;
 
+    [SerializeField] private float zoomLerpSpeed = 10f; // 부드러움 조절
+    private float targetFov; // 목표 FOV 저장
+
     // Start is called before the first frame update
     void Start()
     {
-
+        targetFov = virtualCamera.m_Lens.FieldOfView; // 초기 FOV 저장
     }
 
     // Update is called once per frame
@@ -102,10 +105,15 @@ public class InGame_VirtualCamManager : MonoBehaviour
 
         if (scrollInput != 0)
         {
-            float currentFov = virtualCamera.m_Lens.FieldOfView;
-            currentFov -= scrollInput * zoomSpeed * 100f * Time.deltaTime;
-            currentFov = Mathf.Clamp(currentFov, zoomMin, zoomMax);
-            virtualCamera.m_Lens.FieldOfView = currentFov;
+            targetFov -= scrollInput * zoomSpeed * 100f * Time.deltaTime;
+            targetFov = Mathf.Clamp(targetFov, zoomMin, zoomMax);
         }
+
+        // 현재 FOV와 목표 FOV 사이를 Lerp로 보간
+        virtualCamera.m_Lens.FieldOfView = Mathf.Lerp(
+            virtualCamera.m_Lens.FieldOfView,
+            targetFov,
+            Time.deltaTime * zoomLerpSpeed
+        );
     }
 }

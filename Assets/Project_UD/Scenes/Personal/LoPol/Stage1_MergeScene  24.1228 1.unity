@@ -31246,6 +31246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a4859edec90ba478e71dfff924757e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 959445838}
   EnemyTestModeBtn: {fileID: 572921570}
   UnitSetModeText: {fileID: 636566296}
   unitSpawnPanel: {fileID: 590253401}
@@ -31261,16 +31262,10 @@ MonoBehaviour:
   sSkillText: {fileID: 1278265746}
   hpImage: {fileID: 0}
   hpText: {fileID: 100013216}
-  attackTypeImage: {fileID: 0}
-  attackTypeText: {fileID: 1597134954}
   defenseTypeImage: {fileID: 0}
   defeneTypeText: {fileID: 1172482911}
   gSkillInfoText: {fileID: 1931295459}
   sSkillInfoText: {fileID: 155965889}
-  enemyArcherImage: {fileID: 21300000, guid: 3ec6dfbf1ccaff047958617cfb88fd57, type: 3}
-  enenmyWarriorImage: {fileID: 21300000, guid: dcd086b0e1610e34ab78e1c64cafd2cc, type: 3}
-  minByeongImage: {fileID: 21300000, guid: d6f8bf894bc30ed4a9d92f630f56d564, type: 3}
-  hunterImage: {fileID: 21300000, guid: f48bd728ddc9bca41896e1162ac9e56e, type: 3}
   endGameBtn: {fileID: 0}
   restartGameBtn: {fileID: 71754744}
   pauseGameBtn: {fileID: 962950878}
@@ -31284,9 +31279,7 @@ MonoBehaviour:
     type: 3}
   currentUpgradeMenu: {fileID: 0}
   UnitUpgrade1Btn: {fileID: 0}
-  UnitUpgrade1Txt: {fileID: 0}
   UnitUpgrade2Btn: {fileID: 0}
-  UnitUpgrade2Txt: {fileID: 0}
   UnitUpgradeCloseeBtn: {fileID: 0}
   unitUpgradeMenuConfirmBox: {fileID: 7637056931051435507, guid: 0d6b51319c9344b49bea663d59436840,
     type: 3}
@@ -35670,6 +35663,7 @@ MonoBehaviour:
   xMin: -40
   zMax: 4.5
   zMin: -25
+  zoomLerpSpeed: 10
 --- !u!4 &927719981
 Transform:
   m_ObjectHideFlags: 0
@@ -59809,27 +59803,27 @@ PrefabInstance:
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8772666
+      value: 0.87726635
       objectReference: {fileID: 0}
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: -0.0003314411
       objectReference: {fileID: 0}
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.48000354
+      value: -0.48000342
       objectReference: {fileID: 0}
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.00060575
       objectReference: {fileID: 0}
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -0.067
       objectReference: {fileID: 0}
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
@@ -59839,7 +59833,7 @@ PrefabInstance:
     - target: {fileID: 2590682417945228745, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -0.043
       objectReference: {fileID: 0}
     - target: {fileID: 8790522339504496268, guid: 27ecdb7e65f6dd64194f49d16636a2b4,
         type: 3}
@@ -83586,12 +83580,12 @@ SceneRoots:
   - {fileID: 1519819086}
   - {fileID: 1346724711}
   - {fileID: 633104417}
+  - {fileID: 959445839}
   - {fileID: 1555955064}
   - {fileID: 1249955021}
   - {fileID: 1889340050}
   - {fileID: 1852803596}
   - {fileID: 511252055}
-  - {fileID: 959445839}
   - {fileID: 831843511}
   - {fileID: 1361997904}
   - {fileID: 588367418}

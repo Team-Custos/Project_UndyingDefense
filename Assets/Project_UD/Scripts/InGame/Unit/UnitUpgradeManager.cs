@@ -10,8 +10,8 @@ public class UnitUpgradeManager : MonoBehaviour
 {
     public static UnitUpgradeManager Instance;
 
-    public List<Ingame_UnitData> allUnitData;  // 모든 유닛 데이터
-    private Dictionary<string, Ingame_UnitData> unitMap;  // 코드 매핑
+    public List<Ingame_UnitData> allUnitData;  //유닛 데이터
+    private Dictionary<string, Ingame_UnitData> unitMap; 
 
     public bool isUpgrade = false;
 
@@ -47,7 +47,7 @@ public class UnitUpgradeManager : MonoBehaviour
         {
             targetUnit.SetUnitData(nextUnitData);
             targetUnit.ModelSwap();
-            targetUnit.StatsInit();
+            //targetUnit.StatsInit();
             Debug.Log($"업그레이드 성공! 새로운 유닛: {nextUnitData.name}");
         }
         else

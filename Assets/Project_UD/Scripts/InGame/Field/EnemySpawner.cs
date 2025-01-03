@@ -247,12 +247,12 @@ public class EnemySpawner : MonoBehaviour
 
 
     //몬스터 죽음 처리
-    public void OnMonsterDead(GameObject monster)
+    public void OnMonsterDead(GameObject monster, float destroyDelay)
     {
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            Destroy(monster,2f);
+            Destroy(monster, destroyDelay);
         }
     }
 
