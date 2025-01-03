@@ -14,9 +14,12 @@ public static class CONSTANT
     public static string TAG_ATTACK = "Attack"; //공격 판정 태그
 
     public static string ANITRIGGER_DEAD = "IsDead";
+    public static string ANIBOOL_STUNEND = "StunEnd";//기절 애니메이션 종료
+    public static string ANITRIGGER_STUN = "IsStun";
     public static string ANIBOOL_RUN = "IsRunning";
     public static string ANITRIGGER_ATTACK = "AttackTrigger";
     public static string ANITRIGGER_SPECIAL = "SpecialTrigger";
+
 
 
 }

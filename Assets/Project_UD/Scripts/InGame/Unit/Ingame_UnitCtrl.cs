@@ -47,7 +47,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
 
     public Ingame_UnitData unitData; //유닛의 데이터 (스크립터블 오브젝트.)
-    UnitDebuffManager debuffManager; //디버프 관리.
+    public UnitDebuffManager debuffManager; //디버프 관리.
 
     public UnitSoundManager soundManager; //유닛의 SFX 관리.
 
@@ -479,7 +479,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //프리모드일때
         else if (Ally_Mode == AllyMode.Free)
         {
-            //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, false);
             unitUiCtrl.OnOffSiegeEffect(false);
 
             UnitSkill.UnitSpecialSkill(unitData.specialSkillCode, unitData.skillCooldown);//유닛의 특수 스킬.
@@ -490,7 +489,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                 if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)//목적지에 도착할떄까지
                 {
-                    //VisualModel.transform.rotation = Quaternion.identity;
                     Ally_State.fsm.ChangeState(UnitState.Move);//이동 상태 설정.
                 }
                 else
@@ -629,7 +627,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             moveTargetPos = moveTargetBasePos;
 
-            //NavAgent.SetDestination(new Vector3(this.transform.position.x, targetBase.transform.position.y, targetBase.transform.position.z)); 
             if (enemy_isBaseInRange)
             {
                 Enemy_State.fsm.ChangeState(EnemyState.Attack);
@@ -648,8 +645,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
     }
-
-
 
     public void SearchEnemy()
     {
@@ -709,7 +704,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     Debug.Log("SkillCode : " + unitData.generalSkillCode);
                     Debug.Log("targetEnemy." + targetEnemy.name);
-                    //Debug.Log("weaponCooldown : " + unitData.weaponCooldown);
 
                     VisualModel.transform.LookAt(targetEnemy.transform.position);
                     UnitSkill.EnemyGeneralSkill(unitData.generalSkillCode, targetEnemy, unitData.attackSpeed, true);

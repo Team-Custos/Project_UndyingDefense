@@ -186,6 +186,7 @@ public class UnitSkillManager : MonoBehaviour
                     if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                     {
                         StopCoroutine(DoubleShot());
+                        UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 1f;
                         return;
                     }
                     else
@@ -195,6 +196,8 @@ public class UnitSkillManager : MonoBehaviour
 
                     IEnumerator DoubleShot() // 2연사 코루틴
                     {
+                        AnimatorStateInfo stateInfo = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.GetCurrentAnimatorStateInfo(0);
+
                         //Debug.Log("Double shot 1");
                         if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                         {
@@ -205,13 +208,15 @@ public class UnitSkillManager : MonoBehaviour
                             if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
                             {
                                 UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 3f;
                                 Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
                                 Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                                 TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
                             }
                         }
                         // 지연 시간 후 두 번째 총알 발사
-                        yield return new WaitForSeconds(UnitCtrl.unitData.attackSpeed * 0.5f);
+                        yield return new WaitWhile(() => stateInfo.normalizedTime < 1);
+                        //yield return new WaitForSeconds(UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.GetCurrentAnimatorStateInfo(0).length);
                         //Debug.Log("Double shot 2");
                         if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                         {
@@ -222,6 +227,7 @@ public class UnitSkillManager : MonoBehaviour
                             if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
                             {
                                 UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
+                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 3f;
                                 Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
                                 Bow.GetComponent<BowCtrl>().ArrowShoot(false);
                                 TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
