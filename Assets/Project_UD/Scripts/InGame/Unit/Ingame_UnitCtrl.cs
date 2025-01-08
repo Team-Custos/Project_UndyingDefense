@@ -37,6 +37,10 @@ public enum TargetSelectType//유닛의 타겟 선정 방식.
     Fixed
 }
 
+
+// 유닛(아군, 적)을 관리하는 스크립트
+// 
+
 public class Ingame_UnitCtrl : MonoBehaviour
 {
     [HideInInspector] public AllyUnitState Ally_State;
@@ -421,8 +425,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 }
                 else if (previousAllyMode == AllyMode.Siege)
                 {
-                    //NavAgent.updatePosition = false;
-
                     IEnumerator ModeChangeDelayCoroutine()
                     {
                         NavObstacle.carving = false;
@@ -432,10 +434,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     }
                     StartCoroutine(ModeChangeDelayCoroutine());
 
-                    //NavAgent.Warp(transform.position);
-
                     Ally_Mode = AllyMode.Free;
-                    //NavAgent.updatePosition = true;
 
                     SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_toFree);
                 }
@@ -456,7 +455,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isEnemyInSight = false;
                 Ally_State.fsm.ChangeState(UnitState.Idle);
-                SearchEnemy();
             }
 
 
@@ -505,7 +503,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                 {
                     isEnemyInSight = false;
                     Ally_State.fsm.ChangeState(UnitState.Idle);
-                    SearchEnemy();
                 }
 
                 if (targetEnemy != null)

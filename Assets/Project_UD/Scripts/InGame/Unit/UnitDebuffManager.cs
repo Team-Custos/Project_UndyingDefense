@@ -92,6 +92,7 @@ public class UnitDebuffManager : MonoBehaviour
                         }
                         break;
                     case UnitDebuff.Stun:
+                        unitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetBool(CONSTANT.ANIBOOL_STUNEND, false);
                         unitCtrl.unActable = true;
                         break;
                     case UnitDebuff.Trapped:

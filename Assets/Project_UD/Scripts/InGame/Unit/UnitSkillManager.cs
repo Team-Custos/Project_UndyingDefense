@@ -185,55 +185,14 @@ public class UnitSkillManager : MonoBehaviour
                 case 102:
                     if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
                     {
-                        StopCoroutine(DoubleShot());
-                        UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 1f;
                         return;
                     }
                     else
                     {
-                        StartCoroutine(DoubleShot());
-                    }
-
-                    IEnumerator DoubleShot() // 2연사 코루틴
-                    {
-                        AnimatorStateInfo stateInfo = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.GetCurrentAnimatorStateInfo(0);
-
-                        //Debug.Log("Double shot 1");
-                        if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
-                        {
-                            StopCoroutine(DoubleShot());
-                        }
-                        else
-                        {
-                            if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
-                            {
-                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
-                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 3f;
-                                Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
-                                Bow.GetComponent<BowCtrl>().ArrowShoot(false);
-                                TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
-                            }
-                        }
-                        // 지연 시간 후 두 번째 총알 발사
-                        yield return new WaitWhile(() => stateInfo.normalizedTime < 1);
-                        //yield return new WaitForSeconds(UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.GetCurrentAnimatorStateInfo(0).length);
-                        //Debug.Log("Double shot 2");
-                        if (TargetEnemy == null && !UnitCtrl.isEnemyInRange)
-                        {
-                            StopCoroutine(DoubleShot());
-                        }
-                        else
-                        {
-                            if ((TargetEnemy != null && UnitCtrl.isEnemyInRange))
-                            {
-                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
-                                UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.speed = 3f;
-                                Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
-                                Bow.GetComponent<BowCtrl>().ArrowShoot(false);
-                                TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce, UnitDebuff.Bleed);
-                            }
-                        }
-                    }
+                        Bow.transform.LookAt(UnitCtrl.targetEnemy.transform.position);
+                        Bow.GetComponent<BowCtrl>().DoubleShot();
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + 5, AttackType.Pierce);
+                    }    
                     break;
                 //멀리베기
                 case 201:
@@ -416,8 +375,14 @@ public class UnitSkillManager : MonoBehaviour
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
                     break;
-                //검 베기
+                //망치질
                 case 102:
+                    damage = 10;
+                    attackType = AttackType.Crush;
+                    debuff = UnitDebuff.Dizzy;
+                    break;
+                //검 베기
+                case 103:
                     damage = 10;
                     attackType = AttackType.Slash;
                     debuff = UnitDebuff.Bleed;
@@ -439,10 +404,39 @@ public class UnitSkillManager : MonoBehaviour
                     attackType = AttackType.Pierce;
                     debuff = UnitDebuff.Bleed;
                     break;
+                //칼의 속삭임
+                case 203:
+                    damage = 10;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
+                //방페 앞세우기
+                case 204:
+                    damage = 10;
+                    attackType = AttackType.Crush;
+                    debuff = UnitDebuff.Dizzy;
+                    break;
+                //독가스 방출
+                case 205:
+                    break;
+                case 206:
+                    damage = 10;
+                    attackType = AttackType.Slash;
+                    debuff = UnitDebuff.Bleed;
+                    break;
                 case 301:
                     damage = 14;
                     attackType = AttackType.Crush;
                     debuff = UnitDebuff.Dizzy;
+                    break;
+                case 302:
+                    //5초 동안 자신 주변의 아군에게 재생 버프
+                    break;
+                //피의 향연
+                case 303:
+                    damage = 10;
+                    attackType = AttackType.Slash;
+                    //치명타시 자신에게 재생 버프
                     break;
                 case 401:
                     damage = 16;
@@ -493,6 +487,43 @@ public class UnitSkillManager : MonoBehaviour
         else
         {
             weaponCooldown_Cur -= Time.deltaTime;
+        }
+    }
+
+    public void EnemySpecialSkill(int SkillCode, float skillCooldown)
+    {
+        int SkillDamage = SpecialSkillDamageInit();
+        Ingame_UnitCtrl TargetEnemy = null;
+
+        if (UnitCtrl.targetEnemy != null)
+        {
+            TargetEnemy = UnitCtrl.targetEnemy.GetComponent<Ingame_UnitCtrl>();
+            SpecialSkillStop = false;
+        }
+        else
+        {
+            SpecialSkillStop = true;
+        }
+
+        if (skillCooldown_Cur <= 0)
+        {
+            skillCooldown_Cur = skillCooldown;
+            switch (SkillCode)
+            {
+                case 401:
+                    //광포의 포효를 질러 5초동안 범위 내의 아군에게 속도 증가 버프
+                    break;
+                case 501:
+                    //망자를 소환하는 주술로 자신 주변에 5명의 너덜너덜한 좀비, 부식된 백골 병사를 소환한다.
+                    break;
+            }
+        }
+        else
+        {
+            if (!SpecialSkillStop)
+            {
+                skillCooldown_Cur -= Time.deltaTime;
+            }
         }
     }
 }

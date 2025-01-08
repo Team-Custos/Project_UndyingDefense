@@ -382,6 +382,7 @@ MonoBehaviour:
   NavAgent: {fileID: 0}
   UnitSkill: {fileID: 0}
   unitData: {fileID: 0}
+  debuffManager: {fileID: 0}
   soundManager: {fileID: 8380448265939572467}
   Ally_Mode: 0
   unitPos: {x: 0, y: 0}
@@ -1587,6 +1588,11 @@ PrefabInstance:
       propertyPath: looping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 269774074506989241, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 641670966508373173, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
         type: 3}
       propertyPath: m_Name
@@ -1595,7 +1601,22 @@ PrefabInstance:
     - target: {fileID: 641670966508373173, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
         type: 3}
@@ -1605,7 +1626,7 @@ PrefabInstance:
     - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.247
+      value: 0.89
       objectReference: {fileID: 0}
     - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
         type: 3}
@@ -1646,6 +1667,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116463709981409762, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140495125187155588, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6250807099592788652, guid: 0f94e34e7ea42d6498ca3a8f46966dca,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
