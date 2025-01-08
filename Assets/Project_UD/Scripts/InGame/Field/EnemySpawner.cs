@@ -35,13 +35,12 @@ public class EnemySpawner : MonoBehaviour
 
     public Transform[] poolSapwnPoint;
 
-    public int waveCount = 10;
-    public int monsterPerWave = 5;
-    public float spawnInterval = 2.0f;
 
     public int currentWave = 1;
     public bool isWaveing = false;
     public int waveRewardGold = 0;
+
+    public int maxWave = 10;
 
     public List<GameObject> activeMonsters = new List<GameObject>();
 
@@ -167,7 +166,7 @@ public class EnemySpawner : MonoBehaviour
         
 
         // 웨이브 클리어 UI
-        if(currentData.waveNumber == 10)
+        if(currentData.waveNumber == maxWave)
         {
             yield return null;
         }
@@ -184,7 +183,7 @@ public class EnemySpawner : MonoBehaviour
         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
         Debug.Log($"[Wave {currentWave}] 클리어! 보상 {currentData.reward} 획득");
 
-        if(currentData.waveNumber == 10)
+        if(currentData.waveNumber == maxWave)
         {
             if(bgmManager != null) 
             {
@@ -262,6 +261,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return null;
         }
+
     }
 
     // Base 공격 확인 함수

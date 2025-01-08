@@ -181,7 +181,7 @@ public class Ingame_UIManager : MonoBehaviour
                         // 이미지 상태 변경 로직
                         UpdateButtonEffect(idx);
 
-                        DestroyUnitStateChangeBox();
+                        OnOffUnitStateChangeBox(false);
                         DestroyUnitUpgradeMenu();
                         DestorypgradeMenuConfirmBox();
                     }
@@ -196,7 +196,7 @@ public class Ingame_UIManager : MonoBehaviour
                 InGameManager.inst.UnitSetMode = !InGameManager.inst.UnitSetMode;
                 InGameManager.inst.EnemyUnitSetMode = !InGameManager.inst.EnemyUnitSetMode;
 
-                DestroyUnitStateChangeBox();
+                OnOffUnitStateChangeBox(false);
             });
         }
 
@@ -455,7 +455,7 @@ public class Ingame_UIManager : MonoBehaviour
         //hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
     }
 
-    public void CreateSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)
+    public void ShowSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)
     {
         if (unit.Ally_Mode == AllyMode.Change)
         {
@@ -477,7 +477,18 @@ public class Ingame_UIManager : MonoBehaviour
 
         SetSelectedUnit(unit);
 
-        currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
+
+        // 처음 한번만 생성후 OnOff로 유지 사용
+        if (currentSelectedUnitOptionBox == null)
+        {
+            currentSelectedUnitOptionBox = Instantiate(slectedUnitOptionBox) as GameObject;
+        }
+        else
+        {
+            currentSelectedUnitOptionBox.SetActive(true);
+        }
+
+
 
         currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
         RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
@@ -508,7 +519,7 @@ public class Ingame_UIManager : MonoBehaviour
                     unit.Ally_Mode = AllyMode.Change;
                     Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(unit.transform, -0.8f);
 
-                    DestroyUnitStateChangeBox();
+                    OnOffUnitStateChangeBox(false);
                 }
             });
         }
@@ -698,13 +709,15 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-    public void DestroyUnitStateChangeBox()
+    public void OnOffUnitStateChangeBox(bool isSelected)
     {
-        if (currentSelectedUnitOptionBox != null)
+        if(isSelected && currentSelectedUnitOptionBox != null)
         {
-            Destroy(currentSelectedUnitOptionBox);
-
-            currentSelectedUnitOptionBox = null;
+            currentSelectedUnitOptionBox.SetActive(true);
+        }
+        else
+        {
+            currentSelectedUnitOptionBox.SetActive(false);
         }
     }
 

@@ -16,6 +16,7 @@ public class GameOrderSystem : MonoBehaviour
 
     public GameObject clickedObj = null; //클릭한 오브젝트
     public GameObject selectedUnit = null; //선택한 유닛 (아군, 적군)
+    public GameObject newSelectedUnit = null; // 새로 선택한 유닛
 
     public Vector3 clickedWorldPos = Vector3.zero; //클릭한 지점의 월드 좌표.
 
@@ -71,7 +72,7 @@ public class GameOrderSystem : MonoBehaviour
 
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
-                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                    Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 }
 
                 if (Ingame_UIManager.instance.currentUpgradeMenu != null)
@@ -168,38 +169,63 @@ public class GameOrderSystem : MonoBehaviour
                     GAMEMANAGER.AllyUnitSetMode = false;
                 }
 
-                Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
+                //Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
-                Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
-                foreach (var unit in allUnit)
+                //Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
+                //foreach (var unit in allUnit)
+                //{
+                //    unit.isSelected = false;
+                //}
+                //AllyUnit.isSelected = !AllyUnit.isSelected;
+
+                //if (AllyUnit.isSelected && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
+                //{
+                //    selectedUnit = AllyUnit.gameObject;
+
+                //    if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                //    {
+                //        Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
+                //        Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
+                //    }
+
+                //    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+
+                //    Ingame_UIManager.instance.ShowSeletedUnitdOptionBox(hit.point, AllyUnit);
+                //    Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                //    Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
+
+                //}
+                //else
+                //{
+                //    selectedUnit = null;
+                //}
+
+                // 선택된 유닛
+                Ingame_UnitCtrl allyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
+
+                if (selectedUnit != null)
                 {
-                    unit.isSelected = false;
+                    Ingame_UnitCtrl oldallyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                    if (oldallyUnit != null)
+                        oldallyUnit.isSelected = false;
                 }
-                AllyUnit.isSelected = !AllyUnit.isSelected;
 
-                if (AllyUnit.isSelected) // && AllyUnit.CompareTag(CONSTANT.TAG_UNIT))
+                allyUnit.isSelected = true;
+
+                selectedUnit = allyUnit.gameObject;
+
+
+                // UI 처리
+                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
-                    selectedUnit = AllyUnit.gameObject;
-
-
-                    if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
-                    {
-                        Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
-                        Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
-                    }
-
-                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
-
-                    Ingame_UIManager.instance.CreateSeletedUnitdOptionBox(hit.point, AllyUnit);
-                    Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
-                    Ingame_UIManager.instance.UpdateUnitInfoPanel(AllyUnit);
-           
+                    Destroy(Ingame_UIManager.instance.currentSelectedUnitOptionBox);
+                    Ingame_UIManager.instance.currentSelectedUnitOptionBox = null;
                 }
-                else
-                {
-                    AllyUnit.isSelected = true;
-                    selectedUnit = null;
-                }
+
+                Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+                Ingame_UIManager.instance.ShowSeletedUnitdOptionBox(hit.point, allyUnit);
+                Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
+                Ingame_UIManager.instance.UpdateUnitInfoPanel(allyUnit);
             }
             //적 클릭했을 때
             else if (clickedObj.CompareTag(CONSTANT.TAG_ENEMY))
@@ -208,7 +234,7 @@ public class GameOrderSystem : MonoBehaviour
 
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
-                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                    Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 }
 
                 if (Ingame_UIManager.instance.currentUpgradeMenu != null)
@@ -222,46 +248,39 @@ public class GameOrderSystem : MonoBehaviour
                 }
 
 
-                Ingame_UnitCtrl Enemy = hit.collider.GetComponent<Ingame_UnitCtrl>();
+                // 선택된 유닛
+                Ingame_UnitCtrl enmyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
-                // 모든 유닛의 선택 해제
-                Ingame_UnitCtrl[] allEnemys = FindObjectsOfType<Ingame_UnitCtrl>();
-                foreach (var unit in allEnemys)
+                if (selectedUnit != null)
                 {
-                    unit.isSelected = false;
+                    Ingame_UnitCtrl oldEnemyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                    if (oldEnemyUnit != null)
+                        oldEnemyUnit.isSelected = false;
                 }
 
-                Enemy.isSelected = !Enemy.isSelected;
+                enmyUnit.isSelected = true;
 
-                if (Enemy.isSelected)
-                {
-                    selectedUnit = Enemy.gameObject;
+                selectedUnit = enmyUnit.gameObject;
 
-                }
-                else
-                {
-                    selectedUnit = null;
-                }
+                //if (selectedUnit != null && selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
+                //{
+                //    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
+                //    AllyUnit.isSelected = false;
+                //    AllyUnit.targetEnemy = clickedObj;
 
-                if (selectedUnit != null && selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
-                {
-                    Ingame_UnitCtrl AllyUnit = selectedUnit.GetComponent<Ingame_UnitCtrl>();
-                    AllyUnit.isSelected = false;
-                    AllyUnit.targetEnemy = clickedObj;
-
-                    if (AllyUnit.Ally_Mode == AllyMode.Free)
-                    {
-                        AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
-                    }
-                    Enemy.isSelected = false;
+                //    if (AllyUnit.Ally_Mode == AllyMode.Free)
+                //    {
+                //        AllyUnit.moveTargetPos = new Vector3(Enemy.transform.position.x, 0, Enemy.transform.position.z);
+                //    }
+                //    Enemy.isSelected = false;
 
 
-                    selectedUnit = null;
-                }
+                //    selectedUnit = null;
+                //}
 
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(true);
-                Ingame_UIManager.instance.UpdateUnitInfoPanel(Enemy);
+                Ingame_UIManager.instance.UpdateUnitInfoPanel(enmyUnit);
             }
             //else if (clickedObj.tag == CONSTANT.TAG_ENEMY)
             //{
@@ -283,6 +302,7 @@ public class GameOrderSystem : MonoBehaviour
             //        selectedUnit = null;
             //    }
             //}
+
             //지형 클릭했을 때
             else if (clickedObj.CompareTag(CONSTANT.TAG_GROUND))
             {
@@ -292,7 +312,7 @@ public class GameOrderSystem : MonoBehaviour
 
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
                 {
-                    Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                    Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 }
 
                 if (Ingame_UIManager.instance.currentUpgradeMenu != null)
@@ -412,7 +432,7 @@ public class GameOrderSystem : MonoBehaviour
                             SoundManager.instance.PlayUnitSFX(SoundManager.unitSfx.sfx_assignAble);
 
                             gridTile.SelectedTile(true); // 타일 선택 효과
-                            Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                            Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                             Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                             Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
 

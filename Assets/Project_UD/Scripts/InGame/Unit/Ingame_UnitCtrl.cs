@@ -312,7 +312,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else 
             {
                 Destroy(this.gameObject);
-                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }
@@ -382,7 +382,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             Ally_Mode = AllyMode.Change;
             Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(transform, -0.8f);
 
-            Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+            Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
             Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
             Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
         }
@@ -776,7 +776,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
                 isDead = true;
-                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }
@@ -893,7 +893,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             else if (gameObject.CompareTag(CONSTANT.TAG_UNIT))
             {
                 isDead = true;
-                Ingame_UIManager.instance.DestroyUnitStateChangeBox();
+                Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
                 Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
                 Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
             }

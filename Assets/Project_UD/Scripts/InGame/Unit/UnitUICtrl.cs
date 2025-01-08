@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UnitUICtrl: MonoBehaviour
 {
+    Ingame_UnitCtrl unitCtrl;
 
     public GameObject selecteParticle;
     public GameObject spawnEffect;
@@ -23,6 +24,7 @@ public class UnitUICtrl: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        unitCtrl = GetComponent<Ingame_UnitCtrl>();
 
         PlaySummonEffect();
     }
