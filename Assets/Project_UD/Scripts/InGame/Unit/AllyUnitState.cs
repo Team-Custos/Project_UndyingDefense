@@ -144,7 +144,15 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
-            UnitCtrl.SearchEnemy();//적군 탐색.
+            if (UnitCtrl.haveToMovePosition)
+            {
+                UnitCtrl.isEnemyInRange = false;
+                UnitCtrl.isEnemyInSight = false;
+            }
+            else
+            {
+                UnitCtrl.SearchEnemy();//적군 탐색.
+            }
 
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
@@ -156,7 +164,7 @@ public class AllyUnitState : MonoBehaviour
             if (targetMoveDistance_Cur <= 0.1f)//목적지에 도착했을 때
             {
                 UnitCtrl.moveTargetPos = transform.position;
-                fsm.ChangeState(UnitState.Search);//탐색 상태로 변경.
+                fsm.ChangeState(UnitState.Idle);//탐색 상태로 변경.
                 return;
             }
         }
