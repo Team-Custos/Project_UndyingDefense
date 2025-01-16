@@ -24,6 +24,7 @@ public class AllyUnitState : MonoBehaviour
     Ingame_UnitCtrl UnitCtrl; //이 병사
     Ingame_UIManager UnitUIManager;//이 병사의 UI
     NavMeshAgent navAgent;//병사의 길찾기 및 이동을 위한 NavMeshAgent.
+    NavMeshObstacle navObstacle;
     Animator allyAnimator;//병사 모델의 애니메이션을 관리하기 위한 애니메이터.
 
 
@@ -34,7 +35,8 @@ public class AllyUnitState : MonoBehaviour
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
-        
+        navObstacle = this.GetComponent<NavMeshObstacle>();
+
     }
 
     private void Update()
@@ -189,6 +191,7 @@ public class AllyUnitState : MonoBehaviour
 
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position); //타겟 적군과의 거리.
+        Debug.Log("targetEnemyDistance_Cur : " + targetEnemyDistance_Cur);
 
         if (targetEnemyDistance_Cur <= UnitCtrl.unitData.attackRange) //공격 범위 안으로 들어왔을 경우.
         {
@@ -204,7 +207,6 @@ public class AllyUnitState : MonoBehaviour
         {
             
         }
-
     }
 
     void Chase_Exit()
