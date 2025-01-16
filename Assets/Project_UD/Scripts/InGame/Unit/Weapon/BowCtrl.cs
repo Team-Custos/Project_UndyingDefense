@@ -6,16 +6,19 @@ public class BowCtrl : MonoBehaviour
 {
     public GameObject Arrow;
 
-    public void ArrowShoot(bool isEnemyAttack)
+    public void ArrowShoot(bool isEnemyAttack, float ArrowPosY = 0)
     {
         GameObject arrow_Obj = Instantiate(Arrow);
         if(arrow_Obj != null)
         {
-            arrow_Obj.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            arrow_Obj.transform.SetPositionAndRotation(transform.position + Vector3.up * ArrowPosY, transform.rotation);
             AttackCtrl arrowCtrl = arrow_Obj.GetComponent<AttackCtrl>();
-
-            //여기서 NullReferenceException 오류 발생. 왜지?????
-            //arrowCtrl.isEnemyAttack = isEnemyAttack;
         }
+    }
+
+    public void DoubleShot()
+    {
+        ArrowShoot(false, 0.3f);
+        ArrowShoot(false, -0.3f);
     }
 }

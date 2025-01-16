@@ -142,6 +142,8 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
+            UnitCtrl.SearchEnemy();//적군 탐색.
+
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
             navAgent.SetDestination(UnitCtrl.moveTargetPos); //병사의 이동 목적지 설정

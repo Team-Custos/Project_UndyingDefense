@@ -66,4 +66,9 @@ public class SoundManager : MonoBehaviour
     {
         IngameSfxSource.PlayOneShot(uiSfxClip[(int)uisfx]);
     }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        IngameSfxSource.PlayOneShot(clip);
+    }
 }
