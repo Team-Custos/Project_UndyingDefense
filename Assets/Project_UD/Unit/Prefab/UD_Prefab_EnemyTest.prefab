@@ -565,12 +565,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 423550f24d9d8634a8491ba2669383d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selecteParticle: {fileID: 352275357870371126}
+  hpBar: {fileID: 3917604664920769546}
+  selectedUI: {fileID: 352275357870371126}
   spawnEffect: {fileID: 3505234495556357522}
   summonParticle: {fileID: 0}
   effectDuration: 2
-  unitHp: {fileID: 3917604664920769546}
+  unitMoveImage: {fileID: 0}
   siegeEffect: {fileID: 0}
+  unitState: 0
 --- !u!1 &4487228603168820245
 GameObject:
   m_ObjectHideFlags: 0

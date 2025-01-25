@@ -22,6 +22,8 @@ public class GameOrderSystem : MonoBehaviour
 
     public GameObject clickedPosIndicator = null; //클릭한 지점을 표시하기 위한 오브젝트 (삭제 예정)
 
+    public UnitUIManager unitUIManager;
+
     private void Awake()
     {
         instance = this;
@@ -85,6 +87,7 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
                 }
 
+                unitUIManager.OnOffUnitUI(selectedUnit.transform, false);
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
 
@@ -169,6 +172,8 @@ public class GameOrderSystem : MonoBehaviour
                     GAMEMANAGER.AllyUnitSetMode = false;
                 }
 
+                
+
                 //Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
                 //Ingame_UnitCtrl[] allUnit = FindObjectsOfType<Ingame_UnitCtrl>();
@@ -214,6 +219,8 @@ public class GameOrderSystem : MonoBehaviour
 
                 selectedUnit = allyUnit.gameObject;
 
+
+                unitUIManager.OnOffUnitUI(selectedUnit.transform, true);
 
                 // UI 처리
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)

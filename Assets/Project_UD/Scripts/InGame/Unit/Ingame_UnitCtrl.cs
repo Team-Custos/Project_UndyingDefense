@@ -261,7 +261,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (hpBar != null)
         {
-            hpBar.fillAmount = (float)HP / (float)maxHp;
+            hpBar.fillAmount = (float)HP / (float)maxHp;   // -> 나눗셈을 곱셉으로 변환 해서 계산, 역수 사용
         }
 
         if (HP > 0)

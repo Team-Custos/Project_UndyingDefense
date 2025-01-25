@@ -2,15 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEngine.UI.CanvasScaler;
-using static UnitExcelDataManager;
 using UnityEngine.Rendering.Universal;
-using DG.Tweening.Core.Easing;
-using System.Threading.Tasks;
-using Unity.Burst.CompilerServices;
 
 //이 스크립트는 인게임의 전반적인 UI를 관리하기 위한 스크립트입니다.
 
@@ -122,20 +117,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
-
-        // 저장된 커맨더 스킬 확인 용
-        if (commanderSkillBtn != null)
-        {
-            commanderSkillBtn.onClick.AddListener(() =>
-            {
-                Dictionary<string, string> savedSkills = inGameManager.LoadCommandSkillList();
-
-                foreach (var skill in savedSkills)
-                {
-                    Debug.Log($"이름: {skill.Value}");
-                }
-            });
-        }
 
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
@@ -330,23 +311,6 @@ public class Ingame_UIManager : MonoBehaviour
         goldTxt.text = InGameManager.inst.gold.ToString();
 
 
-        if (unitSpawnBtn[0].interactable)
-        {
-            unitSpawnBtn[0].tag = "InteractiveUi";
-        }
-        else
-        {
-            unitSpawnBtn[0].tag = "UnInteractiveUi";
-        }
-
-        if (unitSpawnBtn[1].interactable)
-        {
-            unitSpawnBtn[1].tag = "InteractiveUi";
-        }
-        else
-        {
-            unitSpawnBtn[1].tag = "UnInteractiveUi";
-        }
     }
 
 
@@ -400,15 +364,6 @@ public class Ingame_UIManager : MonoBehaviour
             selectedBtnEffectImage[i].gameObject.SetActive(i == activeIndex);
         }
 
-        // 두 옵션이 모두 false인 경우 모든 이미지를 비활성화
-        //if (InGameManager.inst.UnitSetMode && InGameManager.inst.AllyUnitSetMode)
-        //{
-        //    // activeIndex와 일치하는 인덱스의 이미지만 켜고 나머지는 끔
-        //    for (int i = 0; i < selectedBtnEffectImage.Length; i++)
-        //    {
-        //        selectedBtnEffectImage[i].gameObject.SetActive(i == activeIndex);
-        //    }
-        //}
     }
 
     public void UpdateUnitInfoPanel(Ingame_UnitCtrl selectedUnit)
@@ -417,14 +372,6 @@ public class Ingame_UIManager : MonoBehaviour
         {
             return;
         }
-
-        Ingame_UnitCtrl unitData = selectedUnit;
-
-        if (unitData == null)
-        {
-            return;
-        }
-
 
         // 유닛의 이름, 레벨, HP, 스킬 등 정보를 UI에 업데이트
         unitInfoImage.sprite = selectedUnit.unitData.unitImage;
@@ -447,27 +394,27 @@ public class Ingame_UIManager : MonoBehaviour
             sSkillImage.gameObject.SetActive(false);
         }
 
-
         if (selectedUnit.HP <= 0)
             selectedUnit.HP = 0;
-
-        // HP 정보 업데이트
-        //hpText.text = selectedUnit.HP + "/" + unitData.maxHp;
     }
 
-    public void ShowSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl unit)
+    public void ShowSeletedUnitdOptionBox(Vector3 worldPosition, Ingame_UnitCtrl selectedUnit)
     {
-        if (unit.Ally_Mode == AllyMode.Change)
+        if (selectedUnit.Ally_Mode == AllyMode.Change)
         {
             return;
         }
+
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
+
+        SetSelectedUnit(selectedUnit);
 
         if (Ingame_UIManager.instance.currentUpgradeMenu != null)
         {
             Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
         }
 
-        Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPosition);
 
         if (slectedUnitOptionBox != null)
         {
@@ -475,7 +422,6 @@ public class Ingame_UIManager : MonoBehaviour
             currentSelectedUnitOptionBox = null;
         }
 
-        SetSelectedUnit(unit);
 
 
         // 처음 한번만 생성후 OnOff로 유지 사용
@@ -490,12 +436,12 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-        currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
-        RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
-        screenPos.x += 100;
-        screenPos.y -= 20;
+        //currentSelectedUnitOptionBox.transform.SetParent(canvas.transform, false);
+        //RectTransform rectTransform = currentSelectedUnitOptionBox.GetComponent<RectTransform>();
+        //screenPos.x += 100;
+        //screenPos.y -= 20;
 
-        rectTransform.position = screenPos;
+        //rectTransform.position = screenPos;
 
         SelectedUnitOptionBox optionBox = currentSelectedUnitOptionBox.GetComponent<SelectedUnitOptionBox>();
         unitStateChageBtn = optionBox.UnitStateChangeBtn;
@@ -513,11 +459,11 @@ public class Ingame_UIManager : MonoBehaviour
 
                 //DestroyUnitStateChangeBox();
 
-                if (unit.isSelected)
+                if (selectedUnit.isSelected)
                 {
-                    unit.previousAllyMode = unit.Ally_Mode;
-                    unit.Ally_Mode = AllyMode.Change;
-                    Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(unit.transform, -0.8f);
+                    selectedUnit.previousAllyMode =  selectedUnit.Ally_Mode;
+                    selectedUnit.Ally_Mode = AllyMode.Change;
+                    Ingame_ParticleManager.Instance.PlayUnitModeChangeParticleEffect(selectedUnit.transform, -0.8f);
 
                     OnOffUnitStateChangeBox(false);
                 }
@@ -535,7 +481,7 @@ public class Ingame_UIManager : MonoBehaviour
             buttonImage.sprite = SiegeModeImage;
         }
 
-        if(unit.unitData.level >= 2)
+        if(selectedUnit.unitData.level >= 2)
         {
             unitUpgradeBtn.interactable = false;
         }
@@ -556,7 +502,7 @@ public class Ingame_UIManager : MonoBehaviour
                     currentSelectedUnitOptionBox = null;
                 }
 
-                CreateUpgradeMenu(unit);
+                CreateUpgradeMenu(selectedUnit);
             });
         }
     }
@@ -574,7 +520,7 @@ public class Ingame_UIManager : MonoBehaviour
         UpgradeMenu upgradeMenu = currentUpgradeMenu.GetComponent<UpgradeMenu>();
 
         RectTransform rectTransform = currentUpgradeMenu.GetComponent<RectTransform>();
-        Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnit.transform.position);
         screenPos.x += 200;
         rectTransform.position = screenPos;
 
@@ -748,25 +694,6 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-    public void ShowUnitMoveUI(GameObject unit, bool move)
-    {
-        if (unit == null)
-        {
-            return;
-        }
-
-        Transform unitMoveImageTransform = unit.transform.Find("Canvas/UnitMoveImage");
-
-        if (unitMoveImageTransform == null)
-        {
-            return;
-        }
-
-        GameObject unitMoveImage = unitMoveImageTransform.gameObject;
-
-        unitMoveImage.SetActive(move);
-    }
-
 
 
 
@@ -785,7 +712,7 @@ public class Ingame_UIManager : MonoBehaviour
 
 
 
-
+    #region // 일시정지, 종료, 재시작
     void EndGame()
     {
 #if UNITY_EDITOR
@@ -815,5 +742,5 @@ public class Ingame_UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-
+    #endregion
 }

@@ -17,5 +17,8 @@ public class Ingame_CanvasCtrl : MonoBehaviour
     {
         transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.back,
                          mainCamera.transform.rotation * Vector3.up);
+
+        
     }
+
 }

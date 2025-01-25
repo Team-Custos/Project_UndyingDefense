@@ -22,7 +22,7 @@ public class AllyUnitState : MonoBehaviour
     public StateMachine<UnitState, StateDriverUnity> fsm;
     
     Ingame_UnitCtrl UnitCtrl; //이 병사
-    Ingame_UIManager UnitUIManager;//이 병사의 UI
+    UnitUICtrl unitUiCtrl;      // 유닛의 ui 담당 스크립트
     NavMeshAgent navAgent;//병사의 길찾기 및 이동을 위한 NavMeshAgent.
     Animator allyAnimator;//병사 모델의 애니메이션을 관리하기 위한 애니메이터.
 
@@ -33,6 +33,7 @@ public class AllyUnitState : MonoBehaviour
         fsm.ChangeState(UnitState.Idle);
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
+        unitUiCtrl = this.GetComponent<UnitUICtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
         
     }
@@ -135,7 +136,7 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-        Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, true);
+        unitUiCtrl.OnOffUnitMoveUI(true);
     }
 
     void Move_Update()
@@ -157,14 +158,14 @@ public class AllyUnitState : MonoBehaviour
             }
         }
 
-        //Ingame_UIManager.instance.SetUnitButtonsInteractable(false);
+        
     }
 
     void Move_Exit()
     {
         navAgent.SetDestination(transform.position); //NavmeshAgent를 정지시키기 위한 목적지 설정.
         navAgent.isStopped = true; //멈춤 상태로 변경.
-        Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, false); 
+        unitUiCtrl.OnOffUnitMoveUI(false);
     }
     #endregion
 
