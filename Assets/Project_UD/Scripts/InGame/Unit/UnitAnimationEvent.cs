@@ -23,7 +23,7 @@ public class UnitAnimationEvent : MonoBehaviour
         UnitSkillManager unitSkill = unitCtrl.UnitSkill;
 
         unitSkill.attackStop = true;
-        unitSkill.weaponCooldown_Cur = unitSkill.weaponCooldown_Cur = unitCtrl.cur_attackSpeed;
+        unitSkill.weaponCooldown_Cur = unitCtrl.cur_attackSpeed;
     }
 
     public void BowAttackEnd()

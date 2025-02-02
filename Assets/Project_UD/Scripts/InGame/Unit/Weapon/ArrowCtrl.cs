@@ -10,64 +10,36 @@ public class ArrowCtrl : MonoBehaviour
     public bool isEnemyAttack = false;
 
     public float alphaColor = 1f;
-    MaterialPropertyBlock block;
+
     public Color baseColor;
 
+    private MaterialPropertyBlock block;
+    private Rigidbody rb;
+
     MeshRenderer meshRenderer;
+    private Animator animator;
 
 
     // Start is called before the first frame update
     void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
+        animator = GetComponent<Animator>();
         block = new MaterialPropertyBlock();
-        //GetComponent<Renderer>().GetPropertyBlock(block);
-        Destroy(gameObject,3f);
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = transform.forward * speed * 0.5f;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void StickToTarget(Transform target)
     {
-        transform.Translate(Vector3.forward * speed * 0.5f);
+        transform.SetParent(target);
+        transform.localPosition = Vector3.zero + Vector3.up * transform.localPosition.y;
 
-        meshRenderer.GetPropertyBlock(block);
-        block.SetColor("_BASE_COLOR", new Color(1, 0, 0, alphaColor));
-        meshRenderer.SetPropertyBlock(block);
+        rb.velocity = Vector3.zero;
 
-        Material mat = meshRenderer.sharedMaterial;
-        if (mat != null)
-        {
-            Debug.Log($"Shader: {mat.shader.name}");
-            for (int i = 0; i < mat.shader.GetPropertyCount(); i++)
-            {
-                Debug.Log($"Property {i}: {mat.shader.GetPropertyName(i)} - {mat.shader.GetPropertyType(i)}");
-            }
-        }
-
+        animator.SetTrigger("FadeOut");
     }
-
-    //public void StickToTarget(Transform target)
-    //{
-    //    transform.SetParent(target);
-    //    transform.localPosition = Vector3.zero + Vector3.up * transform.localPosition.y;
-
-    //    speed = 0;
-
-    //    StartCoroutine(FadeDestroy());
-
-    //    IEnumerator FadeDestroy()
-    //    {
-    //        yield return new WaitForSeconds(1f);
-    //        for (float i = 1; i >= 0; i -= 0.1f)
-    //        {
-    //            GetComponent<Renderer>().GetPropertyBlock(block).GetColor("BaseColor");
-    //            color.a = i;
-    //            GetComponent<Renderer>().material.color = color;
-    //            yield return new WaitForSeconds(0.1f);
-    //        }
-    //        Destroy(gameObject);
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -75,13 +47,14 @@ public class ArrowCtrl : MonoBehaviour
         {
             Ingame_UnitCtrl unitCtrl = other.GetComponent<Ingame_UnitCtrl>();
 
-            transform.SetParent(other.transform);
-            transform.localPosition = Vector3.zero + Vector3.up * transform.localPosition.y;
-
-            speed = 0;
-
-            //StickToTarget(unitCtrl.VisualModel.transform);
+            StickToTarget(unitCtrl.transform);
         }
     }
+
+    private void ObjDestroy()
+    {
+        Destroy(gameObject);
+    }
+
 
 }

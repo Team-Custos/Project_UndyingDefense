@@ -366,7 +366,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
-            debuffManager.AddDebuff(UnitDebuff.Stun);
+            debuffManager.AddDebuff(UnitDebuff.Dizzy);
         }
 
         if (isSelected && Input.GetKeyDown(KeyCode.Z))//선택된 유닛의 모드 변경. 디버그용. 삭제 예정.
@@ -584,7 +584,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
-            debuffManager.AddDebuff(UnitDebuff.Stun);
+            debuffManager.AddDebuff(UnitDebuff.Dizzy);
         }
 
 

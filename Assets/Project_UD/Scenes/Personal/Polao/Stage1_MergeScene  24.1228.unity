@@ -1223,7 +1223,7 @@ MonoBehaviour:
     tickDamage: 1
     StartSFX: {fileID: 8300000, guid: 7bb7b72e704a28b44984ca158ddffee6, type: 3}
     EndSFX: {fileID: 8300000, guid: db942f4cdd2c2c54f9f418dbfa12997a, type: 3}
-    startParticle: {fileID: 128662203558835824, guid: 0262c3808f514024586b55b8e0574915,
+    startParticle: {fileID: 224568370840089508, guid: 2955e83f067d6a949b4f707661c0a12e,
       type: 3}
   - name: 2
     Stackable: 1
@@ -1232,7 +1232,7 @@ MonoBehaviour:
     tickDamage: 0
     StartSFX: {fileID: 8300000, guid: d66912733e6f2e1439a75a47646aee82, type: 3}
     EndSFX: {fileID: 0}
-    startParticle: {fileID: 2004547811848923304, guid: 5acebc03c10a1ab46b960ddb7ce9025a,
+    startParticle: {fileID: 7408619720702253274, guid: 5acebc03c10a1ab46b960ddb7ce9025a,
       type: 3}
   - name: 3
     Stackable: 0
@@ -1241,7 +1241,7 @@ MonoBehaviour:
     tickDamage: 0
     StartSFX: {fileID: 8300000, guid: 35405c4b5b8965f4388870ede75534c3, type: 3}
     EndSFX: {fileID: 8300000, guid: e9d3c2cf06bfbb04fb61db0fcf36b508, type: 3}
-    startParticle: {fileID: 2667383456218805792, guid: 36bb29790e08be74e9d383a4fd3f78f4,
+    startParticle: {fileID: 410180464242607033, guid: 92b5d8247c2be334bb8cea6dde87b7dd,
       type: 3}
   - name: 4
     Stackable: 0
@@ -1250,7 +1250,7 @@ MonoBehaviour:
     tickDamage: 8
     StartSFX: {fileID: 8300000, guid: e9165cf6470c8dd40b9ef16bd0dc620e, type: 3}
     EndSFX: {fileID: 0}
-    startParticle: {fileID: 3393394141918659268, guid: 8c8f46328d8db6a48951b985d025f48a,
+    startParticle: {fileID: 8963742715435225835, guid: 1615f0d94a8468a4b98c068fbf40480b,
       type: 3}
   - name: 5
     Stackable: 1
@@ -2154,6 +2154,54 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 40712892}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &41019044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 41019046}
+  - component: {fileID: 41019045}
+  m_Layer: 0
+  m_Name: TestObjectForStudy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &41019045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41019044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c103e976f65729f4d9ae15a31e6c026a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitData: {fileID: 0}
+  curHP: 0
+  SightRangeCollider: {fileID: 0}
+  AttackRangeDistance: 0
+--- !u!4 &41019046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41019044}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.811647, y: 0.08545964, z: -10.849487}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &44054522
 GameObject:
   m_ObjectHideFlags: 0
@@ -78731,12 +78779,12 @@ MonoBehaviour:
     type: 3}
   unitSpawnDeckEffect: {fileID: 0}
   AttackVFX:
-  - {fileID: 3042452728146279208, guid: 9135a80ca7dd4824ea98d0773539c710, type: 3}
-  - {fileID: 6509706080284087790, guid: 18d3e2c69d62c5f4680d6b0d900ca31b, type: 3}
+  - {fileID: 8862294107620227319, guid: 793553492a2c03744a98ee959355f704, type: 3}
+  - {fileID: 4680229374731916917, guid: dd07ceefe2ac8b64390ac610f250224b, type: 3}
   - {fileID: 4791065678331725444, guid: 80d7ffb013de2dd41a8f6c42e4097812, type: 3}
   AttackCritVFX:
-  - {fileID: 853575959399141184, guid: e4c60472dfabb034183283198f15f922, type: 3}
-  - {fileID: 516829267387349542, guid: 635b9e75de5453244b70f09ec3944d45, type: 3}
+  - {fileID: 7696536780613182330, guid: 2ea7e791cf329134a86694685019141d, type: 3}
+  - {fileID: 2978356013642458910, guid: 48e4cc4a1caf1f24a9fc2ef464149a8b, type: 3}
   - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
   EnemyAttackVFX: []
   allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
@@ -83595,3 +83643,4 @@ SceneRoots:
   - {fileID: 831843511}
   - {fileID: 1361997904}
   - {fileID: 588367418}
+  - {fileID: 41019046}

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1524628817576402750}
   - component: {fileID: -7253675673234515982}
   - component: {fileID: 1653212543355842366}
+  - component: {fileID: 1827006063921977885}
   m_Layer: 10
   m_Name: UD_Prefab_ArrowTest
   m_TagString: Attack
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8462500469413093967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.07, y: 0, z: 6.44}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -130,7 +131,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -151,3 +152,24 @@ MonoBehaviour:
   isEnemyAttack: 0
   alphaColor: 0.5
   baseColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!95 &1827006063921977885
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462500469413093967}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ef0ec2f52a0bfc8418324011d5af1d69, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

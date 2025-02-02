@@ -62,6 +62,15 @@ public class UnitSkillManager : MonoBehaviour
             Animator animator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
             animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);//쿨타임이 돌면 공격 애니메이션 실행.
 
+            if (SkillCode == 102)
+            {
+                if (Bow != null)
+                {
+                    Bow.transform.LookAt(TargetPos);
+                    Bow.GetComponent<BowCtrl>().ArrowShoot(false);
+                }
+            }
+
             /*
             //공격의 상세 스텟 설정.
             switch (SkillCode)
