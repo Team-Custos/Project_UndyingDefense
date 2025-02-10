@@ -55,9 +55,9 @@ public class Ingame_SceneManager : MonoBehaviour
             });
         }
 
-        if (Ingame_WaveUIManager.instance.Winlobbybtn != null)
+        if (Ingame_WaveUIManager.instance.winLobbyBtn != null)
         {
-            Ingame_WaveUIManager.instance.Winlobbybtn.onClick.AddListener(() =>
+            Ingame_WaveUIManager.instance.winLobbyBtn.onClick.AddListener(() =>
             {
                 Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
@@ -76,9 +76,9 @@ public class Ingame_SceneManager : MonoBehaviour
                 
         }
 
-        if (Ingame_WaveUIManager.instance.loselobbybtn != null)
+        if (Ingame_WaveUIManager.instance.loseLobbyBtn != null)
         {
-            Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(() =>
+            Ingame_WaveUIManager.instance.loseLobbyBtn.onClick.AddListener(() =>
             {
                 Time.timeScale = 1.0f;
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);

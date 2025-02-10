@@ -120,25 +120,25 @@ public class EnemySpawner : MonoBehaviour
         List<int> normalMonsterList = new List<int>();
         List<int> bossMonsterList = new List<int>();
 
-        foreach (var info in currentData.monsterSpawnInfos)
-        {
-            if (!info.isBoss)
-            {
-                // 일반 몬스터
-                for (int i = 0; i < info.repeatNum; i++)
-                {
-                    normalMonsterList.Add(info.monsterType);
-                }
-            }
-            else
-            {
-                // 보스 몬스터
-                for (int i = 0; i < info.repeatNum; i++)
-                {
-                    bossMonsterList.Add(info.monsterType);
-                }
-            }
-        }
+        //foreach (var info in currentData.monsterSpawnInfos)
+        //{
+        //    if (!info.isBoss)
+        //    {
+        //        // 일반 몬스터
+        //        for (int i = 0; i < info.repeatNum; i++)
+        //        {
+        //            normalMonsterList.Add(info.monsterType);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // 보스 몬스터
+        //        for (int i = 0; i < info.repeatNum; i++)
+        //        {
+        //            bossMonsterList.Add(info.monsterType);
+        //        }
+        //    }
+        //}
 
         ShuffleList(normalMonsterList);
 
@@ -269,7 +269,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!isBaseAttackPerWave) // 현재 웨이브에서 Base가 공격 당했다면
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
+            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
             isBaseAttackPerWave = true;
         }
     }

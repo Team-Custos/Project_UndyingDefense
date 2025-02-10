@@ -19,13 +19,13 @@ public class Ingame_WaveUIManager : MonoBehaviour
     public Button waveCountSkipBtn;
     public bool isCountDownIng = false;
     public Button winWaveRestartBtn = null;
-    public Button Winlobbybtn = null;
+    public Button winLobbyBtn = null;
     public Button loseWaveRestartBtn = null;
-    public Button loselobbybtn = null;
+    public Button loseLobbyBtn = null;
     public GameObject waveStepSuccessPanel;
     public Text waveStepText;
     public Text curWaveStepText;
-    public GameObject waveWarnningPanel;
+    public GameObject waveWarningPanel;
 
     public float fadeDuration = 0.3f;
 
@@ -41,29 +41,49 @@ public class Ingame_WaveUIManager : MonoBehaviour
             GameObject canvasInstance = Instantiate(canvasWavePrefab, transform);
             Ingame_WaveUIManager instance = canvasInstance.GetComponent<Ingame_WaveUIManager>();
 
-            //UI 요소 연결 작업 -> 수정 필요, Find 말고 캔버스 프리팹에 스크립트 사용예정
-            waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
-            waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
 
+            // UI 요소 연결
+            waveStepText = canvasInstance.GetComponentInChildren<Text>(true);
+            waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
             waveStartPanel = canvasInstance.transform.Find("WaveStartPanel").gameObject;
-            waveStartText = waveStartPanel.transform.Find("WaveStartText").GetComponent<Text>();
-
+            waveStartText = waveStartPanel.GetComponentInChildren<Text>(true);
             waveCountTextPanel = canvasInstance.transform.Find("WaveCountTextPanel").gameObject;
-            waveCountText = waveCountTextPanel.transform.Find("WaveCountText").GetComponent<Text>();
-            waveCountSkipBtn = waveCountText.transform.Find("WaveCountSkipBtn").GetComponent<Button>();
-
+            waveCountText = waveCountTextPanel.GetComponentInChildren<Text>(true);
+            waveCountSkipBtn = waveCountTextPanel.GetComponentInChildren<Button>(true);
             waveResultWinPanel = canvasInstance.transform.Find("WaveResultWinPanel").gameObject;
-            winWaveRestartBtn = waveResultWinPanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
-            Winlobbybtn = waveResultWinPanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
-
+            winWaveRestartBtn = waveResultWinPanel.GetComponentInChildren<Button>(true);
+            winLobbyBtn = waveResultWinPanel.GetComponentInChildren<Button>(true);
             waveResultLosePanel = canvasInstance.transform.Find("WaveResultLosePanel").gameObject;
-            loseWaveRestartBtn = waveResultLosePanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
-            loselobbybtn = waveResultLosePanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
-
+            loseWaveRestartBtn = waveResultLosePanel.GetComponentInChildren<Button>(true);
+            loseLobbyBtn = waveResultLosePanel.GetComponentInChildren<Button>(true);
             waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
-            curWaveStepText = waveStepText.transform.Find("WaveStepText2").GetComponent<Text>();
+            curWaveStepText = waveStepText.GetComponentInChildren<Text>(true);
+            waveWarningPanel = canvasInstance.transform.Find("WaveWarningPanel").gameObject;
 
-            waveWarnningPanel = canvasInstance.transform.Find("WaveWarnningPanel").gameObject;
+            //UI 요소 연결 작업 -> 수정 필요, Find 말고 캔버스 프리팹에 스크립트 사용예정
+            //waveStepText = canvasInstance.transform.Find("WaveStepText").GetComponent<Text>();
+
+            //waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
+
+            //waveStartPanel = canvasInstance.transform.Find("WaveStartPanel").gameObject;
+            //waveStartText = waveStartPanel.transform.Find("WaveStartText").GetComponent<Text>();
+
+            //waveCountTextPanel = canvasInstance.transform.Find("WaveCountTextPanel").gameObject;
+            //waveCountText = waveCountTextPanel.transform.Find("WaveCountText").GetComponent<Text>();
+            //waveCountSkipBtn = waveCountText.transform.Find("WaveCountSkipBtn").GetComponent<Button>();
+
+            //waveResultWinPanel = canvasInstance.transform.Find("WaveResultWinPanel").gameObject;
+            //winWaveRestartBtn = waveResultWinPanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
+            //Winlobbybtn = waveResultWinPanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
+
+            //waveResultLosePanel = canvasInstance.transform.Find("WaveResultLosePanel").gameObject;
+            //loseWaveRestartBtn = waveResultLosePanel.transform.Find("WaveRestartBtn").GetComponent<Button>();
+            //loselobbybtn = waveResultLosePanel.transform.Find("WaveLobbyBtn").GetComponent<Button>();
+
+            //waveStepSuccessPanel = canvasInstance.transform.Find("WaveStepSuccessPanel").gameObject;
+            //curWaveStepText = waveStepText.transform.Find("WaveStepText2").GetComponent<Text>();
+
+            //waveWarnningPanel = canvasInstance.transform.Find("WaveWarnningPanel").gameObject;
         }
         else
         {
@@ -122,7 +142,7 @@ public class Ingame_WaveUIManager : MonoBehaviour
                 waveCountTextPanel.SetActive(false);
                
 
-                StartCoroutine(EnemySpawner.inst.RunWave());
+                //StartCoroutine(EnemySpawner.inst.RunWave());
                 waveCount = 20;
             }
         }

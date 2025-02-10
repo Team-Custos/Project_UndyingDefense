@@ -87,7 +87,7 @@ public class GameOrderSystem : MonoBehaviour
                     Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
                 }
 
-                unitUIManager.OnOffUnitUI(selectedUnit.transform, false);
+                //unitUIManager.OnOffUnitUI(selectedUnit.transform, false);
 
                 Ingame_UIManager.instance.unitInfoPanel.SetActive(false);
 

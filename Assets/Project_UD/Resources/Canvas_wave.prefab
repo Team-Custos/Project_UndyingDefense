@@ -3707,6 +3707,7 @@ GameObject:
   - component: {fileID: 3253931116177806076}
   - component: {fileID: 6198464163508251927}
   - component: {fileID: 3884987990476214797}
+  - component: {fileID: 1147777773601809497}
   m_Layer: 5
   m_Name: Canvas_wave
   m_TagString: Untagged
@@ -3805,6 +3806,31 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1147777773601809497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263996549706093103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 725dd93e5d0dbaa44b8bc8332a366d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveStepText: {fileID: 5394728416630891780}
+  waveStartPanel: {fileID: 3578891344651919485}
+  waveStartText: {fileID: 894848876733994063}
+  waveCountTextPanel: {fileID: 1300361695048805158}
+  waveCountText: {fileID: 7168541947298933683}
+  waveCountSkipBtn: {fileID: 5339473423195348671}
+  waveResultWinPanel: {fileID: 6438498911202566416}
+  winWaveRestartBtn: {fileID: 221182669046222130}
+  Winlobbybtn: {fileID: 746366124093795066}
+  waveResultLosePanel: {fileID: 1269009534262360863}
+  loseWaveRestartBtn: {fileID: 8781778881964500194}
+  loselobbybtn: {fileID: 890582082408076685}
+  waveWarnningPanel: {fileID: 5028878561077563675}
 --- !u!1 &7651087956119757288
 GameObject:
   m_ObjectHideFlags: 0
