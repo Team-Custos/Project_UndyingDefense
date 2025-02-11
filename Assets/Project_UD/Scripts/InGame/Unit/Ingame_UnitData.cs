@@ -16,32 +16,23 @@ public class Ingame_UnitData : ScriptableObject
     public GameObject modelPrefab;
     public int maxHP;                                             
     public int mental = 1;                                        
-    public float moveSpeed;
-
-    public float sightRange = 0;
-    public float attackRange = 0;
-
+    public float moveSpeed;                                       
+                                                                  
     public AnimatorOverrideController overrideController;         
                                                                   
-    [Header("====GeneralSkill====")]
-    public int generalSkillCode = 101;
-    public float attackSpeed = 0;
-    public int generalSkillDamage = 1;                                  
-    public int baseCritChanceRate;
-    public AttackType generalAttackType;
-    public UnitDebuff generalSkillDebuff;      
+    [Header("====Attack====")]                                    
+    public int attackPoint = 1;        
+    public int specialAttackPoint = 1;
+    public int critChanceRate;                                    
+    public int generalSkillCode = 101;                            
+    public int specialSkillCode = 101;                            
+    public float attackSpeed = 0;                             
+    public float skillCooldown = 0;                               
+    public float sightRange = 0;                                  
+    public float attackRange = 0;                   
     public AudioClip[] attackSound;
 
     public GameObject attackVFX;
-
-    [Header("====SpecialSkill====")]
-    public int specialSkillCode = 101;
-    public float skillCooldown = 0;
-    public int specialSkillDamage = 0;
-    public int bonusCritChanceRate = 0;
-    public AttackType specialAttackType;
-    public UnitDebuff specialSkillDebuff;
-
 
     // 추가
     [Header("============")]

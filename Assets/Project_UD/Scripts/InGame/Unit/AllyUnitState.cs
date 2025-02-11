@@ -6,37 +6,36 @@ using MonsterLove.StateMachine;
 
 //이 스크립트는 아군 병사들의 행동패턴을 관리하기 위한 함수입니다. (FSM 시스템 외부 스크립트 사용.)
 
-public enum UnitState //유닛의 상태
+public enum PUState //유닛의 상태
 {
-    Idle,
-    Attack,
+    Idle = UnitState.Idle,
+    Attack = UnitState.Attack,
+    Move = UnitState.Move,
+    Dead = UnitState.Dead,
     Search,
-    Chase,
-    Move,
-    Dead
+    Chase
+
 }
 
 public class AllyUnitState : MonoBehaviour
 {
-    [HideInInspector]public UnitState State;
-    public StateMachine<UnitState, StateDriverUnity> fsm;
+    [HideInInspector]public PUState State;
+    public StateMachine<PUState, StateDriverUnity> fsm;
     
     Ingame_UnitCtrl UnitCtrl; //이 병사
     Ingame_UIManager UnitUIManager;//이 병사의 UI
     NavMeshAgent navAgent;//병사의 길찾기 및 이동을 위한 NavMeshAgent.
-    NavMeshObstacle navObstacle;
     Animator allyAnimator;//병사 모델의 애니메이션을 관리하기 위한 애니메이터.
 
 
     private void Start()
     {
-        fsm = new StateMachine<UnitState, StateDriverUnity>(this);
-        fsm.ChangeState(UnitState.Idle);
+        fsm = new StateMachine<PUState, StateDriverUnity>(this);
+        fsm.ChangeState(PUState.Idle);
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
-        navObstacle = this.GetComponent<NavMeshObstacle>();
-
+        
     }
 
     private void Update()
@@ -81,7 +80,7 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.haveToMovePosition)
         {
-            fsm.ChangeState(UnitState.Move);
+            fsm.ChangeState(PUState.Move);
             return;
         }
 
@@ -99,7 +98,7 @@ public class AllyUnitState : MonoBehaviour
                     UnitCtrl.isEnemyInSight = false;
 
                     //이동 상태로 변경.
-                    fsm.ChangeState(UnitState.Move);
+                    fsm.ChangeState(PUState.Move);
 
                     //변수 초기화.
                     UnitCtrl.haveToMovePosition = false;
@@ -114,7 +113,7 @@ public class AllyUnitState : MonoBehaviour
         else //시야범위에 적군이 없거나 있었던 적군이 없어질 경우
         {
             UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
-            fsm.ChangeState(UnitState.Search);//탐색 상태로 변경.
+            fsm.ChangeState(PUState.Search);//탐색 상태로 변경.
         }
     }
 
@@ -144,15 +143,7 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
-            if (UnitCtrl.haveToMovePosition)
-            {
-                UnitCtrl.isEnemyInRange = false;
-                UnitCtrl.isEnemyInSight = false;
-            }
-            else
-            {
-                UnitCtrl.SearchEnemy();//적군 탐색.
-            }
+            UnitCtrl.SearchEnemy();//적군 탐색.
 
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
@@ -164,7 +155,7 @@ public class AllyUnitState : MonoBehaviour
             if (targetMoveDistance_Cur <= 0.1f)//목적지에 도착했을 때
             {
                 UnitCtrl.moveTargetPos = transform.position;
-                fsm.ChangeState(UnitState.Idle);//탐색 상태로 변경.
+                fsm.ChangeState(PUState.Search);//탐색 상태로 변경.
                 return;
             }
         }
@@ -194,12 +185,11 @@ public class AllyUnitState : MonoBehaviour
 
         if (UnitCtrl.haveToMovePosition)
         {
-            fsm.ChangeState(UnitState.Move);
+            fsm.ChangeState(PUState.Move);
         }
 
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position); //타겟 적군과의 거리.
-        Debug.Log("targetEnemyDistance_Cur : " + targetEnemyDistance_Cur);
 
         if (targetEnemyDistance_Cur <= UnitCtrl.unitData.attackRange) //공격 범위 안으로 들어왔을 경우.
         {
@@ -215,6 +205,7 @@ public class AllyUnitState : MonoBehaviour
         {
             
         }
+
     }
 
     void Chase_Exit()

@@ -21,25 +21,19 @@ MonoBehaviour:
   maxHP: 225
   mental: 1
   moveSpeed: 2
+  overrideController: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
+  attackPoint: 1
+  critChanceRate: 10
+  generalSkillCode: 201
+  specialSkillCode: 201
+  attackSpeed: 1
+  skillCooldown: 1
   sightRange: 5
   attackRange: 5
-  overrideController: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
-  generalSkillCode: 201
-  attackSpeed: 1
-  generalSkillDamage: 1
-  baseCritChanceRate: 0
-  generalAttackType: 0
-  generalSkillDebuff: 1
   attackSound:
   - {fileID: 8300000, guid: 54351e086e5c1fc4e80f6c3c5e20607a, type: 3}
   - {fileID: 8300000, guid: 29549eb00a8f2124f99141be3f11fac6, type: 3}
   attackVFX: {fileID: 0}
-  specialSkillCode: 201
-  skillCooldown: 1
-  specialSkillDamage: 0
-  bonusCritChanceRate: 0
-  specialAttackType: 0
-  specialSkillDebuff: 0
   name: "\uCC3D\uBCD1"
   unitCode: 11
   cost: 150
@@ -61,5 +55,3 @@ MonoBehaviour:
   - 112
   upgrade1Cost: 0
   upgrade2Cost: 0
-  uupgrade1Image: {fileID: 0}
-  uupgrade2Image: {fileID: 0}

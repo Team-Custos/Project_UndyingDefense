@@ -10,14 +10,14 @@ public class ArrowCtrl : MonoBehaviour
     public bool isEnemyAttack = false;
 
     public float alphaColor = 1f;
-
+    
     public Color baseColor;
 
     private MaterialPropertyBlock block;
     private Rigidbody rb;
 
     MeshRenderer meshRenderer;
-    private Animator animator;
+    Animator animator;
 
 
     // Start is called before the first frame update
@@ -25,9 +25,9 @@ public class ArrowCtrl : MonoBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         animator = GetComponent<Animator>();
-        block = new MaterialPropertyBlock();
         rb = GetComponent<Rigidbody>();
-        rb.velocity = transform.forward * speed * 0.5f;
+        block = new MaterialPropertyBlock();
+        rb.velocity = Vector3.forward * speed * 0.5f;
     }
 
 
@@ -47,7 +47,7 @@ public class ArrowCtrl : MonoBehaviour
         {
             Ingame_UnitCtrl unitCtrl = other.GetComponent<Ingame_UnitCtrl>();
 
-            StickToTarget(unitCtrl.transform);
+            StickToTarget(unitCtrl.VisualModel.transform);
         }
     }
 
@@ -55,6 +55,5 @@ public class ArrowCtrl : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 
 }

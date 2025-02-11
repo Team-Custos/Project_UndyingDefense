@@ -30,7 +30,7 @@ public class AttackCtrl : MonoBehaviour
 
     public AttackType Type;
     public UnitDebuff Debuff2Add;
-    public int Damage = 1; //데미지
+    public float Damage = 1; //데미지
     public float moveSpeed = 1f;//(이동할 경우) 이동 속도
     public float Crit = 0;//치명타 확률
 

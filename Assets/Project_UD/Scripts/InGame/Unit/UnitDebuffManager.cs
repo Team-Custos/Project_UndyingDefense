@@ -9,11 +9,11 @@ using UnityEngine;
 [System.Serializable]
 public class UnitCurDebuff
 {
-    public UnitDebuff name;      // ����� �̸�
-    public int stack;            // ����� ����
-    public float duration;       // ����� ��ü ���� �ð�
-    public float currentTime;    // ����� ���� ���� �ð�
-    public int tickDamage;//ƽ ������
+    public UnitDebuff name;      
+    public int stack;            
+    public float duration;       
+    public float currentTime;    
+    public int tickDamage;
     public AudioClip StartSFX;
     public AudioClip EndSFX;
 }
