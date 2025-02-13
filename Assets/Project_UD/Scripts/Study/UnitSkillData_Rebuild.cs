@@ -13,6 +13,4 @@ public class UnitSkillData_Rebuild : ScriptableObject
     public AttackType attackType;
     public int skillDamage; //스킬 데미지 공격 스킬이 아닐 경우 0.
     public float skillCritChanceRate; //스킬 치명타 확률
-    public UnitDebuff debuff2Apply;
-    //다른 것도 추가할 예정
 }

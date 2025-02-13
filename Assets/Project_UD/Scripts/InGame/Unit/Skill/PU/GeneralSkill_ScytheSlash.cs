@@ -13,7 +13,9 @@ public class GeneralSkill_ScytheSlash : AttackSkill
 
     public override void AddDebuff(UnitCtrl_ReBuild target)
     {
-        Debuff_Bleed b = target.AddComponent<Debuff_Bleed>();
-        b.SetTarget(target);
+        GameObject Effect_Obj = Instantiate(EffectOnCrit);
+        Effect_Obj.transform.parent = target.EffectParent.transform;
+        UnitDebuff_Rebuild debuff = Effect_Obj.GetComponent<UnitDebuff_Rebuild>();
+        debuff.SetTarget(target);
     }
 }

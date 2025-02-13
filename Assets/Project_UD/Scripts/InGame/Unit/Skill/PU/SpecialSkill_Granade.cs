@@ -24,6 +24,6 @@ public class SpecialSkill_Granade : AttackSkill
         granade.AttackTrigger.GetComponent<AttackCtrl>().Damage = skillDamage;
         granade.AttackTrigger.GetComponent<AttackCtrl>().Crit = unitCtrl.curCrit;
         granade.AttackTrigger.GetComponent<AttackCtrl>().Type = attackType;
-        granade.AttackTrigger.GetComponent<AttackCtrl>().Debuff2Add = debuff;
+        //granade.AttackTrigger.GetComponent<AttackCtrl>().Debuff2Add = debuff;
     }
 }

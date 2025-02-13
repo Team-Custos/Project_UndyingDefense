@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Debuff_Inferno : UnitDebuff_Rebuild
+public class Debuff_Burn : UnitDebuff_Rebuild
 {
     [Header("====Damage====")]
     [SerializeField] private float tickTimeIntervals; //틱 시간 간격
@@ -15,8 +15,9 @@ public class Debuff_Inferno : UnitDebuff_Rebuild
         target.TakeDamage(tickDamage);
     }
 
-    public override void Update()
+    protected override void Update()
     {
+        //일정 스택 이상일떄 다른 디버프로 변경하는 코드 추가해야함.
         if (Cur_tickTime <= 0)
         {
             Debug.Log("Burn Tick");

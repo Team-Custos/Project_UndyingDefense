@@ -22,7 +22,7 @@ public class GeneralSkill_GroundSmash : AttackSkill
             attackCtrl.Damage = skillDamage;
             attackCtrl.Crit = UnitCtrl.curCrit;
             attackCtrl.Type = attackType;
-            attackCtrl.Debuff2Add = debuff;
+            //attackCtrl.Debuff2Add = debuff;
         }
     }
 }

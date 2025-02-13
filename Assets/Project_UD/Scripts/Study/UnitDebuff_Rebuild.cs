@@ -23,6 +23,8 @@ public abstract class UnitDebuff_Rebuild : MonoBehaviour
 
     protected UnitCtrl_ReBuild target;
 
+
+
     public abstract void ApplyDebuff(UnitCtrl_ReBuild target);
 
     public virtual void RemoveDebuff()
@@ -49,13 +51,7 @@ public abstract class UnitDebuff_Rebuild : MonoBehaviour
     {
         Cur_duration = duration;
     }
-
-    private void Start()
-    {
-        
-    } 
-
-    public virtual void Update()
+    protected virtual void Update()
     {
         Cur_duration -= Time.deltaTime;
         Debug.Log("Debuff Duration : " + Cur_duration);

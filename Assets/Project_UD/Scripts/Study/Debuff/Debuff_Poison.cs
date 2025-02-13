@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Debuff_Bleed : UnitDebuff_Rebuild
+public class Debuff_Poison : UnitDebuff_Rebuild
 {
     [Header("====FX====")]
     public AudioClip StartSFX; //효과 시작시 SFX
@@ -15,25 +15,17 @@ public class Debuff_Bleed : UnitDebuff_Rebuild
     [SerializeField] private float Cur_tickTime = 0f; //틱 시간
     public float tickDamage; //틱 데미지
 
+    private void Awake()
+    {
+        tickTimeIntervals = 3f;
+        Cur_tickTime = tickTimeIntervals;
+        tickDamage = 1f;
+    }
+
     public override void ApplyDebuff(UnitCtrl_ReBuild target)
     {
         //출혈 효과 적용
-        target.TakeDamage(tickDamage);
+        
     }
 
-    public override void Update()
-    {
-        if (Cur_tickTime <= 0)
-        {
-            Debug.Log("Bleed Tick");
-            ApplyDebuff(target);
-            Cur_tickTime = tickTimeIntervals;
-        }
-        else
-        {
-            Cur_tickTime -= Time.deltaTime;
-        }
-
-        base.Update();
-    }
 }

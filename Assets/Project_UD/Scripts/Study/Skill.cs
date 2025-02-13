@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +55,8 @@ public class AttackSkill : Skill
     [SerializeField] protected float skillDamage = 5;
     [SerializeField] protected int skillBounsCritical = 0;
     [SerializeField] protected AttackType attackType = AttackType.Slash;
-    [SerializeField] protected UnitDebuff debuff = UnitDebuff.Bleed;
+    [SerializeField] protected GameObject EffectOnCrit;
+
 
     public override void Activate(UnitCtrl_ReBuild target)
     {
