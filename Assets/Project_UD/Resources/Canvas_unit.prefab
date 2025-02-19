@@ -1248,7 +1248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99942df37b77a0d4fb2e0e6dc19cd139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitCode: 1
+  costText: {fileID: 0}
+  Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
+  Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
+  AbleToSpawn: 1
+  currentUnitType: 0
 --- !u!1 &6028387130360855024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,7 +1387,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99942df37b77a0d4fb2e0e6dc19cd139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitCode: 0
+  costText: {fileID: 0}
+  Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
+  Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
+  AbleToSpawn: 1
+  currentUnitType: 0
 --- !u!1 &6055815331385030936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,7 +1771,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99942df37b77a0d4fb2e0e6dc19cd139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitCode: 0
+  costText: {fileID: 0}
+  Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
+  Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
+  AbleToSpawn: 1
+  currentUnitType: 0
 --- !u!1 &7035530572000211815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,7 +2225,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99942df37b77a0d4fb2e0e6dc19cd139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitCode: 4
+  costText: {fileID: 0}
+  Color_UnableToCost: {r: 1, g: 0, b: 0, a: 1}
+  Color_ableToCost: {r: 1, g: 1, b: 1, a: 1}
+  AbleToSpawn: 1
+  currentUnitType: 0
 --- !u!1 &8500858443600639752
 GameObject:
   m_ObjectHideFlags: 0

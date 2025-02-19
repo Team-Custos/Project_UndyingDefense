@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager inst;
+    [SerializeField] private WaveCanvasController waveCanvasController;
 
     public WaveDataTable waveDataTable;                 // WaveData를 담고 있는 ScriptableObject
     public List<Ingame_UnitData> enemyDatas;            // 적 데이터 리스트
@@ -23,9 +24,10 @@ public class WaveManager : MonoBehaviour
 
     public int maxWave = 10;
 
-
-    private float waveTimer = 0f;   // 웨이브 종료 후 대기 시간 (현재는 20초로 고정)
-    [SerializeField] private float spawnTimer = 0f;  // 몬스터 스폰 간격 (현재는 3초로 고정)
+    [Header("웨이브에 필요한 시간 변수")]
+    [SerializeField] private float waveTimer = 20.0f;   // 웨이브 종료 후 대기 시간 (현재는 20초로 고정)
+    [SerializeField] private float spawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
+    [SerializeField] private float waveDelay = 1.0f;    // 웨이브, ui 간 텀
 
     private WaveData waveData;
 
@@ -36,15 +38,37 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int monSpawnCount;     // 인덱스의 몬스터 소환 횟수
     [SerializeField] private int totalMonCount;     // 현재 생성되어있는 모든 몬스터 수
 
+
     private void Awake()
     {
         inst = this;
+
+        // Resources 폴더에서 프리팹 로드
+        GameObject canvasWavePrefab = Resources.Load<GameObject>("Canvas_wave");
+        if (canvasWavePrefab != null)
+        {
+            // 프리팹을 인스턴스화하고 현재 오브젝트의 자식으로 추가
+            GameObject canvasInstance = Instantiate(canvasWavePrefab, transform);
+
+            waveCanvasController = canvasInstance.GetComponent<WaveCanvasController>();
+
+        }
+        else
+        {
+            Debug.Log("프리팹을 찾을 수 없습니다: Canvas_wave");
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        if(waveCanvasController.waveCountSkipBtn != null)
+        {
+            waveCanvasController.waveCountSkipBtn.onClick.AddListener(() =>
+            {
+                waveTimer = 0.0f;
+            });
+        }
     }
 
     // Update is called once per frame
@@ -54,12 +78,34 @@ public class WaveManager : MonoBehaviour
         {
             if (!isSpawning && totalMonCount == 0)
             {
-                if(currentWave <= maxWave)
+                if (currentWave <= maxWave)
                 {
-                    StartWave();
+                    waveDelay -= Time.deltaTime;
+
+                    if (waveDelay <= 0.0f)
+                    {
+                        // 웨이브 대기 시작
+                        waveCanvasController.waveCountTextPanel.SetActive(true);
+                        waveTimer -= Time.deltaTime;
+
+                        // 웨이브 대기 시간을 표시하는 타이머
+                        waveCanvasController.waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveTimer) + "초";
+
+                        if (waveTimer <= 0.0f) // && waveTimer > -1.0f) // 카운트가 끝나면 웨이브 시작
+                        {
+                            waveCanvasController.waveCountTextPanel.SetActive(false);
+
+                            waveCanvasController.waveStartPanel.SetActive(true);
+                            StartWave();
+                            waveTimer = 20.0f;
+                        }
+
+                        
+                    }
                 }
+
             }
-            else if(isSpawning)
+            else if (isSpawning)
             {
                 spawnTimer += Time.deltaTime;
                 if (spawnTimer >= waveData.interval)
@@ -70,17 +116,47 @@ public class WaveManager : MonoBehaviour
                     Debug.Log("총 몬스터 수 " + totalMonCount);
                 }
             }
+
+
+
+            
+
         }
         else
         {
-            EndWave();
+            //if(waveCanvasController.waveDefenseSuccessPaenl.activeSelf == true)
+            //{
+            //    uiDuration -= Time.deltaTime;
+            //    {
+            //        if(uiDuration <= 0.0f)
+            //        {
+            //            waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
+            //        }
+            //    }
+            //}
+
+            // 웨이브 종료후 대기 시간 
+            waveDelay -= Time.deltaTime;
+            if (waveDelay <= 0.0f)
+            {
+                EndWave();
+                //waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
+                waveDelay = 1.0f;
+            }
         }
     }
-
+    
     private void StartWave()
     {
+        waveDelay = 4.0f;
+
+        waveCanvasController.waveStepText.text = "웨이브 " + currentWave;
+
+        waveCanvasController.waveStartText.text = currentWave + "차 침공 시작!";
+
         // WaveData를 가져옴
         waveData = waveDataTable.waves[currentWave - 1];
+
 
         if (waveData == null)
         {
@@ -130,6 +206,12 @@ public class WaveManager : MonoBehaviour
         if (waveData.waveNumber == maxWave)
         {
             // 게임 종료 ui 생성, bgm 재생
+
+            //PlayerPrefs.SetInt("PlayerGold", InGameManager.inst.gold);
+            //PlayerPrefs.Save();
+
+            //// 저장된 값 확인
+            //Debug.Log("저장된 골드: " + PlayerPrefs.GetInt("PlayerGold", -1));
         }
         else
         {
@@ -144,20 +226,23 @@ public class WaveManager : MonoBehaviour
 
         currentWave++;
 
-        waveTimer += Time.deltaTime;
-        if (waveTimer >= 5.0f) // 웨이브간 대기 시간
-        {
-            waveTimer = 0f;
+        WaveData nextWaveData = waveDataTable.GetWaveData(currentWave);
 
-            WaveData nextWaveData = waveDataTable.GetWaveData(currentWave);
-            if (nextWaveData != null)
-            {
-                SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
-            }
+        //if(waveTimer >= 5.0f) // 웨이브간 대기 시간
+        //{
+        //    if (nextWaveData != null)
+        //    {
+        //        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
+        //    }
 
-        }
+        //    waveTimer = 0f;
+
+        //}
+
+        
 
         isWaveing = true;
+
 
     }
 
@@ -183,10 +268,33 @@ public class WaveManager : MonoBehaviour
         totalMonCount--;
         Debug.Log("총 몬스터 수 " + totalMonCount);
 
-        if(totalMonCount == 0)
+        if(totalMonCount == 0 && !isSpawning)
         {
-            isWaveing = false;
+            if(currentWave == maxWave)
+            {
+                waveCanvasController.waveResultWinPanel.SetActive(true);
+
+                PlayerPrefs.SetInt("PlayerGold", InGameManager.inst.gold);
+                PlayerPrefs.Save();
+
+                // 저장된 값 확인
+                Debug.Log("저장된 골드: " + PlayerPrefs.GetInt("PlayerGold", -1));
+
+                Time.timeScale = 0.0f;
+
+            }
+            else
+            {
+                // 웨이브 종료시 성공 판넬 생성
+                waveCanvasController.waveDefenseSuccessPaenl.SetActive(true);
+
+                isWaveing = false;
+
+
+            }
         }
+
+        
 
         //if (activeMonsters.Contains(monster))
         //{

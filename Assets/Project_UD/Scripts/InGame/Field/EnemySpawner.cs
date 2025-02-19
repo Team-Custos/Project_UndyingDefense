@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public InGame_BGMManager bgmManager;
 
     public WaveDataTable waveDataTable;
+    
 
 
     public static EnemySpawner inst;
@@ -63,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
 
         spawnPoint = new Transform[gridHeight];
 
-        Ingame_WaveUIManager.instance.StartNextWaveCountdown(20.0f);
+        //Ingame_WaveUIManager.instance.StartNextWaveCountdown(20.0f);
     }
 
     // Update is called once per frame
@@ -108,10 +109,10 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // 웨이브 시작 UI 표시
-        Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
-        Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
-        Ingame_WaveUIManager.instance.curWaveStepText.text = "웨이브 " + currentWave;
-        Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
+        //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
+        //Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
+        //Ingame_WaveUIManager.instance.curWaveStepText.text = "웨이브 " + currentWave;
+        //Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
         Debug.Log($"Wave {currentWave} 시작");
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
@@ -172,8 +173,8 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
-            Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
+            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
+            //Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
         }
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
@@ -189,7 +190,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 bgmManager.PauseBGM();      // 웨이브 종료시 bgm은 끔
             }
-            Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
+            //Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
             InGameManager.inst.isGamePause = true;
         }
@@ -205,8 +206,8 @@ public class EnemySpawner : MonoBehaviour
 
         if (nextWaveData != null && nextWaveData)
         {
-            Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
-            Ingame_WaveUIManager.instance.waveCountTextPanel.SetActive(true);
+            //Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
+            //Ingame_WaveUIManager.instance.waveCountTextPanel.SetActive(true);
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
         }
     }

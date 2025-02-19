@@ -116,10 +116,27 @@ public class LobbyUIManager : MonoBehaviour
     float elapsedTime = 0f;
     public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
+    private int userGold;
+    public Text userGoldText;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        if (PlayerPrefs.HasKey("PlayerGold"))
+        {
+            Debug.Log("골드 데이터가 있습니다.");
+        }
+        else
+        {
+            Debug.Log("골드 데이터가 없습니다.");
+        }
+
+
+        userGold = PlayerPrefs.GetInt("PlayerGold", 0);
+
+        userGoldText.text = userGold.ToString();
+
         Time.timeScale = 1.0f;
 
         commandSkillManager = CommandSkillManager.Instance;

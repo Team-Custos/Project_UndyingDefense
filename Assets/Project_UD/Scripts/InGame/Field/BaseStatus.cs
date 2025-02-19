@@ -82,6 +82,6 @@ public class BaseStatus : MonoBehaviour
         }
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
-        Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
+        //Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
     }
 }

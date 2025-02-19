@@ -10592,6 +10592,8 @@ MonoBehaviour:
     type: 3}
   selectedUIPrefab: {fileID: 6430430827356602697, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
+  hpBarFill: {fileID: 6642203540677236237, guid: 7654712bf060b4749921efcfaf6730c5,
+    type: 3}
   uiCanvas: {fileID: 176055292}
   mainCamera: {fileID: 1346724710}
   hpBarYOffset: 3
@@ -18310,7 +18312,6 @@ Transform:
   - {fileID: 1368154823}
   - {fileID: 447005217}
   - {fileID: 1832086055}
-  - {fileID: 1391571423}
   - {fileID: 2131315957}
   - {fileID: 825525762}
   - {fileID: 1615164033}
@@ -18324,6 +18325,7 @@ Transform:
   - {fileID: 1636126441}
   - {fileID: 38934298}
   - {fileID: 243416722}
+  - {fileID: 1391571423}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &475068739
@@ -55797,6 +55799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd529b3dc5ae0840a0f85be232106ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveCanvasController: {fileID: 1147777773601809497, guid: 332b19f550817614bb510673348d806e,
+    type: 3}
   waveDataTable: {fileID: 11400000, guid: 1956f4a03b933404c88ac6a3bbe682f5, type: 2}
   enemyDatas:
   - {fileID: 11400000, guid: 307c7bba30ed8fb43ab4178f5b226ea7, type: 2}
@@ -55816,9 +55820,14 @@ MonoBehaviour:
   activeMonsters: []
   isWaveing: 1
   isSpawning: 0
-  maxWave: 10
+  maxWave: 1
+  waveTimer: 20
   spawnTimer: 0
+  waveDelay: 1
   isBaseAttackPerWave: 0
+  monSpawnIndex: 0
+  monSpawnCount: 0
+  totalMonCount: 0
 --- !u!1001 &1393067389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64578,25 +64587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1883f678a89c5da43bb9a7d59365817a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCount: 99
-  waveCountText: {fileID: 0}
-  waveCountTextPanel: {fileID: 0}
-  waveStartText: {fileID: 0}
-  waveStartPanel: {fileID: 0}
-  waveResultWinPanel: {fileID: 0}
-  waveResultLosePanel: {fileID: 0}
-  isCurrentWaveSucceed: 0
-  nextWavBtn: {fileID: 0}
-  waveCountSkipBtn: {fileID: 0}
-  isCountDownIng: 1
-  winWaveRestartBtn: {fileID: 0}
-  winLobbyBtn: {fileID: 0}
-  loseWaveRestartBtn: {fileID: 0}
-  loseLobbyBtn: {fileID: 0}
-  waveStepSuccessPanel: {fileID: 0}
-  waveStepText: {fileID: 0}
-  curWaveStepText: {fileID: 0}
-  waveWarningPanel: {fileID: 0}
+  waveCanvasController: {fileID: 1147777773601809497, guid: 332b19f550817614bb510673348d806e,
+    type: 3}
   fadeDuration: 0.3
 --- !u!1001 &1615883927
 PrefabInstance:

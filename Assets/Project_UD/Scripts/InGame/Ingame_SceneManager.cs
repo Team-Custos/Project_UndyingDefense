@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class Ingame_SceneManager : MonoBehaviour
 {
+    public static Ingame_SceneManager inst;
+
     public GameObject loadingPanel;
     public Image progressImage;
     public Text progressText;
@@ -17,6 +19,13 @@ public class Ingame_SceneManager : MonoBehaviour
 
     float elapsedTime = 0f;
     public float minLoadingTime = 3.0f; // 씬 로딩 시간 3초로 고정
+
+    private void Awake()
+    {
+        inst = this;
+
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     public void _nextScene(int sceneIdx)
     {
@@ -32,6 +41,12 @@ public class Ingame_SceneManager : MonoBehaviour
         SceneManager.LoadSceneAsync(currentScene.buildIndex);  // 비동기적으로 현재 씬 다시 로드
     }
 
+
+    public void GoToTitle()
+    {
+        SceneManager.LoadSceneAsync(0);  // 비동기적으로 타이틀 씬 로드
+    }
+
     // 로비 씬으로 이동
     public void GoToLobby()
     {
@@ -44,71 +59,71 @@ public class Ingame_SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Ingame_WaveUIManager.instance.  winWaveRestartBtn != null)
-        {
-            Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
+        //if (Ingame_WaveUIManager.instance.  winWaveRestartBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
                 
-            });
-        }
+        //    });
+        //}
 
-        if (Ingame_WaveUIManager.instance.winLobbyBtn != null)
-        {
-            Ingame_WaveUIManager.instance.winLobbyBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
-        }
+        //if (Ingame_WaveUIManager.instance.winLobbyBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.winLobbyBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
+        //}
 
-        if (Ingame_WaveUIManager.instance.loseWaveRestartBtn != null)
-        {
-            Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
-            });
+        //if (Ingame_WaveUIManager.instance.loseWaveRestartBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
+        //    });
                 
-        }
+        //}
 
-        if (Ingame_WaveUIManager.instance.loseLobbyBtn != null)
-        {
-            Ingame_WaveUIManager.instance.loseLobbyBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
+        //if (Ingame_WaveUIManager.instance.loseLobbyBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.loseLobbyBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
             
-        }
+        //}
 
-        if (Ingame_UIManager.instance.settingLobbyBtn != null)
-        {
-            Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
+        //if (Ingame_UIManager.instance.settingLobbyBtn != null)
+        //{
+        //    Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
 
 
-        }
+        //}
 
-        if (Ingame_UIManager.instance.settingReStartBtn != null)
-        {
-            Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
-            });
+        //if (Ingame_UIManager.instance.settingReStartBtn != null)
+        //{
+        //    Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
+        //    });
 
-        }
+        //}
     }
 
 
