@@ -8,7 +8,8 @@ public class UnitUIManager : MonoBehaviour
 {
     [Header("UI Prefabs")]
     public GameObject hpBarPrefab;       // HP 바 프리팹
-    public GameObject selectedUIPrefab;  // 선택 UI 프리팹
+    public GameObject selectedAllyUIPrefab;     // 아군 선택 UI 프리팹
+    public GameObject selectedEnemyUIPrefab;    // 적군 선택 UI 프리팹
     public Image hpBarFill;              // HP 바 채우기 이미지
 
     [Header("UI Settings")]
@@ -28,6 +29,12 @@ public class UnitUIManager : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+
+    }
+
+    private void Start()
+    {
+
     }
 
     private void Update()
@@ -41,8 +48,10 @@ public class UnitUIManager : MonoBehaviour
         UpdateHPBar();
     }
 
-    public void OnOffUnitUI(Transform unitTransform, bool on)
+    public void OnOffUnitUI(Transform unitTransform, bool on, bool isAlly)
     {
+        // 유닛 선택시 hp와 선택 파티클 표시
+
         if (on)
         {
             selectedUnitTr = unitTransform;
@@ -59,12 +68,19 @@ public class UnitUIManager : MonoBehaviour
             curHpBar.transform.rotation = Quaternion.identity;
             curHpBar.SetActive(true);
 
-            // 선택 ui가 없으면 생성
-            if (curSelectedUI == null)
+            if(curSelectedUI == null)
             {
-                curSelectedUI = Instantiate(selectedUIPrefab, transform);
+                if(isAlly)
+                {
+                    curSelectedUI = Instantiate(selectedAllyUIPrefab, transform);
+                }
+                else
+                {
+                    curSelectedUI = Instantiate(selectedEnemyUIPrefab, transform);
+                }
             }
 
+            
             // 선택 UI를 선택된 유닛의 자식으로 설정
             curSelectedUI.transform.SetParent(selectedUnitTr);
             curSelectedUI.transform.localPosition = new Vector3(0, selectedUIYOffset, 0);

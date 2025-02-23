@@ -72,20 +72,20 @@ public class GameOrderSystem : MonoBehaviour
                 InGameManager.inst.UnitSetMode = false;
                 InGameManager.inst.AllyUnitSetMode = false;
 
-                if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
-                {
-                    Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
-                }
+                //if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
+                //{
+                //    Ingame_UIManager.instance.OnOffUnitStateChangeBox(false);
+                //}
 
-                if (Ingame_UIManager.instance.currentUpgradeMenu != null)
-                {
-                    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
-                }
+                //if (Ingame_UIManager.instance.currentUpgradeMenu != null)
+                //{
+                //    Ingame_UIManager.instance.DestroyUnitUpgradeMenu();
+                //}
 
-                if (Ingame_UIManager.instance.currentunitUpgradeMenuConfirmBox != null)
-                {
-                    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
-                }
+                //if (Ingame_UIManager.instance.currentunitUpgradeMenuConfirmBox != null)
+                //{
+                //    Ingame_UIManager.instance.DestorypgradeMenuConfirmBox();
+                //}
 
                 //unitUIManager.OnOffUnitUI(selectedUnit.transform, false);
 
@@ -220,7 +220,7 @@ public class GameOrderSystem : MonoBehaviour
                 selectedUnit = allyUnit.gameObject;
 
 
-                unitUIManager.OnOffUnitUI(selectedUnit.transform, true);
+                unitUIManager.OnOffUnitUI(selectedUnit.transform, true, true);
 
                 // UI 처리
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
@@ -268,6 +268,8 @@ public class GameOrderSystem : MonoBehaviour
                 enmyUnit.isSelected = true;
 
                 selectedUnit = enmyUnit.gameObject;
+
+                unitUIManager.OnOffUnitUI(selectedUnit.transform, true, false);
 
                 //if (selectedUnit != null && selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
                 //{
