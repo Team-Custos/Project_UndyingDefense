@@ -6,32 +6,34 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManager : MonoBehaviour
 {
+    // 로딩씬 다음 설정해주는 변수  씬 a -> 로딩씬 -> 씬 b 
+    private static string nextScene;
     [SerializeField] private Image progressImage;
     [SerializeField] private Text progressText;
     [SerializeField] private float loadingTime = 0.0f;
 
-    // 로딩씬 다음 설정해주는 변수  a -> 로딩씬 -> b 
-    private string nextSceneName;
+    
 
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(LoadScene("IntroScene"));
+        StartCoroutine(LoadSceneProcess());
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void LoadScene(string sceneName)
     {
-        
+        nextScene = sceneName;
+        SceneManager.LoadScene("LoadingScene");
     }
 
-    private IEnumerator LoadScene(string sceneName)
+
+    private IEnumerator LoadSceneProcess()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(nextScene);
         operation.allowSceneActivation = false;
-        
-        while(!operation.isDone)
+
+        while (!operation.isDone)
         {
             loadingTime += Time.deltaTime;
 
@@ -41,11 +43,12 @@ public class LoadingSceneManager : MonoBehaviour
             {
                 if (loadingTime >= 3.0f)
                 {
+                    progress = 1.0f;
                     operation.allowSceneActivation = true;
                 }
                 else
                 {
-                    progress = Mathf.Clamp01(loadingTime / 1.0f);
+                    progress = Mathf.Lerp(0.9f, 1.0f, loadingTime / 3.0f); // 90%에서 100%까지 서서히 증가
                 }
             }
 
@@ -57,6 +60,5 @@ public class LoadingSceneManager : MonoBehaviour
 
             yield return null;
         }
-
     }
 }
