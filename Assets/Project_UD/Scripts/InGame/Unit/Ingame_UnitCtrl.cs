@@ -300,7 +300,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if(this.gameObject.CompareTag(CONSTANT.TAG_ENEMY))
             {
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                WaveManager.inst.MonsterDead(this.gameObject, 0.0f);
             }
             else 
             {
@@ -751,7 +751,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                WaveManager.inst.MonsterDead(this.gameObject, 3.0f);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }
@@ -868,7 +868,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 isDead = true;
                 Ingame_ParticleManager.Instance.EnemyDeathEffect(this.transform);
-                EnemySpawner.inst.OnMonsterDead(this.gameObject);
+                WaveManager.inst.MonsterDead(this.gameObject, 3.0f);
                 InGameManager.inst.gold += enmeyRewardGold;
                 Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
             }

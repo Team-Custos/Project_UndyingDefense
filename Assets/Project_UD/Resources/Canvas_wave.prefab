@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 4204684718547367972}
   - component: {fileID: 4716190510926807468}
   - component: {fileID: 3080323660085696807}
+  - component: {fileID: 6763241873067095423}
   m_Layer: 5
   m_Name: WaveStepSuccessPanel
   m_TagString: Untagged
@@ -429,6 +430,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6763241873067095423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001406854772943355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c072c42afd4ee884abe822f080f98341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1185789606505837293
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,16 +718,14 @@ RectTransform:
   m_GameObject: {fileID: 1474214869196450896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5777501517438433298}
-  - {fileID: 3535604046215098143}
-  m_Father: {fileID: 3709078698537141586}
+  m_Children: []
+  m_Father: {fileID: 5777501517438433298}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -44.6}
+  m_AnchoredPosition: {x: 0, y: -11.21}
   m_SizeDelta: {x: 66.7, y: 6.4}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2339191350103457105
@@ -758,7 +769,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC6E8\uC774\uBE0C N"
+  m_Text: "\uC6E8\uC774\uBE0C 1"
 --- !u!1 &2031958293801468122
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,6 +1766,7 @@ GameObject:
   - component: {fileID: 1042662908015040803}
   - component: {fileID: 2003723038897298736}
   - component: {fileID: 1570117125144248815}
+  - component: {fileID: 6449537653001520165}
   m_Layer: 5
   m_Name: WaveStartPanel
   m_TagString: Untagged
@@ -1820,6 +1832,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6449537653001520165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578891344651919485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c072c42afd4ee884abe822f080f98341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3832868996244642267
 GameObject:
   m_ObjectHideFlags: 0
@@ -2614,7 +2638,7 @@ GameObject:
   - component: {fileID: 1645417006446211397}
   - component: {fileID: 1078424867890830928}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: WaveStepPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2627,16 +2651,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4632594228274943661}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 431336490099293896}
+  m_Children:
+  - {fileID: 431336490099293896}
+  m_Father: {fileID: 3709078698537141586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.3}
+  m_AnchoredPosition: {x: 0, y: 482.40002}
   m_SizeDelta: {x: 146.4, y: 29.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1645417006446211397
@@ -2952,85 +2977,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5370042586984684604
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3535604046215098143}
-  - component: {fileID: 3612726360080056831}
-  - component: {fileID: 8434174918941540750}
-  m_Layer: 5
-  m_Name: WaveStepText2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3535604046215098143
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370042586984684604}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 431336490099293896}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.2999878}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3612726360080056831
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370042586984684604}
-  m_CullTransparentMesh: 1
---- !u!114 &8434174918941540750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5370042586984684604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 5c093b2dcc6174e4a8e9b4fe95017b5c, type: 3}
-    m_FontSize: 12
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 60
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: "\uC6E8\uC774\uBE0C 1"
 --- !u!1 &5432572038800842251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3707,6 +3653,7 @@ GameObject:
   - component: {fileID: 3253931116177806076}
   - component: {fileID: 6198464163508251927}
   - component: {fileID: 3884987990476214797}
+  - component: {fileID: 715008833222234846}
   m_Layer: 5
   m_Name: Canvas_wave
   m_TagString: Untagged
@@ -3726,7 +3673,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 431336490099293896}
+  - {fileID: 5777501517438433298}
   - {fileID: 2858772962176590440}
   - {fileID: 5548433036254510212}
   - {fileID: 1042662908015040803}
@@ -3805,6 +3752,35 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &715008833222234846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263996549706093103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219eab70b30376d45b82e7daf89118c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveStepPanel: {fileID: 4632594228274943661}
+  waveStepText: {fileID: 5394728416630891780}
+  waveStartPanel: {fileID: 3578891344651919485}
+  waveStartText: {fileID: 894848876733994063}
+  waveCountTextPanel: {fileID: 1300361695048805158}
+  waveCountText: {fileID: 7168541947298933683}
+  waveCountSkipBtn: {fileID: 5339473423195348671}
+  waveDefenseSuccessPaenl: {fileID: 1001406854772943355}
+  waveCount: 20
+  waveResultPanel: {fileID: 0}
+  winWaveRestartBtn: {fileID: 0}
+  waveResultWinPanel: {fileID: 0}
+  Winlobbybtn: {fileID: 0}
+  waveResultLosePanel: {fileID: 0}
+  loseWaveRestartBtn: {fileID: 0}
+  loselobbybtn: {fileID: 0}
+  waveWarnningPanel: {fileID: 0}
 --- !u!1 &7651087956119757288
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     public WaveDataTable waveDataTable;
 
 
+
     public static EnemySpawner inst;
     public List<Ingame_UnitData> enemyDatas;
 
@@ -35,13 +36,12 @@ public class EnemySpawner : MonoBehaviour
 
     public Transform[] poolSapwnPoint;
 
-    public int waveCount = 10;
-    public int monsterPerWave = 5;
-    public float spawnInterval = 2.0f;
 
     public int currentWave = 1;
     public bool isWaveing = false;
     public int waveRewardGold = 0;
+
+    public int maxWave = 10;
 
     public List<GameObject> activeMonsters = new List<GameObject>();
 
@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
 
         spawnPoint = new Transform[gridHeight];
 
-        Ingame_WaveUIManager.instance.StartNextWaveCountdown(20.0f);
+        //Ingame_WaveUIManager.instance.StartNextWaveCountdown(20.0f);
     }
 
     // Update is called once per frame
@@ -102,7 +102,6 @@ public class EnemySpawner : MonoBehaviour
         isBaseAttackPerWave = false;
 
         WaveData currentData = waveDataTable.GetWaveData(currentWave);
-
         if (currentData == null)
         {
             Debug.LogError("해당 웨이브 데이터를 찾을 수 없습니다: " + currentWave);
@@ -110,10 +109,10 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // 웨이브 시작 UI 표시
-        Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
-        Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
-        Ingame_WaveUIManager.instance.curWaveStepText.text = "웨이브 " + currentWave;
-        Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
+        //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStartPanel, 3.0f);
+        //Ingame_WaveUIManager.instance.waveStepText.text = "웨이브 " + currentWave;
+        //Ingame_WaveUIManager.instance.curWaveStepText.text = "웨이브 " + currentWave;
+        //Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(true);
         Debug.Log($"Wave {currentWave} 시작");
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
@@ -122,32 +121,32 @@ public class EnemySpawner : MonoBehaviour
         List<int> normalMonsterList = new List<int>();
         List<int> bossMonsterList = new List<int>();
 
-        foreach (var info in currentData.monsterSpawnInfos)
-        {
-            if (!info.isBoss)
-            {
-                // 일반 몬스터
-                for (int i = 0; i < info.repeatNum; i++)
-                {
-                    normalMonsterList.Add(info.monsterType);
-                }
-            }
-            else
-            {
-                // 보스 몬스터
-                for (int i = 0; i < info.repeatNum; i++)
-                {
-                    bossMonsterList.Add(info.monsterType);
-                }
-            }
-        }
+        //foreach (var info in currentData.monsterSpawnInfos)
+        //{
+        //    if (!info.isBoss)
+        //    {
+        //        // 일반 몬스터
+        //        for (int i = 0; i < info.repeatNum; i++)
+        //        {
+        //            normalMonsterList.Add(info.monsterType);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // 보스 몬스터
+        //        for (int i = 0; i < info.repeatNum; i++)
+        //        {
+        //            bossMonsterList.Add(info.monsterType);
+        //        }
+        //    }
+        //}
 
         ShuffleList(normalMonsterList);
 
         foreach (int monsterTypeId in normalMonsterList)
         {
             SpawnEnemy(monsterTypeId);
-            yield return new WaitForSeconds(currentData.interval);
+            //yield return new WaitForSeconds(currentData.interval);
         }
 
 
@@ -158,24 +157,24 @@ public class EnemySpawner : MonoBehaviour
             foreach (int bossTypeId in bossMonsterList)
             {
                 SpawnEnemy(bossTypeId);
-                yield return new WaitForSeconds(currentData.interval);
+                //yield return new WaitForSeconds(currentData.interval);
             }
         }
 
         // 모든 몬스터 처치 대기
         yield return StartCoroutine(CheckAllMonstersDead());
 
-        
+
 
         // 웨이브 클리어 UI
-        if(currentData.waveNumber == 10)
+        if (currentData.waveNumber == maxWave)
         {
             yield return null;
         }
         else
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
-            Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
+            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveStepSuccessPanel, 3.0f);
+            //Ingame_WaveUIManager.instance.waveStepText.gameObject.SetActive(false);
         }
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
@@ -185,13 +184,13 @@ public class EnemySpawner : MonoBehaviour
         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
         Debug.Log($"[Wave {currentWave}] 클리어! 보상 {currentData.reward} 획득");
 
-        if(currentData.waveNumber == 10)
+        if (currentData.waveNumber == maxWave)
         {
-            if(bgmManager != null) 
+            if (bgmManager != null)
             {
                 bgmManager.PauseBGM();      // 웨이브 종료시 bgm은 끔
             }
-            Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
+            //Ingame_WaveUIManager.instance.waveResultWinPanel.SetActive(true);
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
             InGameManager.inst.isGamePause = true;
         }
@@ -207,8 +206,8 @@ public class EnemySpawner : MonoBehaviour
 
         if (nextWaveData != null && nextWaveData)
         {
-            Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
-            Ingame_WaveUIManager.instance.waveCountTextPanel.SetActive(true);
+            //Ingame_WaveUIManager.instance.StartNextWaveCountdown(20f);
+            //Ingame_WaveUIManager.instance.waveCountTextPanel.SetActive(true);
             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
         }
     }
@@ -248,12 +247,12 @@ public class EnemySpawner : MonoBehaviour
 
 
     //몬스터 죽음 처리
-    public void OnMonsterDead(GameObject monster)
+    public void OnMonsterDead(GameObject monster, float destroyDelay)
     {
         if (activeMonsters.Contains(monster))
         {
             activeMonsters.Remove(monster);
-            Destroy(monster,2f);
+            Destroy(monster, destroyDelay);
         }
     }
 
@@ -263,6 +262,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return null;
         }
+
     }
 
     // Base 공격 확인 함수
@@ -270,7 +270,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!isBaseAttackPerWave) // 현재 웨이브에서 Base가 공격 당했다면
         {
-            Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
+            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
             isBaseAttackPerWave = true;
         }
     }

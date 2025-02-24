@@ -18337,7 +18337,6 @@ Transform:
   - {fileID: 1368154823}
   - {fileID: 447005217}
   - {fileID: 1832086055}
-  - {fileID: 1391571423}
   - {fileID: 2131315957}
   - {fileID: 825525762}
   - {fileID: 1615164033}
@@ -18351,6 +18350,7 @@ Transform:
   - {fileID: 1904282612}
   - {fileID: 1636126441}
   - {fileID: 38934298}
+  - {fileID: 1391571423}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &475068739
@@ -26604,7 +26604,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &698307674
 Transform:
   m_ObjectHideFlags: 0
@@ -55972,7 +55972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1391571423}
-  - component: {fileID: 1391571424}
+  - component: {fileID: 1391571425}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -55995,7 +55995,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 472590888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1391571424
+--- !u!114 &1391571425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56004,10 +56004,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1391571422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fce063d8664265e408b708b574893175, type: 3}
+  m_Script: {fileID: 11500000, guid: dbd529b3dc5ae0840a0f85be232106ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmManager: {fileID: 1904282614}
+  waveCanvasController: {fileID: 715008833222234846, guid: 332b19f550817614bb510673348d806e,
+    type: 3}
   waveDataTable: {fileID: 11400000, guid: 1956f4a03b933404c88ac6a3bbe682f5, type: 2}
   enemyDatas:
   - {fileID: 11400000, guid: 307c7bba30ed8fb43ab4178f5b226ea7, type: 2}
@@ -56017,22 +56018,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 486cf09239462a54d94b6aa8cd115e88, type: 2}
   - {fileID: 11400000, guid: 3e70587e3f5db544bb8c18baa4224489, type: 2}
   - {fileID: 11400000, guid: 96cb2484ab6373c4fb2027a2744d57ba, type: 2}
-  spawnPoint: []
-  Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
-    type: 3}
-  enemyToSpawn: 0
-  poolSapwnPoint:
+  waveSapwnPoint:
   - {fileID: 2005882644}
   - {fileID: 1811652448}
   - {fileID: 1497830957}
-  waveCount: 10
-  monsterPerWave: 5
-  spawnInterval: 2
+  Test_Enemy: {fileID: 4121165819109045414, guid: b284ef815987a44459fc4cf89ce506d8,
+    type: 3}
   currentWave: 1
-  isWaveing: 0
-  waveRewardGold: 0
   activeMonsters: []
+  isWaveing: 1
+  isSpawning: 0
+  maxWave: 10
+  waveTimer: 20
+  spawnTimer: 3
+  curSpawnTimer: 0
+  waveDelay: 1
   isBaseAttackPerWave: 0
+  monSpawnIndex: 0
+  monSpawnCount: 0
+  totalMonCount: 0
 --- !u!1001 &1393067389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64823,7 +64827,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1615164033
 Transform:
   m_ObjectHideFlags: 0
