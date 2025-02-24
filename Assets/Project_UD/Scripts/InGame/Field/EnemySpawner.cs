@@ -102,6 +102,7 @@ public class EnemySpawner : MonoBehaviour
         isBaseAttackPerWave = false;
 
         WaveData currentData = waveDataTable.GetWaveData(currentWave);
+
         if (currentData == null)
         {
             Debug.LogError("해당 웨이브 데이터를 찾을 수 없습니다: " + currentWave);
