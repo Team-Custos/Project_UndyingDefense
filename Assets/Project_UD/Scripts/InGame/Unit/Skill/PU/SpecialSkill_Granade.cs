@@ -5,15 +5,15 @@ using UnityEngine;
 public class SpecialSkill_Granade : AttackSkill
 {
     [Header("====Required components====")]
-    UnitCtrl_ReBuild unitCtrl;
+    Unit unitCtrl;
     public GameObject Granade;
 
     private void Awake()
     {
-        unitCtrl = GetComponentInParent<UnitCtrl_ReBuild>();
+        unitCtrl = GetComponentInParent<Unit>();
     }
 
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         //유닛 스킬 애니메이션 실행
         //unitCtrl. unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_SPECIAL);

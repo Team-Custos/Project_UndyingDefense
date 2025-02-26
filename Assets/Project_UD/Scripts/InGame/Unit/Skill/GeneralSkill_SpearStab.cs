@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GeneralSkill_SpearStab : AttackSkill
 {
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         Debug.Log("TestSkill3 Activate");
-        base.Activate(target);
+        base.Activate(caster, target);
     }
 }

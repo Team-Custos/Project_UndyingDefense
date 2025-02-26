@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Debuff_Inferno : UnitDebuff_Rebuild
+public class Debuff_Inferno : UnitEffect
 {
     [Header("====Damage====")]
     [SerializeField] private float tickTimeIntervals; //틱 시간 간격
     [SerializeField] private float Cur_tickTime; //틱 시간
     public float tickDamage; //틱 데미지
 
-    public override void ApplyDebuff(UnitCtrl_ReBuild target)
+    public override void ApplyDebuff(Unit target)
     {
         //출혈 효과 적용
         target.TakeDamage(tickDamage);

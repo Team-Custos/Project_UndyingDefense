@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class GeneralSkill_ClawSlash : AttackSkill
 {
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         Debug.Log("TestSkill6 Activate");
-        base.Activate(target);
     }
 
-    public override void AddDebuff(UnitCtrl_ReBuild target)
+
+
+    public override void AddEffect(Unit target)
     {
         GameObject Effect_Obj = Instantiate(EffectOnCrit);
         Effect_Obj.transform.parent = target.EffectParent.transform;
-        UnitDebuff_Rebuild debuff = Effect_Obj.GetComponent<UnitDebuff_Rebuild>();
+        Effect_Obj.transform.position = Vector3.zero;
+        UnitEffect debuff = Effect_Obj.GetComponent<UnitEffect>();
         debuff.SetTarget(target);
+        target.AddEffect(debuff);
     }
 }

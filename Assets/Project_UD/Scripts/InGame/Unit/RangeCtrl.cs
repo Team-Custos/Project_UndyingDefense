@@ -100,7 +100,7 @@ public class RangeCtrl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.transform.root.TryGetComponent(out UnitCtrl_ReBuild unit))
+        if (other.transform.root.TryGetComponent(out Unit unit))
         {
             if (other.CompareTag(tagToSearch.ToString()))//찾을 태그에 맞을 경우. (외부 스크립트 사용.)
             {
@@ -115,7 +115,7 @@ public class RangeCtrl : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.root.TryGetComponent(out UnitCtrl_ReBuild unit))
+        if (other.transform.root.TryGetComponent(out Unit unit))
         {
             if (other.CompareTag(tagToSearch))//찾을 태그에 맞을 경우. (외부 스크립트 사용.)
             {

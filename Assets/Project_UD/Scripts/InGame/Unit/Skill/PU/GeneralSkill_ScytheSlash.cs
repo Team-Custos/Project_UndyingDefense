@@ -5,17 +5,15 @@ using UnityEngine;
 
 public class GeneralSkill_ScytheSlash : AttackSkill
 {
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         Debug.Log("TestSkill1 Activate");
-        base.Activate(target);
+        base.Activate(caster, target);
     }
 
-    public override void AddDebuff(UnitCtrl_ReBuild target)
+    public override void AddEffect(Unit target)
     {
-        GameObject Effect_Obj = Instantiate(EffectOnCrit);
-        Effect_Obj.transform.parent = target.EffectParent.transform;
-        UnitDebuff_Rebuild debuff = Effect_Obj.GetComponent<UnitDebuff_Rebuild>();
-        debuff.SetTarget(target);
+        UnitEffect debuff = EffectOnCrit.GetComponent<UnitEffect>();
+        target.AddEffect(debuff);
     }
 }

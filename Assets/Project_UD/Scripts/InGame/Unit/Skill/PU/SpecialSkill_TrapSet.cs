@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpecialSkill_TrapSet : AttackSkill
 {
     [Header("====Required Component====")]
-    UnitCtrl_ReBuild UnitCtrl;
+    Unit UnitCtrl;
     GridManager GridManager;//설치에 필요한 위치 불러올 그리드.
     public GameObject Trap_Obj;
     public Dictionary<int, bool> TargetCellPlaceable = new Dictionary<int, bool> { };
@@ -15,11 +15,11 @@ public class SpecialSkill_TrapSet : AttackSkill
 
     private void Awake()
     {
-        UnitCtrl = GetComponentInParent<UnitCtrl_ReBuild>();
+        UnitCtrl = GetComponentInParent<Unit>();
         GridManager = GridManager.inst;
     }
 
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         Debug.Log("TestSkill2 Activate");
         if (Trap_Obj != null)

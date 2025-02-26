@@ -5,15 +5,15 @@ using UnityEngine;
 public class GeneralSkill_GroundSmash : AttackSkill
 {
     [Header("====Required Components====")]
-    private UnitCtrl_ReBuild UnitCtrl;
+    private Unit UnitCtrl;
     public GameObject AttackTrigger;
 
     private void Awake()
     {
-        UnitCtrl = GetComponent<UnitCtrl_ReBuild>();
+        UnitCtrl = GetComponent<Unit>();
     }
 
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         if (AttackTrigger != null)
         {

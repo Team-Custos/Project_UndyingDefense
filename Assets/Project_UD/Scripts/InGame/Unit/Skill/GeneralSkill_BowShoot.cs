@@ -5,15 +5,15 @@ using UnityEngine;
 public class GeneralSkill_BowShoot : AttackSkill
 {
     [Header("Required Component")]
-    UnitCtrl_ReBuild unitCtrl;
+    Unit unitCtrl;
     public GameObject Bow;
 
     private void Awake()
     {
-        unitCtrl = GetComponentInParent<UnitCtrl_ReBuild>();
+        unitCtrl = GetComponentInParent<Unit>();
     }
 
-    public override void Activate(UnitCtrl_ReBuild target)
+    public override void Activate(Unit caster, Unit target)
     {
         Vector3 TargetPos = target.transform.position;
 
@@ -26,6 +26,6 @@ public class GeneralSkill_BowShoot : AttackSkill
         }
 
         Debug.Log("TestSkill2 Activate");
-        base.Activate(target);
+        base.Activate(caster, target);
     }
 }

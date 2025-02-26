@@ -39,17 +39,16 @@ public class UnitData_ReBuild : ScriptableObject
 {
     [Header("====General====")]
     public string unitName;
-    //public string description;
     public int tier = 1;
     public float maxHP;
     public DefenseType defenseType;
     public TargetSelectType targetSelectType;
     
-    //public int baseDamage;
-    public float baseCritChanceRate;
+    public float baseCrit;
     public int mental;
     public float baseMoveSpeed;
     public float baseAttackCooldown;
+    public float baseCritChanceRate;
 
     public float sightRange;
     public float attackRange;

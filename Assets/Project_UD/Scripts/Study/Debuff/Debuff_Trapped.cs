@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Debuff_Trapped : UnitDebuff_Rebuild
+public class Debuff_Trapped : UnitEffect
 {
     [Header("====FX====")]
     public AudioClip StartSFX; //효과 시작시 SFX
@@ -22,7 +22,7 @@ public class Debuff_Trapped : UnitDebuff_Rebuild
         tickDamage = 1f;
     }
 
-    public override void ApplyDebuff(UnitCtrl_ReBuild target)
+    public override void ApplyDebuff(Unit target)
     {
         //이속 0으로 만들기?
 
