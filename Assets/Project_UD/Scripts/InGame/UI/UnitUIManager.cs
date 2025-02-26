@@ -11,6 +11,7 @@ public class UnitUIManager : MonoBehaviour
     public GameObject selectedAllyUIPrefab;     // 아군 선택 UI 프리팹
     public GameObject selectedEnemyUIPrefab;    // 적군 선택 UI 프리팹
     public Image hpBarFill;              // HP 바 채우기 이미지
+    public GameObject unitOptionBox;
 
     [Header("UI Settings")]
     [SerializeField] private Canvas uiCanvas;    // World Space Canvas
@@ -20,7 +21,10 @@ public class UnitUIManager : MonoBehaviour
 
     // 현재 선택된 유닛과 연결된 UI
     private GameObject curHpBar;
-    private GameObject curSelectedUI;
+    private GameObject curAllySelectUI;
+    private GameObject curEnemySelectUI;
+    private GameObject curUnitOptionBox;
+
     private Transform selectedUnitTr;
 
     private void Awake()
@@ -41,17 +45,33 @@ public class UnitUIManager : MonoBehaviour
     {
         if (selectedUnitTr != null)
         {
-            // HP 바가 유닛을 따라가게
+            // UI들이 유닛을 따라다니도록 설정
             curHpBar.transform.position = selectedUnitTr.position + new Vector3(0, hpBarYOffset, 0);
-        }
 
-        UpdateHPBar();
+            if(curAllySelectUI != null)
+            {
+                curAllySelectUI.transform.position = selectedUnitTr.position + new Vector3(0, selectedUIYOffset, 0);
+            }
+
+            if(curEnemySelectUI != null)
+            {
+                curEnemySelectUI.transform.position = selectedUnitTr.position + new Vector3(0, selectedUIYOffset, 0);
+            }
+            
+            if(curUnitOptionBox != null)
+            {
+                Vector3 screenPos = mainCamera.WorldToScreenPoint(selectedUnitTr.transform.position);
+                screenPos.x += 100;
+                screenPos.y -= 20;
+
+                curUnitOptionBox.transform.position = screenPos;
+            }
+        }
     }
 
-    public void OnOffUnitUI(Transform unitTransform, bool on, bool isAlly)
+    public void SelcetUnit(Transform unitTransform, bool on, bool isAlly)
     {
         // 유닛 선택시 hp와 선택 파티클 표시
-
         if (on)
         {
             selectedUnitTr = unitTransform;
@@ -68,53 +88,90 @@ public class UnitUIManager : MonoBehaviour
             curHpBar.transform.rotation = Quaternion.identity;
             curHpBar.SetActive(true);
 
-            if(curSelectedUI == null)
+            // 선택된 유닛의 위치에 UI 표시를 위한 포지션 계산
+            Vector3 uiPosition = unitTransform.position + new Vector3(0, selectedUIYOffset, 0);
+
+            if (isAlly)
             {
-                if(isAlly)
+                // 아군 UI 활성화
+                if (curAllySelectUI == null)
                 {
-                    curSelectedUI = Instantiate(selectedAllyUIPrefab, transform);
+                    curAllySelectUI = Instantiate(selectedAllyUIPrefab, transform);
                 }
-                else
+                curAllySelectUI.transform.position = uiPosition;
+                curAllySelectUI.SetActive(true);
+
+                // 적군 UI가 있다면 비활성화
+                if (curEnemySelectUI != null)
                 {
-                    curSelectedUI = Instantiate(selectedEnemyUIPrefab, transform);
+                    curEnemySelectUI.SetActive(false);
                 }
             }
+            else
+            {
+                // 적군 UI 활성화
+                if (curEnemySelectUI == null)
+                {
+                    curEnemySelectUI = Instantiate(selectedEnemyUIPrefab, transform);
+                }
+                curEnemySelectUI.transform.position = uiPosition;
+                curEnemySelectUI.SetActive(true);
 
-            
-            // 선택 UI를 선택된 유닛의 자식으로 설정
-            curSelectedUI.transform.SetParent(selectedUnitTr);
-            curSelectedUI.transform.localPosition = new Vector3(0, selectedUIYOffset, 0);
-            curSelectedUI.transform.localRotation = Quaternion.identity;
-            curSelectedUI.SetActive(true);
+                // 아군 UI가 있다면 비활성화
+                if (curAllySelectUI != null)
+                {
+                    curAllySelectUI.SetActive(false);
+                }
+            }
         }
         else
         {
-            if (curHpBar != null)
+            if(curHpBar != null)
             {
                 curHpBar.SetActive(false);
             }
 
-            if (curSelectedUI != null)
+            if (curHpBar != null)
             {
-                curSelectedUI.SetActive(false);
+                curAllySelectUI.SetActive(false);
             }
 
-            selectedUnitTr = null;
+            if (curHpBar != null)
+            {
+                curEnemySelectUI.SetActive(false);
+            }
         }
     }
 
-    // HP 바 업데이트
-    private void UpdateHPBar()
+    public void AllyUnitSelect(Vector3 worldPos, Ingame_UnitCtrl selectedUnit, bool on)
     {
-        if (selectedUnitTr != null)
+        // Change 상태에서는 모드변경, 업그레이드 불가
+        if(selectedUnit.Ally_Mode == AllyMode.Change)
         {
-            Ingame_UnitCtrl unit = selectedUnitTr.GetComponent<Ingame_UnitCtrl>();
-            if (unit != null && hpBarFill != null)
-            {
-                // 체력 비율 계산 (0 ~ 1)
-                float healthRatio = unit.HP / unit.unitData.maxHP;
-                hpBarFill.fillAmount = healthRatio; // HP 바 업데이트
-            }
+            return;
         }
+
+        if (on)
+        {
+            if (curUnitOptionBox == null)
+            {
+                curUnitOptionBox = Instantiate(unitOptionBox, uiCanvas.transform);
+            }
+
+            RectTransform rectTransform = curUnitOptionBox.GetComponent<RectTransform>();
+
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(worldPos);
+            screenPos.x += 100;
+            screenPos.y -= 20;
+
+            rectTransform.position = screenPos;
+
+            curUnitOptionBox.SetActive(true);
+        }
+        else
+        {
+            curUnitOptionBox.SetActive(false);
+        }
+        
     }
 }

@@ -443,7 +443,7 @@ public class Ingame_UIManager : MonoBehaviour
 
         //rectTransform.position = screenPos;
 
-        SelectedUnitOptionBox optionBox = currentSelectedUnitOptionBox.GetComponent<SelectedUnitOptionBox>();
+        UnitOptionBox optionBox = currentSelectedUnitOptionBox.GetComponent<UnitOptionBox>();
         unitStateChageBtn = optionBox.UnitStateChangeBtn;
         unitUpgradeBtn = optionBox.UnitUpgradeBtn;
 
@@ -688,10 +688,6 @@ public class Ingame_UIManager : MonoBehaviour
             currentunitUpgradeMenuConfirmBox = null;
         }
     }
-
-
-
-
 
 
 

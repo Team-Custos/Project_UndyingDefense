@@ -146,7 +146,7 @@ public class EnemySpawner : MonoBehaviour
         foreach (int monsterTypeId in normalMonsterList)
         {
             SpawnEnemy(monsterTypeId);
-            yield return new WaitForSeconds(currentData.interval);
+            //yield return new WaitForSeconds(currentData.interval);
         }
 
 
@@ -157,7 +157,7 @@ public class EnemySpawner : MonoBehaviour
             foreach (int bossTypeId in bossMonsterList)
             {
                 SpawnEnemy(bossTypeId);
-                yield return new WaitForSeconds(currentData.interval);
+                //yield return new WaitForSeconds(currentData.interval);
             }
         }
 

@@ -160,6 +160,7 @@ public class GameOrderSystem : MonoBehaviour
                     selectedUnit = null;
                 }
 
+                unitUIManager.SelcetUnit(transform, false, false);
             }
             //유닛 클릭했을 때
             else if (clickedObj.CompareTag(CONSTANT.TAG_UNIT))
@@ -171,8 +172,6 @@ public class GameOrderSystem : MonoBehaviour
                     GAMEMANAGER.UnitSetMode = false;
                     GAMEMANAGER.AllyUnitSetMode = false;
                 }
-
-                
 
                 //Ingame_UnitCtrl AllyUnit = hit.collider.GetComponent<Ingame_UnitCtrl>();
 
@@ -220,7 +219,8 @@ public class GameOrderSystem : MonoBehaviour
                 selectedUnit = allyUnit.gameObject;
 
 
-                unitUIManager.OnOffUnitUI(selectedUnit.transform, true, true);
+                unitUIManager.SelcetUnit(selectedUnit.transform, true, true);
+                unitUIManager.AllyUnitSelect(hit.point, allyUnit, true);
 
                 // UI 처리
                 if (Ingame_UIManager.instance.currentSelectedUnitOptionBox != null)
@@ -269,7 +269,7 @@ public class GameOrderSystem : MonoBehaviour
 
                 selectedUnit = enmyUnit.gameObject;
 
-                unitUIManager.OnOffUnitUI(selectedUnit.transform, true, false);
+                unitUIManager.SelcetUnit(selectedUnit.transform, true, false);
 
                 //if (selectedUnit != null && selectedUnit.CompareTag(CONSTANT.TAG_UNIT))
                 //{

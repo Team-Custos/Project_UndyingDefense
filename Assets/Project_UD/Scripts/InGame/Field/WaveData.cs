@@ -16,8 +16,8 @@ public class MonsterSpawnInfo
 public class WaveData : ScriptableObject
 {
     public int waveNumber;      // 웨이브 번호 -> 삭제 예정
-    public float waveStartTime; // 이전 웨이브 종료 후 다음 웨이브 시작까지 대기 시간(초 단위) -> 삭제 예정
-    public float interval;      // 몬스터 스폰 간격(초 단위) -> 삭제 예정
+    //public float waveStartTime; // 이전 웨이브 종료 후 다음 웨이브 시작까지 대기 시간(초 단위) -> 삭제 예정
+    //public float interval;      // 몬스터 스폰 간격(초 단위) -> 삭제 예정
 
     public int reward;          // 웨이브 클리어 시 보상(골드)
 

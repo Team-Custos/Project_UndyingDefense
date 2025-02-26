@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectedUnitOptionBox : MonoBehaviour
+public class UnitOptionBox : MonoBehaviour
 {
     [SerializeField] private Button unitStateChangeBtn;
     [SerializeField] private Button unitUpgradeBtn;

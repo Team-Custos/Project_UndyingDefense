@@ -140,7 +140,6 @@ public class Ingame_SceneManager : MonoBehaviour
 
         while (!operation.isDone)
         {
-            // 로딩 진행도 (0.0 ~ 1.0)
             float progress = Mathf.Clamp01(operation.progress / 1f);
             if (progressImage != null)
                 progressImage.fillAmount = progress;

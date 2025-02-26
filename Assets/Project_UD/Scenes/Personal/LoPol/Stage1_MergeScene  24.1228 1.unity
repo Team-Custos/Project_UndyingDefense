@@ -10596,7 +10596,9 @@ MonoBehaviour:
     type: 3}
   hpBarFill: {fileID: 6642203540677236237, guid: 7654712bf060b4749921efcfaf6730c5,
     type: 3}
-  uiCanvas: {fileID: 176055292}
+  unitOptionBox: {fileID: 4658650071193815894, guid: 465dcfa83dfe92841b4b954b8a9ab1b1,
+    type: 3}
+  uiCanvas: {fileID: 959445838}
   mainCamera: {fileID: 1346724710}
   hpBarYOffset: 3
   selectedUIYOffset: -0.9
@@ -26509,9 +26511,6 @@ MonoBehaviour:
   loadingPanel: {fileID: 231270354}
   progressImage: {fileID: 447398441}
   progressText: {fileID: 1030239927}
-  animationDuration: 0.5
-  delayBetweenAnimations: 0.2
-  minLoadingTime: 3
 --- !u!4 &698478976 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -55822,9 +55821,10 @@ MonoBehaviour:
   activeMonsters: []
   isWaveing: 1
   isSpawning: 0
-  maxWave: 1
+  maxWave: 10
   waveTimer: 20
-  spawnTimer: 0
+  spawnTimer: 3
+  curSpawnTimer: 3
   waveDelay: 1
   isBaseAttackPerWave: 0
   monSpawnIndex: 0

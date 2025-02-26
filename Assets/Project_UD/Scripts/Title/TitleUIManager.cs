@@ -39,7 +39,8 @@ public class TitleUIManager : MonoBehaviour
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
-                LoadScene(1);
+
+                LoadingSceneManager.LoadScene("LobbyScene_LoPol");
             });
 
         }
@@ -57,11 +58,6 @@ public class TitleUIManager : MonoBehaviour
         }
 
         StartCoroutine(PlayTitleSceneAnimation());
-    }
-
-    public void LoadScene(int sceneNumber)
-    {
-        StartCoroutine(LoadSceneAsync(sceneNumber));
     }
 
     private IEnumerator LoadSceneAsync(int sceneNumber)

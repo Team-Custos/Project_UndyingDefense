@@ -27,6 +27,7 @@ public class WaveManager : MonoBehaviour
     [Header("웨이브에 필요한 시간 변수")]
     [SerializeField] private float waveTimer = 20.0f;   // 웨이브 종료 후 대기 시간 (현재는 20초로 고정)
     [SerializeField] private float spawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
+    [SerializeField] private float curSpawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
     [SerializeField] private float waveDelay = 1.0f;    // 웨이브, ui 간 텀
 
     private WaveData waveData;
@@ -69,6 +70,8 @@ public class WaveManager : MonoBehaviour
                 waveTimer = 0.0f;
             });
         }
+
+        curSpawnTimer = spawnTimer;
     }
 
     // Update is called once per frame
@@ -107,10 +110,10 @@ public class WaveManager : MonoBehaviour
             }
             else if (isSpawning)
             {
-                spawnTimer += Time.deltaTime;
-                if (spawnTimer >= waveData.interval)
+                curSpawnTimer -= Time.deltaTime;
+                if (curSpawnTimer <= 0)
                 {
-                    spawnTimer -= waveData.interval;
+                    curSpawnTimer = spawnTimer;
                     SpawnMonster();
                     totalMonCount++;
                     Debug.Log("총 몬스터 수 " + totalMonCount);
@@ -119,7 +122,7 @@ public class WaveManager : MonoBehaviour
 
 
 
-            
+
 
         }
         else
@@ -148,6 +151,8 @@ public class WaveManager : MonoBehaviour
     
     private void StartWave()
     {
+        isBaseAttackPerWave = false;
+
         waveDelay = 4.0f;
 
         waveCanvasController.waveStepText.text = "웨이브 " + currentWave;
@@ -312,7 +317,7 @@ public class WaveManager : MonoBehaviour
     {
         if (!isBaseAttackPerWave)
         {
-            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
+            waveCanvasController.waveWarnningPanel.SetActive(true);
             isBaseAttackPerWave = true;
         }
     }
