@@ -156,7 +156,7 @@ public class EnemyUnitState : MonoBehaviour
                 if (targetUnitDistance_Cur <= UnitCtrl.unitData.attackRange)//목적지에 도착했을 때
                 {
                     UnitCtrl.isEnemyInRange = true;
-                    navAgent.SetDestination(UnitCtrl.transform.position);//정지.
+                    navAgent.isStopped = true;
                     return;
                 }
             }

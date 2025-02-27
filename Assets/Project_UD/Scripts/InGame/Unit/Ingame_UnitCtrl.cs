@@ -196,6 +196,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
 
         moveTargetPos = this.transform.position;
+        VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         // 초기 모델 설정 후 크기 애니메이션 적용
         if (VisualModel.childCount > 0)
@@ -355,6 +356,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
             return;
         }
 
+        if (targetEnemy != null)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+            Debug.Log("distanceToEnemy : " + distanceToEnemy);
+            isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
+        }
+
 
         if (targetEnemy != null && targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
         {
@@ -460,8 +468,8 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
             if (targetEnemy != null && !haveToMovePosition) // 타겟 적군이 있을 경우.
             {
-                float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-                isEnemyInRange = (distanceToEnemy <= unitData.attackRange);//적군이 유닛 공격 범위 내에 있는가?
+                //float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+                //isEnemyInRange = (distanceToEnemy <= unitData.attackRange);//적군이 유닛 공격 범위 내에 있는가?
 
                 if (isEnemyInRange && Ally_State != null && Ally_State.fsm != null)
                 {
@@ -508,22 +516,19 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
                 if (targetEnemy != null)
                 {
-                    float distance = Vector3.Distance(transform.position, targetEnemy.transform.position);
-
-                    if (distance <= unitData.attackRange)
+                    if (isEnemyInRange)
                     {
-                        isEnemyInRange = true;
                         isEnemyInRangeDelay_Cur = 0;
                     }
-                    else if (isEnemyInRange)
-                    {
-                        isEnemyInRangeDelay_Cur += Time.deltaTime;
+                    //else if (isEnemyInRange)
+                    //{
+                    //    isEnemyInRangeDelay_Cur += Time.deltaTime;
 
-                        if (isEnemyInRangeDelay_Cur >= isEnemyInRangeDelay)
-                        {
-                            isEnemyInRange = false;
-                        }
-                    }
+                    //    if (isEnemyInRangeDelay_Cur >= isEnemyInRangeDelay)
+                    //    {
+                    //        isEnemyInRange = false;
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -615,6 +620,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     }
                     else
                     {
+                        VisualModel.transform.rotation = transform.rotation;
                         Enemy_State.fsm.ChangeState(EnemyState.Move);
                     }
                 }
@@ -630,6 +636,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
+                VisualModel.transform.rotation = transform.rotation;
                 Enemy_State.fsm.ChangeState(EnemyState.Move);
             }
 
@@ -637,6 +644,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (!isEnemyInRange && !enemy_isBaseInRange)
         {
+            VisualModel.transform.rotation = transform.rotation;
             Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
     }
@@ -650,17 +658,13 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj = sightRangeSensor.NearestObjectSearch();
+            GameObject TargetObj =
+                sightRangeSensor.NearestObjectSearch();
 
             if (TargetObj != null)
             {
                 isEnemyInSight = true;
                 targetEnemy = TargetObj;
-                if (targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
-                {
-                    targetEnemy = null;
-                    SearchEnemy();
-                }
 
                 if (Ally_Mode == AllyMode.Free)
                 {
@@ -679,14 +683,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT)) //아군일때
         {
-            if (targetEnemy == null || targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+            if (targetEnemy == null)
             {
-                targetEnemy = null;
                 Ally_State.fsm.ChangeState(PUState.Search);
                 return;
             }
             else if (isEnemyInRange)
             {
+                VisualModel.transform.LookAt(targetEnemy.transform.position);
                 UnitSkill.UnitGeneralSkill(unitData.generalSkill, targetEnemy, unitData.generalSkill.coolTime, false);
             }
         }
@@ -694,7 +698,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if (enemy_isBaseInRange)
             {
-                transform.LookAt(targetBase.transform.position);
+                VisualModel.transform.LookAt(targetBase.transform.position);
                 UnitSkill.EnemyGeneralSkill(unitData.generalSkill, targetBase, unitData.generalSkill.coolTime, true);
             }
             else
@@ -704,6 +708,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("SkillCode : " + unitData.generalSkill);
                     Debug.Log("targetEnemy." + targetEnemy.name);
 
+                    VisualModel.transform.LookAt(targetEnemy.transform.position);
                     UnitSkill.EnemyGeneralSkill(unitData.generalSkill, targetEnemy, unitData.generalSkill.coolTime, true);
                 }
                 else if (targetEnemy == null)
@@ -732,9 +737,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             {
                 Enemy_State.fsm.ChangeState(EnemyState.Idle);
             }
-
         }
-
     }
 
     //틱 데미지용 함수.

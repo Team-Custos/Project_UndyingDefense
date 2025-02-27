@@ -35,7 +35,7 @@ public class AllyUnitState : MonoBehaviour
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
-        
+        UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void Update()
@@ -92,9 +92,6 @@ public class AllyUnitState : MonoBehaviour
                 {
                     //유닛의 적군과 관련된 모든 변수를 초기화.
                     UnitCtrl.targetEnemy = null;
-                    UnitCtrl.isEnemyInRange = false;
-                    UnitCtrl.isEnemyInSight = false;
-
                     //이동 상태로 변경.
                     fsm.ChangeState(PUState.Move);
 
@@ -134,6 +131,8 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
+
+        
         Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, true);
     }
 
@@ -142,7 +141,7 @@ public class AllyUnitState : MonoBehaviour
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
             //UnitCtrl.SearchEnemy();//적군 탐색.
-
+            UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
             navAgent.SetDestination(UnitCtrl.moveTargetPos); //병사의 이동 목적지 설정
@@ -172,6 +171,7 @@ public class AllyUnitState : MonoBehaviour
     {
         Debug.Log("Chase_Enter");
         navAgent.isStopped = false;
+        UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     void Chase_Update()
@@ -191,7 +191,7 @@ public class AllyUnitState : MonoBehaviour
         if (targetEnemyDistance_Cur <= UnitCtrl.unitData.attackRange) //공격 범위 안으로 들어왔을 경우.
         {
             UnitCtrl.isEnemyInRange = true;
-            navAgent.SetDestination(UnitCtrl.transform.position); //정지 시키기 위한 목적지 설정.
+            navAgent.isStopped = true; //정지 시키기 위한 목적지 설정.
         }
         else //타겟 적군이 공격 범위 밖에 있을 경우.
         {
@@ -224,7 +224,7 @@ public class AllyUnitState : MonoBehaviour
     {
         if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
             UnitCtrl.transform.rotation = Quaternion.Slerp(UnitCtrl.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
 

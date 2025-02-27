@@ -77,6 +77,7 @@ public class UnitSkillManager : MonoBehaviour
     {
         Vector3 TargetPos = TargetEnemy.transform.position;
         
+
         //공격 정보 관리 (데미지, 치명타 확률, 공격 타입, 디버프(필요한 경우))
         int damage = Skill.damage;
         AttackType attackType = Skill.attackType;
@@ -86,7 +87,7 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
-            UnitCtrl.transform.LookAt(TargetEnemy.transform.position);
+            UnitCtrl.VisualModel.transform.LookAt(TargetPos);
             Animator animator = UnitCtrl.GetComponent<UnitAnimationParaCtrl>().animator;
             animator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);//쿨타임이 돌면 공격 애니메이션 실행.
 
@@ -350,7 +351,7 @@ public class UnitSkillManager : MonoBehaviour
 
         if (weaponCooldown_Cur <= 0)
         {
-            UnitCtrl.transform.LookAt(TargetEnemy.transform.position);
+            UnitCtrl.VisualModel.transform.LookAt(TargetPos);
 
             unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_ATTACK);
             switch (Skill.skillType)
