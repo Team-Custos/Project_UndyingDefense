@@ -8,8 +8,6 @@ using WSWhitehouse.TagSelector;
 //이 스크립트는 공격 범위를 관리하기 위한 스크립트입니다.
 public class RangeCtrl : MonoBehaviour
 {
-    public Ingame_UnitCtrl unitCtrl; //부모의 unitCtrl컴포넌트
-
     [TagSelector] public string tagToSearch; //찾을 오브젝트의 태그 설정.
 
     public float radius = 5;//공격 범위 수치.
@@ -17,6 +15,7 @@ public class RangeCtrl : MonoBehaviour
     public List<GameObject> detectedObjects = new List<GameObject>();//감지된 게임 오브젝트.
     public List<GameObject> ignoreList = new List<GameObject>();//무시할 게임 오브젝트 (자기 자신 등)
 
+    public GameObject FinalTarget;//최종 타겟.
     public GameObject Obj_Nearest = null; //가장 가까이 있는 오브젝트.
     public SphereCollider RangeCollider;
 
@@ -34,7 +33,7 @@ public class RangeCtrl : MonoBehaviour
             Obj_Nearest = null;
         }
 
-        NearestObjectSearch();
+        FinalTarget = NearestObjectSearch();
     }
 
     public GameObject NearestObjectSearch()//가까이 있는 오브젝트를 검색.
@@ -108,7 +107,6 @@ public class RangeCtrl : MonoBehaviour
                 if (detectedObjects.Contains(unit.gameObject) == false)
                 {
                     detectedObjects.Add(unit.gameObject); //리스트에 추가.
-                    unit.OnUnitDead += RemoveDetectedUnit;
                 }
             }
             else return;
@@ -124,10 +122,8 @@ public class RangeCtrl : MonoBehaviour
                 if (Obj_Nearest == unit.gameObject)
                 {
                     Obj_Nearest = null; //가까이 있는 오브젝트 변수를 초기화.
-                    unitCtrl.targetEnemy = null;
                 }
 
-                unit.OnUnitDead -= RemoveDetectedUnit;
                 ListTargetDelete(unit.gameObject);//리스트에서 삭제.
             }
             else return;

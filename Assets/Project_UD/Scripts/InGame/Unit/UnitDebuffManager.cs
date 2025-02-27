@@ -9,11 +9,11 @@ using UnityEngine;
 [System.Serializable]
 public class UnitCurDebuff
 {
-    public UnitDebuff name;      // ����� �̸�
-    public int stack;            // ����� ����
-    public float duration;       // ����� ��ü ���� �ð�
-    public float currentTime;    // ����� ���� ���� �ð�
-    public int tickDamage;//ƽ ������
+    public UnitDebuff name;      
+    public int stack;            
+    public float duration;       
+    public float currentTime;    
+    public int tickDamage;
     public AudioClip StartSFX;
     public AudioClip EndSFX;
 }
@@ -88,7 +88,7 @@ public class UnitDebuffManager : MonoBehaviour
                         else
                         {
                             unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
-                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
+                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime * 0.8f;
                         }
                         break;
                     case UnitDebuff.Stun:
@@ -100,7 +100,6 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: 
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
                         break;
                     case UnitDebuff.Bleed: 
                         int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
@@ -152,7 +151,7 @@ public class UnitDebuffManager : MonoBehaviour
                 {
                     case UnitDebuff.Dizzy:
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
                         break;
                     case UnitDebuff.Stun:
                         unitCtrl.unActable = false;
@@ -162,7 +161,7 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: 
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
                         break;
                     case UnitDebuff.Bleed:
                         break;
@@ -235,7 +234,7 @@ public class UnitDebuffManager : MonoBehaviour
         {
             case UnitDebuff.Dizzy://3�� ���� �̵� �ӵ� 20%, ���� �ӵ� 20% ����. �ִ� 3������ ���õȴ�. 4�� ���ý� ���� ȿ���� �ߵ��ȴ�.
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
                 break;
             case UnitDebuff.Stun://5�� ���� �ൿ �Ұ�
                 unitCtrl.unActable = false;
@@ -247,7 +246,7 @@ public class UnitDebuffManager : MonoBehaviour
                 break;
             case UnitDebuff.Poison: //3�� ���� �̵� �ӵ�, ���� �ӵ� 20% ����
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
                 break;
             case UnitDebuff.Bleed:
                 break;

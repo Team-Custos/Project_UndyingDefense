@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 1524628817576402750}
   - component: {fileID: -7253675673234515982}
   - component: {fileID: 1653212543355842366}
-  - component: {fileID: 1827006063921977885}
+  - component: {fileID: 5729214398200184594}
+  - component: {fileID: 493920588523385917}
   m_Layer: 10
   m_Name: UD_Prefab_ArrowTest
   m_TagString: Attack
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 8462500469413093967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.07, y: 0, z: 6.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -131,7 +132,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -152,7 +153,22 @@ MonoBehaviour:
   isEnemyAttack: 0
   alphaColor: 0.5
   baseColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!95 &1827006063921977885
+--- !u!114 &5729214398200184594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8462500469413093967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b0887426f12d24fa3d3752a018993f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 3166612255250759096}
+  transparency: 0
+  reflectionsWeight: 0
+--- !u!95 &493920588523385917
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -162,7 +178,7 @@ Animator:
   m_GameObject: {fileID: 8462500469413093967}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ef0ec2f52a0bfc8418324011d5af1d69, type: 2}
+  m_Controller: {fileID: 9100000, guid: c9bf3487b8749ef4ea5788bd17e18e03, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

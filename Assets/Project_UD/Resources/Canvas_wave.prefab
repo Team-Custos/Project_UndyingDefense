@@ -362,7 +362,6 @@ GameObject:
   - component: {fileID: 4204684718547367972}
   - component: {fileID: 4716190510926807468}
   - component: {fileID: 3080323660085696807}
-  - component: {fileID: 6763241873067095423}
   m_Layer: 5
   m_Name: WaveStepSuccessPanel
   m_TagString: Untagged
@@ -430,18 +429,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6763241873067095423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001406854772943355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c072c42afd4ee884abe822f080f98341, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1185789606505837293
 GameObject:
   m_ObjectHideFlags: 0
@@ -725,7 +712,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -11.21}
+  m_AnchoredPosition: {x: 0, y: -13.64}
   m_SizeDelta: {x: 66.7, y: 6.4}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2339191350103457105
@@ -1766,7 +1753,6 @@ GameObject:
   - component: {fileID: 1042662908015040803}
   - component: {fileID: 2003723038897298736}
   - component: {fileID: 1570117125144248815}
-  - component: {fileID: 6449537653001520165}
   m_Layer: 5
   m_Name: WaveStartPanel
   m_TagString: Untagged
@@ -1832,18 +1818,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6449537653001520165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3578891344651919485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c072c42afd4ee884abe822f080f98341, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3832868996244642267
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,7 +2612,7 @@ GameObject:
   - component: {fileID: 1645417006446211397}
   - component: {fileID: 1078424867890830928}
   m_Layer: 5
-  m_Name: WaveStepPanel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2661,7 +2635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 482.40002}
+  m_AnchoredPosition: {x: 0, y: 482.5089}
   m_SizeDelta: {x: 146.4, y: 29.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1645417006446211397
@@ -3666,7 +3640,7 @@ GameObject:
   - component: {fileID: 3253931116177806076}
   - component: {fileID: 6198464163508251927}
   - component: {fileID: 3884987990476214797}
-  - component: {fileID: 715008833222234846}
+  - component: {fileID: 8313809165269565003}
   m_Layer: 5
   m_Name: Canvas_wave
   m_TagString: Untagged
@@ -3765,7 +3739,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &715008833222234846
+--- !u!114 &8313809165269565003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

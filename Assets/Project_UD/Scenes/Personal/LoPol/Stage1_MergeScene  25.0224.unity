@@ -2185,8 +2185,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitData: {fileID: 0}
   curHP: 0
+  curAttackDamage: 0
+  curCrit: 0
+  curMoveSpeed: 0
+  targetEnemy: {fileID: 0}
   SightRangeCollider: {fileID: 0}
   AttackRangeDistance: 0
+  moveTargetPos: {x: 0, y: 0, z: 0}
 --- !u!4 &41019046
 Transform:
   m_ObjectHideFlags: 0
@@ -2982,58 +2987,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 969543683}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &70126123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 70126124}
-  - component: {fileID: 70126125}
-  m_Layer: 0
-  m_Name: UnitModelSwapManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &70126124
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 70126123}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 472590888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &70126125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 70126123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bcb65790be835b499d8323b2b8e235d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AllyModel:
-  - {fileID: 3479069782232769390, guid: 233b1c8ab8f0fe147974d2f601b99606, type: 3}
-  - {fileID: 1487621566057180888, guid: 0658734e1ee05cb42a93c15b2303cc50, type: 3}
-  - {fileID: 5758078185264022787, guid: 84a182c083ee02f49b1517031f474098, type: 3}
-  - {fileID: 4707239755127648730, guid: 7b257838a6ea6134d9c694768d5674f4, type: 3}
-  EnemyModel:
-  - {fileID: 6605580031305847503, guid: aaad4cd17e30eae4192f94585ee49962, type: 3}
-  - {fileID: 3890863645045533065, guid: e2e8e1166d3da7942a40677a20204050, type: 3}
 --- !u!1001 &70252619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18340,7 +18293,6 @@ Transform:
   - {fileID: 2131315957}
   - {fileID: 825525762}
   - {fileID: 1615164033}
-  - {fileID: 70126124}
   - {fileID: 754875855}
   - {fileID: 1553022671}
   - {fileID: 354275767}
@@ -55974,7 +55926,7 @@ GameObject:
   - component: {fileID: 1391571423}
   - component: {fileID: 1391571425}
   m_Layer: 0
-  m_Name: EnemySpawner
+  m_Name: WaveManager
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -56007,7 +55959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd529b3dc5ae0840a0f85be232106ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCanvasController: {fileID: 715008833222234846, guid: 332b19f550817614bb510673348d806e,
+  waveCanvasController: {fileID: 8313809165269565003, guid: 332b19f550817614bb510673348d806e,
     type: 3}
   waveDataTable: {fileID: 11400000, guid: 1956f4a03b933404c88ac6a3bbe682f5, type: 2}
   enemyDatas:
@@ -73174,6 +73126,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c6a2dd0d96851a047ac495bfe7b62993, type: 2}
   - {fileID: 11400000, guid: 3352f409265f45b46a31bb76424e3841, type: 2}
   - {fileID: 11400000, guid: b1bc7e558feda7a41bb1977590a3f76b, type: 2}
+  - {fileID: 11400000, guid: 28012edc982028a4ba326f17a99e1ab2, type: 2}
+  - {fileID: 11400000, guid: dde97378542f7d141aee3afc7fb277c5, type: 2}
+  - {fileID: 11400000, guid: d0c4bb1fd1be69745b6313e7d26aa006, type: 2}
+  - {fileID: 11400000, guid: c7de69e4dac5f2647820568ceb88e51c, type: 2}
+  - {fileID: 11400000, guid: 59300b1b116d8884491942f0eac9fb4b, type: 2}
+  - {fileID: 11400000, guid: 5ed1ee465162e624483102b1f4e104f7, type: 2}
+  - {fileID: 11400000, guid: b2f75782588a26644b887777b16a3d18, type: 2}
+  - {fileID: 11400000, guid: 3669340d80618ce41837fe405b912283, type: 2}
   unitPrefab: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
     type: 3}
   Test_Ally: {fileID: 4121165819109045414, guid: 993fb90a5a797cc4282b7bd05ad26f0d,
@@ -78785,11 +78745,11 @@ MonoBehaviour:
   AttackVFX:
   - {fileID: 8862294107620227319, guid: 793553492a2c03744a98ee959355f704, type: 3}
   - {fileID: 4680229374731916917, guid: dd07ceefe2ac8b64390ac610f250224b, type: 3}
-  - {fileID: 4791065678331725444, guid: 80d7ffb013de2dd41a8f6c42e4097812, type: 3}
+  - {fileID: 2664660456616596323, guid: 7d3d10110438cd5429be53ee4f66dc31, type: 3}
   AttackCritVFX:
   - {fileID: 7696536780613182330, guid: 2ea7e791cf329134a86694685019141d, type: 3}
   - {fileID: 2978356013642458910, guid: 48e4cc4a1caf1f24a9fc2ef464149a8b, type: 3}
-  - {fileID: 993139225673281755, guid: 42a015714708e0946a8e1ee9163ea7b5, type: 3}
+  - {fileID: 2269800381088475307, guid: 6834fd7665376584d93553e2b3a66279, type: 3}
   EnemyAttackVFX: []
   allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
     type: 3}
