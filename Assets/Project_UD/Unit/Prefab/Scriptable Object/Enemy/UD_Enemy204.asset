@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
+  m_Name: UD_Enemy204
+  m_EditorClassIdentifier: 
+  unitType: 1
+  defenseType: 2
+  targetSelectType: 0
+  level: 2
+  modelPrefab: {fileID: 2901181753004230024, guid: ee33e6d55e032dd439bf687ff701ffa2,
+    type: 3}
+  maxHP: 225
+  mental: 1
+  moveSpeed: 2
+  overrideController: {fileID: 22100000, guid: c598ddf0bc8bfc6438673b82eb7e2b34, type: 2}
+  critChanceRate: 10
+  generalSkill: {fileID: 0}
+  specialSkill: {fileID: 0}
+  sightRange: 200
+  attackRange: 11
+  attackSound:
+  - {fileID: 8300000, guid: 3f55e05070ed3784889d1eb0bba4c7c9, type: 3}
+  - {fileID: 8300000, guid: 9b4df403f8d809e419a7026ae5855e3d, type: 3}
+  attackVFX: {fileID: 0}
+  name: "\uBC31\uACE8 \uAD81\uC218"
+  unitCode: 81
+  cost: 0
+  gold: 100
+  g_SkillName: "\uC57D\uC810 \uC800\uACA9"
+  s_SkillName: 
+  g_SkillInfo: "\uC801\uC758 \uC57D\uC810\uC744 \uD654\uC0B4\uB85C \uC800\uACA9\uD558\uC5EC
+    6 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9."
+  s_SkillInfo: 
+  g_SkillImage: {fileID: 21300000, guid: 7ee474a36aa8c404fae8a89ebe7589d5, type: 3}
+  s_SkillImage: {fileID: 0}
+  unitImage: {fileID: 21300000, guid: f0253b6026b6d744fa3ddbc8fe62c6c8, type: 3}
+  upgradePaths: []
+  upgrade1Cost: 0
+  upgrade2Cost: 0
+  uupgrade1Image: {fileID: 0}
+  uupgrade2Image: {fileID: 0}

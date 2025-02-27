@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
+  m_Name: UD_Ally204
+  m_EditorClassIdentifier: 
+  unitType: 5
+  defenseType: 0
+  targetSelectType: 0
+  level: 2
+  modelPrefab: {fileID: 5846208657833008537, guid: b1c1c684d8eff76438084fe3f03d4a19,
+    type: 3}
+  maxHP: 150
+  mental: 1
+  moveSpeed: 1.8
+  overrideController: {fileID: 22100000, guid: 0b470cad3d029594e90b07b6441162a9, type: 2}
+  attackPoint: 1
+  critChanceRate: 30
+  generalSkillCode: 203
+  specialSkillCode: 203
+  attackSpeed: 1
+  skillCooldown: 3
+  sightRange: 12
+  attackRange: 12
+  attackSound:
+  - {fileID: 8300000, guid: 9f583b2d58b0883488a5fd967741f3fb, type: 3}
+  - {fileID: 8300000, guid: b020df0f4eaa2874fab3905306415ad2, type: 3}
+  attackVFX: {fileID: 0}
+  name: "\uD3EC\uC218"
+  unitCode: 22
+  cost: 200
+  gold: 0
+  g_SkillName: "\uC5FD \uC3D8\uAE30"
+  s_SkillName: "\uC218\uB958\uD0C4 \uD22C\uCC99"
+  g_SkillInfo: "\uC5FD\uCD1D\uC744 \uC3D8\uC544 \uD55C \uBA85\uC758 \uC801\uC5D0\uAC8C
+    7 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9. \uCE58\uBA85\uD0C0 \uC2DC
+    \uCD9C\uD608 \uD6A8\uACFC"
+  s_SkillInfo: "\uC218\uB958\uD0C4\uC744 \uB358\uC838 \uC6D0\uD615 \uB0B4\uC758 \uC801\uC5D0\uAC8C
+    7 \uB370\uBBF8\uC9C0\uC758 \uBD84\uC1C4 \uACF5\uACA9. \uCE58\uBA85\uD0C0\uC728
+    10% \uC99D\uAC00. \uCE58\uBA85\uD0C0 \uC2DC \uAE30\uC808 \uD6A8\uACFC"
+  g_SkillImage: {fileID: 21300000, guid: 29203881cf983614f887c9f4d54f12a7, type: 3}
+  s_SkillImage: {fileID: 21300000, guid: 6905148c6986db646bac67fcd2d4dbf5, type: 3}
+  unitImage: {fileID: 21300000, guid: 5eb4fffb7a0e89a47a080804f442d6be, type: 3}
+  upgradePaths:
+  - 222
+  - 221
+  upgrade1Cost: 0
+  upgrade2Cost: 0

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
+  m_Name: UD_Ally301
+  m_EditorClassIdentifier: 
+  unitType: 4
+  defenseType: 1
+  targetSelectType: 0
+  level: 2
+  modelPrefab: {fileID: 1783382208135903739, guid: db15c1685eaa95b49b052ff706769990,
+    type: 3}
+  maxHP: 225
+  mental: 1
+  moveSpeed: 2.5
+  overrideController: {fileID: 22100000, guid: 5fa7b740fd0201647bbe30b9b9f28114, type: 2}
+  critChanceRate: 20
+  generalSkill: {fileID: 11400000, guid: aa5349e0469d6e74894356608a15c69d, type: 2}
+  specialSkill: {fileID: 11400000, guid: fe7c6fb4da4b3c84eae9717015268f3b, type: 2}
+  sightRange: 10
+  attackRange: 3
+  attackSound:
+  - {fileID: 8300000, guid: dd931d1ba1ead1e459eab9743083936b, type: 3}
+  - {fileID: 8300000, guid: d4b5a8a25f726bb40bff8386be6704fc, type: 3}
+  attackVFX: {fileID: 826453539395977001, guid: 396323d0d0dbdd746a55eeab7ca1bb2a,
+    type: 3}
+  name: "\uCC99\uD6C4\uBCD1"
+  unitCode: 12
+  cost: 150
+  gold: 0
+  g_SkillName: "\uCCA0\uD1F4 \uB0B4\uB824\uCE58\uAE30"
+  s_SkillName: "\uBC29\uD328 \uCE58\uAE30"
+  g_SkillInfo: "\uCCA0\uD1F4\uB85C \uD55C \uBA85\uC758 \uC801\uC744 \uC138\uAC8C
+    \uCC0D\uC5B4 10 \uB370\uBBF8\uC9C0\uC758 \uBD84\uC1C4 \uACF5\uACA9. \uCE58\uBA85\uD0C0
+    \uC2DC \uCDA9\uACA9 \uD6A8\uACFC"
+  s_SkillInfo: "\uB300\uD615 \uBC29\uD328\uB85C \uD55C \uBA85\uC758 \uC801\uC744
+    \uAC15\uD0C0\uD558\uC5EC 10 \uB370\uBBF8\uC9C0\uC758 \uBD84\uC1C4 \uACF5\uACA9.
+    \uCE58\uBA85\uD0C0 \uBC1C\uB3D9 \uC2DC \uCDA9\uACA9 \uD6A8\uACFC"
+  g_SkillImage: {fileID: 21300000, guid: 4ea1bc7845001ec46841481a6690f62e, type: 3}
+  s_SkillImage: {fileID: 21300000, guid: 79dedddd770dce14493aa41473086233, type: 3}
+  unitImage: {fileID: 21300000, guid: 1685814065b978445a3eb3f2e9718776, type: 3}
+  upgradePaths: []
+  upgrade1Cost: 0
+  upgrade2Cost: 0
+  uupgrade1Image: {fileID: 0}
+  uupgrade2Image: {fileID: 0}

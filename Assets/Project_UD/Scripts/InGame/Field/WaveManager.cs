@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +28,7 @@ public class WaveManager : MonoBehaviour
     [Header("웨이브에 필요한 시간 변수")]
     [SerializeField] private float waveTimer = 20.0f;   // 웨이브 종료 후 대기 시간 (현재는 20초로 고정)
     [SerializeField] private float spawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
-    [SerializeField] private float curSpawnTimer = 0.0f;   // 웨이브 시작 후 대기 시간 (현재는 20초로 고정)
+    [SerializeField] private float curSpawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
     [SerializeField] private float waveDelay = 1.0f;    // 웨이브, ui 간 텀
 
     private WaveData waveData;
@@ -127,11 +128,11 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            //if (waveCanvasController.waveDefenseSuccessPaenl.activeSelf == true)
+            //if(waveCanvasController.waveDefenseSuccessPaenl.activeSelf == true)
             //{
             //    uiDuration -= Time.deltaTime;
             //    {
-            //        if (uiDuration <= 0.0f)
+            //        if(uiDuration <= 0.0f)
             //        {
             //            waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
             //        }
@@ -143,7 +144,7 @@ public class WaveManager : MonoBehaviour
             if (waveDelay <= 0.0f)
             {
                 EndWave();
-                waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
+                //waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
                 waveDelay = 1.0f;
             }
         }
@@ -151,6 +152,8 @@ public class WaveManager : MonoBehaviour
 
     private void StartWave()
     {
+        isBaseAttackPerWave = false;
+
         waveDelay = 4.0f;
 
         waveCanvasController.waveStepText.text = "웨이브 " + currentWave;
@@ -315,7 +318,7 @@ public class WaveManager : MonoBehaviour
     {
         if (!isBaseAttackPerWave)
         {
-            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
+            //waveCanvasController.waveWarnningPanel.SetActive(true);
             isBaseAttackPerWave = true;
         }
     }

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0c358b8b0121b4bb2847ed24d87ab2, type: 3}
+  m_Name: UD_Ally102
+  m_EditorClassIdentifier: 
+  unitType: 1
+  defenseType: 0
+  targetSelectType: 0
+  level: 1
+  modelPrefab: {fileID: 4974052458281479788, guid: 318a04e68463b354a8eb535faf7250c1,
+    type: 3}
+  maxHP: 100
+  mental: 1
+  moveSpeed: 1
+  overrideController: {fileID: 22100000, guid: 0b470cad3d029594e90b07b6441162a9, type: 2}
+  critChanceRate: 20
+  generalSkill: {fileID: 11400000, guid: aa8175c261240734c877eb1d706f94c3, type: 2}
+  specialSkill: {fileID: 11400000, guid: 5488f6f036d151248ad218aa0aa036b3, type: 2}
+  sightRange: 12
+  attackRange: 8
+  attackSound:
+  - {fileID: 8300000, guid: 3f55e05070ed3784889d1eb0bba4c7c9, type: 3}
+  - {fileID: 8300000, guid: 9b4df403f8d809e419a7026ae5855e3d, type: 3}
+  attackVFX: {fileID: 0}
+  name: "\uC0AC\uB0E5\uAFBC"
+  unitCode: 2
+  cost: 150
+  gold: 0
+  g_SkillName: "\uD65C\uC3D8\uAE30"
+  s_SkillName: "\uC5F0\uC0AC"
+  g_SkillInfo: "\uD654\uC0B4\uC744 \uC3D8\uC544 \uD55C \uBA85\uC758 \uC801\uC5D0\uAC8C
+    5 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9\uC744 \uAC00\uD55C\uB2E4.
+    \uCE58\uBA85\uD0C0 \uBC1C\uB3D9 \uC2DC \uCD9C\uD608 \uD6A8\uACFC"
+  s_SkillInfo: "\uD654\uC0B4\uC744 \uBE60\uB974\uAC8C \uB450\uBC88 \uC3D8\uC544 \uD55C
+    \uBA85\uC758 \uC801\uC5D0\uAC8C \uCD1D 10 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5
+    \uACF5\uACA9\uC744 \uAC00\uD55C\uB2E4. \uCE58\uBA85\uD0C0\uC728 5% \uC99D\uAC00.
+    \uCE58\uBA85\uD0C0 \uBC1C\uB3D9 \uC2DC \uCD9C\uD608 \uD6A8\uACFC"
+  g_SkillImage: {fileID: 21300000, guid: c8914aefa3018244fa9b08750a73b8ba, type: 3}
+  s_SkillImage: {fileID: 21300000, guid: 916b72a843bbe584fad13d35aa412429, type: 3}
+  unitImage: {fileID: 21300000, guid: 1cb3e03c756abc94da720351ebf41e81, type: 3}
+  upgradePaths:
+  - 21
+  - 22
+  upgrade1Cost: 200
+  upgrade2Cost: 200
+  uupgrade1Image: {fileID: 21300000, guid: 4fc1dd1527754df49ab32f1617858a72, type: 3}
+  uupgrade2Image: {fileID: 21300000, guid: 5eb4fffb7a0e89a47a080804f442d6be, type: 3}

@@ -117,13 +117,13 @@ public class Ingame_WaveUIManager : MonoBehaviour
             }
             else if (waveCount < 0)
             {
-                waveStartText.text = EnemySpawner.inst.currentWave.ToString() + "차 침공 시작";
+                //waveStartText.text = EnemySpawner.inst.currentWave.ToString() + "차 침공 시작";
                 isCountDownIng = false;
-                EnemySpawner.inst.isWaveing = true;
+                //EnemySpawner.inst.isWaveing = true;
                 waveCountTextPanel.SetActive(false);
                
 
-                StartCoroutine(EnemySpawner.inst.RunWave());
+                //StartCoroutine(EnemySpawner.inst.RunWave());
                 waveCount = 20;
             }
         }
