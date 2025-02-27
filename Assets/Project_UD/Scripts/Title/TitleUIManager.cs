@@ -9,9 +9,6 @@ public class TitleUIManager : MonoBehaviour
 {
     public Button gameStartBtn;
     public Button gameEndBtn;
-    public GameObject loadingPanel;
-    public Image progressImage;
-    public Text progressText;
 
     public RectTransform backgroundPanel;
     public RectTransform titleText;
@@ -26,11 +23,6 @@ public class TitleUIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (loadingPanel != null)
-        {
-            loadingPanel.SetActive(false);
-        }
-
         if (gameStartBtn != null)
         {
             gameStartBtn.onClick.AddListener(() =>
@@ -39,7 +31,10 @@ public class TitleUIManager : MonoBehaviour
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
-                LoadScene(1);
+
+                //LoadScene(1);
+
+                LoadingSceneManager.LoadScene("IntroScene");
             });
 
         }
@@ -58,49 +53,6 @@ public class TitleUIManager : MonoBehaviour
 
         StartCoroutine(PlayTitleSceneAnimation());
     }
-
-    public void LoadScene(int sceneNumber)
-    {
-        StartCoroutine(LoadSceneAsync(sceneNumber));
-    }
-
-    private IEnumerator LoadSceneAsync(int sceneNumber)
-    {
-        loadingPanel.SetActive(true);
-
-        progressImage.fillAmount = 0f;
-        progressText.text = "0%";
-
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneNumber);
-        operation.allowSceneActivation = false; // 씬 자동 활성화 방지
-
-        float elapsedTime = 0f;
-        float totalTime = 3f; // 프로그래스바 연출 시간
-
-        while (elapsedTime < totalTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsedTime / totalTime);
-
-            progressImage.fillAmount = progress;
-            progressText.text = Mathf.RoundToInt(progress * 100f) + "%";
-
-            yield return null;
-        }
-
-        // 프로그래스바 연출이 끝난 후 실제 씬 로드 완료 여부 체크
-        while (!operation.isDone)
-        {
-            if (operation.progress >= 0.9f)
-            {
-                operation.allowSceneActivation = true; // 씬 활성화
-            }
-            yield return null;
-        }
-
-        loadingPanel.SetActive(false);
-    }
-
 
     IEnumerator PlayTitleSceneAnimation()
     {

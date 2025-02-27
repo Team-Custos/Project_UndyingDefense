@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,5 +27,31 @@ public class WaveCanvasController : MonoBehaviour
     public Button loseWaveRestartBtn;
     public Button loselobbybtn;
     public GameObject waveWarnningPanel;
+
+    private void Start()
+    {
+        waveResultLosePanel.SetActive(false);
+        waveResultWinPanel.SetActive(false);
+
+        Winlobbybtn.onClick.AddListener(() =>
+        {
+            LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+        });
+
+        loselobbybtn.onClick.AddListener(() =>
+        {
+            LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+        });
+
+        winWaveRestartBtn.onClick.AddListener(() =>
+        {
+            LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224");
+        });
+
+        loseWaveRestartBtn.onClick.AddListener(() =>
+        {
+            LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224");
+        });
+    }
 
 }

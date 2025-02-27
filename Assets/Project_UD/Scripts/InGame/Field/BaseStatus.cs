@@ -14,6 +14,8 @@ public class BaseStatus : MonoBehaviour
 
     public InGame_BGMManager bGMManager;
 
+    public bool isBaseDestroyed;
+
 
     private void Awake()
     {
@@ -55,7 +57,8 @@ public class BaseStatus : MonoBehaviour
             OnBaseDestroyed();
         }
 
-        EnemySpawner.inst.OnBaseAttacked(); // Base 공격 알림
+        WaveManager.inst.OnBaseAttacked(); // Base 공격 알림
+        
     }
 
     private IEnumerator HitEffect()//피격 이펙트
@@ -74,14 +77,14 @@ public class BaseStatus : MonoBehaviour
 
     private void OnBaseDestroyed()
     {
-        InGameManager.inst.isGamePause = true;
-
         if (bGMManager != null)
         {
             bGMManager.PauseBGM();
         }
 
         SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleLose);
-        Ingame_WaveUIManager.instance.waveResultLosePanel.SetActive(true);
+
+        isBaseDestroyed = true;
+
     }
 }

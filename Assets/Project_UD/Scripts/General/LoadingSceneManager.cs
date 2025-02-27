@@ -10,7 +10,7 @@ public class LoadingSceneManager : MonoBehaviour
     private static string nextScene;
     [SerializeField] private Image progressImage;
     [SerializeField] private Text progressText;
-    [SerializeField] private float loadingTime = 0.0f;
+    [SerializeField] private float loadingTime = 3.0f;
 
     
 
@@ -28,37 +28,35 @@ public class LoadingSceneManager : MonoBehaviour
     }
 
 
+
     private IEnumerator LoadSceneProcess()
     {
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(nextScene);
-        operation.allowSceneActivation = false;
+        operation.allowSceneActivation = false; // 씬 자동 활성화 방지
 
-        while (!operation.isDone)
+        float elapsedTime = 0f;
+
+        while (elapsedTime < loadingTime)
         {
-            loadingTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
+            float progress = Mathf.Clamp01(elapsedTime / loadingTime);
 
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
-
-            if (operation.progress >= 0.9f) // 씬 로딩이 완료되었을 때
-            {
-                if (loadingTime >= 3.0f)
-                {
-                    progress = 1.0f;
-                    operation.allowSceneActivation = true;
-                }
-                else
-                {
-                    progress = Mathf.Lerp(0.9f, 1.0f, loadingTime / 3.0f); // 90%에서 100%까지 서서히 증가
-                }
-            }
-
-            if (progressImage != null)
-                progressImage.fillAmount = progress;
-
-            if (progressText != null)
-                progressText.text = (progress * 100f).ToString("F0") + "%";
+            progressImage.fillAmount = progress;
+            progressText.text = Mathf.RoundToInt(progress * 100f) + "%";
 
             yield return null;
         }
+
+        // 프로그래스바 연출이 끝난 후 실제 씬 로드 완료 여부 체크
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true; // 씬 활성화
+            }
+            yield return null;
+        }
+
     }
 }

@@ -89,6 +89,8 @@ public class WaveManager : MonoBehaviour
                     {
                         // 웨이브 대기 시작
                         waveCanvasController.waveCountTextPanel.SetActive(true);
+                        //SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
+
                         waveTimer -= Time.deltaTime;
 
                         // 웨이브 대기 시간을 표시하는 타이머
@@ -99,6 +101,8 @@ public class WaveManager : MonoBehaviour
                             waveCanvasController.waveCountTextPanel.SetActive(false);
 
                             waveCanvasController.waveStartPanel.SetActive(true);
+                            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveStart);
+
                             StartWave();
                             waveTimer = 20.0f;
                         }
@@ -120,23 +124,9 @@ public class WaveManager : MonoBehaviour
                 }
             }
 
-
-
-
-
         }
         else
         {
-            //if (waveCanvasController.waveDefenseSuccessPaenl.activeSelf == true)
-            //{
-            //    uiDuration -= Time.deltaTime;
-            //    {
-            //        if (uiDuration <= 0.0f)
-            //        {
-            //            waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
-            //        }
-            //    }
-            //}
 
             // 웨이브 종료후 대기 시간 
             waveDelay -= Time.deltaTime;
@@ -147,7 +137,16 @@ public class WaveManager : MonoBehaviour
                 waveDelay = 1.0f;
             }
         }
+
+        if(BaseStatus.instance.isBaseDestroyed)
+        {
+            waveCanvasController.waveResultLosePanel.SetActive(true);
+
+
+            InGameManager.inst.isGamePause = true;
+        }
     }
+
 
     private void StartWave()
     {
@@ -276,6 +275,7 @@ public class WaveManager : MonoBehaviour
             if (currentWave == maxWave)
             {
                 waveCanvasController.waveResultWinPanel.SetActive(true);
+                SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
 
                 PlayerPrefs.SetInt("PlayerGold", InGameManager.inst.gold);
                 PlayerPrefs.Save();
@@ -283,13 +283,14 @@ public class WaveManager : MonoBehaviour
                 // 저장된 값 확인
                 Debug.Log("저장된 골드: " + PlayerPrefs.GetInt("PlayerGold", -1));
 
-                Time.timeScale = 0.0f;
+                InGameManager.inst.isGamePause = true;
 
             }
             else
             {
                 // 웨이브 종료시 성공 판넬 생성
                 waveCanvasController.waveDefenseSuccessPaenl.SetActive(true);
+                SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
 
                 isWaveing = false;
 
@@ -315,7 +316,7 @@ public class WaveManager : MonoBehaviour
     {
         if (!isBaseAttackPerWave)
         {
-            //Ingame_WaveUIManager.instance.ShowUI(Ingame_WaveUIManager.instance.waveWarnningPanel, 3.0f);
+            waveCanvasController.waveWarnningPanel.SetActive(true);
             isBaseAttackPerWave = true;
         }
     }

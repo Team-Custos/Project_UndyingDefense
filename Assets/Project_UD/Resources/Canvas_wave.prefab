@@ -2911,6 +2911,7 @@ GameObject:
   - component: {fileID: 6748365629520167089}
   - component: {fileID: 3930718832674237424}
   - component: {fileID: 3470176190789337248}
+  - component: {fileID: 6218770870488886263}
   m_Layer: 5
   m_Name: WaveWarnningPanel
   m_TagString: Untagged
@@ -2977,6 +2978,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6218770870488886263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028878561077563675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c072c42afd4ee884abe822f080f98341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5432572038800842251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3774,13 +3787,13 @@ MonoBehaviour:
   waveDefenseSuccessPaenl: {fileID: 1001406854772943355}
   waveCount: 20
   waveResultPanel: {fileID: 0}
-  winWaveRestartBtn: {fileID: 0}
-  waveResultWinPanel: {fileID: 0}
-  Winlobbybtn: {fileID: 0}
-  waveResultLosePanel: {fileID: 0}
-  loseWaveRestartBtn: {fileID: 0}
-  loselobbybtn: {fileID: 0}
-  waveWarnningPanel: {fileID: 0}
+  winWaveRestartBtn: {fileID: 221182669046222130}
+  waveResultWinPanel: {fileID: 6438498911202566416}
+  Winlobbybtn: {fileID: 746366124093795066}
+  waveResultLosePanel: {fileID: 1269009534262360863}
+  loseWaveRestartBtn: {fileID: 8781778881964500194}
+  loselobbybtn: {fileID: 890582082408076685}
+  waveWarnningPanel: {fileID: 5028878561077563675}
 --- !u!1 &7651087956119757288
 GameObject:
   m_ObjectHideFlags: 0

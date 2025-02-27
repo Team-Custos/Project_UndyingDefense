@@ -44,6 +44,6 @@ public class IntroScene : MonoBehaviour
 
     private void LoadScene()
     {
-        LoadingSceneManager.LoadScene("TitleScene_LoPol");
+        LoadingSceneManager.LoadScene("LobbyScene_LoPol");
     }
 }

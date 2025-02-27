@@ -6,7 +6,7 @@ public class UserDataModel : MonoBehaviour
 {
     public static UserDataModel instance;
 
-    public List<string> skillIDs = new List<string>();
+    public List<CommandSkillData> skillDatas = new List<CommandSkillData>();
 
     private void Awake()
     {

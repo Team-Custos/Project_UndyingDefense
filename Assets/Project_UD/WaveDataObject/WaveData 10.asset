@@ -10,12 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2ff4521b1548a542ba258b0f5dd5c7a, type: 3}
-  m_Name: WaveData
+  m_Name: WaveData 10
   m_EditorClassIdentifier: 
-  waveNumber: 1
+  waveNumber: 9
   waveStartTime: 20
   interval: 3
-  reward: 200
+  reward: 0
   monsterSpawnInfos:
   - monsterType: 0
-    repeatNum: 3
+    count: 1
+  - monsterType: 1
+    count: 1
+  - monsterType: 4
+    count: 1
+  - monsterType: 5
+    count: 1
