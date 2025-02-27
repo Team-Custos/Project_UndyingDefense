@@ -292,7 +292,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         Vector3 targetPosition = BaseStatus.instance.GetNearestPosition(transform.position);
         moveTargetBasePos = targetPosition;//성의 좌표 초기화.
 
-        NavAgent.speed = unitData.moveSpeed;//이동속도 설정 
+        NavAgent.speed = cur_moveSpeed;//이동속도 설정 
 
         //GridManager.inst.SetTilePlaceable(this.transform.position, false, false);
 
@@ -483,6 +483,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
             if (haveToMovePosition)//모든 행동을 무시하고 이동해야하는가?
             {
                 targetEnemy = null;
+
                 Vector2 CurPos = new Vector2(transform.position.x, transform.position.z);
 
                 if (Vector2.Distance(CurPos, new Vector2(moveTargetPos.x, moveTargetPos.z)) >= 0.15f)//목적지에 도착할떄까지
@@ -614,7 +615,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     }
                     else
                     {
-                        VisualModel.transform.rotation = transform.rotation;
                         Enemy_State.fsm.ChangeState(EnemyState.Move);
                     }
                 }
@@ -630,7 +630,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
             }
             else
             {
-                VisualModel.transform.rotation = transform.rotation;
                 Enemy_State.fsm.ChangeState(EnemyState.Move);
             }
 
@@ -638,7 +637,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
 
         if (!isEnemyInRange && !enemy_isBaseInRange)
         {
-            VisualModel.transform.rotation = transform.rotation;
             Enemy_State.fsm.ChangeState(EnemyState.Move);
         }
     }
@@ -652,13 +650,17 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch();
+            GameObject TargetObj = sightRangeSensor.NearestObjectSearch();
 
             if (TargetObj != null)
             {
                 isEnemyInSight = true;
                 targetEnemy = TargetObj;
+                if (targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+                {
+                    targetEnemy = null;
+                    SearchEnemy();
+                }
 
                 if (Ally_Mode == AllyMode.Free)
                 {
@@ -677,14 +679,14 @@ public class Ingame_UnitCtrl : MonoBehaviour
     {
         if (this.gameObject.CompareTag(CONSTANT.TAG_UNIT)) //아군일때
         {
-            if (targetEnemy == null)
+            if (targetEnemy == null || targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
             {
+                targetEnemy = null;
                 Ally_State.fsm.ChangeState(PUState.Search);
                 return;
             }
             else if (isEnemyInRange)
             {
-                VisualModel.transform.LookAt(targetEnemy.transform.position);
                 UnitSkill.UnitGeneralSkill(unitData.generalSkill, targetEnemy, unitData.generalSkill.coolTime, false);
             }
         }
@@ -692,7 +694,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         {
             if (enemy_isBaseInRange)
             {
-                VisualModel.transform.LookAt(targetBase.transform.position);
+                transform.LookAt(targetBase.transform.position);
                 UnitSkill.EnemyGeneralSkill(unitData.generalSkill, targetBase, unitData.generalSkill.coolTime, true);
             }
             else
@@ -702,7 +704,6 @@ public class Ingame_UnitCtrl : MonoBehaviour
                     Debug.Log("SkillCode : " + unitData.generalSkill);
                     Debug.Log("targetEnemy." + targetEnemy.name);
 
-                    VisualModel.transform.LookAt(targetEnemy.transform.position);
                     UnitSkill.EnemyGeneralSkill(unitData.generalSkill, targetEnemy, unitData.generalSkill.coolTime, true);
                 }
                 else if (targetEnemy == null)

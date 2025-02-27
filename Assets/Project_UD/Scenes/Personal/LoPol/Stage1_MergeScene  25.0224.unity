@@ -2183,15 +2183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c103e976f65729f4d9ae15a31e6c026a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitData: {fileID: 0}
-  curHP: 0
-  curAttackDamage: 0
-  curCrit: 0
-  curMoveSpeed: 0
-  targetEnemy: {fileID: 0}
-  SightRangeCollider: {fileID: 0}
-  AttackRangeDistance: 0
-  moveTargetPos: {x: 0, y: 0, z: 0}
 --- !u!4 &41019046
 Transform:
   m_ObjectHideFlags: 0
@@ -5562,6 +5553,7 @@ MonoBehaviour:
   BaseHPCur: 0
   baseBoxCollider: {fileID: 0}
   bGMManager: {fileID: 1904282614}
+  isBaseDestroyed: 0
 --- !u!82 &122481052
 AudioSource:
   m_ObjectHideFlags: 0
@@ -28076,12 +28068,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allUnitData:
-  - {fileID: 11400000, guid: 102bd3488a7f145408e5ad2e164a1621, type: 2}
-  - {fileID: 11400000, guid: c6a2dd0d96851a047ac495bfe7b62993, type: 2}
-  - {fileID: 11400000, guid: b1bc7e558feda7a41bb1977590a3f76b, type: 2}
-  - {fileID: 11400000, guid: a84dc512e388a464b9b40dbf39534efa, type: 2}
   - {fileID: 11400000, guid: fbae3235d199a5b4992c5d42059d4d6b, type: 2}
   - {fileID: 11400000, guid: 3352f409265f45b46a31bb76424e3841, type: 2}
+  - {fileID: 11400000, guid: c6a2dd0d96851a047ac495bfe7b62993, type: 2}
+  - {fileID: 11400000, guid: b1bc7e558feda7a41bb1977590a3f76b, type: 2}
+  - {fileID: 11400000, guid: 28012edc982028a4ba326f17a99e1ab2, type: 2}
+  - {fileID: 11400000, guid: dde97378542f7d141aee3afc7fb277c5, type: 2}
+  - {fileID: 11400000, guid: d0c4bb1fd1be69745b6313e7d26aa006, type: 2}
+  - {fileID: 11400000, guid: c7de69e4dac5f2647820568ceb88e51c, type: 2}
+  - {fileID: 11400000, guid: 59300b1b116d8884491942f0eac9fb4b, type: 2}
+  - {fileID: 11400000, guid: 5ed1ee465162e624483102b1f4e104f7, type: 2}
+  - {fileID: 11400000, guid: b2f75782588a26644b887777b16a3d18, type: 2}
+  - {fileID: 11400000, guid: 3669340d80618ce41837fe405b912283, type: 2}
   isUpgrade: 0
 --- !u!1001 &755884107
 PrefabInstance:
@@ -74191,6 +74189,7 @@ MonoBehaviour:
   BaseHPCur: 0
   baseBoxCollider: {fileID: 0}
   bGMManager: {fileID: 0}
+  isBaseDestroyed: 0
 --- !u!23 &1852803599
 MeshRenderer:
   m_ObjectHideFlags: 0

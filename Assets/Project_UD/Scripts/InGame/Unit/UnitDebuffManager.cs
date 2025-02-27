@@ -186,7 +186,7 @@ public class UnitDebuffManager : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < debuffData.Length; i++)
+        for (int i = 1; i < debuffData.Length; i++)
         {
             if (debuff == debuffData[i].name) // �̹� �ش� ������� �ִ��� Ȯ��
             {

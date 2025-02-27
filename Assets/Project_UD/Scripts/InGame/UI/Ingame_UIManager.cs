@@ -522,14 +522,14 @@ public class Ingame_UIManager : MonoBehaviour
             buttonImage.sprite = SiegeModeImage;
         }
 
-        if(unit.unitData.level >= 2)
-        {
-            unitUpgradeBtn.interactable = false;
-        }
-        else
-        {
-            unitUpgradeBtn.interactable = true;
-        }
+        //if(unit.unitData.level >= 2)
+        //{
+        //    unitUpgradeBtn.interactable = false;
+        //}
+        //else
+        //{
+        //    unitUpgradeBtn.interactable = true;
+        //}
 
         // 업그레이드 버튼
         if (unitUpgradeBtn != null)

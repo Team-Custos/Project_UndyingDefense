@@ -57,7 +57,7 @@ public class AllyUnitState : MonoBehaviour
         if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
-            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.transform.rotation = Quaternion.Slerp(UnitCtrl.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
 
         UnitCtrl.SearchEnemy();
@@ -83,8 +83,6 @@ public class AllyUnitState : MonoBehaviour
             fsm.ChangeState(PUState.Move);
             return;
         }
-
-        UnitCtrl.targetEnemy = UnitCtrl.sightRangeSensor.NearestObjectSearch();
 
         if (UnitCtrl.sightRangeSensor.Obj_Nearest != null) //유닛의 시야 범위에 적군이 있는가?
         {
@@ -143,7 +141,7 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
-            UnitCtrl.SearchEnemy();//적군 탐색.
+            //UnitCtrl.SearchEnemy();//적군 탐색.
 
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
@@ -165,7 +163,6 @@ public class AllyUnitState : MonoBehaviour
 
     void Move_Exit()
     {
-        navAgent.SetDestination(transform.position); //NavmeshAgent를 정지시키기 위한 목적지 설정.
         navAgent.isStopped = true; //멈춤 상태로 변경.
         Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, false); 
     }
@@ -180,7 +177,7 @@ public class AllyUnitState : MonoBehaviour
     void Chase_Update()
     {
         //Debug.Log("Chase_Update");
-        if (UnitCtrl.isAttacking)
+        if (UnitCtrl.isAttacking || UnitCtrl.targetEnemy == null)
         { return; }
 
         if (UnitCtrl.haveToMovePosition)
@@ -205,7 +202,6 @@ public class AllyUnitState : MonoBehaviour
         {
             
         }
-
     }
 
     void Chase_Exit()
@@ -213,7 +209,7 @@ public class AllyUnitState : MonoBehaviour
         Debug.Log("Chase_Exit");
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
-            navAgent.SetDestination(transform.position); //정지 시키기 위한 목적지 설정.
+            navAgent.isStopped = true; //정지 시키기 위한 목적지 설정.
         }
     }
 
@@ -229,7 +225,7 @@ public class AllyUnitState : MonoBehaviour
         if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
-            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.transform.rotation = Quaternion.Slerp(UnitCtrl.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
 
         UnitCtrl.SearchEnemy();//적군 탐색.
@@ -238,6 +234,8 @@ public class AllyUnitState : MonoBehaviour
     void Dead_Enter()
     {
         UnitCtrl.GetComponent<CapsuleCollider>().enabled = false;
+        UnitCtrl.GetComponent<NavMeshAgent>().enabled = false;
+        UnitCtrl.GetComponent<NavMeshObstacle>().enabled = false;
     }
 
     void Dead_Update()

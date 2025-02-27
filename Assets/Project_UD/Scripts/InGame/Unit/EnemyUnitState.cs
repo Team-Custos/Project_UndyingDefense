@@ -176,7 +176,8 @@ public class EnemyUnitState : MonoBehaviour
 
     void Dead_Enter()
     {
-
+        UnitCtrl.GetComponent<NavMeshAgent>().enabled = false;
+        UnitCtrl.GetComponent<NavMeshObstacle>().enabled = false;
     }
 
     void Dead_Update()
@@ -196,18 +197,18 @@ public class EnemyUnitState : MonoBehaviour
         {
             if (calcaulatedPath.status != NavMeshPathStatus.PathComplete)
             {
-                Debug.Log("Can not Find Path");
+                //Debug.Log("Can not Find Path");
                 UnitCtrl.enemy_isPathBlocked = true;
             }
             else
             {
-                Debug.Log("Find Path Success");
+                //Debug.Log("Find Path Success");
                 UnitCtrl.enemy_isPathBlocked = false;
             }
         }
         else
         {
-            Debug.Log("Can not Find Path");
+            //Debug.Log("Can not Find Path");
             UnitCtrl.enemy_isPathBlocked = true;
         }
     }

@@ -47,23 +47,25 @@ public class RangeCtrl : MonoBehaviour
             ListTargetDelete(Obj_Nearest);
         }
 
-        if (detectedObjects.Count > 0) //한 게임 오브젝트라도 탐지 되었을때,
+        if (detectedObjects.Count > 1) //한 게임 오브젝트라도 탐지 되었을때,
         {
             //가장 가까이 있는 오브젝트를 찾기 위한 정렬.
-            Obj_Nearest = detectedObjects[0];
-            float Obj_Distance_Nearest = Vector3.Distance(Obj_Nearest.transform.position, transform.position);
+            if (Obj_Nearest == null)
+            {
+                Obj_Nearest = detectedObjects[0];
+            }
 
             if (detectedObjects.Count > 1)//2개 이상 있을경우 최단거리 계산을 위함. 
             {
+                float Obj_Distance_Nearest = Vector3.Distance(Obj_Nearest.transform.position, transform.position);
                 for (int i = 1; i < detectedObjects.Count - 1; i++) //정렬.
                 {
+
                     if (detectedObjects[i] != null)
                     {
                         float Obj_Distance = Vector3.Distance(detectedObjects[i].transform.position, transform.position);
                         if (Obj_Distance_Nearest > Obj_Distance)
                         {
-                            //Obj_Nearest = detectedObjects[i];
-
                             if (detectedObjects[i].activeInHierarchy == false && detectedObjects.Contains(detectedObjects[i]))
                             {
                                 detectedObjects.Remove(detectedObjects[i]);
@@ -83,6 +85,10 @@ public class RangeCtrl : MonoBehaviour
             }
 
             return Obj_Nearest;
+        }
+        else if (detectedObjects.Count == 1)
+        {
+            return detectedObjects[0];
         }
         else
         {
@@ -106,7 +112,10 @@ public class RangeCtrl : MonoBehaviour
             {
                 if (detectedObjects.Contains(unit.gameObject) == false)
                 {
-                    detectedObjects.Add(unit.gameObject); //리스트에 추가.
+                    if (unit.HP > 0)
+                    {
+                        detectedObjects.Add(unit.gameObject); //리스트에 추가.
+                    }
                 }
             }
             else return;
