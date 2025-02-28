@@ -20,10 +20,14 @@ public class InGame_BGMManager : MonoBehaviour
 
 
         audioSource.clip = BGM[0];
-        if (!audioSource.isPlaying) //재생중이 아닐경우 재생.
-        {
-            audioSource.Play();
-        }
+
+        audioSource.Play();
+
+        //if (!audioSource.isPlaying) //재생중이 아닐경우 재생.
+        //{
+        //    Debug.Log("BGM 재생");
+        //    audioSource.Play();
+        //}
     }
 
     // Update is called once per frame

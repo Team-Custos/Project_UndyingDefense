@@ -8,6 +8,7 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager inst;
     [SerializeField] private WaveCanvasController waveCanvasController;
+    [SerializeField] private InGame_BGMManager bgmManager;
 
     public WaveDataTable waveDataTable;                 // WaveData를 담고 있는 ScriptableObject
     public List<Ingame_UnitData> enemyDatas;            // 적 데이터 리스트
@@ -141,6 +142,7 @@ public class WaveManager : MonoBehaviour
 
         if(BaseStatus.instance.isBaseDestroyed)
         {
+            bgmManager.PauseBGM();
             waveCanvasController.waveResultLosePanel.SetActive(true);
 
 
@@ -277,6 +279,8 @@ public class WaveManager : MonoBehaviour
         {
             if (currentWave == maxWave)
             {
+                bgmManager.PauseBGM();
+                waveCanvasController.waveWarnningPanel.SetActive(false);
                 waveCanvasController.waveResultWinPanel.SetActive(true);
                 SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
 

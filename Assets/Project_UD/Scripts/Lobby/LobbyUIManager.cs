@@ -80,6 +80,14 @@ public class LobbyUIManager : MonoBehaviour
     float elapsedTime = 0f;
     public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
+    [Header("■ Command Skill Save UI")]
+    public Button csSaveBtn;
+    public GameObject csSavePanel;
+    public Button[] csCancelBtn;
+    public Button csSaveConfirmBtn;
+    public Text csSaveText;
+    public GameObject[] csUIPanel;
+    public Button csSlotConfrimBtn;
 
     // Start is called before the first frame update
     void Start()
@@ -90,17 +98,14 @@ public class LobbyUIManager : MonoBehaviour
         {
             battleStartBtn.onClick.AddListener(() =>
             {
-                if(UserDataModel.instance.skillDatas.Count < 3)
-                {
-                    Debug.Log("스킬을 3개 선택해주세요.");
-                    return;
-                }
-                else
-                {
-                    LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224");
-                }
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224 1");
             });
         }
+
+        csSaveBtn.onClick.AddListener(() =>
+        {
+            csSavePanel.SetActive(true);
+        });
 
         // 설정 창 on/off
         if (lobbySettingBtn != null)
@@ -222,6 +227,60 @@ public class LobbyUIManager : MonoBehaviour
             commandSkillPanel.SetActive(true);
         });
 
+        for(int i =0; i < csCancelBtn.Length; i++)
+        {
+            int index = i;
+            csCancelBtn[i].onClick.AddListener(() =>
+            {
+                csSavePanel.SetActive(false);
+
+                csUIPanel[0].SetActive(true);
+                csUIPanel[1].SetActive(false);
+                csUIPanel[2].SetActive(false);
+            });
+        }
+
+        csSaveConfirmBtn.onClick.AddListener(() =>
+        {
+            if(UserDataModel.instance.IsSkillListFull())
+            {
+                localCommandSkillImage[0].sprite = UserDataModel.instance.skillDatas[0].commandSkillImage;
+                localCommandSkillImage[1].sprite = UserDataModel.instance.skillDatas[1].commandSkillImage;
+                localCommandSkillImage[2].sprite = UserDataModel.instance.skillDatas[2].commandSkillImage;
+
+                csSavePanel.SetActive(false);
+            }
+            else
+            {
+                csUIPanel[0].SetActive(false);
+                csUIPanel[2].SetActive(true);
+            }
+        });
+
+        csSlotConfrimBtn.onClick.AddListener(() =>
+        {
+            csUIPanel[2].SetActive(false);
+            csSavePanel.SetActive(false);
+            csUIPanel[0].SetActive(true);
+
+
+            for (int i = 0; i < localCommandSkillImage.Length; i++)
+            {
+                if (UserDataModel.instance.skillDatas[i] == null)
+                {
+                    Debug.Log(i);
+                    localCommandSkillImage[i].sprite = null;
+                }
+                else
+                {
+                    localCommandSkillImage[i].sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
+                }
+
+            }
+
+        });
+
+
         // 지역상황창 열기
         if (stageStartBtn != null)
         {
@@ -243,9 +302,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 commandSkillPanel.SetActive(false);
 
-                localCommandSkillImage[0].sprite = UserDataModel.instance.skillDatas[0].commandSkillImage;
-                localCommandSkillImage[1].sprite = UserDataModel.instance.skillDatas[1].commandSkillImage;
-                localCommandSkillImage[2].sprite = UserDataModel.instance.skillDatas[2].commandSkillImage;
+                
             });
         }
 

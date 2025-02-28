@@ -109,8 +109,7 @@ public class Ingame_UIManager : MonoBehaviour
     private Transform clickUITransform;
     public GameObject clickUI;
 
-    // 곧 지울거
-    public Button commanderSkillBtn;
+    public Button[] inGameCommandSkillBtn;
 
 
     private void Awake()
@@ -127,20 +126,6 @@ public class Ingame_UIManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
-
-        // 저장된 커맨더 스킬 확인 용
-        if (commanderSkillBtn != null)
-        {
-            commanderSkillBtn.onClick.AddListener(() =>
-            {
-                Dictionary<string, string> savedSkills = inGameManager.LoadCommandSkillList();
-
-                foreach (var skill in savedSkills)
-                {
-                    Debug.Log($"이름: {skill.Value}");
-                }
-            });
-        }
 
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
@@ -246,10 +231,20 @@ public class Ingame_UIManager : MonoBehaviour
             });
         }
 
-
-
         unitSpawnBtn[2].interactable = false;
         unitSpawnBtn[3].interactable = false;
+
+        for (int i = 0; i < inGameCommandSkillBtn.Length; i++)
+        {
+            inGameCommandSkillBtn[i].image.sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
+
+            int index = i;
+
+            inGameCommandSkillBtn[i].onClick.AddListener(() =>
+            {
+                Debug.Log(UserDataModel.instance.skillDatas[index].commandSkillName);
+            });
+        }
     }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WaveCanvasController : MonoBehaviour
@@ -35,22 +36,26 @@ public class WaveCanvasController : MonoBehaviour
 
         Winlobbybtn.onClick.AddListener(() =>
         {
+            InGameManager.inst.isGamePause = false;
             LoadingSceneManager.LoadScene("LobbyScene_LoPol");
         });
 
         loselobbybtn.onClick.AddListener(() =>
         {
+            InGameManager.inst.isGamePause = false;
             LoadingSceneManager.LoadScene("LobbyScene_LoPol");
         });
 
         winWaveRestartBtn.onClick.AddListener(() =>
         {
-            LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224");
+            InGameManager.inst.isGamePause = false;
+            LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
 
         loseWaveRestartBtn.onClick.AddListener(() =>
         {
-            LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224");
+            InGameManager.inst.isGamePause = false;
+            LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
     }
 
