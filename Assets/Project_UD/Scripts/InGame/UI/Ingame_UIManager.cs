@@ -217,7 +217,7 @@ public class Ingame_UIManager : MonoBehaviour
             {
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 settingPanel.SetActive(true);
-                InGameManager.inst.isGamePause = true;
+                //InGameManager.inst.isGamePause = true;
             });
         }
 
@@ -234,6 +234,31 @@ public class Ingame_UIManager : MonoBehaviour
         unitSpawnBtn[2].interactable = false;
         unitSpawnBtn[3].interactable = false;
 
+
+        if (settingLobbyBtn != null)
+        {
+            settingLobbyBtn.onClick.AddListener(() =>
+            {
+                InGameManager.inst.isGamePause = false;
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+                LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+
+            });
+
+
+        }
+
+        if (settingReStartBtn != null)
+        {
+            settingReStartBtn.onClick.AddListener(() =>
+            {
+                InGameManager.inst.isGamePause = false;
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+                LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            });
+
+        }
+
         for (int i = 0; i < inGameCommandSkillBtn.Length; i++)
         {
             inGameCommandSkillBtn[i].image.sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
@@ -245,6 +270,8 @@ public class Ingame_UIManager : MonoBehaviour
                 Debug.Log(UserDataModel.instance.skillDatas[index].commandSkillName);
             });
         }
+
+        
     }
 
 
@@ -517,7 +544,7 @@ public class Ingame_UIManager : MonoBehaviour
             buttonImage.sprite = SiegeModeImage;
         }
 
-        //if(unit.unitData.level >= 2)
+        //if (unit.unitData.level >= 2)
         //{
         //    unitUpgradeBtn.interactable = false;
         //}
@@ -804,7 +831,7 @@ public class Ingame_UIManager : MonoBehaviour
 
     void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 

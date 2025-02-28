@@ -18,22 +18,22 @@ MonoBehaviour:
   level: 2
   modelPrefab: {fileID: 5242871380062502731, guid: 82a5ae2565898f644b0f99e36d528dba,
     type: 3}
-  maxHP: 150
+  maxHP: 135
   mental: 1
-  moveSpeed: 1.8
+  moveSpeed: 2
   overrideController: {fileID: 22100000, guid: 0b470cad3d029594e90b07b6441162a9, type: 2}
-  critChanceRate: 30
-  generalSkill: {fileID: 0}
-  specialSkill: {fileID: 0}
-  sightRange: 15
-  attackRange: 15
+  critChanceRate: 20
+  generalSkill: {fileID: 11400000, guid: 8d7573f99a18d6b42ad95c26f9c16f9a, type: 2}
+  specialSkill: {fileID: 11400000, guid: c9fbf0094e792fa48a9318066701b80d, type: 2}
+  sightRange: 20
+  attackRange: 9
   attackSound:
   - {fileID: 8300000, guid: 3f55e05070ed3784889d1eb0bba4c7c9, type: 3}
   - {fileID: 8300000, guid: 9b4df403f8d809e419a7026ae5855e3d, type: 3}
   attackVFX: {fileID: 0}
   name: "\uD55C\uB7C9"
   unitCode: 21
-  cost: 200
+  cost: 300
   gold: 0
   g_SkillName: "\uD65C \uC3D8\uAE302"
   s_SkillName: "\uACF0\uB36B \uC124\uCE58"
@@ -50,7 +50,7 @@ MonoBehaviour:
   upgradePaths:
   - 211
   - 212
-  upgrade1Cost: 1000
-  upgrade2Cost: 1000
+  upgrade1Cost: 400
+  upgrade2Cost: 400
   uupgrade1Image: {fileID: 0}
   uupgrade2Image: {fileID: 0}

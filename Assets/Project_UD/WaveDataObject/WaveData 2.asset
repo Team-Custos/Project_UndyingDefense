@@ -13,13 +13,11 @@ MonoBehaviour:
   m_Name: WaveData 2
   m_EditorClassIdentifier: 
   waveNumber: 3
-  waveStartTime: 20
-  interval: 3
-  reward: 200
+  reward: 150
   monsterSpawnInfos:
-  - monsterType: 0
-    repeatNum: 3
-  - monsterType: 1
-    repeatNum: 3
   - monsterType: 2
-    repeatNum: 3
+    count: 5
+  - monsterType: 1
+    count: 2
+  - monsterType: 3
+    count: 3

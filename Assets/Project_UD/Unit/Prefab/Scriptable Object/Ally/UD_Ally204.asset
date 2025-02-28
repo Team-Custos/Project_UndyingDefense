@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: UD_Ally204
   m_EditorClassIdentifier: 
   unitType: 5
-  defenseType: 0
+  defenseType: 1
   targetSelectType: 0
   level: 2
   modelPrefab: {fileID: 5846208657833008537, guid: b1c1c684d8eff76438084fe3f03d4a19,
     type: 3}
-  maxHP: 150
+  maxHP: 135
   mental: 1
-  moveSpeed: 1.8
+  moveSpeed: 2
   overrideController: {fileID: 22100000, guid: 0b470cad3d029594e90b07b6441162a9, type: 2}
-  critChanceRate: 30
-  generalSkill: {fileID: 0}
-  specialSkill: {fileID: 0}
-  sightRange: 12
-  attackRange: 12
+  critChanceRate: 20
+  generalSkill: {fileID: 11400000, guid: 980eb9fdfe68baf40b6c6591b877ce2e, type: 2}
+  specialSkill: {fileID: 11400000, guid: 54b042f02ded5024d8d64f6f2f9e8fca, type: 2}
+  sightRange: 20
+  attackRange: 9
   attackSound:
   - {fileID: 8300000, guid: 9f583b2d58b0883488a5fd967741f3fb, type: 3}
   - {fileID: 8300000, guid: b020df0f4eaa2874fab3905306415ad2, type: 3}
   attackVFX: {fileID: 0}
   name: "\uD3EC\uC218"
   unitCode: 22
-  cost: 200
+  cost: 300
   gold: 0
   g_SkillName: "\uC5FD \uC3D8\uAE30"
   s_SkillName: "\uC218\uB958\uD0C4 \uD22C\uCC99"
@@ -49,7 +49,7 @@ MonoBehaviour:
   upgradePaths:
   - 222
   - 221
-  upgrade1Cost: 1000
-  upgrade2Cost: 1000
+  upgrade1Cost: 400
+  upgrade2Cost: 400
   uupgrade1Image: {fileID: 0}
   uupgrade2Image: {fileID: 0}

@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: UD_Enemy403
   m_EditorClassIdentifier: 
   unitType: 0
-  defenseType: 1
+  defenseType: 2
   targetSelectType: 0
   level: 4
   modelPrefab: {fileID: 2633961086988171876, guid: a373ae95738b5264f893cf9d4488ae68,
     type: 3}
-  maxHP: 375
+  maxHP: 225
   mental: 3
-  moveSpeed: 2
+  moveSpeed: 3
   overrideController: {fileID: 22100000, guid: 2788e2971154ac844a1adf50f6b54ec3, type: 2}
-  critChanceRate: 10
-  generalSkill: {fileID: 0}
+  critChanceRate: 40
+  generalSkill: {fileID: 11400000, guid: 8372c2ab335f0254782e9043a5ad1c58, type: 2}
   specialSkill: {fileID: 0}
-  sightRange: 200
-  attackRange: 5
+  sightRange: 20
+  attackRange: 4
   attackSound:
   - {fileID: 8300000, guid: 56f0668d9ecb81745886bc8b5f86fa18, type: 3}
   attackVFX: {fileID: 826453539395977001, guid: b7d7dec3b5487804195ef22e654d4d6b,
     type: 3}
-  name: "\uC800\uC8FC\uBC1B\uC740 \uAD70\uB2E8\uC7A5"
+  name: "\uADF8\uB9BC\uC790 \uC554\uC0B4 \uB300\uC7A5"
   unitCode: 80
   cost: 0
-  gold: 200
+  gold: 100
   g_SkillName: "\uC751\uC9D5\uC758 \uAC80"
   s_SkillName: 
   g_SkillInfo: "\uC591\uC190 \uAC80\uC744 \uD718\uB458\uB7EC \uC5EC\uB7EC \uBA85\uC758

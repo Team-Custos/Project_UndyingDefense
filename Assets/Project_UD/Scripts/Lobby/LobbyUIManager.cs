@@ -98,7 +98,7 @@ public class LobbyUIManager : MonoBehaviour
         {
             battleStartBtn.onClick.AddListener(() =>
             {
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0224 1");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0228");
             });
         }
 

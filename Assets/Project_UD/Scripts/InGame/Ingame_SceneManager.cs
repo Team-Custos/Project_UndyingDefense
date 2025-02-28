@@ -44,71 +44,71 @@ public class Ingame_SceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Ingame_WaveUIManager.instance.  winWaveRestartBtn != null)
-        {
-            Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
+        //if (Ingame_WaveUIManager.instance.  winWaveRestartBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.winWaveRestartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
                 
-            });
-        }
+        //    });
+        //}
 
-        if (Ingame_WaveUIManager.instance.Winlobbybtn != null)
-        {
-            Ingame_WaveUIManager.instance.Winlobbybtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
-        }
+        //if (Ingame_WaveUIManager.instance.Winlobbybtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.Winlobbybtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
+        //}
 
-        if (Ingame_WaveUIManager.instance.loseWaveRestartBtn != null)
-        {
-            Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
-            });
+        //if (Ingame_WaveUIManager.instance.loseWaveRestartBtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.loseWaveRestartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
+        //    });
                 
-        }
+        //}
 
-        if (Ingame_WaveUIManager.instance.loselobbybtn != null)
-        {
-            Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
+        //if (Ingame_WaveUIManager.instance.loselobbybtn != null)
+        //{
+        //    Ingame_WaveUIManager.instance.loselobbybtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
             
-        }
+        //}
 
-        if (Ingame_UIManager.instance.settingLobbyBtn != null)
-        {
-            Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                GoToLobby();
-            });
+        //if (Ingame_UIManager.instance.settingLobbyBtn != null)
+        //{
+        //    Ingame_UIManager.instance.settingLobbyBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+        //        GoToLobby();
+        //    });
 
 
-        }
+        //}
 
-        if (Ingame_UIManager.instance.settingReStartBtn != null)
-        {
-            Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(() =>
-            {
-                Time.timeScale = 1.0f;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                RestartCurrentScene();
-            });
+        //if (Ingame_UIManager.instance.settingReStartBtn != null)
+        //{
+        //    Ingame_UIManager.instance.settingReStartBtn.onClick.AddListener(() =>
+        //    {
+        //        Time.timeScale = 1.0f;
+        //        SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+        //        RestartCurrentScene();
+        //    });
 
-        }
+        //}
     }
 
 
