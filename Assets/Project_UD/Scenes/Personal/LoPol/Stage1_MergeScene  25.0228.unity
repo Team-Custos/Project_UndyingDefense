@@ -2154,50 +2154,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 40712892}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &41019044
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 41019046}
-  - component: {fileID: 41019045}
-  m_Layer: 0
-  m_Name: TestObjectForStudy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &41019045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 41019044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c103e976f65729f4d9ae15a31e6c026a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &41019046
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 41019044}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.811647, y: 0.08545964, z: -10.849487}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &44054522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2728,7 +2684,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62342847}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 884}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -79454,29 +79410,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15122b57f1d507541b0d484f24e0c704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allySummonEffect: {fileID: 4084045715847604344, guid: 5ed8aaf122a0b2847957c6dd53a59133,
+  allySummonEffect: {fileID: 8760135807510656041, guid: 5b090d71dd852754ab8acb83df7c7185,
     type: 3}
-  enemeySummonEffect: {fileID: 3318205575424167203, guid: c8f9b26cd4bec544ea39a8d2f78f08e0,
+  enemeySummonEffect: {fileID: 833945790083547160, guid: d61ad084c1088e24f8cc89d22dfdc6da,
     type: 3}
   modeChangeEffect: {fileID: 8844220393683860033, guid: dc68d7ed3bed50f49bfdf0311e5bf35f,
     type: 3}
   unitSpawnDeckEffect: {fileID: 0}
   AttackVFX:
-  - {fileID: 8862294107620227319, guid: 793553492a2c03744a98ee959355f704, type: 3}
+  - {fileID: 7586159789876081776, guid: faa1d8dd8cc10e64f93289750ba62e21, type: 3}
   - {fileID: 4680229374731916917, guid: dd07ceefe2ac8b64390ac610f250224b, type: 3}
-  - {fileID: 2664660456616596323, guid: 7d3d10110438cd5429be53ee4f66dc31, type: 3}
+  - {fileID: 4472849137510755637, guid: ecffc5a70bdcb3248ab8ffe7fbaedad0, type: 3}
   AttackCritVFX:
-  - {fileID: 7696536780613182330, guid: 2ea7e791cf329134a86694685019141d, type: 3}
+  - {fileID: 8399983255156834262, guid: 5b93863d66147644fa8378118666e7e1, type: 3}
   - {fileID: 2978356013642458910, guid: 48e4cc4a1caf1f24a9fc2ef464149a8b, type: 3}
   - {fileID: 2269800381088475307, guid: 6834fd7665376584d93553e2b3a66279, type: 3}
   EnemyAttackVFX: []
-  allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
+  allySelectEffect: {fileID: 8187109130101774242, guid: 78029023c56169949be0eaad5117f62a,
     type: 3}
-  enemySelectEffect: {fileID: 0}
-  allySiegeEffect: {fileID: 3478824122546897687, guid: ae331dc76c8518243a626a1017f15e78,
+  enemySelectEffect: {fileID: 8970575185586305268, guid: 57859ddd9b0932744a78a8a318104738,
+    type: 3}
+  allySiegeEffect: {fileID: 6676743650483916267, guid: 333d587b6c764ab4299feb206eff51f4,
     type: 3}
   siegeEffect: {fileID: 0}
-  spawnCoinEffect: {fileID: 7363310065621503760, guid: 65ee9279357dd1140a3216c9cc47caf4,
+  spawnCoinEffect: {fileID: 1255425476115968614, guid: e522d2b6cd061444cb4adafa89b1af47,
     type: 3}
   enemyGhostEffect: {fileID: 8925381408423502869, guid: eafc95c38b6bf3c44ae0574383a50fbb,
     type: 3}
@@ -84326,4 +84283,3 @@ SceneRoots:
   - {fileID: 831843511}
   - {fileID: 1361997904}
   - {fileID: 588367418}
-  - {fileID: 41019046}
