@@ -2755,9 +2755,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 25
-    m_Right: -6
-    m_Top: 15
+    m_Left: 29
+    m_Right: -12
+    m_Top: 30
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: -0.6
@@ -2788,8 +2788,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 118bc93c4d0e79345ba985340df593ca, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -39771,7 +39771,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -220, y: -20}
+  m_AnchoredPosition: {x: -120, y: -20}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1008834852
@@ -42959,7 +42959,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 105, y: 105}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1072692042
 MonoBehaviour:
@@ -44046,7 +44046,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 105, y: 105}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1105405804
 MonoBehaviour:
@@ -53829,7 +53829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1334785167
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68138,7 +68138,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 105, y: 105}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711156621
 MonoBehaviour:
@@ -79215,26 +79215,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allySummonEffect: {fileID: 4084045715847604344, guid: 5ed8aaf122a0b2847957c6dd53a59133,
     type: 3}
-  enemeySummonEffect: {fileID: 3318205575424167203, guid: c8f9b26cd4bec544ea39a8d2f78f08e0,
-    type: 3}
   modeChangeEffect: {fileID: 8844220393683860033, guid: dc68d7ed3bed50f49bfdf0311e5bf35f,
     type: 3}
-  unitSpawnDeckEffect: {fileID: 0}
   AttackVFX:
   - {fileID: 8862294107620227319, guid: 793553492a2c03744a98ee959355f704, type: 3}
-  - {fileID: 4680229374731916917, guid: dd07ceefe2ac8b64390ac610f250224b, type: 3}
+  - {fileID: 4680229374731916917, guid: 83cac8e982909b7449d949b94c2a7cfa, type: 3}
   - {fileID: 2664660456616596323, guid: 7d3d10110438cd5429be53ee4f66dc31, type: 3}
   AttackCritVFX:
   - {fileID: 7696536780613182330, guid: 2ea7e791cf329134a86694685019141d, type: 3}
-  - {fileID: 2978356013642458910, guid: 48e4cc4a1caf1f24a9fc2ef464149a8b, type: 3}
+  - {fileID: 2978356013642458910, guid: c986a3e314ad1324d9d8c4c225c7a5a7, type: 3}
   - {fileID: 2269800381088475307, guid: 6834fd7665376584d93553e2b3a66279, type: 3}
   EnemyAttackVFX: []
-  allySelectEffect: {fileID: 1122182268784740321, guid: 2fb44afe5954ddc4a9daa3700e001e97,
-    type: 3}
-  enemySelectEffect: {fileID: 0}
   allySiegeEffect: {fileID: 3478824122546897687, guid: ae331dc76c8518243a626a1017f15e78,
     type: 3}
-  siegeEffect: {fileID: 0}
   spawnCoinEffect: {fileID: 7363310065621503760, guid: 65ee9279357dd1140a3216c9cc47caf4,
     type: 3}
   enemyGhostEffect: {fileID: 8925381408423502869, guid: eafc95c38b6bf3c44ae0574383a50fbb,

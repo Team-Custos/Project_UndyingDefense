@@ -9,23 +9,16 @@ public class Ingame_ParticleManager : MonoBehaviour
     public static Ingame_ParticleManager Instance;
 
     public ParticleSystem allySummonEffect; // 유닛 소환 이펙트
-    public ParticleSystem enemeySummonEffect; // 적 유닛 소환 이펙트
 
     public ParticleSystem modeChangeEffect; // 유닛 모드 전환 이펙트 
-
-    public ParticleSystem unitSpawnDeckEffect; // 유닛 소환 모드시 덱에 나타나는 이펙트
 
     public ParticleSystem[] AttackVFX;
     public ParticleSystem[] AttackCritVFX;
 
     public ParticleSystem[] EnemyAttackVFX;
 
-    public ParticleSystem allySelectEffect;    // 아군 유닛 선택 이펙트
-    public ParticleSystem enemySelectEffect;    // 적 유닛 선택 이펙트
 
     public ParticleSystem allySiegeEffect;     // 아군 유닛 시즈모드 이펙트
-
-    public GameObject siegeEffect;
 
 
     public GameObject spawnCoinEffect;         // 적 유닛 사망 후 코인 생성 이펙트

@@ -359,7 +359,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         if (targetEnemy != null)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-            Debug.Log("distanceToEnemy : " + distanceToEnemy);
+            //Debug.Log("distanceToEnemy : " + distanceToEnemy);
             isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
         }
 
