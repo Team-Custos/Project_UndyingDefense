@@ -41,6 +41,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int monSpawnCount;     // 인덱스의 몬스터 소환 횟수
     [SerializeField] private int totalMonCount;     // 현재 생성되어있는 모든 몬스터 수
 
+    private bool oneShot;
+
 
     private void Awake()
     {
@@ -91,12 +93,18 @@ public class WaveManager : MonoBehaviour
                     {
                         // 웨이브 대기 시작
                         waveCanvasController.waveCountTextPanel.SetActive(true);
-                        //SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
+                        if (oneShot)
+                        {
+                            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
+                            oneShot = false;
+                        }
 
                         waveTimer -= Time.deltaTime;
 
                         // 웨이브 대기 시간을 표시하는 타이머
                         waveCanvasController.waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveTimer) + "초";
+
+
 
                         if (waveTimer <= 0.0f) // && waveTimer > -1.0f) // 카운트가 끝나면 웨이브 시작
                         {
@@ -225,7 +233,6 @@ public class WaveManager : MonoBehaviour
             // 웨이브 클리어 ui
         }
 
-        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
 
         InGameManager.inst.gold += waveData.reward;
         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
@@ -250,7 +257,7 @@ public class WaveManager : MonoBehaviour
 
         isWaveing = true;
 
-
+        oneShot = true;
     }
 
 
@@ -326,6 +333,9 @@ public class WaveManager : MonoBehaviour
             waveCanvasController.waveWarnningPanel.SetActive(true);
             isBaseAttackPerWave = true;
         }
+
+        int i = Random.Range(0, 2);
+        SoundManager.instance.PlayCastleSFX(i);
     }
 
 }

@@ -356,21 +356,15 @@ public class Ingame_UnitCtrl : MonoBehaviour
             return;
         }
 
-        if (targetEnemy != null)
-        {
-            float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
-            //Debug.Log("distanceToEnemy : " + distanceToEnemy);
-            isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
-        }
+
+        //if (targetEnemy != null && targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
+        //{
+        //    sightRangeSensor.ListTargetDelete(targetEnemy);
+        //    targetEnemy = null;
+        //}
 
 
-        if (targetEnemy != null && targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0)
-        {
-            sightRangeSensor.ListTargetDelete(targetEnemy);
-            targetEnemy = null;
-        }
-
-        sightRangeSensor.radius = unitData.sightRange;
+        sightRangeSensor.SetRadius(unitData.sightRange);
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
@@ -452,6 +446,18 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //시즈모드일때
         else if (Ally_Mode == AllyMode.Siege)
         {
+            if (targetEnemy != null)
+            {
+                float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+                //Debug.Log("distanceToEnemy : " + distanceToEnemy);
+                isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
+
+                if (targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0f || !isEnemyInRange)
+                {
+                    targetEnemy = null;
+                }
+            }
+
             //Ingame_ParticleManager.Instance.PlaySiegeModeEffect(this.gameObject, true);
             unitUiCtrl.OnOffSiegeEffect(true);
 
@@ -485,6 +491,19 @@ public class Ingame_UnitCtrl : MonoBehaviour
         //프리모드일때
         else if (Ally_Mode == AllyMode.Free)
         {
+            if (targetEnemy != null)
+            {
+                float distanceToEnemy = Vector3.Distance(transform.position, targetEnemy.transform.position);
+
+                isEnemyInSight = (distanceToEnemy <= unitData.sightRange);
+                isEnemyInRange = (distanceToEnemy <= unitData.attackRange);
+
+                if (targetEnemy.GetComponent<Ingame_UnitCtrl>().HP <= 0f || !isEnemyInSight)
+                {
+                    targetEnemy = null;
+                }
+            }
+
             unitUiCtrl.OnOffSiegeEffect(false);
 
             UnitSkill.UnitSpecialSkill(unitData.specialSkill, unitData.specialSkill.coolTime);//유닛의 특수 스킬.
@@ -586,7 +605,7 @@ public class Ingame_UnitCtrl : MonoBehaviour
         enemy_isBaseInRange =
         (Vector3.Distance(transform.position, moveTargetBasePos) <= unitData.attackRange); //성이 적군의 공격 범위 내에 있는지 판단.
 
-        sightRangeSensor.radius = unitData.sightRange;
+        sightRangeSensor.SetRadius(unitData.sightRange);
 
         if (Input.GetKeyDown(KeyCode.B) && isSelected)//유닛의 디버프 적용. 디버그용.
         {
@@ -658,20 +677,22 @@ public class Ingame_UnitCtrl : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj =
-                sightRangeSensor.NearestObjectSearch();
+            //GameObject TargetObj =
+            //    sightRangeSensor.NearestObjectSearch();
 
-            if (TargetObj != null)
+            if (sightRangeSensor.NearestUnit != null)
             {
+                GameObject targetObj = sightRangeSensor.NearestUnit.gameObject;
+
                 isEnemyInSight = true;
-                targetEnemy = TargetObj;
+                targetEnemy = targetObj;
 
                 if (Ally_Mode == AllyMode.Free)
                 {
-                    moveTargetPos = TargetObj.transform.position;
+                    moveTargetPos = targetObj.transform.position;
                 }
             }
-            else if (sightRangeSensor.detectedObjects.Count <= 0)
+            else
             {
                 isEnemyInSight = false;
                 targetEnemy = null;

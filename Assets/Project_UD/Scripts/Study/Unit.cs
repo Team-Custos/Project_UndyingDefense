@@ -172,7 +172,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            GameObject TargetObj = SightRangeCollider.GetComponent<RangeCtrl>().FinalTarget;
+            //GameObject TargetObj = SightRangeCollider.GetComponent<RangeCtrl>().FinalTarget;
         }
     }
 

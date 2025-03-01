@@ -255,18 +255,21 @@ public class Ingame_UIManager : MonoBehaviour
             });
 
         }
-
-        for (int i = 0; i < inGameCommandSkillBtn.Length; i++)
+        if(UserDataModel.instance.IsSkillListFull())
         {
-            inGameCommandSkillBtn[i].image.sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
-
-            int index = i;
-
-            inGameCommandSkillBtn[i].onClick.AddListener(() =>
+            for (int i = 0; i < inGameCommandSkillBtn.Length; i++)
             {
-                Debug.Log(UserDataModel.instance.skillDatas[index].commandSkillName);
-            });
+                inGameCommandSkillBtn[i].image.sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
+
+                int index = i;
+
+                inGameCommandSkillBtn[i].onClick.AddListener(() =>
+                {
+                    Debug.Log(UserDataModel.instance.skillDatas[index].commandSkillName);
+                });
+            }
         }
+        
 
         
     }

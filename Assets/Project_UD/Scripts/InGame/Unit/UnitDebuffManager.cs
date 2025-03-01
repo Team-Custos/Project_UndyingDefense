@@ -101,8 +101,14 @@ public class UnitDebuffManager : MonoBehaviour
                     case UnitDebuff.Poison: 
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
                         break;
-                    case UnitDebuff.Bleed: 
-                        int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
+                    case UnitDebuff.Bleed:
+                        int finalDamage = activeDebuffs[debuffDataIdx].tickDamage * activeDebuffs[debuffDataIdx].stack;
+
+                        if(activeDebuffs[debuffDataIdx].stack >= 4)
+                        {
+                            unitCtrl.ReceiveTickDamage(-20);
+                            RemoveDebuff(activeDebuffs[debuffDataIdx]);
+                        }
 
                         if (activeDebuffs[debuffDataIdx].currentTime > 0)
                         {
@@ -114,6 +120,7 @@ public class UnitDebuffManager : MonoBehaviour
                             }
                         }
                         break;
+
                     case UnitDebuff.Burn: 
                         if (activeDebuffs[debuffDataIdx].stack >= 4)
                         {
@@ -143,6 +150,7 @@ public class UnitDebuffManager : MonoBehaviour
                             }
                         }
                         break;
+
                 }
             }
             else //디버프 종료시 처리

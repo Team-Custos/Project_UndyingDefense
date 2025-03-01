@@ -84,7 +84,7 @@ public class AllyUnitState : MonoBehaviour
             return;
         }
 
-        if (UnitCtrl.sightRangeSensor.Obj_Nearest != null) //유닛의 시야 범위에 적군이 있는가?
+        if (UnitCtrl.sightRangeSensor.NearestUnit != null) //유닛의 시야 범위에 적군이 있는가?
         {
             if (UnitCtrl.targetEnemy != null)//타겟 적군이 있는가?
             {
@@ -107,7 +107,8 @@ public class AllyUnitState : MonoBehaviour
         }
         else //시야범위에 적군이 없거나 있었던 적군이 없어질 경우
         {
-            UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
+            //UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
+            UnitCtrl.targetEnemy = null;
             fsm.ChangeState(PUState.Search);//탐색 상태로 변경.
         }
     }

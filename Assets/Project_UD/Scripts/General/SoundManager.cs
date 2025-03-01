@@ -38,6 +38,8 @@ public class SoundManager : MonoBehaviour
         sfx_unableClick,            //  선택 불가
     }
 
+    
+
     public static SoundManager instance;
 
     private void Awake()
@@ -48,6 +50,10 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip[] unitSfxClip;
     [SerializeField] AudioClip[] waveSfxClip;
     [SerializeField] AudioClip[] uiSfxClip;
+
+    [SerializeField] AudioClip[] castleClip;
+
+
 
     [SerializeField] AudioSource IngameSfxSource;
 
@@ -70,5 +76,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         IngameSfxSource.PlayOneShot(clip);
+    }
+
+    public void PlayCastleSFX(int index)
+    {
+        
+        IngameSfxSource.PlayOneShot(castleClip[index]);
     }
 }
