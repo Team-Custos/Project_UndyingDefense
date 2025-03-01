@@ -21,6 +21,8 @@ public class LobbyUIManager : MonoBehaviour
     public GameObject commandSkillPanel;
     public Button commandSkillPanelCloseBtn;
 
+    // 임시용
+    public Button commandSkillOpenBtn;
 
     public GameObject HelpUsePanel;
     public GameObject HelpArrPanel;
@@ -94,7 +96,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         Time.timeScale = 1.0f;
 
-        if(battleStartBtn != null)
+        if (battleStartBtn != null)
         {
             battleStartBtn.onClick.AddListener(() =>
             {
@@ -122,7 +124,7 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-        if(settingCloseBtn != null)
+        if (settingCloseBtn != null)
         {
 
             settingCloseBtn.onClick.AddListener(() =>
@@ -136,7 +138,7 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-        if(endGameBtn != null)
+        if (endGameBtn != null)
         {
 
             endGameBtn.onClick.AddListener(() =>
@@ -167,7 +169,7 @@ public class LobbyUIManager : MonoBehaviour
 
         if (HelpCloseBtn != null)
         {
-            
+
             HelpCloseBtn.onClick.AddListener(() =>
             {
                 if (GlobalSoundManager.instance != null)
@@ -201,8 +203,8 @@ public class LobbyUIManager : MonoBehaviour
                 helpAttributePanel.SetActive(false);
             });
         }
-        
-        
+
+
         if (helpAttributeBtn != null)
         {
 
@@ -227,7 +229,7 @@ public class LobbyUIManager : MonoBehaviour
             commandSkillPanel.SetActive(true);
         });
 
-        for(int i =0; i < csCancelBtn.Length; i++)
+        for (int i = 0; i < csCancelBtn.Length; i++)
         {
             int index = i;
             csCancelBtn[i].onClick.AddListener(() =>
@@ -242,7 +244,7 @@ public class LobbyUIManager : MonoBehaviour
 
         csSaveConfirmBtn.onClick.AddListener(() =>
         {
-            if(UserDataModel.instance.IsSkillListFull())
+            if (UserDataModel.instance.IsSkillListFull())
             {
                 localCommandSkillImage[0].sprite = UserDataModel.instance.skillDatas[0].commandSkillImage;
                 localCommandSkillImage[1].sprite = UserDataModel.instance.skillDatas[1].commandSkillImage;
@@ -280,6 +282,11 @@ public class LobbyUIManager : MonoBehaviour
 
         });
 
+        commandSkillOpenBtn.onClick.AddListener(() =>
+        {
+            commandSkillPanel.SetActive(true);
+        });
+
 
         // 지역상황창 열기
         if (stageStartBtn != null)
@@ -291,7 +298,9 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
                 }
 
-                ShowUI(localSituationPanel);
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0228");
+
+                //ShowUI(localSituationPanel);
             });
 
         }
