@@ -22,6 +22,7 @@ public class UnitDebuffManager : MonoBehaviour
 {
     UnitDebuffData[] debuffData;
     public GameObject DebuffParticleParent;
+    [SerializeField] private GameObject Debuff_OverBleed;
 
 
     [SerializeField]
@@ -106,11 +107,13 @@ public class UnitDebuffManager : MonoBehaviour
 
                         if(activeDebuffs[debuffDataIdx].stack >= 4)
                         {
-                            unitCtrl.ReceiveTickDamage(-20);
                             RemoveDebuff(activeDebuffs[debuffDataIdx]);
+                            unitCtrl.ReceiveTickDamage(20);
+                            GameObject Overbleed = Instantiate(Debuff_OverBleed, DebuffParticleParent.transform);
+                            Overbleed.transform.localPosition = Vector3.zero;
+                            Destroy(Overbleed, 1f);
                         }
-
-                        if (activeDebuffs[debuffDataIdx].currentTime > 0)
+                        else if (activeDebuffs[debuffDataIdx].currentTime > 0)
                         {
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
@@ -205,6 +208,21 @@ public class UnitDebuffManager : MonoBehaviour
                     if (debuffData[i].Stackable && existingDebuff.stack <= debuffData[i].stackLimit)
                     {
                         existingDebuff.stack++;
+                        if (debuff == UnitDebuff.Dizzy)
+                        {
+
+                            for (int idx = 0; idx < 3; idx++)
+                            {
+                                if (idx == existingDebuff.stack - 1)
+                                {
+                                    Debuff_OBJ[(int)debuff].transform.GetChild(idx).gameObject.SetActive(true);
+                                }
+                                else
+                                {
+                                    Debuff_OBJ[(int)debuff].transform.GetChild(idx).gameObject.SetActive(false);
+                                }
+                            }
+                        }
                     }
                 }
                 else 
@@ -222,6 +240,15 @@ public class UnitDebuffManager : MonoBehaviour
                     StartSFX = debuffData[i].StartSFX;
                     unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, StartSFX);
                     Debuff_OBJ[(int)debuff].SetActive(true);
+
+                    if (debuff == UnitDebuff.Dizzy)
+                    {
+                        //ParticleSystem[] vfxByStack = Debuff_OBJ[(int)debuff].transform.GetChild();
+                        Debuff_OBJ[(int)debuff].transform.GetChild(0).gameObject.SetActive(true);
+                        Debuff_OBJ[(int)debuff].transform.GetChild(1).gameObject.SetActive(false);
+                        Debuff_OBJ[(int)debuff].transform.GetChild(2).gameObject.SetActive(false);
+                    }
+
                     if (debuff == UnitDebuff.Stun)
                     {
                         unitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_STUN);
