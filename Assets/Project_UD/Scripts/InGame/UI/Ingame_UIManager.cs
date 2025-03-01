@@ -106,9 +106,6 @@ public class Ingame_UIManager : MonoBehaviour
 
     public Button unitUpgradeBtn;
 
-    private Transform clickUITransform;
-    public GameObject clickUI;
-
     public Button[] inGameCommandSkillBtn;
 
 

@@ -17,8 +17,8 @@ public class CommandSkillListManager : MonoBehaviour, IPointerClickHandler
     public Text commandSkillInfoName;
     public Text commandSkillInfoDescription;
 
-    public Image[] commandSkillSlotImage;
-    public Button[] commandSkillSlotBtn;
+
+    
 
     private int index;
 
