@@ -29,7 +29,7 @@ public class TitleUIManager : MonoBehaviour
             {
                 if (GlobalSoundManager.instance != null)
                 {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_gameStart);
                 }
 
                 //LoadScene(1);
@@ -45,9 +45,9 @@ public class TitleUIManager : MonoBehaviour
             {
                 if (GlobalSoundManager.instance != null)
                 {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_exit);
+                    EndGame();
                 }
-                EndGame();
             });
         }
 

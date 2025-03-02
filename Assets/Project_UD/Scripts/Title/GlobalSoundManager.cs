@@ -17,6 +17,8 @@ public class GlobalSoundManager : MonoBehaviour
         sfx_commanderSkillUnequip,
         sfx_bookOpen,
         sfx_bookClose,
+        sfx_exit,
+        sfx_gameStart,
     }
 
 

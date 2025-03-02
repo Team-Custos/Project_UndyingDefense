@@ -599,9 +599,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGM:
-  - {fileID: 8300000, guid: b4074f78709f04f488d31d53c7ddd4ed, type: 3}
+  - {fileID: 8300000, guid: 861b7cdccb33f7c44b788ea012d2fd1f, type: 3}
   audioSource: {fileID: 530951518}
 --- !u!4 &530951520
 Transform:
@@ -1249,14 +1249,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lobbySfxClip:
-  - {fileID: 8300000, guid: 8dad5b867e972fd43b2d024c0a79b76f, type: 3}
+  - {fileID: 8300000, guid: 67c963b757a351d4494409b75e9ed139, type: 3}
   - {fileID: 8300000, guid: 380cce720bcce6f4d97b3f3d8cba5fab, type: 3}
-  - {fileID: 8300000, guid: 3205697b82037a248a287ec200acc263, type: 3}
+  - {fileID: 8300000, guid: bef72d5025df76648a0299c37243c4f6, type: 3}
   - {fileID: 8300000, guid: 5fba87603c4baef4ba6c6dad51258dcd, type: 3}
   - {fileID: 8300000, guid: 186e4d5094a1d6343abbd08ed6520e80, type: 3}
   - {fileID: 8300000, guid: 9856ab9e2b19f5d48bb103ef9bbe0ae7, type: 3}
   - {fileID: 8300000, guid: 9831bd7283e95a442bc15df634489025, type: 3}
   - {fileID: 8300000, guid: c8f9c09550188fa42b91832cfcede0e4, type: 3}
+  - {fileID: 8300000, guid: a6c758047ef064a49a8d617152e54b7a, type: 3}
+  - {fileID: 8300000, guid: 64c07b093ae79b44da61ab9549d92036, type: 3}
   lobbySfxSource: {fileID: 1180866461}
 --- !u!82 &1180866461
 AudioSource:

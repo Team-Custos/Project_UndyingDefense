@@ -334,7 +334,7 @@ public class WaveManager : MonoBehaviour
             isBaseAttackPerWave = true;
         }
 
-        int i = Random.Range(0, 2);
+        int i = Random.Range(0, 4);
         SoundManager.instance.PlayCastleSFX(i);
     }
 

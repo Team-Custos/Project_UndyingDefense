@@ -143,12 +143,13 @@ public class EnemyUnitState : MonoBehaviour
 
             if (UnitCtrl.targetEnemy != null)//타겟 아군이 있는가?
             {
-                if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)//목표 병사보다 현재 타겟 위치가 더 멈.
-                {
-                    //Debug.Log("목표 병사보다 현재 타겟 위치가 더 멈.");
-                    UnitCtrl.enemy_isPathBlocked = false; //성까지의 길이 막혀있지 않음.
-                    return;
-                }
+                // 내 스폰지점  < 현재 타게 위치
+                //if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)//목표 병사보다 현재 타겟 위치가 더 멈.
+                //{
+                //    //Debug.Log("목표 병사보다 현재 타겟 위치가 더 멈.");
+                //    UnitCtrl.enemy_isPathBlocked = false; //성까지의 길이 막혀있지 않음.
+                //    return;
+                //}
 
                 float targetUnitDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);//현재 아군 병사와 현재 적군의 위치 간 거리.
                 UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;//적군의 이동 목적 좌표를 아군 병사의 위치로 설정.

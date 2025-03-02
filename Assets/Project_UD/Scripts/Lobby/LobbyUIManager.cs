@@ -100,7 +100,7 @@ public class LobbyUIManager : MonoBehaviour
         {
             battleStartBtn.onClick.AddListener(() =>
             {
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0228");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0302 1");
             });
         }
 
@@ -298,7 +298,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);
                 }
 
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0228");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0302 1");
 
                 //ShowUI(localSituationPanel);
             });

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnitDataManager;
 
@@ -111,7 +112,7 @@ public class UnitSkillManager : MonoBehaviour
                 if (TargetEnemy.gameObject.CompareTag(CONSTANT.TAG_ENEMY) && TargetEnemy.activeSelf)
                 {
                     Ingame_UnitCtrl EnemyCtrl = TargetEnemy.GetComponent<Ingame_UnitCtrl>();
-                    int HitSoundRandomNum = Random.Range(0, 2);
+                    int HitSoundRandomNum = Random.Range(0, UnitCtrl.unitData.attackSound.Length);
                     AudioClip SFX2Play = UnitCtrl.unitData.attackSound[HitSoundRandomNum];
 
                     UnitCtrl.soundManager.PlaySFX(UnitCtrl.soundManager.ATTACK_SFX, SFX2Play);
@@ -181,10 +182,10 @@ public class UnitSkillManager : MonoBehaviour
                         unitAnimator.SetTrigger(CONSTANT.ANITRIGGER_SPECIAL);
                         Bow.transform.LookAt(TargetEnemy.transform.position);
                         Bow.GetComponent<BowCtrl>().ArrowShoot(false);
-                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + Skill.bounsCrit, AttackType.Pierce, UnitDebuff.Dizzy);
+                        TargetEnemy.ReceivePhysicalDamage(SkillDamage, UnitCtrl.unitData.critChanceRate + Skill.bounsCrit, AttackType.Pierce, UnitDebuff.None);
                     }
                     break;
-                case AttackSkillType.난타:
+                //case AttackSkillType.난타:
 
                     break;
                 //수류탄 투척

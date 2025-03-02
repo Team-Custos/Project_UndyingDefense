@@ -222,7 +222,7 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingCloseBtn.onClick.AddListener(() =>
             {
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 settingPanel.SetActive(false);
                 InGameManager.inst.isGamePause = false;
             });
