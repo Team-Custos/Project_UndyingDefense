@@ -2126,6 +2126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6731490226368600004}
   - component: {fileID: 6731490226358728802}
+  - component: {fileID: 4847537322503276387}
   m_Layer: 0
   m_Name: Enemy303
   m_TagString: Untagged
@@ -2165,7 +2166,7 @@ Animator:
   m_GameObject: {fileID: 6731490226368236516}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c337ddb6004b44540ab7b14ed166b81b, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: eaa709d9457046f409986a01bf88426f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2176,6 +2177,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4847537322503276387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6731490226368236516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c316fa85ae29d4b8b6f36a58f59403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6731490226368236518
 GameObject:
   m_ObjectHideFlags: 0
