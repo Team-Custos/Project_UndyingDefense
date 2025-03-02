@@ -20,13 +20,13 @@ MonoBehaviour:
     type: 3}
   maxHP: 180
   mental: 1
-  moveSpeed: 2
+  moveSpeed: 2.3
   overrideController: {fileID: 22100000, guid: 767157814e0cf7943bda7c4eaf25ce9a, type: 2}
   critChanceRate: 20
   generalSkill: {fileID: 11400000, guid: 611b8e7fef6fc984ebd4250bd58d3b95, type: 2}
   specialSkill: {fileID: 11400000, guid: db46485b83253dc44ac67a4a7679b11b, type: 2}
   sightRange: 20
-  attackRange: 4
+  attackRange: 5
   attackSound:
   - {fileID: 8300000, guid: 54351e086e5c1fc4e80f6c3c5e20607a, type: 3}
   - {fileID: 8300000, guid: 29549eb00a8f2124f99141be3f11fac6, type: 3}
@@ -35,21 +35,15 @@ MonoBehaviour:
   unitCode: 11
   cost: 200
   gold: 0
-  g_SkillName: "\uCC3D \uCC0C\uB974\uAE30"
-  s_SkillName: "\uBA40\uB9AC \uBCA0\uAE30"
-  g_SkillInfo: "\uCC3D\uC73C\uB85C \uD55C \uBA85\uC758 \uC801\uC744 \uCC14\uB7EC
-    7 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9. \uCE58\uBA85\uD0C0 \uC2DC
-    \uCD9C\uD608 \uD6A8\uACFC"
-  s_SkillInfo: "\uCC3D\uC5D0 \uB2EC\uB9B0 \uB0AB\uC73C\uB85C \uBA40\uB9AC \uC788\uB294
-    \uD55C \uBA85\uC758 \uC801\uC744 \uBCA0\uC5B4 7 \uB370\uBBF8\uC9C0\uC758 \uBCA0\uAE30
-    \uACF5\uACA9. \uCE58\uBA85\uD0C0\uC728 10% \uC99D\uAC00. \uCE58\uBA85\uD0C0 \uC2DC
-    \uCD9C\uD608 \uD6A8\uACFC"
+  g_SkillName: "\uCC0C\uB974\uAE30 2 "
+  s_SkillName: "\uC808\uBA85 2 "
+  g_SkillInfo: "\uBFB0\uC871\uD55C \uCD09\uC73C\uB85C \uB2E8\uC77C \uB300\uC0C1\uC744
+    \uCC0C\uB978\uB2E4. "
+  s_SkillInfo: "\uBFB0\uC871\uD55C \uCD09\uC73C\uB85C \uB2E8\uC77C \uB300\uC0C1\uC744
+    \uAC15\uB825\uD558\uAC8C \uCC0C\uB978\uB2E4. "
   g_SkillImage: {fileID: 21300000, guid: acbcb3694eb244b4eb8df7555c66f387, type: 3}
   s_SkillImage: {fileID: 21300000, guid: 29a4428e3664fa94c96a223b480655fa, type: 3}
   unitImage: {fileID: 21300000, guid: bfd155fb81283464ea321dc66afdec63, type: 3}
-  upgradePaths:
-  - 111
-  - 112
   upgrade1Cost: 400
   upgrade2Cost: 400
   uupgrade1Image: {fileID: 0}
