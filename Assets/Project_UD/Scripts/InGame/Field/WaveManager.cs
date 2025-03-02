@@ -93,10 +93,10 @@ public class WaveManager : MonoBehaviour
                     {
                         // 웨이브 대기 시작
                         waveCanvasController.waveCountTextPanel.SetActive(true);
-                        if (oneShot)
+                        if (!oneShot)
                         {
                             SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
-                            oneShot = false;
+                            oneShot = true;
                         }
 
                         waveTimer -= Time.deltaTime;
@@ -257,7 +257,7 @@ public class WaveManager : MonoBehaviour
 
         isWaveing = true;
 
-        oneShot = true;
+        oneShot = false;
     }
 
 
