@@ -1,0 +1,28 @@
+using UnityEngine;
+
+public class DurationEffect : Effect
+{
+    [Header("■ Duration Effect Options")]
+    [SerializeField] protected float duration;
+
+    protected float durationCheck;      // 지속시간을 체크하는 변수
+
+    protected virtual void Update()
+    {
+        if (durationCheck < duration)
+        {
+            durationCheck += Time.deltaTime;
+        }
+        else
+        {
+            durationCheck -= duration;
+            Remove();
+        }
+    }
+
+    public override void Activate() // 효과를 발동할 때
+    {
+        base.Activate();
+        durationCheck = 0f;
+    }
+}
