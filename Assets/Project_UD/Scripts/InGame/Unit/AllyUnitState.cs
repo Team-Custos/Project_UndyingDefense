@@ -6,36 +6,37 @@ using MonsterLove.StateMachine;
 
 //이 스크립트는 아군 병사들의 행동패턴을 관리하기 위한 함수입니다. (FSM 시스템 외부 스크립트 사용.)
 
-public enum PUState //유닛의 상태
+public enum UnitState //유닛의 상태
 {
-    Idle = UnitState.Idle,
-    Attack = UnitState.Attack,
-    Move = UnitState.Move,
-    Dead = UnitState.Dead,
+    Idle,
+    Attack,
     Search,
-    Chase
-
+    Chase,
+    Move,
+    Dead
 }
 
 public class AllyUnitState : MonoBehaviour
 {
-    [HideInInspector]public PUState State;
-    public StateMachine<PUState, StateDriverUnity> fsm;
+    [HideInInspector]public UnitState State;
+    public StateMachine<UnitState, StateDriverUnity> fsm;
     
     Ingame_UnitCtrl UnitCtrl; //이 병사
     Ingame_UIManager UnitUIManager;//이 병사의 UI
     NavMeshAgent navAgent;//병사의 길찾기 및 이동을 위한 NavMeshAgent.
+    NavMeshObstacle navObstacle;
     Animator allyAnimator;//병사 모델의 애니메이션을 관리하기 위한 애니메이터.
 
 
     private void Start()
     {
-        fsm = new StateMachine<PUState, StateDriverUnity>(this);
-        fsm.ChangeState(PUState.Idle);
+        fsm = new StateMachine<UnitState, StateDriverUnity>(this);
+        fsm.ChangeState(UnitState.Idle);
 
         UnitCtrl = this.GetComponent<Ingame_UnitCtrl>();
         navAgent = this.GetComponent<NavMeshAgent>();
-        UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        navObstacle = this.GetComponent<NavMeshObstacle>();
+
     }
 
     private void Update()
@@ -57,7 +58,7 @@ public class AllyUnitState : MonoBehaviour
         if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
-            UnitCtrl.transform.rotation = Quaternion.Slerp(UnitCtrl.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
 
         UnitCtrl.SearchEnemy();
@@ -80,11 +81,13 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.haveToMovePosition)
         {
-            fsm.ChangeState(PUState.Move);
+            fsm.ChangeState(UnitState.Move);
             return;
         }
 
-        if (UnitCtrl.sightRangeSensor.NearestUnit != null) //유닛의 시야 범위에 적군이 있는가?
+        UnitCtrl.targetEnemy = UnitCtrl.sightRangeSensor.NearestObjectSearch();
+
+        if (UnitCtrl.sightRangeSensor.Obj_Nearest != null) //유닛의 시야 범위에 적군이 있는가?
         {
             if (UnitCtrl.targetEnemy != null)//타겟 적군이 있는가?
             {
@@ -92,8 +95,11 @@ public class AllyUnitState : MonoBehaviour
                 {
                     //유닛의 적군과 관련된 모든 변수를 초기화.
                     UnitCtrl.targetEnemy = null;
+                    UnitCtrl.isEnemyInRange = false;
+                    UnitCtrl.isEnemyInSight = false;
+
                     //이동 상태로 변경.
-                    fsm.ChangeState(PUState.Move);
+                    fsm.ChangeState(UnitState.Move);
 
                     //변수 초기화.
                     UnitCtrl.haveToMovePosition = false;
@@ -107,9 +113,8 @@ public class AllyUnitState : MonoBehaviour
         }
         else //시야범위에 적군이 없거나 있었던 적군이 없어질 경우
         {
-            //UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
-            UnitCtrl.targetEnemy = null;
-            fsm.ChangeState(PUState.Search);//탐색 상태로 변경.
+            UnitCtrl.sightRangeSensor.ListTargetDelete(UnitCtrl.targetEnemy);//시야 범위 센서의 리스트를 새로 고침.
+            fsm.ChangeState(UnitState.Search);//탐색 상태로 변경.
         }
     }
 
@@ -132,8 +137,6 @@ public class AllyUnitState : MonoBehaviour
         UnitCtrl.isEnemyInRange = false;
         UnitCtrl.isEnemyInSight = false;
 
-
-        
         Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, true);
     }
 
@@ -141,8 +144,16 @@ public class AllyUnitState : MonoBehaviour
     {
         if (UnitCtrl.Ally_Mode == AllyMode.Free)//프리 모드일 때
         {
-            //UnitCtrl.SearchEnemy();//적군 탐색.
-            UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            if (UnitCtrl.haveToMovePosition)
+            {
+                UnitCtrl.isEnemyInRange = false;
+                UnitCtrl.isEnemyInSight = false;
+            }
+            else
+            {
+                UnitCtrl.SearchEnemy();//적군 탐색.
+            }
+
             navAgent.speed = UnitCtrl.cur_moveSpeed;//현재 설정된 속도로 이동.
 
             navAgent.SetDestination(UnitCtrl.moveTargetPos); //병사의 이동 목적지 설정
@@ -153,7 +164,7 @@ public class AllyUnitState : MonoBehaviour
             if (targetMoveDistance_Cur <= 0.1f)//목적지에 도착했을 때
             {
                 UnitCtrl.moveTargetPos = transform.position;
-                fsm.ChangeState(PUState.Search);//탐색 상태로 변경.
+                fsm.ChangeState(UnitState.Idle);//탐색 상태로 변경.
                 return;
             }
         }
@@ -163,6 +174,7 @@ public class AllyUnitState : MonoBehaviour
 
     void Move_Exit()
     {
+        navAgent.SetDestination(transform.position); //NavmeshAgent를 정지시키기 위한 목적지 설정.
         navAgent.isStopped = true; //멈춤 상태로 변경.
         Ingame_UIManager.instance.ShowUnitMoveUI(this.gameObject, false); 
     }
@@ -172,27 +184,27 @@ public class AllyUnitState : MonoBehaviour
     {
         Debug.Log("Chase_Enter");
         navAgent.isStopped = false;
-        UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     void Chase_Update()
     {
         //Debug.Log("Chase_Update");
-        if (UnitCtrl.isAttacking || UnitCtrl.targetEnemy == null)
+        if (UnitCtrl.isAttacking)
         { return; }
 
         if (UnitCtrl.haveToMovePosition)
         {
-            fsm.ChangeState(PUState.Move);
+            fsm.ChangeState(UnitState.Move);
         }
 
 
         float targetEnemyDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position); //타겟 적군과의 거리.
+        Debug.Log("targetEnemyDistance_Cur : " + targetEnemyDistance_Cur);
 
         if (targetEnemyDistance_Cur <= UnitCtrl.unitData.attackRange) //공격 범위 안으로 들어왔을 경우.
         {
             UnitCtrl.isEnemyInRange = true;
-            navAgent.isStopped = true; //정지 시키기 위한 목적지 설정.
+            navAgent.SetDestination(UnitCtrl.transform.position); //정지 시키기 위한 목적지 설정.
         }
         else //타겟 적군이 공격 범위 밖에 있을 경우.
         {
@@ -210,7 +222,7 @@ public class AllyUnitState : MonoBehaviour
         Debug.Log("Chase_Exit");
         if (UnitCtrl.Ally_Mode == AllyMode.Free)
         {
-            navAgent.isStopped = true; //정지 시키기 위한 목적지 설정.
+            navAgent.SetDestination(transform.position); //정지 시키기 위한 목적지 설정.
         }
     }
 
@@ -225,8 +237,8 @@ public class AllyUnitState : MonoBehaviour
     {
         if (!UnitCtrl.isEnemyInSight || UnitCtrl.targetEnemy == null) // 프리모드에서는 회전이 안되게 해야하나??
         {
-            UnitCtrl.VisualModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            UnitCtrl.transform.rotation = Quaternion.Slerp(UnitCtrl.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
+            UnitCtrl.VisualModel.transform.rotation = Quaternion.Slerp(UnitCtrl.VisualModel.transform.rotation, UnitCtrl.defaultTargetRotation, Time.deltaTime * 2f);
         }
 
         UnitCtrl.SearchEnemy();//적군 탐색.
@@ -235,8 +247,6 @@ public class AllyUnitState : MonoBehaviour
     void Dead_Enter()
     {
         UnitCtrl.GetComponent<CapsuleCollider>().enabled = false;
-        UnitCtrl.GetComponent<NavMeshAgent>().enabled = false;
-        UnitCtrl.GetComponent<NavMeshObstacle>().enabled = false;
     }
 
     void Dead_Update()

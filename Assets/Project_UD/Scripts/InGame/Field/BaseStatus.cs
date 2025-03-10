@@ -58,6 +58,7 @@ public class BaseStatus : MonoBehaviour
         }
 
         WaveManager.inst.OnBaseAttacked(); // Base 공격 알림
+        
     }
 
     private IEnumerator HitEffect()//피격 이펙트

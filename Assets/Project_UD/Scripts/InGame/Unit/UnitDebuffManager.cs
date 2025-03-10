@@ -9,11 +9,11 @@ using UnityEngine;
 [System.Serializable]
 public class UnitCurDebuff
 {
-    public UnitDebuff name;      
-    public int stack;            
-    public float duration;       
-    public float currentTime;    
-    public int tickDamage;
+    public UnitDebuff name;      // ����� �̸�
+    public int stack;            // ����� ����
+    public float duration;       // ����� ��ü ���� �ð�
+    public float currentTime;    // ����� ���� ���� �ð�
+    public int tickDamage;//ƽ ������
     public AudioClip StartSFX;
     public AudioClip EndSFX;
 }
@@ -22,7 +22,6 @@ public class UnitDebuffManager : MonoBehaviour
 {
     UnitDebuffData[] debuffData;
     public GameObject DebuffParticleParent;
-    [SerializeField] private GameObject Debuff_OverBleed;
 
 
     [SerializeField]
@@ -89,7 +88,7 @@ public class UnitDebuffManager : MonoBehaviour
                         else
                         {
                             unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
-                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime * 0.8f;
+                            unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
                         }
                         break;
                     case UnitDebuff.Stun:
@@ -101,19 +100,12 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: 
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed * 0.8f;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed * 0.8f;
                         break;
-                    case UnitDebuff.Bleed:
-                        int finalDamage = activeDebuffs[debuffDataIdx].tickDamage * activeDebuffs[debuffDataIdx].stack;
+                    case UnitDebuff.Bleed: 
+                        int finalDamage = activeDebuffs[debuffDataIdx].tickDamage + (2 * (activeDebuffs[debuffDataIdx].stack - 1));
 
-                        if(activeDebuffs[debuffDataIdx].stack >= 4)
-                        {
-                            RemoveDebuff(activeDebuffs[debuffDataIdx]);
-                            unitCtrl.ReceiveTickDamage(20);
-                            GameObject Overbleed = Instantiate(Debuff_OverBleed, DebuffParticleParent.transform);
-                            Overbleed.transform.localPosition = Vector3.zero;
-                            Destroy(Overbleed, 1f);
-                        }
-                        else if (activeDebuffs[debuffDataIdx].currentTime > 0)
+                        if (activeDebuffs[debuffDataIdx].currentTime > 0)
                         {
                             tickInterval_cur -= Time.deltaTime;
                             if (tickInterval_cur <= 0)
@@ -123,7 +115,6 @@ public class UnitDebuffManager : MonoBehaviour
                             }
                         }
                         break;
-
                     case UnitDebuff.Burn: 
                         if (activeDebuffs[debuffDataIdx].stack >= 4)
                         {
@@ -153,7 +144,6 @@ public class UnitDebuffManager : MonoBehaviour
                             }
                         }
                         break;
-
                 }
             }
             else //디버프 종료시 처리
@@ -162,7 +152,7 @@ public class UnitDebuffManager : MonoBehaviour
                 {
                     case UnitDebuff.Dizzy:
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                         break;
                     case UnitDebuff.Stun:
                         unitCtrl.unActable = false;
@@ -172,7 +162,7 @@ public class UnitDebuffManager : MonoBehaviour
                         break;
                     case UnitDebuff.Poison: 
                         unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
+                        unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                         break;
                     case UnitDebuff.Bleed:
                         break;
@@ -197,7 +187,7 @@ public class UnitDebuffManager : MonoBehaviour
             return;
         }
 
-        for (int i = 1; i < debuffData.Length; i++)
+        for (int i = 0; i < debuffData.Length; i++)
         {
             if (debuff == debuffData[i].name) // �̹� �ش� ������� �ִ��� Ȯ��
             {
@@ -208,21 +198,6 @@ public class UnitDebuffManager : MonoBehaviour
                     if (debuffData[i].Stackable && existingDebuff.stack <= debuffData[i].stackLimit)
                     {
                         existingDebuff.stack++;
-                        if (debuff == UnitDebuff.Dizzy)
-                        {
-
-                            for (int idx = 0; idx < 3; idx++)
-                            {
-                                if (idx == existingDebuff.stack - 1)
-                                {
-                                    Debuff_OBJ[(int)debuff].transform.GetChild(idx).gameObject.SetActive(true);
-                                }
-                                else
-                                {
-                                    Debuff_OBJ[(int)debuff].transform.GetChild(idx).gameObject.SetActive(false);
-                                }
-                            }
-                        }
                     }
                 }
                 else 
@@ -240,15 +215,6 @@ public class UnitDebuffManager : MonoBehaviour
                     StartSFX = debuffData[i].StartSFX;
                     unitCtrl.soundManager.PlaySFX(unitCtrl.soundManager.DEBUFF_SFX, StartSFX);
                     Debuff_OBJ[(int)debuff].SetActive(true);
-
-                    if (debuff == UnitDebuff.Dizzy)
-                    {
-                        //ParticleSystem[] vfxByStack = Debuff_OBJ[(int)debuff].transform.GetChild();
-                        Debuff_OBJ[(int)debuff].transform.GetChild(0).gameObject.SetActive(true);
-                        Debuff_OBJ[(int)debuff].transform.GetChild(1).gameObject.SetActive(false);
-                        Debuff_OBJ[(int)debuff].transform.GetChild(2).gameObject.SetActive(false);
-                    }
-
                     if (debuff == UnitDebuff.Stun)
                     {
                         unitCtrl.GetComponent<UnitAnimationParaCtrl>().animator.SetTrigger(CONSTANT.ANITRIGGER_STUN);
@@ -269,7 +235,7 @@ public class UnitDebuffManager : MonoBehaviour
         {
             case UnitDebuff.Dizzy://3�� ���� �̵� �ӵ� 20%, ���� �ӵ� 20% ����. �ִ� 3������ ���õȴ�. 4�� ���ý� ���� ȿ���� �ߵ��ȴ�.
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                 break;
             case UnitDebuff.Stun://5�� ���� �ൿ �Ұ�
                 unitCtrl.unActable = false;
@@ -281,7 +247,7 @@ public class UnitDebuffManager : MonoBehaviour
                 break;
             case UnitDebuff.Poison: //3�� ���� �̵� �ӵ�, ���� �ӵ� 20% ����
                 unitCtrl.cur_moveSpeed = unitCtrl.unitData.moveSpeed;
-                unitCtrl.cur_attackSpeed = unitCtrl.unitData.generalSkill.coolTime;
+                unitCtrl.cur_attackSpeed = unitCtrl.unitData.attackSpeed;
                 break;
             case UnitDebuff.Bleed:
                 break;

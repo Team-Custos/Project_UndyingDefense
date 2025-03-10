@@ -143,13 +143,12 @@ public class EnemyUnitState : MonoBehaviour
 
             if (UnitCtrl.targetEnemy != null)//타겟 아군이 있는가?
             {
-                // 내 스폰지점  < 현재 타게 위치
-                //if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)//목표 병사보다 현재 타겟 위치가 더 멈.
-                //{
-                //    //Debug.Log("목표 병사보다 현재 타겟 위치가 더 멈.");
-                //    UnitCtrl.enemy_isPathBlocked = false; //성까지의 길이 막혀있지 않음.
-                //    return;
-                //}
+                if (previousNavDestination.z < UnitCtrl.targetEnemy.transform.position.z)//목표 병사보다 현재 타겟 위치가 더 멈.
+                {
+                    //Debug.Log("목표 병사보다 현재 타겟 위치가 더 멈.");
+                    UnitCtrl.enemy_isPathBlocked = false; //성까지의 길이 막혀있지 않음.
+                    return;
+                }
 
                 float targetUnitDistance_Cur = Vector3.Distance(transform.position, UnitCtrl.targetEnemy.transform.position);//현재 아군 병사와 현재 적군의 위치 간 거리.
                 UnitCtrl.moveTargetPos = UnitCtrl.targetEnemy.transform.position;//적군의 이동 목적 좌표를 아군 병사의 위치로 설정.
@@ -157,7 +156,7 @@ public class EnemyUnitState : MonoBehaviour
                 if (targetUnitDistance_Cur <= UnitCtrl.unitData.attackRange)//목적지에 도착했을 때
                 {
                     UnitCtrl.isEnemyInRange = true;
-                    navAgent.isStopped = true;
+                    navAgent.SetDestination(UnitCtrl.transform.position);//정지.
                     return;
                 }
             }
@@ -177,8 +176,7 @@ public class EnemyUnitState : MonoBehaviour
 
     void Dead_Enter()
     {
-        UnitCtrl.GetComponent<NavMeshAgent>().enabled = false;
-        UnitCtrl.GetComponent<NavMeshObstacle>().enabled = false;
+
     }
 
     void Dead_Update()
@@ -198,18 +196,18 @@ public class EnemyUnitState : MonoBehaviour
         {
             if (calcaulatedPath.status != NavMeshPathStatus.PathComplete)
             {
-                //Debug.Log("Can not Find Path");
+                Debug.Log("Can not Find Path");
                 UnitCtrl.enemy_isPathBlocked = true;
             }
             else
             {
-                //Debug.Log("Find Path Success");
+                Debug.Log("Find Path Success");
                 UnitCtrl.enemy_isPathBlocked = false;
             }
         }
         else
         {
-            //Debug.Log("Can not Find Path");
+            Debug.Log("Can not Find Path");
             UnitCtrl.enemy_isPathBlocked = true;
         }
     }

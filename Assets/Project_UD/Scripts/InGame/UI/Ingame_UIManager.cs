@@ -106,7 +106,11 @@ public class Ingame_UIManager : MonoBehaviour
 
     public Button unitUpgradeBtn;
 
-    public Button[] inGameCommandSkillBtn;
+    private Transform clickUITransform;
+    public GameObject clickUI;
+
+    // 곧 지울거
+    public Button commanderSkillBtn;
 
 
     private void Awake()
@@ -123,6 +127,20 @@ public class Ingame_UIManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
+
+        // 저장된 커맨더 스킬 확인 용
+        if (commanderSkillBtn != null)
+        {
+            commanderSkillBtn.onClick.AddListener(() =>
+            {
+                Dictionary<string, string> savedSkills = inGameManager.LoadCommandSkillList();
+
+                foreach (var skill in savedSkills)
+                {
+                    Debug.Log($"이름: {skill.Value}");
+                }
+            });
+        }
 
         for (int ii = 0; ii < unitSpawnBtn.Length; ii++)
         {
@@ -214,7 +232,7 @@ public class Ingame_UIManager : MonoBehaviour
             {
                 SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
                 settingPanel.SetActive(true);
-                //InGameManager.inst.isGamePause = true;
+                InGameManager.inst.isGamePause = true;
             });
         }
 
@@ -222,56 +240,16 @@ public class Ingame_UIManager : MonoBehaviour
         {
             settingCloseBtn.onClick.AddListener(() =>
             {
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
+                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
                 settingPanel.SetActive(false);
                 InGameManager.inst.isGamePause = false;
             });
         }
 
+
+
         unitSpawnBtn[2].interactable = false;
         unitSpawnBtn[3].interactable = false;
-
-
-        if (settingLobbyBtn != null)
-        {
-            settingLobbyBtn.onClick.AddListener(() =>
-            {
-                InGameManager.inst.isGamePause = false;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_exit);
-                LoadingSceneManager.LoadScene("LobbyScene_LoPol");
-
-            });
-
-
-        }
-
-        if (settingReStartBtn != null)
-        {
-            settingReStartBtn.onClick.AddListener(() =>
-            {
-                InGameManager.inst.isGamePause = false;
-                SoundManager.instance.PlayUISFx(SoundManager.uiSfx.sfx_click);
-                LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            });
-
-        }
-        if(UserDataModel.instance.IsSkillListFull())
-        {
-            for (int i = 0; i < inGameCommandSkillBtn.Length; i++)
-            {
-                inGameCommandSkillBtn[i].image.sprite = UserDataModel.instance.skillDatas[i].commandSkillImage;
-
-                int index = i;
-
-                inGameCommandSkillBtn[i].onClick.AddListener(() =>
-                {
-                    Debug.Log(UserDataModel.instance.skillDatas[index].commandSkillName);
-                });
-            }
-        }
-        
-
-        
     }
 
 
@@ -544,14 +522,14 @@ public class Ingame_UIManager : MonoBehaviour
             buttonImage.sprite = SiegeModeImage;
         }
 
-        //if (unit.unitData.level >= 2)
-        //{
-        //    unitUpgradeBtn.interactable = false;
-        //}
-        //else
-        //{
-        //    unitUpgradeBtn.interactable = true;
-        //}
+        if(unit.unitData.level >= 2)
+        {
+            unitUpgradeBtn.interactable = false;
+        }
+        else
+        {
+            unitUpgradeBtn.interactable = true;
+        }
 
         // 업그레이드 버튼
         if (unitUpgradeBtn != null)
@@ -831,7 +809,7 @@ public class Ingame_UIManager : MonoBehaviour
 
     void RestartGame()
     {
-        LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 

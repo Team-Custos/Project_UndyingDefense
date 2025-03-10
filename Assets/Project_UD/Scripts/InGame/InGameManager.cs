@@ -13,6 +13,7 @@ public class InGameManager : MonoBehaviour
     public UnitDebuffDataCtrl unitDebuffData;//유닛의 디버프의 기본정보 관리.
     public int gold = 0;//현재 가지고 있는 골드의 양.
 
+    public CommanderSkillData[] CurCommanderSkill;//현재 지휘간 스킬.
 
     public GameObject Base;//성 오브젝트.
     public NavMeshSurface NavMeshSurface;
@@ -106,5 +107,30 @@ public class InGameManager : MonoBehaviour
     }
 
 
+    // 저장된 커맨더 스킬 불러오기
+    public Dictionary<string, string> LoadCommandSkillList()
+    {
+        Dictionary<string, string> loadedSkills = new Dictionary<string, string>();
+
+        string skillIDList = PlayerPrefs.GetString("SkillIDList", "");
+
+        if (!string.IsNullOrEmpty(skillIDList))
+        {
+            string[] skillIDs = skillIDList.Split(',');
+
+            foreach (string skillID in skillIDs)
+            {
+                string skillName = PlayerPrefs.GetString(skillID, "이름 없음");
+                loadedSkills.Add(skillID, skillName);
+            }
+        }
+
+        if (loadedSkills.Count == 0)
+        {
+            Debug.LogWarning("불러온 스킬이 없습니다.");
+        }
+
+        return loadedSkills;
+    }
 
 }

@@ -13,19 +13,22 @@ MonoBehaviour:
   m_Name: UD_Enemy102
   m_EditorClassIdentifier: 
   unitType: 0
-  defenseType: 2
+  defenseType: 0
   targetSelectType: 0
   level: 1
-  modelPrefab: {fileID: 242289790221605892, guid: 2d05805cf6d511e4b91650e0967bb17a,
+  modelPrefab: {fileID: 242289790221605892, guid: b97e1d7a6563ab04082eab9041842ff4,
     type: 3}
-  maxHP: 180
+  maxHP: 150
   mental: 1
   moveSpeed: 2
-  overrideController: {fileID: 22100000, guid: 3abceb20b290afc4db7008839fdaa066, type: 2}
+  overrideController: {fileID: 22100000, guid: b8de80c4779215549a544ea51401e234, type: 2}
+  attackPoint: 1
   critChanceRate: 10
-  generalSkill: {fileID: 11400000, guid: db1c18e15aa88164687f19f990a7a696, type: 2}
-  specialSkill: {fileID: 0}
-  sightRange: 20
+  generalSkillCode: 103
+  specialSkillCode: 0
+  attackSpeed: 1
+  skillCooldown: 5
+  sightRange: 200
   attackRange: 3
   attackSound:
   - {fileID: 8300000, guid: c4b110176e912ec468fe285d581c321f, type: 3}
@@ -34,15 +37,17 @@ MonoBehaviour:
   name: "\uAC1C\uCC99\uC790"
   unitCode: 80
   cost: 0
-  gold: 10
-  g_SkillName: "\uAC00\uB85C \uBCA0\uAE30 1 "
+  gold: 50
+  g_SkillName: "\uAC80 \uBCA0\uAE30"
   s_SkillName: 
-  g_SkillInfo: "\uD55C\uC190 \uB0A0\uC744 \uAC00\uB85C\uB85C \uADF8\uC5B4 \uB2E8\uC77C
-    \uB300\uC0C1\uC744 \uBCA4\uB2E4. "
+  g_SkillInfo: "\uAC80\uC73C\uB85C \uD55C \uBA85\uC758 \uC801\uC744 \uBCA0\uC5B4
+    5 \uB370\uBBF8\uC9C0\uC758 \uBCA0\uAE30 \uACF5\uACA9. \uCE58\uBA85\uD0C0 \uC2DC
+    \uCD9C\uD608 \uD6A8\uACFC"
   s_SkillInfo: 
   g_SkillImage: {fileID: 21300000, guid: 76769ede7a91f914fbe3065418fa34b5, type: 3}
   s_SkillImage: {fileID: 0}
   unitImage: {fileID: 21300000, guid: dcd086b0e1610e34ab78e1c64cafd2cc, type: 3}
+  upgradePaths: []
   upgrade1Cost: 0
   upgrade2Cost: 0
   uupgrade1Image: {fileID: 0}

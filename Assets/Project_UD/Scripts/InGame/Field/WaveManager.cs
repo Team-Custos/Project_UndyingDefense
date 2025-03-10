@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,7 +7,6 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager inst;
     [SerializeField] private WaveCanvasController waveCanvasController;
-    [SerializeField] private InGame_BGMManager bgmManager;
 
     public WaveDataTable waveDataTable;                 // WaveData를 담고 있는 ScriptableObject
     public List<Ingame_UnitData> enemyDatas;            // 적 데이터 리스트
@@ -29,7 +27,7 @@ public class WaveManager : MonoBehaviour
     [Header("웨이브에 필요한 시간 변수")]
     [SerializeField] private float waveTimer = 20.0f;   // 웨이브 종료 후 대기 시간 (현재는 20초로 고정)
     [SerializeField] private float spawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
-    [SerializeField] private float curSpawnTimer = 3.0f;   // 몬스터 스폰 간격 (현재는 3초로 고정)
+    [SerializeField] private float curSpawnTimer = 0.0f;   // 웨이브 시작 후 대기 시간 (현재는 20초로 고정)
     [SerializeField] private float waveDelay = 1.0f;    // 웨이브, ui 간 텀
 
     private WaveData waveData;
@@ -40,8 +38,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int monSpawnIndex;     // 몬스터 스폰 인덱스
     [SerializeField] private int monSpawnCount;     // 인덱스의 몬스터 소환 횟수
     [SerializeField] private int totalMonCount;     // 현재 생성되어있는 모든 몬스터 수
-
-    private bool oneShot;
 
 
     private void Awake()
@@ -93,18 +89,12 @@ public class WaveManager : MonoBehaviour
                     {
                         // 웨이브 대기 시작
                         waveCanvasController.waveCountTextPanel.SetActive(true);
-                        if (!oneShot)
-                        {
-                            SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
-                            oneShot = true;
-                        }
+                        //SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_wavePrepare);
 
                         waveTimer -= Time.deltaTime;
 
                         // 웨이브 대기 시간을 표시하는 타이머
                         waveCanvasController.waveCountText.text = "적군 침공까지 " + Mathf.Ceil(waveTimer) + "초";
-
-
 
                         if (waveTimer <= 0.0f) // && waveTimer > -1.0f) // 카운트가 끝나면 웨이브 시작
                         {
@@ -143,14 +133,13 @@ public class WaveManager : MonoBehaviour
             if (waveDelay <= 0.0f)
             {
                 EndWave();
-                //waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
+                waveCanvasController.waveDefenseSuccessPaenl.SetActive(false);
                 waveDelay = 1.0f;
             }
         }
 
         if(BaseStatus.instance.isBaseDestroyed)
         {
-            bgmManager.PauseBGM();
             waveCanvasController.waveResultLosePanel.SetActive(true);
 
 
@@ -161,8 +150,6 @@ public class WaveManager : MonoBehaviour
 
     private void StartWave()
     {
-        isBaseAttackPerWave = false;
-
         waveDelay = 4.0f;
 
         waveCanvasController.waveStepText.text = "웨이브 " + currentWave;
@@ -233,6 +220,7 @@ public class WaveManager : MonoBehaviour
             // 웨이브 클리어 ui
         }
 
+        SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_waveWin);
 
         InGameManager.inst.gold += waveData.reward;
         Ingame_UIManager.instance.goldTxt.text = InGameManager.inst.gold.ToString();
@@ -257,7 +245,7 @@ public class WaveManager : MonoBehaviour
 
         isWaveing = true;
 
-        oneShot = false;
+
     }
 
 
@@ -286,8 +274,6 @@ public class WaveManager : MonoBehaviour
         {
             if (currentWave == maxWave)
             {
-                bgmManager.PauseBGM();
-                waveCanvasController.waveWarnningPanel.SetActive(false);
                 waveCanvasController.waveResultWinPanel.SetActive(true);
                 SoundManager.instance.PlayWaveSFX(SoundManager.waveSfx.sfx_battleWin);
 
@@ -333,9 +319,6 @@ public class WaveManager : MonoBehaviour
             waveCanvasController.waveWarnningPanel.SetActive(true);
             isBaseAttackPerWave = true;
         }
-
-        int i = Random.Range(0, 4);
-        SoundManager.instance.PlayCastleSFX(i);
     }
 
 }

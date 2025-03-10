@@ -16,19 +16,32 @@ public class Ingame_UnitData : ScriptableObject
     public GameObject modelPrefab;
     public int maxHP;                                             
     public int mental = 1;                                        
-    public float moveSpeed;                                       
-                                                                  
+    public float moveSpeed;
+
+    public float sightRange = 0;
+    public float attackRange = 0;
+
     public AnimatorOverrideController overrideController;         
                                                                   
-    [Header("====Attack====")]                                    
-    public int critChanceRate;                                  
-    public UnitSkillData generalSkill;                            
-    public UnitSkillData specialSkill;                                                          
-    public float sightRange = 0;                                  
-    public float attackRange = 0;                   
+    [Header("====GeneralSkill====")]
+    public int generalSkillCode = 101;
+    public float attackSpeed = 0;
+    public int generalSkillDamage = 1;                                  
+    public int baseCritChanceRate;
+    public AttackType generalAttackType;
+    public UnitDebuff generalSkillDebuff;      
     public AudioClip[] attackSound;
 
     public GameObject attackVFX;
+
+    [Header("====SpecialSkill====")]
+    public int specialSkillCode = 101;
+    public float skillCooldown = 0;
+    public int specialSkillDamage = 0;
+    public int bonusCritChanceRate = 0;
+    public AttackType specialAttackType;
+    public UnitDebuff specialSkillDebuff;
+
 
     // 추가
     [Header("============")]
@@ -45,6 +58,7 @@ public class Ingame_UnitData : ScriptableObject
     public Sprite unitImage;
 
     [Header("====Upgrade Options====")]
+    public List<string> upgradePaths;  // 업그레이드 가능 코드 리스트
     public int upgrade1Cost;
     public int upgrade2Cost;
     public Sprite uupgrade1Image;
