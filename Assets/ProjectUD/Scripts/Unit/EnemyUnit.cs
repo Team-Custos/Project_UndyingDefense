@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class EnemyUnit : Unit
 {
@@ -25,6 +26,7 @@ public class EnemyUnit : Unit
 
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
+    private EnemyUnitSpawner enemySpawner;
 
     private Mode mode;
     private State state;
@@ -34,18 +36,12 @@ public class EnemyUnit : Unit
 
     public override UnitData Data => data;
 
-    private EnemyUnitSpawner spawner;
-
-    private void Start()
-    {
-        spawner = FindObjectOfType<EnemyUnitSpawner>();
-    }
-
-    public void Initialize(EnemyUnitData data, ObjectPoolWithList<EnemyUnit> pool, Fortress fortress)
+    public void Initialize(EnemyUnitData data, ObjectPoolWithList<EnemyUnit> pool, Fortress fortress, EnemyUnitSpawner enemySpawner)
     {
         this.data = data;
         this.pool = pool;
         this.fortress = fortress;
+        this.enemySpawner = enemySpawner;
     }
 
     public void Initialize(Vector3 fortressPos)
@@ -288,10 +284,23 @@ public class EnemyUnit : Unit
         navObstacle.enabled = false;
         collider.enabled = false;
 
+        // 상태를 변경하고 에니메이션을 변경
         state = State.DEAD;
         modelAnimator.SetTrigger("Die");
 
-        spawner.OnEnemyDead();
+        enemySpawner.OnEnemyDead();
+    }
+
+    private void OnDisable()
+    {
+        if(pool == null)
+            return;
+
+        if(gameObject.activeInHierarchy)
+            gameObject.SetActive(false);
+
+        pool.List.Remove(this);  // 리스트에서 제거
+        pool.Pool.Release(this);    // 풀에 반환
     }
 
 

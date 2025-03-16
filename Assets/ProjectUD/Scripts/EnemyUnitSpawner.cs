@@ -42,7 +42,6 @@ public class EnemyUnitSpawner : MonoBehaviour
             waveTimer -= Time.deltaTime;
             if (waveTimer <= 0f)
             {
-                waveTimer = 20f;
                 isWaveEnd = false;
                 waveTimer = 20f;
             }
@@ -68,6 +67,8 @@ public class EnemyUnitSpawner : MonoBehaviour
                 Debug.Log("현재 몬스터 수 : " + totalMonCount);
 
                 EnemyUnit enemyUnit = poolDic[data].Pool.Get();
+                poolDic[data].List.Add(enemyUnit);
+
                 Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
                 enemyUnit.transform.position = pos;
                 enemyUnit.transform.forward = spawnDirection.forward;
@@ -85,7 +86,7 @@ public class EnemyUnitSpawner : MonoBehaviour
                     {
                         spawnDataIndex = 0;
                         isSpawnEnd = true;
-                        curWave++;
+                        
                     }
                 }
             }
@@ -98,7 +99,7 @@ public class EnemyUnitSpawner : MonoBehaviour
         obj.SetActive(false);
         if(obj.TryGetComponent(out EnemyUnit enemy))
         {
-            enemy.Initialize(data, poolDic[data], fortress);
+            enemy.Initialize(data, poolDic[data], fortress, this);
             return enemy;
         }
         else
@@ -113,10 +114,12 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         Debug.Log("현재 몬스터 수 : " + totalMonCount);
 
-        if (totalMonCount == 0 && isSpawnEnd)
+        if (totalMonCount == 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
         {
             isSpawnEnd = false;
             isWaveEnd = true;
+
+            curWave++;
         }
     }
 

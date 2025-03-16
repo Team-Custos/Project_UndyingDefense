@@ -25918,7 +25918,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0eff35fdc3429f2448534e6b34e14fab, type: 2}
   curWave: 1
   isWaveEnd: 1
-  waveTimer: 20
+  waveTimer: 3
   totalMonCount: 0
   ingameUI: {fileID: 959445840}
 --- !u!4 &679628029
@@ -36509,6 +36509,7 @@ GameObject:
   - component: {fileID: 981024400}
   - component: {fileID: 981024402}
   - component: {fileID: 981024401}
+  - component: {fileID: 981024403}
   m_Layer: 14
   m_Name: HP_Bar
   m_TagString: Untagged
@@ -36574,6 +36575,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981024399}
   m_CullTransparentMesh: 1
+--- !u!114 &981024403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981024399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf39bfec30f2c945963ab6062489038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitHPPrefab: {fileID: 981024399}
+  unitHP: {fileID: 785500414}
 --- !u!1001 &982135043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63031,6 +63046,7 @@ GameObject:
   - component: {fileID: 1627123781}
   - component: {fileID: 1627123780}
   - component: {fileID: 1627123782}
+  - component: {fileID: 1627123783}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -63161,6 +63177,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicRaycaster: {fileID: 959445836}
+--- !u!114 &1627123783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627123779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c25deac27992f44486ef91e5d368f8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitHp: {fileID: 981024403}
+  mainCamera: {fileID: 1346724710}
+  inputEventManager: {fileID: 1627123782}
 --- !u!1001 &1627136562
 PrefabInstance:
   m_ObjectHideFlags: 0
