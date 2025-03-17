@@ -10,20 +10,21 @@ TagManager:
   - Ground
   - Base
   - Attack
+  - WaveUI
+  - UI
+  - InteractiveUi
+  - UnInteractiveUi
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - Ground
-  - Unit
-  - Sensor
-  - Attack
-  - Tile
-  - Base
+  - AllyUnit
+  - EnemyUnit
+  - Ally
+  - Enemy
   - Obstacle
   - 
   - 
@@ -33,6 +34,9 @@ TagManager:
   - 
   - 
   - 
+  - 
+  - DrawOutline
+  - IgnoreOutline
   - 
   - 
   - 
@@ -46,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UnitUI
+    uniqueID: 1842759009
     locked: 0
