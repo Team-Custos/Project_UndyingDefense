@@ -1,12 +1,93 @@
+using Cinemachine;
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 
 //카메라 조작을 위한 스크립트. (삭제 예정.)
-public class Ingame_CamManager : MonoBehaviour
+public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel
 {
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private Transform cameraPivot;
+
+    [Header("■ Cam Controll")]
+    [SerializeField] private float moveSpeed = 10.0f;
+    [SerializeField] private float zoomSpeed = 2.0f;
+    [SerializeField] private float zoomMin = 5.0f;
+    [SerializeField] private float zoomMax = 20.0f;
+
+    [Header("■ Cam Limtis")]
+    [SerializeField] private float xMax = 30.0f;
+    [SerializeField] private float xMin = -40.0f;
+    [SerializeField] private float zMax = 4.5f;
+    [SerializeField] private float zMin = -25.0f;
+
+    private Vector3 moveDirection = Vector3.zero; // 이동 방향 저장
+
+    private void Start()
+    {
+        inputEventManager.OnNavigateTarget = this;
+        inputEventManager.OnScrollTarget = this;
+    }
+
+    public void OnNavigate(InputAction.CallbackContext context)
+    {
+        if (context.started || context.performed)
+        {
+            Vector2 input = context.ReadValue<Vector2>();
+            moveDirection = Vector3.zero;
+
+            if (input.y > 0) // W 키
+                moveDirection += new Vector3(1, 0, 1);
+            if (input.y < 0) // S 키
+                moveDirection += new Vector3(-1, 0, -1);
+            if (input.x > 0) // D 키
+                moveDirection += new Vector3(1, 0, -1);
+            if (input.x < 0) // A 키
+                moveDirection += new Vector3(-1, 0, 1);
+        }
+        else if (context.canceled)
+        {
+            moveDirection = Vector3.zero; // 키를 떼면 멈추기
+        }
+    }
+
+    public void OnScrollWheel(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            float scrollInput = context.ReadValue<Vector2>().y;
+
+            float currentFov = virtualCamera.m_Lens.FieldOfView;
+            currentFov -= scrollInput * zoomSpeed * Time.deltaTime;
+            currentFov = Mathf.Clamp(currentFov, zoomMin, zoomMax);
+            virtualCamera.m_Lens.FieldOfView = currentFov;
+
+        }
+    }
+
+
+    private void Update()
+    {
+        if (moveDirection != Vector3.zero)
+        {
+            Vector3 movement = moveDirection.normalized * moveSpeed * Time.deltaTime;
+            cameraPivot.position += movement;
+
+            // 카메라 이동 범위 제한
+            Vector3 clampedPosition = cameraPivot.position;
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
+            clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
+            cameraPivot.position = clampedPosition;
+        }
+    }
+
     //public float camZoomValue = 0.5f;
 
     //public float moveSpeed = 2;

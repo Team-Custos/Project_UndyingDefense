@@ -6,7 +6,8 @@ public class AllyUnit : Unit
     public enum Mode
     {
         FREE,
-        SEIGE
+        SEIGE,
+        CHANGE
     }
 
     public enum TargetingType    //아군 유닛의 타겟 선정 방식.
@@ -31,6 +32,9 @@ public class AllyUnit : Unit
     private Mode mode;
     
     private State state;
+
+    private float changeDuration = 3.0f;
+    private Mode previousMode;
 
     public override UnitData Data => data;
 
@@ -316,6 +320,30 @@ public class AllyUnit : Unit
                             navAgent.enabled = true;
                         }
                     }
+                }
+                break;
+            case Mode.CHANGE:
+                {
+                    if(changeDuration >= 0)
+                    {
+                        changeDuration -= Time.deltaTime;
+                        state = State.IDLE;
+                    }
+                    else
+                    {
+                        if(previousMode == Mode.FREE)
+                        {
+                            mode = Mode.SEIGE;
+                        }
+                        else if(previousMode == Mode.SEIGE)
+                        {
+                            mode = Mode.FREE;
+                        }
+
+                        changeDuration = 3.0f;
+                        previousMode = mode;
+                    }
+
                 }
                 break;
         }

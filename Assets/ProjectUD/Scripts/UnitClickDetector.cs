@@ -6,19 +6,17 @@ using UnityEngine.InputSystem;
 
 public class UnitClickDetector : MonoBehaviour, IInputClick
 {
-    [SerializeField] private UnitHpUI unitHp;
+    [SerializeField] private UnitSelectUI unitSelectUI;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
+
     private void Start()
     {
-        if (inputEventManager != null)
-        {
-            inputEventManager.OnClickTarget = this;
-        }
+        inputEventManager.OnClickTarget = this;
     }
 
-public void OnClick(InputAction.CallbackContext context)
+    public void OnClick(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
@@ -29,23 +27,20 @@ public void OnClick(InputAction.CallbackContext context)
 
             if(Physics.Raycast(ray, out hit))
             {
-                Unit unit = hit.collider.GetComponent<Unit>();
-
-                if(unit != null)
+                if(hit.collider.CompareTag("Unit"))
                 {
-                    Debug.Log("fefe");
-                    unitHp.ShowHP(unit);
+                    Debug.Log(22222);
+                    Unit unit = hit.collider.GetComponent<Unit>();
+                    
+                    unitSelectUI.ShowHP(unit);
                 }
                 else
                 {
-                    unitHp.HideHP();
+                    Debug.Log(33333);
+                    unitSelectUI.HideHP();
                 }
+
             }
-            else
-            {
-                unitHp.HideHP();
-            }
-            
         }
     }
 }

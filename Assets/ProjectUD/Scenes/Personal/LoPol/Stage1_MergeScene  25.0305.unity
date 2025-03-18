@@ -33853,6 +33853,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  unitClickDector: {fileID: 1627123783}
 --- !u!4 &923510899
 Transform:
   m_ObjectHideFlags: 0
@@ -35324,6 +35325,7 @@ RectTransform:
   - {fileID: 2086530388764488708}
   - {fileID: 1102041695}
   - {fileID: 2073251261}
+  - {fileID: 981024400}
   m_Father: {fileID: 1965640244}
   m_LocalEulerAnglesHint: {x: 0, y: -1.961, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -36510,6 +36512,7 @@ GameObject:
   - component: {fileID: 981024402}
   - component: {fileID: 981024401}
   - component: {fileID: 981024403}
+  - component: {fileID: 981024404}
   m_Layer: 14
   m_Name: HP_Bar
   m_TagString: Untagged
@@ -36530,7 +36533,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 785500413}
-  m_Father: {fileID: 2003644686}
+  m_Father: {fileID: 959445839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -36589,6 +36592,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitHPPrefab: {fileID: 981024399}
   unitHP: {fileID: 785500414}
+  yPos: 0.9
+--- !u!114 &981024404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981024399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b29e30088072b4290e13bf84be4ec6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &982135043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52061,11 +52077,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346724708}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4c19a1207bd51a4fac6803442afd9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputEventManager: {fileID: 1627123782}
+  virtualCamera: {fileID: 633104416}
+  cameraPivot: {fileID: 1555955064}
+  moveSpeed: 20
+  zoomSpeed: 1
+  zoomMin: 5
+  zoomMax: 20
+  xMax: 30
+  xMin: -40
+  zMax: 4.5
+  zMin: -25
 --- !u!114 &1346724713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63093,7 +63120,19 @@ MonoBehaviour:
     m_ActionId: d8a805c8-1f85-4f56-b9f2-0443e85c8747
     m_ActionName: Player/Fire[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1346724712}
+        m_TargetAssemblyTypeName: Ingame_CamManager, Assembly-CSharp
+        m_MethodName: OnNavigate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 5c688389-d4ee-4ac6-a197-03a512bace35
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -63125,7 +63164,19 @@ MonoBehaviour:
     m_ActionId: 031a639c-9559-460e-87f6-8e8d19223ef7
     m_ActionName: UI/Click[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1346724712}
+        m_TargetAssemblyTypeName: Ingame_CamManager, Assembly-CSharp
+        m_MethodName: OnScrollWheel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ecdf010a-2baa-4697-860d-58897a647676
     m_ActionName: UI/ScrollWheel[/Mouse/scroll]
   - m_PersistentCalls:
@@ -63189,7 +63240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c25deac27992f44486ef91e5d368f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitHp: {fileID: 981024403}
+  unitSelectUI: {fileID: 981024403}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1627123782}
 --- !u!1001 &1627136562
@@ -76286,8 +76337,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 981024400}
+  m_Children: []
   m_Father: {fileID: 1965640244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

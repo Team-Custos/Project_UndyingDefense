@@ -10,6 +10,7 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputSubmit OnSubmitTarget { set; private get; }
     public IInputNavigate OnNavigateTarget { set; private get; }
     public IInputClick OnClickTarget { set; private get; }
+    public IInputScrollWheel OnScrollTarget { set; private get; }
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
 
@@ -32,6 +33,12 @@ public class PlayerInputEventManager : MonoBehaviour
     {
         if (OnClickTarget != null)
             OnClickTarget.OnClick(context);
+    }
+
+    public void OnScrollWheel(InputAction.CallbackContext context)
+    {
+        if(OnScrollTarget != null)
+            OnScrollTarget.OnScrollWheel(context);
     }
 
     public bool IsPointerOnUIElements()

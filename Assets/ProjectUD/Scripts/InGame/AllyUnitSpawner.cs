@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
+using UnityEngine.UIElements;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick
 {
@@ -29,6 +30,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
     private bool spawn;
     private List<ObjectPoolWithList<AllyUnit>> unitPools;
     private ObjectPoolWithList<UnitSpawnPoint> spawnPointPool;
+
+    [SerializeField] UnitClickDetector unitClickDector;
 
     private void Start()
     {
@@ -110,7 +113,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
         spawn = false;
         indicator.SetActive(false);
         mouseIndicator.SetActive(false);
-        inputMng.OnClickTarget = null;
+        inputMng.OnClickTarget = unitClickDector; //  null;
         unitSpawnUI.Deselect();
     }
 

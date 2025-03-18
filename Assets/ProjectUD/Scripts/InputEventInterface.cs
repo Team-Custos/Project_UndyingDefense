@@ -16,4 +16,9 @@ namespace InputEventInterface
     {
         void OnClick(InputAction.CallbackContext context);
     }
+
+    public interface IInputScrollWheel
+    {
+        void OnScrollWheel(InputAction.CallbackContext context);
+    }
 }

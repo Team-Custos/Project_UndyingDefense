@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitHpUI : MonoBehaviour
+public class UnitSelectUI : MonoBehaviour
 {
     [SerializeField] private GameObject unitHPPrefab;
     [SerializeField] private Image unitHP;
 
     private Unit selectedUnit;
+    [SerializeField] private float yPos = 0.9f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -29,6 +25,7 @@ public class UnitHpUI : MonoBehaviour
     {
         selectedUnit = unit;
         gameObject.SetActive(true);
+        transform.position = selectedUnit.transform.position + new Vector3(0, yPos, 0);
     }
 
     public void HideHP()
@@ -42,6 +39,7 @@ public class UnitHpUI : MonoBehaviour
         if(unitHPPrefab != null)
         {
             unitHP.fillAmount = selectedUnit.HpPercent;
+            transform.position = selectedUnit.transform.position + new Vector3(0, yPos, 0);
         }
     }
 }
