@@ -87,7 +87,12 @@ public class AttackSkill : SkillBase
         }
     }
 
-    //사각형 공격도 추가할 예정.
+    public void AreaAttack(Unit unit, Unit pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
+    {
+        
+    }
+
+    
 
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)//투사체 발사
     {
