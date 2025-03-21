@@ -11,10 +11,11 @@ using UnityEngine.InputSystem;
 //카메라 조작을 위한 스크립트. (삭제 예정.)
 public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel
 {
+    [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputEventManager;
-
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Transform cameraPivot;
+    private CinemachineFramingTransposer framingTransposer;
 
     [Header("■ Cam Controll")]
     [SerializeField] private float moveSpeed = 10.0f;
@@ -32,6 +33,11 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     private void Start()
     {
+        if (virtualCamera != null)
+        {
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        }
+
         inputEventManager.OnNavigateTarget = this;
         inputEventManager.OnScrollTarget = this;
     }
@@ -43,14 +49,14 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             Vector2 input = context.ReadValue<Vector2>();
             moveDirection = Vector3.zero;
 
-            if (input.y > 0) // W 키
-                moveDirection += new Vector3(1, 0, 1);
-            if (input.y < 0) // S 키
-                moveDirection += new Vector3(-1, 0, -1);
-            if (input.x > 0) // D 키
-                moveDirection += new Vector3(1, 0, -1);
-            if (input.x < 0) // A 키
-                moveDirection += new Vector3(-1, 0, 1);
+            if (input.y > 0f) // W 키
+                moveDirection += new Vector3(1f, 0f, 1f);
+            if (input.y < 0f) // S 키
+                moveDirection += new Vector3(-1f, 0f, -1f);
+            if (input.x > 0f) // D 키
+                moveDirection += new Vector3(1f, 0f, -1f);
+            if (input.x < 0f) // A 키
+                moveDirection += new Vector3(-1f, 0f, 1f);
         }
         else if (context.canceled)
         {
@@ -64,10 +70,10 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         {
             float scrollInput = context.ReadValue<Vector2>().y;
 
-            float currentFov = virtualCamera.m_Lens.FieldOfView;
+            float currentFov = framingTransposer.m_CameraDistance;
             currentFov -= scrollInput * zoomSpeed * Time.deltaTime;
             currentFov = Mathf.Clamp(currentFov, zoomMin, zoomMax);
-            virtualCamera.m_Lens.FieldOfView = currentFov;
+            framingTransposer.m_CameraDistance = currentFov;
 
         }
     }

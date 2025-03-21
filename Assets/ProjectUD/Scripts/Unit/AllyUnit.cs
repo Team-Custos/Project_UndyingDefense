@@ -29,7 +29,7 @@ public class AllyUnit : Unit
 
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
-    private Mode mode;
+    [SerializeField] private Mode mode;
     
     private State state;
 
@@ -43,6 +43,7 @@ public class AllyUnit : Unit
         base.Initialize();
         mode = Mode.SEIGE;
         //mode = Mode.FREE;
+        previousMode = mode;
     }
 
     public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool)
@@ -98,10 +99,18 @@ public class AllyUnit : Unit
                 break;
             case State.IDLE:
                 {
-                    if (navAgent.enabled && navAgent.velocity.magnitude > 0f)
+                    if(mode == Mode.CHANGE)
                     {
-                        state = State.RUN;
-                        modelAnimator.SetBool("isRunning", true);
+                        modelAnimator.SetBool("isRunning", false);
+                        navAgent.enabled = false;
+                    }
+                    else
+                    {
+                        if (navAgent.enabled && navAgent.velocity.magnitude > 0f)
+                        {
+                            state = State.RUN;
+                            modelAnimator.SetBool("isRunning", true);
+                        }
                     }
 
                     UpdateMode();
@@ -408,10 +417,11 @@ public class AllyUnit : Unit
 
     public void ChangeMode(Mode mode)
     {
+        Debug.Log($"현재 모드: {mode}");
         this.mode = mode;
     }
 
-    protected void Upgrade()
+    public void Upgrade()
     {
         
     }

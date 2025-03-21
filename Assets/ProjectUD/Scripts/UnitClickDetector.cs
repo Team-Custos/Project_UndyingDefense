@@ -20,8 +20,6 @@ public class UnitClickDetector : MonoBehaviour, IInputClick
     {
         if(context.performed)
         {
-            Debug.Log(1111);
-
             Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
@@ -29,15 +27,22 @@ public class UnitClickDetector : MonoBehaviour, IInputClick
             {
                 if(hit.collider.CompareTag("Unit"))
                 {
-                    Debug.Log(22222);
                     Unit unit = hit.collider.GetComponent<Unit>();
                     
-                    unitSelectUI.ShowHP(unit);
+                    if(unit is AllyUnit)
+                    {
+                        unitSelectUI.ShowAllyUI((AllyUnit)unit);
+                    }
+                    else
+                    {
+                        unitSelectUI.HideAllyUI();
+                    }
+
+                    unitSelectUI.ShowHp(unit);
                 }
                 else
                 {
-                    Debug.Log(33333);
-                    unitSelectUI.HideHP();
+                    unitSelectUI.HideHp();
                 }
 
             }

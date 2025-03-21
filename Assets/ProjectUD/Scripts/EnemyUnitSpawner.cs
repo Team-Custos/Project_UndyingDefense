@@ -64,7 +64,6 @@ public class EnemyUnitSpawner : MonoBehaviour
                     poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
 
                 totalMonCount++;
-                Debug.Log("현재 몬스터 수 : " + totalMonCount);
 
                 EnemyUnit enemyUnit = poolDic[data].Pool.Get();
                 poolDic[data].List.Add(enemyUnit);
