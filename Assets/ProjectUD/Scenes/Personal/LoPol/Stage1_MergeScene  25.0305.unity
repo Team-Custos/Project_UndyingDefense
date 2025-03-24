@@ -22268,6 +22268,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1 &570027506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 570027508}
+  - component: {fileID: 570027507}
+  m_Layer: 0
+  m_Name: ShortCutKeyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &570027507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570027506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898daff6cc7935045a9771de03ed337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputEventManager: {fileID: 1627123782}
+--- !u!4 &570027508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570027506}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.69348526, y: 7.0395193, z: 22.844969}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &571118903 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -52277,7 +52322,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 633104416}
   cameraPivot: {fileID: 1555955064}
   moveSpeed: 20
-  zoomSpeed: 1
+  zoomSpeed: 2
   zoomMin: 15
   zoomMax: 50
   xMax: 30
@@ -63346,7 +63391,19 @@ MonoBehaviour:
     m_ActionId: 5c688389-d4ee-4ac6-a197-03a512bace35
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 570027507}
+        m_TargetAssemblyTypeName: ShortCutKeyManager, Assembly-CSharp
+        m_MethodName: OnSubmit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 663ef333-e293-4bd7-81ef-3300fb563a8c
     m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
@@ -84489,3 +84546,4 @@ SceneRoots:
   - {fileID: 679628029}
   - {fileID: 1188809550}
   - {fileID: 1519819086}
+  - {fileID: 570027508}

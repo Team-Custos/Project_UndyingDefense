@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class AllyUnit : Unit
 {
@@ -37,6 +39,8 @@ public class AllyUnit : Unit
     private Mode previousMode;
 
     public override UnitData Data => data;
+
+    [SerializeField] private GameObject siegeEffect;
 
     public override void Initialize()
     {
@@ -272,6 +276,8 @@ public class AllyUnit : Unit
                         else
                             LookAt(targetUnit.transform.position);   
                     }
+
+                    siegeEffect.SetActive(true);
                 }
                 break;
             case Mode.FREE:
@@ -329,6 +335,8 @@ public class AllyUnit : Unit
                             navAgent.enabled = true;
                         }
                     }
+
+                    siegeEffect.SetActive(false);
                 }
                 break;
             case Mode.CHANGE:
@@ -353,6 +361,7 @@ public class AllyUnit : Unit
                         previousMode = mode;
                     }
 
+                    siegeEffect.SetActive(false);
                 }
                 break;
         }
@@ -417,14 +426,27 @@ public class AllyUnit : Unit
 
     public void ChangeMode(Mode mode)
     {
-        Debug.Log($"현재 모드: {mode}");
         this.mode = mode;
     }
 
-    public void Upgrade()
+    public void Upgrade(AllyUnitData allyUnitData, int index)
     {
-        
+        if (allyUnitData.UpgradeUnits.Length <= 0)
+        {
+            Debug.Log("데이터가 없습니다.");
+            return;
+        }
+        else
+        {
+            UnitData upgradeUnitData = allyUnitData.UpgradeUnits[index];
+
+            GameObject obj = upgradeUnitData.Prefab;
+        }
+
+        // 새 유닛 데이터를 가져와 스포너 방식의 풀로
+        // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
     }
+
 
     public override void Die()
     {

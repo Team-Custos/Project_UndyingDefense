@@ -11,4 +11,6 @@ public class AllyUnitData : UnitData
 
     public float Cost => cost;
     public TargetingType TargetingType => targetingType;
+
+    public UnitData[] UpgradeUnits => upgradeUnits;
 }

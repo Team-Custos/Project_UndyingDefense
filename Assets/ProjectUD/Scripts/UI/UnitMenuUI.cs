@@ -15,7 +15,7 @@ public class UnitMenuUI : MonoBehaviour
         upgradeBtn.onClick.AddListener(() =>
         {
             Debug.Log("업그레이드");
-            unit.Upgrade();
+            //unit.Upgrade(0);
         });
     }
 

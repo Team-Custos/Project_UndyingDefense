@@ -30,6 +30,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
     private bool spawn;
     private List<ObjectPoolWithList<AllyUnit>> unitPools;
     private ObjectPoolWithList<UnitSpawnPoint> spawnPointPool;
+    private Dictionary<GameObject, List<AllyUnit>> upgradeUnitPools;
 
     [SerializeField] UnitClickDetector unitClickDector;
 
