@@ -17,7 +17,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     protected float coolTimeCheck;
 
     public abstract SkillData Data { get; }
-    public bool IsCoolDown => coolTimeCheck >= Data.CoolTime;
+    public bool IsCoolDown => coolTimeCheck >= Data.CoolTime; // IsCoolDown이 true면 스킬이 쿨타임이 차서 사용 가능하다는 의미.
 
     public TargetType GetTargetType() => Data.TargetType;
 

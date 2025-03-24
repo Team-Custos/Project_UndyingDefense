@@ -89,19 +89,35 @@ public class AttackSkill : SkillBase
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
     {
-        
-    }
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
 
-    
+        int targetCount = Physics.OverlapBoxNonAlloc(pivotTarget.transform.position + Vector3.forward * AreaZ * 0.5f,new Vector3(AreaX,AreaY,AreaZ),targets);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+            }
+        }
+    }
 
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)//투사체 발사
     {
         // 투사체 발사
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position, Quaternion.identity);
-        //투사체 발사 할때 정보 전달.
+        ArrowCtrl arrowCtrl = projectile.GetComponent<ArrowCtrl>();
+        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
         projectile.transform.position = unit.transform.position;
-        //projectile.GetComponent<Projectile>().Shoot(target.transform.position, () => Attack(unit, target));
 
+        if (arrowCtrl != null)
+        {
+            arrowCtrl.SetTarget(target);
+            arrowCtrl.SetAttackPower(data.Damage);
+            arrowCtrl.CalculateTime(distance);
+        }
+
+        //projectile.GetComponent<Projectile>().Shoot(target.transform.position, () => Attack(unit, target));
     }
 
     public void Attack(Unit unit, Unit target)
