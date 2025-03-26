@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3120690377591463887}
   - component: {fileID: 5925473690637231011}
   - component: {fileID: 293578361156122460}
+  - component: {fileID: 4252606940935356880}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -83,3 +84,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4252606940935356880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758128800661199001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 165ca14834816cb4a95883d0ee57cf9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelAnimator: {fileID: 0}
+  navAgent: {fileID: 0}
+  navObstacle: {fileID: 0}
+  collider: {fileID: 0}
+  effectParent: {fileID: 0}
+  generalSkill: {fileID: 0}
+  specialSkill: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  nearbyDistance: 0
+  mode: 0
+  siegeEffect: {fileID: 0}

@@ -34,8 +34,6 @@ public class UnitSelectUI : MonoBehaviour
         selectedUnit = unit;
         unitHPPrefab.SetActive(true);
 
-        unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
-        unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit);
     }
 
     public void HideHp()
@@ -44,12 +42,16 @@ public class UnitSelectUI : MonoBehaviour
         selectedUnit = null;
     }
 
-    public void ShowAllyUI(AllyUnit allyUnit)
+    public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
     {
         selectedUnit = allyUnit;
         unitMenuPrefab.SetActive(true);
 
+        unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
+        int upgradeOption = Random.Range(0, 2);
+
+        unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit, allyUnitData, upgradeOption);
     }
 
     public void HideAllyUI()

@@ -14958,20 +14958,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!114 &390622803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: UI/Submit
-  m_EditorClassIdentifier: 
-  m_Asset: {fileID: -944628639613478452, guid: 5c47c7a1e506cd748953a188179d7825, type: 3}
-  m_ActionId: 663ef333-e293-4bd7-81ef-3300fb563a8c
 --- !u!4 &394460441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -59747,7 +59733,8 @@ MonoBehaviour:
     type: 3}
   m_PointAction: {fileID: 939647943}
   m_MoveAction: {fileID: 1436213222}
-  m_SubmitAction: {fileID: 390622803}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: 5c47c7a1e506cd748953a188179d7825,
+    type: 3}
   m_CancelAction: {fileID: 1829839015}
   m_LeftClickAction: {fileID: 1274331202}
   m_MiddleClickAction: {fileID: 415976303}
@@ -63391,19 +63378,7 @@ MonoBehaviour:
     m_ActionId: 5c688389-d4ee-4ac6-a197-03a512bace35
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 570027507}
-        m_TargetAssemblyTypeName: ShortCutKeyManager, Assembly-CSharp
-        m_MethodName: OnSubmit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 663ef333-e293-4bd7-81ef-3300fb563a8c
     m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
@@ -63462,6 +63437,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 92a1b1df-8502-40cf-a122-615768a5aecf
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570027507}
+        m_TargetAssemblyTypeName: ShortCutKeyManager, Assembly-CSharp
+        m_MethodName: OnSpeedUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1aaabb0a-cb6a-47d1-b3b2-51957af991dd
+    m_ActionName: Player/SpeedUp[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570027507}
+        m_TargetAssemblyTypeName: ShortCutKeyManager, Assembly-CSharp
+        m_MethodName: OnUnitDelete
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fac460cd-ac72-404a-aecb-42030ad8669c
+    m_ActionName: Player/UnitDelete[/Keyboard/h]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

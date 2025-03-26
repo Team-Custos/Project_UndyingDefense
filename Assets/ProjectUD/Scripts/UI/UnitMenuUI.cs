@@ -8,14 +8,14 @@ public class UnitMenuUI : MonoBehaviour
     [SerializeField] private Button modeChangeBtn;
     [SerializeField] private Button upgradeBtn;
 
-    private AllyUnit allyUnit;
-    public void PerformUpgrade(AllyUnit unit)
+    public void PerformUpgrade(AllyUnit allyUnit, AllyUnitData allyUnitData, int index)
     {
         upgradeBtn.onClick.RemoveAllListeners();
         upgradeBtn.onClick.AddListener(() =>
         {
             Debug.Log("업그레이드");
-            //unit.Upgrade(0);
+            allyUnit.Upgrade(allyUnitData, index);
+            gameObject.SetActive(false);
         });
     }
 
@@ -26,6 +26,7 @@ public class UnitMenuUI : MonoBehaviour
         {
             Debug.Log("모드 변경");
             unit.ChangeMode(AllyUnit.Mode.CHANGE);
+            gameObject.SetActive(false);
         });
     }
 }

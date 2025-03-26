@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ShortCutKeyManager : MonoBehaviour, IInputSubmit
+public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp, IInputUnitDelete
 {
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
@@ -15,45 +15,31 @@ public class ShortCutKeyManager : MonoBehaviour, IInputSubmit
 
     private void Start()
     {
-        inputEventManager.OnSubmitTarget = this;
+        inputEventManager.OnSpeedUpTarget = this;
+        inputEventManager.OnUnitDeleteTarget = this;
     }
 
-    public void OnSubmit(InputAction.CallbackContext context)
+    public void OnSpeedUp(InputAction.CallbackContext context)
     {
-        if (context.control.name == "e")
+        if (context.action.name == "SpeedUp" && context.performed)
         {
-            if (context.performed)
-            {
-                Time.timeScale = 3.0f;
-            }
-            else if (context.canceled)
-            {
-                Time.timeScale = 1.0f;
-            }
+            Time.timeScale = 3.0f;
         }
-        else if (context.control.name == "h")
+        else if (context.canceled)
         {
-            if (context.performed)
+            Time.timeScale = 1.0f;
+        }
+    }
+
+    public void OnUnitDelete(InputAction.CallbackContext context)
+    {
+        if (context.action.name == "UnitDelete" && context.performed)
+        {
+            if (selectedUnit != null)
             {
                 unitPool.Pool.Release(selectedUnit);
                 selectedUnit = null;
-                Debug.Log("유닛 삭제");
             }
         }
     }
-
-
-
-
-    //public void OnSubmit(InputAction.CallbackContext context)
-    //{
-    //    if (context.action.name == "Submit" && context.performed)
-    //    {
-    //        Time.timeScale = 3.0f;
-    //    }
-    //    else if (context.canceled)
-    //    {
-    //        Time.timeScale = 1.0f;
-    //    }
-    //}
 }

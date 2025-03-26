@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -42,6 +43,8 @@ public class AllyUnit : Unit
 
     [SerializeField] private GameObject siegeEffect;
 
+    private AllyUnitSpawner spawner;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -50,10 +53,11 @@ public class AllyUnit : Unit
         previousMode = mode;
     }
 
-    public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool)
+    public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner)
     {
         this.data = data;
         this.pool = pool;
+        this.spawner = spawner;
     }
 
     protected override void Update()
@@ -277,7 +281,7 @@ public class AllyUnit : Unit
                             LookAt(targetUnit.transform.position);   
                     }
 
-                    siegeEffect.SetActive(true);
+                    siegeEffect.SetActive(false);
                 }
                 break;
             case Mode.FREE:
@@ -441,6 +445,10 @@ public class AllyUnit : Unit
             UnitData upgradeUnitData = allyUnitData.UpgradeUnits[index];
 
             GameObject obj = upgradeUnitData.Prefab;
+            spawner.CreatUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform);
+
+            pool.Pool.Release(this);
+            gameObject.SetActive(false);    
         }
 
         // 새 유닛 데이터를 가져와 스포너 방식의 풀로

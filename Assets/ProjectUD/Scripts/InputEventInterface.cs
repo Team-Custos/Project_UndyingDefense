@@ -21,4 +21,14 @@ namespace InputEventInterface
     {
         void OnScrollWheel(InputAction.CallbackContext context);
     }
+
+    public interface IInputSpeedUp
+    {
+        void OnSpeedUp(InputAction.CallbackContext context);
+    }
+
+    public interface IInputUnitDelete
+    {
+        void OnUnitDelete(InputAction.CallbackContext context);
+    }
 }
