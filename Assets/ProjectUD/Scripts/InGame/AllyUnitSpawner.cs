@@ -32,7 +32,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
     private List<ObjectPoolWithList<AllyUnit>> unitPools;
     private ObjectPoolWithList<UnitSpawnPoint> spawnPointPool;
 
-    private Dictionary<GameObject, List<AllyUnit>> upgradeUnitPoolsDic = new Dictionary<GameObject, List<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
+    private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic = 
+        new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
 
     [SerializeField] UnitClickDetector unitClickDector;
 
@@ -88,49 +89,100 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
         GameObject obj;
 
         // 해당 유닛의 값이 있는지 확인
-        if (upgradeUnitPoolsDic.TryGetValue(allyUnitPrefab, out List<AllyUnit> unitPool))
+        if (upgradeUnitPoolsDic.ContainsKey(allyUnitPrefab))
         {
-            if(unitPool.Count <= 0) // 풀이 비어있는지 확인
-            { 
+            if (upgradeUnitPoolsDic[allyUnitPrefab].List.Count <= 0)
+            {
                 obj = Instantiate(allyUnitPrefab);
                 obj.SetActive(false);
 
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
                 upgradeUnit.gameObject.SetActive(true);
 
+                upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
 
                 return upgradeUnit;
             }
-            else // 풀에 유닛 있음
+            else
             {
-                AllyUnit upgradeUnit = unitPool[0];
-                unitPool.RemoveAt(0);
-                upgradeUnit.gameObject.SetActive(true);
-
-                upgradeUnit.transform.position = transform.position;
-                upgradeUnit.transform.rotation = transform.rotation;
+                AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
+                upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
                 return upgradeUnit;
             }
         }
         else
         {
-            List<AllyUnit> newPool = new List<AllyUnit>();
-            upgradeUnitPoolsDic.Add(allyUnitPrefab, newPool);
+            upgradeUnitPoolsDic.Add(allyUnitPrefab, new ObjectPoolWithList<AllyUnit>(() =>
+            {
+                GameObject obj = Instantiate(allyUnitPrefab);
+                obj.SetActive(false);
 
-            obj = Instantiate(allyUnitPrefab);
-            obj.SetActive(false);
+                AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
+                return upgradeUnit;
+            }));
 
-            AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
+            AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
             upgradeUnit.gameObject.SetActive(true);
 
             upgradeUnit.transform.position = transform.position;
             upgradeUnit.transform.rotation = transform.rotation;
 
+            upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
             return upgradeUnit;
         }
+
+
+        //    else
+        //    {
+        //        upgradeUnitPoolsDic
+        //    }
+
+        //    if (unitPool.List.Count <= 0) // 풀이 비어있는지 확인
+        //    { 
+        //        obj = Instantiate(allyUnitPrefab);
+        //        obj.SetActive(false);
+
+        //        AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
+        //        upgradeUnit.gameObject.SetActive(true);
+
+        //        upgradeUnit.transform.position = transform.position;
+        //        upgradeUnit.transform.rotation = transform.rotation;
+
+        //        return upgradeUnit;
+        //    }
+        //    else // 풀에 유닛 있음
+        //    {
+        //        AllyUnit upgradeUnit = unitPool[0];
+        //        unitPool.RemoveAt(0);
+        //        upgradeUnit.gameObject.SetActive(true);
+
+        //        upgradeUnit.transform.position = transform.position;
+        //        upgradeUnit.transform.rotation = transform.rotation;
+
+        //        return upgradeUnit;
+        //    }
+        //}
+        //else
+        //{
+        //    List<AllyUnit> newPool = new List<AllyUnit>();
+        //    upgradeUnitPoolsDic.Add(allyUnitPrefab, newPool);
+
+        //    obj = Instantiate(allyUnitPrefab);
+        //    obj.SetActive(false);
+
+        //    AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
+        //    upgradeUnit.gameObject.SetActive(true);
+
+        //    upgradeUnit.transform.position = transform.position;
+        //    upgradeUnit.transform.rotation = transform.rotation;
+
+        //    return upgradeUnit;
+        //}
     }
 
     private UnitSpawnPoint CreateSpawnPoint()

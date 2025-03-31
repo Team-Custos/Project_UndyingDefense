@@ -37,7 +37,9 @@ public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp, IInputUnitDelete
         {
             if (selectedUnit != null)
             {
-                unitPool.Pool.Release(selectedUnit);
+                Debug.Log("Unit Delete");
+                //unitPool.Pool.Release(selectedUnit);
+                Destroy(selectedUnit.gameObject);
                 selectedUnit = null;
             }
         }

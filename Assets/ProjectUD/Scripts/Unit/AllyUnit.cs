@@ -42,8 +42,18 @@ public class AllyUnit : Unit
     public override UnitData Data => data;
 
     [SerializeField] private GameObject siegeEffect;
+    [SerializeField] private ParticleSystem siegeParticle;
+
+    private bool isSiegeModeInitialized = false;
+
+    [SerializeField] private GameObject chagneEffet;
 
     private AllyUnitSpawner spawner;
+
+    public Transform destinaitonTransfrom;
+
+    public bool isSelected = false;
+
 
     public override void Initialize()
     {
@@ -241,6 +251,14 @@ public class AllyUnit : Unit
         {
             case Mode.SEIGE:
                 {
+                    if (!isSiegeModeInitialized)
+                    {
+                        siegeParticle.gameObject.SetActive(true);
+                        siegeParticle.Play();
+                        
+                        isSiegeModeInitialized = true;
+                    }
+
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
@@ -270,6 +288,7 @@ public class AllyUnit : Unit
                                 {
                                     ActivateSkill(skill, null);
                                 }
+
                                 break;
                         }
                     }
@@ -281,11 +300,30 @@ public class AllyUnit : Unit
                             LookAt(targetUnit.transform.position);   
                     }
 
-                    siegeEffect.SetActive(false);
+                    siegeEffect.SetActive(true);
+                    chagneEffet.SetActive(false);
                 }
                 break;
             case Mode.FREE:
                 {
+                    if(isSelected && destinaitonTransfrom != null)
+                    {
+                        Debug.Log(destinaitonTransfrom.transform);
+
+                        targetUnit = null;
+
+                        navAgent.SetDestination(destinaitonTransfrom.position);
+                        modelAnimator.SetBool("isRunning", true);
+
+                        float distance = Vector3.Distance(transform.position, destinaitonTransfrom.position);
+
+                        if (distance < 0.1f)
+                        {
+                            destinaitonTransfrom = null;
+                            modelAnimator.SetBool("isRunning", false);
+                        }
+                    }
+
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
                     {
                         SkillBase skill = GetAvailableSkill();
@@ -339,13 +377,21 @@ public class AllyUnit : Unit
                             navAgent.enabled = true;
                         }
                     }
-
-                    siegeEffect.SetActive(false);
                 }
                 break;
             case Mode.CHANGE:
                 {
-                    if(changeDuration >= 0)
+                    if (isSiegeModeInitialized)
+                    {
+                        siegeParticle.Stop();
+                        siegeParticle.gameObject.SetActive(false);
+                        isSiegeModeInitialized = false;
+                    }
+
+                    siegeEffect.SetActive(false);
+                    chagneEffet.SetActive(mode == Mode.CHANGE);
+
+                    if (changeDuration >= 0)
                     {
                         changeDuration -= Time.deltaTime;
                         state = State.IDLE;
@@ -365,10 +411,19 @@ public class AllyUnit : Unit
                         previousMode = mode;
                     }
 
-                    siegeEffect.SetActive(false);
                 }
                 break;
         }
+
+        //if (previousMode != mode)
+        //{
+        //    if (mode == Mode.SEIGE)
+        //    {
+        //        siegeParticle.gameObject.SetActive(true);
+        //        siegeParticle.Play();
+        //    }
+        //    previousMode = mode;
+        //}
     }
 
     private Unit SearchTarget(float range)
@@ -433,16 +488,16 @@ public class AllyUnit : Unit
         this.mode = mode;
     }
 
-    public void Upgrade(AllyUnitData allyUnitData, int index)
+    public void Upgrade(int index)
     {
-        if (allyUnitData.UpgradeUnits.Length <= 0)
+        if (data.UpgradeUnits.Length <= 0)
         {
             Debug.Log("데이터가 없습니다.");
             return;
         }
         else
         {
-            UnitData upgradeUnitData = allyUnitData.UpgradeUnits[index];
+            UnitData upgradeUnitData = data.UpgradeUnits[index];
 
             GameObject obj = upgradeUnitData.Prefab;
             spawner.CreatUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform);

@@ -47,11 +47,10 @@ public class UnitSelectUI : MonoBehaviour
         selectedUnit = allyUnit;
         unitMenuPrefab.SetActive(true);
 
-        unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
+        //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
-        int upgradeOption = Random.Range(0, 2);
 
-        unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit, allyUnitData, upgradeOption);
+        //unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit, allyUnitData, upgradeOption);
     }
 
     public void HideAllyUI()
