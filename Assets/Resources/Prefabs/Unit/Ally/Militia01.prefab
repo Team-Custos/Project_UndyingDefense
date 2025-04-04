@@ -4978,7 +4978,7 @@ GameObject:
   - component: {fileID: 4562744520695134539}
   - component: {fileID: 8313250914067092267}
   m_Layer: 0
-  m_Name: vfx_siegeMode_ally_02
+  m_Name: SiegeEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19712,6 +19712,7 @@ GameObject:
   - component: {fileID: 748263312291810464}
   - component: {fileID: 2635317832878904254}
   - component: {fileID: 551603424968508796}
+  - component: {fileID: 8165679513488081310}
   m_Layer: 6
   m_Name: Militia01
   m_TagString: Unit
@@ -19822,11 +19823,34 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   nearbyDistance: 1.2
-  mode: 0
-  siegeManager: {fileID: 0}
+  mode: 1
+  chagneEffet: {fileID: 7949259683017886635}
   siegeEffect: {fileID: 3539013716386966762}
   siegeParticle: {fileID: 3600676916565136099}
-  chagneEffet: {fileID: 7949259683017886635}
+  destinationPosition: {x: 0, y: 0, z: 0}
+  isSelected: 0
+  particleDuration: 0.3
+--- !u!65 &8165679513488081310
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8033772474009387374}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 0.5, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8918324146885326228
 GameObject:
   m_ObjectHideFlags: 0
@@ -20154,6 +20178,41 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 199734096465245916, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199734096465245916, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.38027325
+      objectReference: {fileID: 0}
+    - target: {fileID: 199734096465245916, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.995283
+      objectReference: {fileID: 0}
+    - target: {fileID: 199734096465245916, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.7468998
+      objectReference: {fileID: 0}
+    - target: {fileID: 3167882859084928654, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3167882859084928654, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3167882859084928654, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.8
+      objectReference: {fileID: 0}
     - target: {fileID: 3167882859084928654, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20209,10 +20268,15 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3661415241228561330, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3875590891261279862, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
       propertyPath: m_Name
-      value: vfx_siegeMode_ally_summon01
+      value: SiegeParticle
       objectReference: {fileID: 0}
     - target: {fileID: 3875590891261279862, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
@@ -20224,9 +20288,19 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7473610941545269226, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7666827848013174084, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666827848013174084, guid: ce31f74dfe311b843bb7f97834aea7b2,
+        type: 3}
+      propertyPath: moveWithTransform
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -12,9 +12,13 @@ namespace InputEventInterface
         void OnNavigate(InputAction.CallbackContext context);
     }
 
-    public interface IInputClick
+    public interface IInputClick    // 마우스 좌클릭
     {
         void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IInputRightClick
+    {
+        void OnRightClick(InputAction.CallbackContext context);
     }
 
     public interface IInputScrollWheel
@@ -31,4 +35,5 @@ namespace InputEventInterface
     {
         void OnUnitDelete(InputAction.CallbackContext context);
     }
+
 }

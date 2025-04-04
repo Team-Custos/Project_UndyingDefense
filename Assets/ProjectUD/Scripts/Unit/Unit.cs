@@ -400,6 +400,7 @@ public abstract class Unit : MonoBehaviour
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
     public float BlockRate => blockRate;
+    public LayerMask EnemyLayer => enemyLayer;
 
     public virtual void Initialize()
     {

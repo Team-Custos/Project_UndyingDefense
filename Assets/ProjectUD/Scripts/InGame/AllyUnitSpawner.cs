@@ -84,7 +84,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
         return unit;
     }
 
-    public AllyUnit CreatUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform)
+    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform)
     {
         GameObject obj;
 
@@ -212,7 +212,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
         }
     }
 
-    private void CancelSpawn()
+    public void CancelSpawn()
     {
         selectedIndex = -1;
         spawn = false;

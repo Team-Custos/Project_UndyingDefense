@@ -56,7 +56,7 @@ public class UnitSelectUI : MonoBehaviour
     public void HideAllyUI()
     {
         unitMenuPrefab.SetActive(false);
-        selectedUnit = null;
+        //selectedUnit = null;
     }
 
     private void UpdateUI()

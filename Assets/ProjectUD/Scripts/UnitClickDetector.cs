@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UnitClickDetector : MonoBehaviour, IInputClick
+public class UnitClickDetector : MonoBehaviour, IInputClick, IInputRightClick
 {
     [SerializeField] private UnitSelectUI unitSelectUI;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
@@ -17,8 +18,10 @@ public class UnitClickDetector : MonoBehaviour, IInputClick
     private void Start()
     {
         inputEventManager.OnClickTarget = this;
+        inputEventManager.OnRightClickTarget = this;
     }
 
+    // 마우스 좌클릭 선택
     public void OnClick(InputAction.CallbackContext context)
     {
         if(context.performed)
@@ -50,35 +53,54 @@ public class UnitClickDetector : MonoBehaviour, IInputClick
                 {
                     if (selectedAllyUnit != null && selectedAllyUnit.isSelected)
                     {
-                        hit.point = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
+                        if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
+                            return;
 
-                        selectedAllyUnit.destinaitonTransfrom.position = hit.point;
+                        selectedAllyUnit.destinationPosition = hit.point;
 
-                        Debug.Log(selectedAllyUnit.destinaitonTransfrom.position);
                     }
                 }
                 else
                 {
                     Debug.Log(hit.collider.name);
-                    //unitSelectUI.HideAllyUI();
-                    unitSelectUI.HideHp();
-                    selectedUnit = null;
-                    //selectedAllyUnit.destinaitonTranfrom = null;
                 }
 
             }
         }
     }
 
+    // 마우스 우클릭은 선택 해제
+    public void OnRightClick(InputAction.CallbackContext context)
+    {   
+        if (context.performed)
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if(selectedUnit != null)
+                {
+                    selectedUnit = null;
+                    selectedAllyUnit.isSelected = false;
+                    unitSelectUI.HideAllyUI();
+                    unitSelectUI.HideHp();
+                }
+
+                allyUnitSpawner.CancelSpawn();
+            }
+        }
+    }
+
     public void UpgradeSelectedUnit(int index)
     {
-        Debug.Log("Uprade");
         selectedAllyUnit.Upgrade(index);
+        unitSelectUI.HideAllyUI();
     }
 
     public void ModeChangeSelectedUnit()
     {
-        Debug.Log("Mode Change");
         selectedAllyUnit.ChangeMode(AllyUnit.Mode.CHANGE);
+        unitSelectUI.HideAllyUI();
     }
 }

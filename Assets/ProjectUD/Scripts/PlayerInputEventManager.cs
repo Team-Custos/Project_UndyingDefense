@@ -10,9 +10,11 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputSubmit OnSubmitTarget { set; private get; }
     public IInputNavigate OnNavigateTarget { set; private get; }
     public IInputClick OnClickTarget { set; private get; }
+    public IInputRightClick OnRightClickTarget { set; private get; }
     public IInputScrollWheel OnScrollTarget { set; private get; }
     public IInputSpeedUp OnSpeedUpTarget { set; private get; }
     public IInputUnitDelete OnUnitDeleteTarget { set; private get; }
+
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
 
@@ -35,6 +37,12 @@ public class PlayerInputEventManager : MonoBehaviour
     {
         if (OnClickTarget != null)
             OnClickTarget.OnClick(context);
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (OnRightClickTarget != null)
+            OnRightClickTarget.OnRightClick(context);
     }
 
     public void OnScrollWheel(InputAction.CallbackContext context)

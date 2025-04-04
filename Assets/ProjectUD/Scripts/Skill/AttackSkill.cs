@@ -21,6 +21,7 @@ public class AttackSkill : SkillBase
     protected static Effect pierceCritEffect;
     protected static Effect crushCritEffect;
 
+
     public override SkillData Data => data;
 
     protected static Effect SlashCritEffect
@@ -61,7 +62,7 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets);
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
         for (int i = 0; i < targetCount; i++)
         {
             if (targets[i].TryGetComponent(out Unit target))
@@ -77,7 +78,7 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets);
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
         for (int i = 0; i < targetCount; i++)
         {
             if (targets[i].TryGetComponent(out Unit target))

@@ -58992,7 +58992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1515057054
 Transform:
   m_ObjectHideFlags: 0
@@ -63496,7 +63496,19 @@ MonoBehaviour:
     m_ActionId: 1156fd0d-8ef2-4865-936b-0870f5682aa8
     m_ActionName: UI/MiddleClick[/Mouse/middleButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1627123783}
+        m_TargetAssemblyTypeName: UnitClickDetector, Assembly-CSharp
+        m_MethodName: OnRightClick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b9db0e9b-56f9-4bed-9179-0176e140ff9a
     m_ActionName: UI/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
@@ -63587,6 +63599,7 @@ MonoBehaviour:
   unitSelectUI: {fileID: 1188809551}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1627123782}
+  allyUnitSpawner: {fileID: 923510898}
 --- !u!1001 &1627136562
 PrefabInstance:
   m_ObjectHideFlags: 0
