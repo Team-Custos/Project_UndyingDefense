@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //이 스크립트는 인게임 내에서 이루어진 전반적인 것을 관리하기 위한 스크립트입니다.
@@ -16,7 +17,7 @@ public class InGameManager : MonoBehaviour
 
     //public GameObject Base;//성 오브젝트.
     //public NavMeshSurface NavMeshSurface;
-   
+
     ////디버그용으로 사용할 유닛 설치가능 상태.
     //public bool UnitSetMode = false;
     //public bool AllyUnitSetMode = false;
@@ -55,7 +56,7 @@ public class InGameManager : MonoBehaviour
     //        }
     //    }
 
-        
+
 
 
     //    if (UnitSetMode && AllyUnitSetMode)
@@ -131,4 +132,33 @@ public class InGameManager : MonoBehaviour
     //    return loadedSkills;
     //}
 
+    [SerializeField] public float inGameGold { set; private get; }
+    [SerializeField] private IngameScreenUI ingameScreenUI;
+
+    private void Start()
+    {
+        ingameScreenUI.SetGoldTextUI(inGameGold);
+    }
+
+    public void SetGold(float gold, bool plus)
+    {
+        if(plus)
+        {
+            inGameGold += gold;
+        }
+        else
+        {
+            if(inGameGold < gold)
+            {
+                Debug.Log("골드 부족");
+                return;
+            }
+            else
+            {
+                inGameGold -= gold;
+            }
+        }
+
+        ingameScreenUI.SetGoldTextUI(inGameGold);
+    }
 }

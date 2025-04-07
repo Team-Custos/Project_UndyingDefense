@@ -10,6 +10,8 @@ public class UnitClickDetector : MonoBehaviour, IInputClick, IInputRightClick
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private IngameScreenUI ingameScreenUI;
+    [SerializeField] private InGameManager inGameManager; 
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
@@ -31,7 +33,10 @@ public class UnitClickDetector : MonoBehaviour, IInputClick, IInputRightClick
 
             if (Physics.Raycast(ray, out hit))
             {
-                if(hit.collider.CompareTag("Unit"))
+                if (inputEventManager.IsPointerOnUIElements())
+                    return;
+
+                if (hit.collider.CompareTag("Unit"))
                 {
                     selectedUnit = hit.collider.GetComponent<Unit>();
                     UnitData unitData = selectedUnit.Data;
@@ -95,6 +100,11 @@ public class UnitClickDetector : MonoBehaviour, IInputClick, IInputRightClick
     public void UpgradeSelectedUnit(int index)
     {
         selectedAllyUnit.Upgrade(index);
+
+        var allyUnitData = selectedAllyUnit.Data as AllyUnitData;
+
+        inGameManager.SetGold(allyUnitData.Cost, false);
+
         unitSelectUI.HideAllyUI();
     }
 

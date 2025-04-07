@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
-using static UnitDataManager;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick
 {
@@ -12,6 +11,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
     [SerializeField] private PlayerInputEventManager inputMng;
     [SerializeField] private Grid grid;
     [SerializeField] private Transform spawnDirection;
+    [SerializeField] private IngameScreenUI ingameScreenUI;
+    [SerializeField] private InGameManager inGameManager;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
@@ -136,53 +137,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
             return upgradeUnit;
         }
 
-
-        //    else
-        //    {
-        //        upgradeUnitPoolsDic
-        //    }
-
-        //    if (unitPool.List.Count <= 0) // 풀이 비어있는지 확인
-        //    { 
-        //        obj = Instantiate(allyUnitPrefab);
-        //        obj.SetActive(false);
-
-        //        AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
-        //        upgradeUnit.gameObject.SetActive(true);
-
-        //        upgradeUnit.transform.position = transform.position;
-        //        upgradeUnit.transform.rotation = transform.rotation;
-
-        //        return upgradeUnit;
-        //    }
-        //    else // 풀에 유닛 있음
-        //    {
-        //        AllyUnit upgradeUnit = unitPool[0];
-        //        unitPool.RemoveAt(0);
-        //        upgradeUnit.gameObject.SetActive(true);
-
-        //        upgradeUnit.transform.position = transform.position;
-        //        upgradeUnit.transform.rotation = transform.rotation;
-
-        //        return upgradeUnit;
-        //    }
-        //}
-        //else
-        //{
-        //    List<AllyUnit> newPool = new List<AllyUnit>();
-        //    upgradeUnitPoolsDic.Add(allyUnitPrefab, newPool);
-
-        //    obj = Instantiate(allyUnitPrefab);
-        //    obj.SetActive(false);
-
-        //    AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
-        //    upgradeUnit.gameObject.SetActive(true);
-
-        //    upgradeUnit.transform.position = transform.position;
-        //    upgradeUnit.transform.rotation = transform.rotation;
-
-        //    return upgradeUnit;
-        //}
     }
 
     private UnitSpawnPoint CreateSpawnPoint()
@@ -238,6 +192,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
 
                 ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
                 AllyUnit unit = pool.Pool.Get();               
+
+                var allyUnitData = unit.Data as AllyUnitData;
+                inGameManager.SetGold(allyUnitData.Cost, false);
+
                 // 유닛의 소환 방향 설정
                 unit.transform.forward = spawnDirection.forward;
 
@@ -246,6 +204,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
                 spawnPoint.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
                 spawnPoint.gameObject.SetActive(true);
                 spawnPoint.Initialize(unit);
+
+
 
                 CancelSpawn();
             }

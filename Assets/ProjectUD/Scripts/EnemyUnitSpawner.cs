@@ -6,6 +6,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 {
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;
+    [SerializeField] private InGameManager inGameManager;
 
     [Header("■ Options")]
     [SerializeField] private float spawnTime;
@@ -32,13 +33,13 @@ public class EnemyUnitSpawner : MonoBehaviour
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
 
     [Header("■ UI")]
-    [SerializeField] private IngameScreenUI ingameUI;
+    [SerializeField] private IngameScreenUI ingameScreenUI;
 
     private void Update()
     {
         if(isWaveEnd)
         {
-            ingameUI.ShowNotice("웨이브 시작까지 " + waveTimer.ToString("F1") + "초.", false);
+            ingameScreenUI.ShowNotice("웨이브 시작까지 " + waveTimer.ToString("F1") + "초.", false);
             waveTimer -= Time.deltaTime;
             if (waveTimer <= 0f)
             {
@@ -63,7 +64,6 @@ public class EnemyUnitSpawner : MonoBehaviour
                 if (!poolDic.ContainsKey(data))
                     poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
 
-                totalMonCount++;
 
                 EnemyUnit enemyUnit = poolDic[data].Pool.Get();
                 poolDic[data].List.Add(enemyUnit);
@@ -74,6 +74,7 @@ public class EnemyUnitSpawner : MonoBehaviour
                 enemyUnit.gameObject.SetActive(true);
                 enemyUnit.Initialize(fortress.GetPosition(spawnCount));
 
+                totalMonCount++;
                 spawnDataEnemyCount++;
                 spawnCount++;
 
@@ -107,16 +108,19 @@ public class EnemyUnitSpawner : MonoBehaviour
         }
     }
 
-    public void OnEnemyDead()
+    public void OnEnemyDead(EnemyUnitData enmeyUnitData)
     {
         totalMonCount--;
 
+        inGameManager.SetGold(enmeyUnitData.Gold, true);
         Debug.Log("현재 몬스터 수 : " + totalMonCount);
 
-        if (totalMonCount == 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
+        if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
         {
             isSpawnEnd = false;
             isWaveEnd = true;
+
+            inGameManager.SetGold(waveData[curWave - 1].Reward, true);
 
             curWave++;
         }

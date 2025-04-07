@@ -54,6 +54,7 @@ public class EnemyUnit : Unit
     {
         base.Initialize();
         state = State.BATTLECRY;
+        isDead = false;
     }
 
     protected override void Update()
@@ -280,15 +281,21 @@ public class EnemyUnit : Unit
 
     public override void Die()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = false;
-        collider.enabled = false;
+        if(!isDead)
+        {
+            navAgent.enabled = false;
+            navObstacle.enabled = false;
+            collider.enabled = false;
 
-        // 상태를 변경하고 에니메이션을 변경
-        state = State.DEAD;
-        modelAnimator.SetTrigger("Die");
+            // 상태를 변경하고 에니메이션을 변경
+            state = State.DEAD;
+            modelAnimator.SetTrigger("Die");
 
-        enemySpawner.OnEnemyDead();
+            enemySpawner.OnEnemyDead(data);
+
+            isDead = true;
+        }
+        
     }
 
     private void OnDisable()

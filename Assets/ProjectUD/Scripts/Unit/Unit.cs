@@ -395,6 +395,7 @@ public abstract class Unit : MonoBehaviour
 
     protected const float moveThresholdOnStop = float.MaxValue;
 
+    protected bool isDead;
     public abstract UnitData Data { get; }
     public float HpPercent => hp / Data.MaxHp;
     public float CritChance => critChance;
@@ -848,11 +849,16 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Die()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = false;
-        collider.enabled = false;
+        if(!isDead)
+        {
+            navAgent.enabled = false;
+            navObstacle.enabled = false;
+            collider.enabled = false;
 
-        modelAnimator.SetTrigger("Die");
+            modelAnimator.SetTrigger("Die");
+
+            isDead = true;
+        }
     }
 
     public void SetStateDuration(float duration) => stateDuration = duration;

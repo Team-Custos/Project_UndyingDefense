@@ -5,7 +5,7 @@ using TargetingType = AllyUnit.TargetingType;
 public class AllyUnitData : UnitData
 {
     [Header("■ Ally Unit")]
-    [SerializeField] private float cost;
+    [SerializeField] private float cost;    // 소환시 필요한 골드
     [SerializeField] private UnitData[] upgradeUnits;
     [SerializeField] private TargetingType targetingType;
 

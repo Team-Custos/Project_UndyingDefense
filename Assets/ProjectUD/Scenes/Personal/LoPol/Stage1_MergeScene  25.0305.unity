@@ -18658,7 +18658,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 856739624}
   - {fileID: 698307674}
   - {fileID: 927719981}
   - {fileID: 1166344172}
@@ -26162,6 +26161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fortress: {fileID: 987298097}
+  inGameManager: {fileID: 856739625}
   spawnTime: 1
   spawnPoints:
   - {fileID: 227319632}
@@ -26170,13 +26170,13 @@ MonoBehaviour:
   spawnDirection: {fileID: 1047462387}
   waveData:
   - {fileID: 11400000, guid: 0eff35fdc3429f2448534e6b34e14fab, type: 2}
-  - {fileID: 11400000, guid: 0eff35fdc3429f2448534e6b34e14fab, type: 2}
+  - {fileID: 11400000, guid: 8e32bdd2c5f69824cad858ba9ca97ed4, type: 2}
   - {fileID: 11400000, guid: 0eff35fdc3429f2448534e6b34e14fab, type: 2}
   curWave: 1
   isWaveEnd: 1
   waveTimer: 3
   totalMonCount: 0
-  ingameUI: {fileID: 959445840}
+  ingameScreenUI: {fileID: 959445840}
 --- !u!4 &679628029
 Transform:
   m_ObjectHideFlags: 0
@@ -32193,12 +32193,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856739623}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 472590888}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &856739625
 MonoBehaviour:
@@ -32212,6 +32212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ingameScreenUI: {fileID: 959445840}
 --- !u!1001 &858771693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34110,6 +34111,8 @@ MonoBehaviour:
   inputMng: {fileID: 1627123782}
   grid: {fileID: 792189368}
   spawnDirection: {fileID: 1856430471}
+  ingameScreenUI: {fileID: 959445840}
+  inGameManager: {fileID: 856739625}
   units:
   - {fileID: 11400000, guid: aa807ccfd535ee9418b4bcf5cdc68f53, type: 2}
   - {fileID: 11400000, guid: f2bf427934db55141bd2164dfecc71ea, type: 2}
@@ -63600,6 +63603,8 @@ MonoBehaviour:
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1627123782}
   allyUnitSpawner: {fileID: 923510898}
+  ingameScreenUI: {fileID: 959445840}
+  inGameManager: {fileID: 856739625}
 --- !u!1001 &1627136562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84618,6 +84623,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 472590888}
   - {fileID: 1874500719}
+  - {fileID: 856739624}
   - {fileID: 1965640244}
   - {fileID: 1346724711}
   - {fileID: 633104417}

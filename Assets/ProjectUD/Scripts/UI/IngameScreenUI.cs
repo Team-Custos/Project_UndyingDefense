@@ -23,7 +23,7 @@ public class IngameScreenUI : MonoBehaviour
         waveTextUI.text = $"웨이브 {waveNum}";
     }
 
-    public void SetGold(float gold)
+    public void SetGoldTextUI(float gold)
     {
         goldTextUI.text = ((int)gold).ToString();
     }

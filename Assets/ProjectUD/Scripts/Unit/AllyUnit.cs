@@ -499,6 +499,7 @@ public class AllyUnit : Unit
             gameObject.SetActive(false);
         }
 
+
         // 새 유닛 데이터를 가져와 스포너 방식의 풀로
         // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
     }
