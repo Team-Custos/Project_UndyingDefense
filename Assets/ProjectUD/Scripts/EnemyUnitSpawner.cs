@@ -113,7 +113,6 @@ public class EnemyUnitSpawner : MonoBehaviour
         totalMonCount--;
 
         inGameManager.SetGold(enmeyUnitData.Gold, true);
-        Debug.Log("현재 몬스터 수 : " + totalMonCount);
 
         if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
         {
@@ -121,6 +120,21 @@ public class EnemyUnitSpawner : MonoBehaviour
             isWaveEnd = true;
 
             inGameManager.SetGold(waveData[curWave - 1].Reward, true);
+
+            curWave++;
+        }
+    }
+
+    public void OnEnemyDead()
+    {
+        totalMonCount--;
+
+        if (totalMonCount <= 0 && isSpawnEnd)
+        {
+            isSpawnEnd = false;
+            isWaveEnd = true;
+
+            //inGameManager.SetGold(waveData[curWave - 1].Reward, true);
 
             curWave++;
         }

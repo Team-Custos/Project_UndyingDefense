@@ -36,4 +36,18 @@ namespace InputEventInterface
         void OnUnitDelete(InputAction.CallbackContext context);
     }
 
+    public interface IInputUnitSpawn
+    {
+        void OnUnitSpawn(InputAction.CallbackContext context);
+    }
+
+    public interface IInputUnitUpgrade
+    {
+        void OnUnitUpgrade(InputAction.CallbackContext context);
+    }
+
+    public interface IInputUnitModeChange
+    {
+        void OnUnitModeChange(InputAction.CallbackContext context);
+    }
 }

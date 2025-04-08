@@ -49,7 +49,7 @@ public class AllyUnit : Unit
     [SerializeField] private ParticleSystem siegeParticle;
 
     public Vector3 destinationPosition;     // 프리모드 목적지
-    public bool isSelected;                 // 유닛 선택 여부
+
     private bool isMoving = false;          // 이동 명령 중인지 확인
 
     [SerializeField] private float particleDuration = 0.3f;

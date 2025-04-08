@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp, IInputUnitDelete
+public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp
 {
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
@@ -16,7 +16,6 @@ public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp, IInputUnitDelete
     private void Start()
     {
         inputEventManager.OnSpeedUpTarget = this;
-        inputEventManager.OnUnitDeleteTarget = this;
     }
 
     public void OnSpeedUp(InputAction.CallbackContext context)
@@ -31,16 +30,4 @@ public class ShortCutKeyManager : MonoBehaviour, IInputSpeedUp, IInputUnitDelete
         }
     }
 
-    public void OnUnitDelete(InputAction.CallbackContext context)
-    {
-        if (context.action.name == "UnitDelete" && context.performed)
-        {
-            if (selectedUnit != null)
-            {
-                //unitPool.Pool.Release(selectedUnit);
-                Destroy(selectedUnit.gameObject);
-                selectedUnit = null;
-            }
-        }
-    }
 }

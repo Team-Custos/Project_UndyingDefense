@@ -383,6 +383,8 @@ public abstract class Unit : MonoBehaviour
 
     private float lastMoveTime;
 
+    protected bool isSelected;
+
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
 
@@ -402,6 +404,13 @@ public abstract class Unit : MonoBehaviour
     public float CritVulnerability => critVulnerability;
     public float BlockRate => blockRate;
     public LayerMask EnemyLayer => enemyLayer;
+    public bool IsSelected
+    {
+        get => isSelected;
+        set => isSelected = value;
+    }
+
+    private SelectedUnitUI unitSelectUI;
 
     public virtual void Initialize()
     {
@@ -430,6 +439,11 @@ public abstract class Unit : MonoBehaviour
         collider.enabled = true;
 
         lastMoveTime = Time.time;
+    }
+
+    public void Initialize(SelectedUnitUI selectedUnitUI)
+    {
+        this.unitSelectUI = selectedUnitUI;
     }
 
     protected virtual void Update()
@@ -843,8 +857,14 @@ public abstract class Unit : MonoBehaviour
     public virtual void TakeDamage(float Damage)
     {
         hp -= Damage;
-        if (hp <= 0)
-            Die();
+
+        if(unitSelectUI != null)
+        {
+            unitSelectUI.UpdateHPUI(this);
+        }
+
+         if (hp <= 0)
+             Die();
     }
 
     public virtual void Die()
@@ -918,5 +938,21 @@ public abstract class Unit : MonoBehaviour
 
             effects.Add(effect);
         }
+    }
+
+    public string SetUnitHPUI()
+    {
+        string hpText;
+
+        if (this.hp <= 0.0f)
+        {
+            hpText = 0 + " / " + Data.MaxHp;
+        }
+        else
+        {
+            hpText = (int)this.hp + " / " + Data.MaxHp;
+        }
+
+        return hpText;
     }
 }

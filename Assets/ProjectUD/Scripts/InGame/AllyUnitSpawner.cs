@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
 
-public class AllyUnitSpawner : MonoBehaviour, IInputClick
+public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 {
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputMng;
@@ -36,7 +36,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
     private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic = 
         new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
 
-    [SerializeField] UnitClickDetector unitClickDector;
+    [SerializeField] SelectedUnitManager selectedUnitManager;
 
     private void Start()
     {
@@ -52,6 +52,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
             AllyUnitData data = units[i];
             unitSpawnUI.SetSpawnButton(i, data.Icon, data.Tier, (int)data.Cost);
         }
+
+        inputMng.OnUnitSpawnTarget = this;
     }
 
     private void Update()
@@ -172,8 +174,22 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick
         spawn = false;
         indicator.SetActive(false);
         mouseIndicator.SetActive(false);
-        inputMng.OnClickTarget = unitClickDector; //  null;
+        inputMng.OnClickTarget = selectedUnitManager; //  null;
         unitSpawnUI.Deselect();
+    }
+
+    public void OnUnitSpawn(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            string keyName = context.control.name;
+
+            if (int.TryParse(keyName, out int keyNumber))
+            {
+                ToggleSpawnUnit(keyNumber - 1);
+            }
+
+        }
     }
 
     public void OnClick(InputAction.CallbackContext context)

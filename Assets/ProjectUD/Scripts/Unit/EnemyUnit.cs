@@ -96,7 +96,9 @@ public class EnemyUnit : Unit
                         if (state == State.BATTLECRY)
                             MoveTo(fortressPos);
                         else if (state == State.DEAD)
+                        {
                             gameObject.SetActive(false);
+                        }
 
                         state = State.IDLE;
 

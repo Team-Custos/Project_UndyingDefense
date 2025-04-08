@@ -148,12 +148,6 @@ public class InGameManager : MonoBehaviour
         }
         else
         {
-            if(inGameGold < gold)
-            {
-                Debug.Log("골드 부족");
-                return;
-            }
-            else
             {
                 inGameGold -= gold;
             }

@@ -14,6 +14,9 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputScrollWheel OnScrollTarget { set; private get; }
     public IInputSpeedUp OnSpeedUpTarget { set; private get; }
     public IInputUnitDelete OnUnitDeleteTarget { set; private get; }
+    public IInputUnitSpawn OnUnitSpawnTarget { set; private get; }
+    public IInputUnitUpgrade OnUnitUpgradeTarget { set; private get; }
+    public IInputUnitModeChange OnUnitModeChangeTarget { set; private get; }
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -57,10 +60,29 @@ public class PlayerInputEventManager : MonoBehaviour
             OnSpeedUpTarget.OnSpeedUp(context);
     }
 
+
     public void OnUnitDelete(InputAction.CallbackContext context)
     {
         if (OnUnitDeleteTarget != null)
             OnUnitDeleteTarget.OnUnitDelete(context);
+    }
+
+    public void OnUnitSpawn(InputAction.CallbackContext context)
+    {
+        if (OnUnitSpawnTarget != null)
+            OnUnitSpawnTarget.OnUnitSpawn(context);
+    }
+
+    public void OnUnitUpgrade(InputAction.CallbackContext context)
+    {
+        if (OnUnitUpgradeTarget != null)
+            OnUnitUpgradeTarget.OnUnitUpgrade(context);
+    }
+
+    public void OnUnitModeChange(InputAction.CallbackContext context)
+    {
+        if (OnUnitModeChangeTarget != null)
+            OnUnitModeChangeTarget.OnUnitModeChange(context);
     }
 
 
