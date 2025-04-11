@@ -1,22 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 //이 스크립트는 화살 오브젝트를 관리하기 위한 스크립트입니다.
-public class ArrowCtrl : MonoBehaviour
+public class ArrowCtrl : ProjectileCtrl
 {
-    Unit targetUnit = null;
-    float attackPower = 1f;
-    [SerializeField] float speed = 1f;
-    float timeCheck = 0f;
-    float time = 0f;
+    private float timeCheck = 0f;
+    private float time = 0f;
+
+    private UnityEvent onAttack = new UnityEvent();
 
     //public float alphaColor = 1f;
 
     //public Color baseColor;
 
     //private MaterialPropertyBlock block;
-    private Rigidbody rb;
 
     //MeshRenderer meshRenderer;
     //Animator animator;
@@ -27,25 +24,14 @@ public class ArrowCtrl : MonoBehaviour
     {
         //meshRenderer = GetComponent<MeshRenderer>();
         //animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
         //block = new MaterialPropertyBlock();
         rb.velocity = Vector3.forward * speed * 0.5f;
         timeCheck = 0f;
     }
 
-    public float GetSpeed()
+    public void SetEvent(UnityAction onAttack)
     {
-        return speed;
-    }
-
-    public void SetAttackPower(float power)
-    {
-        attackPower = power;
-    }
-
-    public void SetTarget(Unit target)
-    {
-        targetUnit = target;
+        this.onAttack.AddListener(onAttack);
     }
 
     public void CalculateTime(float distance)
@@ -63,11 +49,12 @@ public class ArrowCtrl : MonoBehaviour
         {
             if (targetUnit != null)
             {
-                targetUnit.TakeDamage(attackPower);
-            }
+                onAttack.Invoke();
+            }     
             Destroy(gameObject);
         }
     }
+
 
 
     //private void StickToTarget(Transform target)

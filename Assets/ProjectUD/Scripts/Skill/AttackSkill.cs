@@ -7,7 +7,8 @@ public class AttackSkill : SkillBase
     {
         SLASH,
         PIERCE,
-        CRUSH
+        CRUSH,
+        NONE
     }
 
     [Header("■ Data")]
@@ -113,12 +114,21 @@ public class AttackSkill : SkillBase
         if (arrowCtrl != null)
         {
             arrowCtrl.SetTarget(target);
-            arrowCtrl.SetAttackPower(data.Damage);
+            arrowCtrl.SetEvent(() => {
+                Attack(unit, target);
+            });
             arrowCtrl.CalculateTime(distance);
         }
 
+        // 람다식 Lambda Expression
+        // 임시 메서드(무명 메서드)
+
+        // ([인수]) => { [코드]들 }
+
+
         //projectile.GetComponent<Projectile>().Shoot(target.transform.position, () => Attack(unit, target));
     }
+
 
     public void Attack(Unit unit, Unit target)
     {
@@ -128,9 +138,11 @@ public class AttackSkill : SkillBase
         {
             float calcBlockRate = 1f - (0.3f * target.BlockRate);
             calcDamage *= calcBlockRate;
-            calcCrit *= calcBlockRate;
         }
 
+        calcDamage += calcDamage * unit.AttackDamageMultiplier * 0.01f;
+        calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
+        
         target.TakeDamage(calcDamage);
         if (Random.Range(0f, 1f) <= calcCrit)
             ActivateCriticalEffect(unit, target);
