@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //이 스크립트는 인게임 내에서 이루어진 전반적인 것을 관리하기 위한 스크립트입니다.
 
@@ -154,5 +155,10 @@ public class InGameManager : MonoBehaviour
         }
 
         ingameScreenUI.SetGoldTextUI(inGameGold);
+    }
+
+    public void ReLoadeCurrentScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

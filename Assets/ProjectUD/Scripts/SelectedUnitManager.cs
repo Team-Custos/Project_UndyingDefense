@@ -46,21 +46,40 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 if (hit.collider.CompareTag("Unit"))
                 {
-                    selectedUnit = hit.collider.GetComponent<Unit>();
-                    UnitData unitData = selectedUnit.Data;
+                    Unit unit = hit.collider.GetComponent<Unit>();
 
-                    if (selectedUnit.HpPercent <= 0.0f)
+                    if (unit.HpPercent <= 0.0f)
                     {
-                        selectedUnit = null;
                         return;
                     }
 
+                    if (selectedUnit != null) // 새 유닛 선택
+                    {
+                        if(unit != selectedUnit)
+                        {
+                            selectedUnit.IsSelected = false;
+                            selectedUnit.SetUnitUI(null);
+                        }
+
+                        unit.IsSelected = true;
+
+                        selectedUnit = unit;
+                    }
+                    else
+                    {
+                        selectedUnit = unit;
+                    }
+
+                    UnitData unitData = selectedUnit.Data;
+
+                    selectedUnit.IsSelected = true;
+
                     unitSelectUI.UpdateUnitInfo(selectedUnit);
+
 
                     if (selectedUnit is AllyUnit)
                     {
                         selectedAllyUnit = (AllyUnit)selectedUnit;
-                        selectedAllyUnit.IsSelected = true;
                         unitSelectUI.ShowAllyUI((AllyUnit)selectedUnit, (AllyUnitData)unitData);
                     }
                     else
@@ -136,12 +155,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null)
             {
+                selectedUnit.gameObject.SetActive(false);
+
                 if (selectedUnit is EnemyUnit)
                 {
                     enemyUnitSpawner.OnEnemyDead();
                 }
 
-                selectedUnit.gameObject.SetActive(false);
+                selectedUnit = null;
 
                 unitSelectUI.HideHp();
                 unitSelectUI.HideAllyUI();

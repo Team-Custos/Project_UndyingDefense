@@ -28,18 +28,22 @@ public class IngameScreenUI : MonoBehaviour
         goldTextUI.text = ((int)gold).ToString();
     }
 
-    public void SetHP(float hp, float maxHp)
+    public void SetHP(float hp, float maxHp) // 성 HP
     {
         hpBarUI.fillAmount = hp / maxHp;
         hpTextUI.text = $"{(int)hp} / {(int)maxHp}";
     }
 
-    public void ShowNotice(string text, bool isWarning = false)
+    public void ShowNotice(string text, bool isWarning, bool timerOn) //
     {
-        noticeUI.Show(text, isWarning, true);
+        noticeUI.Show(text, isWarning, timerOn);
     }
 
-    public void HideNotice() => noticeUI.Hide();
+    public void HideNotice()
+    {
+        noticeUI.Hide(true);
+    }
+
 
     public void ShowPreWaveNotice()
     {

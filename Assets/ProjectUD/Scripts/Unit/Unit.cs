@@ -399,6 +399,8 @@ public abstract class Unit : MonoBehaviour
 
     protected bool isDead;
     public abstract UnitData Data { get; }
+
+    public float Hp => hp;
     public float HpPercent => hp / Data.MaxHp;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
@@ -410,7 +412,7 @@ public abstract class Unit : MonoBehaviour
         set => isSelected = value;
     }
 
-    private SelectedUnitUI unitSelectUI;
+    private SelectedUnitUI selectedUnitUI;
 
     public virtual void Initialize()
     {
@@ -441,9 +443,9 @@ public abstract class Unit : MonoBehaviour
         lastMoveTime = Time.time;
     }
 
-    public void Initialize(SelectedUnitUI selectedUnitUI)
+    public void SetUnitUI(SelectedUnitUI selectedUnitUI)
     {
-        this.unitSelectUI = selectedUnitUI;
+        this.selectedUnitUI = selectedUnitUI;
     }
 
     protected virtual void Update()
@@ -857,14 +859,16 @@ public abstract class Unit : MonoBehaviour
     public virtual void TakeDamage(float Damage)
     {
         hp -= Damage;
-
-        if(unitSelectUI != null)
+        if (hp <= 0)
         {
-            unitSelectUI.UpdateHPUI(this);
+            hp = 0f;
+            Die();
         }
 
-         if (hp <= 0)
-             Die();
+        if (selectedUnitUI != null)
+        {
+            selectedUnitUI.UpdateHPUI(this);
+        }
     }
 
     public virtual void Die()
@@ -940,19 +944,4 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    public string SetUnitHPUI()
-    {
-        string hpText;
-
-        if (this.hp <= 0.0f)
-        {
-            hpText = 0 + " / " + Data.MaxHp;
-        }
-        else
-        {
-            hpText = (int)this.hp + " / " + Data.MaxHp;
-        }
-
-        return hpText;
-    }
 }

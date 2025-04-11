@@ -24,6 +24,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     [SerializeField] private bool isWaveEnd;
     [SerializeField] private float waveTimer = 20f;
+    private float waveDelay = 1.0f; // 웨이브 시작간 대기 시간 1초
 
     private int spawnCount; // 총 스폰 횟수
 
@@ -39,12 +40,27 @@ public class EnemyUnitSpawner : MonoBehaviour
     {
         if(isWaveEnd)
         {
-            ingameScreenUI.ShowNotice("웨이브 시작까지 " + waveTimer.ToString("F1") + "초.", false);
-            waveTimer -= Time.deltaTime;
-            if (waveTimer <= 0f)
+            if (curWave > waveData.Length && totalMonCount <= 0)
             {
-                isWaveEnd = false;
-                waveTimer = 20f;
+                ingameScreenUI.ShowResult(100, true);
+
+                return;
+            }
+
+            waveDelay -= Time.deltaTime;
+            if (waveDelay <= 0f)
+            {
+                ingameScreenUI.ShowNotice("a", false, true);
+                ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
+
+                waveTimer -= Time.deltaTime;
+                if (waveTimer <= 0f)
+                {
+                    ingameScreenUI.HideNotice();
+                    isWaveEnd = false;
+                    waveDelay = 1.0f;
+                    waveTimer = 20f;
+                }
             }
         }
         else
@@ -52,42 +68,56 @@ public class EnemyUnitSpawner : MonoBehaviour
             if (isSpawnEnd)
                 return;
 
-            if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
+            if(waveDelay > 0f)
             {
-                spawnTimeCheck += Time.deltaTime;
+                waveDelay -= Time.deltaTime;
             }
-            else // Enemy 생성
+            else
             {
-                spawnTimeCheck -= spawnTime;
+                ingameScreenUI.ShowNotice("a", false, false);
+                ingameScreenUI.SetNoticeText(curWave + "차 침공 시작");
 
-                EnemyUnitData data = waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Enemy;
-                if (!poolDic.ContainsKey(data))
-                    poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
+                //ingameScreenUI.HideNotice();
 
-
-                EnemyUnit enemyUnit = poolDic[data].Pool.Get();
-                poolDic[data].List.Add(enemyUnit);
-
-                Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-                enemyUnit.transform.position = pos;
-                enemyUnit.transform.forward = spawnDirection.forward;
-                enemyUnit.gameObject.SetActive(true);
-                enemyUnit.Initialize(fortress.GetPosition(spawnCount));
-
-                totalMonCount++;
-                spawnDataEnemyCount++;
-                spawnCount++;
-
-                if (spawnDataEnemyCount >= waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Count)
+                if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
                 {
-                    spawnDataEnemyCount = 0;
-                    spawnDataIndex++;
-                    if (spawnDataIndex >= waveData[curWave - 1].MonsterSpawnInfos.Count)
+                    spawnTimeCheck += Time.deltaTime;
+                }
+                else // Enemy 생성
+                {
+                    spawnTimeCheck -= spawnTime;
+
+                    EnemyUnitData data = waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Enemy;
+                    if (!poolDic.ContainsKey(data))
+                        poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
+
+
+                    EnemyUnit enemyUnit = poolDic[data].Pool.Get();
+                    poolDic[data].List.Add(enemyUnit);
+
+                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+                    enemyUnit.transform.position = pos;
+                    enemyUnit.transform.forward = spawnDirection.forward;
+                    enemyUnit.gameObject.SetActive(true);
+                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
+
+                    totalMonCount++;
+                    spawnDataEnemyCount++;
+                    spawnCount++;
+
+                    if (spawnDataEnemyCount >= waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Count)
                     {
-                        spawnDataIndex = 0;
-                        isSpawnEnd = true;
-                        
+                        spawnDataEnemyCount = 0;
+                        spawnDataIndex++;
+                        if (spawnDataIndex >= waveData[curWave - 1].MonsterSpawnInfos.Count)
+                        {
+                            spawnDataIndex = 0;
+                            isSpawnEnd = true;
+
+                            waveDelay = 1.0f;
+                        }
                     }
+
                 }
             }
         }
@@ -140,4 +170,8 @@ public class EnemyUnitSpawner : MonoBehaviour
         }
     }
 
+    public void SetWaverTimerEnd()
+    {
+        waveTimer = 0.0f;
+    }
 }

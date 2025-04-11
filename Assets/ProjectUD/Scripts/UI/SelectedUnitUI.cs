@@ -99,11 +99,11 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void UpdateUnitInfo(Unit unit)
     {
-       unit.Initialize(this);
+       unit.SetUnitUI(this);
 
        unitInfoImage.gameObject.SetActive(true);
 
-       unitHPText.text = unit.SetUnitHPUI();
+       UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.Data.Name;
        unitDefenseTypeText.text = unit.Data.ArmorType.ToString();
@@ -115,9 +115,9 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void UpdateHPUI(Unit unit)
     {
-        if(unit != null && selectedUnit == unit)
+        if(unit != null)
         {
-            unitHPText.text = unit.SetUnitHPUI();
+            unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
         }
     }
 }

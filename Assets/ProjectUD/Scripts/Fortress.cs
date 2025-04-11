@@ -19,6 +19,8 @@ public class Fortress : MonoBehaviour
         {
             hp = 0f;
             // 게임 오버
+
+            ingameUI.ShowResult(0f, false);
         }
 
         ingameUI.SetHP(hp, maxHp);
