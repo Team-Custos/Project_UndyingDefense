@@ -1,7 +1,7 @@
 using UnityEngine;
 using AttackType = AttackSkill.AttackType;
 
-[CreateAssetMenu(fileName = "AllyUnitData", menuName = "ProjectUD/AttackSkillData")]
+[CreateAssetMenu(fileName = "AttackSkillData", menuName = "ProjectUD/AttackSkillData")]
 public class AttackSkillData : SkillData
 {
     [Header("■ AttackSkill")]

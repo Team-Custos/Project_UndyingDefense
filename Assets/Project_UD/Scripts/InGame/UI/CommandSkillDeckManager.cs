@@ -20,7 +20,7 @@ public class CommandSkillDeckManager : MonoBehaviour
 
         commandSkillDeckBtn.onClick.AddListener(() =>
         {
-            UserDataModel.instance.skillDatas[index] = null;
+            //UserDataModel.instance.skillDatas[index] = null;
             commandSkillDeckImage.sprite = defaultImage;
         });
     }

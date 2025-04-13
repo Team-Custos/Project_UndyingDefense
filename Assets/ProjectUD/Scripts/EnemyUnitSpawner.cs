@@ -30,7 +30,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     [SerializeField] private int totalMonCount = 0;
 
-    private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic = 
+    private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
 
     [Header("■ UI")]
@@ -38,7 +38,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(isWaveEnd)
+        if (isWaveEnd)
         {
             if (curWave > waveData.Length && totalMonCount <= 0)
             {
@@ -68,7 +68,7 @@ public class EnemyUnitSpawner : MonoBehaviour
             if (isSpawnEnd)
                 return;
 
-            if(waveDelay > 0f)
+            if (waveDelay > 0f)
             {
                 waveDelay -= Time.deltaTime;
             }
@@ -127,7 +127,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     {
         GameObject obj = Instantiate(data.Prefab);
         obj.SetActive(false);
-        if(obj.TryGetComponent(out EnemyUnit enemy))
+        if (obj.TryGetComponent(out EnemyUnit enemy))
         {
             enemy.Initialize(data, poolDic[data], fortress, this);
             return enemy;

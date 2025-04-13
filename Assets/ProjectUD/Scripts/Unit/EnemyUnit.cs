@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class EnemyUnit : Unit
 {
@@ -96,9 +95,7 @@ public class EnemyUnit : Unit
                         if (state == State.BATTLECRY)
                             MoveTo(fortressPos);
                         else if (state == State.DEAD)
-                        {
                             gameObject.SetActive(false);
-                        }
 
                         state = State.IDLE;
 
@@ -283,7 +280,7 @@ public class EnemyUnit : Unit
 
     public override void Die()
     {
-        if(!isDead)
+        if (!isDead)
         {
             navAgent.enabled = false;
             navObstacle.enabled = false;
@@ -297,21 +294,8 @@ public class EnemyUnit : Unit
 
             isDead = true;
         }
-        
+
     }
-
-    private void OnDisable()
-    {
-        if(pool == null)
-            return;
-
-        if(gameObject.activeInHierarchy)
-            gameObject.SetActive(false);
-
-        pool.List.Remove(this);  // 리스트에서 제거
-        pool.Pool.Release(this);    // 풀에 반환
-    }
-
 
     //private void Update()
     //{

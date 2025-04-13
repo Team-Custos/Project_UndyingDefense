@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2069943930901700787}
   - component: {fileID: 5968854208163566658}
-  - component: {fileID: 8835239887134060165}
+  - component: {fileID: 9033071336621035321}
   m_Layer: 10
   m_Name: UD_Prefab_TrapTest
   m_TagString: Attack
@@ -55,7 +55,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8835239887134060165
+--- !u!114 &9033071336621035321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,17 +64,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3424956440323876401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b40f49a03424f9d4cac1a765812655fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 261911138b0d92b418ab76d113796a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModelAnimator: {fileID: 6820604761404342911}
-  MethodType: 2
-  Type: 1
-  Debuff2Add: 4
-  Damage: 5
-  moveSpeed: 1
-  Crit: 0
-  isEnemyAttack: 0
 --- !u!1001 &2279759395797369565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -146,12 +138,6 @@ PrefabInstance:
 --- !u!4 &103282807700231480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2219634966407157733, guid: 6c55d425a3d3ebf469f15e314be3093d,
-    type: 3}
-  m_PrefabInstance: {fileID: 2279759395797369565}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &6820604761404342911 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4685136641269203106, guid: 6c55d425a3d3ebf469f15e314be3093d,
     type: 3}
   m_PrefabInstance: {fileID: 2279759395797369565}
   m_PrefabAsset: {fileID: 0}

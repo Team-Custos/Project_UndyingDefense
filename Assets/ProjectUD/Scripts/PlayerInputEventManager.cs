@@ -50,7 +50,7 @@ public class PlayerInputEventManager : MonoBehaviour
 
     public void OnScrollWheel(InputAction.CallbackContext context)
     {
-        if(OnScrollTarget != null)
+        if (OnScrollTarget != null)
             OnScrollTarget.OnScrollWheel(context);
     }
 

@@ -369,10 +369,13 @@ public abstract class Unit : MonoBehaviour
     protected float critChance;
     protected float critVulnerability; // 치명타를 받을 확률.
     protected float attackSpeed;
+    protected float mental; // 정신력
     // protected float moveSpeed;
     protected float attackSpeedMultiplier;
     protected float moveSpeedMultiplier;
     protected float blockRate; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
+    protected float damageReductionMultiplier; // 피해량 감소 비율
+    protected float attackDamageMultiplier; // 공격력 증가 비율
 
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
@@ -382,8 +385,6 @@ public abstract class Unit : MonoBehaviour
     protected Unit targetUnit;
 
     private float lastMoveTime;
-
-    protected bool isSelected;
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -395,17 +396,23 @@ public abstract class Unit : MonoBehaviour
 
     protected const int maxTargetCount = 10;
 
+    protected bool isSelected;
+
     protected const float moveThresholdOnStop = float.MaxValue;
 
     protected bool isDead;
-    public abstract UnitData Data { get; }
 
+    public abstract UnitData Data { get; }
     public float Hp => hp;
     public float HpPercent => hp / Data.MaxHp;
+    public float Mental => mental;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
     public float BlockRate => blockRate;
+    public float DamageReductionMultiplier => damageReductionMultiplier;
+    public float AttackDamageMultiplier => attackDamageMultiplier;
     public LayerMask EnemyLayer => enemyLayer;
+
     public bool IsSelected
     {
         get => isSelected;
@@ -873,7 +880,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Die()
     {
-        if(!isDead)
+        if (!isDead)
         {
             navAgent.enabled = false;
             navObstacle.enabled = false;
@@ -896,13 +903,18 @@ public abstract class Unit : MonoBehaviour
         navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
     }
 
+    public void AddMental(float amount)
+    {
+        mental += amount;
+    }
+
     public void AddAttackSpeedMultiplier(float value)
     {
         attackSpeedMultiplier += value;
         if (attackSpeedMultiplier < 0f)
             attackSpeedMultiplier = 0f;
 
-        navAgent.speed = Data.AttackSpeed * attackSpeedMultiplier;
+        attackSpeed = Data.AttackSpeed * attackSpeedMultiplier;
     }
 
     public void AddCriticalVulnerability(float amount)
@@ -917,6 +929,18 @@ public abstract class Unit : MonoBehaviour
     public void AddAttackSpeed(float speed)
     {
         attackSpeed += speed;
+    }
+
+    public void AddAdditionalDamage(float percent)
+    {
+        // 추가 피해량
+        attackDamageMultiplier += percent;
+    }
+
+    public void AddDamageReduction(float percent)
+    {
+        // 받는 피해량 감소
+        damageReductionMultiplier += percent;
     }
 
     public void AddEffect(Unit unit, Effect effect)
@@ -943,5 +967,4 @@ public abstract class Unit : MonoBehaviour
             effects.Add(effect);
         }
     }
-
 }

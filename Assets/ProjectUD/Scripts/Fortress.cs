@@ -10,24 +10,31 @@ public class Fortress : MonoBehaviour
     [SerializeField] private float maxHp;
     [SerializeField] private ListedPositions linePositions;
 
+    [Header("■ Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] damageSound;
+
     private float hp;
 
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        if(hp <= 0f)
+        //데미지를 입을때 사운드 출력
+
+        if (hp <= 0f)
         {
             hp = 0f;
             // 게임 오버
-
-            ingameUI.ShowResult(0f, false);
         }
 
         ingameUI.SetHP(hp, maxHp);
+        audioSource.PlayOneShot(damageSound[Random.Range(0, damageSound.Length)]);//데미지 사운드 출력
     }
 
     public Vector3 GetPosition(int index)
     {
         return linePositions[index];
     }
+
+    
 }

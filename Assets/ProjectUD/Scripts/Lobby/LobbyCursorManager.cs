@@ -57,7 +57,7 @@ public class LobbyCursorManager : MonoBehaviour
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current)
         {
-            position = Input.mousePosition
+            // position = Input.mousePosition
         };
 
         List<RaycastResult> results = new List<RaycastResult>();

@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Diagnostics;
 
 public class NoticeUI : MonoBehaviour
 {
@@ -19,7 +18,6 @@ public class NoticeUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         skipBtn.SetActive(showSkipBtn);
-        textUI.gameObject.SetActive(true);
 
         if (isWarning)
         {
@@ -36,7 +34,7 @@ public class NoticeUI : MonoBehaviour
 
         textUI.text = text;
     }
-    
+
     public void Hide(bool isAuto)
     {
         if (!isAuto)
@@ -44,7 +42,7 @@ public class NoticeUI : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-    
+
     public void SetText(string text)
     {
         textUI.text = text;

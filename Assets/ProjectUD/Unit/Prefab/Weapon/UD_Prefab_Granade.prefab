@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2333323632407570966}
   - component: {fileID: 3119219152334764631}
   - component: {fileID: 4775280863287712545}
-  - component: {fileID: 6942643340470380427}
+  - component: {fileID: 2554728831356238345}
   m_Layer: 0
   m_Name: UD_Prefab_Granade
   m_TagString: Attack
@@ -83,7 +83,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.17
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6942643340470380427
+--- !u!114 &2554728831356238345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,13 +92,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2365663690683853301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36083ba63c4730242b6f5ced869cc35e, type: 3}
+  m_Script: {fileID: 11500000, guid: 576e640def261ca41846b0925e5e0325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPos: {x: 10, y: 0, z: 2}
-  height: 0
-  rb: {fileID: 3119219152334764631}
-  jumpSpeed: 0
+  height: 5
+  jumpSpeed: 10
   gravity: 9.81
   AttackTrigger: {fileID: 826453539395977001, guid: b601672a3fb085547ae4d279877e4eca,
     type: 3}

@@ -33,7 +33,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     private List<ObjectPoolWithList<AllyUnit>> unitPools;
     private ObjectPoolWithList<UnitSpawnPoint> spawnPointPool;
 
-    private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic = 
+    private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic =
         new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
 
     [SerializeField] SelectedUnitManager selectedUnitManager;
@@ -42,7 +42,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     {
         selectedIndex = -1;
         unitPools = new List<ObjectPoolWithList<AllyUnit>>();
-        for(int i = 0; i < units.Length; i++)
+        for (int i = 0; i < units.Length; i++)
         {
             int index = i;
             unitPools.Add(new ObjectPoolWithList<AllyUnit>(() => CreateUnit(index)));
@@ -58,7 +58,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     private void Update()
     {
-        if(spawn)
+        if (spawn)
         {
             if (inputMng.IsPointerOnUIElements())
                 return;
@@ -153,7 +153,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     public void ToggleSpawnUnit(int index)
     {
-        if(index == selectedIndex)
+        if (index == selectedIndex)
         {
             CancelSpawn();
         }
@@ -194,20 +194,20 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     public void OnClick(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if (context.performed)
         {
             if (inputMng.IsPointerOnUIElements())
                 return;
 
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            if(Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (!hit.transform.CompareTag("Ground"))
                     return;
 
                 ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
-                AllyUnit unit = pool.Pool.Get();               
+                AllyUnit unit = pool.Pool.Get();
 
                 var allyUnitData = unit.Data as AllyUnitData;
                 inGameManager.SetGold(allyUnitData.Cost, false);

@@ -1,8 +1,5 @@
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.AI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class AllyUnit : Unit
 {
@@ -32,7 +29,7 @@ public class AllyUnit : Unit
 
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
-    [SerializeField] private Mode mode;
+    private Mode mode;
     public Mode ModeType => mode;
 
     private State state;
@@ -55,7 +52,6 @@ public class AllyUnit : Unit
     [SerializeField] private float particleDuration = 0.3f;
 
     private bool isSiegeActive = false;
-
 
     public override void Initialize()
     {
@@ -83,7 +79,7 @@ public class AllyUnit : Unit
             case State.STUN:
             case State.DEAD:
                 {
-                    if (state != State.DEAD)
+                    if(state != State.DEAD)
                     {
                         if (navAgent.enabled)
                         {
@@ -94,7 +90,7 @@ public class AllyUnit : Unit
                         if (!navObstacle.enabled)
                             navObstacle.enabled = true;
                     }
-
+                    
                     if (stateDuration <= 0f)
                         return;
 
@@ -112,7 +108,7 @@ public class AllyUnit : Unit
 
                         state = State.IDLE;
 
-                        if (mode == Mode.FREE)
+                        if(mode == Mode.FREE)
                             navObstacle.enabled = false;
                     }
                 }
@@ -140,7 +136,7 @@ public class AllyUnit : Unit
                 {
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        if (navAgent.enabled)
+                        if(navAgent.enabled)
                         {
                             navAgent.enabled = false;
                             navObstacle.enabled = true;
@@ -155,8 +151,8 @@ public class AllyUnit : Unit
                 break;
         }
 
-
-        //SkillBase skill = GetAvailableSkill();
+        
+        /*SkillBase skill = GetAvailableSkill();
         //if (skill != null) // 사용 가능한 스킬이 존재할 경우
         //{
         //    SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
@@ -245,6 +241,7 @@ public class AllyUnit : Unit
         //            break;
         //    }
         //}
+        */
     }
 
     private void UpdateMode()
@@ -264,7 +261,7 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.ENEMY:
                                 {
-                                    if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
+                                    if(targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             if (navAgent.enabled && !navAgent.isStopped)
@@ -285,7 +282,6 @@ public class AllyUnit : Unit
                                 {
                                     ActivateSkill(skill, null);
                                 }
-
                                 break;
                         }
                     }
@@ -294,9 +290,8 @@ public class AllyUnit : Unit
                         if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
                             targetUnit = SearchTarget(data.SightRange);
                         else
-                            LookAt(targetUnit.transform.position);
+                            LookAt(targetUnit.transform.position);   
                     }
-
                 }
                 break;
             case Mode.FREE:
@@ -330,10 +325,10 @@ public class AllyUnit : Unit
                     }
 
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
-                        && !isMoving)
+                       && !isMoving)
                     {
                         SkillBase skill = GetAvailableSkill();
-                        if (skill != null)
+                        if(skill != null)
                         {
                             SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                             switch (skillTargetType)
@@ -355,7 +350,7 @@ public class AllyUnit : Unit
                             }
                         }
 
-                        if (IsTargetInRange(targetUnit, data.SightRange))
+                        if(IsTargetInRange(targetUnit, data.SightRange))
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
@@ -504,7 +499,6 @@ public class AllyUnit : Unit
         // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
     }
 
-
     public override void Die()
     {
         navAgent.enabled = false;
@@ -525,7 +519,7 @@ public class AllyUnit : Unit
                 isSiegeActive = true;
             }
 
-            if(particleDuration > 0)
+            if (particleDuration > 0)
             {
                 particleDuration -= Time.deltaTime;
             }
@@ -542,5 +536,4 @@ public class AllyUnit : Unit
             siegeEffect.SetActive(false);
         }
     }
-
 }

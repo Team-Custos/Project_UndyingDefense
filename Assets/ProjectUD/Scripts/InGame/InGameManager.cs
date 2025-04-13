@@ -143,7 +143,7 @@ public class InGameManager : MonoBehaviour
 
     public void SetGold(float gold, bool plus)
     {
-        if(plus)
+        if (plus)
         {
             inGameGold += gold;
         }

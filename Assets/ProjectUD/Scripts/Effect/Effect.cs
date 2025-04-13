@@ -11,7 +11,7 @@ public class Effect : MonoBehaviour
     [SerializeField] protected UltEvent onActivate;
     [SerializeField] protected UltEvent onMaxStack;
 
-    protected UltEvent onRemove;
+    protected UltEvent onRemove = new UltEvent();
 
     protected int stack;
     protected Unit unit;
@@ -66,16 +66,16 @@ public class Effect : MonoBehaviour
     {
         target.AddMoveSpeedMultiplier(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack;
-        onRemove.AddListener(() => AddMoveSpeedPercent(removeValue));
+        float removeValue = -percent * 0.01f;
+        onRemove.AddListener(() => target.AddMoveSpeedMultiplier(removeValue));
     }
 
     public virtual void AddAttackSpeedPercent(float percent)
     {
         target.AddAttackSpeedMultiplier(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack;
-        onRemove.AddListener(() => AddAttackSpeedPercent(removeValue));
+        float removeValue = -percent * 0.01f;
+        onRemove.AddListener(() => target.AddAttackSpeedMultiplier(removeValue));
     }
 
     public virtual void AddCriticalVulnerability(float percent)
@@ -92,6 +92,27 @@ public class Effect : MonoBehaviour
 
         float removeValue = -percent * 0.01f * maxStack;
         onRemove.AddListener(() => AddBlockRate(removeValue));
+    }
+
+    public virtual void AddAdditionalDamage(float percent)
+    {
+        target.AddAdditionalDamage(percent);
+        float removeValue = -percent * maxStack;
+        onRemove.AddListener(() => AddAdditionalDamage(removeValue));
+    }
+
+    public virtual void AddMental(float amount)
+    {
+        target.AddMental(amount);
+        float removeValue = -amount * maxStack;
+        onRemove.AddListener(() => AddMental(removeValue));
+    }
+
+    public virtual void AddDamageReduction(float percent)
+    {
+        target.AddDamageReduction(percent);
+        float removeValue = -percent * maxStack;
+        onRemove.AddListener(() => AddDamageReduction(removeValue));
     }
 
     public virtual void AddEffect(GameObject effectPrefab)
