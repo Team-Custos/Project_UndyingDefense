@@ -1,6 +1,4 @@
 using InputEventInterface;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -134,11 +132,19 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
     public void UpgradeSelectedUnit(int index)
     {
+        if (selectedUnit.Data.Tier <= 2)
+            index = Random.Range(0, 2);
+        else
+            index = 0;
+
         selectedAllyUnit.Upgrade(index);
 
         var allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 
         inGameManager.SetGold(allyUnitData.Cost, false);
+
+        unitSelectUI.UpdateHPUI(selectedAllyUnit);
+        unitSelectUI.UpdateUnitInfo(selectedAllyUnit);
 
         unitSelectUI.HideAllyUI();
     }
@@ -176,7 +182,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
-                UpgradeSelectedUnit(0);
+                int a = 0;
+
+                if (selectedUnit.Data.Tier <= 2)
+                    a = Random.Range(0, 2);
+                else
+                    a = 0;
+
+                UpgradeSelectedUnit(a);
             }
         }
     }

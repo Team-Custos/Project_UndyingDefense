@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5015410173806188862}
   - component: {fileID: 513589119368596452}
   - component: {fileID: 3166612255250759096}
-  - component: {fileID: 1524628817576402750}
   - component: {fileID: -7253675673234515982}
   - component: {fileID: 1653212543355842366}
   - component: {fileID: 5729214398200184594}
@@ -88,27 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1524628817576402750
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8462500469413093967}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &-7253675673234515982
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,11 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb6e516522675e4896b6b21ce840874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Atk: 1
   speed: 5
-  isEnemyAttack: 0
-  alphaColor: 0.5
-  baseColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &5729214398200184594
 MonoBehaviour:
   m_ObjectHideFlags: 0

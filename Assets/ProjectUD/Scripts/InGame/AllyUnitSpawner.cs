@@ -100,6 +100,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 obj.SetActive(false);
 
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
+
+                upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+                upgradeUnit.Initialize();
+
                 upgradeUnit.gameObject.SetActive(true);
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
@@ -111,7 +115,17 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             }
             else
             {
+
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
+
+                upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+                upgradeUnit.Initialize();
+
+                upgradeUnit.gameObject.SetActive(true);
+
+                upgradeUnit.transform.position = transform.position;
+                upgradeUnit.transform.rotation = transform.rotation;
+
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
                 return upgradeUnit;
@@ -129,6 +143,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             }));
 
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
+
+            upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+            upgradeUnit.Initialize();
+
             upgradeUnit.gameObject.SetActive(true);
 
             upgradeUnit.transform.position = transform.position;

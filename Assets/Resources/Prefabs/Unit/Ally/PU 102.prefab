@@ -19892,11 +19892,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: "1\uD2F0\uC5B4 \uC0AC\uB0E5\uAFBC"
       objectReference: {fileID: 0}
+    - target: {fileID: 5950656475026868518, guid: 89a458e8d8b99ec42bba7b5b73ea6643,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 0b470cad3d029594e90b07b6441162a9,
+        type: 2}
+    - target: {fileID: 5950656475026868518, guid: 89a458e8d8b99ec42bba7b5b73ea6643,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89a458e8d8b99ec42bba7b5b73ea6643, type: 3}
+--- !u!95 &1508303037204862658 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5950656475026868518, guid: 89a458e8d8b99ec42bba7b5b73ea6643,
+    type: 3}
+  m_PrefabInstance: {fileID: 5078489279637217252}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4759949983837375672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 321117171510350684, guid: 89a458e8d8b99ec42bba7b5b73ea6643,
@@ -20069,7 +20086,7 @@ PrefabInstance:
     - target: {fileID: 8844220393683860035, guid: dc68d7ed3bed50f49bfdf0311e5bf35f,
         type: 3}
       propertyPath: m_Name
-      value: Bottom01-07
+      value: ChangeEffect
       objectReference: {fileID: 0}
     - target: {fileID: 8844220393683860035, guid: dc68d7ed3bed50f49bfdf0311e5bf35f,
         type: 3}
@@ -20173,6 +20190,11 @@ PrefabInstance:
       objectReference: {fileID: 6579293219399746199}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 1508303037204862658}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
       propertyPath: siegeParticle
       value: 
       objectReference: {fileID: 958260100943817829}
@@ -20232,7 +20254,8 @@ PrefabInstance:
       value: PU 102
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3539013716386966762, guid: 90d6c0b244efaa84793a2f190b4dff8d, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6124276177035537338, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
