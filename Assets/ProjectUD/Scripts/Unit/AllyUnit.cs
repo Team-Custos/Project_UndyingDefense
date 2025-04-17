@@ -45,13 +45,19 @@ public class AllyUnit : Unit
     [SerializeField] private GameObject siegeEffect;
     [SerializeField] private ParticleSystem siegeParticle;
 
-    public Vector3 destinationPosition;     // 프리모드 목적지
+    private Vector3 destinationPosition;  // 프리모드 목적지
 
     private bool isMoving = false;          // 이동 명령 중인지 확인
 
     [SerializeField] private float particleDuration = 0.3f;
 
     private bool isSiegeActive = false;
+    public Vector3 DestinationPosition
+    {
+        get => destinationPosition;
+        set => destinationPosition = value;
+    }
+
 
     public override void Initialize()
     {
@@ -67,6 +73,7 @@ public class AllyUnit : Unit
         this.pool = pool;
         this.spawner = spawner;
     }
+
 
     protected override void Update()
     {
@@ -324,6 +331,7 @@ public class AllyUnit : Unit
                         }
                     }
 
+                    
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
                        && !isMoving)
                     {
@@ -350,7 +358,7 @@ public class AllyUnit : Unit
                             }
                         }
 
-                        if(IsTargetInRange(targetUnit, data.SightRange))
+                        if (IsTargetInRange(targetUnit, data.SightRange))
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
@@ -361,6 +369,7 @@ public class AllyUnit : Unit
                         {
                             targetUnit = null;
                         }
+
                     }
                     else
                     {
@@ -492,6 +501,7 @@ public class AllyUnit : Unit
 
             pool.Pool.Release(this);
             gameObject.SetActive(false);
+
         }
 
 

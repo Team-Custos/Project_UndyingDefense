@@ -147,10 +147,11 @@ public class AttackSkill : SkillBase
             ActivateCriticalEffect(unit, target);
     }
 
-    public void Attack(Unit unit, Fortress fortress)
+    public void AttackFortress(Unit unit, Fortress fortress, UnitData data)
     {
-        float calcDamage = data.Damage;
-        fortress.TakeDamage(calcDamage);
+        int damage = data.Tier;
+
+        fortress.TakeDamage(damage);
     }
 
     private void ActivateCriticalEffect(Unit unit, Unit target)

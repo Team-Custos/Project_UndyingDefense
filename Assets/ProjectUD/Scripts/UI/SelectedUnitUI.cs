@@ -13,8 +13,12 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Image unitHP;
     [SerializeField] private RectTransform hpRectTransform;
 
-    [SerializeField] private UnitMenuUI unitMenuUI;
     [SerializeField] private GameObject unitMenuPrefab;
+    [SerializeField] private GameObject unitUpgradeMenuPrefab;
+
+    [SerializeField] private Image modeChangeBtnImage;
+    [SerializeField] private Sprite freeIcon;
+    [SerializeField] private Sprite siegeIcon;
 
     private Unit selectedUnit;
     [SerializeField] private float yPos;
@@ -56,10 +60,30 @@ public class SelectedUnitUI : MonoBehaviour
         selectedUnit = null;
     }
 
+    public void HideUpgrdeUI()
+    {
+        unitUpgradeMenuPrefab.SetActive(false);
+    }
+
+    public void ShowUpgradeMenu()
+    {
+        unitMenuPrefab.SetActive(false);
+        unitUpgradeMenuPrefab.SetActive(true);
+    }
+
     public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
     {
         selectedUnit = allyUnit;
         unitMenuPrefab.SetActive(true);
+
+        if(allyUnit.ModeType == AllyUnit.Mode.FREE)
+        {
+            modeChangeBtnImage.sprite = siegeIcon;
+        }
+        else if(allyUnit.ModeType == AllyUnit.Mode.SEIGE)
+        {
+            modeChangeBtnImage.sprite = freeIcon;
+        }
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
@@ -93,6 +117,14 @@ public class SelectedUnitUI : MonoBehaviour
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitMenuPrefab.transform.position = screenPosition;
+            }
+
+            if(unitUpgradeMenuPrefab != null)
+            {
+                Vector3 worldPosition = selectedUnit.transform.position + Vector3.right * xPos;
+                Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+
+                unitUpgradeMenuPrefab.transform.position = screenPosition;
             }
         }
     }

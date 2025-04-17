@@ -14,10 +14,9 @@ public class NoticeUI : MonoBehaviour
     [SerializeField] private Sprite panelSprite;
     [SerializeField] private Sprite warningPanelSprite;
 
-    public void Show(string text, bool isWarning = false, bool showSkipBtn = false)
+    public void Show(string text, bool isWarning = false)
     {
         gameObject.SetActive(true);
-        skipBtn.SetActive(showSkipBtn);
 
         if (isWarning)
         {
@@ -35,11 +34,8 @@ public class NoticeUI : MonoBehaviour
         textUI.text = text;
     }
 
-    public void Hide(bool isAuto)
+    public void Hide()
     {
-        if (!isAuto)
-            return;
-
         gameObject.SetActive(false);
     }
 

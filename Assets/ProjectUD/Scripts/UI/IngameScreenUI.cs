@@ -14,6 +14,7 @@ public class IngameScreenUI : MonoBehaviour
 
     [Header("■ Notice")]
     [SerializeField] private NoticeUI noticeUI;
+    [SerializeField] private NoticeUI noticeTimerUI;
 
     [Header("■ Result")]
     [SerializeField] private ResultUI resultUI;
@@ -34,25 +35,30 @@ public class IngameScreenUI : MonoBehaviour
         hpTextUI.text = $"{(int)hp} / {(int)maxHp}";
     }
 
-    public void ShowNotice(string text, bool isWarning, bool timerOn) //
+    public void ShowNotice(string text) //
     {
-        noticeUI.Show(text, isWarning, timerOn);
+        noticeUI.Show(text);
+    }
+
+    public void ShowTimer()
+    {
+        noticeTimerUI.gameObject.SetActive(true);
     }
 
     public void HideNotice()
     {
-        noticeUI.Hide(true);
+        noticeTimerUI.Hide();
     }
 
 
     public void ShowPreWaveNotice()
     {
-        noticeUI.Show(string.Empty, false, true);
+        noticeUI.Show("성이 현재 공겨받고있습니다!", true);
     }
 
     public void SetNoticeText(string text)
     {
-        noticeUI.SetText(text);
+        noticeTimerUI.SetText(text);
     }
 
     public void ShowResult(float reward, bool win)

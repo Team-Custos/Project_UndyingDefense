@@ -94,7 +94,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                             return;
 
-                        selectedAllyUnit.destinationPosition = hit.point;
+                        selectedAllyUnit.DestinationPosition = hit.point;
 
                     }
                 }
@@ -130,13 +130,20 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         }
     }
 
+    public void ShowUpgradeMenu()
+    {
+        if(selectedUnit.Data.Tier >= 4)
+        {
+            Debug.Log("업그레이드 불가");
+            return;
+        }
+
+        unitSelectUI.ShowUpgradeMenu();
+    }
+
     public void UpgradeSelectedUnit(int index)
     {
-        if (selectedUnit.Data.Tier <= 2)
-            index = Random.Range(0, 2);
-        else
-            index = 0;
-
+       
         selectedAllyUnit.Upgrade(index);
 
         var allyUnitData = selectedAllyUnit.Data as AllyUnitData;
@@ -146,6 +153,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         unitSelectUI.UpdateHPUI(selectedAllyUnit);
         unitSelectUI.UpdateUnitInfo(selectedAllyUnit);
 
+        unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();
     }
 
@@ -189,7 +197,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 else
                     a = 0;
 
-                UpgradeSelectedUnit(a);
+                //ShowUpgradeMenu();
             }
         }
     }

@@ -13,6 +13,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private Transform spawnDirection;
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private SelectedUnitUI selectedUnitUI;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
@@ -111,6 +112,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
 
+                selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+
                 return upgradeUnit;
             }
             else
@@ -127,6 +130,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.transform.rotation = transform.rotation;
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
+                selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
                 return upgradeUnit;
             }
@@ -153,6 +158,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit.transform.rotation = transform.rotation;
 
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
+            selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
             return upgradeUnit;
         }

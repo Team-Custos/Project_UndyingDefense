@@ -760,6 +760,14 @@ public abstract class Unit : MonoBehaviour
             return null;
     }
 
+    protected SkillBase GetGeneralSkill()
+    {
+        if(generalSkill != null && generalSkill.IsCoolDown)
+            return generalSkill;
+        else
+            return null;
+    }
+
     public virtual void MoveTo(Vector3 pos)
     {
         bool navAgentEnabled = navAgent.enabled;

@@ -3,8 +3,11 @@ using UnityEngine.UI;
 
 public class Fortress : MonoBehaviour
 {
+    [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
+
     [Header("■ UI")]
     [SerializeField] private IngameScreenUI ingameUI;
+
 
     [Header("■ Options")]
     [SerializeField] private float maxHp;
@@ -16,6 +19,12 @@ public class Fortress : MonoBehaviour
 
     private float hp;
 
+    private void Start()
+    {
+        hp = maxHp;
+        ingameUI.SetHP(hp, maxHp);
+    }
+
     public void TakeDamage(float damage)
     {
         hp -= damage;
@@ -25,7 +34,11 @@ public class Fortress : MonoBehaviour
         {
             hp = 0f;
             // 게임 오버
+
+            ingameUI.ShowResult(0, false);
         }
+
+        enemyUnitSpawner.OnFortressAttacked();
 
         ingameUI.SetHP(hp, maxHp);
         audioSource.PlayOneShot(damageSound[Random.Range(0, damageSound.Length)]);//데미지 사운드 출력

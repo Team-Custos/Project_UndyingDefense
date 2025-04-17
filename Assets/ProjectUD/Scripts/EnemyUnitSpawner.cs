@@ -7,28 +7,25 @@ public class EnemyUnitSpawner : MonoBehaviour
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;
     [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private WaveData[] waveData;
 
     [Header("■ Options")]
     [SerializeField] private float spawnTime;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform spawnDirection;
+    [SerializeField] private int curWave = 1;
+    [SerializeField] private bool isWaveEnd;
+    [SerializeField] private float waveTimer = 20f;
+    [SerializeField] private int totalMonCount = 0;
 
     private float spawnTimeCheck;
-
-    [SerializeField] private WaveData[] waveData;
-    [SerializeField] private int curWave = 1;
-
     private int spawnDataIndex; // 현재 EnemySpawnData의 인덱스
     private int spawnDataEnemyCount; // 현재 EnemySpawnData의 스폰 횟수.
     private bool isSpawnEnd;
-
-    [SerializeField] private bool isWaveEnd;
-    [SerializeField] private float waveTimer = 20f;
     private float waveDelay = 1.0f; // 웨이브 시작간 대기 시간 1초
-
     private int spawnCount; // 총 스폰 횟수
+    private bool isFortreessAttacked;
 
-    [SerializeField] private int totalMonCount = 0;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
@@ -38,47 +35,66 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (isWaveEnd)
+        if (isWaveEnd) // 웨이브 종료 및 시작 대기
         {
+            // 게임 성공
             if (curWave > waveData.Length && totalMonCount <= 0)
             {
                 ingameScreenUI.ShowResult(100, true);
-
                 return;
             }
 
+            
             waveDelay -= Time.deltaTime;
             if (waveDelay <= 0f)
             {
-                ingameScreenUI.ShowNotice("a", false, true);
+                ingameScreenUI.SetWaveNumber(curWave);
+
+                // 웨이브 타이머 설정
+                ingameScreenUI.ShowTimer();
                 ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
 
                 waveTimer -= Time.deltaTime;
                 if (waveTimer <= 0f)
-                {
+                {   // 타이머 종료 및 웨이브 시작
                     ingameScreenUI.HideNotice();
                     isWaveEnd = false;
                     waveDelay = 1.0f;
                     waveTimer = 20f;
+
+                    ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+
+                    
                 }
             }
         }
-        else
+        else // 웨이브 시작
         {
-            if (isSpawnEnd)
+
+            if (isSpawnEnd && totalMonCount <= 0) // 웨이브 종료 및 시작 대기
+            {
+                ingameScreenUI.ShowNotice("방어 성공!");
+
+                isSpawnEnd = false;
+                isWaveEnd = true;
+
+                inGameManager.SetGold(waveData[curWave - 1].Reward, true);
+
+                waveDelay = 4.0f;
+
+                curWave++;
+
+                isFortreessAttacked = false; 
+            }
+            else if (isSpawnEnd)
                 return;
 
             if (waveDelay > 0f)
-            {
+            {   // 웨이브 딜레이 1초
                 waveDelay -= Time.deltaTime;
             }
-            else
+            else     // 스폰 시작
             {
-                ingameScreenUI.ShowNotice("a", false, false);
-                ingameScreenUI.SetNoticeText(curWave + "차 침공 시작");
-
-                //ingameScreenUI.HideNotice();
-
                 if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
                 {
                     spawnTimeCheck += Time.deltaTime;
@@ -118,6 +134,8 @@ public class EnemyUnitSpawner : MonoBehaviour
                         }
                     }
 
+                    
+
                 }
             }
         }
@@ -144,34 +162,45 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         inGameManager.SetGold(enmeyUnitData.Gold, true);
 
-        if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
-        {
-            isSpawnEnd = false;
-            isWaveEnd = true;
+        //if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
+        //{
+        //    isSpawnEnd = false;
+        //    isWaveEnd = true;
 
-            inGameManager.SetGold(waveData[curWave - 1].Reward, true);
+        //    inGameManager.SetGold(waveData[curWave - 1].Reward, true);
 
-            curWave++;
-        }
+        //    curWave++;
+        //}
     }
 
     public void OnEnemyDead()
     {
         totalMonCount--;
 
-        if (totalMonCount <= 0 && isSpawnEnd)
-        {
-            isSpawnEnd = false;
-            isWaveEnd = true;
+        //if (totalMonCount <= 0 && isSpawnEnd)
+        //{
+        //    isSpawnEnd = false;
+        //    isWaveEnd = true;
 
-            //inGameManager.SetGold(waveData[curWave - 1].Reward, true);
+        //    //inGameManager.SetGold(waveData[curWave - 1].Reward, true);
 
-            curWave++;
-        }
+        //    curWave++;
+        //}
     }
 
     public void SetWaverTimerEnd()
     {
         waveTimer = 0.0f;
+    }
+
+    public void OnFortressAttacked()
+    {
+        if (!isFortreessAttacked)
+        {
+            ingameScreenUI.ShowPreWaveNotice();
+
+            isFortreessAttacked = true;
+        }
+
     }
 }

@@ -35,6 +35,8 @@ public class EnemyUnit : Unit
 
     public override UnitData Data => data;
 
+    private float attackCool;
+
     public void Initialize(EnemyUnitData data, ObjectPoolWithList<EnemyUnit> pool, Fortress fortress, EnemyUnitSpawner enemySpawner)
     {
         this.data = data;
@@ -142,20 +144,44 @@ public class EnemyUnit : Unit
                 {
                     if (navAgent.pathStatus != NavMeshPathStatus.PathComplete) // 길이 막혀있는 경우
                     {
-                        if(navAgent.enabled)
+                        float distance = Vector3.Distance(transform.position, fortressPos);
+
+                        if(distance <= data.AttackRange)
                         {
-                            targetUnit = SearchNearestReachableTarget(data.SightRange);
+                            ActivateSkill(fortress, data);
                         }
                         else
                         {
-                            navObstacle.enabled = false;
-                            navAgent.enabled = true;
+                            if (navAgent.enabled)
+                            {
+                                targetUnit = SearchNearestReachableTarget(data.SightRange);
+                            }
+                            else
+                            {
+                                navObstacle.enabled = false;
+                                navAgent.enabled = true;
 
-                            targetUnit = SearchNearestReachableTarget(data.SightRange);
+                                targetUnit = SearchNearestReachableTarget(data.SightRange);
 
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
+                                navAgent.enabled = false;
+                                navObstacle.enabled = true;
+                            }
                         }
+
+                        //if (navAgent.enabled)
+                        //{
+                        //    targetUnit = SearchNearestReachableTarget(data.SightRange);
+                        //}
+                        //else
+                        //{
+                        //    navObstacle.enabled = false;
+                        //    navAgent.enabled = true;
+
+                        //    targetUnit = SearchNearestReachableTarget(data.SightRange);
+
+                        //    navAgent.enabled = false;
+                        //    navObstacle.enabled = true;
+                        //}
                         
                         if (targetUnit != null)
                             mode = Mode.COMBAT;
@@ -234,16 +260,13 @@ public class EnemyUnit : Unit
                 break;
             case Mode.ATTACKFORTRESS:
                 {
-                    // 스킬 관련 처리
-                    SkillBase skill = GetAvailableSkill();
-                    if (skill != null)
-                        ActivateSkill(skill, fortress);
+                    ActivateSkill(fortress, data);
                 }
                 break;
         }
     }
 
-    protected override void ActivateSkill(SkillBase skill, Unit target)
+    protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 스킬
     {
         if (skill == generalSkill)
         {
@@ -262,21 +285,33 @@ public class EnemyUnit : Unit
         base.ActivateSkill(skill, target);
     }
 
-    protected void ActivateSkill(SkillBase skill, Fortress fortress)
+    protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
     {
-        if (skill == generalSkill)
-        {
-            state = State.GENERALSKILL;
-            modelAnimator.SetTrigger("GeneralSkill");
-        }
-        else if (skill == specialSkill)
-        {
-            state = State.SPECIALSKILL;
-            modelAnimator.SetTrigger("SpecialSkill");
-        }
         transform.LookAt(fortress.transform.position);
-        skill.Activate(this, fortress);
+
+        attackCool -= Time.deltaTime;
+        if(attackCool <= 0f)
+        {
+            modelAnimator.SetTrigger("GeneralSkill");
+            fortress.TakeDamage(data.Tier);
+            attackCool = base.generalSkill.Data.CoolTime;
+        }
+
+
+        //if (skill == generalSkill)
+        //{
+        //    state = State.GENERALSKILL;
+        //    modelAnimator.SetTrigger("GeneralSkill");
+        //}
+        //else if (skill == specialSkill)
+        //{
+        //    state = State.SPECIALSKILL;
+        //    modelAnimator.SetTrigger("SpecialSkill");
+        //}
+        //transform.LookAt(fortress.transform.position);
+        //skill.Activate(this, fortress);
     }
+
 
     public override void Die()
     {
