@@ -750,6 +750,15 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    protected bool IsTargetInAttackRange(Unit target, float range)
+    {
+        if (target == null)
+            return false;
+
+        float dst = Vector3.Distance(transform.position, target.transform.position);
+        return dst <= range;
+    }
+
     protected SkillBase GetAvailableSkill()
     {
         if (specialSkill != null && specialSkill.IsCoolDown)

@@ -358,6 +358,11 @@ public class AllyUnit : Unit
                             }
                         }
 
+                        if(IsTargetInAttackRange(targetUnit, data.AttackRange))
+                        {
+                            return;
+                        }
+
                         if (IsTargetInRange(targetUnit, data.SightRange))
                         {
                             MoveTo(targetUnit);
