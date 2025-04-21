@@ -356,8 +356,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Transform effectParent;
 
     [Header("■ Skill")]
-    [SerializeField] protected SkillBase generalSkill;
-    [SerializeField] protected SkillBase specialSkill;
+    [SerializeField] private SkillBase generalSkill;
+    [SerializeField] private SkillBase specialSkill;
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -412,6 +412,8 @@ public abstract class Unit : MonoBehaviour
     public float DamageReductionMultiplier => damageReductionMultiplier;
     public float AttackDamageMultiplier => attackDamageMultiplier;
     public LayerMask EnemyLayer => enemyLayer;
+    public SkillBase GeneralSkill => generalSkill;
+    public SkillBase SpecialSkill => specialSkill;
 
     public bool IsSelected
     {

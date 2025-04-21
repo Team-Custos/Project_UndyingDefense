@@ -19071,7 +19071,9 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   waveData:
-  - {fileID: 11400000, guid: 82a4e1d8fc42258449eccd48922d1c7c, type: 2}
+  - {fileID: 11400000, guid: 0eff35fdc3429f2448534e6b34e14fab, type: 2}
+  - {fileID: 11400000, guid: d2891d772e3fd384780430e161fb7e0c, type: 2}
+  - {fileID: 11400000, guid: 5819141ba069110468d4e047ca19ac48, type: 2}
   spawnTime: 3
   spawnPoints:
   - {fileID: 227319632}
@@ -26184,13 +26186,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 856739625}
+        m_TargetAssemblyTypeName: InGameManager, Assembly-CSharp
+        m_MethodName: ReLoadeCurrentScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -27265,7 +27267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyUnitSpawner: {fileID: 679628028}
   ingameUI: {fileID: 959445840}
-  maxHp: 10
+  maxHp: 100000
   linePositions: {fileID: 1953437798}
   audioSource: {fileID: 987298099}
   damageSound:

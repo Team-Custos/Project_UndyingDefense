@@ -228,6 +228,7 @@ public class EnemyUnit : Unit
                             if (skill != null)
                             {
                                 ActivateSkill(skill, targetUnit);
+                                modelAnimator.SetTrigger("AttackTrigger");
                             }
                         }
                         else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
@@ -268,12 +269,12 @@ public class EnemyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 스킬
     {
-        if (skill == generalSkill)
+        if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
             modelAnimator.SetTrigger("GeneralSkill");
         }
-        else if(skill == specialSkill)
+        else if(skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
             modelAnimator.SetTrigger("SpecialSkill");
@@ -293,8 +294,9 @@ public class EnemyUnit : Unit
         if(attackCool <= 0f)
         {
             modelAnimator.SetTrigger("GeneralSkill");
+            modelAnimator.SetTrigger("AttackTrigger");
             fortress.TakeDamage(data.Tier);
-            attackCool = base.generalSkill.Data.CoolTime;
+            attackCool = base.GeneralSkill.Data.CoolTime;
         }
 
 

@@ -136,6 +136,8 @@ public class InGameManager : MonoBehaviour
     [SerializeField] public float inGameGold { set; private get; }
     [SerializeField] private IngameScreenUI ingameScreenUI;
 
+    private bool isGamePause = false;
+
     private void Start()
     {
         ingameScreenUI.SetGoldTextUI(inGameGold);
@@ -160,5 +162,19 @@ public class InGameManager : MonoBehaviour
     public void ReLoadeCurrentScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit(); // 어플리케이션 종료
+#endif
+    }
+
+    public void PauseGame()
+    {
+        
     }
 }

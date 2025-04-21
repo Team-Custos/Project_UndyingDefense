@@ -16,10 +16,6 @@ public class UnitData : ScriptableObject
     [SerializeField] private float attackRange;
     [SerializeField] private Sprite icon;
     [SerializeField] private GameObject prefab;
-    [SerializeField] private string gSkillText;
-    [SerializeField] private string sSkillText;
-    [SerializeField] private Sprite gSkillIcon;
-    [SerializeField] private Sprite sSkillIcon;
 
     public string Name => unitName;
     public int Tier => tier;
@@ -33,9 +29,4 @@ public class UnitData : ScriptableObject
     public float AttackRange => attackRange;
     public Sprite Icon => icon;
     public GameObject Prefab => prefab;
-
-    public string GSkillText => gSkillText;
-    public string SSkillText => sSkillText;
-    public Sprite SSkillIcon => sSkillIcon;
-    public Sprite GSkillIcon => gSkillIcon;
 }
