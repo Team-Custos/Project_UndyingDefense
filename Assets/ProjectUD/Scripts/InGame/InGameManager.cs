@@ -140,6 +140,7 @@ public class InGameManager : MonoBehaviour
 
     private void Start()
     {
+        inGameGold = 500;
         ingameScreenUI.SetGoldTextUI(inGameGold);
     }
 

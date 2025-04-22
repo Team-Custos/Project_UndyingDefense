@@ -149,6 +149,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: orc_shaman
       objectReference: {fileID: 0}
+    - target: {fileID: 4947980330377629915, guid: 4e9c790d539465d45861942eea60e41b,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -167,6 +172,12 @@ Transform:
 --- !u!4 &5433491135340495453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4947980330369924939, guid: 4e9c790d539465d45861942eea60e41b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1138674596906925334}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5433491135347731917 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4947980330377629915, guid: 4e9c790d539465d45861942eea60e41b,
     type: 3}
   m_PrefabInstance: {fileID: 1138674596906925334}
   m_PrefabAsset: {fileID: 0}
@@ -403,6 +414,11 @@ PrefabInstance:
       propertyPath: specialSkill
       value: 
       objectReference: {fileID: 1032704715339249508}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 5433491135347731917}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -14,6 +14,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 22100000, guid: c598ddf0bc8bfc6438673b82eb7e2b34,
         type: 2}
+    - target: {fileID: 385578117157192735, guid: f2252134a0d86ce4a9bd61ca341d2d96,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 385578117164496793, guid: f2252134a0d86ce4a9bd61ca341d2d96,
         type: 3}
       propertyPath: m_Name
@@ -87,6 +92,12 @@ Transform:
 --- !u!4 &3398772423921459607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 385578117164919741, guid: f2252134a0d86ce4a9bd61ca341d2d96,
+    type: 3}
+  m_PrefabInstance: {fileID: 3058793803906026026}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3398772423928942133 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 385578117157192735, guid: f2252134a0d86ce4a9bd61ca341d2d96,
     type: 3}
   m_PrefabInstance: {fileID: 3058793803906026026}
   m_PrefabAsset: {fileID: 0}
@@ -323,6 +334,11 @@ PrefabInstance:
       propertyPath: specialSkill
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 3398772423928942133}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

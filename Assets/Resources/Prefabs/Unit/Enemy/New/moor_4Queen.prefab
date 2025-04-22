@@ -324,6 +324,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8564522559579639762, guid: 54f3d430051204ba3a3146fd6852c164,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 5fa7b740fd0201647bbe30b9b9f28114,
+        type: 2}
     - target: {fileID: 8564522559583924496, guid: 54f3d430051204ba3a3146fd6852c164,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -377,6 +383,12 @@ Transform:
 --- !u!4 &4177394199770954238 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8564522559570616334, guid: 54f3d430051204ba3a3146fd6852c164,
+    type: 3}
+  m_PrefabInstance: {fileID: 5702223434278853104}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4177394199777842722 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8564522559579639762, guid: 54f3d430051204ba3a3146fd6852c164,
     type: 3}
   m_PrefabInstance: {fileID: 5702223434278853104}
   m_PrefabAsset: {fileID: 0}
@@ -453,6 +465,11 @@ PrefabInstance:
       propertyPath: specialSkill
       value: 
       objectReference: {fileID: 2238113478997736709}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 4177394199777842722}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

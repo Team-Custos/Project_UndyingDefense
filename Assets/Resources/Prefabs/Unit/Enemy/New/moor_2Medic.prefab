@@ -154,6 +154,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6549341049704211086}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &4125347480979987543 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7179796985067454169, guid: cd31829d5f9d64a8994e937a50f55389,
+    type: 3}
+  m_PrefabInstance: {fileID: 6549341049704211086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7585994184723518643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,7 +379,7 @@ PrefabInstance:
     - target: {fileID: 698659943156479177, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_Name
-      value: NPU 101
+      value: moor_2Medic
       objectReference: {fileID: 0}
     - target: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
@@ -436,6 +442,11 @@ PrefabInstance:
       propertyPath: generalSkill
       value: 
       objectReference: {fileID: 2621207244402404865}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 4125347480979987543}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

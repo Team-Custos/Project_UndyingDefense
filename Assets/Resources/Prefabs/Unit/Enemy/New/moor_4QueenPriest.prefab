@@ -158,6 +158,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5702223434278853104}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &4177394199777842722 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8564522559579639762, guid: 54f3d430051204ba3a3146fd6852c164,
+    type: 3}
+  m_PrefabInstance: {fileID: 5702223434278853104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5931811144864787067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -255,7 +261,7 @@ PrefabInstance:
     - target: {fileID: 698659943156479177, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_Name
-      value: moor_4Queen
+      value: moor_4QueenPriest
       objectReference: {fileID: 0}
     - target: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
@@ -312,6 +318,11 @@ PrefabInstance:
       propertyPath: generalSkill
       value: 
       objectReference: {fileID: 74914064746905997}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 4177394199777842722}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

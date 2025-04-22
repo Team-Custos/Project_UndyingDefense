@@ -891,11 +891,16 @@ public abstract class Unit : MonoBehaviour
             hp = 0f;
             Die();
 
-            // ui 제거
-            selectedUnitUI.HideHp();
-            selectedUnitUI.HideHp();
-            selectedUnitUI.HideUpgrdeUI();
-            selectedUnitUI.HideUntInfo();
+            if(selectedUnitUI != null)
+            {
+                // ui 제거
+                selectedUnitUI.HideHp();
+                selectedUnitUI.HideHp();
+                selectedUnitUI.HideUpgrdeUI();
+                selectedUnitUI.HideUntInfo();
+            }
+
+            
         }
 
         if (selectedUnitUI != null)
@@ -998,6 +1003,7 @@ public abstract class Unit : MonoBehaviour
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
         VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.localPosition = Vector3.zero;
         Destroy(VFXobj, VFX.main.duration);
     }
 }
