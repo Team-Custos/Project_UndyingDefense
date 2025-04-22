@@ -55,10 +55,14 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void HideHp()
     {
-        unitHPPrefab.SetActive(false);
-        unitInfoImage.gameObject.SetActive(false);
+        if(unitHPPrefab != null)
+        {
+            unitHPPrefab.SetActive(false);
+            unitInfoImage.gameObject.SetActive(false);
 
-        selectedUnit = null;
+            selectedUnit = null;
+        }
+        
     }
 
     public void HideUpgrdeUI()
@@ -130,6 +134,7 @@ public class SelectedUnitUI : MonoBehaviour
         }
     }
 
+
     public void UpdateUnitInfo(Unit unit)
     {
        unit.SetUnitUI(this);
@@ -154,6 +159,11 @@ public class SelectedUnitUI : MonoBehaviour
         }
 
        unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+    }
+    
+    public void HideUntInfo()
+    {
+        unitInfoImage.gameObject.SetActive(false);
     }
 
     public void UpdateHPUI(Unit unit)

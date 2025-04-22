@@ -889,6 +889,12 @@ public abstract class Unit : MonoBehaviour
         {
             hp = 0f;
             Die();
+
+            // ui 제거
+            selectedUnitUI.HideHp();
+            selectedUnitUI.HideHp();
+            selectedUnitUI.HideUpgrdeUI();
+            selectedUnitUI.HideUntInfo();
         }
 
         if (selectedUnitUI != null)
