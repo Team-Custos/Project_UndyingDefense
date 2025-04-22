@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using static AllyUnit;
 
 public class EnemyUnit : Unit
 {
@@ -23,12 +24,26 @@ public class EnemyUnit : Unit
         DEAD
     }
 
+    public enum TargetingType    //유닛의 타겟 선정 방식.
+    {
+        NEAR,           // 가까운 적
+        LOWHP,          // HP가 낮은 적
+        HIGHTIER        // 티어가 높은 적
+    }
+
+    public enum AIStance
+    {
+        NORMAL,
+        AGGRESSIVE
+    }
+
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
     private EnemyUnitSpawner enemySpawner;
 
     private Mode mode;
     private State state;
+    private AIStance aiStance;
 
     private Fortress fortress;
     private Vector3 fortressPos;
@@ -146,7 +161,7 @@ public class EnemyUnit : Unit
                     {
                         float distance = Vector3.Distance(transform.position, fortressPos);
 
-                        if(distance <= data.AttackRange)
+                        if (distance <= data.AttackRange)
                         {
                             ActivateSkill(fortress, data);
                         }
@@ -154,35 +169,20 @@ public class EnemyUnit : Unit
                         {
                             if (navAgent.enabled)
                             {
-                                targetUnit = SearchNearestReachableTarget(data.SightRange);
+                                targetUnit = SearchTarget(data.SightRange);
                             }
                             else
                             {
                                 navObstacle.enabled = false;
                                 navAgent.enabled = true;
 
-                                targetUnit = SearchNearestReachableTarget(data.SightRange);
+                                targetUnit = SearchTarget(data.SightRange);
 
                                 navAgent.enabled = false;
                                 navObstacle.enabled = true;
                             }
                         }
 
-                        //if (navAgent.enabled)
-                        //{
-                        //    targetUnit = SearchNearestReachableTarget(data.SightRange);
-                        //}
-                        //else
-                        //{
-                        //    navObstacle.enabled = false;
-                        //    navAgent.enabled = true;
-
-                        //    targetUnit = SearchNearestReachableTarget(data.SightRange);
-
-                        //    navAgent.enabled = false;
-                        //    navObstacle.enabled = true;
-                        //}
-                        
                         if (targetUnit != null)
                             mode = Mode.COMBAT;
                         else
@@ -228,14 +228,15 @@ public class EnemyUnit : Unit
                             if (skill != null)
                             {
                                 ActivateSkill(skill, targetUnit);
+                                modelAnimator.SetTrigger("AttackTrigger");
                             }
                         }
                         else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
                         {
-                            MoveTo(targetUnit);
+                            MoveTo(targetUnit); 
                             if(path.status != NavMeshPathStatus.PathComplete)
                             {
-                                targetUnit = SearchNearestReachableTarget(data.SightRange);
+                                targetUnit = SearchTarget(data.SightRange);
                                 if (targetUnit == null)
                                 {
                                     mode = Mode.MOVE;
@@ -261,6 +262,16 @@ public class EnemyUnit : Unit
             case Mode.ATTACKFORTRESS:
                 {
                     ActivateSkill(fortress, data);
+
+                    if (aiStance == AIStance.AGGRESSIVE)
+                    {
+                        targetUnit = SearchTarget(data.SightRange);
+                        if (targetUnit != null)
+                        {
+                            mode = Mode.COMBAT;
+                            MoveTo(targetUnit);
+                        }
+                    }
                 }
                 break;
         }
@@ -268,12 +279,12 @@ public class EnemyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 스킬
     {
-        if (skill == generalSkill)
+        if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
             modelAnimator.SetTrigger("GeneralSkill");
         }
-        else if(skill == specialSkill)
+        else if(skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
             modelAnimator.SetTrigger("SpecialSkill");
@@ -293,23 +304,10 @@ public class EnemyUnit : Unit
         if(attackCool <= 0f)
         {
             modelAnimator.SetTrigger("GeneralSkill");
+            modelAnimator.SetTrigger("AttackTrigger");
             fortress.TakeDamage(data.Tier);
-            attackCool = base.generalSkill.Data.CoolTime;
+            attackCool = base.GeneralSkill.Data.CoolTime;
         }
-
-
-        //if (skill == generalSkill)
-        //{
-        //    state = State.GENERALSKILL;
-        //    modelAnimator.SetTrigger("GeneralSkill");
-        //}
-        //else if (skill == specialSkill)
-        //{
-        //    state = State.SPECIALSKILL;
-        //    modelAnimator.SetTrigger("SpecialSkill");
-        //}
-        //transform.LookAt(fortress.transform.position);
-        //skill.Activate(this, fortress);
     }
 
 
@@ -330,6 +328,25 @@ public class EnemyUnit : Unit
             isDead = true;
         }
 
+    }
+
+    private Unit SearchTarget(float range)
+    {
+        Unit result = null;
+        switch (data.targetingType)
+        {
+            case TargetingType.NEAR:
+                result = SearchNearestTarget(range);
+                break;
+            case TargetingType.LOWHP:
+                result = SearchLowHPTarget(range);
+                break;
+            case TargetingType.HIGHTIER:
+                result = SearchHighTierTarget(range);
+                break;
+        }
+
+        return result;
     }
 
     //private void Update()

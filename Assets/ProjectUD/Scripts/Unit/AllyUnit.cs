@@ -278,6 +278,7 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
+                                            modelAnimator.SetTrigger("AttackTrigger");
                                         }
                                         else
                                             targetUnit = null;
@@ -346,6 +347,7 @@ public class AllyUnit : Unit
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             ActivateSkill(skill, targetUnit);
+                                            modelAnimator.SetTrigger("AttackTrigger");
                                             return;
                                         }
                                     }
@@ -468,12 +470,12 @@ public class AllyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target)
     {
-        if (skill == generalSkill)
+        if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
             modelAnimator.SetTrigger("GeneralSkill");
         }
-        else if (skill == specialSkill)
+        else if (skill ==  SpecialSkill)
         {
             state = State.SPECIALSKILL;
             modelAnimator.SetTrigger("SpecialSkill");

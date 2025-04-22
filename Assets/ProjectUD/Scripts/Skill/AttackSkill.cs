@@ -22,6 +22,13 @@ public class AttackSkill : SkillBase
     protected static Effect pierceCritEffect;
     protected static Effect crushCritEffect;
 
+    protected static ParticleSystem slashHitVFX;
+    protected static ParticleSystem pierceHitVFX;
+    protected static ParticleSystem crushHitVFX;
+    protected static ParticleSystem slashCritVFX;
+    protected static ParticleSystem pierceCritVFX;
+    protected static ParticleSystem crushCritVFX;
+
     public override SkillData Data => data;
 
     protected static Effect SlashCritEffect
@@ -54,6 +61,70 @@ public class AttackSkill : SkillBase
             return crushCritEffect;
         }
     }
+
+    protected static ParticleSystem SlashHitVFX
+    {
+        get
+        {
+            if (slashHitVFX == null)
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit").GetComponent<ParticleSystem>();
+
+            return slashHitVFX;
+        }
+    }
+
+    protected static ParticleSystem PierceHitVFX
+    {
+        get
+        {
+            if (pierceHitVFX == null)
+                pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+
+            return pierceHitVFX;
+        }
+    }
+
+    protected static ParticleSystem CrushHitVFX
+    {
+        get
+        {
+            if (crushHitVFX == null)
+                crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
+
+            return crushHitVFX;
+        }
+    }
+
+    protected static ParticleSystem SlashCritVFX
+    {
+        get
+        {
+            if (slashCritVFX == null)
+                slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit").GetComponent<ParticleSystem>();
+            return slashCritVFX;
+        }
+    }
+
+    protected static ParticleSystem PierceCritVFX
+    {
+        get
+        {
+            if (pierceCritVFX == null)
+                pierceCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceCrit").GetComponent<ParticleSystem>();
+            return pierceCritVFX;
+        }
+    }
+
+    protected static ParticleSystem CrushCritVFX
+    {
+        get
+        {
+            if (crushCritVFX == null)
+                crushCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushCrit").GetComponent<ParticleSystem>();
+            return crushCritVFX;
+        }
+    }
+
 
     public AttackType GetAttackType() => data.AttackType;
 
@@ -144,7 +215,15 @@ public class AttackSkill : SkillBase
         
         target.TakeDamage(calcDamage);
         if (Random.Range(0f, 1f) <= calcCrit)
+        {
+            AddCritVFX(unit, target);
             ActivateCriticalEffect(unit, target);
+        }
+        else
+        {
+            AddHitVFX(unit, target);
+        }
+
     }
 
     public void AttackFortress(Unit unit, Fortress fortress, UnitData data)
@@ -171,6 +250,43 @@ public class AttackSkill : SkillBase
         }
 
         target.AddEffect(unit, critEffect);
+    }
+
+    private void AddHitVFX(Unit unit, Unit target)
+    {
+        ParticleSystem hitVFX = null;
+        switch (data.AttackType)
+        {
+            case AttackType.SLASH:
+                hitVFX = SlashHitVFX;
+                break;
+            case AttackType.PIERCE:
+                hitVFX = PierceHitVFX;
+                break;
+            case AttackType.CRUSH:
+                hitVFX = CrushHitVFX;
+                break;
+        }
+
+        target.AddVFX(hitVFX);
+    }
+
+    private void AddCritVFX(Unit unit, Unit target)
+    {
+        ParticleSystem critVFX = null;
+        switch (data.AttackType)
+        {
+            case AttackType.SLASH:
+                critVFX = SlashCritVFX;
+                break;
+            case AttackType.PIERCE:
+                critVFX = PierceCritVFX;
+                break;
+            case AttackType.CRUSH:
+                critVFX = CrushCritVFX;
+                break;
+        }
+        target.AddVFX(critVFX);
     }
 
     private bool IsBlocked(ArmorType armorType)

@@ -7,7 +7,8 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     public enum TargetType
     {
         ENEMY,
-        ALLY
+        ALLY,
+        SELF
     }
 
     [Header("■ Events")]

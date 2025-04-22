@@ -123,6 +123,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     selectedUnit = null;
                     unitSelectUI.HideAllyUI();
                     unitSelectUI.HideHp();
+                    unitSelectUI.HideUpgrdeUI();
                 }
 
                 allyUnitSpawner.CancelSpawn();

@@ -354,10 +354,11 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected NavMeshObstacle navObstacle;
     [SerializeField] protected new Collider collider;
     [SerializeField] protected Transform effectParent;
+    [SerializeField] protected Transform VFXParent;
 
     [Header("■ Skill")]
-    [SerializeField] protected SkillBase generalSkill;
-    [SerializeField] protected SkillBase specialSkill;
+    [SerializeField] private SkillBase generalSkill;
+    [SerializeField] private SkillBase specialSkill;
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -412,6 +413,8 @@ public abstract class Unit : MonoBehaviour
     public float DamageReductionMultiplier => damageReductionMultiplier;
     public float AttackDamageMultiplier => attackDamageMultiplier;
     public LayerMask EnemyLayer => enemyLayer;
+    public SkillBase GeneralSkill => generalSkill;
+    public SkillBase SpecialSkill => specialSkill;
 
     public bool IsSelected
     {
@@ -887,6 +890,12 @@ public abstract class Unit : MonoBehaviour
         {
             hp = 0f;
             Die();
+
+            // ui 제거
+            selectedUnitUI.HideHp();
+            selectedUnitUI.HideHp();
+            selectedUnitUI.HideUpgrdeUI();
+            selectedUnitUI.HideUntInfo();
         }
 
         if (selectedUnitUI != null)
@@ -983,5 +992,12 @@ public abstract class Unit : MonoBehaviour
 
             effects.Add(effect);
         }
+    }
+
+    public void AddVFX(ParticleSystem VFX)
+    {
+        GameObject VFXobj = Instantiate(VFX.gameObject);
+        VFXobj.transform.SetParent(VFXParent);
+        Destroy(VFXobj, VFX.main.duration);
     }
 }

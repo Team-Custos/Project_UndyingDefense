@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,10 +55,14 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void HideHp()
     {
-        unitHPPrefab.SetActive(false);
-        unitInfoImage.gameObject.SetActive(false);
+        if(unitHPPrefab != null)
+        {
+            unitHPPrefab.SetActive(false);
+            unitInfoImage.gameObject.SetActive(false);
 
-        selectedUnit = null;
+            selectedUnit = null;
+        }
+        
     }
 
     public void HideUpgrdeUI()
@@ -129,6 +134,7 @@ public class SelectedUnitUI : MonoBehaviour
         }
     }
 
+
     public void UpdateUnitInfo(Unit unit)
     {
        unit.SetUnitUI(this);
@@ -138,11 +144,26 @@ public class SelectedUnitUI : MonoBehaviour
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.Data.Name;
-       unitDefenseTypeText.text = unit.Data.ArmorType.ToString();
-       unitGSkillText.text = unit.Data.GSkillText;
-       unitSSkillText.text = unit.Data.SSkillText;
-       unitSSkillImage.sprite = unit.Data.GSkillIcon;
-       unitGSkillImage.sprite = unit.Data.SSkillIcon;
+       unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
+       unitGSkillText.text = unit.GeneralSkill.Data.name;
+
+       if(unit.SpecialSkill != null)
+        {
+            unitSSkillText.text = unit.SpecialSkill.Data.name;
+            unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
+        }
+        else
+        {
+            unitSSkillText.text = " ";
+            unitGSkillImage.sprite = null;
+        }
+
+       unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+    }
+    
+    public void HideUntInfo()
+    {
+        unitInfoImage.gameObject.SetActive(false);
     }
 
     public void UpdateHPUI(Unit unit)
@@ -151,5 +172,23 @@ public class SelectedUnitUI : MonoBehaviour
         {
             unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
         }
+    }
+
+    public string ConvertDefenseName(string armorType)
+    {
+        if (armorType == Unit.ArmorType.PADDED.ToString())
+        {
+            return "완충갑";
+        }
+        else if (armorType == Unit.ArmorType.ANTIPIERCING.ToString())
+        {
+            return "방탄갑";
+        }
+        else if (armorType == Unit.ArmorType.STEELPLATED.ToString())
+        {
+            return "철갑";
+        }
+        else
+            return "정보없음";
     }
 }
