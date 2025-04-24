@@ -157,13 +157,19 @@ public class EnemyUnit : Unit
         {
             case Mode.MOVE:
                 {
-                    if (navAgent.pathStatus != NavMeshPathStatus.PathComplete) // 길이 막혀있는 경우
-                    {
-                        float distance = Vector3.Distance(transform.position, fortressPos);
+                    float distance = Vector3.Distance(transform.position, fortressPos);
 
+                    if(distance <= data.AttackRange)
+                    {
+                        mode = Mode.ATTACKFORTRESS;
+                        return;
+                    }
+
+                    if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
+                    {
                         if (distance <= data.AttackRange)
                         {
-                            ActivateSkill(fortress, data);
+                            mode = Mode.ATTACKFORTRESS;
                         }
                         else
                         {
@@ -299,6 +305,12 @@ public class EnemyUnit : Unit
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
     {
         transform.LookAt(fortress.transform.position);
+
+        if (navAgent.enabled)
+        {
+            navAgent.isStopped = true;
+        }
+
 
         attackCool -= Time.deltaTime;
         if(attackCool <= 0f)

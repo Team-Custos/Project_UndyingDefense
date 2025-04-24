@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class SelectedUnitUI : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private SelectedUnitManager selecteUnitManger;
 
     [SerializeField] private GameObject unitHPPrefab;
     [SerializeField] private Image unitHP;
@@ -20,8 +21,6 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Image modeChangeBtnImage;
     [SerializeField] private Sprite freeIcon;
     [SerializeField] private Sprite siegeIcon;
-
-    private Unit selectedUnit;
     [SerializeField] private float yPos;
     [SerializeField] private float xPos;
 
@@ -40,7 +39,7 @@ public class SelectedUnitUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (selectedUnit != null)
+        if (selecteUnitManger.SelectedUnit != null)
         {
             UpdateUI();
         }
@@ -48,7 +47,7 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void ShowHp(Unit unit)
     {
-        selectedUnit = unit;
+        unit = selecteUnitManger.SelectedUnit; 
         unitHPPrefab.SetActive(true);
 
     }
@@ -59,8 +58,6 @@ public class SelectedUnitUI : MonoBehaviour
         {
             unitHPPrefab.SetActive(false);
             unitInfoImage.gameObject.SetActive(false);
-
-            selectedUnit = null;
         }
         
     }
@@ -78,7 +75,7 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
     {
-        selectedUnit = allyUnit;
+        allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
         unitMenuPrefab.SetActive(true);
 
         if(allyUnit.ModeType == AllyUnit.Mode.FREE)
@@ -104,13 +101,13 @@ public class SelectedUnitUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        if(selectedUnit != null)
+        if(selecteUnitManger.SelectedUnit != null)
         {
             if (unitHPPrefab != null)
             {
-                unitHP.fillAmount = selectedUnit.HpPercent;
+                unitHP.fillAmount = selecteUnitManger.SelectedUnit.HpPercent;
 
-                Vector3 worldPosition = selectedUnit.transform.position + Vector3.up * yPos;
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.up * yPos;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitHPPrefab.transform.position = screenPosition;
@@ -118,7 +115,7 @@ public class SelectedUnitUI : MonoBehaviour
 
             if(unitMenuPrefab != null)
             {
-                Vector3 worldPosition = selectedUnit.transform.position + Vector3.right * xPos;
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitMenuPrefab.transform.position = screenPosition;
@@ -126,7 +123,7 @@ public class SelectedUnitUI : MonoBehaviour
 
             if(unitUpgradeMenuPrefab != null)
             {
-                Vector3 worldPosition = selectedUnit.transform.position + Vector3.right * xPos;
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitUpgradeMenuPrefab.transform.position = screenPosition;
@@ -150,12 +147,14 @@ public class SelectedUnitUI : MonoBehaviour
        if(unit.SpecialSkill != null)
         {
             unitSSkillText.text = unit.SpecialSkill.Data.name;
+
+            unitGSkillImage.gameObject.SetActive(true);
             unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
         }
         else
         {
             unitSSkillText.text = " ";
-            unitGSkillImage.sprite = null;
+            unitGSkillImage.gameObject.SetActive(false);
         }
 
        unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;

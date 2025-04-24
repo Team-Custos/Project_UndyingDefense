@@ -151,8 +151,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
         inGameManager.SetGold(allyUnitData.Cost, false);
 
-        unitSelectUI.UpdateHPUI(selectedAllyUnit);
-        unitSelectUI.UpdateUnitInfo(selectedAllyUnit);
 
         unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();

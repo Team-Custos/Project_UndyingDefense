@@ -57,14 +57,13 @@ public class EnemyUnitSpawner : MonoBehaviour
                 waveTimer -= Time.deltaTime;
                 if (waveTimer <= 0f)
                 {   // 타이머 종료 및 웨이브 시작
-                    ingameScreenUI.HideNotice();
+                    //ingameScreenUI.HideNotice();
                     isWaveEnd = false;
                     waveDelay = 1.0f;
                     waveTimer = 20f;
 
                     ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
 
-                    
                 }
             }
         }

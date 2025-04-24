@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Specialized;
 
 public class IngameScreenUI : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class IngameScreenUI : MonoBehaviour
 
     [Header("■ Result")]
     [SerializeField] private ResultUI resultUI;
+
+    [SerializeField] private Animator animator;
 
     public void SetWaveNumber(int waveNum)
     {
@@ -37,12 +40,14 @@ public class IngameScreenUI : MonoBehaviour
 
     public void ShowNotice(string text) //
     {
-        noticeUI.Show(text);
+        noticeUI.SetText(text ,false);
+        Fade();
     }
 
     public void ShowTimer()
     {
-        noticeTimerUI.gameObject.SetActive(true);
+        TimerFade();
+        //noticeTimerUI.gameObject.SetActive(true);
     }
 
     public void HideNotice()
@@ -53,12 +58,13 @@ public class IngameScreenUI : MonoBehaviour
 
     public void ShowPreWaveNotice()
     {
-        noticeUI.Show("성이 현재 공겨받고있습니다!", true);
+        Fade();
+        noticeUI.SetText("성이 현재 공겨받고있습니다!", true);
     }
 
     public void SetNoticeText(string text)
     {
-        noticeTimerUI.SetText(text);
+        noticeTimerUI.SetText(text, false);
     }
 
     public void ShowResult(float reward, bool win)
@@ -67,4 +73,19 @@ public class IngameScreenUI : MonoBehaviour
     }
 
     public void HideResult() => resultUI.Hide();
+
+    public void Fade()
+    {
+        animator.SetTrigger("FadeTrigger");
+    }
+
+    public void TimerFade()
+    {
+        animator.SetTrigger("TimerFadeTrigger");
+    }
+
+    public void TimerEnd()
+    {
+        animator.SetTrigger("TimerEndTrigger");
+    }
 }

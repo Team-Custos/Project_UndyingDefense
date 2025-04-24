@@ -20971,11 +20971,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751923279}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce23a74dfe072e447a29c9003818c641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!114 &751923282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26383,6 +26384,7 @@ GameObject:
   - component: {fileID: 959445837}
   - component: {fileID: 959445836}
   - component: {fileID: 959445840}
+  - component: {fileID: 959445841}
   m_Layer: 5
   m_Name: Screen
   m_TagString: Untagged
@@ -26507,6 +26509,28 @@ MonoBehaviour:
   noticeUI: {fileID: 751923282}
   noticeTimerUI: {fileID: 2532806955720346971}
   resultUI: {fileID: 738562325}
+  animator: {fileID: 959445841}
+--- !u!95 &959445841
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959445835}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1be50cba9f4cf6a4eae271f760ebe65e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &960057208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -37003,6 +37027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1346724710}
+  selecteUnitManger: {fileID: 1137951088}
   unitHPPrefab: {fileID: 659961443}
   unitHP: {fileID: 564626855}
   hpRectTransform: {fileID: 659961444}
@@ -61354,6 +61379,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 959445840}
+        m_TargetAssemblyTypeName: IngameScreenUI, Assembly-CSharp
+        m_MethodName: TimerEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 679628028}
         m_TargetAssemblyTypeName: EnemyUnitSpawner, Assembly-CSharp
         m_MethodName: SetWaverTimerEnd
@@ -62243,8 +62280,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 472590888}
-  - {fileID: 1608983615}
   - {fileID: 1874500719}
+  - {fileID: 1608983615}
   - {fileID: 1965640244}
   - {fileID: 1519819086}
   - {fileID: 1346724711}
