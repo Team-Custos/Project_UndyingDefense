@@ -307,7 +307,7 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
 
-                    if (isSelected && destinationPosition != Vector3.zero)
+                    if (destinationPosition != Vector3.zero)
                     {
                         targetUnit = null;
 
