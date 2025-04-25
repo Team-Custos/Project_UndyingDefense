@@ -12,6 +12,8 @@ public class UnitStateDuration : StateMachineBehaviour
         if (unit == null)
             unit = animator.transform.root.GetComponent<Unit>();
 
+        Debug.Log($"[DEBUG] {animator.name} entered {stateInfo.fullPathHash} with duration {stateInfo.length}");
+
         unit.SetStateDuration(stateInfo.length);
     }
 

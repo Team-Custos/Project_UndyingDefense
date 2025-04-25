@@ -526,6 +526,10 @@ public class AllyUnit : Unit
         modelAnimator.SetTrigger("Die");
     }
 
+    public void UpgradeDuration()
+    {
+        mode = Mode.CHANGE;
+    }
     private void OnOffSiefeEffect(bool isSiege)
     {
         if (isSiege)

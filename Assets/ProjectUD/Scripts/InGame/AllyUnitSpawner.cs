@@ -152,7 +152,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
             upgradeUnit.Initialize();
 
+
             upgradeUnit.gameObject.SetActive(true);
+
+            upgradeUnit.UpgradeDuration();
 
             upgradeUnit.transform.position = transform.position;
             upgradeUnit.transform.rotation = transform.rotation;
@@ -160,6 +163,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
             selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+;
 
             return upgradeUnit;
         }
