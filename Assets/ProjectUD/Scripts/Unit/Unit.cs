@@ -354,10 +354,11 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected NavMeshObstacle navObstacle;
     [SerializeField] protected new Collider collider;
     [SerializeField] protected Transform effectParent;
+    [SerializeField] protected Transform VFXParent;
 
     [Header("■ Skill")]
-    [SerializeField] protected SkillBase generalSkill;
-    [SerializeField] protected SkillBase specialSkill;
+    [SerializeField] private SkillBase generalSkill;
+    [SerializeField] private SkillBase specialSkill;
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -412,6 +413,8 @@ public abstract class Unit : MonoBehaviour
     public float DamageReductionMultiplier => damageReductionMultiplier;
     public float AttackDamageMultiplier => attackDamageMultiplier;
     public LayerMask EnemyLayer => enemyLayer;
+    public SkillBase GeneralSkill => generalSkill;
+    public SkillBase SpecialSkill => specialSkill;
 
     public bool IsSelected
     {
@@ -750,11 +753,28 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    protected bool IsTargetInAttackRange(Unit target, float range)
+    {
+        if (target == null)
+            return false;
+
+        float dst = Vector3.Distance(transform.position, target.transform.position);
+        return dst <= range;
+    }
+
     protected SkillBase GetAvailableSkill()
     {
         if (specialSkill != null && specialSkill.IsCoolDown)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown)
+            return generalSkill;
+        else
+            return null;
+    }
+
+    protected SkillBase GetGeneralSkill()
+    {
+        if(generalSkill != null && generalSkill.IsCoolDown)
             return generalSkill;
         else
             return null;
@@ -870,6 +890,17 @@ public abstract class Unit : MonoBehaviour
         {
             hp = 0f;
             Die();
+
+            if(selectedUnitUI != null)
+            {
+                // ui 제거
+                selectedUnitUI.HideHp();
+                selectedUnitUI.HideHp();
+                selectedUnitUI.HideUpgrdeUI();
+                selectedUnitUI.HideUntInfo();
+            }
+
+            
         }
 
         if (selectedUnitUI != null)
@@ -976,5 +1007,13 @@ public abstract class Unit : MonoBehaviour
 
             effects.Add(effect);
         }
+    }
+
+    public void AddVFX(ParticleSystem VFX)
+    {
+        GameObject VFXobj = Instantiate(VFX.gameObject);
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.localPosition = Vector3.zero;
+        Destroy(VFXobj, VFX.main.duration);
     }
 }

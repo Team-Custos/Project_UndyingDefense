@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,8 +14,12 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Image unitHP;
     [SerializeField] private RectTransform hpRectTransform;
 
-    [SerializeField] private UnitMenuUI unitMenuUI;
     [SerializeField] private GameObject unitMenuPrefab;
+    [SerializeField] private GameObject unitUpgradeMenuPrefab;
+
+    [SerializeField] private Image modeChangeBtnImage;
+    [SerializeField] private Sprite freeIcon;
+    [SerializeField] private Sprite siegeIcon;
 
     private Unit selectedUnit;
     [SerializeField] private float yPos;
@@ -50,16 +55,40 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void HideHp()
     {
-        unitHPPrefab.SetActive(false);
-        unitInfoImage.gameObject.SetActive(false);
+        if(unitHPPrefab != null)
+        {
+            unitHPPrefab.SetActive(false);
+            unitInfoImage.gameObject.SetActive(false);
 
-        selectedUnit = null;
+            selectedUnit = null;
+        }
+        
+    }
+
+    public void HideUpgrdeUI()
+    {
+        unitUpgradeMenuPrefab.SetActive(false);
+    }
+
+    public void ShowUpgradeMenu()
+    {
+        unitMenuPrefab.SetActive(false);
+        unitUpgradeMenuPrefab.SetActive(true);
     }
 
     public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
     {
         selectedUnit = allyUnit;
         unitMenuPrefab.SetActive(true);
+
+        if(allyUnit.ModeType == AllyUnit.Mode.FREE)
+        {
+            modeChangeBtnImage.sprite = siegeIcon;
+        }
+        else if(allyUnit.ModeType == AllyUnit.Mode.SEIGE)
+        {
+            modeChangeBtnImage.sprite = freeIcon;
+        }
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
@@ -94,8 +123,17 @@ public class SelectedUnitUI : MonoBehaviour
 
                 unitMenuPrefab.transform.position = screenPosition;
             }
+
+            if(unitUpgradeMenuPrefab != null)
+            {
+                Vector3 worldPosition = selectedUnit.transform.position + Vector3.right * xPos;
+                Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+
+                unitUpgradeMenuPrefab.transform.position = screenPosition;
+            }
         }
     }
+
 
     public void UpdateUnitInfo(Unit unit)
     {
@@ -106,11 +144,26 @@ public class SelectedUnitUI : MonoBehaviour
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.Data.Name;
-       unitDefenseTypeText.text = unit.Data.ArmorType.ToString();
-       unitGSkillText.text = unit.Data.GSkillText;
-       unitSSkillText.text = unit.Data.SSkillText;
-       unitSSkillImage.sprite = unit.Data.GSkillIcon;
-       unitGSkillImage.sprite = unit.Data.SSkillIcon;
+       unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
+       unitGSkillText.text = unit.GeneralSkill.Data.name;
+
+       if(unit.SpecialSkill != null)
+        {
+            unitSSkillText.text = unit.SpecialSkill.Data.name;
+            unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
+        }
+        else
+        {
+            unitSSkillText.text = " ";
+            unitGSkillImage.sprite = null;
+        }
+
+       unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+    }
+    
+    public void HideUntInfo()
+    {
+        unitInfoImage.gameObject.SetActive(false);
     }
 
     public void UpdateHPUI(Unit unit)
@@ -119,5 +172,23 @@ public class SelectedUnitUI : MonoBehaviour
         {
             unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
         }
+    }
+
+    public string ConvertDefenseName(string armorType)
+    {
+        if (armorType == Unit.ArmorType.PADDED.ToString())
+        {
+            return "완충갑";
+        }
+        else if (armorType == Unit.ArmorType.ANTIPIERCING.ToString())
+        {
+            return "방탄갑";
+        }
+        else if (armorType == Unit.ArmorType.STEELPLATED.ToString())
+        {
+            return "철갑";
+        }
+        else
+            return "정보없음";
     }
 }
