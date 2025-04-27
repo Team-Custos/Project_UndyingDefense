@@ -62,6 +62,11 @@ public class Effect : MonoBehaviour
         target.TakeDamage(damage);
     }
 
+    public void DealDamagePercent(float percent)
+    {
+        target.TakeDamage(target.Data.MaxHp * 0.01f * percent);
+    }
+
     public virtual void AddMoveSpeedPercent(float percent)
     {
         target.AddMoveSpeedMultiplier(percent * 0.01f);
@@ -113,6 +118,12 @@ public class Effect : MonoBehaviour
         target.AddDamageReduction(percent);
         float removeValue = -percent * maxStack;
         onRemove.AddListener(() => AddDamageReduction(removeValue));
+    }
+
+    public virtual void GetProvoked()
+    {
+        target.GetProvoked(unit);
+        onRemove.AddListener(() => target.RemoveProvoked());
     }
 
     public virtual void AddEffect(GameObject effectPrefab)

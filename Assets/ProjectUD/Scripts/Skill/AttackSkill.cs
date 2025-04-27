@@ -55,6 +55,73 @@ public class AttackSkill : SkillBase
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    protected static ParticleSystem SlashHitVFX
+    {
+        get
+        {
+            if (slashHitVFX == null)
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
+
+            return slashHitVFX;
+        }
+    }
+
+    protected static ParticleSystem PierceHitVFX
+    {
+        get
+        {
+            if (pierceHitVFX == null)
+                pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+
+            return pierceHitVFX;
+        }
+    }
+
+    protected static ParticleSystem CrushHitVFX
+    {
+        get
+        {
+            if (crushHitVFX == null)
+                crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
+
+            return crushHitVFX;
+        }
+    }
+
+    protected static ParticleSystem SlashCritVFX
+    {
+        get
+        {
+            if (slashCritVFX == null)
+                slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit_New").GetComponent<ParticleSystem>();
+            return slashCritVFX;
+        }
+    }
+
+    protected static ParticleSystem PierceCritVFX
+    {
+        get
+        {
+            if (pierceCritVFX == null)
+                pierceCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceCrit").GetComponent<ParticleSystem>();
+            return pierceCritVFX;
+        }
+    }
+
+    protected static ParticleSystem CrushCritVFX
+    {
+        get
+        {
+            if (crushCritVFX == null)
+                crushCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushCrit").GetComponent<ParticleSystem>();
+            return crushCritVFX;
+        }
+    }
+
+
+>>>>>>> Stashed changes
     public AttackType GetAttackType() => data.AttackType;
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle) //부채꼴 공격
@@ -98,6 +165,23 @@ public class AttackSkill : SkillBase
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(unit, target);
+            }
+        }
+    }
+
+    public void SelfDestruct(Unit unit, Unit pivotTarget, float radius, float hpToTrigger)
+    {
+        if (unit.HpPercent > hpToTrigger)
+        {
+            if (targets == null)
+                targets = new Collider[maxTargetCount];
+            int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+            for (int i = 0; i < targetCount; i++)
+            {
+                if (targets[i].TryGetComponent(out Unit target))
+                {
+                    Attack(unit, target);
+                }
             }
         }
     }
