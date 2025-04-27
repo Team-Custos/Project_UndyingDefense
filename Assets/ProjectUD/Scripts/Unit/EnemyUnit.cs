@@ -203,6 +203,11 @@ public class EnemyUnit : Unit
                             {
                                 ActivateSkill(skill, targetUnit);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+                                modelAnimator.SetTrigger("GeneralSkill");
+                                //modelAnimator.SetTrigger("AttackTrigger");
+>>>>>>> Stashed changes
 =======
                                 modelAnimator.SetTrigger("GeneralSkill");
                                 //modelAnimator.SetTrigger("AttackTrigger");
@@ -274,7 +279,10 @@ public class EnemyUnit : Unit
             state = State.GENERALSKILL;
             modelAnimator.SetTrigger("GeneralSkill");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
             //modelAnimator.SetTrigger("AttackTrigger");
             fortress.TakeDamage(data.Tier);
             attackCool = base.GeneralSkill.Data.CoolTime;
