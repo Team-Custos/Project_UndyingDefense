@@ -67,7 +67,7 @@ public class AttackSkill : SkillBase
         get
         {
             if (slashHitVFX == null)
-                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit").GetComponent<ParticleSystem>();
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
 
             return slashHitVFX;
         }
@@ -100,7 +100,7 @@ public class AttackSkill : SkillBase
         get
         {
             if (slashCritVFX == null)
-                slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit").GetComponent<ParticleSystem>();
+                slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit_New").GetComponent<ParticleSystem>();
             return slashCritVFX;
         }
     }
@@ -169,6 +169,23 @@ public class AttackSkill : SkillBase
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(unit, target);
+            }
+        }
+    }
+
+    public void SelfDestruct(Unit unit, Unit pivotTarget, float radius, float hpToTrigger)
+    {
+        if (unit.HpPercent > hpToTrigger)
+        {
+            if (targets == null)
+                targets = new Collider[maxTargetCount];
+            int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+            for (int i = 0; i < targetCount; i++)
+            {
+                if (targets[i].TryGetComponent(out Unit target))
+                {
+                    Attack(unit, target);
+                }
             }
         }
     }

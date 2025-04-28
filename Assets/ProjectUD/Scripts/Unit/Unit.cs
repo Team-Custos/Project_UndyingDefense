@@ -974,6 +974,16 @@ public abstract class Unit : MonoBehaviour
         damageReductionMultiplier += percent;
     }
 
+    public void GetProvoked(Unit ProvokedTarget)
+    {
+        targetUnit = ProvokedTarget;
+    }
+
+    public void RemoveProvoked()
+    {
+        targetUnit = null;
+    }
+
     public void AddEffect(Unit unit, Effect effect)
     {
         Effect prevEffect = effects.Find(item => item.Id == effect.Id);

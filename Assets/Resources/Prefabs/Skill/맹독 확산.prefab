@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8629626338088976046
+--- !u!1 &8675126071776639299
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7434015172272022382}
-  - component: {fileID: -1524244307425060721}
+  - component: {fileID: 4887701372474759928}
+  - component: {fileID: -8998121551933104840}
   m_Layer: 0
-  m_Name: "\uB3C4\uBC1C"
+  m_Name: "\uB9F9\uB3C5 \uD655\uC0B0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7434015172272022382
+--- !u!4 &4887701372474759928
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629626338088976046}
+  m_GameObject: {fileID: 8675126071776639299}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,22 +32,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1524244307425060721
+--- !u!114 &-8998121551933104840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629626338088976046}
+  m_GameObject: {fileID: 8675126071776639299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f429d03f071b27a4d9eacdd27a797019, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e59e22e33114264e95361804ecaa06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: Taunted
-  maxStack: 1
   onActivate:
+    _PersistentCalls:
+    - _Target: {fileID: -8998121551933104840}
+      _MemberName: AreaEffectSkill
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 1
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onAttackFortress:
     _PersistentCalls: []
-  onMaxStack:
-    _PersistentCalls: []
-  duration: 5
+  data: {fileID: 11400000, guid: 4a26af2091fe44d4293169f0c0aed992, type: 2}
