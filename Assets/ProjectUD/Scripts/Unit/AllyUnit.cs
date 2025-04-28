@@ -7,7 +7,9 @@ public class AllyUnit : Unit
     {
         FREE,
         SEIGE,
-        CHANGE
+        CHANGE,
+        UPGRADE
+        
     }
 
     public enum TargetingType    //아군 유닛의 타겟 선정 방식.
@@ -37,8 +39,10 @@ public class AllyUnit : Unit
     public override UnitData Data => data;
 
     private AllyUnitSpawner spawner;
+    private Grid grid;
 
     private float changeDuration = 3.0f;        // 모드 변경 시간
+    private float upgradeDuraiton = 3.0f;
     private Mode previousMode;                  // 이전 모드 확인을 위한 변수
 
     [SerializeField] private GameObject chagneEffet;
@@ -72,6 +76,11 @@ public class AllyUnit : Unit
         this.data = data;
         this.pool = pool;
         this.spawner = spawner;
+    }
+
+    private void Start()
+    {
+        grid = FindObjectOfType<Grid>();
     }
 
 
@@ -260,6 +269,8 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(true);
                     chagneEffet.SetActive(false);
 
+                    navObstacle.enabled = true;
+
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
@@ -414,6 +425,7 @@ public class AllyUnit : Unit
                     {
                         if (previousMode == Mode.FREE)
                         {
+                            MoveToGridCenter();
                             mode = Mode.SEIGE;
                         }
                         else if (previousMode == Mode.SEIGE)
@@ -424,8 +436,38 @@ public class AllyUnit : Unit
                         changeDuration = 3.0f;
                         previousMode = mode;
                     }
-
                 }
+                break;
+
+            case Mode.UPGRADE:
+                {
+                    OnOffSiefeEffect(false);
+                    chagneEffet.SetActive(true);
+
+                    particleDuration = 0.3f;
+                    isSiegeActive = false;
+
+                    if (upgradeDuraiton >= 0)
+                    {
+                        upgradeDuraiton -= Time.deltaTime;
+                        state = State.IDLE;
+                    }
+                    else
+                    {
+                        if (previousMode == Mode.FREE)
+                        {
+                            mode = Mode.FREE;
+                        }
+                        else if (previousMode == Mode.SEIGE)
+                        {
+                            mode = Mode.SEIGE;
+                        }
+
+                        upgradeDuraiton = 3.0f;
+                        previousMode = mode;
+                    }
+                }
+
                 break;
         }
     }
@@ -492,6 +534,11 @@ public class AllyUnit : Unit
         this.mode = mode;
     }
 
+    public void UpgradeMode(Mode mode)
+    {
+        this.mode = Mode.UPGRADE;
+    }
+
     public void Upgrade(int index)
     {
         if (data.UpgradeUnits.Length <= 0)
@@ -526,10 +573,8 @@ public class AllyUnit : Unit
         modelAnimator.SetTrigger("Die");
     }
 
-    public void UpgradeDuration()
-    {
-        mode = Mode.CHANGE;
-    }
+    
+
     private void OnOffSiefeEffect(bool isSiege)
     {
         if (isSiege)
@@ -556,5 +601,14 @@ public class AllyUnit : Unit
             siegeParticle.gameObject.SetActive(false);
             siegeEffect.SetActive(false);
         }
+    }
+
+    private void MoveToGridCenter()
+    {
+        Vector3 currentPosition = transform.position;
+        Vector3Int gridCellPos = grid.WorldToCell(currentPosition);
+        Vector3 centerPos = grid.GetCellCenterWorld(gridCellPos);
+        Vector3 newUnitPos = new Vector3(centerPos.x, 0, centerPos.z);
+        transform.position = newUnitPos;
     }
 }

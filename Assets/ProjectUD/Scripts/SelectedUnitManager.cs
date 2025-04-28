@@ -139,18 +139,27 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             return;
         }
 
-        unitSelectUI.ShowUpgradeMenu();
+        unitSelectUI.ShowUpgradeMenu(selectedUnit);
     }
 
     public void UpgradeSelectedUnit(int index)
     {
-       
+        AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
+
+        AllyUnitData nextUnitData = allyUnitData.UpgradeUnits[index] as AllyUnitData;
+
+
+        // 골드 부족 여부 확인
+        if (inGameManager.inGameGold < nextUnitData.Cost)
+        {
+            Debug.Log("골드 부족");
+            unitSelectUI.HideUpgrdeUI();
+            return;
+        }
+
         selectedAllyUnit.Upgrade(index);
 
-        var allyUnitData = selectedAllyUnit.Data as AllyUnitData;
-
-        inGameManager.SetGold(allyUnitData.Cost, false);
-
+        inGameManager.SetGold(nextUnitData.Cost, false);
 
         unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();

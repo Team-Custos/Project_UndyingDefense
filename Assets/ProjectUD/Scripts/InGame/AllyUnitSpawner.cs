@@ -107,6 +107,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 upgradeUnit.gameObject.SetActive(true);
 
+                upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
+
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
                 upgradeUnit.transform.position = transform.position;
@@ -125,6 +127,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.Initialize();
 
                 upgradeUnit.gameObject.SetActive(true);
+
+                upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
 
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
@@ -155,7 +159,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             upgradeUnit.gameObject.SetActive(true);
 
-            upgradeUnit.UpgradeDuration();
+            upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
 
             upgradeUnit.transform.position = transform.position;
             upgradeUnit.transform.rotation = transform.rotation;
@@ -182,6 +186,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     public void ToggleSpawnUnit(int index)
     {
+        if(inGameManager.inGameGold < units[index].Cost)
+        {
+            return;
+        }
+
         if (index == selectedIndex)
         {
             CancelSpawn();

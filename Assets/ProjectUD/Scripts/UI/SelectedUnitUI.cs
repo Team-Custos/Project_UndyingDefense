@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -67,8 +68,11 @@ public class SelectedUnitUI : MonoBehaviour
         unitUpgradeMenuPrefab.SetActive(false);
     }
 
-    public void ShowUpgradeMenu()
+    public void ShowUpgradeMenu(Unit unit)
     {
+        if (unit.Data.Tier >= 4)
+            return;
+
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
     }

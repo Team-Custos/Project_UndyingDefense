@@ -4,6 +4,15 @@ using UnityEngine.Rendering.Universal;
 
 public class EnemyUnitSpawner : MonoBehaviour
 {
+    public enum waveSfx
+    {
+        sfx_waveWin,                //  웨이브 방어 성공
+        sfx_wavePrepare,            //  웨이브 준비 단계 알림
+        sfx_waveStart,              //  웨이브 시작 알림
+        sfx_battleLose,             //  전투 패배
+        sfx_battleWin               //  전투 승리
+    }
+
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;
     [SerializeField] private InGameManager inGameManager;
@@ -17,7 +26,9 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private bool isWaveEnd;
     [SerializeField] private float waveTimer = 20f;
     [SerializeField] private int totalMonCount = 0;
+    [SerializeField] AudioClip[] waveSfxClip;
 
+    private bool oneTime = false;
     private float spawnTimeCheck;
     private int spawnDataIndex; // 현재 EnemySpawnData의 인덱스
     private int spawnDataEnemyCount; // 현재 EnemySpawnData의 스폰 횟수.
@@ -40,6 +51,8 @@ public class EnemyUnitSpawner : MonoBehaviour
             // 게임 성공
             if (curWave > waveData.Length && totalMonCount <= 0)
             {
+                SoundManager.Instance.StopBGM();
+                SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
                 ingameScreenUI.ShowResult(100, true);
                 return;
             }
@@ -49,6 +62,13 @@ public class EnemyUnitSpawner : MonoBehaviour
             if (waveDelay <= 0f)
             {
                 ingameScreenUI.SetWaveNumber(curWave);
+
+                if (!oneTime)
+                {
+                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_wavePrepare]);
+                    oneTime = true;
+                }
+
 
                 // 웨이브 타이머 설정
                 ingameScreenUI.ShowTimer();
@@ -63,6 +83,7 @@ public class EnemyUnitSpawner : MonoBehaviour
                     waveTimer = 20f;
 
                     ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
 
                 }
             }
@@ -72,6 +93,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
             if (isSpawnEnd && totalMonCount <= 0) // 웨이브 종료 및 시작 대기
             {
+                SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
                 ingameScreenUI.ShowNotice("방어 성공!");
 
                 isSpawnEnd = false;
@@ -201,5 +223,11 @@ public class EnemyUnitSpawner : MonoBehaviour
             isFortreessAttacked = true;
         }
 
+    }
+
+    public void GameLose()
+    {
+        SoundManager.Instance.StopBGM();
+        SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleLose]);
     }
 }
