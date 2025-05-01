@@ -4,22 +4,11 @@ using UnityEngine;
 
 public class GranadeCtrl : ProjectileCtrl
 {
-    [SerializeField] private float height = 5f;
-    [SerializeField] private float gravity = 9.81f;  // 중력 가속도 (Unity 기본 중력)
 
     [SerializeField] private GameObject AttackTrigger;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Vector3 targetPos = targetUnit.transform.position;
-        //speed = Mathf.Abs((transform.position.x - targetPos.x) + (transform.position.z - targetPos.z)) + 1;
-        height = Mathf.Abs((transform.position.x - targetPos.x) + (transform.position.z - targetPos.z)) + 1;
-        JumpTowards(targetPos, height);
-    }
-
     // 특정 좌표로 점프하는 함수
-    public void JumpTowards(Vector3 targetPosition, float jumpHeight)
+    public void JumpTowards(Vector3 targetPosition, float jumpHeight, float gravity)
     {
         // 1. 현재 위치와 목표 위치의 수평 거리 계산 (y축 제외)
         Vector3 direction = new Vector3(targetPosition.x - transform.position.x, 0, targetPosition.z - transform.position.z);

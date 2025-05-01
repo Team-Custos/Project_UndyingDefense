@@ -62,6 +62,7 @@ public class AttackSkill : SkillBase
         }
     }
 
+
     protected static ParticleSystem SlashHitVFX
     {
         get
@@ -125,6 +126,7 @@ public class AttackSkill : SkillBase
         }
     }
 
+    
 
     public AttackType GetAttackType() => data.AttackType;
 
@@ -194,17 +196,28 @@ public class AttackSkill : SkillBase
     {
         // 투사체 발사
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position, Quaternion.identity);
-        ArrowCtrl arrowCtrl = projectile.GetComponent<ArrowCtrl>();
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
         projectile.transform.position = unit.transform.position;
 
-        if (arrowCtrl != null)
+        if (projectile.GetComponent<ArrowCtrl>() != null)
         {
+            ArrowCtrl arrowCtrl = projectile.GetComponent<ArrowCtrl>();
             arrowCtrl.SetTarget(target);
             arrowCtrl.SetEvent(() => {
                 Attack(unit, target);
             });
             arrowCtrl.CalculateTime(distance);
+        }
+        if (projectile.GetComponent<GranadeCtrl>() != null)
+        {
+            Vector3 targetPos = target.transform.position;
+            projectile.transform.position = this.transform.position;
+
+            GranadeCtrl granadeCtrl = projectile.GetComponent<GranadeCtrl>();
+            float height = Mathf.Abs((transform.position.x - targetPos.x) + (transform.position.z - targetPos.z)) + 1;
+            float gravity = 1f;  // 중력 가속도 (Unity 기본 중력)
+
+            granadeCtrl.JumpTowards(targetPos, height, gravity);
         }
 
         // 람다식 Lambda Expression
@@ -219,6 +232,17 @@ public class AttackSkill : SkillBase
 
     public void Attack(Unit unit, Unit target)
     {
+        if (data.StartVFX != null)
+        {
+            unit.AddVFX(data.StartVFX);
+        }
+        int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
+        if (data.StartSFX[randomSoundIdx] != null)
+        {
+            SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
+        }
+
+
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritChance + target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
@@ -241,6 +265,13 @@ public class AttackSkill : SkillBase
             AddHitVFX(unit, target);
         }
 
+        if (data.InduseEffect != null)
+        {
+            if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
+            {
+                target.AddEffect(unit, data.InduseEffect);
+            }
+        }
     }
 
     public void AttackFortress(Unit unit, Fortress fortress, UnitData data)

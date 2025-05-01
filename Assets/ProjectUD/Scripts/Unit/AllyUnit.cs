@@ -52,6 +52,7 @@ public class AllyUnit : Unit
     [SerializeField] private float particleDuration = 0.3f;
 
     private bool isSiegeActive = false;
+
     public Vector3 DestinationPosition
     {
         get => destinationPosition;
@@ -278,7 +279,7 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("AttackTrigger");
+                                            modelAnimator.SetTrigger("GeneralSkill");
                                         }
                                         else
                                             targetUnit = null;
@@ -428,6 +429,12 @@ public class AllyUnit : Unit
                 }
                 break;
         }
+    }
+
+    public override void GetProvoked(Unit ProvokedTarget)
+    {
+        Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+        targetUnit = ProvokedTarget;
     }
 
     private Unit SearchTarget(float range)

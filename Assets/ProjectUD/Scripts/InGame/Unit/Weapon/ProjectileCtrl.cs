@@ -23,10 +23,4 @@ public class ProjectileCtrl : MonoBehaviour
     {
         targetUnit = target;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

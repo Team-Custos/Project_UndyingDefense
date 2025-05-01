@@ -6,6 +6,7 @@ public class Effect : MonoBehaviour
     [Header("■ Effect Options")]
     [SerializeField] protected string id;
     [SerializeField] protected int maxStack;
+    [SerializeField] protected ParticleSystem endVFX;
 
     [Header("■ Activate Effect")]
     [SerializeField] protected UltEvent onActivate;
@@ -23,6 +24,7 @@ public class Effect : MonoBehaviour
     {
         this.unit = unit;
         this.target = target;
+        this.transform.localPosition = Vector3.zero;
         Initialize();
     }
 

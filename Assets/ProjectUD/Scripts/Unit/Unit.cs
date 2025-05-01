@@ -974,15 +974,10 @@ public abstract class Unit : MonoBehaviour
         damageReductionMultiplier += percent;
     }
 
-    public void GetProvoked(Unit ProvokedTarget)
-    {
-        targetUnit = ProvokedTarget;
-    }
+    public abstract void GetProvoked(Unit ProvokedTarget);
 
-    public void RemoveProvoked()
-    {
-        targetUnit = null;
-    }
+    public virtual void RemoveProvoked()
+    { }
 
     public void AddEffect(Unit unit, Effect effect)
     {
@@ -1013,7 +1008,8 @@ public abstract class Unit : MonoBehaviour
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition = Vector3.zero;
+        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         Destroy(VFXobj, VFX.main.duration);
     }
 }

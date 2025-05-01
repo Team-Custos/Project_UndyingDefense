@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3119219152334764631}
   - component: {fileID: 4775280863287712545}
   - component: {fileID: 2554728831356238345}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: UD_Prefab_Granade
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3438420154072238399}
   m_Father: {fileID: 0}
@@ -95,9 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576e640def261ca41846b0925e5e0325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 5
-  jumpSpeed: 10
-  gravity: 9.81
+  speed: 1
   AttackTrigger: {fileID: 826453539395977001, guid: b601672a3fb085547ae4d279877e4eca,
     type: 3}
 --- !u!1001 &1173615401354937692

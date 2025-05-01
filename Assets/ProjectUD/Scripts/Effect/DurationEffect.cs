@@ -16,6 +16,11 @@ public class DurationEffect : Effect
         else
         {
             durationCheck -= duration;
+            if (endVFX != null)
+            {
+                GameObject endVFXObj = Instantiate(endVFX.gameObject);
+                endVFXObj.transform.localPosition = Vector3.up;
+            }
             Remove();
         }
     }
