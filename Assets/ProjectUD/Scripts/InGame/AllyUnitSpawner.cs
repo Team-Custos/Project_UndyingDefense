@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
+using UnityEditor.Tilemaps;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 {
@@ -241,7 +242,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!hit.transform.CompareTag("Ground"))
+                if (!hit.transform.CompareTag("Tile"))
                     return;
 
                 ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
@@ -255,7 +256,28 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 // 소환진 설정
                 UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
-                spawnPoint.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+
+                Tile tile = hit.transform.GetComponent<Tile>();
+                if (tile.SetAllyUnit(unit) == null)
+                    return;
+
+                UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
+                unitGrid.SetTargetTile(tile);
+
+                spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+
+                
+
+                //Vector3Int cellPos = grid.WorldToCell(hit.point);
+                //Vector3 center = grid.GetCellCenterWorld(cellPos);
+
+                //if (!gridManager.OccupiedGridDic.ContainsKey(grid.GetCellCenterWorld(cellPos)))
+                //{
+                //    Debug.Log(grid.GetCellCenterWorld(cellPos));
+                //    gridManager.OccupiedGridDic.Add(grid.GetCellCenterWorld(cellPos), true);
+                //}
+
+                //Debug.Log(grid.WorldToCell(hit.point));
                 spawnPoint.gameObject.SetActive(true);
                 spawnPoint.Initialize(unit);
 

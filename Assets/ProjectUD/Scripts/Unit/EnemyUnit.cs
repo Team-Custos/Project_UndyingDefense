@@ -161,7 +161,7 @@ public class EnemyUnit : Unit
                 {
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
-                    if(distance <= data.AttackRange)
+            if(distance <= data.AttackRange)
                     {
                         mode = Mode.ATTACKFORTRESS;
                         return;
@@ -275,6 +275,10 @@ public class EnemyUnit : Unit
                         {
                             mode = Mode.COMBAT;
                             MoveTo(targetUnit);
+                        }
+                        else
+                        {
+                            ActivateSkill(fortress, data);
                         }
                     }
                     else

@@ -16,6 +16,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
+    private bool isUpgradeOn;
 
     public Unit SelectedUnit => selectedUnit;
 
@@ -44,6 +45,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 if (hit.collider.CompareTag("Unit"))
                 {
+                    allyUnitSpawner.CancelSpawn();
+
                     Unit unit = hit.collider.GetComponent<Unit>();
 
                     if (unit.HpPercent <= 0.0f)
@@ -87,7 +90,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     unitSelectUI.ShowHp(selectedUnit);
                 }
-                else if (hit.collider.CompareTag("Ground"))
+                else if (hit.collider.CompareTag("Tile"))
                 {
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
@@ -128,6 +131,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 allyUnitSpawner.CancelSpawn();
             }
+
+            isUpgradeOn = false;
         }
     }
 
@@ -198,14 +203,18 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
-                int a = 0;
+                ShowUpgradeMenu();
+                //isUpgradeOn = true;
 
-                if (selectedUnit.Data.Tier <= 2)
-                    a = Random.Range(0, 2);
-                else
-                    a = 0;
+                //if(isUpgradeOn)
+                //{
+                //    string keyNumber = context.control.name;
 
-                //ShowUpgradeMenu();
+                //    if (int.TryParse(keyNumber, out int upgradeOption))
+                //    {
+                //        UpgradeSelectedUnit(upgradeOption - 1);
+                //    }
+                //}
             }
         }
     }

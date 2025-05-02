@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -48,6 +49,9 @@ public class AllyUnit : Unit
     [SerializeField] private GameObject chagneEffet;
     [SerializeField] private GameObject siegeEffect;
     [SerializeField] private ParticleSystem siegeParticle;
+    [SerializeField] private UnitGrid unitGrid;
+
+    public UnitGrid UnitGrid => unitGrid;
 
     private Vector3 destinationPosition;  // 프리모드 목적지
 
@@ -56,6 +60,7 @@ public class AllyUnit : Unit
     [SerializeField] private float particleDuration = 0.3f;
 
     private bool isSiegeActive = false;
+    private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
     public Vector3 DestinationPosition
     {
         get => destinationPosition;
@@ -269,7 +274,7 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(true);
                     chagneEffet.SetActive(false);
 
-                    navObstacle.enabled = true;
+                    //navObstacle.enabled = true;
 
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
@@ -289,7 +294,6 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("AttackTrigger");
                                         }
                                         else
                                             targetUnit = null;
@@ -358,7 +362,6 @@ public class AllyUnit : Unit
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("AttackTrigger");
                                             return;
                                         }
                                     }
@@ -410,32 +413,98 @@ public class AllyUnit : Unit
                 break;
             case Mode.CHANGE:
                 {
-                    OnOffSiefeEffect(false);
-                    chagneEffet.SetActive(true);
-
-                    particleDuration = 0.3f;
-                    isSiegeActive = false;
-
-                    if (changeDuration >= 0)
+                    if (previousMode == Mode.FREE)      // 시즈로 변경
                     {
-                        changeDuration -= Time.deltaTime;
-                        state = State.IDLE;
-                    }
-                    else
-                    {
-                        if (previousMode == Mode.FREE)
+                        if (!isAvailableToSiege)
                         {
-                            MoveToGridCenter();
-                            mode = Mode.SEIGE;
+                            Tile targetTile = unitGrid.GetAvailableTile();
+
+                            if (targetTile != null)
+                            {
+                                transform.position = targetTile.transform.position;
+                                navObstacle.enabled = true;
+                                navAgent.enabled = false;
+
+                            }
+                            else
+                            {
+                                mode = Mode.FREE;
+                                return;
+                            }
+                                
+
+                            //transform.position = unitGrid.GetAvailableTile().transform.position;
+
+                            OnOffSiefeEffect(false);
+                            chagneEffet.SetActive(true);
+
+                            particleDuration = 0.3f;
+                            isSiegeActive = false;
+
+                            isAvailableToSiege = true;
                         }
-                        else if (previousMode == Mode.SEIGE)
+
+                        if (isAvailableToSiege)
+                        {
+                            if (changeDuration >= 0)
+                            {
+                                changeDuration -= Time.deltaTime;
+                                state = State.IDLE;
+                            }
+                            else
+                            {
+                                mode = Mode.SEIGE;
+                                changeDuration = 3.0f;
+                                previousMode = mode;
+                                isAvailableToSiege = false;
+                            }
+                        }
+                    }
+                    else if (previousMode == Mode.SEIGE)
+                    {
+                        unitGrid.ClearTile();
+
+                        OnOffSiefeEffect(false);
+                        chagneEffet.SetActive(true);
+
+                        particleDuration = 0.3f;
+                        isSiegeActive = false;
+
+                        if (changeDuration >= 0)
+                        {
+                            changeDuration -= Time.deltaTime;
+                            state = State.IDLE;
+                        }
+                        else
                         {
                             mode = Mode.FREE;
-                        }
 
-                        changeDuration = 3.0f;
-                        previousMode = mode;
+                            changeDuration = 3.0f;
+                            previousMode = mode;
+                        }
                     }
+
+
+
+                    //if (changeDuration >= 0)
+                    //{
+                    //    changeDuration -= Time.deltaTime;
+                    //    state = State.IDLE;
+                    //}
+                    //else
+                    //{
+                    //    if (previousMode == Mode.FREE)
+                    //    {
+                    //        mode = Mode.SEIGE;
+                    //    }
+                    //    else if (previousMode == Mode.SEIGE)
+                    //    {
+                    //        mode = Mode.FREE;
+                    //    }
+
+                    //    changeDuration = 3.0f;
+                    //    previousMode = mode;
+                    //}
                 }
                 break;
 
@@ -571,6 +640,7 @@ public class AllyUnit : Unit
 
         state = State.DEAD;
         modelAnimator.SetTrigger("Die");
+        unitGrid.ClearTile();
     }
 
     
@@ -603,12 +673,7 @@ public class AllyUnit : Unit
         }
     }
 
-    private void MoveToGridCenter()
-    {
-        Vector3 currentPosition = transform.position;
-        Vector3Int gridCellPos = grid.WorldToCell(currentPosition);
-        Vector3 centerPos = grid.GetCellCenterWorld(gridCellPos);
-        Vector3 newUnitPos = new Vector3(centerPos.x, 0, centerPos.z);
-        transform.position = newUnitPos;
-    }
+    
+    
+
 }
