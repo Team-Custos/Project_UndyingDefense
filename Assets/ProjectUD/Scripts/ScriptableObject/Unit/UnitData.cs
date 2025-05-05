@@ -16,6 +16,8 @@ public class UnitData : ScriptableObject
     [SerializeField] private float attackRange;
     [SerializeField] private Sprite icon;
     [SerializeField] private GameObject prefab;
+    [SerializeField] private Sprite atTypeIcon;
+    [SerializeField] private Sprite dfTypeIcon;
 
     public string Name => unitName;
     public int Tier => tier;
@@ -28,5 +30,8 @@ public class UnitData : ScriptableObject
     public float SightRange => sightRange;
     public float AttackRange => attackRange;
     public Sprite Icon => icon;
+    public Sprite AtTypeIcon => atTypeIcon;
+    public Sprite DfTypeIcon => dfTypeIcon;
+
     public GameObject Prefab => prefab;
 }

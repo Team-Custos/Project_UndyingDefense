@@ -50,4 +50,9 @@ namespace InputEventInterface
     {
         void OnUnitModeChange(InputAction.CallbackContext context);
     }
+
+    public interface IInputPerformUnitUpgrade
+    {
+        void OnPerformUnitUpgrade(InputAction.CallbackContext context);
+    }
 }

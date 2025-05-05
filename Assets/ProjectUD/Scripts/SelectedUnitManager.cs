@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick, IInputUnitDelete
-    , IInputUnitUpgrade, IInputUnitModeChange
+    , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade
 {
     [SerializeField] private SelectedUnitUI unitSelectUI;
     [SerializeField] private Camera mainCamera;
@@ -12,6 +12,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
+    [SerializeField] private Ingame_CamManager camManager;
 
 
     private Unit selectedUnit;
@@ -28,9 +29,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         inputEventManager.OnUnitDeleteTarget = this;
         inputEventManager.OnUnitModeChangeTarget = this;
         inputEventManager.OnUnitUpgradeTarget = this;
+        inputEventManager.OnPerformUnitUpgradeTarget = this;
     }
 
-    // 마우스 좌클릭 선택
+    // 마우스 좌클릭 선택 
     public void OnClick(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -53,6 +55,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     {
                         return;
                     }
+
+                    camManager.FocusSelectedUnit(hit.transform.position);
 
                     if (selectedUnit != null) // 새 유닛 선택
                     {
@@ -153,6 +157,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
         AllyUnitData nextUnitData = allyUnitData.UpgradeUnits[index] as AllyUnitData;
 
+        if (nextUnitData == null)
+            return;
+
 
         // 골드 부족 여부 확인
         if (inGameManager.inGameGold < nextUnitData.Cost)
@@ -204,17 +211,15 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
                 ShowUpgradeMenu();
-                //isUpgradeOn = true;
 
-                //if(isUpgradeOn)
-                //{
-                //    string keyNumber = context.control.name;
+                isUpgradeOn = true;
 
-                //    if (int.TryParse(keyNumber, out int upgradeOption))
-                //    {
-                //        UpgradeSelectedUnit(upgradeOption - 1);
-                //    }
-                //}
+                //string keyNumber = context.control.name;
+
+                //  if (int.TryParse(keyNumber, out int upgradeOption))
+                //  {
+                //      UpgradeSelectedUnit(upgradeOption - 1);
+                //  }
             }
         }
     }
@@ -226,6 +231,25 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
                 ModeChangeSelectedUnit();
+            }
+        }
+    }
+
+    public void OnPerformUnitUpgrade(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if(selectedAllyUnit != null && isUpgradeOn)
+            {
+                string keyName = context.control.name;
+
+                if (int.TryParse(keyName, out int upgradeOption))
+                {
+                    UpgradeSelectedUnit(upgradeOption - 1);
+                    isUpgradeOn = false;
+                }
+                else
+                    return;
             }
         }
     }

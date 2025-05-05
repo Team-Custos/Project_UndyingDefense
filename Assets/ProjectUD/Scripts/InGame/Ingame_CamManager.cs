@@ -42,6 +42,21 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         inputEventManager.OnScrollTarget = this;
     }
 
+    private void Update()
+    {
+        if (moveDirection != Vector3.zero)
+        {
+            Vector3 movement = moveDirection.normalized * moveSpeed * Time.deltaTime;
+            cameraPivot.position += movement;
+
+            // 카메라 이동 범위 제한
+            Vector3 clampedPosition = cameraPivot.position;
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
+            clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
+            cameraPivot.position = clampedPosition;
+        }
+    }
+
     public void OnNavigate(InputAction.CallbackContext context)
     {
         if (context.started || context.performed)
@@ -78,21 +93,12 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         }
     }
 
-
-    private void Update()
+    public void FocusSelectedUnit(Vector3 targetPosition)
     {
-        if (moveDirection != Vector3.zero)
-        {
-            Vector3 movement = moveDirection.normalized * moveSpeed * Time.deltaTime;
-            cameraPivot.position += movement;
-
-            // 카메라 이동 범위 제한
-            Vector3 clampedPosition = cameraPivot.position;
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
-            clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
-            cameraPivot.position = clampedPosition;
-        }
+        Vector3 newPosition = new Vector3(targetPosition.x, cameraPivot.position.y, targetPosition.z);
+        cameraPivot.position = newPosition;
     }
+
 
     //public float camZoomValue = 0.5f;
 

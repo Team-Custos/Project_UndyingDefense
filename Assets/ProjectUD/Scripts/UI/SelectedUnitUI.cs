@@ -11,6 +11,7 @@ public class SelectedUnitUI : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager selecteUnitManger;
+    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
 
     [SerializeField] private GameObject unitHPPrefab;
     [SerializeField] private Image unitHP;
@@ -75,6 +76,7 @@ public class SelectedUnitUI : MonoBehaviour
 
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
+        upgradeMenuUI.SetUnitUpgradeMenu(unit);
     }
 
     public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)

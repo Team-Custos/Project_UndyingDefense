@@ -44,12 +44,13 @@ public class AllyUnit : Unit
 
     private float changeDuration = 3.0f;        // 모드 변경 시간
     private float upgradeDuraiton = 3.0f;
-    private Mode previousMode;                  // 이전 모드 확인을 위한 변수
+    public Mode previousMode;                  // 이전 모드 확인을 위한 변수
 
     [SerializeField] private GameObject chagneEffet;
     [SerializeField] private GameObject siegeEffect;
     [SerializeField] private ParticleSystem siegeParticle;
     [SerializeField] private UnitGrid unitGrid;
+
 
     public UnitGrid UnitGrid => unitGrid;
 
@@ -61,6 +62,7 @@ public class AllyUnit : Unit
 
     private bool isSiegeActive = false;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
+    private bool isSpawned = true;
     public Vector3 DestinationPosition
     {
         get => destinationPosition;
@@ -72,8 +74,14 @@ public class AllyUnit : Unit
     {
         base.Initialize();
         mode = Mode.SEIGE;
-        //mode = Mode.FREE;
         previousMode = mode;
+        //mode = Mode.FREE;
+    }
+
+    public void UpgradeInitialize()
+    {
+        base.Initialize();
+        mode = Mode.UPGRADE;
     }
 
     public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner)
@@ -81,11 +89,6 @@ public class AllyUnit : Unit
         this.data = data;
         this.pool = pool;
         this.spawner = spawner;
-    }
-
-    private void Start()
-    {
-        grid = FindObjectOfType<Grid>();
     }
 
 
@@ -603,11 +606,6 @@ public class AllyUnit : Unit
         this.mode = mode;
     }
 
-    public void UpgradeMode(Mode mode)
-    {
-        this.mode = Mode.UPGRADE;
-    }
-
     public void Upgrade(int index)
     {
         if (data.UpgradeUnits.Length <= 0)
@@ -620,7 +618,7 @@ public class AllyUnit : Unit
             UnitData upgradeUnitData = data.UpgradeUnits[index];
 
             GameObject obj = upgradeUnitData.Prefab;
-            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform);
+            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode);
 
             pool.Pool.Release(this);
             gameObject.SetActive(false);

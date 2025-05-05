@@ -89,7 +89,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         return unit;
     }
 
-    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform)
+    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform, AllyUnit.Mode mode)
     {
         GameObject obj;
 
@@ -104,11 +104,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-                upgradeUnit.Initialize();
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.gameObject.SetActive(true);
 
-                upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
@@ -125,11 +125,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-                upgradeUnit.Initialize();
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.gameObject.SetActive(true);
 
-                upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
 
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
@@ -155,12 +155,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-            upgradeUnit.Initialize();
-
+            upgradeUnit.previousMode = mode;
+            upgradeUnit.UpgradeInitialize();
+            //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
 
             upgradeUnit.gameObject.SetActive(true);
 
-            upgradeUnit.UpgradeMode(upgradeUnit.ModeType);
 
             upgradeUnit.transform.position = transform.position;
             upgradeUnit.transform.rotation = transform.rotation;
@@ -168,7 +168,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
             selectedUnitUI.UpdateUnitInfo(upgradeUnit);
-;
 
             return upgradeUnit;
         }
@@ -217,8 +216,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         unitSpawnUI.Deselect();
     }
 
+    // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
+        if (selectedUnitManager.SelectedUnit != null)
+            return;
+
         if (context.performed)
         {
             string keyName = context.control.name;
