@@ -30,6 +30,11 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
 
+    private UnitData firstUnitData;
+    private UnitData secondUnitData;
+
+
+
     [SerializeField] private Text upgradeCostTxt;
     [SerializeField] private Button upgradePerformBtn;
 
@@ -86,8 +91,10 @@ public class UpgradeMenuUI : MonoBehaviour
         UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
         UnitData secondUpgradeUnitData = allyUnitData.UpgradeUnits[1];
 
+        firstUnitData = firstUpgradeUnitData;
+        secondUnitData = secondUpgradeUnitData;
 
-        if(firstUpgradeUnitData != null)
+        if (firstUpgradeUnitData != null)
         {
             // 첫번째 업그레이드 유닛
             firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
