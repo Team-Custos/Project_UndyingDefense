@@ -23,7 +23,7 @@ public class TileManager : MonoBehaviour
 
     private void GenerateTileMap()
     {
-        for (int x = -39; x < gridWidth; x+=2)
+        for (int x = -55; x < gridWidth; x+=2)
         {
             for (int y = -15; y < gridHeight; y+=2)
             {

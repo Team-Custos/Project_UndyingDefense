@@ -183,6 +183,15 @@ public class InGameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        
+        if (!isGamePause)
+        {
+            Time.timeScale = 0f;
+            isGamePause = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            isGamePause = false;
+        }
     }
 }

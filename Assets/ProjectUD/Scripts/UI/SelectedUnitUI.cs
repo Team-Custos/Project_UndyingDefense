@@ -31,11 +31,23 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Image unitImage;
     [SerializeField] private TextMeshProUGUI unitNameText;
     [SerializeField] private TextMeshProUGUI unitHPText;
+    [SerializeField] private Image unitHPImage;
+    [SerializeField] private TextMeshProUGUI unitMentalText;
+    //[SerializeField] private Image unitMentalImage;  나중에 작업
+    [SerializeField] private Image atTypeIcon;
+    [SerializeField] private Image dfTypeIcon;
+    [SerializeField] private Image unitSSkillImage;
+    [SerializeField] private Image unitGSkillImage;
+    [SerializeField] private Text critText;
+    [SerializeField] private Text moveSpeedText;
+    [SerializeField] private Text atSpeedText;
+    [SerializeField] private Image[] tierImage;
+    [SerializeField] private Text gSkillInfoText;
+    [SerializeField] private Text sSkillInfoText;
+
     [SerializeField] private TextMeshProUGUI unitGSkillText;
     [SerializeField] private TextMeshProUGUI unitSSkillText;
     [SerializeField] private TextMeshProUGUI unitDefenseTypeText;
-    [SerializeField] private Image unitSSkillImage;
-    [SerializeField] private Image unitGSkillImage;
 
 
     // Update is called once per frame
@@ -147,23 +159,41 @@ public class SelectedUnitUI : MonoBehaviour
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.Data.Name;
+       unitMentalText.text = unit.Data.Mental.ToString();
+
+        SetUnitTierIcon(unit.Data.Tier);
+
+        atTypeIcon.sprite = unit.Data.AtTypeIcon;
+       dfTypeIcon.sprite = unit.Data.DfTypeIcon;
+
        unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
        unitGSkillText.text = unit.GeneralSkill.Data.name;
 
-       if(unit.SpecialSkill != null)
+        
+
+        if (unit.SpecialSkill != null)
         {
             unitSSkillText.text = unit.SpecialSkill.Data.name;
 
             unitGSkillImage.gameObject.SetActive(true);
             unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
+
+            gSkillInfoText.text = unit.SpecialSkill.Data.Description;
+            sSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
         }
         else
         {
             unitSSkillText.text = " ";
             unitGSkillImage.gameObject.SetActive(false);
+            
         }
 
        unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+
+        critText.text = "치명타 율 : " + unit.Data.CritChance.ToString() + "%";
+        moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
     }
     
     public void HideUntInfo()
@@ -176,6 +206,7 @@ public class SelectedUnitUI : MonoBehaviour
         if(unit != null)
         {
             unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
+            unitHPImage.fillAmount = unit.HpPercent;
         }
     }
 
@@ -195,5 +226,13 @@ public class SelectedUnitUI : MonoBehaviour
         }
         else
             return "정보없음";
+    }
+
+    public void SetUnitTierIcon(int tier)
+    {
+        for (int i = 0; i < tierImage.Length; i++)
+        {
+            tierImage[i].gameObject.SetActive(i < tier);
+        }
     }
 }
