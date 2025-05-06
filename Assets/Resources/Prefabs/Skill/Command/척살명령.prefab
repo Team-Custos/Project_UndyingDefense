@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8937539548969486936}
-  - component: {fileID: 4077591543310677227}
+  - component: {fileID: 2625658090149482085}
   m_Layer: 0
   m_Name: "\uCC99\uC0B4\uBA85\uB839"
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4077591543310677227
+--- !u!114 &2625658090149482085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4995738849285770237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a75131d87774ae49b30c742bd544fa8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ba3db4518102484d94054b8f6c5e937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onActivate:
@@ -50,7 +50,7 @@ MonoBehaviour:
     _PersistentCalls: []
   onActivateAtUnit:
     _PersistentCalls:
-    - _Target: {fileID: 4077591543310677227}
+    - _Target: {fileID: 2625658090149482085}
       _MemberName: ApplyEffect
       _PersistentArguments:
       - _Type: 14
@@ -68,8 +68,9 @@ MonoBehaviour:
         _Y: 0
         _Z: 0
         _W: 0
-        _Object: {fileID: 0}
-  TargetLayer:
+        _Object: {fileID: -8111910041185338406, guid: 491e3c59d0f615b4daef79defc6eb05d,
+          type: 3}
+  data: {fileID: 0}
+  attackTargetLayer:
     serializedVersion: 2
-    m_Bits: 128
-  data: {fileID: 11400000, guid: f5d260750d600ac4c9e0307851589856, type: 2}
+    m_Bits: 0

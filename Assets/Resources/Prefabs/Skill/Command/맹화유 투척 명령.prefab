@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8937539548969486936}
-  - component: {fileID: 4077591543310677227}
+  - component: {fileID: -336196044479407675}
   m_Layer: 0
-  m_Name: "\uC9D1\uC911\uD3EC\uD654\uBA85\uB839"
+  m_Name: "\uB9F9\uD654\uC720 \uD22C\uCC99 \uBA85\uB839"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4077591543310677227
+--- !u!114 &-336196044479407675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4995738849285770237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a75131d87774ae49b30c742bd544fa8, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ba3db4518102484d94054b8f6c5e937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onActivate:
+    _PersistentCalls: []
+  onActivateAtPos:
     _PersistentCalls:
-    - _Target: {fileID: 4077591543310677227}
+    - _Target: {fileID: -336196044479407675}
       _MemberName: AreaAttack
       _PersistentArguments:
-      - _Type: 13
+      - _Type: 14
         _Int: 0
         _String: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -66,11 +68,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-  onActivateAtPos:
-    _PersistentCalls: []
   onActivateAtUnit:
     _PersistentCalls: []
-  data: {fileID: 11400000, guid: f5d260750d600ac4c9e0307851589856, type: 2}
-  TargetLayer:
+  data: {fileID: 11400000, guid: 11c11f6eee32d5f4c9ae03b0e9b06799, type: 2}
+  attackTargetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128

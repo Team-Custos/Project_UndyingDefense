@@ -7,6 +7,7 @@ public class IngameCommandSkillManager : MonoBehaviour
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
     [SerializeField] private GameObject mouseIndicator;
+    [SerializeField] private GameObject BurningOilPos;
     private Unit selectedTargetUnit;
     [SerializeField] private Button[] skillButtons;
 
@@ -26,34 +27,35 @@ public class IngameCommandSkillManager : MonoBehaviour
                 Debug.Log("Button " + idx + " Clicked");
                 if (GetComponentsInChildren<CommandSkill>() != null)
                 {
-                    CommandSkill[] skill = GetComponentsInChildren<CommandSkill>();
-                    if (skill[idx].Data.CommandType == CommandSkill.CommandSkillType.ACTIVE)
-                    {
-                        ActivateCommandSkill(skill[idx]);
-                    }
+                    ActiveCommandSkill[] skill = GetComponentsInChildren<ActiveCommandSkill>();
+                    ActivateCommandSkill(skill[idx]);
                 }
             });
         }
     }
 
 
-    public void ActivateCommandSkill(CommandSkill skill)
+    public void ActivateCommandSkill(ActiveCommandSkill skill)
     {
         selectedTargetUnit = null;
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
+                Debug.Log("Skill Activated");
                 skill.Activate();
                 break;
             case CommandSkill.TargetType.UNIT:
+                Debug.Log("UnitSkill Activated");
                 selectedTargetUnit = SelectedUnitManager.SelectedUnit;
                 skill.Activate(selectedTargetUnit);
                 break;
-            case CommandSkill.TargetType.AREA:
+            case CommandSkill.TargetType.MOUSEPOSAREA:
                 skill.Activate(mouseIndicator.transform);
+                break;
+            case CommandSkill.TargetType.AREA:
+                Debug.Log("AreaSkill Activated");
+                skill.Activate(BurningOilPos.transform);
                 break;
         }
     }
-
-
 }

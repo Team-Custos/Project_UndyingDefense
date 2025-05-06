@@ -366,6 +366,7 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
 
+    protected float maxhp;
     protected float hp;
     protected float critChance;
     protected float critVulnerability; // 치명타를 받을 확률.
@@ -404,6 +405,7 @@ public abstract class Unit : MonoBehaviour
     protected bool isDead;
 
     public abstract UnitData Data { get; }
+    public float Maxhp => maxhp;
     public float Hp => hp;
     public float HpPercent => hp / Data.MaxHp;
     public float Mental => mental;
