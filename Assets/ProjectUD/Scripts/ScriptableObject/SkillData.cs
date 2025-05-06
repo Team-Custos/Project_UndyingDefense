@@ -7,11 +7,15 @@ public class SkillData : ScriptableObject
     [SerializeField, TextArea] private string description;
     [SerializeField] private float coolTime;
     [SerializeField] private TargetType targetType;
+    [SerializeField] private AudioClip[] startSFX;
+    [SerializeField] private ParticleSystem startVFX;
     [SerializeField] private Sprite icon;
 
     public string Name => name;
     public string Description => description;
     public float CoolTime => coolTime;
     public TargetType TargetType => targetType;
+    public AudioClip[] StartSFX => startSFX;
+    public ParticleSystem StartVFX => startVFX;
     public Sprite Icon => icon;
 }

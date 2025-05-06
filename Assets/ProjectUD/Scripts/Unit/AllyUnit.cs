@@ -297,6 +297,7 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
+                                            modelAnimator.SetTrigger("GeneralSkill");
                                         }
                                         else
                                             targetUnit = null;
@@ -542,6 +543,12 @@ public class AllyUnit : Unit
 
                 break;
         }
+    }
+
+    public override void GetProvoked(Unit ProvokedTarget)
+    {
+        Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+        targetUnit = ProvokedTarget;
     }
 
     private Unit SearchTarget(float range)

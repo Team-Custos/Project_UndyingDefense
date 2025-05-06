@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7434015172272022382}
-  - component: {fileID: -1524244307425060721}
+  - component: {fileID: 4334698192522332170}
   m_Layer: 0
   m_Name: "\uB3C4\uBC1C \uC0C1\uD0DC"
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 9020462640110281612}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1524244307425060721
+--- !u!114 &4334698192522332170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,16 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f429d03f071b27a4d9eacdd27a797019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: Taunted
+  id: 
   maxStack: 1
   onActivate:
     _PersistentCalls:
-    - _Target: {fileID: -1524244307425060721}
-      _MemberName: Activate
+    - _Target: {fileID: 4334698192522332170}
+      _MemberName: GetProvoked
       _PersistentArguments: []
   onMaxStack:
     _PersistentCalls: []
-  duration: 5
+  duration: 999999
 --- !u!1001 &6834862463497289125
 PrefabInstance:
   m_ObjectHideFlags: 0

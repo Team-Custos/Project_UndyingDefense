@@ -366,6 +366,7 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
 
+    protected float maxhp;
     protected float hp;
     protected float critChance;
     protected float critVulnerability; // 치명타를 받을 확률.
@@ -404,6 +405,7 @@ public abstract class Unit : MonoBehaviour
     protected bool isDead;
 
     public abstract UnitData Data { get; }
+    public float Maxhp => maxhp;
     public float Hp => hp;
     public float HpPercent => hp / Data.MaxHp;
     public float Mental => mental;
@@ -974,15 +976,10 @@ public abstract class Unit : MonoBehaviour
         damageReductionMultiplier += percent;
     }
 
-    public void GetProvoked(Unit ProvokedTarget)
-    {
-        targetUnit = ProvokedTarget;
-    }
+    public abstract void GetProvoked(Unit ProvokedTarget);
 
-    public void RemoveProvoked()
-    {
-        targetUnit = null;
-    }
+    public virtual void RemoveProvoked()
+    { }
 
     public void AddEffect(Unit unit, Effect effect)
     {
@@ -1013,7 +1010,8 @@ public abstract class Unit : MonoBehaviour
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition = Vector3.zero;
+        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         Destroy(VFXobj, VFX.main.duration);
     }
 }

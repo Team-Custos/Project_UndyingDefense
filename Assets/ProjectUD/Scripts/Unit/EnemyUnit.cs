@@ -328,6 +328,19 @@ public class EnemyUnit : Unit
         }
     }
 
+    public override void GetProvoked(Unit ProvokedTarget)
+    {
+        Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+        mode = Mode.COMBAT;
+        targetUnit = ProvokedTarget;
+    }
+
+    public override void RemoveProvoked()
+    {
+        mode = Mode.MOVE;
+        targetUnit = null;
+    }
+
 
     public override void Die()
     {
