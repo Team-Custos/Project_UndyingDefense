@@ -214,10 +214,9 @@ public class AttackSkill : SkillBase
             projectile.transform.position = this.transform.position;
 
             GranadeCtrl granadeCtrl = projectile.GetComponent<GranadeCtrl>();
-            float height = Mathf.Abs((transform.position.x - targetPos.x) + (transform.position.z - targetPos.z)) + 1;
-            float gravity = 1f;  // 중력 가속도 (Unity 기본 중력)
+            float maxHeight = 1f;
 
-            granadeCtrl.JumpTowards(targetPos, height, gravity);
+            granadeCtrl.JumpTowards(targetPos, maxHeight);
         }
 
         // 람다식 Lambda Expression
@@ -237,7 +236,7 @@ public class AttackSkill : SkillBase
             unit.AddVFX(data.StartVFX);
         }
         int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
-        if (data.StartSFX[randomSoundIdx] != null)
+        if (data.StartSFX[randomSoundIdx] != null && data.StartSFX.Length > 0)
         {
             SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
         }

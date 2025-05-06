@@ -6,6 +6,7 @@ public class Effect : MonoBehaviour
     [Header("■ Effect Options")]
     [SerializeField] protected string id;
     [SerializeField] protected int maxStack;
+    [SerializeField] protected ParticleSystem[] stackVFX;
     [SerializeField] protected ParticleSystem endVFX;
 
     [Header("■ Activate Effect")]
@@ -31,6 +32,7 @@ public class Effect : MonoBehaviour
     public virtual void Initialize() // 이미 유닛에 있는 효과를 초기화할 때
     {
         stack = 0;
+        ChangeStackVFX();
     }
 
     public virtual void Activate() // 효과를 발동할 때
@@ -38,6 +40,7 @@ public class Effect : MonoBehaviour
         if (stack < maxStack)
         {
             stack++;
+            ChangeStackVFX();
             if (onActivate != null)
                 onActivate.Invoke();
         }
@@ -59,11 +62,35 @@ public class Effect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void ChangeStackVFX()
+    {
+        if (stackVFX.Length > 0)
+        {
+            for (int idx = 0; idx < stackVFX.Length; idx++)
+            {
+                if (idx == stack)
+                {
+                    stackVFX[idx].gameObject.SetActive(true);
+                }
+                else
+                {
+                    stackVFX[idx].gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// "damage" 만큼 데미지를 줍니다.
+    /// </summary>
     public void DealDamage(float damage)
     {
         target.TakeDamage(damage);
     }
 
+    /// <summary>
+    /// 목표 유닛의 최대 HP에 비례한 "percent"(%) 만큼 데미지를 줍니다.
+    /// </summary>
     public void DealDamagePercent(float percent)
     {
         target.TakeDamage(target.Data.MaxHp * 0.01f * percent);
@@ -124,6 +151,7 @@ public class Effect : MonoBehaviour
 
     public virtual void GetProvoked()
     {
+        Debug.Log("getprovoked");
         target.GetProvoked(unit);
         onRemove.AddListener(() => target.RemoveProvoked());
     }
