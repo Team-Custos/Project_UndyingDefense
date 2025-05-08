@@ -19548,7 +19548,7 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   waveData:
-  - {fileID: 11400000, guid: 8f5725ea4f38a0244b42e63d6a084a6a, type: 2}
+  - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
   - {fileID: 11400000, guid: b915d18fdc1070f4dad204380ed83748, type: 2}
   - {fileID: 11400000, guid: 052e185d1d8b47c4da34c2a91013a0c6, type: 2}
@@ -20058,12 +20058,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705343321}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.69348526, y: 7.0395193, z: 22.844969}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1108.6307, y: -752.0767, z: -75.70378}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1285506505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &707472098
 PrefabInstance:
@@ -37655,7 +37655,8 @@ Transform:
   m_LocalPosition: {x: 1109.3242, y: 759.1162, z: 98.54875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 705343323}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1287699481
@@ -61231,7 +61232,6 @@ SceneRoots:
   - {fileID: 679628029}
   - {fileID: 1395901473}
   - {fileID: 1285506505}
-  - {fileID: 705343323}
   - {fileID: 856739624}
   - {fileID: 1137951089}
   - {fileID: 1238902732}
