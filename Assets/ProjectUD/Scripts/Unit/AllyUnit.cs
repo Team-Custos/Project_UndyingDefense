@@ -297,7 +297,7 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("GeneralSkill");
+                                            //modelAnimator.SetTrigger("GeneralSkill");
                                         }
                                         else
                                             targetUnit = null;

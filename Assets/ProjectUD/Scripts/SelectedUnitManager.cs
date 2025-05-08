@@ -13,6 +13,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
     [SerializeField] private Ingame_CamManager camManager;
+    [SerializeField] private IngameCommandSkillManager commandSkillManager;
+    [SerializeField] private ParticleSystem mouseIndicatorParticle;
 
 
     private Unit selectedUnit;
@@ -96,12 +98,23 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 }
                 else if (hit.collider.CompareTag("Tile"))
                 {
+                    //if(commandSkillManager.isCommandSkillActive)
+                    //{
+                    //    commandSkillManager.clickPos.position = hit.point;
+                    //    commandSkillManager.isCommandSkillActive = false;
+                    //    commandSkillManager.clickPos = null;
+                    //    return;
+                    //}
+
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
                         if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                             return;
 
                         selectedAllyUnit.DestinationPosition = hit.point;
+                        mouseIndicatorParticle.gameObject.SetActive(true);
+                        mouseIndicatorParticle.Play();
+                        mouseIndicatorParticle.transform.position = hit.point;
 
                     }
                 }

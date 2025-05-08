@@ -145,7 +145,7 @@ public class InGameManager : MonoBehaviour
     private void Start()
     {
 
-        inGameGold = 100000;
+        inGameGold = 300000;
         ingameScreenUI.SetGoldTextUI(inGameGold);
 
         SoundManager.Instance.PlayBGM(inGmaeBgm);

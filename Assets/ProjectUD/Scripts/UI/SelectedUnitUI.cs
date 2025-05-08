@@ -194,6 +194,8 @@ public class SelectedUnitUI : MonoBehaviour
         critText.text = "치명타 율 : " + unit.Data.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
+
+        GetUnitState(unit);
     }
     
     public void HideUntInfo()
@@ -234,5 +236,14 @@ public class SelectedUnitUI : MonoBehaviour
         {
             tierImage[i].gameObject.SetActive(i < tier);
         }
+    }
+
+    public void GetUnitState(Unit unit)
+    {
+        unit = selecteUnitManger.SelectedUnit;
+
+        Debug.Log(unit.GetComponent<Unit>().EffectParent.childCount.ToString());
+
+        //unit.GetComponent<Unit>().EffectParent.childCount.ToString();
     }
 }

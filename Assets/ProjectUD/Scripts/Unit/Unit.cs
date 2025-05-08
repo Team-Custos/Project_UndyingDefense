@@ -404,6 +404,8 @@ public abstract class Unit : MonoBehaviour
 
     protected bool isDead;
 
+    public Transform EffectParent => effectParent;
+
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;

@@ -48,6 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: Bleed
   maxStack: 3
+  stackVFX:
+  - {fileID: 8674253619887515184}
+  - {fileID: 8674253619887515184}
+  - {fileID: 8674253619887515184}
+  endVFX: {fileID: 0}
   onActivate:
     _PersistentCalls: []
   onMaxStack:
@@ -311,6 +316,12 @@ PrefabInstance:
 --- !u!4 &5862815509953823523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6682525470897430245, guid: 6205d62c5f464174ea312e61b63dea8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000360032776592838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8674253619887515184 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8467010926513437686, guid: 6205d62c5f464174ea312e61b63dea8b,
     type: 3}
   m_PrefabInstance: {fileID: 1000360032776592838}
   m_PrefabAsset: {fileID: 0}

@@ -15,6 +15,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private IngameCommandSkillManager commandSkillManager;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
@@ -196,6 +197,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         }
         else
         {
+            commandSkillManager.CancleSkill();
             selectedIndex = index;
             spawn = true;
             indicator.SetActive(true);

@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: OverBleed
   maxStack: 1
+  stackVFX:
+  - {fileID: 8865727672077174345}
   endVFX: {fileID: 0}
   onActivate:
     _PersistentCalls:
@@ -247,6 +249,12 @@ PrefabInstance:
 --- !u!4 &6755822728989732641 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2262274121589303223, guid: 835e3149e7af0794aae6e8a1c46f7e0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4802163942855198870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8865727672077174345 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4156209967529987807, guid: 835e3149e7af0794aae6e8a1c46f7e0a,
     type: 3}
   m_PrefabInstance: {fileID: 4802163942855198870}
   m_PrefabAsset: {fileID: 0}
