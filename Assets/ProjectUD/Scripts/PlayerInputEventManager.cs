@@ -17,6 +17,7 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputUnitSpawn OnUnitSpawnTarget { set; private get; }
     public IInputUnitUpgrade OnUnitUpgradeTarget { set; private get; }
     public IInputUnitModeChange OnUnitModeChangeTarget { set; private get; }
+    public IInputPerformUnitUpgrade OnPerformUnitUpgradeTarget { set; private get; }
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -85,6 +86,12 @@ public class PlayerInputEventManager : MonoBehaviour
             OnUnitModeChangeTarget.OnUnitModeChange(context);
     }
 
+    public void OnPerformUnitUpgrade(InputAction.CallbackContext context)
+    {
+        if (OnPerformUnitUpgradeTarget != null)
+            OnPerformUnitUpgradeTarget.OnPerformUnitUpgrade(context);
+    }
+
 
     public bool IsPointerOnUIElements()
     {
@@ -98,4 +105,5 @@ public class PlayerInputEventManager : MonoBehaviour
 
         return pointerRaycastResults.Count > 0;
     }
+
 }

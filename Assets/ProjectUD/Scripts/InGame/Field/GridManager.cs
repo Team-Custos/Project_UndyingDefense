@@ -1,110 +1,143 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
-using UnityEngine.Tilemaps;
-using System;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using DG.Tweening;
+//using UnityEngine.Tilemaps;
+//using System;
+//public class GridManager : MonoBehaviour
+//{
+//    private Dictionary<Vector3, bool> occupiedgridDic = new Dictionary<Vector3, bool>();
+//    public Dictionary<Vector3, bool> OccupiedGridDic => occupiedgridDic;
 
-//이 스크립트는 그리드와 타일을 관리하기 위한 스크립트입니다.
-public class GridManager : MonoBehaviour
-{
-    //public static GridManager inst;
+//    // 그리드 등록
+//    // 그리드 확인
+//    // 그리드 해제
 
-    //public int _width, _height;
+//    [SerializeField] private Grid grid;
 
-    //[SerializeField] private GridTile _tilePrefab; //타일 프리팹
+//    public bool IsGridOccupied(AllyUnit allyUnit, out Vector3 gridPos)
+//    {
+//        if (GetOccupiedGridCenters(allyUnit.GridCollider, out gridPos))
+//        {
+//            return true;
+//            //if (!gridOccupyDic.TryGetValue(gridPos, out bool isOccupied) || !isOccupied)
+//            //{
+//            //    gridOccupyDic[gridPos] = true;
+//            //    return true;
+//            //}
+//        }
 
-    //public Dictionary<Vector2, bool> _tiles = new Dictionary<Vector2, bool>
-    //{ };
+//        gridPos = default;
+//        return false;
+//    }
 
-    //public GameObject TILEPARENT;
+//    public bool GetOccupiedGridCenters(Collider unitCollider, out Vector3 resultGrid)
+//    {
+//        resultGrid = default;
 
-    //public GridTile[] Tiles_Obj;
-    //int Tiles_idx;
+//        List<Vector3> occupiedGridCenters = new List<Vector3>();
 
-    //public Grid mapGrid; //타일맵을 통해 선택한 타일의 최종 월드 좌표를 가져오기위한 그리드.
-    //public Tilemap groundTilemap; //타일 위치를 가지고 오기위한 타일맵
+//        Bounds bounds = unitCollider.bounds;
+//        Vector3 min = bounds.min;
+//        Vector3 max = bounds.max;
 
-    //public float tile_Offset;
+//        for (float x = min.x; x <= max.x; x += grid.cellSize.x)
+//        {
+//            for (float z = min.z; z <= max.z; z += grid.cellSize.z)
+//            {
+//                Vector3 worldPos = new Vector3(x, 0, z);
+//                Vector3Int cellPos = grid.WorldToCell(worldPos);
 
-    //private void Awake()
-    //{
-    //    inst = this;
-    //    Tiles_Obj = FindObjectsOfType<GridTile>();
-    //    for (Tiles_idx = 0; Tiles_idx < Tiles_Obj.Length; Tiles_idx++)
-    //    {
-    //        Tiles_Obj[Tiles_idx].GridPos = new Vector2(mapGrid.WorldToCell(Tiles_Obj[Tiles_idx].transform.position).x, mapGrid.WorldToCell(Tiles_Obj[Tiles_idx].transform.position).y);
-    //        _tiles.Add(new Vector2(Tiles_Obj[Tiles_idx].GridPos.x, Tiles_Obj[Tiles_idx].GridPos.y), true);
-    //    }
-    //}
+                
+//                // 딕셔너리에 등록되어 있지 않으면 딕셔너리와 리스트에 추가
+//                if(!occupiedgridDic.ContainsKey(grid.GetCellCenterWorld(cellPos)))
+//                {
+//                    occupiedgridDic.Add(grid.GetCellCenterWorld(cellPos), false);
+//                    occupiedGridCenters.Add(grid.GetCellCenterWorld(cellPos));
+//                }   // 딕셔너리에 등록되어있지만 false면 리스트에 추가
+//                else if (occupiedgridDic[grid.GetCellCenterWorld(cellPos)] == false) 
+//                {
+//                    occupiedGridCenters.Add(grid.GetCellCenterWorld(cellPos));
+//                }
+//                else if(occupiedgridDic[grid.GetCellCenterWorld(cellPos)] == true)
+//                {
+//                    Debug.Log("이미 점유된 그리드 : " + grid.GetCellCenterWorld(cellPos));
+//                }
+//            }
+//        }
 
-    //public Vector2 GetTilePos(Vector3 pos) //타일 좌표를 불러내기 위한 함수.
-    //{
-    //    Vector2 TilePos = new Vector2(groundTilemap.WorldToCell(pos).x, groundTilemap.WorldToCell(pos).y);
-    //    return TilePos;
-    //}
-
-    //public void SetTilePlaceable(Vector3 pos, bool SetManualMode, bool PlaceableToSetManual) //타일의 유닛 배치 가능여부를 설정하는 함수.
-    //{
-    //    Vector3Int CurCellPos = groundTilemap.WorldToCell(pos);
-    //    Vector3 CurCellWorldPos = new Vector3(groundTilemap.GetCellCenterWorld(CurCellPos).x, 0, groundTilemap.GetCellCenterWorld(CurCellPos).z);
-
-    //    Vector3 CurUnitWorldPos = new Vector3(pos.x, 0, pos.z);
-
-    //    //Debug.Log("현재 배치 가능 여부 : " + _tiles[CurCellPos]);
-    //    //Debug.Log("현재 위치한 타일의 그리드 좌표 : " + CurCellPos);
-    //    //Debug.Log("현재 위치한 타일의 월드 좌표 : " + CurCellWorldPos);
-
-    //    // 유닛과 타일의 중심 간의 거리 계산 (x와 z만 비교)
-    //    float distanceX = Mathf.Abs(CurCellWorldPos.x - CurUnitWorldPos.x);
-    //    float distanceZ = Mathf.Abs(CurCellWorldPos.z - CurUnitWorldPos.z);
-
-    //    //Debug.Log(new Vector2(distanceX,distanceZ));
-
-    //    if (SetManualMode == true)//직접 설정할경우(덫 설치 같은 설치형 특수 스킬에 필요.)
-    //    {
-    //        _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = PlaceableToSetManual;
-    //        return;
-    //    }
-    //    else
-    //    {
-    //        // 타일 중심과 유닛 위치의 x 및 z 거리 차이를 이용하여 배치 가능 여부를 판단
-    //        if (distanceX > 0.95f || distanceZ > 0.95f)
-    //        {
-    //            // 타일과 유닛이 같은 위치에 있다고 판단 - 배치 가능
-    //            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = true;
-    //        }
-    //        else
-    //        {
-    //            // 타일과 유닛이 충분히 가까이 있지 않음 - 배치 불가
-    //            _tiles[new Vector2(CurCellPos.x, CurCellPos.y)] = false;
-    //        }
-    //    }
+//        //foreach(var gridCenter in occupiedGridCenters)
+//        //{
+//        //    Debug.Log("등록된 자표 : " + gridCenter);
+//        //    Debug.Log(gridOccupyDic[gridCenter]);
+//        //}
 
 
-    //}
+//        if (occupiedGridCenters.Count == 0)
+//            return false;
 
-    //public bool GetTilePlaceable(Vector3 WorldPosToFind) //타일의 유닛 배치 가능 여부를 판단하는 함수.
-    //{
-    //    Vector3Int CellPos = groundTilemap.WorldToCell(WorldPosToFind);
-    //    if (_tiles.ContainsKey(new Vector2(CellPos.x, CellPos.y)))
-    //    {
-    //        return _tiles[new Vector2(CellPos.x, CellPos.y)];
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //}
+//        Vector3 unitPos = unitCollider.transform.position;
+
+//        occupiedGridCenters.Sort((a, b) =>Vector3.Distance(unitPos, a)
+//        .CompareTo(Vector3.Distance(unitPos, b)));
 
 
-    //public bool IsTilesAllOff()//모든 타일의 선택 해제.
-    //{
-    //    if (Tiles_Obj[Tiles_idx].GetComponent<GridTile>().Selected)
-    //    {
-    //        return false;
-    //    }
-    //    else { return true; }
-    //}
+//        resultGrid = occupiedGridCenters[0];
 
-}
+//        //Debug.Log("확정 그리드 : " + resultGrid);
+
+//        return true;
+
+
+//        //return occupiedGridCenters;
+//    }
+
+//    public void ClearGrid(Vector3 cellPosition)
+//    {
+//        if (occupiedgridDic.ContainsKey(cellPosition))
+//        {
+//            occupiedgridDic[cellPosition] = false;
+//        }
+//    }
+
+
+//    // 유닛에 겹쳐져 있는 그리드 중 이동할 그리드를 가져옴, 또는 nll
+//    //public bool TryGetAvailableGrid(Collider unitCollider, out Vector3Int resultGrid)
+//    //{
+//    //    resultGrid = default;
+
+//    //    List<Vector3Int> overlappedGrid = new List<Vector3Int>();
+
+//    //    Bounds bounds = unitCollider.bounds;
+//    //    Vector3 min = bounds.min;
+//    //    Vector3 max = bounds.max;
+
+//    //    for (float x = min.x; x <= max.x; x += 0.5f)
+//    //    {
+//    //        for (float z = min.z; z <= max.z; z += 0.5f)
+//    //        {
+//    //            Vector3 worldPos = new Vector3(x, 0, z);
+//    //            Vector3Int cellPos = grid.WorldToCell(worldPos);
+//    //            if (!overlappedGrid.Contains(cellPos))
+//    //            {
+//    //                overlappedGrid.Add(cellPos);
+//    //            }
+//    //        }
+//    //    }
+
+//    //    if (overlappedGrid.Count == 0)
+//    //        return false;
+
+//    //    Vector3 unitPos = unitCollider.transform.position;
+//    //    overlappedGrid.Sort((a, b) =>
+//    //        Vector3.Distance(unitPos, grid.GetCellCenterWorld(a))
+//    //        .CompareTo(Vector3.Distance(unitPos, grid.GetCellCenterWorld(b)))
+//    //    );
+
+//    //    resultGrid = overlappedGrid[0];
+
+//    //    return true;
+//    //}
+
+
+//}

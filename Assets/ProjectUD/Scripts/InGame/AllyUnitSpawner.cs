@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
+using UnityEditor.Tilemaps;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 {
@@ -14,6 +15,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private IngameCommandSkillManager commandSkillManager;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
@@ -87,7 +89,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         return unit;
     }
 
-    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform)
+    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform, AllyUnit.Mode mode)
     {
         GameObject obj;
 
@@ -102,9 +104,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-                upgradeUnit.Initialize();
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.gameObject.SetActive(true);
+
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
@@ -121,9 +125,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-                upgradeUnit.Initialize();
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.gameObject.SetActive(true);
+
 
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
@@ -149,9 +155,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-            upgradeUnit.Initialize();
+            upgradeUnit.previousMode = mode;
+            upgradeUnit.UpgradeInitialize();
+            //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
 
             upgradeUnit.gameObject.SetActive(true);
+
 
             upgradeUnit.transform.position = transform.position;
             upgradeUnit.transform.rotation = transform.rotation;
@@ -177,12 +186,18 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     public void ToggleSpawnUnit(int index)
     {
+        if(inGameManager.inGameGold < units[index].Cost)
+        {
+            return;
+        }
+
         if (index == selectedIndex)
         {
             CancelSpawn();
         }
         else
         {
+            commandSkillManager.CancleSkill();
             selectedIndex = index;
             spawn = true;
             indicator.SetActive(true);
@@ -202,8 +217,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         unitSpawnUI.Deselect();
     }
 
+    // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
+        if (selectedUnitManager.SelectedUnit != null)
+            return;
+
         if (context.performed)
         {
             string keyName = context.control.name;
@@ -227,7 +246,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!hit.transform.CompareTag("Ground"))
+                if (!hit.transform.CompareTag("Tile"))
                     return;
 
                 ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
@@ -241,7 +260,28 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 // 소환진 설정
                 UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
-                spawnPoint.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+
+                Tile tile = hit.transform.GetComponent<Tile>();
+                if (tile.SetAllyUnit(unit) == null)
+                    return;
+
+                UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
+                unitGrid.SetTargetTile(tile);
+
+                spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+
+                
+
+                //Vector3Int cellPos = grid.WorldToCell(hit.point);
+                //Vector3 center = grid.GetCellCenterWorld(cellPos);
+
+                //if (!gridManager.OccupiedGridDic.ContainsKey(grid.GetCellCenterWorld(cellPos)))
+                //{
+                //    Debug.Log(grid.GetCellCenterWorld(cellPos));
+                //    gridManager.OccupiedGridDic.Add(grid.GetCellCenterWorld(cellPos), true);
+                //}
+
+                //Debug.Log(grid.WorldToCell(hit.point));
                 spawnPoint.gameObject.SetActive(true);
                 spawnPoint.Initialize(unit);
 

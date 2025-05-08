@@ -133,15 +133,22 @@ public class InGameManager : MonoBehaviour
     //    return loadedSkills;
     //}
 
-    [SerializeField] public float inGameGold { set; private get; }
+    public float inGameGold { set; get; }
     [SerializeField] private IngameScreenUI ingameScreenUI;
+
+    [SerializeField] private AudioClip inGmaeBgm;
+
+    // public float ingameGold => InGameGold;
 
     private bool isGamePause = false;
 
     private void Start()
     {
-        inGameGold = 500;
+
+        inGameGold = 300000;
         ingameScreenUI.SetGoldTextUI(inGameGold);
+
+        SoundManager.Instance.PlayBGM(inGmaeBgm);
     }
 
     public void SetGold(float gold, bool plus)
@@ -176,6 +183,15 @@ public class InGameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        
+        if (!isGamePause)
+        {
+            Time.timeScale = 0f;
+            isGamePause = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            isGamePause = false;
+        }
     }
 }

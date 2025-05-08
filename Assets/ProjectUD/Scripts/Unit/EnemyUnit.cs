@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
 using static AllyUnit;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class EnemyUnit : Unit
 {
@@ -71,6 +72,7 @@ public class EnemyUnit : Unit
         base.Initialize();
         state = State.BATTLECRY;
         isDead = false;
+        aiStance = data.aiStance;
     }
 
     protected override void Update()
@@ -157,13 +159,19 @@ public class EnemyUnit : Unit
         {
             case Mode.MOVE:
                 {
-                    if (navAgent.pathStatus != NavMeshPathStatus.PathComplete) // 길이 막혀있는 경우
-                    {
-                        float distance = Vector3.Distance(transform.position, fortressPos);
+                    float distance = Vector3.Distance(transform.position, fortressPos);
 
+            if(distance <= data.AttackRange)
+                    {
+                        mode = Mode.ATTACKFORTRESS;
+                        return;
+                    }
+
+                    if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
+                    {
                         if (distance <= data.AttackRange)
                         {
-                            ActivateSkill(fortress, data);
+                            mode = Mode.ATTACKFORTRESS;
                         }
                         else
                         {
@@ -228,8 +236,6 @@ public class EnemyUnit : Unit
                             if (skill != null)
                             {
                                 ActivateSkill(skill, targetUnit);
-                                modelAnimator.SetTrigger("GeneralSkill");
-                                //modelAnimator.SetTrigger("AttackTrigger");
                             }
                         }
                         else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
@@ -262,8 +268,6 @@ public class EnemyUnit : Unit
                 break;
             case Mode.ATTACKFORTRESS:
                 {
-                    ActivateSkill(fortress, data);
-
                     if (aiStance == AIStance.AGGRESSIVE)
                     {
                         targetUnit = SearchTarget(data.SightRange);
@@ -272,6 +276,14 @@ public class EnemyUnit : Unit
                             mode = Mode.COMBAT;
                             MoveTo(targetUnit);
                         }
+                        else
+                        {
+                            ActivateSkill(fortress, data);
+                        }
+                    }
+                    else
+                    {
+                        ActivateSkill(fortress, data);
                     }
                 }
                 break;
@@ -301,11 +313,16 @@ public class EnemyUnit : Unit
     {
         transform.LookAt(fortress.transform.position);
 
+        if (navAgent.enabled)
+        {
+            navAgent.isStopped = true;
+        }
+
+
         attackCool -= Time.deltaTime;
         if(attackCool <= 0f)
         {
             modelAnimator.SetTrigger("GeneralSkill");
-            //modelAnimator.SetTrigger("AttackTrigger");
             fortress.TakeDamage(data.Tier);
             attackCool = base.GeneralSkill.Data.CoolTime;
         }

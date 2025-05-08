@@ -14,9 +14,10 @@ public class NoticeUI : MonoBehaviour
     [SerializeField] private Sprite panelSprite;
     [SerializeField] private Sprite warningPanelSprite;
 
-    public void Show(string text, bool isWarning = false)
+    public void SetText(string text, bool isWarning = false)
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+
 
         if (isWarning)
         {
@@ -43,4 +44,5 @@ public class NoticeUI : MonoBehaviour
     {
         textUI.text = text;
     }
+
 }

@@ -5,15 +5,17 @@ using UnityEngine.EventSystems;
 
 public class Ingame_ImageHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public GameObject skillInfoPanel;
+    public GameObject mouseOverObject;
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        skillInfoPanel.SetActive(false);
+        mouseOverObject.SetActive(false);
+
+        // 여기서 설정
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        skillInfoPanel.SetActive(true);
+        mouseOverObject.SetActive(true);
     }
 }

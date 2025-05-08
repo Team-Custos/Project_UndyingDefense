@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,9 @@ public class AllyUnit : Unit
     {
         FREE,
         SEIGE,
-        CHANGE
+        CHANGE,
+        UPGRADE
+        
     }
 
     public enum TargetingType    //아군 유닛의 타겟 선정 방식.
@@ -37,13 +40,19 @@ public class AllyUnit : Unit
     public override UnitData Data => data;
 
     private AllyUnitSpawner spawner;
+    private Grid grid;
 
     private float changeDuration = 3.0f;        // 모드 변경 시간
-    private Mode previousMode;                  // 이전 모드 확인을 위한 변수
+    private float upgradeDuraiton = 3.0f;
+    public Mode previousMode;                  // 이전 모드 확인을 위한 변수
 
     [SerializeField] private GameObject chagneEffet;
     [SerializeField] private GameObject siegeEffect;
     [SerializeField] private ParticleSystem siegeParticle;
+    [SerializeField] private UnitGrid unitGrid;
+
+
+    public UnitGrid UnitGrid => unitGrid;
 
     private Vector3 destinationPosition;  // 프리모드 목적지
 
@@ -52,7 +61,8 @@ public class AllyUnit : Unit
     [SerializeField] private float particleDuration = 0.3f;
 
     private bool isSiegeActive = false;
-
+    private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
+    private bool isSpawned = true;
     public Vector3 DestinationPosition
     {
         get => destinationPosition;
@@ -64,8 +74,14 @@ public class AllyUnit : Unit
     {
         base.Initialize();
         mode = Mode.SEIGE;
-        //mode = Mode.FREE;
         previousMode = mode;
+        //mode = Mode.FREE;
+    }
+
+    public void UpgradeInitialize()
+    {
+        base.Initialize();
+        mode = Mode.UPGRADE;
     }
 
     public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner)
@@ -261,6 +277,8 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(true);
                     chagneEffet.SetActive(false);
 
+                    //navObstacle.enabled = true;
+
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
@@ -279,7 +297,7 @@ public class AllyUnit : Unit
                                             }
 
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("GeneralSkill");
+                                            //modelAnimator.SetTrigger("GeneralSkill");
                                         }
                                         else
                                             targetUnit = null;
@@ -308,7 +326,7 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
 
-                    if (isSelected && destinationPosition != Vector3.zero)
+                    if (destinationPosition != Vector3.zero)
                     {
                         targetUnit = null;
 
@@ -348,7 +366,6 @@ public class AllyUnit : Unit
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             ActivateSkill(skill, targetUnit);
-                                            modelAnimator.SetTrigger("AttackTrigger");
                                             return;
                                         }
                                     }
@@ -400,33 +417,130 @@ public class AllyUnit : Unit
                 break;
             case Mode.CHANGE:
                 {
+                    if (previousMode == Mode.FREE)      // 시즈로 변경
+                    {
+                        if (!isAvailableToSiege)
+                        {
+                            Tile targetTile = unitGrid.GetAvailableTile();
+
+                            if (targetTile != null)
+                            {
+                                transform.position = targetTile.transform.position;
+                                navObstacle.enabled = true;
+                                navAgent.enabled = false;
+
+                            }
+                            else
+                            {
+                                mode = Mode.FREE;
+                                return;
+                            }
+                                
+
+                            //transform.position = unitGrid.GetAvailableTile().transform.position;
+
+                            OnOffSiefeEffect(false);
+                            chagneEffet.SetActive(true);
+
+                            particleDuration = 0.3f;
+                            isSiegeActive = false;
+
+                            isAvailableToSiege = true;
+                        }
+
+                        if (isAvailableToSiege)
+                        {
+                            if (changeDuration >= 0)
+                            {
+                                changeDuration -= Time.deltaTime;
+                                state = State.IDLE;
+                            }
+                            else
+                            {
+                                mode = Mode.SEIGE;
+                                changeDuration = 3.0f;
+                                previousMode = mode;
+                                isAvailableToSiege = false;
+                            }
+                        }
+                    }
+                    else if (previousMode == Mode.SEIGE)
+                    {
+                        unitGrid.ClearTile();
+
+                        OnOffSiefeEffect(false);
+                        chagneEffet.SetActive(true);
+
+                        particleDuration = 0.3f;
+                        isSiegeActive = false;
+
+                        if (changeDuration >= 0)
+                        {
+                            changeDuration -= Time.deltaTime;
+                            state = State.IDLE;
+                        }
+                        else
+                        {
+                            mode = Mode.FREE;
+
+                            changeDuration = 3.0f;
+                            previousMode = mode;
+                        }
+                    }
+
+
+
+                    //if (changeDuration >= 0)
+                    //{
+                    //    changeDuration -= Time.deltaTime;
+                    //    state = State.IDLE;
+                    //}
+                    //else
+                    //{
+                    //    if (previousMode == Mode.FREE)
+                    //    {
+                    //        mode = Mode.SEIGE;
+                    //    }
+                    //    else if (previousMode == Mode.SEIGE)
+                    //    {
+                    //        mode = Mode.FREE;
+                    //    }
+
+                    //    changeDuration = 3.0f;
+                    //    previousMode = mode;
+                    //}
+                }
+                break;
+
+            case Mode.UPGRADE:
+                {
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(true);
 
                     particleDuration = 0.3f;
                     isSiegeActive = false;
 
-                    if (changeDuration >= 0)
+                    if (upgradeDuraiton >= 0)
                     {
-                        changeDuration -= Time.deltaTime;
+                        upgradeDuraiton -= Time.deltaTime;
                         state = State.IDLE;
                     }
                     else
                     {
                         if (previousMode == Mode.FREE)
                         {
-                            mode = Mode.SEIGE;
+                            mode = Mode.FREE;
                         }
                         else if (previousMode == Mode.SEIGE)
                         {
-                            mode = Mode.FREE;
+                            mode = Mode.SEIGE;
                         }
 
-                        changeDuration = 3.0f;
+                        upgradeDuraiton = 3.0f;
                         previousMode = mode;
                     }
-
                 }
+
                 break;
         }
     }
@@ -511,7 +625,7 @@ public class AllyUnit : Unit
             UnitData upgradeUnitData = data.UpgradeUnits[index];
 
             GameObject obj = upgradeUnitData.Prefab;
-            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform);
+            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode);
 
             pool.Pool.Release(this);
             gameObject.SetActive(false);
@@ -531,7 +645,10 @@ public class AllyUnit : Unit
 
         state = State.DEAD;
         modelAnimator.SetTrigger("Die");
+        unitGrid.ClearTile();
     }
+
+    
 
     private void OnOffSiefeEffect(bool isSiege)
     {
@@ -560,4 +677,8 @@ public class AllyUnit : Unit
             siegeEffect.SetActive(false);
         }
     }
+
+    
+    
+
 }

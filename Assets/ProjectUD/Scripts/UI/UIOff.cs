@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class UIOnOff : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
+
     private float delay = 3.0f;
     private void OnEnable()
     {
@@ -11,7 +13,7 @@ public class UIOnOff : MonoBehaviour
 
     private void OffUI()
     {
-        gameObject.SetActive(false);
+        animator.SetTrigger("FadeOutTrigger");
     }
 
     private void OnDisable()

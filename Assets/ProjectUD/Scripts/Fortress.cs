@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,6 @@ public class Fortress : MonoBehaviour
     [Header("■ UI")]
     [SerializeField] private IngameScreenUI ingameUI;
 
-
     [Header("■ Options")]
     [SerializeField] private float maxHp;
     [SerializeField] private ListedPositions linePositions;
@@ -16,6 +16,8 @@ public class Fortress : MonoBehaviour
     [Header("■ Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] damageSound;
+
+    private bool isGameOver = true;
 
     private float hp;
 
@@ -35,7 +37,12 @@ public class Fortress : MonoBehaviour
             hp = 0f;
             // 게임 오버
 
-            ingameUI.ShowResult(0, false);
+            if(isGameOver)
+            {
+                ingameUI.ShowResult(0, false);
+                enemyUnitSpawner.GameLose();
+                isGameOver = false;
+            }
         }
 
         enemyUnitSpawner.OnFortressAttacked();
