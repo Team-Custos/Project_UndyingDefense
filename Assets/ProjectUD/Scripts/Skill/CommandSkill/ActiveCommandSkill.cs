@@ -84,6 +84,13 @@ public class ActiveCommandSkill : CommandSkill
         calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
         target.TakeDamage(calcDamage);
+        if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
+        {
+            if (data.InduseEffct != null)
+            {
+                ApplyEffect(target, data.InduseEffct);
+            }
+        }
     }
 
     public void ApplyEffect(Unit target, Effect effect)
