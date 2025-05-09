@@ -44,6 +44,7 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Image[] tierImage;
     [SerializeField] private Text gSkillInfoText;
     [SerializeField] private Text sSkillInfoText;
+    [SerializeField] private Image[] unitStateImage;
 
     [SerializeField] private TextMeshProUGUI unitGSkillText;
     [SerializeField] private TextMeshProUGUI unitSSkillText;
@@ -195,7 +196,7 @@ public class SelectedUnitUI : MonoBehaviour
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
 
-        GetUnitState(unit);
+        //GetUnitState(unit);
     }
     
     public void HideUntInfo()

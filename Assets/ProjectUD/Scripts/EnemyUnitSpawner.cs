@@ -68,10 +68,10 @@ public class EnemyUnitSpawner : MonoBehaviour
                     SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_wavePrepare]);
                     oneTime = true;
                 }
-
-
-                // 웨이브 타이머 설정
+                
                 ingameScreenUI.ShowTimer();
+
+                
                 ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
 
                 waveTimer -= Time.deltaTime;
@@ -82,15 +82,15 @@ public class EnemyUnitSpawner : MonoBehaviour
                     waveDelay = 1.0f;
                     waveTimer = 20f;
 
+                    ingameScreenUI.HideTimer();
+
                     ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
                     SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
-
                 }
             }
         }
         else // 웨이브 시작
         {
-
             if (isSpawnEnd && totalMonCount <= 0) // 웨이브 종료 및 시작 대기
             {
                 SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
@@ -116,6 +116,8 @@ public class EnemyUnitSpawner : MonoBehaviour
             }
             else     // 스폰 시작
             {
+                
+
                 if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
                 {
                     spawnTimeCheck += Time.deltaTime;
@@ -154,8 +156,6 @@ public class EnemyUnitSpawner : MonoBehaviour
                             waveDelay = 1.0f;
                         }
                     }
-
-                    
 
                 }
             }
@@ -212,6 +212,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     public void SetWaverTimerEnd()
     {
         waveTimer = 0.0f;
+
     }
 
     public void OnFortressAttacked()

@@ -48,7 +48,9 @@ public class Fortress : MonoBehaviour
         enemyUnitSpawner.OnFortressAttacked();
 
         ingameUI.SetHP(hp, maxHp);
-        audioSource.PlayOneShot(damageSound[Random.Range(0, damageSound.Length)]);//데미지 사운드 출력
+
+        if(hp > 0f)
+            audioSource.PlayOneShot(damageSound[Random.Range(0, damageSound.Length)]);//데미지 사운드 출력
     }
 
     public Vector3 GetPosition(int index)
