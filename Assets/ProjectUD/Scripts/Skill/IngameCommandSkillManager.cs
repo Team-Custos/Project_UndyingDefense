@@ -37,7 +37,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
-        selectedTargetUnit = null;
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
@@ -46,8 +45,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 break;
             case CommandSkill.TargetType.UNIT:
                 Debug.Log("UnitSkill Activated");
-                selectedTargetUnit = SelectedUnitManager.SelectedUnit;
                 skill.Activate(selectedTargetUnit);
+                selectedTargetUnit = null;
                 break;
             case CommandSkill.TargetType.MOUSEPOSAREA:
                 inputEventManager.OnClickTarget = this;
@@ -77,8 +76,9 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 {
                     if (hit.collider.GetComponent<Unit>() != null)
                     {
+                        selectedTargetUnit = hit.collider.GetComponent<Unit>();
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
-
+                        
                         inputEventManager.OnClickTarget = SelectedUnitManager;
                         selectedUI.gameObject.SetActive(false);
                         return;
@@ -127,7 +127,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
     public void CancelSkill()
     {
-        isTargetRequired = false;
         selectedUI.gameObject.SetActive(false);
     }
 }

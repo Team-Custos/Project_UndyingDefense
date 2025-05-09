@@ -12,7 +12,7 @@ public class ActiveCommandSkill : CommandSkill
     [SerializeField] private LayerMask attackTargetLayer;
 
     [Header("■ AreaTriggerObject")]
-    [SerializeField] protected CommandSkillAttackTrigger areaTriggerObject;
+    [SerializeField] protected GameObject areaTriggerObject;
 
     public override CommandSkillData Data => data;
 
@@ -70,8 +70,9 @@ public class ActiveCommandSkill : CommandSkill
         }
     }
 
-    public void ApplyEffect(Unit target, Effect effect)
+    public void ApplyEffect(Unit target, GameObject effectObject)
     {
+        Effect effect = effectObject.GetComponent<Effect>();
         target.AddEffect(target, effect);
     }
 
