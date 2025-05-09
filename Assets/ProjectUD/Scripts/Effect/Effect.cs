@@ -47,7 +47,11 @@ public class Effect : MonoBehaviour
         else
         {
             if (onMaxStack != null)
+            {
+                Debug.Log("onMaxStack");
                 onMaxStack.Invoke();
+            }
+                
         }
     }
 

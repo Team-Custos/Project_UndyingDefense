@@ -3252,7 +3252,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 95428787}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1238902731}
+        m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
+        m_MethodName: GetClickControl
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &95428787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4825,9 +4837,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 100 / 100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6dd9bd780954f5b4a89a9186e4564274, type: 2}
-  m_sharedMaterial: {fileID: -2489636855689893228, guid: 6dd9bd780954f5b4a89a9186e4564274,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15556,9 +15567,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB0A8\uD55C\uC0B0\uC131"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6dd9bd780954f5b4a89a9186e4564274, type: 2}
-  m_sharedMaterial: {fileID: -2489636855689893228, guid: 6dd9bd780954f5b4a89a9186e4564274,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -19548,6 +19558,7 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   waveData:
+  - {fileID: 11400000, guid: 28e3ded3e3d3f7e48abe2677376e05cb, type: 2}
   - {fileID: 11400000, guid: 8f5725ea4f38a0244b42e63d6a084a6a, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
   - {fileID: 11400000, guid: b915d18fdc1070f4dad204380ed83748, type: 2}
@@ -24669,7 +24680,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.033333335
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 68870576e3172ad459a1271f6b66e8fc, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: e802036d59a5f3044ae7b77fa177af25, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &877068173
 Transform:
@@ -30990,7 +31001,7 @@ Transform:
   m_GameObject: {fileID: 1061626274}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.79, y: 0, z: -9.02}
+  m_LocalPosition: {x: 29.79, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35931,10 +35942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedUnitManager: {fileID: 1137951088}
-  mouseIndicator: {fileID: 1893194893}
-  BurningOilPos: {fileID: 1061626274}
-  skillButtons:
-  - {fileID: 0}
+  BurningOilPos: {fileID: 1061626275}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1590103094}
   selectedUI: {fileID: 1461431851}
@@ -41673,50 +41681,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1959810103}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1395901471
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1395901473}
-  - component: {fileID: 1395901472}
-  m_Layer: 0
-  m_Name: CommandSkill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1395901472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1395901471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a75131d87774ae49b30c742bd544fa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1395901473
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1395901471}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398795433
 GameObject:
   m_ObjectHideFlags: 0
@@ -44220,12 +44184,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1238902731}
         m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
-        m_MethodName: ActivateCommandSkill
-        m_Mode: 1
+        m_MethodName: GetClickControl
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -46211,11 +46175,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1238902731}
         m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
         m_MethodName: GetClickControl
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -49260,6 +49224,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1238902732}
     m_Modifications:
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._X
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._X
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[3]._X
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[5]._X
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 4995738849285770237, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
       propertyPath: m_Name
@@ -60736,9 +60720,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC6E8\uC774\uBE0C 1"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6dd9bd780954f5b4a89a9186e4564274, type: 2}
-  m_sharedMaterial: {fileID: -2489636855689893228, guid: 6dd9bd780954f5b4a89a9186e4564274,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -61229,7 +61212,6 @@ SceneRoots:
   - {fileID: 923510899}
   - {fileID: 124077945}
   - {fileID: 679628029}
-  - {fileID: 1395901473}
   - {fileID: 1285506505}
   - {fileID: 705343323}
   - {fileID: 856739624}

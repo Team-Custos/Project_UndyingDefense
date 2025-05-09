@@ -23,6 +23,19 @@ public abstract class CommandSkill : MonoBehaviour
     protected float coolTimeCheck;
     public bool IsCoolDown => coolTimeCheck >= Data.CoolTime; // IsCoolDown이 true면 스킬이 쿨타임이 차서 사용 가능하다는 의미.
 
+    private void Start()
+    {
+        coolTimeCheck = Data.CoolTime;
+    }
+
+    private void Update()
+    {
+        if (coolTimeCheck < Data.CoolTime)
+        {
+            coolTimeCheck += Time.deltaTime;
+        }
+    }
+
     public void ApplyPassive()
     {
         if(onActivate != null)

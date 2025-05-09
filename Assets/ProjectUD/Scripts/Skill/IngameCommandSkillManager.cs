@@ -8,15 +8,20 @@ using UnityEngine.UI;
 public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
-    [SerializeField] private GameObject mouseIndicator;
-    [SerializeField] private GameObject BurningOilPos;
+    //[SerializeField] private GameObject mouseIndicator;
+    [SerializeField] private Transform BurningOilPos;
     private Unit selectedTargetUnit;
-    [SerializeField] private Button[] skillButtons;
+    //[SerializeField] private Button[] skillButtons;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
     [SerializeField] private Transform selectedUI;
+
+    private ActiveCommandSkill[] skill;
+
+    private bool isTargetRequired = false;
+    private int activatedSkillButtonIdx = 0;
 
 
 
@@ -27,29 +32,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
             Debug.LogError("CommandSkillNullError");
             return;
         }
-
-        for (int i = 0; i < skillButtons.Length; i++)
-        {
-            int idx = i;
-            skillButtons[idx].onClick.AddListener(() => 
-            {
-                Debug.Log("Button " + idx + " Clicked");
-                if (GetComponentsInChildren<CommandSkill>() != null)
-                {
-                    ActiveCommandSkill[] skill = GetComponentsInChildren<ActiveCommandSkill>();
-
-                    ActivateCommandSkill(skill[idx], this.transform);
-
-                    //isCommandSkillActive = true;
-
-                    //if (isCommandSkillActive && clickPos != null)
-                    //{
-                        
-                    //}
-                   
-                }
-            });
-        }
+        skill = GetComponentsInChildren<ActiveCommandSkill>();
     }
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
@@ -72,7 +55,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 break;
             case CommandSkill.TargetType.AREA:
                 Debug.Log("AreaSkill Activated");
-                skill.Activate(BurningOilPos.transform);
+                skill.Activate(BurningOilPos);
                 break;
         }
     }
@@ -89,35 +72,62 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 if (inputEventManager.IsPointerOnUIElements())
                     return;
 
-                if (hit.collider.CompareTag("Tile"))
+                if (skill[activatedSkillButtonIdx].Data.TargetType
+                    == CommandSkill.TargetType.UNIT)
                 {
-                    ActiveCommandSkill[] skill = GetComponentsInChildren<ActiveCommandSkill>();
+                    if (hit.collider.GetComponent<Unit>() != null)
+                    {
+                        ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
-                    ActivateCommandSkill(skill[1], hit.transform);
-                   
+                        inputEventManager.OnClickTarget = SelectedUnitManager;
+                        selectedUI.gameObject.SetActive(false);
+                        return;
+                    }
+                }
+
+                if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
+                {
+                    ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+
                     inputEventManager.OnClickTarget = SelectedUnitManager;
                     selectedUI.gameObject.SetActive(false);
-
-                }    
+                }
             }
         }
     }
 
-    public void ActivateCommandSkill()
+    public void GetClickControl(int idx)
     {
-        ActiveCommandSkill[] skill = GetComponentsInChildren<ActiveCommandSkill>();
-        ActivateCommandSkill(skill[2], this.transform);
+        activatedSkillButtonIdx = idx;
+        if (!skill[activatedSkillButtonIdx].IsCoolDown)
+        {
+            Debug.Log(skill[activatedSkillButtonIdx].name + "이 쿨타임 중...");
+            return;
+        }
+        else
+        {
+            CommandSkillData skillData;
+            skillData = skill[activatedSkillButtonIdx].Data;
+            if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
+                || skillData.TargetType == CommandSkill.TargetType.UNIT)
+            {
+                inputEventManager.OnClickTarget = this;
+                selectedUI.gameObject.SetActive(true);
+            }
+            else if (skillData.TargetType == CommandSkill.TargetType.AREA)
+            {
+                ActivateCommandSkill(skill[activatedSkillButtonIdx], BurningOilPos);
+            }
+            else
+            {
+                //ActivateCommandSkill(skill[activatedSkillButtonIdx], );
+            }
+        }
     }
 
-
-    public void GetClickControl()
+    public void CancelSkill()
     {
-        inputEventManager.OnClickTarget = this;
-        selectedUI.gameObject.SetActive(true);
-    }
-
-    public void CancleSkill()
-    {
+        isTargetRequired = false;
         selectedUI.gameObject.SetActive(false);
     }
 }

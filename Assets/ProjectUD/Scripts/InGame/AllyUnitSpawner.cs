@@ -197,7 +197,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         }
         else
         {
-            commandSkillManager.CancleSkill();
+            commandSkillManager.CancelSkill();
             selectedIndex = index;
             spawn = true;
             indicator.SetActive(true);

@@ -9,6 +9,7 @@ public class ActiveCommandSkillData : CommandSkillData
     [SerializeField] private float damage;
     [SerializeField] private AttackType attackType;
     [SerializeField] private float bonusCrit;
+    [SerializeField] private GameObject attackTrigger;
 
     [Header("■ ActiveCommandSkill - InduseEffect")]
     [SerializeField] protected Effect induseEffct;
@@ -18,6 +19,7 @@ public class ActiveCommandSkillData : CommandSkillData
     public float Damage => damage;
     public AttackType AttackType => attackType;
     public float BonusCrit => bonusCrit;
+    public GameObject AttackTrigger => attackTrigger;
     public Effect InduseEffct => induseEffct;
     public float InduseEffectSuccessRate => induseEffectSuccessRate;
 }
