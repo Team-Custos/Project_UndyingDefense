@@ -147,7 +147,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         {
             if (data.InduseEffct != null)
             {
-                target.AddEffect(target, data.InduseEffct);
+                target.AddEffect(target, data.InduseEffct.GetComponent<Effect>());
             }
         }
     }
