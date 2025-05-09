@@ -3252,7 +3252,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 95428787}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1238902731}
+        m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
+        m_MethodName: GetClickControl
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &95428787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3911,7 +3923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &121359805
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8900,7 +8912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &282221629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19856,7 +19868,7 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   waveData:
-  - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
+  - {fileID: 11400000, guid: 28e3ded3e3d3f7e48abe2677376e05cb, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
   - {fileID: 11400000, guid: b915d18fdc1070f4dad204380ed83748, type: 2}
   - {fileID: 11400000, guid: 052e185d1d8b47c4da34c2a91013a0c6, type: 2}
@@ -23396,7 +23408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &811239937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25063,7 +25075,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.033333335
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 68870576e3172ad459a1271f6b66e8fc, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: d9a792f4e8d8b7846a9a67f717cdd0b8, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &877068173
 Transform:
@@ -26642,14 +26654,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 937906157}
-  - component: {fileID: 937906158}
   m_Layer: 5
   m_Name: UnitState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &937906157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26676,32 +26687,6 @@ RectTransform:
   m_AnchoredPosition: {x: 32.34, y: 32.5}
   m_SizeDelta: {x: 287.4, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &937906158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937906156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 7
-    m_Right: -11
-    m_Top: 7
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1001 &938038955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30518,7 +30503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1043921109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36528,10 +36513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedUnitManager: {fileID: 1137951088}
-  mouseIndicator: {fileID: 1893194893}
-  BurningOilPos: {fileID: 1061626274}
-  skillButtons:
-  - {fileID: 0}
+  BurningOilPos: {fileID: 1061626275}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1590103094}
   selectedUI: {fileID: 1461431851}
@@ -38237,10 +38219,35 @@ MonoBehaviour:
   - {fileID: 2132998470}
   gSkillInfoText: {fileID: 469380127}
   sSkillInfoText: {fileID: 1755378735}
-  unitStateImage: []
+  unitStateImage:
+  - {fileID: 282221630}
+  - {fileID: 1767241628}
+  - {fileID: 811239938}
+  - {fileID: 1640549195}
+  - {fileID: 1043921110}
+  - {fileID: 121359806}
+  - {fileID: 1378905712}
   unitGSkillText: {fileID: 1047384432}
   unitSSkillText: {fileID: 1883063305}
   unitDefenseTypeText: {fileID: 448241471}
+  bleedSprite: {fileID: 21300000, guid: 7d8ec8060a955ce4cb88f262c527168a, type: 3}
+  painSprite: {fileID: 21300000, guid: c3456ac44aa5dda4c8a26ce033fd286b, type: 3}
+  shockSprite: {fileID: 21300000, guid: 3fc82096380768f4cb7ee6fac62df60e, type: 3}
+  stunSprite: {fileID: 21300000, guid: ba2ad5e8b19b6724db1011a257514e9a, type: 3}
+  trappedSprite: {fileID: 21300000, guid: d921434db8aaad643af19041e1a1c5e9, type: 3}
+  fearSprite: {fileID: 21300000, guid: 439bad53c93f15e4197fc971cff242c1, type: 3}
+  provokeSprite: {fileID: 0}
+  weakenSprite: {fileID: 21300000, guid: a07f0bb8985a8dc4f98468d992d72b7f, type: 3}
+  fastMoveSprite: {fileID: 21300000, guid: 39aaa8de206d3e941a2790809f45b106, type: 3}
+  shrinkSprite: {fileID: 21300000, guid: 1a8b9a362842c044b9dc8877c8409ab0, type: 3}
+  burnSprite: {fileID: 21300000, guid: 1bce72ccc5deb754f9c1d9b009260e3c, type: 3}
+  igniteSprite: {fileID: 21300000, guid: ab93cb2d26934684592f86d9dc4f2c2d, type: 3}
+  posionSprite: {fileID: 21300000, guid: 6a277674e4048434fb49ef69e6d0b5f3, type: 3}
+  focusSprite: {fileID: 21300000, guid: a15ac7c2d73f4364d920aa914611354d, type: 3}
+  executeSprite: {fileID: 21300000, guid: b34486bc0d361074a8c6f75884130c8e, type: 3}
+  defenseSprite: {fileID: 21300000, guid: f4cfed2464893dc44a2a072619abb1e1, type: 3}
+  fortitudeSprite: {fileID: 21300000, guid: ab4344a4c5c7b7b4590ce984f9f06b98, type: 3}
+  crushSprite: {fileID: 21300000, guid: 3fc82096380768f4cb7ee6fac62df60e, type: 3}
 --- !u!4 &1285506505
 Transform:
   m_ObjectHideFlags: 0
@@ -39742,7 +39749,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1326674665
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41759,7 +41766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1378905711
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45161,12 +45168,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1238902731}
         m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
-        m_MethodName: ActivateCommandSkill
-        m_Mode: 1
+        m_MethodName: GetClickControl
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -47152,11 +47159,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1238902731}
         m_TargetAssemblyTypeName: IngameCommandSkillManager, Assembly-CSharp
         m_MethodName: GetClickControl
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -49465,7 +49472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640549194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -50276,6 +50283,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1238902732}
     m_Modifications:
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._X
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._X
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[3]._X
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[4]._X
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[5]._X
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4995738849285770237, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
       propertyPath: m_Name
@@ -51590,7 +51622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1767241627
 RectTransform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
@@ -50,6 +51,28 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unitSSkillText;
     [SerializeField] private TextMeshProUGUI unitDefenseTypeText;
 
+    // 상태 아이콘
+    [SerializeField] private Sprite bleedSprite;
+    [SerializeField] private Sprite painSprite;
+    [SerializeField] private Sprite shockSprite;
+    [SerializeField] private Sprite stunSprite;
+    [SerializeField] private Sprite trappedSprite;
+    [SerializeField] private Sprite fearSprite;
+    [SerializeField] private Sprite provokeSprite;
+    [SerializeField] private Sprite weakenSprite;
+    [SerializeField] private Sprite fastMoveSprite;
+    [SerializeField] private Sprite shrinkSprite;
+    [SerializeField] private Sprite burnSprite;
+    [SerializeField] private Sprite igniteSprite;
+    [SerializeField] private Sprite posionSprite;
+    [SerializeField] private Sprite focusSprite;
+    [SerializeField] private Sprite executeSprite;
+    [SerializeField] private Sprite defenseSprite;
+    [SerializeField] private Sprite fortitudeSprite;
+
+
+
+    [SerializeField] private Sprite crushSprite;
 
     // Update is called once per frame
     void Update()
@@ -196,7 +219,7 @@ public class SelectedUnitUI : MonoBehaviour
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
 
-        //GetUnitState(unit);
+        UpdateUnitStateUI();
     }
     
     public void HideUntInfo()
@@ -239,12 +262,82 @@ public class SelectedUnitUI : MonoBehaviour
         }
     }
 
-    public void GetUnitState(Unit unit)
+    public void UpdateUnitStateUI()
     {
-        unit = selecteUnitManger.SelectedUnit;
+        if(selecteUnitManger.SelectedUnit != null)
+        {
+            // 모든 이미지 끄기
+            for (int i = 0; i < unitStateImage.Length; i++)
+            {
+                unitStateImage[i].gameObject.SetActive(false);
+            }
 
-        Debug.Log(unit.GetComponent<Unit>().EffectParent.childCount.ToString());
+            List<DurationEffect> effects = selecteUnitManger.SelectedUnit.EffectsList;
 
-        //unit.GetComponent<Unit>().EffectParent.childCount.ToString();
+            HashSet<Sprite> usedSprites = new HashSet<Sprite>();
+
+            int imageIndex = 0;
+
+            for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
+            {
+                Effect effect = effects[i];
+                Sprite sprite = GetSpriteForEffect(effect.Id);
+
+                // 스프라이트가 유효하고 중복이 아닐 때만 표시
+                if (sprite != null && !usedSprites.Contains(sprite))
+                {
+                    usedSprites.Add(sprite);
+
+                    unitStateImage[imageIndex].sprite = sprite;
+                    unitStateImage[imageIndex].gameObject.SetActive(true);
+                    imageIndex++;
+                }
+                
+            }
+
+            for (int i = imageIndex; i < unitStateImage.Length; i++)
+            {
+                unitStateImage[i].gameObject.SetActive(false);
+            }
+
+
+            //for (int i = imageIndex; i < unitStateImage.Length; i++)
+            //{
+            //    unitStateImage[i].gameObject.SetActive(false);
+            //}
+        }
+
+        
     }
+
+    // ID에 따라 스프라이트 결정
+    private Sprite GetSpriteForEffect(string id)
+    {
+        switch (id)
+        {
+            case "Bleed": return bleedSprite;
+            case "OverBleed": return bleedSprite;
+            case "Pain": return painSprite;
+            case "Shock": return shockSprite;
+            case "Stun": return stunSprite;
+            case "Trapped": return trappedSprite;
+            case "Fear": return fearSprite;
+            case "Provoke": return provokeSprite;
+            case "Weaken": return weakenSprite;
+            case "FastMove": return fastMoveSprite;
+            case "Shrink": return shrinkSprite;
+            case "Burn": return burnSprite;
+            case "IgniteSprite": return igniteSprite;
+            case "Posion": return posionSprite;
+            case "Focus": return focusSprite;
+            case "Execute": return executeSprite;
+            case "Defense": return defenseSprite;
+            case "Fortitude": return fortitudeSprite;
+
+            default:
+                Debug.LogWarning($"Effect ID '{id}'에 해당하는 스프라이트가 없습니다.");
+                return null;
+        }
+    }
+
 }
