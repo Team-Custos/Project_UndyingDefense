@@ -1,6 +1,7 @@
 using UnityEngine;
 using static AttackSkill;
 using static Unit;
+using AttackTriggerType = CommandSkillAttackTrigger.AttackTriggerType;
 
 public class ActiveCommandSkill : CommandSkill
 {
@@ -10,65 +11,41 @@ public class ActiveCommandSkill : CommandSkill
     [Header("■ Target")]
     [SerializeField] private LayerMask attackTargetLayer;
 
+    [Header("■ AreaTriggerObject")]
+    [SerializeField] protected CommandSkillAttackTrigger areaTriggerObject;
+
     public override CommandSkillData Data => data;
 
-    // 범위를 가진 스킬
-    protected Collider[] targets;
-    protected const int maxTargetCount = 5;
-
-    public void AreaAttack(Transform pivotTarget, float radius) //원형 공격
+    public void AreaAttack(Transform pivotTarget, float radius, float tickTime = 0.1f, float lifeTime = 0f) //원형 공격
     {
-        if (data.StartVFX != null)
+        CommandSkillAttackTrigger trigger = 
+            Instantiate(areaTriggerObject).GetComponent<CommandSkillAttackTrigger>();
+        trigger.transform.position = pivotTarget.position;
+        trigger.transform.rotation = pivotTarget.rotation;
+        if (lifeTime > 0)
         {
-            GameObject VFXobj = Instantiate(data.StartVFX.gameObject);
-            VFXobj.transform.SetParent(pivotTarget);
-            VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            Destroy(VFXobj, data.StartVFX.main.duration);
+            Destroy(trigger.gameObject, lifeTime);
         }
-        if (data.LoopVFX != null)
-        {
-            GameObject VFXobj = Instantiate(data.LoopVFX.gameObject);
-            VFXobj.transform.SetParent(pivotTarget);
-            VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        }
-
-        if (targets == null)
-            targets = new Collider[maxTargetCount];
-        int targetCount = Physics.OverlapSphereNonAlloc
-            (pivotTarget.transform.position, radius, targets, attackTargetLayer);
-        for (int i = 0; i < targetCount; i++)
-        {
-            if (targets[i].TryGetComponent(out Unit target))
-            {
-                Attack(target);
-            }
-        }
+        trigger.SetData(data);
+        trigger.SetTargetLayer(attackTargetLayer);
+        trigger.SetTriggerType(AttackTriggerType.Shpere);
+        trigger.SetArea(radius);
     }
 
-    public void AreaAttack(Transform pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
+    public void AreaAttack(Transform pivotTarget, float AreaX, float AreaY, float AreaZ, float tickTime = 0.1f, float lifeTime = 0f)//사각형 공격
     {
-        if (data.StartVFX != null)
+        CommandSkillAttackTrigger trigger =
+            Instantiate(areaTriggerObject).GetComponent<CommandSkillAttackTrigger>();
+        trigger.transform.position = pivotTarget.position;
+        trigger.transform.rotation = pivotTarget.rotation;
+        if (lifeTime > 0)
         {
-            GameObject VFXobj = Instantiate(data.StartVFX.gameObject);
-            VFXobj.transform.SetParent(pivotTarget);
-            VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            Destroy(VFXobj, data.StartVFX.main.duration);
+            Destroy(trigger.gameObject, lifeTime);
         }
-
-        if (targets == null)
-            targets = new Collider[maxTargetCount];
-
-        int targetCount = Physics.OverlapBoxNonAlloc(pivotTarget.transform.position + Vector3.forward * AreaZ * 0.5f, new Vector3(AreaX, AreaY, AreaZ), targets);
-        for (int i = 0; i < targetCount; i++)
-        {
-            if (targets[i].TryGetComponent(out Unit target))
-            {
-                Attack(target);
-            }
-        }
+        trigger.SetData(data);
+        trigger.SetTargetLayer(attackTargetLayer);
+        trigger.SetTriggerType(AttackTriggerType.Box);
+        trigger.SetArea(AreaX, AreaY, AreaZ);
     }
 
     public void Attack(Unit target)
@@ -84,6 +61,13 @@ public class ActiveCommandSkill : CommandSkill
         calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
         target.TakeDamage(calcDamage);
+        if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
+        {
+            if (data.InduseEffct != null)
+            {
+                ApplyEffect(target, data.InduseEffct);
+            }
+        }
     }
 
     public void ApplyEffect(Unit target, Effect effect)
@@ -98,5 +82,4 @@ public class ActiveCommandSkill : CommandSkill
             (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
-
 }

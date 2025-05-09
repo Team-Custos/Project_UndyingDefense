@@ -189,6 +189,7 @@ public class AttackSkill : SkillBase
                     Attack(unit, target);
                 }
             }
+            unit.TakeDamage(9999);
         }
     }
 
