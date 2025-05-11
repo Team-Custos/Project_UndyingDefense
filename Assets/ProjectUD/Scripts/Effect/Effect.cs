@@ -50,8 +50,7 @@ public class Effect : MonoBehaviour
             {
                 Debug.Log("onMaxStack");
                 onMaxStack.Invoke();
-            }
-                
+            } 
         }
     }
 

@@ -19,8 +19,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     [SerializeField] private Transform selectedUI;
 
     private ActiveCommandSkill[] skill;
-
-    private bool isTargetRequired = false;
     private int activatedSkillButtonIdx = 0;
 
 

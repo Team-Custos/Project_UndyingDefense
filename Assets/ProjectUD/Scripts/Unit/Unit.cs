@@ -406,6 +406,8 @@ public abstract class Unit : MonoBehaviour
 
     public Transform EffectParent => effectParent;
 
+    public List<Effect> EffectList => effects;
+
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
