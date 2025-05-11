@@ -128,12 +128,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
 
-                Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
+                Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[1].Prefab.GetComponent<Unit>();
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
                 infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
-                infoSSkillImage.sprite = secondUpgradeUnit.SpecialSkill.Data.Icon;
-                infoGSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
                 infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
+
+                infoSSkillImage.sprite = secondUpgradeUnit.SpecialSkill.Data.Icon;
+                infoSSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
                 infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
         }
