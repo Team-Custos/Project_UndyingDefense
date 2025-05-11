@@ -87,6 +87,14 @@ public class ActiveCommandSkill : CommandSkill
         target.AddEffect(target, effect);
     }
 
+    public void GetMark(Unit target)
+    {
+        if (target.GetComponent<EnemyUnit>() != null)
+        {
+            target.GetComponent<EnemyUnit>().SetExecuted(true);
+        }
+    }
+
     private bool IsBlocked(ArmorType armorType)
     {
         return

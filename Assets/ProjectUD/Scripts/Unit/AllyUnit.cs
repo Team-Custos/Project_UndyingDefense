@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -287,7 +288,13 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.ENEMY:
                                 {
-                                    if(targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
+                                    if (SearchMarkedTarget(data.SightRange) != null)
+                                    {
+                                        targetUnit = SearchMarkedTarget(data.SightRange);
+                                    }
+
+                                    if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
+                                    {
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             if (navAgent.enabled && !navAgent.isStopped)
@@ -301,8 +308,8 @@ public class AllyUnit : Unit
                                         }
                                         else
                                             targetUnit = null;
-                                    else
-                                        targetUnit = SearchTarget(data.SightRange);
+                                    }
+                                    else targetUnit = SearchTarget(data.SightRange);
                                 }
                                 break;
                             case SkillBase.TargetType.ALLY:
@@ -351,7 +358,11 @@ public class AllyUnit : Unit
                         }
                     }
 
-                    
+                    if (SearchMarkedTarget(data.SightRange) != null)
+                    {
+                        targetUnit = SearchMarkedTarget(data.SightRange);
+                    }
+
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
                        && !isMoving)
                     {
@@ -584,6 +595,54 @@ public class AllyUnit : Unit
             case TargetingType.HIGHTIER:
                 result = SearchHighTierReachableTarget(range);
                 break;
+        }
+
+        return result;
+    }
+
+    private EnemyUnit SearchMarkedTarget(float range)
+    {
+        EnemyUnit result = null;
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                EnemyUnit unit = collidersInRange[i].GetComponent<EnemyUnit>();
+
+                if (unit.HasExecuteMark)
+                {
+                    if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                        continue;
+                    else
+                        result = unit;
+                }
+            }
+        }
+        return result;
+    }
+
+    private EnemyUnit SearchReachableMarkedTarget(float range)
+    {
+        EnemyUnit result = null;
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                EnemyUnit unit = collidersInRange[i].GetComponent<EnemyUnit>();
+
+                if (unit.HasExecuteMark)
+                {
+                    if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                        continue;
+
+                    if (IsReachable(unit))
+                    {
+                        result = unit;
+                    }
+                }
+            }
         }
 
         return result;

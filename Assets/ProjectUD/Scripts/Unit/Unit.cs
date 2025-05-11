@@ -396,7 +396,7 @@ public abstract class Unit : MonoBehaviour
 
     private List<DurationEffect> effectsList = new List<DurationEffect>();
 
-    private bool hasExecute = false;
+
 
     protected const int maxTargetCount = 10;
 
@@ -424,7 +424,6 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
-    public bool HasExecute => hasExecute;
     public List<DurationEffect> EffectsList => effectsList;
     public bool IsSelected
     {
@@ -988,6 +987,8 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void RemoveProvoked()
     { }
+
+    
 
     public void AddEffect(Unit unit, Effect effect)
     {

@@ -49,9 +49,18 @@ public class EnemyUnit : Unit
     private Fortress fortress;
     private Vector3 fortressPos;
 
+    private bool hasExecutedMark = false;
+
+    public bool HasExecuteMark => hasExecutedMark;
+
     public override UnitData Data => data;
 
     private float attackCool;
+
+    public void SetExecuted(bool Executed)
+    {
+        hasExecutedMark = Executed;
+    }
 
     public void Initialize(EnemyUnitData data, ObjectPoolWithList<EnemyUnit> pool, Fortress fortress, EnemyUnitSpawner enemySpawner)
     {

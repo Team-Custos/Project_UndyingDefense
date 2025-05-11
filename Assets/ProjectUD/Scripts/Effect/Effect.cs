@@ -164,13 +164,6 @@ public class Effect : MonoBehaviour
         onRemove.AddListener(() => target.RemoveProvoked());
     }
 
-    public virtual void GetExecuted()
-    {
-        Debug.Log("getexecuted");
-        unit.ExecutedTarget(target);
-        onRemove.AddListener(() => unit.ExecutedTarget(target));
-    }
-
     public virtual void AddEffect(GameObject effectPrefab)
     {
         if(effectPrefab.TryGetComponent(out Effect effect))
