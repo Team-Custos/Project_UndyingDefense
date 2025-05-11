@@ -327,7 +327,7 @@ public class SelectedUnitUI : MonoBehaviour
             case "FastMove": return fastMoveSprite;
             case "Shrink": return shrinkSprite;
             case "Burn": return burnSprite;
-            case "IgniteSprite": return igniteSprite;
+            case "Ignite": return igniteSprite;
             case "Posion": return posionSprite;
             case "Focus": return focusSprite;
             case "Execute": return executeSprite;

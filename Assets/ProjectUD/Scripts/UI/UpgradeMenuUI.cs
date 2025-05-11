@@ -14,6 +14,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text selectedUnitNameText;
     [SerializeField] private Image selectedUnitAtTypeImage;
     [SerializeField] private Image selectedUnitDfTypeImage;
+    [SerializeField] private Image[] selectedUnitTierImage;
 
     [Header(" ■ 첫번째 업그레이드 유닛")]
     [SerializeField] private Image firstUpgradeUnitBackImage;
@@ -22,6 +23,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text firstUpgradeUnitNameText;
     [SerializeField] private Image firstUpgradeUnitAtTypeImage;
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
+    [SerializeField] private Image[] firstUpgradeUnitTierImage;
 
     [Header(" ■ 두번째 업그레이드 유닛")]
     [SerializeField] private Image secondUpgradeUnitBackImage;
@@ -30,6 +32,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text secondUpgradeUnitNameText;
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
+    [SerializeField] private Image[] secondUpgradeUnitTierImage;
 
     [Header(" ■ 업그레이드할 유니의 정보")]
     [SerializeField]private GameObject infoPanel;
@@ -44,6 +47,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text infoGSkillText;
     [SerializeField] private Image infoSSkillImage;
     [SerializeField] private Text infoSSkillText;
+    [SerializeField] private Text infoGSkillDescript;
+    [SerializeField] private Text infoSSkillDescript;
 
 
 
@@ -85,9 +90,8 @@ public class UpgradeMenuUI : MonoBehaviour
             infoPanel.SetActive(true);
             upgradeIndex = index;
             upgradePerformBtn.interactable = true;
-            Debug.Log($"업그레이드 인덱스 선택됨: {upgradeIndex}");
 
-            if(index == 0)
+            if (index == 0)
             {
                 infoText.text = firstUnitData.Name;
                 infoCrtiText.text = "치명타율 : " + firstUnitData.CritChance.ToString();
@@ -97,11 +101,22 @@ public class UpgradeMenuUI : MonoBehaviour
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
                 afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
 
+                Unit firstUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
+
+                infoGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
+                infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
+                infoSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
+                infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
+                infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
+                infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
+
+
 
                 //infoGSkillImage.sprite = firstUnitData.GeneralSkill.Icon;
                 //infoGSkillText.text = secondUnitData.GSkillName;
                 //infoSSkillImage.sprite = secondUnitData.SSkillIcon;
                 //infoSSkillText.text = secondUnitData.SSkillName;
+
             }
             else if (index == 1)
             {
@@ -112,6 +127,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
+
+                Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
+                infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
+                infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
+                infoSSkillImage.sprite = secondUpgradeUnit.SpecialSkill.Data.Icon;
+                infoGSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
+                infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
+                infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
         }
 
@@ -126,6 +149,8 @@ public class UpgradeMenuUI : MonoBehaviour
 
     public void SetUnitUpgradeMenu(Unit selectedUnit)
     {
+        infoPanel.SetActive(false);
+
         upgradeIndex = -1;
 
         currentUnitData = selectedUnit.Data;
@@ -137,6 +162,12 @@ public class UpgradeMenuUI : MonoBehaviour
         selectedUnitNameText.text = selectedUnit.Data.Name;
         selectedUnitAtTypeImage.sprite = selectedUnit.Data.AtTypeIcon;
         selectedUnitDfTypeImage.sprite = selectedUnit.Data.DfTypeIcon;
+
+        for (int i = 0; i < selectedUnitTierImage.Length; i++)
+        {
+            selectedUnitTierImage[i].gameObject.SetActive(i < selectedUnit.Data.Tier);
+        }
+
 
         AllyUnitData allyUnitData = (AllyUnitData)selectedUnit.Data;
 
@@ -157,6 +188,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
                 firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
+
+                for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
+                {
+                    if (i < firstUpgradeUnitData.Tier)
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
+                    else
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
+                }
             }
 
             if (secondUpgradeUnitData != null)
@@ -166,6 +205,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 secondUpgradeUnitNameText.text = secondUpgradeUnitData.Name;
                 secondUpgradeUnitAtTypeImage.sprite = secondUpgradeUnitData.AtTypeIcon;
                 secondUpgradeUnitDfTypeImage.sprite = secondUpgradeUnitData.DfTypeIcon;
+
+                for (int i = 0; i < secondUpgradeUnitTierImage.Length; i++)
+                {
+                    if (i < secondUpgradeUnitData.Tier)
+                        secondUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
+                    else
+                        secondUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
+                }
             }
             AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
             upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
@@ -184,6 +231,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
 
+                for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
+                {
+                    if (i < firstUpgradeUnitData.Tier)
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
+                    else
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
+                }
+
                 // 승급 비용
 
                 AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
@@ -195,6 +250,8 @@ public class UpgradeMenuUI : MonoBehaviour
 
         SetUnitBackImage(selectedUnit);
     }
+
+
 
     private void SetUnitBackImage(Unit selectedUnit)
     {
