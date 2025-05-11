@@ -42,6 +42,11 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         this.data = data;
     }
 
+    public void SetTickTime(float tickTime)
+    {
+        this.tickTime = tickTime;
+    }
+
     public void SetTargetLayer(LayerMask targetLayer)
     {
         attackTargetLayer = targetLayer;

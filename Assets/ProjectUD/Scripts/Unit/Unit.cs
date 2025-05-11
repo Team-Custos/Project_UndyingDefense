@@ -396,6 +396,8 @@ public abstract class Unit : MonoBehaviour
 
     private List<DurationEffect> effectsList = new List<DurationEffect>();
 
+    private bool hasExecute = false;
+
     protected const int maxTargetCount = 10;
 
     protected bool isSelected;
@@ -406,7 +408,7 @@ public abstract class Unit : MonoBehaviour
 
     public Transform EffectParent => effectParent;
 
-    public List<Effect> EffectList => effects;
+    public List<DurationEffect> EffectList => effectsList;
 
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
@@ -422,6 +424,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
+    public bool HasExecute => hasExecute;
     public List<DurationEffect> EffectsList => effectsList;
     public bool IsSelected
     {
@@ -573,7 +576,6 @@ public abstract class Unit : MonoBehaviour
 
                 if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
                     continue;
-
                 float dst = Vector3.Distance(transform.position, unit.transform.position);
                 if (dst < minDst)
                 {

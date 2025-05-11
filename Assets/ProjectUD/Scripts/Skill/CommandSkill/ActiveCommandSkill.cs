@@ -26,6 +26,11 @@ public class ActiveCommandSkill : CommandSkill
         {
             Destroy(trigger.gameObject, lifeTime);
         }
+        if (tickTime > 0)
+        {
+            trigger.SetTickTime(tickTime);
+        }
+
         trigger.SetData(data);
         trigger.SetTargetLayer(attackTargetLayer);
         trigger.SetTriggerType(AttackTriggerType.Shpere);
@@ -42,6 +47,11 @@ public class ActiveCommandSkill : CommandSkill
         {
             Destroy(trigger.gameObject, lifeTime);
         }
+        if (tickTime > 0)
+        {
+            trigger.SetTickTime(tickTime);
+        }
+
         trigger.SetData(data);
         trigger.SetTargetLayer(attackTargetLayer);
         trigger.SetTriggerType(AttackTriggerType.Box);
