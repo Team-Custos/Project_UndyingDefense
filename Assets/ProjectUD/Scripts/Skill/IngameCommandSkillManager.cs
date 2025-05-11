@@ -16,12 +16,31 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
-    [SerializeField] private Transform selectedUI;
+    [SerializeField] private Transform selectedUI0;
+    [SerializeField] private Transform selectedUI1;
+    [SerializeField] private GameObject circle;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isSkillActivated = false;
 
     private ActiveCommandSkill[] skill;
     private int activatedSkillButtonIdx = 0;
 
 
+
+    void Update()
+    {
+        if (isSkillActivated)
+        {
+            if (inputEventManager.IsPointerOnUIElements())
+                return;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
+            {
+                circle.transform.position = hit.point;
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -78,7 +97,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
                         
                         inputEventManager.OnClickTarget = SelectedUnitManager;
-                        selectedUI.gameObject.SetActive(false);
+                        selectedUI0.gameObject.SetActive(false);
+                        selectedUI1.gameObject.SetActive(false);
                         return;
                     }
                 }
@@ -88,7 +108,10 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                     ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
                     inputEventManager.OnClickTarget = SelectedUnitManager;
-                    selectedUI.gameObject.SetActive(false);
+                    selectedUI0.gameObject.SetActive(false);
+                    selectedUI1.gameObject.SetActive(false);
+                    circle.SetActive(false);
+                    isSkillActivated = false;
                 }
             }
         }
@@ -110,7 +133,19 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 || skillData.TargetType == CommandSkill.TargetType.UNIT)
             {
                 inputEventManager.OnClickTarget = this;
-                selectedUI.gameObject.SetActive(true);
+                if (idx == 0)
+                {
+                    selectedUI0.gameObject.SetActive(true);
+                    selectedUI1.gameObject.SetActive(false);
+                }
+                else if (idx == 1)
+                {
+                    selectedUI0.gameObject.SetActive(false);
+                    selectedUI1.gameObject.SetActive(true);
+                    isSkillActivated = true;
+                    circle.SetActive(true);
+                }
+
             }
             else if (skillData.TargetType == CommandSkill.TargetType.AREA)
             {
@@ -120,11 +155,13 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
             {
                 //ActivateCommandSkill(skill[activatedSkillButtonIdx], );
             }
+            
         }
     }
 
     public void CancelSkill()
     {
-        selectedUI.gameObject.SetActive(false);
+        selectedUI0.gameObject.SetActive(false);
+        selectedUI1.gameObject.SetActive(false);
     }
 }

@@ -8,6 +8,7 @@ public class IngameScreenUI : MonoBehaviour
     [Header("■ UI")]
     [SerializeField] private TextMeshProUGUI waveTextUI;
     [SerializeField] private TextMeshProUGUI goldTextUI;
+    [SerializeField] private GameObject settingUI;
 
     [Header("■ HP Bar")]
     [SerializeField] private Image hpBarUI;
@@ -41,13 +42,16 @@ public class IngameScreenUI : MonoBehaviour
     public void ShowNotice(string text) //
     {
         noticeUI.SetText(text ,false);
-        Fade();
     }
 
     public void ShowTimer()
     {
-        TimerFade();
-        //noticeTimerUI.gameObject.SetActive(true);
+        noticeTimerUI.gameObject.SetActive(true);
+    }
+
+    public void HideTimer()
+    {
+        noticeTimerUI.gameObject.SetActive(false);
     }
 
     public void HideNotice()
@@ -58,8 +62,7 @@ public class IngameScreenUI : MonoBehaviour
 
     public void ShowPreWaveNotice()
     {
-        Fade();
-        noticeUI.SetText("성이 현재 공겨받고있습니다!", true);
+        noticeUI.SetText("성이 현재 공격받고있습니다!", true);
     }
 
     public void SetNoticeText(string text)
@@ -74,18 +77,16 @@ public class IngameScreenUI : MonoBehaviour
 
     public void HideResult() => resultUI.Hide();
 
-    public void Fade()
+    public void OnOffSetting()
     {
-        animator.SetTrigger("FadeTrigger");
+        if (settingUI.activeSelf)
+        {
+            settingUI.SetActive(false);
+        }
+        else
+        {
+            settingUI.SetActive(true);
+        }
     }
 
-    public void TimerFade()
-    {
-        animator.SetTrigger("TimerFadeTrigger");
-    }
-
-    public void TimerEnd()
-    {
-        animator.SetTrigger("TimerEndTrigger");
-    }
 }

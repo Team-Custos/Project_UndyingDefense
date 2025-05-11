@@ -58,6 +58,9 @@ public class Effect : MonoBehaviour
     {
         if(onRemove != null)
         {
+            //target.EffectsList.Remove(this);
+            //this.unit.UpdateState();
+
             onRemove.Invoke();
             onRemove.Clear();
         }
@@ -74,7 +77,6 @@ public class Effect : MonoBehaviour
                 if (idx == stack)
                 {
                     if (idx > 1)
-                        Debug.Log(22);
 
                     stackVFX[idx].gameObject.SetActive(true);
                 }

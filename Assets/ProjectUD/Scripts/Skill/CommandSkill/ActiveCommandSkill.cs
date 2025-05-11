@@ -46,6 +46,7 @@ public class ActiveCommandSkill : CommandSkill
         trigger.SetTargetLayer(attackTargetLayer);
         trigger.SetTriggerType(AttackTriggerType.Box);
         trigger.SetArea(AreaX, AreaY, AreaZ);
+
     }
 
     public void Attack(Unit target)

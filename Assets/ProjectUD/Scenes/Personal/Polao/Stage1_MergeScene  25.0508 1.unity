@@ -21216,7 +21216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce23a74dfe072e447a29c9003818c641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!114 &751923282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26768,6 +26767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveTextUI: {fileID: 6344069329748373788}
   goldTextUI: {fileID: 1550525388}
+  settingUI: {fileID: 0}
   hpBarUI: {fileID: 567817879}
   hpTextUI: {fileID: 139754859}
   noticeUI: {fileID: 751923282}
@@ -37648,6 +37648,7 @@ MonoBehaviour:
   - {fileID: 2132998470}
   gSkillInfoText: {fileID: 469380127}
   sSkillInfoText: {fileID: 1755378735}
+  unitStateImage: []
   unitGSkillText: {fileID: 1047384432}
   unitSSkillText: {fileID: 1883063305}
   unitDefenseTypeText: {fileID: 448241471}
@@ -49247,8 +49248,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
+      propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[4]._X
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
+        type: 3}
       propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[5]._X
-      value: 1000
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4995738849285770237, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}

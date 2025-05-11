@@ -394,7 +394,7 @@ public abstract class Unit : MonoBehaviour
     protected float stateDuration;
     protected float stateDurationCheck;
 
-    private List<Effect> effects = new List<Effect>();
+    private List<DurationEffect> effectsList = new List<DurationEffect>();
 
     protected const int maxTargetCount = 10;
 
@@ -422,6 +422,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
+    public List<DurationEffect> EffectsList => effectsList;
     public bool IsSelected
     {
         get => isSelected;
@@ -455,6 +456,7 @@ public abstract class Unit : MonoBehaviour
         navAgent.enabled = false;
         navObstacle.enabled = true;
         collider.enabled = true;
+
 
         lastMoveTime = Time.time;
     }
@@ -987,7 +989,7 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(Unit unit, Effect effect)
     {
-        Effect prevEffect = effects.Find(item => item.Id == effect.Id);
+        Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
         if (prevEffect != null)
         {
             if(!prevEffect.gameObject.activeInHierarchy)
@@ -997,6 +999,9 @@ public abstract class Unit : MonoBehaviour
             }
 
             prevEffect.Activate();
+
+            //effectsList.Add(effect);
+            UpdateState();
         }
         else
         {
@@ -1006,7 +1011,16 @@ public abstract class Unit : MonoBehaviour
             effect.Initialize(unit, this);
             effect.Activate();
 
-            effects.Add(effect);
+            if (effect is DurationEffect)
+            {
+                DurationEffect durationEffect = effect as DurationEffect;
+
+                effectsList.Add(durationEffect);
+
+                UpdateState();
+            }
+
+            
         }
     }
 
@@ -1018,4 +1032,13 @@ public abstract class Unit : MonoBehaviour
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         Destroy(VFXobj, VFX.main.duration);
     }
+
+    public void UpdateState()
+    {
+        if(selectedUnitUI != null)
+        {
+            selectedUnitUI.UpdateUnitStateUI();
+        }
+    }
+
 }

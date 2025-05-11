@@ -16,7 +16,7 @@ public class NoticeUI : MonoBehaviour
 
     public void SetText(string text, bool isWarning = false)
     {
-        //gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
 
         if (isWarning)

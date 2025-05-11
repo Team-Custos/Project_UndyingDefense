@@ -30,4 +30,18 @@ public class DurationEffect : Effect
         base.Activate();
         durationCheck = 0f;
     }
+
+    public override void Remove()
+    {
+        if (onRemove != null)
+        {
+            target.EffectsList.Remove(this);
+            target.UpdateState();
+
+            onRemove.Invoke();
+            onRemove.Clear();
+        }
+
+        gameObject.SetActive(false);
+    }
 }

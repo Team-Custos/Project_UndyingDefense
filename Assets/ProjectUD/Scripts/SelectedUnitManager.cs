@@ -53,6 +53,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     Unit unit = hit.collider.GetComponent<Unit>();
 
+                    if (unit is AllyUnit)
+                    {
+                        AllyUnit allyUnit = unit as AllyUnit;
+                        if (allyUnit.ModeType == AllyUnit.Mode.CHANGE || allyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                            return;
+                    }
+
                     if (unit.HpPercent <= 0.0f)
                     {
                         return;

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class UIOnOff : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-
     private float delay = 3.0f;
+
     private void OnEnable()
     {
         Invoke("OffUI", delay);
@@ -13,7 +13,7 @@ public class UIOnOff : MonoBehaviour
 
     private void OffUI()
     {
-        animator.SetTrigger("FadeOutTrigger");
+        gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -21,6 +21,4 @@ public class UIOnOff : MonoBehaviour
         // UI가 비활성화되면 OffUI 호출 예약 취소
         CancelInvoke("OffUI");
     }
-
-
 }
