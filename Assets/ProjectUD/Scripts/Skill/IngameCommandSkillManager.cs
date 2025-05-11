@@ -23,8 +23,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     private bool isSkillActivated = false;
 
     private ActiveCommandSkill[] skill;
-
-    private bool isTargetRequired = false;
     private int activatedSkillButtonIdx = 0;
 
 

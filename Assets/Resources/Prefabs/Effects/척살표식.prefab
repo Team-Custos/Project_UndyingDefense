@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7434015172272022382}
-  - component: {fileID: -8111910041185338406}
+  - component: {fileID: 4378504931579747474}
   m_Layer: 0
   m_Name: "\uCC99\uC0B4\uD45C\uC2DD"
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8111910041185338406
+--- !u!114 &4378504931579747474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,11 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Execute
-  maxStack: 1
+  maxStack: 0
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
     _PersistentCalls: []
   onMaxStack:
     _PersistentCalls: []
-  duration: 5
+  duration: 9999999

@@ -48,10 +48,9 @@ public class Effect : MonoBehaviour
         {
             if (onMaxStack != null)
             {
-                Debug.Log("onMaxStack");
+                //Debug.Log("onMaxStack");
                 onMaxStack.Invoke();
-            }
-                
+            } 
         }
     }
 
@@ -163,6 +162,13 @@ public class Effect : MonoBehaviour
         Debug.Log("getprovoked");
         target.GetProvoked(unit);
         onRemove.AddListener(() => target.RemoveProvoked());
+    }
+
+    public virtual void GetExecuted()
+    {
+        Debug.Log("getexecuted");
+        unit.ExecutedTarget(target);
+        onRemove.AddListener(() => unit.ExecutedTarget(target));
     }
 
     public virtual void AddEffect(GameObject effectPrefab)
