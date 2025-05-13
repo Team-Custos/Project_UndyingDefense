@@ -18,6 +18,7 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputUnitUpgrade OnUnitUpgradeTarget { set; private get; }
     public IInputUnitModeChange OnUnitModeChangeTarget { set; private get; }
     public IInputPerformUnitUpgrade OnPerformUnitUpgradeTarget { set; private get; }
+    public IInputESC OnESCTarget { set; private get; } 
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -90,6 +91,12 @@ public class PlayerInputEventManager : MonoBehaviour
     {
         if (OnPerformUnitUpgradeTarget != null)
             OnPerformUnitUpgradeTarget.OnPerformUnitUpgrade(context);
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (OnESCTarget != null)
+            OnESCTarget.OnESC(context);
     }
 
 

@@ -167,8 +167,8 @@ public class Effect : MonoBehaviour
     public virtual void GetExecuted()
     {
         Debug.Log("getexecuted");
-        unit.ExecutedTarget(target);
-        onRemove.AddListener(() => unit.ExecutedTarget(target));
+        //unit.ExecutedTarget(target);
+        //onRemove.AddListener(() => unit.ExecutedTarget(target));
     }
 
     public virtual void AddEffect(GameObject effectPrefab)

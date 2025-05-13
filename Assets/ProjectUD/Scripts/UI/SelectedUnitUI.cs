@@ -69,10 +69,13 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Sprite executeSprite;
     [SerializeField] private Sprite defenseSprite;
     [SerializeField] private Sprite fortitudeSprite;
-
-
-
     [SerializeField] private Sprite crushSprite;
+
+    [SerializeField] private GameObject allyUnitUI;
+    [SerializeField] private GameObject enemyUnitUI;
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -80,6 +83,19 @@ public class SelectedUnitUI : MonoBehaviour
         if (selecteUnitManger.SelectedUnit != null)
         {
             UpdateUI();
+
+            if(selecteUnitManger.SelectedUnit is AllyUnit)
+            {
+                allyUnitUI.SetActive(true);
+                allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+                enemyUnitUI.SetActive(false);
+            }
+            else if (selecteUnitManger.SelectedUnit is EnemyUnit)
+            {
+                enemyUnitUI.SetActive(true);
+                enemyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+                allyUnitUI.SetActive(false);
+            }
         }
     }
 
@@ -97,7 +113,10 @@ public class SelectedUnitUI : MonoBehaviour
             unitHPPrefab.SetActive(false);
             unitInfoImage.gameObject.SetActive(false);
         }
-        
+
+        allyUnitUI.SetActive(false);
+        enemyUnitUI.SetActive(false);
+
     }
 
     public void HideUpgrdeUI()
@@ -225,6 +244,7 @@ public class SelectedUnitUI : MonoBehaviour
     public void HideUntInfo()
     {
         unitInfoImage.gameObject.SetActive(false);
+
     }
 
     public void UpdateHPUI(Unit unit)
@@ -339,5 +359,6 @@ public class SelectedUnitUI : MonoBehaviour
                 return null;
         }
     }
+
 
 }

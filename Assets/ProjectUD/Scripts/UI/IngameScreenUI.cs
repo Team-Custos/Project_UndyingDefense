@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Specialized;
+using InputEventInterface;
 
 public class IngameScreenUI : MonoBehaviour
 {
@@ -17,11 +18,15 @@ public class IngameScreenUI : MonoBehaviour
     [Header("■ Notice")]
     [SerializeField] private NoticeUI noticeUI;
     [SerializeField] private NoticeUI noticeTimerUI;
+    [SerializeField] private GameObject errorPanel;
+    [SerializeField] private Text errorText;
 
     [Header("■ Result")]
     [SerializeField] private ResultUI resultUI;
 
     [SerializeField] private Animator animator;
+
+
 
     public void SetWaveNumber(int waveNum)
     {
@@ -41,7 +46,7 @@ public class IngameScreenUI : MonoBehaviour
 
     public void ShowNotice(string text) //
     {
-        noticeUI.SetText(text ,false);
+        noticeUI.SetText(text, false);
     }
 
     public void ShowTimer()
@@ -82,11 +87,28 @@ public class IngameScreenUI : MonoBehaviour
         if (settingUI.activeSelf)
         {
             settingUI.SetActive(false);
+            Time.timeScale = 1.0f;
         }
         else
         {
             settingUI.SetActive(true);
+            Time.timeScale = 0.0f;
         }
     }
 
+    public void CloseSettting()
+    {
+        if (settingUI.activeSelf)
+        {
+            settingUI.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+
+    }
+
+    public void ShowError(string text)
+    {
+        errorPanel.SetActive(true);
+        errorText.text = text;
+    }
 }

@@ -122,13 +122,13 @@ public class LobbyUIManager : MonoBehaviour
     {
         Time.timeScale = 1.0f;
 
-        commandSkillManager = CommandSkillManager.Instance;
+        //commandSkillManager = CommandSkillManager.Instance;
 
-        emptyDeckImageSprite = commandSkillDeckListImage[0].sprite;
-        emptyDeckImageColor = commandSkillDeckListImage[0].color;
+        //emptyDeckImageSprite = commandSkillDeckListImage[0].sprite;
+        //emptyDeckImageColor = commandSkillDeckListImage[0].color;
 
-        isCommandSkillDeckEmpty = new bool[commandSkillDeckListImage.Length];
-        CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
+        //isCommandSkillDeckEmpty = new bool[commandSkillDeckListImage.Length];
+        //CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
         // 설정 창 on/off
         if(lobbySettingBtn != null)
@@ -281,7 +281,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 //SceneManager.LoadSceneAsync(2);
 
-                LoadScene(2);
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0511");
 
                 if (GlobalSoundManager.instance != null)
                 {
@@ -335,81 +335,81 @@ public class LobbyUIManager : MonoBehaviour
 
 
         // 초기화: 덱 비우기
-        for (int i = 0; i < isCommandSkillDeckEmpty.Length; i++)
-        {
-            isCommandSkillDeckEmpty[i] = true;
-            CommandSkillDeckIndex[i] = -1;
-        }
+        //for (int i = 0; i < isCommandSkillDeckEmpty.Length; i++)
+        //{
+        //    isCommandSkillDeckEmpty[i] = true;
+        //    CommandSkillDeckIndex[i] = -1;
+        //}
 
-        isCommandSkillSelect = new bool[commandSkillList.Length];
+        //isCommandSkillSelect = new bool[commandSkillList.Length];
 
         // 스킬 장착 버튼에 대한 리스너 추가
-        for (int i = 0; i < commandSkillEquipBtn.Length; i++)
-        {
-            if (commandSkillEquipBtn[i] != null)
-            {
-                int buttonIndex = i;
+        //for (int i = 0; i < commandSkillEquipBtn.Length; i++)
+        //{
+        //    if (commandSkillEquipBtn[i] != null)
+        //    {
+        //        int buttonIndex = i;
 
-                commandSkillEquipBtn[buttonIndex].onClick.AddListener(() =>
-                {
-                    if (GlobalSoundManager.instance != null)
-                    {
-                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
-                    }
-                    AddCommandSkill(buttonIndex);
-                });
-            }
-        }
+        //        commandSkillEquipBtn[buttonIndex].onClick.AddListener(() =>
+        //        {
+        //            if (GlobalSoundManager.instance != null)
+        //            {
+        //                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillEquip);
+        //            }
+        //            AddCommandSkill(buttonIndex);
+        //        });
+        //    }
+        //}
 
-        // 스킬 제거 버튼에 대한 리스너 추가
-        for (int i = 0; i < commandSkillClearBtn.Length; i++)
-        {
-            if (commandSkillClearBtn[i] != null)
-            {
-                int buttonIndex = i;
+        //// 스킬 제거 버튼에 대한 리스너 추가
+        //for (int i = 0; i < commandSkillClearBtn.Length; i++)
+        //{
+        //    if (commandSkillClearBtn[i] != null)
+        //    {
+        //        int buttonIndex = i;
 
-                commandSkillClearBtn[buttonIndex].onClick.AddListener(() =>
-                {
-                    if (GlobalSoundManager.instance != null)
-                    {
-                        GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
-                    }
-                    RemoveCommandSkill(buttonIndex);
-                });
-            }
-        }
+        //        commandSkillClearBtn[buttonIndex].onClick.AddListener(() =>
+        //        {
+        //            if (GlobalSoundManager.instance != null)
+        //            {
+        //                GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_commanderSkillUnequip);
+        //            }
+        //            RemoveCommandSkill(buttonIndex);
+        //        });
+        //    }
+        //}
 
-        if (showCommandSkillListBtn != null)
-        {
-            showCommandSkillListBtn.onClick.AddListener(() =>
-            {
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
-                ShowCommandSkillList();
-            });
-        }
+        //if (showCommandSkillListBtn != null)
+        //{
+        //    showCommandSkillListBtn.onClick.AddListener(() =>
+        //    {
+        //        if (GlobalSoundManager.instance != null)
+        //        {
+        //            GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+        //        }
+        //        ShowCommandSkillList();
+        //    });
+        //}
 
-        if (commandkSkillSaveBtn != null)
-        {
-            commandkSkillSaveBtn.onClick.AddListener(() =>
-            {
-                Dictionary<string, string> skillData = new Dictionary<string, string>();
+        //if (commandkSkillSaveBtn != null)
+        //{
+        //    commandkSkillSaveBtn.onClick.AddListener(() =>
+        //    {
+        //        Dictionary<string, string> skillData = new Dictionary<string, string>();
 
-                foreach (var skill in commandSkillDeckList)
-                {
-                    skillData.Add(skill.SkillID, skill.SkillName);
-                }
+        //        foreach (var skill in commandSkillDeckList)
+        //        {
+        //            skillData.Add(skill.SkillID, skill.SkillName);
+        //        }
 
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
+        //        if (GlobalSoundManager.instance != null)
+        //        {
+        //            GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+        //        }
 
-                //SaveCommandSkillList(skillData);
-            });
-        }
+        //        //SaveCommandSkillList(skillData);
+        //    });
+        //}
 
         //for (int i = 0; i < optionBtn.Length; i++)
         //{
@@ -487,17 +487,17 @@ public class LobbyUIManager : MonoBehaviour
 
     private void Update()
     {
-        if(isManulTrue)
-        {
-            helpManulBtnImage.sprite = currentTabImage;
-            helpAttributeBtnImage.sprite = noneTabImage;
+        //if(isManulTrue)
+        //{
+        //    helpManulBtnImage.sprite = currentTabImage;
+        //    helpAttributeBtnImage.sprite = noneTabImage;
 
-        }
-        else
-        {
-            helpManulBtnImage.sprite = noneTabImage;
-            helpAttributeBtnImage.sprite = currentTabImage;
-        }
+        //}
+        //else
+        //{
+        //    helpManulBtnImage.sprite = noneTabImage;
+        //    helpAttributeBtnImage.sprite = currentTabImage;
+        //}
     }
 
     void SlideRight()
@@ -859,10 +859,10 @@ public class LobbyUIManager : MonoBehaviour
 #endif
     }
 
-    public void LoadScene(int sceneNumber)
-    {
-        StartCoroutine(LobbyLoadSceneAsyncCorutine(sceneNumber));
-    }
+    //public void LoadScene(int sceneNumber)
+    //{
+    //    StartCoroutine(LobbyLoadSceneAsyncCorutine(sceneNumber));
+    //}
 
     private IEnumerator LobbyLoadSceneAsyncCorutine(int sceneIdx)
     {

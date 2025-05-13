@@ -7376,16 +7376,22 @@ MonoBehaviour:
   stageStartBtn: {fileID: 1855840415}
   stageStart2Btn: {fileID: 1143291066}
   localSituationPanel: {fileID: 971492519}
-  commandSkillPanelOpenBtn: {fileID: 1604010818}
   localSituationPanelCloseBtn: {fileID: 1670866821}
+  battleFieldImage: {fileID: 0}
+  battleFieldScriptTxt: {fileID: 0}
+  commandSkillResetBtn: {fileID: 0}
+  commandSkillDeckEquipImage: []
+  showCommandSkillListBtn: {fileID: 0}
   battleStartBtn: {fileID: 1005016255}
-  localCommandSkillImage:
-  - {fileID: 1757680197}
-  - {fileID: 811744129}
-  - {fileID: 1999633216}
-  commandSkillPanel: {fileID: 1096497426}
+  commandSkillPanel: {fileID: 1096497427}
   commandSkillPanelCloseBtn: {fileID: 275572592}
-  commandSkillOpenBtn: {fileID: 237886241}
+  commandSkillDeckListImage: []
+  commandSkillList: []
+  commandSkillEquipBtn: []
+  commandSkillInfoImage: {fileID: 0}
+  commandSkillInfoScriptTxt: {fileID: 0}
+  commandSkillClearBtn: []
+  commandkSkillSaveBtn: {fileID: 0}
   HelpUsePanel: {fileID: 1165806098}
   HelpArrPanel: {fileID: 18268103}
   HelpCloseBtn: {fileID: 534129944}
@@ -7418,25 +7424,12 @@ MonoBehaviour:
   helpAttributePanel: {fileID: 2126834233}
   helpManulPanel1: {fileID: 1165806098}
   helpAttributePanel1: {fileID: 1933413729}
+  loadingPanel: {fileID: 0}
+  progressImage: {fileID: 0}
+  progressText: {fileID: 0}
   animationDuration: 0.5
   delayBetweenAnimations: 0.2
   minLoadingTime: 3
-  csSaveBtn: {fileID: 408290161}
-  csSavePanel: {fileID: 412202697}
-  csCancelBtn:
-  - {fileID: 1236282671}
-  - {fileID: 1458386139}
-  - {fileID: 1962278720}
-  - {fileID: 334555473}
-  - {fileID: 379113000}
-  - {fileID: 335744953}
-  csSaveConfirmBtn: {fileID: 1144728651}
-  csSaveText: {fileID: 1992590144}
-  csUIPanel:
-  - {fileID: 1771331443}
-  - {fileID: 1138178356}
-  - {fileID: 53066289}
-  csSlotConfrimBtn: {fileID: 1863728211}
 --- !u!4 &1066538852
 Transform:
   m_ObjectHideFlags: 0
@@ -9293,9 +9286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb6ce34f97f41dd4c9e9fc0fd926a9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGM:
-  - {fileID: 8300000, guid: 89b611217edbd02448ac4aa3ea1e83af, type: 3}
-  audioSource: {fileID: 1265642164}
 --- !u!4 &1265642166
 Transform:
   m_ObjectHideFlags: 0
@@ -10898,7 +10888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc556fe42adde2e4c884eb59e5db1eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillDatas: []
+  skillIDs: []
 --- !u!1 &1570110126
 GameObject:
   m_ObjectHideFlags: 0

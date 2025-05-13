@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
-using UnityEditor.Tilemaps;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 {
@@ -16,6 +15,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
+    [SerializeField] private Ingame_CursorManager cursorManager;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
@@ -70,7 +70,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!hit.transform.CompareTag("Ground"))
+                if (!hit.transform.CompareTag("Tile"))
                     return;
 
                 indicator.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
@@ -188,6 +188,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     {
         if(inGameManager.inGameGold < units[index].Cost)
         {
+            ingameScreenUI.ShowError("재화가 부족합니다.");
             return;
         }
 
@@ -253,7 +254,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 AllyUnit unit = pool.Pool.Get();
 
                 var allyUnitData = unit.Data as AllyUnitData;
-                inGameManager.SetGold(allyUnitData.Cost, false);
+                
 
                 // 유닛의 소환 방향 설정
                 unit.transform.forward = spawnDirection.forward;
@@ -263,14 +264,19 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 Tile tile = hit.transform.GetComponent<Tile>();
                 if (tile.SetAllyUnit(unit) == null)
+                {
+                    ingameScreenUI.ShowError("병사를 소환할 수 없습니다!");
                     return;
+                }
+                    
+                   
 
                 UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
                 unitGrid.SetTargetTile(tile);
 
                 spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
 
-                
+
 
                 //Vector3Int cellPos = grid.WorldToCell(hit.point);
                 //Vector3 center = grid.GetCellCenterWorld(cellPos);
@@ -285,7 +291,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 spawnPoint.gameObject.SetActive(true);
                 spawnPoint.Initialize(unit);
 
-
+                inGameManager.SetGold(allyUnitData.Cost, false);
 
                 CancelSpawn();
             }

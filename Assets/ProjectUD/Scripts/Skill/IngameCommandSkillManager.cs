@@ -135,8 +135,10 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 inputEventManager.OnClickTarget = this;
                 if (idx == 0)
                 {
+                    circle.SetActive(false);
                     selectedUI0.gameObject.SetActive(true);
                     selectedUI1.gameObject.SetActive(false);
+                    isSkillActivated = false;
                 }
                 else if (idx == 1)
                 {
@@ -149,6 +151,10 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
             }
             else if (skillData.TargetType == CommandSkill.TargetType.AREA)
             {
+                selectedUI0.gameObject.SetActive(false);
+                selectedUI1.gameObject.SetActive(false);
+                isSkillActivated = false;
+                circle.SetActive(false);
                 ActivateCommandSkill(skill[activatedSkillButtonIdx], BurningOilPos);
             }
             else

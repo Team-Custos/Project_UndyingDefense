@@ -55,4 +55,9 @@ namespace InputEventInterface
     {
         void OnPerformUnitUpgrade(InputAction.CallbackContext context);
     }
+
+    public interface IInputESC
+    {
+        void OnESC(InputAction.CallbackContext context);
+    }
 }

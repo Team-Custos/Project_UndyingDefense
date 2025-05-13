@@ -19,6 +19,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
+    private AllyUnit tileAllyUnit;
     private bool isUpgradeOn;
 
     public Unit SelectedUnit => selectedUnit;
@@ -115,8 +116,19 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
+                        
+
                         if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
+                        {
+                            Tile tile = hit.collider.GetComponent<Tile>();
+                            if(tile.SetAllyUnit(selectedAllyUnit) == null)
+                            {
+                                ingameScreenUI.ShowError("병사가 이동할 수 없습니다");
+                            }
+
                             return;
+                        }
+                            
 
                         selectedAllyUnit.DestinationPosition = hit.point;
                         mouseIndicatorParticle.gameObject.SetActive(true);
