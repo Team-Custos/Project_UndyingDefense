@@ -193,6 +193,11 @@ public class InGameManager : MonoBehaviour, IInputESC
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void LoadLobbyScene()
+    {
+        SceneManager.LoadScene("LobbyScene_LoPol");
+    }
+
     public void ExitGame()
     {
 #if UNITY_EDITOR
@@ -220,7 +225,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
-            ingameScreenUI.CloseSettting();
+            ingameScreenUI.OnOffSetting();
         }
     }
 }

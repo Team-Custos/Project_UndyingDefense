@@ -31953,7 +31953,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uAC8C\uC784 \uC885\uB8CC"
+  m_Text: "\uB85C\uBE44\uB85C \uC774\uB3D9"
 --- !u!222 &1032831260
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -43714,7 +43714,7 @@ GameObject:
   - component: {fileID: 1379353291}
   - component: {fileID: 1379353290}
   m_Layer: 5
-  m_Name: EndGame
+  m_Name: LoadLobby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43786,7 +43786,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 856739625}
         m_TargetAssemblyTypeName: InGameManager, Assembly-CSharp
-        m_MethodName: ExitGame
+        m_MethodName: LoadLobbyScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

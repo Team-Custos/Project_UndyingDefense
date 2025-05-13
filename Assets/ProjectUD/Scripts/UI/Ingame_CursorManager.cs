@@ -47,20 +47,20 @@ public class Ingame_CursorManager : MonoBehaviour
                 Tile tile = hit.collider.GetComponent<Tile>();
 
 
-                if (inputEventManager == allyUnitSpawner && tile.SetAllyUnit(allyUnit) != null)
-                    targetCursor = redArrowCursor;
+                //if (inputEventManager == allyUnitSpawner && tile.SetAllyUnit(allyUnit) != null)
+                //    targetCursor = redArrowCursor;
 
                 if (selectedUnitManager.SelectedUnit == null && !(selectedUnitManager.SelectedUnit is AllyUnit))
                     return;
 
                 
-                if (tile != null)
-                {
-                    if (tile.SetAllyUnit(allyUnit) == null)
-                        targetCursor = redArrowCursor;
-                    else
-                        targetCursor = greenArrowCursor;
-                }
+                //if (tile != null)
+                //{
+                //    if (tile.SetAllyUnit(allyUnit) == null)
+                //        targetCursor = redArrowCursor;
+                //    else
+                //        targetCursor = greenArrowCursor;
+                //}
                 
             }
         }

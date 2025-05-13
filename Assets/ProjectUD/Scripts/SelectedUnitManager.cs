@@ -117,7 +117,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
                         
-
+                        if((selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE))
+                        {
+                            selectedUnit.IsSelected = false;
+                            selectedUnit = null;
+                            unitSelectUI.HideAllyUI();
+                            unitSelectUI.HideHp();
+                            unitSelectUI.HideUpgrdeUI();
+                            return;
+                        }
+                        
                         if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                         {
                             Tile tile = hit.collider.GetComponent<Tile>();
