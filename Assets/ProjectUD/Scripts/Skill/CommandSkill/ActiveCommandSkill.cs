@@ -16,6 +16,8 @@ public class ActiveCommandSkill : CommandSkill
 
     public override CommandSkillData Data => data;
 
+    public LayerMask AttackTargetLayer => attackTargetLayer;
+
     public void AreaAttack(Transform pivotTarget, float radius, float tickTime = 0.1f, float lifeTime = 0f) //원형 공격
     {
         CommandSkillAttackTrigger trigger = 

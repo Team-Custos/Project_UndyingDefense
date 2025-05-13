@@ -20,12 +20,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     [SerializeField] private Transform selectedUI1;
     [SerializeField] private GameObject circle;
     [SerializeField] private LayerMask groundLayer;
+    private LayerMask targetUnitLayer;
     private bool isSkillActivated = false;
 
     private ActiveCommandSkill[] skill;
     private int activatedSkillButtonIdx = 0;
-
-
 
     void Update()
     {
@@ -83,37 +82,79 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
             Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (skill[activatedSkillButtonIdx].Data.TargetType
+                    == CommandSkill.TargetType.UNIT)
             {
                 if (inputEventManager.IsPointerOnUIElements())
                     return;
-
-                if (skill[activatedSkillButtonIdx].Data.TargetType
-                    == CommandSkill.TargetType.UNIT)
+                targetUnitLayer = skill[activatedSkillButtonIdx].AttackTargetLayer;
+                if (Physics.Raycast(ray, out hit, float.MaxValue, targetUnitLayer))
                 {
                     if (hit.collider.GetComponent<Unit>() != null)
                     {
                         selectedTargetUnit = hit.collider.GetComponent<Unit>();
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
-                        
+
                         inputEventManager.OnClickTarget = SelectedUnitManager;
                         selectedUI0.gameObject.SetActive(false);
                         selectedUI1.gameObject.SetActive(false);
                         return;
                     }
                 }
-
-                if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
+            }
+            else if (skill[activatedSkillButtonIdx].Data.TargetType
+                == CommandSkill.TargetType.MOUSEPOSAREA)
+            {
+                if (Physics.Raycast(ray, out hit,float.MaxValue,groundLayer))
                 {
-                    ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+                    if (inputEventManager.IsPointerOnUIElements())
+                        return;
+                    if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
+                    {
+                        ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
-                    inputEventManager.OnClickTarget = SelectedUnitManager;
-                    selectedUI0.gameObject.SetActive(false);
-                    selectedUI1.gameObject.SetActive(false);
-                    circle.SetActive(false);
-                    isSkillActivated = false;
+                        inputEventManager.OnClickTarget = SelectedUnitManager;
+                        selectedUI0.gameObject.SetActive(false);
+                        selectedUI1.gameObject.SetActive(false);
+                        circle.SetActive(false);
+                        isSkillActivated = false;
+                    }
                 }
             }
+
+            /*if (Physics.Raycast(ray, out hit))
+            //{
+            //    if (inputEventManager.IsPointerOnUIElements())
+            //        return;
+
+            //    if (skill[activatedSkillButtonIdx].Data.TargetType
+            //        == CommandSkill.TargetType.UNIT)
+            //    {
+            //        if (hit.collider.GetComponent<Unit>() != null)
+            //        {
+            //            selectedTargetUnit = hit.collider.GetComponent<Unit>();
+            //            ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+                        
+            //            inputEventManager.OnClickTarget = SelectedUnitManager;
+            //            selectedUI0.gameObject.SetActive(false);
+            //            selectedUI1.gameObject.SetActive(false);
+            //            return;
+            //        }
+            //    }
+
+            //    if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
+            //    {
+            //        ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+
+            //        inputEventManager.OnClickTarget = SelectedUnitManager;
+            //        selectedUI0.gameObject.SetActive(false);
+            //        selectedUI1.gameObject.SetActive(false);
+            //        circle.SetActive(false);
+            //        isSkillActivated = false;
+            //    }
+            //}
+            */
+
         }
     }
 
@@ -122,7 +163,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
         activatedSkillButtonIdx = idx;
         if (!skill[activatedSkillButtonIdx].IsCoolDown)
         {
-            Debug.Log(skill[activatedSkillButtonIdx].name + "이 쿨타임 중...");
+            Debug.Log(skill[activatedSkillButtonIdx].name + "이 쿨타임 중...)");
             return;
         }
         else

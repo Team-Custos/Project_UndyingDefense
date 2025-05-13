@@ -20,7 +20,5 @@ public static class CONSTANT
     public static string ANITRIGGER_ATTACK = "AttackTrigger";
     public static string ANITRIGGER_SPECIAL = "SpecialTrigger";
 
-
-
 }
 

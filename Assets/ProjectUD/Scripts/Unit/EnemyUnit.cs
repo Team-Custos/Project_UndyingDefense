@@ -57,6 +57,34 @@ public class EnemyUnit : Unit
 
     private float attackCool;
 
+    protected static AudioClip[] enemyDeadSFX;
+
+    protected static GameObject coinDropVFX;
+
+    protected static AudioClip[] EnemyDeadSFX
+    {
+        get
+        {
+            if (enemyDeadSFX == null)
+            {
+                enemyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/EnemyDeath");
+            }
+            return enemyDeadSFX;
+        }
+    }
+
+    protected static GameObject CoinDropVFX
+    {
+        get
+        {
+            if (coinDropVFX == null)
+            {
+                coinDropVFX = Resources.Load<GameObject>("Prefabs/VFX/UnitDeath/vfx_coinReward");
+            }
+            return coinDropVFX;
+        }
+    }
+
     public void SetExecuted(bool Executed)
     {
         hasExecutedMark = Executed;
@@ -359,9 +387,17 @@ public class EnemyUnit : Unit
             navObstacle.enabled = false;
             collider.enabled = false;
 
+            if(EnemyDeadSFX.Length > 0)
+            {
+                AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
+                SoundManager.Instance.PlaySFX(clip);
+            }
+
             // 상태를 변경하고 에니메이션을 변경
             state = State.DEAD;
             modelAnimator.SetTrigger("Die");
+            AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
+            AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
 
             enemySpawner.OnEnemyDead(data);
 

@@ -64,6 +64,21 @@ public class AllyUnit : Unit
     private bool isSiegeActive = false;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
     private bool isSpawned = true;
+
+    protected static AudioClip[] allyDeadSFX;
+
+    protected static AudioClip[] AllyDeadSFX
+    {
+        get
+        {
+            if (allyDeadSFX == null)
+            {
+                allyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/AllyDeath");
+            }
+            return allyDeadSFX;
+        }
+    }
+
     public Vector3 DestinationPosition
     {
         get => destinationPosition;
@@ -702,8 +717,15 @@ public class AllyUnit : Unit
         navObstacle.enabled = false;
         collider.enabled = false;
 
+        if(allyDeadSFX.Length > 0)
+        {
+            AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
+            SoundManager.Instance.PlaySFX(clip);
+        }
+
         state = State.DEAD;
         modelAnimator.SetTrigger("Die");
+        AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
         unitGrid.ClearTile();
     }
 

@@ -236,7 +236,7 @@ public class AttackSkill : SkillBase
         {
             unit.AddVFX(data.StartVFX);
         }
-        int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
+        //int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
         //if (data.StartSFX[randomSoundIdx] != null && data.StartSFX.Length > 0)
         //{
         //    SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
@@ -257,13 +257,16 @@ public class AttackSkill : SkillBase
         target.TakeDamage(calcDamage);
         if (Random.Range(0f, 1f) <= calcCrit)
         {
+            target.PlayCritSFX(data.AttackType);
             AddCritVFX(unit, target);
             ActivateCriticalEffect(unit, target);
         }
         else
         {
+            target.PlayHitSFX(data.AttackType);
             AddHitVFX(unit, target);
         }
+        
 
         if (data.InduseEffect != null)
         {
