@@ -11799,6 +11799,7 @@ MonoBehaviour:
   gridWidth: 34
   gridHeight: 8
   tileSize: 1
+  tileMeshRenderer: {fileID: 2000216729}
 --- !u!483693784 &387566691
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -58883,6 +58884,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 2000216725}
+--- !u!23 &2000216729 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2527474352593544711, guid: cf16c39e35b497840b9a727ece7e63d3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1023123892}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2002498040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
