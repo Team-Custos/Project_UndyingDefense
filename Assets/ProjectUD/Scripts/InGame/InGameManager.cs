@@ -146,6 +146,20 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     private bool isGamePause = false;
 
+    protected static AudioClip coinDropSFX;
+    protected static AudioClip CoinDropSFX
+    {
+        get
+        {
+            if (coinDropSFX == null)
+            {
+                coinDropSFX = Resources.Load<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/sfx_coinDrop");
+            }
+            return coinDropSFX;
+        }
+    }
+
+
     private void Start()
     {
         inGameGold = 3000;
@@ -161,6 +175,7 @@ public class InGameManager : MonoBehaviour, IInputESC
         if (plus)
         {
             inGameGold += gold;
+            SoundManager.Instance.PlaySFX(CoinDropSFX);
         }
         else
         {

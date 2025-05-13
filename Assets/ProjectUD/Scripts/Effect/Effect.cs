@@ -26,21 +26,23 @@ public class Effect : MonoBehaviour
         this.unit = unit;
         this.target = target;
         this.transform.localPosition = Vector3.zero;
-        Initialize();
+        stack = 0;
+        ChangeStackVFX(stack);
     }
 
     public virtual void Initialize() // 이미 유닛에 있는 효과를 초기화할 때
     {
-        stack = 0;
-        ChangeStackVFX();
+        if (stack < maxStack)
+        {
+            stack++;
+            ChangeStackVFX(stack);
+        }
     }
 
     public virtual void Activate() // 효과를 발동할 때
     {
         if (stack < maxStack)
         {
-            stack++;
-            ChangeStackVFX();
             if (onActivate != null)
                 onActivate.Invoke();
         }
@@ -68,7 +70,7 @@ public class Effect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void ChangeStackVFX()
+    private void ChangeStackVFX(int stack)
     {
         if (stackVFX.Length > 0)
         {
@@ -76,14 +78,12 @@ public class Effect : MonoBehaviour
             {
                 if (idx == stack)
                 {
-                    if (idx > 1)
-
                     stackVFX[idx].gameObject.SetActive(true);
                 }
                 else
                 {
                     stackVFX[idx].gameObject.SetActive(false);
-                }
+                }                
             }
         }
     }
@@ -162,13 +162,6 @@ public class Effect : MonoBehaviour
         Debug.Log("getprovoked");
         target.GetProvoked(unit);
         onRemove.AddListener(() => target.RemoveProvoked());
-    }
-
-    public virtual void GetExecuted()
-    {
-        Debug.Log("getexecuted");
-        //unit.ExecutedTarget(target);
-        //onRemove.AddListener(() => unit.ExecutedTarget(target));
     }
 
     public virtual void AddEffect(GameObject effectPrefab)

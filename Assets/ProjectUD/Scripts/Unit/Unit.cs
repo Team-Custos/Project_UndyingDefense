@@ -338,6 +338,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using AttackType = AttackSkill.AttackType;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -396,7 +397,7 @@ public abstract class Unit : MonoBehaviour
 
     private List<DurationEffect> effectsList = new List<DurationEffect>();
 
-    private bool hasExecute = false;
+
 
     protected const int maxTargetCount = 10;
 
@@ -424,7 +425,6 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
-    public bool HasExecute => hasExecute;
     public List<DurationEffect> EffectsList => effectsList;
     public bool IsSelected
     {
@@ -433,6 +433,90 @@ public abstract class Unit : MonoBehaviour
     }
 
     private SelectedUnitUI selectedUnitUI;
+
+    protected static AudioClip[] slashHitSFX;
+    protected static AudioClip slashCritSFX;
+    protected static AudioClip[] pierceHitSFX;
+    protected static AudioClip pierceCritSFX;
+    protected static AudioClip[] crushHitSFX;
+    protected static AudioClip crushCritSFX;
+
+    protected static GameObject unitDeathVFX;
+
+
+
+    protected static AudioClip[] SlashHitSFX
+    {
+        get
+        {
+            if (slashHitSFX == null)
+                slashHitSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Slash/Hit");
+            return slashHitSFX;
+        }
+    }
+
+    protected static AudioClip[] PierceHitSFX
+    {
+        get
+        {
+            if (pierceHitSFX == null)
+                pierceHitSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Pierce/Hit");
+            return pierceHitSFX;
+        }
+    }
+
+    protected static AudioClip[] CrushHitSFX
+    {
+        get
+        {
+            if (crushHitSFX == null)
+                crushHitSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Crush/Hit");
+            return crushHitSFX;
+        }
+    }
+
+    protected static AudioClip SlashCritSFX
+    {
+        get
+        {
+            if (slashCritSFX == null)
+                slashCritSFX = Resources.Load<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Slash/Crit/sfx_slashCrit01");
+            return slashCritSFX;
+        }
+    }
+
+    protected static AudioClip PierceCritSFX
+    {
+        get
+        {
+            if (pierceCritSFX == null)
+                pierceCritSFX = Resources.Load<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Pierce/sfx_pierceCrit01");
+            return pierceCritSFX;
+        }
+    }
+
+    protected static AudioClip CrushCritSFX
+    {
+        get
+        {
+            if (crushCritSFX == null)
+                crushCritSFX = Resources.Load<AudioClip>("Sound/SFX/효과음/캐릭터/HitSFX/Crush/sfx_crushCrit01");
+            return crushCritSFX;
+        }
+    }
+
+    protected static GameObject UnitDeathVFX
+    {
+        get
+        {
+            if (unitDeathVFX == null)
+                unitDeathVFX = Resources.Load<GameObject>("Prefabs/VFX/UnitDeath/vfx_characterDeath");
+            return unitDeathVFX;
+        }
+    }
+
+
+
 
     public virtual void Initialize()
     {
@@ -893,9 +977,53 @@ public abstract class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
     }
 
+    public void PlayHitSFX(AttackType attackType)
+    {
+        AudioClip[] hitSFX = null;
+        switch (attackType)
+        {
+            case AttackType.SLASH:
+                hitSFX = SlashHitSFX;
+                break;
+            case AttackType.PIERCE:
+                hitSFX = PierceHitSFX;
+                break;
+            case AttackType.CRUSH:
+                hitSFX = CrushHitSFX;
+                break;
+        }
+        if (hitSFX != null)
+        {
+            int randomIndex = Random.Range(0, hitSFX.Length);
+            SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
+        }
+    }
+
+    public void PlayCritSFX(AttackType attackType)
+    {
+        AudioClip critSFX = null;
+        switch (attackType)
+        {
+            case AttackType.SLASH:
+                critSFX = SlashCritSFX;
+                break;
+            case AttackType.PIERCE:
+                critSFX = PierceCritSFX;
+                break;
+            case AttackType.CRUSH:
+                critSFX = CrushCritSFX;
+                break;
+        }
+        if (critSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(critSFX);
+        }
+    }
+
     public virtual void TakeDamage(float Damage)
     {
         hp -= Damage;
+
         if (hp <= 0)
         {
             hp = 0f;
@@ -909,8 +1037,6 @@ public abstract class Unit : MonoBehaviour
                 selectedUnitUI.HideUpgrdeUI();
                 selectedUnitUI.HideUntInfo();
             }
-
-            
         }
 
         if (selectedUnitUI != null)
@@ -989,6 +1115,8 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveProvoked()
     { }
 
+    
+
     public void AddEffect(Unit unit, Effect effect)
     {
         Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
@@ -1021,8 +1149,6 @@ public abstract class Unit : MonoBehaviour
 
                 UpdateState();
             }
-
-            
         }
     }
 

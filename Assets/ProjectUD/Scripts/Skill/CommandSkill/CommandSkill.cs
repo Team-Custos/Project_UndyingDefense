@@ -59,7 +59,7 @@ public abstract class CommandSkill : MonoBehaviour
     public void Activate(Unit target)
     {
         coolTimeCheck -= Data.CoolTime;
-        if (onActivateAtUnit != null)
+        if (target != null && onActivateAtUnit != null)
             onActivateAtUnit.Invoke(target);
     }
 }
