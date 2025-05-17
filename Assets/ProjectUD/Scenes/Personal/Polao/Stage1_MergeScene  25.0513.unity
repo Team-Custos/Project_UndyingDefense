@@ -4879,6 +4879,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1238902732}
     m_Modifications:
+    - target: {fileID: 2625658090149482085, guid: 6d2217da146a7224f8ab8dc09ec7e5fc,
+        type: 3}
+      propertyPath: onActivateAtUnit._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2625658090149482085, guid: 6d2217da146a7224f8ab8dc09ec7e5fc,
+        type: 3}
+      propertyPath: onActivateAtUnit._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: EnemyUnit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 4077591543310677227, guid: 6d2217da146a7224f8ab8dc09ec7e5fc,
         type: 3}
       propertyPath: data
@@ -26915,7 +26925,7 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1285506504}
   commandSkillManager: {fileID: 1238902731}
   units:
-  - {fileID: 11400000, guid: 20e8828cdd245364cbe52788d374227c, type: 2}
+  - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}

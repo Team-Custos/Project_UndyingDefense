@@ -395,7 +395,7 @@ public abstract class Unit : MonoBehaviour
     protected float stateDuration;
     protected float stateDurationCheck;
 
-    private List<DurationEffect> effectsList = new List<DurationEffect>();
+    private List<Effect> effectList = new List<Effect>();
 
 
 
@@ -408,8 +408,6 @@ public abstract class Unit : MonoBehaviour
     protected bool isDead;
 
     public Transform EffectParent => effectParent;
-
-    public List<DurationEffect> EffectList => effectsList;
 
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
@@ -425,7 +423,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
-    public List<DurationEffect> EffectsList => effectsList;
+    public List<Effect> EffectList => effectList;
     public bool IsSelected
     {
         get => isSelected;
@@ -1119,19 +1117,25 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(Unit unit, Effect effect)
     {
-        Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
+        Effect prevEffect = effectList.Find(effect.IsSameEffect);
+        Effect prevMaxStackEffect = effectList.Find(effect.IsMaxStackEffect);
+
+        if (prevMaxStackEffect != null && prevMaxStackEffect.gameObject.activeInHierarchy)
+            return;
+
+        // 효과 목록 중에 
         if (prevEffect != null)
         {
-            if(!prevEffect.gameObject.activeInHierarchy)
+            if (!prevEffect.gameObject.activeInHierarchy)
             {
                 prevEffect.gameObject.SetActive(true);
                 prevEffect.Initialize();
             }
-
+            else
+            {
+                prevEffect.AddStack();
+            }
             prevEffect.Activate();
-
-            //effectsList.Add(effect);
-            UpdateState();
         }
         else
         {
@@ -1141,15 +1145,45 @@ public abstract class Unit : MonoBehaviour
             effect.Initialize(unit, this);
             effect.Activate();
 
-            if (effect is DurationEffect)
-            {
-                DurationEffect durationEffect = effect as DurationEffect;
-
-                effectsList.Add(durationEffect);
-
-                UpdateState();
-            }
+            effectList.Add(effect);
         }
+
+        UpdateState();
+
+        //Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
+        //if (prevEffect != null)
+        //{
+        //    if(!prevEffect.gameObject.activeInHierarchy)
+        //    {
+        //        prevEffect.gameObject.SetActive(true);
+        //    }
+        //    prevEffect.AddStack();
+        //    prevEffect.Activate();
+
+        //    //effectsList.Add(effect);
+        //    UpdateState();
+        //}
+        //else
+        //{
+        //    Effect maxStackEffect = effectsList.Find(effect.HasMaxStackEffect);
+        //    if (maxStackEffect == null)
+        //    {
+        //        GameObject obj = Instantiate(effect.gameObject);
+        //        obj.transform.SetParent(effectParent);
+        //        effect = obj.GetComponent<Effect>();
+        //        effect.Initialize(unit, this);
+        //        effect.Activate();
+
+        //        if (effect is DurationEffect)
+        //        {
+        //            DurationEffect durationEffect = effect as DurationEffect;
+
+        //            effectsList.Add(durationEffect);
+
+        //            UpdateState();
+        //        }
+        //    }
+        //}
     }
 
     public void AddVFX(ParticleSystem VFX)

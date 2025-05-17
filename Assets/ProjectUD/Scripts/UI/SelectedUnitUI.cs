@@ -272,7 +272,7 @@ public class SelectedUnitUI : MonoBehaviour
                 unitStateImage[i].gameObject.SetActive(false);
             }
 
-            List<DurationEffect> effects = selecteUnitManger.SelectedUnit.EffectsList;
+            List<Effect> effects = selecteUnitManger.SelectedUnit.EffectList;
 
             HashSet<Sprite> usedSprites = new HashSet<Sprite>();
 

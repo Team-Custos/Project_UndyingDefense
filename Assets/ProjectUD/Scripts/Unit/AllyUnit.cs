@@ -298,6 +298,8 @@ public class AllyUnit : Unit
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
+                       // if(stateDurationCheck < )
+
                         SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                         switch (skillTargetType)
                         {

@@ -14,12 +14,26 @@ public class Effect : MonoBehaviour
     [SerializeField] protected UltEvent onMaxStack;
 
     protected UltEvent onRemove = new UltEvent();
+    [SerializeField] protected GameObject maxStackEffectPrefab;
 
     protected int stack;
     protected Unit unit;
     protected Unit target;
 
     public string Id => id;
+    public GameObject MaxStackEffectPrefab => maxStackEffectPrefab;
+
+    public string MaxStackEffectId
+    {
+        get
+        {
+            if (!maxStackEffectPrefab)
+                return string.Empty;
+            else
+                return maxStackEffectPrefab.GetComponent<Effect>().Id;
+        }
+    }
+
 
     public virtual void Initialize(Unit unit, Unit target) // 처음 효과가 유닛에 추가되었을 때
     {
@@ -30,7 +44,27 @@ public class Effect : MonoBehaviour
         ChangeStackVFX(stack);
     }
 
-    public virtual void Initialize() // 이미 유닛에 있는 효과를 초기화할 때
+    public virtual void Initialize()
+    {
+        stack = 0;
+        ChangeStackVFX(stack);
+    }
+
+    public bool IsMaxStackEffect(Effect effect)
+    {
+        if (!maxStackEffectPrefab)
+            return false;
+        else
+            return effect.id == MaxStackEffectId;
+    }
+
+    public bool IsSameEffect(Effect effect)
+    {
+        return effect.id == id; 
+    }
+
+
+    public virtual void AddStack() // 이미 유닛에 있는 효과의 스택을 추가.
     {
         if (stack < maxStack)
         {
@@ -48,11 +82,21 @@ public class Effect : MonoBehaviour
         }
         else
         {
-            if (onMaxStack != null)
+            if (maxStack > 0)
             {
-                //Debug.Log("onMaxStack");
-                onMaxStack.Invoke();
-            } 
+                if (onMaxStack != null)
+                {
+                    //Debug.Log("onMaxStack");
+
+                    if (maxStackEffectPrefab != null)
+                    {
+                        Effect maxStackEffect = maxStackEffectPrefab.GetComponent<Effect>();
+                        target.AddEffect(unit, maxStackEffect);
+                    }
+                    Remove();
+                    onMaxStack.Invoke();
+                }
+            }
         }
     }
 
@@ -60,13 +104,14 @@ public class Effect : MonoBehaviour
     {
         if(onRemove != null)
         {
-            //target.EffectsList.Remove(this);
+            //target.EffectList.Remove(this);
             //this.unit.UpdateState();
 
             onRemove.Invoke();
             onRemove.Clear();
         }
 
+        stack = 0;
         gameObject.SetActive(false);
     }
 
@@ -124,7 +169,7 @@ public class Effect : MonoBehaviour
     {
         target.AddCriticalVulnerability(percent);
 
-        float removeValue = -percent * maxStack;
+        float removeValue = -percent * (stack + 1);
         onRemove.AddListener(() => AddCriticalVulnerability(removeValue));
     }
 
@@ -132,28 +177,28 @@ public class Effect : MonoBehaviour
     {
         target.AddBlockRate(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack;
+        float removeValue = -percent * 0.01f * (stack + 1);
         onRemove.AddListener(() => AddBlockRate(removeValue));
     }
 
     public virtual void AddAdditionalDamage(float percent)
     {
         target.AddAdditionalDamage(percent);
-        float removeValue = -percent * maxStack;
+        float removeValue = -percent * (stack + 1);
         onRemove.AddListener(() => AddAdditionalDamage(removeValue));
     }
 
     public virtual void AddMental(float amount)
     {
         target.AddMental(amount);
-        float removeValue = -amount * maxStack;
+        float removeValue = -amount * (stack + 1);
         onRemove.AddListener(() => AddMental(removeValue));
     }
 
     public virtual void AddDamageReduction(float percent)
     {
         target.AddDamageReduction(percent);
-        float removeValue = -percent * maxStack;
+        float removeValue = -percent * (stack + 1);
         onRemove.AddListener(() => AddDamageReduction(removeValue));
     }
 

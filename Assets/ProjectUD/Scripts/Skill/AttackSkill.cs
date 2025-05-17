@@ -198,7 +198,7 @@ public class AttackSkill : SkillBase
         // 투사체 발사
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position, Quaternion.identity);
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
-        projectile.transform.position = unit.transform.position;
+        projectile.transform.position = unit.transform.position + Vector3.up;
 
         if (projectile.GetComponent<ArrowCtrl>() != null)
         {

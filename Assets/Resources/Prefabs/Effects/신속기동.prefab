@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: FastMove
-  maxStack: 1
+  maxStack: 0
   stackVFX: []
   endVFX: {fileID: 6259396126901048680, guid: 6b647456859987049be59702f3e728db, type: 3}
   onActivate:
@@ -65,6 +65,8 @@ MonoBehaviour:
         _Object: {fileID: 0}
   onMaxStack:
     _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 0}
+  MaxStackEffectId: 
   duration: 5
 --- !u!1001 &3681951960099240025
 PrefabInstance:
