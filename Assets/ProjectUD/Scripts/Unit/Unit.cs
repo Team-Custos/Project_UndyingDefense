@@ -360,6 +360,7 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
+    [SerializeField] private SkillBase passiveSkill;
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -412,7 +413,7 @@ public abstract class Unit : MonoBehaviour
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
-    public float HpPercent => hp / Data.MaxHp;
+    public float HpPercent => hp / Data.MaxHp * 100f;
     public float Mental => mental;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
@@ -553,6 +554,8 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
+        PassiveSkillCheck();
+
         //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
         //    lastMoveTime = Time.time;
 
@@ -566,6 +569,14 @@ public abstract class Unit : MonoBehaviour
         //        modelAnimator.SetBool("isRunning", false);
         //    }
         //}
+    }
+
+    protected virtual void PassiveSkillCheck()
+    {
+        if (passiveSkill != null)
+        {
+            passiveSkill.Activate(this, targetUnit);
+        }
     }
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target)
@@ -1113,7 +1124,19 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveProvoked()
     { }
 
-    
+    public virtual void GetStun()
+    {
+        modelAnimator.SetBool("isStun", true);
+        navAgent.speed = 0f;
+    }
+
+    public virtual void RemoveStun()
+    {
+        modelAnimator.SetBool("isStun", false);
+        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
+    }
+
+
 
     public void AddEffect(Unit unit, Effect effect)
     {
@@ -1123,7 +1146,7 @@ public abstract class Unit : MonoBehaviour
         if (prevMaxStackEffect != null && prevMaxStackEffect.gameObject.activeInHierarchy)
             return;
 
-        // 효과 목록 중에 
+        // 효과 목록 중에 오브젝트로서 이미 추가된 적이 있는 효과가 존재할 경우.
         if (prevEffect != null)
         {
             if (!prevEffect.gameObject.activeInHierarchy)
@@ -1137,7 +1160,7 @@ public abstract class Unit : MonoBehaviour
             }
             prevEffect.Activate();
         }
-        else
+        else //맨 처음 효과 오브젝트가 추가될 때.
         {
             GameObject obj = Instantiate(effect.gameObject);
             obj.transform.SetParent(effectParent);

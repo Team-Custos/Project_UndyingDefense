@@ -209,6 +209,12 @@ public class Effect : MonoBehaviour
         onRemove.AddListener(() => target.RemoveProvoked());
     }
 
+    public virtual void GetStun()
+    {
+        target.GetStun();
+        onRemove.AddListener(() => target.RemoveStun());
+    }
+
     public virtual void AddEffect(GameObject effectPrefab)
     {
         if(effectPrefab.TryGetComponent(out Effect effect))

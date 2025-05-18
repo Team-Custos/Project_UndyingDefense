@@ -121,6 +121,24 @@ public class EnemyUnit : Unit
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.STUN:
+                {
+                    if (stateDuration <= 0f)
+                        return;
+                    if (stateDurationCheck < stateDuration)
+                    {
+                        stateDurationCheck += Time.deltaTime;
+                    }
+                    else
+                    {
+                        stateDurationCheck = 0f;
+                        stateDuration = 0f;
+
+                        state = State.IDLE;
+
+                        modelAnimator.SetBool("isStun", false);
+                    }
+                }
+                break;
             case State.BATTLECRY:
             case State.DEAD:
                 {
@@ -196,9 +214,12 @@ public class EnemyUnit : Unit
         {
             case Mode.MOVE:
                 {
+                    if (state == State.STUN)
+                        return;
+
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
-            if(distance <= data.AttackRange)
+                    if(distance <= data.AttackRange)
                     {
                         mode = Mode.ATTACKFORTRESS;
                         return;
@@ -258,6 +279,9 @@ public class EnemyUnit : Unit
                 break;
             case Mode.COMBAT:
                 {
+                    if (state == State.STUN)
+                        return;
+
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
                         if (IsTargetInRange(targetUnit, Data.AttackRange)) // 공격 사거리 내
@@ -376,6 +400,18 @@ public class EnemyUnit : Unit
     {
         mode = Mode.MOVE;
         targetUnit = null;
+    }
+
+    public override void GetStun()
+    {
+        base.GetStun();
+        state = State.STUN;
+    }
+
+    public override void RemoveStun()
+    {
+        base.RemoveStun();
+        state = State.IDLE;
     }
 
 
