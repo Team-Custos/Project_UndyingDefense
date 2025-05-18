@@ -35,8 +35,8 @@ public class DurationEffect : Effect
     {
         if (onRemove != null)
         {
-            // target.EffectList.Remove(this);
-            // target.UpdateState();
+             target.EffectList.Remove(this);
+             target.UpdateState();
 
             onRemove.Invoke();
             onRemove.Clear();

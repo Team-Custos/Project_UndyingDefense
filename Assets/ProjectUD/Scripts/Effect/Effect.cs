@@ -104,8 +104,8 @@ public class Effect : MonoBehaviour
     {
         if(onRemove != null)
         {
-            //target.EffectList.Remove(this);
-            //this.unit.UpdateState();
+            target.EffectList.Remove(this);
+            this.unit.UpdateState();
 
             onRemove.Invoke();
             onRemove.Clear();

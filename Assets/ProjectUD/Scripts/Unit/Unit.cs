@@ -413,7 +413,7 @@ public abstract class Unit : MonoBehaviour
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
-    public float HpPercent => hp / Data.MaxHp * 100f;
+    public float HpPercent => hp / Data.MaxHp;// * 100f;
     public float Mental => mental;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
