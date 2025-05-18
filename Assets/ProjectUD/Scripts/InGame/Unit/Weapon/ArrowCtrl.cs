@@ -53,7 +53,7 @@ public class ArrowCtrl : ProjectileCtrl
             {
                 onAttack.Invoke();
             }     
-            Destroy(gameObject);
+            Destroy(gameObject,2f);
         }
     }
 

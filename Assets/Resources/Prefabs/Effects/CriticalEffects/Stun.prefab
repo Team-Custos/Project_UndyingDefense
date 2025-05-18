@@ -47,13 +47,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Stun
-  maxStack: 1
+  maxStack: 0
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
     _PersistentCalls: []
   onMaxStack:
     _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 0}
+  MaxStackEffectId: 
   duration: 3
 --- !u!82 &2588188768454690010
 AudioSource:
@@ -159,6 +161,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1795500977350048129}
     m_Modifications:
+    - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
       propertyPath: m_LocalPosition.x

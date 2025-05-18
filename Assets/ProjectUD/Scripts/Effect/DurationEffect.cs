@@ -35,13 +35,14 @@ public class DurationEffect : Effect
     {
         if (onRemove != null)
         {
-            target.EffectsList.Remove(this);
-            target.UpdateState();
+            // target.EffectList.Remove(this);
+            // target.UpdateState();
 
             onRemove.Invoke();
             onRemove.Clear();
         }
 
+        stack = 0;
         gameObject.SetActive(false);
     }
 }

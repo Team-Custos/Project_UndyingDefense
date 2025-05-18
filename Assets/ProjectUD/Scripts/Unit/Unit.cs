@@ -360,6 +360,7 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
+    [SerializeField] private SkillBase passiveSkill;
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -395,7 +396,7 @@ public abstract class Unit : MonoBehaviour
     protected float stateDuration;
     protected float stateDurationCheck;
 
-    private List<DurationEffect> effectsList = new List<DurationEffect>();
+    private List<Effect> effectList = new List<Effect>();
 
 
 
@@ -409,12 +410,10 @@ public abstract class Unit : MonoBehaviour
 
     public Transform EffectParent => effectParent;
 
-    public List<DurationEffect> EffectList => effectsList;
-
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
-    public float HpPercent => hp / Data.MaxHp;
+    public float HpPercent => hp / Data.MaxHp * 100f;
     public float Mental => mental;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
@@ -425,7 +424,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
 
-    public List<DurationEffect> EffectsList => effectsList;
+    public List<Effect> EffectList => effectList;
     public bool IsSelected
     {
         get => isSelected;
@@ -555,6 +554,8 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
+        PassiveSkillCheck();
+
         //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
         //    lastMoveTime = Time.time;
 
@@ -568,6 +569,14 @@ public abstract class Unit : MonoBehaviour
         //        modelAnimator.SetBool("isRunning", false);
         //    }
         //}
+    }
+
+    protected virtual void PassiveSkillCheck()
+    {
+        if (passiveSkill != null)
+        {
+            passiveSkill.Activate(this, targetUnit);
+        }
     }
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target)
@@ -1116,25 +1125,43 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveProvoked()
     { }
 
-    
+    public virtual void GetStun()
+    {
+        modelAnimator.SetBool("isStun", true);
+        navAgent.speed = 0f;
+    }
+
+    public virtual void RemoveStun()
+    {
+        modelAnimator.SetBool("isStun", false);
+        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
+    }
+
+
 
     public void AddEffect(Unit unit, Effect effect)
     {
-        Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
+        Effect prevEffect = effectList.Find(effect.IsSameEffect);
+        Effect prevMaxStackEffect = effectList.Find(effect.IsMaxStackEffect);
+
+        if (prevMaxStackEffect != null && prevMaxStackEffect.gameObject.activeInHierarchy)
+            return;
+
+        // 효과 목록 중에 오브젝트로서 이미 추가된 적이 있는 효과가 존재할 경우.
         if (prevEffect != null)
         {
-            if(!prevEffect.gameObject.activeInHierarchy)
+            if (!prevEffect.gameObject.activeInHierarchy)
             {
                 prevEffect.gameObject.SetActive(true);
                 prevEffect.Initialize();
             }
-
+            else
+            {
+                prevEffect.AddStack();
+            }
             prevEffect.Activate();
-
-            //effectsList.Add(effect);
-            UpdateState();
         }
-        else
+        else //맨 처음 효과 오브젝트가 추가될 때.
         {
             GameObject obj = Instantiate(effect.gameObject);
             obj.transform.SetParent(effectParent);
@@ -1142,15 +1169,45 @@ public abstract class Unit : MonoBehaviour
             effect.Initialize(unit, this);
             effect.Activate();
 
-            if (effect is DurationEffect)
-            {
-                DurationEffect durationEffect = effect as DurationEffect;
-
-                effectsList.Add(durationEffect);
-
-                UpdateState();
-            }
+            effectList.Add(effect);
         }
+
+        UpdateState();
+
+        //Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
+        //if (prevEffect != null)
+        //{
+        //    if(!prevEffect.gameObject.activeInHierarchy)
+        //    {
+        //        prevEffect.gameObject.SetActive(true);
+        //    }
+        //    prevEffect.AddStack();
+        //    prevEffect.Activate();
+
+        //    //effectsList.Add(effect);
+        //    UpdateState();
+        //}
+        //else
+        //{
+        //    Effect maxStackEffect = effectsList.Find(effect.HasMaxStackEffect);
+        //    if (maxStackEffect == null)
+        //    {
+        //        GameObject obj = Instantiate(effect.gameObject);
+        //        obj.transform.SetParent(effectParent);
+        //        effect = obj.GetComponent<Effect>();
+        //        effect.Initialize(unit, this);
+        //        effect.Activate();
+
+        //        if (effect is DurationEffect)
+        //        {
+        //            DurationEffect durationEffect = effect as DurationEffect;
+
+        //            effectsList.Add(durationEffect);
+
+        //            UpdateState();
+        //        }
+        //    }
+        //}
     }
 
     public void AddVFX(ParticleSystem VFX)

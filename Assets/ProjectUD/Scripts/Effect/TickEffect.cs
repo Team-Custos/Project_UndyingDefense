@@ -27,9 +27,9 @@ public class TickEffect : DurationEffect
         base.Update();
     }
 
-    public override void Initialize()
+    public override void AddStack()
     {
-        base.Initialize();
+        base.AddStack();
         tickCount = 0;
     }
 
@@ -43,7 +43,7 @@ public class TickEffect : DurationEffect
     {
         target.AddMoveSpeedMultiplier(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack * tickCount;
+        float removeValue = -percent * 0.01f * (stack + 1) * tickCount;
         onRemove.AddListener(() => AddMoveSpeedPercent(removeValue));
     }
 
@@ -51,7 +51,7 @@ public class TickEffect : DurationEffect
     {
         target.AddAttackSpeedMultiplier(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack * tickCount;
+        float removeValue = -percent * 0.01f * (stack + 1) * tickCount;
         onRemove.AddListener(() => AddAttackSpeedPercent(removeValue));
     }
 
@@ -59,7 +59,7 @@ public class TickEffect : DurationEffect
     {
         target.AddCriticalVulnerability(percent);
 
-        float removeValue = -percent * maxStack * tickCount;
+        float removeValue = -percent * (stack + 1) * tickCount;
         onRemove.AddListener(() => AddCriticalVulnerability(removeValue));
     }
 
@@ -67,7 +67,7 @@ public class TickEffect : DurationEffect
     {
         target.AddBlockRate(percent * 0.01f);
 
-        float removeValue = -percent * 0.01f * maxStack * tickCount;
+        float removeValue = -percent * 0.01f * (stack + 1) * tickCount;
         onRemove.AddListener(() => AddBlockRate(removeValue));
     }
 }

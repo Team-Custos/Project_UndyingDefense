@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Ignite
-  maxStack: 4
+  maxStack: 3
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
@@ -66,6 +66,8 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 8629626338088976046, guid: d3b9d66d30fdad1448869721c60b0747,
           type: 3}
+  maxStackEffectPrefab: {fileID: 0}
+  MaxStackEffectId: 
   duration: 3
   tickTime: 1
   onTick:

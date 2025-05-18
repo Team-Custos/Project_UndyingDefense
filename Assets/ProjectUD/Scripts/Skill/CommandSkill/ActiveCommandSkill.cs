@@ -10,6 +10,7 @@ public class ActiveCommandSkill : CommandSkill
 
     [Header("■ Target")]
     [SerializeField] private LayerMask attackTargetLayer;
+    private EnemyUnit prevMarkedTargetUnit;
 
     [Header("■ AreaTriggerObject")]
     [SerializeField] protected GameObject areaTriggerObject;
@@ -91,9 +92,17 @@ public class ActiveCommandSkill : CommandSkill
 
     public void GetMark(Unit target)
     {
+        if (prevMarkedTargetUnit != null)
+        {
+            prevMarkedTargetUnit.SetExecuted(false);
+        }
+
         if (target.GetComponent<EnemyUnit>() != null)
         {
-            target.GetComponent<EnemyUnit>().SetExecuted(true);
+            EnemyUnit LastMarkEnemy = target.GetComponent<EnemyUnit>();
+
+            LastMarkEnemy.SetExecuted(true);
+            prevMarkedTargetUnit = LastMarkEnemy;
         }
     }
 

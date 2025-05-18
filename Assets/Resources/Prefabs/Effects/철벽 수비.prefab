@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Defense
-  maxStack: 1
+  maxStack: 0
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
@@ -64,6 +64,8 @@ MonoBehaviour:
         _Object: {fileID: 0}
   onMaxStack:
     _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 0}
+  MaxStackEffectId: 
   duration: 5
 --- !u!1001 &6993775387350698913
 PrefabInstance:

@@ -175,13 +175,18 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void SelfDestruct(Unit unit, Unit pivotTarget, float radius, float hpToTrigger)
+    public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
-        if (unit.HpPercent > hpToTrigger)
+        if (unit.Hp <= unit.Data.MaxHp * hpToTrigger * 0.01f && unit.Hp > 0)
         {
+            if(BoomEffectPrefab != null)
+            {
+                unit.AddVFX(BoomEffectPrefab.GetComponent<ParticleSystem>());
+            }
+
             if (targets == null)
                 targets = new Collider[maxTargetCount];
-            int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+            int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
             for (int i = 0; i < targetCount; i++)
             {
                 if (targets[i].TryGetComponent(out Unit target))
@@ -196,9 +201,8 @@ public class AttackSkill : SkillBase
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)//투사체 발사
     {
         // 투사체 발사
-        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, Quaternion.identity);
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
-        projectile.transform.position = unit.transform.position;
 
         if (projectile.GetComponent<ArrowCtrl>() != null)
         {

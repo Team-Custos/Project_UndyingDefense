@@ -11,16 +11,29 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         SELF
     }
 
+
+
     [Header("■ Events")]
     [SerializeField] private UltEvent<Unit, Unit> onActivate; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit, Fortress> onAttackFortress; // 발동했을 때 실행할 이벤트
 
     protected float coolTimeCheck;
 
+    [Header("■ AnimationStateTime")]
+    [SerializeField] private float animationStateTime; // 애니메이션의 상태를 체크하는 시간
+
     public abstract SkillData Data { get; }
+
+    private bool isCoolTimeOn = true;
     public bool IsCoolDown => coolTimeCheck >= Data.CoolTime; // IsCoolDown이 true면 스킬이 쿨타임이 차서 사용 가능하다는 의미.
+    public float AnimationStateTime => animationStateTime; // 애니메이션의 상태를 체크하는 시간
 
     public TargetType GetTargetType() => Data.TargetType;
+
+    public void ActivateCoolTime(bool OnOff)
+    { 
+        isCoolTimeOn = OnOff; // 쿨타임을 사용할지 말지 결정하는 변수
+    }
 
     public void Activate(Unit unit, Unit target)
     {
@@ -43,7 +56,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
     protected virtual void Update()
     {
-        if(!IsCoolDown)
+        if(!IsCoolDown && isCoolTimeOn)
             coolTimeCheck += Time.deltaTime;
     }
 }

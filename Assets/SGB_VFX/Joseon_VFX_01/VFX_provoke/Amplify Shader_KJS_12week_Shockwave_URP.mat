@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Amplify Shader_KJS_12week_Shockwave_URP
+  m_Shader: {fileID: 4800000, guid: 2b603a5e3835cf24c9ca7fbdbcf1eb6e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _USE_CUSTOM_ON
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Main_TEX:
+        m_Texture: {fileID: 2800000, guid: cae54535b6a59c5448319e83f153ba1f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask_TEX:
+        m_Texture: {fileID: 2800000, guid: 4e8d63c553fe17a47a048e8e9cb0a54f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask_Tex:
+        m_Texture: {fileID: 2800000, guid: 4e8d63c553fe17a47a048e8e9cb0a54f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise_Tex:
+        m_Texture: {fileID: 2800000, guid: c20ea1a6e0bd6854bb0e927f6323ffd1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal_TEX:
+        m_Texture: {fileID: 2800000, guid: b160c9dc6d4f34e419bd769a756dba62, type: 3}
+        m_Scale: {x: 1, y: 4.16}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _Dissolve: -0.289
+    - _Distortion: 0.302
+    - _Distortion_Value: 0.244
+    - _Intensity: 1
+    - _Noise_Upanner: 0.05
+    - _Noise_Vpanner: 0
+    - _Noise_power: 1
+    - _Normal_Upanner: 0.05
+    - _Normal_Vpanner: -0.2
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Use_Custom: 1
+    - _normal_Upanner: 0
+    - _normal_vpanner: 0
+    - _opacity: 0.264
+    - _opacity_Power: 1
+    m_Colors:
+    - _EMI_COLOR: {r: 2.297397, g: 2.297397, b: 2.297397, a: 0}
+    - _EmI_color: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

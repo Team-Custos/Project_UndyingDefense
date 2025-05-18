@@ -46,13 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Burn
-  maxStack: 1
+  maxStack: 0
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
     _PersistentCalls: []
   onMaxStack:
     _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 0}
+  MaxStackEffectId: 
   duration: 5
   tickTime: 1
   onTick:

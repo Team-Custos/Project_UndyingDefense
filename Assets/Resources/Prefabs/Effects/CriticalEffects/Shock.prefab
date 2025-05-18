@@ -80,21 +80,11 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   onMaxStack:
-    _PersistentCalls:
-    - _Target: {fileID: 5827514323389466751}
-      _MemberName: AddEffect
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 8111124098750962873, guid: 8a572e32564b5c04f8d663bb2bf88ec8,
-          type: 3}
-  duration: 1
+    _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 8111124098750962873, guid: 8a572e32564b5c04f8d663bb2bf88ec8,
+    type: 3}
+  MaxStackEffectId: Stun
+  duration: 5
 --- !u!82 &5545359881758386723
 AudioSource:
   m_ObjectHideFlags: 0
@@ -272,7 +262,7 @@ PrefabInstance:
     - target: {fileID: 3523105619951085895, guid: 3b48e9f240f58cf4c9e0290f5a8624bf,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -372,7 +362,7 @@ PrefabInstance:
     - target: {fileID: 605188185936367257, guid: 5accfea3c4ab8f747a1241b57357e022,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

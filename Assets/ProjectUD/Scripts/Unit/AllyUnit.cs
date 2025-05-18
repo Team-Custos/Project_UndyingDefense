@@ -117,6 +117,24 @@ public class AllyUnit : Unit
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.STUN:
+                {
+                    if (stateDuration <= 0f)
+                        return;
+                    if (stateDurationCheck < stateDuration)
+                    {
+                        stateDurationCheck += Time.deltaTime;
+                    }
+                    else
+                    {
+                        stateDurationCheck = 0f;
+                        stateDuration = 0f;
+
+                        state = State.IDLE;
+
+                        modelAnimator.SetBool("isStun", false);
+                    }
+                }
+                break;
             case State.DEAD:
                 {
                     if(state != State.DEAD)
@@ -298,6 +316,9 @@ public class AllyUnit : Unit
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
+                        if (state == State.STUN)
+                            return;
+
                         SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                         switch (skillTargetType)
                         {
@@ -384,6 +405,9 @@ public class AllyUnit : Unit
                         SkillBase skill = GetAvailableSkill();
                         if(skill != null)
                         {
+                            if (state == State.STUN)
+                                return;
+
                             SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                             switch (skillTargetType)
                             {
@@ -585,8 +609,20 @@ public class AllyUnit : Unit
 
     public override void GetProvoked(Unit ProvokedTarget)
     {
-        Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+        //Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
         targetUnit = ProvokedTarget;
+    }
+
+    public override void GetStun()
+    {
+        base.GetStun();
+        state = State.STUN;
+    }
+
+    public override void RemoveStun()
+    {
+        base.RemoveStun();
+        state = State.IDLE;
     }
 
     private Unit SearchTarget(float range)
@@ -682,7 +718,7 @@ public class AllyUnit : Unit
             state = State.GENERALSKILL;
             modelAnimator.SetTrigger("GeneralSkill");
         }
-        else if (skill ==  SpecialSkill)
+        else if (skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
             modelAnimator.SetTrigger("SpecialSkill");
