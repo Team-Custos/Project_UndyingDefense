@@ -432,7 +432,7 @@ public abstract class Unit : MonoBehaviour
         set => isSelected = value;
     }
 
-    private SelectedUnitUI selectedUnitUI;
+    protected SelectedUnitUI selectedUnitUI;
 
     protected static AudioClip[] slashHitSFX;
     protected static AudioClip slashCritSFX;
@@ -1029,14 +1029,15 @@ public abstract class Unit : MonoBehaviour
             hp = 0f;
             Die();
 
-            if(selectedUnitUI != null)
+            if (selectedUnitUI != null)
             {
                 // ui 제거
                 selectedUnitUI.HideHp();
-                selectedUnitUI.HideHp();
+                selectedUnitUI.HideAllyUI();
                 selectedUnitUI.HideUpgrdeUI();
                 selectedUnitUI.HideUntInfo();
             }
+
         }
 
         if (selectedUnitUI != null)

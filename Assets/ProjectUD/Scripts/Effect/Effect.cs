@@ -78,7 +78,7 @@ public class Effect : MonoBehaviour
             {
                 if (idx == stack)
                 {
-                    stackVFX[idx].gameObject.SetActive(true);
+                    stackVFX[idx].gameObject.SetActive(true);   
                 }
                 else
                 {

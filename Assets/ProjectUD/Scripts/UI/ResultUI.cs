@@ -10,6 +10,7 @@ public class ResultUI : MonoBehaviour
     [SerializeField] private Image windowUI;
     [SerializeField] private Image lightEffect;
     [SerializeField] private Image underlayEffect;
+    [SerializeField] private Text resultCommentTextUI;
 
     [Header("■ Window Sprites")]
     [SerializeField] private Sprite winSprite;
@@ -25,16 +26,16 @@ public class ResultUI : MonoBehaviour
         if(win)
         {
             windowUI.sprite = winSprite;
-            rewardTitleUI.text = "보상";
             lightEffect.gameObject.SetActive(true);
             underlayEffect.color = winColor;
+            resultCommentTextUI.text = "지략이 빛을 발한 전투였습니다!";
         }
         else
         {
             windowUI.sprite = loseSprite;
-            rewardTitleUI.text = "위로금";
             lightEffect.gameObject.SetActive(false);
             underlayEffect.color = loseColor;
+            resultCommentTextUI.text = "한 걸음 물러나 지혜를 도모해봅시다.";
         }
 
         rewardTextUI.text = ((int)reward).ToString("0,0");

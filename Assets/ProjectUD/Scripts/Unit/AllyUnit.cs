@@ -443,6 +443,8 @@ public class AllyUnit : Unit
                 break;
             case Mode.CHANGE:
                 {
+                    destinationPosition = Vector3.zero;
+
                     if (previousMode == Mode.FREE)      // 시즈로 변경
                     {
                         if (!isAvailableToSiege)
@@ -472,6 +474,7 @@ public class AllyUnit : Unit
                             isSiegeActive = false;
 
                             isAvailableToSiege = true;
+
                         }
 
                         if (isAvailableToSiege)
@@ -487,6 +490,9 @@ public class AllyUnit : Unit
                                 changeDuration = 3.0f;
                                 previousMode = mode;
                                 isAvailableToSiege = false;
+                                
+                                if(selectedUnitUI != null && isSelected)
+                                    selectedUnitUI.ShowAllyUI(this, data);
                             }
                         }
                     }
@@ -511,6 +517,9 @@ public class AllyUnit : Unit
 
                             changeDuration = 3.0f;
                             previousMode = mode;
+
+                            if (selectedUnitUI != null && isSelected)
+                                selectedUnitUI.ShowAllyUI(this, data);
                         }
                     }
 
@@ -564,6 +573,9 @@ public class AllyUnit : Unit
 
                         upgradeDuraiton = 3.0f;
                         previousMode = mode;
+
+                        if(selectedUnitUI != null && isSelected)
+                            selectedUnitUI.ShowAllyUI(this, data);
                     }
                 }
 
@@ -685,6 +697,8 @@ public class AllyUnit : Unit
     public void ChangeMode(Mode mode)
     {
         this.mode = mode;
+        if(selectedUnitUI != null)
+            selectedUnitUI.HideAllyUI();
     }
 
     public void Upgrade(int index)
@@ -697,6 +711,8 @@ public class AllyUnit : Unit
         else
         {
             UnitData upgradeUnitData = data.UpgradeUnits[index];
+
+            selectedUnitUI.HideAllyUI();
 
             GameObject obj = upgradeUnitData.Prefab;
             spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode);
@@ -717,16 +733,21 @@ public class AllyUnit : Unit
         navObstacle.enabled = false;
         collider.enabled = false;
 
-        if(allyDeadSFX.Length > 0)
-        {
-            AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
-            SoundManager.Instance.PlaySFX(clip);
-        }
+        
 
         state = State.DEAD;
         modelAnimator.SetTrigger("Die");
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
         unitGrid.ClearTile();
+
+        if (allyDeadSFX == null)
+            return;
+
+        if (allyDeadSFX.Length > 0)
+        {
+            AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
+            SoundManager.Instance.PlaySFX(clip);
+        }
     }
 
     

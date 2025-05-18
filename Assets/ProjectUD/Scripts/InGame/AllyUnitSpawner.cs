@@ -107,15 +107,20 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.previousMode = mode;
                 upgradeUnit.UpgradeInitialize();
 
-                upgradeUnit.gameObject.SetActive(true);
+                upgradeUnit.IsSelected = true;
 
+                upgradeUnit.gameObject.SetActive(true);
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
 
+                upgradeUnit.IsSelected = true;
+
                 selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+
+
 
                 return upgradeUnit;
             }
@@ -128,6 +133,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.previousMode = mode;
                 upgradeUnit.UpgradeInitialize();
 
+                upgradeUnit.IsSelected = true;
+
                 upgradeUnit.gameObject.SetActive(true);
 
 
@@ -135,6 +142,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 upgradeUnit.transform.rotation = transform.rotation;
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
+                
 
                 selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
@@ -158,6 +167,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit.previousMode = mode;
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
+
+            upgradeUnit.IsSelected = true;
 
             upgradeUnit.gameObject.SetActive(true);
 
@@ -188,16 +199,18 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     {
         if(inGameManager.inGameGold < units[index].Cost)
         {
-            ingameScreenUI.ShowError("재화가 부족합니다.");
+            ingameScreenUI.ShowError("군자금이 모자랍니다!");
             return;
         }
 
         if (index == selectedIndex)
         {
             CancelSpawn();
+            selectedUnitUI.HideUntInfo();
         }
         else
         {
+            selectedUnitManager.DeSelecteUnit();
             commandSkillManager.CancelSkill();
             selectedIndex = index;
             spawn = true;
@@ -205,6 +218,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             mouseIndicator.SetActive(true);
             inputMng.OnClickTarget = this;
             unitSpawnUI.Select(index);
+
+            //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
+
+
+            selectedUnitUI.UpdateUnitInfoByBtn(units[index]);
         }
     }
 
@@ -265,7 +283,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 Tile tile = hit.transform.GetComponent<Tile>();
                 if (tile.SetAllyUnit(unit) == null)
                 {
-                    ingameScreenUI.ShowError("병사를 소환할 수 없습니다!");
+                    ingameScreenUI.ShowError("그곳엔 장애물이 있습니다.");
                     return;
                 }
                     
@@ -292,6 +310,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 spawnPoint.Initialize(unit);
 
                 inGameManager.SetGold(allyUnitData.Cost, false);
+                ingameScreenUI.SetspawnBtnPriceTextColor();
 
                 CancelSpawn();
             }

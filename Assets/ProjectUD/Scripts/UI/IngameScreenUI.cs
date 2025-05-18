@@ -6,6 +6,8 @@ using InputEventInterface;
 
 public class IngameScreenUI : MonoBehaviour
 {
+    [SerializeField] private InGameManager inGameManager;
+
     [Header("■ UI")]
     [SerializeField] private TextMeshProUGUI waveTextUI;
     [SerializeField] private TextMeshProUGUI goldTextUI;
@@ -20,11 +22,16 @@ public class IngameScreenUI : MonoBehaviour
     [SerializeField] private NoticeUI noticeTimerUI;
     [SerializeField] private GameObject errorPanel;
     [SerializeField] private Text errorText;
+    [SerializeField] private Image regionNameUI;
 
     [Header("■ Result")]
     [SerializeField] private ResultUI resultUI;
 
     [SerializeField] private Animator animator;
+
+    [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
+    [SerializeField] private Image[] spawnBtnsImages;
+    [SerializeField] private int spawnCost;
 
 
 
@@ -110,5 +117,27 @@ public class IngameScreenUI : MonoBehaviour
     {
         errorPanel.SetActive(true);
         errorText.text = text;
+    }
+
+    public void SetspawnBtnPriceTextColor()
+    {
+        for (int i = 0; i < spawnBtnPriceText.Length; i++)
+        {
+            if (spawnCost > inGameManager.inGameGold)
+            {
+                spawnBtnPriceText[i].color = Color.red;
+                spawnBtnsImages[i].tag = "UnInteractiveUi";
+            }
+            else
+            {
+                spawnBtnPriceText[i].color = Color.white;
+                spawnBtnsImages[i].tag = "InteractiveUi";
+            }
+        }
+    }
+
+    public void ShowRegionName()
+    {
+        regionNameUI.gameObject.SetActive(true);
     }
 }

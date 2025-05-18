@@ -25,6 +25,8 @@ public class ArrowCtrl : ProjectileCtrl
         //meshRenderer = GetComponent<MeshRenderer>();
         //animator = GetComponent<Animator>();
         //block = new MaterialPropertyBlock();
+        rb.isKinematic = false;
+
         rb.velocity = Vector3.forward * speed * 0.5f;
         timeCheck = 0f;
     }

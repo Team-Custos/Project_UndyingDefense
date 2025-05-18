@@ -7,6 +7,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.CanvasScaler;
 
 public class SelectedUnitUI : MonoBehaviour
 {
@@ -136,8 +137,11 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
     {
+        if(selecteUnitManger.SelectedUnit == null)
+            return;
+
         allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
-        unitMenuPrefab.SetActive(true);
+        
 
         if(allyUnit.ModeType == AllyUnit.Mode.FREE)
         {
@@ -147,6 +151,8 @@ public class SelectedUnitUI : MonoBehaviour
         {
             modeChangeBtnImage.sprite = freeIcon;
         }
+
+        unitMenuPrefab.SetActive(true);
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
@@ -192,6 +198,53 @@ public class SelectedUnitUI : MonoBehaviour
         }
     }
 
+    public void UpdateUnitInfoByBtn(UnitData unitData)
+    {
+        unitInfoImage.gameObject.SetActive(true);
+
+        unitImage.sprite = unitData.Icon;
+        unitNameText.text = unitData.Name;
+        unitMentalText.text = unitData.Mental.ToString();
+
+        unitHPImage.fillAmount = unitData.MaxHp / unitData.MaxHp;
+        unitHPText.text = $"{unitData.MaxHp} / {unitData.MaxHp}";
+
+        SetUnitTierIcon(unitData.Tier);
+
+        atTypeIcon.sprite = unitData.AtTypeIcon;
+        dfTypeIcon.sprite = unitData.DfTypeIcon;
+
+        unitDefenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
+
+        Unit unit = unitData.Prefab.GetComponent<Unit>();
+
+        //unitGSkillText.text = unit.GeneralSkill.Data.name;
+
+
+        if (unit.SpecialSkill != null)
+        {
+            //unitSSkillText.text = unit.SpecialSkill.Data.name;
+
+            unitGSkillImage.gameObject.SetActive(true);
+            unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
+
+            gSkillInfoText.text = unit.SpecialSkill.Data.Description;
+            sSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
+        }
+        else
+        {
+           // unitSSkillText.text = " ";
+            unitGSkillImage.gameObject.SetActive(false);
+
+        }
+
+        unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+
+        critText.text = "치명타 율 : " + unitData.CritChance.ToString() + "%";
+        moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unitData.AttackSpeed.ToString();
+    }
 
     public void UpdateUnitInfo(Unit unit)
     {
@@ -210,13 +263,13 @@ public class SelectedUnitUI : MonoBehaviour
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
        unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
-       unitGSkillText.text = unit.GeneralSkill.Data.name;
+       //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
         
 
         if (unit.SpecialSkill != null)
         {
-            unitSSkillText.text = unit.SpecialSkill.Data.name;
+            //unitSSkillText.text = unit.SpecialSkill.Data.name;
 
             unitGSkillImage.gameObject.SetActive(true);
             unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
@@ -227,7 +280,7 @@ public class SelectedUnitUI : MonoBehaviour
         }
         else
         {
-            unitSSkillText.text = " ";
+            //unitSSkillText.text = " ";
             unitGSkillImage.gameObject.SetActive(false);
             
         }

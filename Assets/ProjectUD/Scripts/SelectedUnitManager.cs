@@ -19,7 +19,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
-    private AllyUnit tileAllyUnit;
     private bool isUpgradeOn;
 
     public Unit SelectedUnit => selectedUnit;
@@ -116,34 +115,31 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
-                        
-                        if((selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE))
+                        // 시즈모드시 타일 누르면 선택 해제
+                        if ((selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE))
                         {
                             selectedUnit.IsSelected = false;
                             selectedUnit = null;
                             unitSelectUI.HideAllyUI();
                             unitSelectUI.HideHp();
                             unitSelectUI.HideUpgrdeUI();
-                            return;
                         }
                         
-                        if (!(selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
+                        // 프리 모드시 이동 불가 타일 확인
+                        else if ((selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                         {
-                            Tile tile = hit.collider.GetComponent<Tile>();
-                            if(tile.SetAllyUnit(selectedAllyUnit) == null)
-                            {
-                                ingameScreenUI.ShowError("병사가 이동할 수 없습니다");
-                            }
+                            //Tile tile = hit.collider.GetComponent<Tile>();
+                            //if(tile.TileAllyUnit != null)
+                            //{
+                            //    ingameScreenUI.ShowError("병사가 이동할 수 없습니다");
+                            //    return;
+                            //}
 
-                            return;
+                            selectedAllyUnit.DestinationPosition = hit.point;
+                            mouseIndicatorParticle.gameObject.SetActive(true);
+                            mouseIndicatorParticle.Play();
+                            mouseIndicatorParticle.transform.position = hit.point;
                         }
-                            
-
-                        selectedAllyUnit.DestinationPosition = hit.point;
-                        mouseIndicatorParticle.gameObject.SetActive(true);
-                        mouseIndicatorParticle.Play();
-                        mouseIndicatorParticle.transform.position = hit.point;
-
                     }
                 }
                 else
@@ -172,7 +168,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     unitSelectUI.HideAllyUI();
                     unitSelectUI.HideHp();
                     unitSelectUI.HideUpgrdeUI();
+                    unitSelectUI.HideUntInfo();
                 }
+                else
+                {
+                    unitSelectUI.HideUntInfo();
+                }
+
+                
 
                 allyUnitSpawner.CancelSpawn();
             }
@@ -213,6 +216,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         selectedAllyUnit.Upgrade(index);
 
         inGameManager.SetGold(nextUnitData.Cost, false);
+        ingameScreenUI.SetspawnBtnPriceTextColor();
 
         unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();
@@ -220,6 +224,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
     public void ModeChangeSelectedUnit()
     {
+        if(!selectedAllyUnit.IsSelected)
+            return;
+
         selectedAllyUnit.ChangeMode(AllyUnit.Mode.CHANGE);
         unitSelectUI.HideAllyUI();
     }
@@ -251,26 +258,38 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
+                if (selectedAllyUnit.ModeType == AllyUnit.Mode.CHANGE ||
+                    selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                    return;
+
                 ShowUpgradeMenu();
 
                 isUpgradeOn = true;
 
-                //string keyNumber = context.control.name;
+                    
 
-                //  if (int.TryParse(keyNumber, out int upgradeOption))
-                //  {
-                //      UpgradeSelectedUnit(upgradeOption - 1);
-                //  }
+                    //string keyNumber = context.control.name;
+
+                    //  if (int.TryParse(keyNumber, out int upgradeOption))
+                    //  {
+                    //      UpgradeSelectedUnit(upgradeOption - 1);
+                    //  }
+                
             }
         }
     }
+
 
     public void OnUnitModeChange(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            if (selectedUnit != null && selectedUnit is AllyUnit)
+            if (selectedAllyUnit != null)
             {
+                if (selectedAllyUnit.ModeType == AllyUnit.Mode.CHANGE ||
+                    selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                    return;
+
                 ModeChangeSelectedUnit();
             }
         }
@@ -292,6 +311,19 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 else
                     return;
             }
+        }
+    }
+
+    public void DeSelecteUnit()
+    {
+        if (selectedUnit != null)
+        {
+            selectedUnit.IsSelected = false;
+            selectedUnit = null;
+            unitSelectUI.HideAllyUI();
+            unitSelectUI.HideHp();
+            unitSelectUI.HideUpgrdeUI();
+            selectedUnit = null;
         }
     }
 }

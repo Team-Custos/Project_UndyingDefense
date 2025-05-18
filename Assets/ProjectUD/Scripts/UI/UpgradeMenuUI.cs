@@ -150,6 +150,9 @@ public class UpgradeMenuUI : MonoBehaviour
 
     public void SetUnitUpgradeMenu(Unit selectedUnit)
     {
+        if (selectedUnit is EnemyUnit)
+            return;
+
         infoPanel.SetActive(false);
 
         upgradeIndex = -1;

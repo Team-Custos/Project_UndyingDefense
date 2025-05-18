@@ -12,6 +12,7 @@ public class Ingame_CursorManager : MonoBehaviour
     [SerializeField] private Texture2D greenArrowCursor;          // 배치 가능 또는 상호작용 가능 ui
     [SerializeField] private Texture2D redArrowCursor;            // 배치 불가능 또는 상호작용 불가능 ui
     [SerializeField] private Texture2D fingerCursor;              // 상호 작용 가능 커서
+    [SerializeField] private Texture2D redFingerCursor;           // 상호 작용 불 가능 커서
 
     [SerializeField] private SelectedUnitManager selectedUnitManager; // 선택된 유닛 매니저
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
@@ -28,40 +29,60 @@ public class Ingame_CursorManager : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
         Texture2D targetCursor = defaultArrowCursor;
 
-        if (Physics.Raycast(ray, out hit))
+        string uiTag = GetPointerOverUITag();
+        if (uiTag == "InteractiveUi")
         {
-            if (hit.collider.CompareTag("Unit"))
+            targetCursor = fingerCursor;
+        }
+        else if (uiTag == "UnInteractiveUi")
+        {
+            targetCursor = redFingerCursor;
+        }
+        else
+        {
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
             {
-                targetCursor = fingerCursor;
+                if (hit.collider.CompareTag("Unit"))
+                {
+                    targetCursor = fingerCursor;
+                }
+                else if (hit.collider.CompareTag("Tile"))
+                {
+                    Tile tile = hit.collider.GetComponent<Tile>();
 
-                if (hit.collider.GetComponent<AllyUnit>() is AllyUnit)
-                    allyUnit = hit.collider.GetComponent<AllyUnit>();
-            }
-            else if (hit.collider.CompareTag("Tile"))
-            {
-                Tile tile = hit.collider.GetComponent<Tile>();
+                    if (selectedUnitManager.SelectedUnit == null ||
+                        selectedUnitManager.SelectedUnit is EnemyUnit)
+                    {
+                        targetCursor = defaultArrowCursor;
+                    }
 
+                    if(selectedUnitManager.SelectedUnit != null)
+                    {
+                        allyUnit = selectedUnitManager.SelectedUnit as AllyUnit;
 
-                //if (inputEventManager == allyUnitSpawner && tile.SetAllyUnit(allyUnit) != null)
-                //    targetCursor = redArrowCursor;
-
-                if (selectedUnitManager.SelectedUnit == null && !(selectedUnitManager.SelectedUnit is AllyUnit))
-                    return;
-
-                
-                //if (tile != null)
-                //{
-                //    if (tile.SetAllyUnit(allyUnit) == null)
-                //        targetCursor = redArrowCursor;
-                //    else
-                //        targetCursor = greenArrowCursor;
-                //}
-                
+                        if (selectedUnitManager.SelectedUnit is AllyUnit &&
+                            allyUnit.ModeType == AllyUnit.Mode.FREE)
+                        {
+                            
+                            targetCursor = greenArrowCursor;
+                        }
+                        else
+                        {
+                            targetCursor = defaultArrowCursor;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    targetCursor = defaultArrowCursor;
+                }
             }
         }
 

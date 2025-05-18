@@ -60,7 +60,6 @@ public class UnitGrid : MonoBehaviour
             }
         }
 
-        Debug.Log("이동 가능 타일 :" + availableTiles.Count);
 
         if (availableTiles.Count <= 0)
             return null;
