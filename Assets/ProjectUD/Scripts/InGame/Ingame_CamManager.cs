@@ -14,6 +14,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private Transform cameraPivot;
     private CinemachineFramingTransposer framingTransposer;
 
@@ -44,7 +45,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     private void Update()
     {
-        if (moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero && !dollyCamera.IsCamPanning)
         {
             Vector3 movement = moveDirection.normalized * moveSpeed * Time.deltaTime;
             cameraPivot.position += movement;
@@ -59,11 +60,16 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     public void OnNavigate(InputAction.CallbackContext context)
     {
+
         if (context.started || context.performed)
         {
+            if (dollyCamera.IsCamPanning)
+                return;
+
             Vector2 input = context.ReadValue<Vector2>();
             moveDirection = Vector3.zero;
 
+            
             if (input.y > 0f) // W 키
                 moveDirection += new Vector3(1f, 0f, 1f);
             if (input.y < 0f) // S 키
@@ -83,6 +89,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         if (context.performed)
         {
+            if (dollyCamera.IsCamPanning)
+                return;
+
             float scrollInput = context.ReadValue<Vector2>().y;
 
             float currentFov = framingTransposer.m_CameraDistance;
