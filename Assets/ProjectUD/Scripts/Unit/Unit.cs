@@ -423,7 +423,6 @@ public abstract class Unit : MonoBehaviour
     public LayerMask EnemyLayer => enemyLayer;
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
-
     public List<Effect> EffectList => effectList;
     public bool IsSelected
     {
@@ -582,6 +581,15 @@ public abstract class Unit : MonoBehaviour
     protected virtual void ActivateSkill(SkillBase skill, Unit target)
     {
         skill.Activate(this, target);
+
+        if (stateDurationCheck < skill.AnimationStateTime)
+        {
+            stateDurationCheck += Time.deltaTime;
+        }
+        else
+        {
+            
+        }   
     }
 
     protected bool IsReachable(Vector3 pos)
@@ -1127,13 +1135,11 @@ public abstract class Unit : MonoBehaviour
     public virtual void GetStun()
     {
         modelAnimator.SetBool("isStun", true);
-        navAgent.speed = 0f;
     }
 
     public virtual void RemoveStun()
     {
         modelAnimator.SetBool("isStun", false);
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
     }
 
 

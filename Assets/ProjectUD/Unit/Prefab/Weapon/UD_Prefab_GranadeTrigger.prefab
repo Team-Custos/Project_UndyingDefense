@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: -3259091365921144433}
   - component: {fileID: 699766227634234583}
   - component: {fileID: 4531771575809438098}
-  - component: {fileID: 1693275535041748129}
   - component: {fileID: 6428117456143693999}
   m_Layer: 10
   m_Name: UD_Prefab_GranadeTrigger
@@ -35,7 +34,7 @@ Transform:
   m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 3707425591969794755}
+  - {fileID: 2894117673707934760}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7595948741201639377
@@ -136,26 +135,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1693275535041748129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 826453539395977001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b40f49a03424f9d4cac1a765812655fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ModelAnimator: {fileID: 0}
-  MethodType: 2
-  Particle: {fileID: 1519888882992216796}
-  Type: 2
-  Debuff2Add: 3
-  Damage: 10
-  moveSpeed: 1
-  Crit: 0
 --- !u!82 &6428117456143693999
 AudioSource:
   m_ObjectHideFlags: 0
@@ -345,15 +324,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7af8ed74744c9464aaea9307d5c2ed6f, type: 3}
---- !u!198 &1519888882992216796 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3797108222837399790, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
-    type: 3}
-  m_PrefabInstance: {fileID: 2424540981926877746}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3707425591969794755 stripped
+--- !u!4 &2894117673707934760 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1357510671938195697, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+  m_CorrespondingSourceObject: {fileID: 688007983525416474, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
     type: 3}
   m_PrefabInstance: {fileID: 2424540981926877746}
   m_PrefabAsset: {fileID: 0}

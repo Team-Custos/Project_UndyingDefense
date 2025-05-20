@@ -14,7 +14,7 @@ AnimatorStateMachine:
     m_Position: {x: 270, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7435533185890541762}
-    m_Position: {x: 240, y: -60, z: 0}
+    m_Position: {x: 270, y: -60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2246689666356609519}
     m_Position: {x: 640, y: -40, z: 0}
@@ -29,7 +29,7 @@ AnimatorStateMachine:
     m_Position: {x: -40, y: -210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3072135377948084840}
-    m_Position: {x: 659.0447, y: -373.45227, z: 0}
+    m_Position: {x: 640, y: -380, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -7572710845861144181}
@@ -163,7 +163,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.87288135
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -367,10 +367,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.87288135
-  m_HasExitTime: 1
+  m_ExitTime: 0.0000000011867384
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -409,6 +409,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &4739404283701176350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ab26abdfa2b2342a967e5342a83e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1101 &4786461053758330862
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -561,7 +573,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 557325659476702234}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 4739404283701176350}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

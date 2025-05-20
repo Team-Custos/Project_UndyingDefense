@@ -9,6 +9,8 @@ public class ArrowCtrl : ProjectileCtrl
 
     private UnityEvent onAttack = new UnityEvent();
 
+    private bool reachedTarget = false;
+
     //public float alphaColor = 1f;
 
     //public Color baseColor;
@@ -20,14 +22,13 @@ public class ArrowCtrl : ProjectileCtrl
 
 
     // Start is called before the first frame update
-    void Start()
-    {
-        //meshRenderer = GetComponent<MeshRenderer>();
-        //animator = GetComponent<Animator>();
-        //block = new MaterialPropertyBlock();
-        rb.velocity = Vector3.forward * speed * 0.5f;
-        timeCheck = 0f;
-    }
+    //void Start()
+    //{
+    //    //meshRenderer = GetComponent<MeshRenderer>();
+    //    //animator = GetComponent<Animator>();
+    //    //block = new MaterialPropertyBlock();
+    //    timeCheck = 0f;
+    //}
 
     public void SetEvent(UnityAction onAttack)
     {
@@ -47,12 +48,19 @@ public class ArrowCtrl : ProjectileCtrl
         }
         else
         {
-            if (targetUnit != null)
+            if (targetUnit != null && !reachedTarget)
             {
+                reachedTarget = true;
                 onAttack.Invoke();
             }     
-            Destroy(gameObject,2f);
+            Destroy(gameObject);
         }
+    }
+
+    public void Shoot(Vector3 dir)
+    {
+        rb.velocity = dir * speed;
+        timeCheck = 0f;
     }
 
 

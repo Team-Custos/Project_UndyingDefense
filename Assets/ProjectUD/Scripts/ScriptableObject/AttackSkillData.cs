@@ -10,13 +10,13 @@ public class AttackSkillData : SkillData
     [SerializeField] protected float bonusCrit;
 
     [Header("■ AttackSkill - InduseEffect")]
-    [SerializeField] protected Effect induseEffct;
+    [SerializeField] protected Effect induseEffect;
     [SerializeField] protected float induseEffectSuccessRate;
 
     public AttackType AttackType => attackType;
     public float Damage => damage;
     public float BonusCrit => bonusCrit;
 
-    public Effect InduseEffect => induseEffct;
+    public Effect InduseEffect => induseEffect;
     public float InduseEffectSuccessRate => induseEffectSuccessRate;
 }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5767769577764027390
+--- !u!1 &5102547360949732786
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1792194397170659288}
-  - component: {fileID: -3973829597900686006}
+  - component: {fileID: 3886151649559501084}
+  - component: {fileID: 8361980643447723506}
   m_Layer: 0
-  m_Name: AttackTrigger
+  m_Name: AttackRadiusTestObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1792194397170659288
+--- !u!4 &3886151649559501084
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5767769577764027390}
+  m_GameObject: {fileID: 5102547360949732786}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,25 +32,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3973829597900686006
+--- !u!114 &8361980643447723506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5767769577764027390}
+  m_GameObject: {fileID: 5102547360949732786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 412941e5b2327e84d943a72e7a97f9f1, type: 3}
+  m_Script: {fileID: 11500000, guid: bc4cdc722a4ecd94c9ffbeb15cb3866d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onActivate:
-    _PersistentCalls: []
-  onActivateAtPos:
-    _PersistentCalls: []
-  onActivateAtUnit:
-    _PersistentCalls: []
-  data: {fileID: 0}
-  attackTargetLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  attackRadius: 5
+  attackRangeX: 5
+  attackRangeY: 5
+  attackRangeZ: 5
+  attackShape: 0

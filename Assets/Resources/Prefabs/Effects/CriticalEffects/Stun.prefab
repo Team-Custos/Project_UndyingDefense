@@ -51,11 +51,13 @@ MonoBehaviour:
   stackVFX: []
   endVFX: {fileID: 0}
   onActivate:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 5239883049828256996}
+      _MemberName: GetStun
+      _PersistentArguments: []
   onMaxStack:
     _PersistentCalls: []
   maxStackEffectPrefab: {fileID: 0}
-  MaxStackEffectId: 
   duration: 3
 --- !u!82 &2588188768454690010
 AudioSource:
@@ -225,6 +227,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342771427606, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: t
+      value: 1.5599991
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342771427606, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: looping
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427611, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
