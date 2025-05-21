@@ -582,14 +582,14 @@ public abstract class Unit : MonoBehaviour
     {
         skill.Activate(this, target);
 
-        if (stateDurationCheck < skill.AnimationStateTime)
-        {
-            stateDurationCheck += Time.deltaTime;
-        }
-        else
-        {
+        //if (stateDurationCheck < skill.AnimationStateTime)
+        //{
+        //    stateDurationCheck += Time.deltaTime;
+        //}
+        //else
+        //{
             
-        }   
+        //}   
     }
 
     protected bool IsReachable(Vector3 pos)
@@ -875,7 +875,7 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()
     {
-        if (specialSkill != null && specialSkill.IsCoolDown)
+        if (specialSkill != null && specialSkill.IsCoolDown && !generalSkill.IsCoolDown)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown)
             return generalSkill;
@@ -887,6 +887,14 @@ public abstract class Unit : MonoBehaviour
     {
         if(generalSkill != null && generalSkill.IsCoolDown)
             return generalSkill;
+        else
+            return null;
+    }
+
+    protected SkillBase GetSpecialSkill()
+    {
+        if (specialSkill != null && specialSkill.IsCoolDown)
+            return specialSkill;
         else
             return null;
     }

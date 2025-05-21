@@ -22,14 +22,10 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
     [Header("■ AnimationStateTime")]
     [SerializeField] private float animationStateTime; // 애니메이션의 상태를 체크하는 시간
-    private bool isPlayingAnimation = false; // 애니메이션이 재생중인지 체크하는 변수
-    //private float animationStateTimeCheck;
 
     public abstract SkillData Data { get; }
 
-    public float AnimationStateTime => animationStateTime; // 애니메이션의 상태를 체크하는 시간
-
-    public bool IsPlayingAnimation => isPlayingAnimation; // 애니메이션이 재생중인지 체크하는 변수
+    public float AnimationStateTime => animationStateTime;
 
     private bool isCoolTimeOn = true;
     public bool IsCoolDown => coolTimeCheck >= Data.CoolTime; // IsCoolDown이 true면 스킬이 쿨타임이 차서 사용 가능하다는 의미.
@@ -37,11 +33,6 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     //public bool isAnimationOK => animationStateTimeCheck >= animationStateTime; // 애니메이션이 끝났는지 체크하는 변수
 
     public TargetType GetTargetType() => Data.TargetType;
-
-    public void SetAnimationState(bool isPlaying)
-    {
-        isPlayingAnimation = isPlaying; // 애니메이션이 재생중인지 체크하는 변수
-    }
 
     public void ActivateCoolTime(bool OnOff)
     { 

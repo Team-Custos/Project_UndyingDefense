@@ -10,9 +10,7 @@ public class AllyUnit : Unit
         FREE,
         SEIGE,
         CHANGE,
-        UPGRADE,
-        STUN
-
+        UPGRADE
     }
 
     public enum TargetingType    //아군 유닛의 타겟 선정 방식.
@@ -152,7 +150,33 @@ public class AllyUnit : Unit
                         if (!navObstacle.enabled)
                             navObstacle.enabled = true;
                     }
-                    
+
+                    if (state == State.SPECIALSKILL)
+                    {
+                        SkillBase skill = GetSpecialSkill();
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
+                    }
+
+                    if (state == State.GENERALSKILL)
+                    {
+                        SkillBase skill = GetGeneralSkill();
+
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
+                    }
+
+
                     if (stateDuration <= 0f)
                         return;
 
@@ -313,8 +337,6 @@ public class AllyUnit : Unit
 
         switch (mode)
         {
-            case Mode.STUN:
-                break;
             case Mode.SEIGE:
                 {
                     OnOffSiefeEffect(true);
@@ -747,7 +769,7 @@ public class AllyUnit : Unit
         if (target != this)
             transform.LookAt(target.transform);
 
-        base.ActivateSkill(skill, target);
+        //base.ActivateSkill(skill, target);
     }
 
     public void ChangeMode(Mode mode)
