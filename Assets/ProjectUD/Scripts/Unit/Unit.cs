@@ -1044,8 +1044,6 @@ public abstract class Unit : MonoBehaviour
             hp = 0f;
             Die();
 
-            if (selectedUnitUI == null)
-                Debug.Log(1213);
 
             if (selectedUnitUI != null)
             {

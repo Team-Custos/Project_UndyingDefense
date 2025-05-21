@@ -241,7 +241,7 @@ public class SelectedUnitUI : MonoBehaviour
 
         unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
 
-        critText.text = "치명타 율 : " + unitData.CritChance.ToString() + "%";
+        critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unitData.AttackSpeed.ToString();
     }

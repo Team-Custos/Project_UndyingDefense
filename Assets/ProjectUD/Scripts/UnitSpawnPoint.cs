@@ -11,6 +11,8 @@ public class UnitSpawnPoint : MonoBehaviour
     private float timeCheck;
     private const float spawnTime = 3f;
 
+    [SerializeField] private AudioClip allySpawn;
+
     public void Initialize(ObjectPoolWithList<UnitSpawnPoint> pool)
     {
         this.pool = pool;
@@ -37,6 +39,7 @@ public class UnitSpawnPoint : MonoBehaviour
                 unit.transform.position = transform.position;
                 unit.Initialize();
                 unit.gameObject.SetActive(true);
+                SoundManager.Instance.PlaySFX(allySpawn);
             }
         }
 

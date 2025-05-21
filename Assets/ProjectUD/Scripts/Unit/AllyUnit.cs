@@ -602,7 +602,6 @@ public class AllyUnit : Unit
                         if (selectedUnitUI != null && isSelected)
                         {
                             selectedUnitUI.ShowAllyUI(this);
-                            Debug.Log(this.data.Name);
                         }
                             
                     }

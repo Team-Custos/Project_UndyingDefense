@@ -70,8 +70,6 @@ public class HelpUI : MonoBehaviour
 
     public void OpenHelp()
     {
-        if(Time.timeScale != 0.0f)
-            Time.timeScale = 0.0f;
 
         currentIndex = 0;
         ResetToFirstPanel();
@@ -80,8 +78,6 @@ public class HelpUI : MonoBehaviour
 
     public void CloseHelp()
     {
-        Time.timeScale = 1.0f;
-
         gameObject.SetActive(false);
     }
 

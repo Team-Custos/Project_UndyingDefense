@@ -41,6 +41,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     [SerializeField] SelectedUnitManager selectedUnitManager;
 
+    [SerializeField] private AudioClip allySummon;
+
     private void Start()
     {
         selectedIndex = -1;
@@ -310,6 +312,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 //Debug.Log(grid.WorldToCell(hit.point));
                 spawnPoint.gameObject.SetActive(true);
+                SoundManager.Instance.PlaySFX(allySummon);
                 spawnPoint.Initialize(unit);
 
                 inGameManager.SetGold(allyUnitData.Cost, false);
