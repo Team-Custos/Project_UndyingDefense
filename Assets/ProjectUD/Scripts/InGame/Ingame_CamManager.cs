@@ -9,11 +9,12 @@ using UnityEngine.InputSystem;
 
 
 //카메라 조작을 위한 스크립트. (삭제 예정.)
-public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel
+public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel, IInputOnSpace
 {
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private SelectedUnitManager    selectedUnitManager;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private Transform cameraPivot;
     private CinemachineFramingTransposer framingTransposer;
@@ -41,6 +42,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
         inputEventManager.OnNavigateTarget = this;
         inputEventManager.OnScrollTarget = this;
+        inputEventManager.OnSpaceTarget = this;
     }
 
     private void Update()
@@ -85,6 +87,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         }
     }
 
+
     public void OnScrollWheel(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -106,6 +109,15 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         Vector3 newPosition = new Vector3(targetPosition.x, cameraPivot.position.y, targetPosition.z);
         cameraPivot.position = newPosition;
+    }
+
+    public void OnSpace(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            if (selectedUnitManager.SelectedUnit != null)
+                FocusSelectedUnit(selectedUnitManager.SelectedUnit.transform.position);
+        }
     }
 
 

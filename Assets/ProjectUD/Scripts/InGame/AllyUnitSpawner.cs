@@ -118,6 +118,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 upgradeUnit.IsSelected = true;
 
+                selectedUnitManager.SetSelectedUnit(upgradeUnit);
                 selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
 
@@ -135,6 +136,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
                 upgradeUnit.IsSelected = true;
 
+                selectedUnitManager.SetSelectedUnit(upgradeUnit);
                 upgradeUnit.gameObject.SetActive(true);
 
 
@@ -167,10 +169,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit.previousMode = mode;
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
-
+            selectedUnitManager.SetSelectedUnit(upgradeUnit);
             upgradeUnit.IsSelected = true;
 
             upgradeUnit.gameObject.SetActive(true);
+            selectedUnitUI.ShowAllyUI(upgradeUnit);
 
 
             upgradeUnit.transform.position = transform.position;

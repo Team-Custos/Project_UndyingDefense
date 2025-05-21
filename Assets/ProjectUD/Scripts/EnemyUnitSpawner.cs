@@ -16,6 +16,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;
     [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private WaveData[] waveData;
 
     [Header("■ Options")]
@@ -28,6 +29,9 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private int totalMonCount = 0;
     [SerializeField] AudioClip[] waveSfxClip;
 
+    [SerializeField] private AudioClip enmeySpawnSfx;
+    [SerializeField] private ParticleSystem enemySpawnVfx;
+
     private bool oneTime = false;
     private float spawnTimeCheck;
     private int spawnDataIndex; // 현재 EnemySpawnData의 인덱스
@@ -37,6 +41,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     private int spawnCount; // 총 스폰 횟수
     private bool isFortreessAttacked;
     private bool isWaveReady = true;
+    private bool isGameOver = false;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
@@ -47,146 +52,137 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (isWaveReady)
+        if (dollyCamera.IsCamPanning)
+            return;
+
+        if(isGameOver)
+            return;
+
+        if (isWaveEnd) // 웨이브 종료 및 시작 대기
         {
-            if(!oneTime)
-            {
-                ingameScreenUI.ShowRegionName();
-                oneTime = true;
-            }
+           // 게임 성공
+           if (curWave > waveData.Length && totalMonCount <= 0)
+           {
+               SoundManager.Instance.StopBGM();
+               SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
+               ingameScreenUI.ShowResult(100, true);
+               Time.timeScale = 0.0f;
+                isGameOver = true;
+                return;
+           }
 
-            waveDelay -= Time.deltaTime;
 
-            if(waveDelay <= 0f && waveDelay > -1.0f)
-            {
-                ingameScreenUI.ShowNotice(" 전투 시작");
-            }
-            else if(waveDelay <= -4.0f)
-            {
-                ingameScreenUI.HideNotice();
-                oneTime = false;
-                isWaveReady = false;
-                waveDelay = 1.0f;
-            }
+           waveDelay -= Time.deltaTime;
+           if (waveDelay <= 0f)
+           {
+               ingameScreenUI.SetWaveNumber(curWave);
 
+               if (!oneTime)
+               {
+                   SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_wavePrepare]);
+                   oneTime = true;
+               }
+
+               ingameScreenUI.ShowTimer();
+
+               ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
+
+               waveTimer -= Time.deltaTime;
+               if (waveTimer <= 0f)
+               {   // 타이머 종료 및 웨이브 시작
+                   //ingameScreenUI.HideNotice();
+                   isWaveEnd = false;
+                   waveDelay = 1.0f;
+                   waveTimer = 20f;
+
+                   ingameScreenUI.HideTimer();
+
+                   ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+                   SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
+               }
+           }
         }
-        else
-        {
-            if (isWaveEnd) // 웨이브 종료 및 시작 대기
+       else // 웨이브 시작
+       {
+           if (isSpawnEnd && totalMonCount <= 0) // 웨이브 종료 및 시작 대기
+           {
+               SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
+               ingameScreenUI.ShowNotice("방어 성공!");
+
+               isSpawnEnd = false;
+               isWaveEnd = true;
+
+               inGameManager.SetGold(waveData[curWave - 1].Reward, true);
+               ingameScreenUI.SetspawnBtnPriceTextColor();
+
+               waveDelay = 4.0f;
+
+               curWave++;
+
+               isFortreessAttacked = false;
+           }
+           else if (isSpawnEnd)
             {
-                // 게임 성공
-                if (curWave > waveData.Length && totalMonCount <= 0)
-                {
-                    SoundManager.Instance.StopBGM();
-                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
-                    ingameScreenUI.ShowResult(100, true);
-                    return;
-                }
-
-
-                waveDelay -= Time.deltaTime;
-                if (waveDelay <= 0f)
-                {
-                    ingameScreenUI.SetWaveNumber(curWave);
-
-                    if (!oneTime)
-                    {
-                        SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_wavePrepare]);
-                        oneTime = true;
-                    }
-
-                    ingameScreenUI.ShowTimer();
-
-                    ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
-
-                    waveTimer -= Time.deltaTime;
-                    if (waveTimer <= 0f)
-                    {   // 타이머 종료 및 웨이브 시작
-                        //ingameScreenUI.HideNotice();
-                        isWaveEnd = false;
-                        waveDelay = 1.0f;
-                        waveTimer = 20f;
-
-                        ingameScreenUI.HideTimer();
-
-                        ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
-                        SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
-                    }
-                }
+                enemySpawnVfx.gameObject.SetActive(false);
+                return;
             }
-            else // 웨이브 시작
-            {
-                if (isSpawnEnd && totalMonCount <= 0) // 웨이브 종료 및 시작 대기
-                {
-                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
-                    ingameScreenUI.ShowNotice("방어 성공!");
+               
 
-                    isSpawnEnd = false;
-                    isWaveEnd = true;
+           if (waveDelay > 0f)
+           {   // 웨이브 딜레이 1초
+               waveDelay -= Time.deltaTime;
+           }
+           else     // 스폰 시작
+           {
 
-                    inGameManager.SetGold(waveData[curWave - 1].Reward, true);
-                    ingameScreenUI.SetspawnBtnPriceTextColor();
+                if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
+               {
+                   spawnTimeCheck += Time.deltaTime;
+               }
+               else // Enemy 생성
+               {
+                   spawnTimeCheck -= spawnTime;
 
-                    waveDelay = 4.0f;
-
-                    curWave++;
-
-                    isFortreessAttacked = false;
-                }
-                else if (isSpawnEnd)
-                    return;
-
-                if (waveDelay > 0f)
-                {   // 웨이브 딜레이 1초
-                    waveDelay -= Time.deltaTime;
-                }
-                else     // 스폰 시작
-                {
+                   EnemyUnitData data = waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Enemy;
+                   if (!poolDic.ContainsKey(data))
+                       poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
 
 
-                    if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
-                    {
-                        spawnTimeCheck += Time.deltaTime;
-                    }
-                    else // Enemy 생성
-                    {
-                        spawnTimeCheck -= spawnTime;
+                   EnemyUnit enemyUnit = poolDic[data].Pool.Get();
+                   poolDic[data].List.Add(enemyUnit);
 
-                        EnemyUnitData data = waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Enemy;
-                        if (!poolDic.ContainsKey(data))
-                            poolDic.Add(data, new ObjectPoolWithList<EnemyUnit>(() => CreateEnemyUnit(data)));
+                   Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+                    enemySpawnVfx.transform.position = pos;
+                   enemyUnit.transform.position = pos;
+                   enemyUnit.transform.forward = spawnDirection.forward;
+                   SoundManager.Instance.PlaySFX(enmeySpawnSfx);
+                    enemySpawnVfx.gameObject.SetActive(true);
+                    enemySpawnVfx.Play();
+                    enemyUnit.gameObject.SetActive(true);
+                   enemyUnit.Initialize(fortress.GetPosition(spawnCount));
 
+                   totalMonCount++;
+                   spawnDataEnemyCount++;
+                   spawnCount++;
 
-                        EnemyUnit enemyUnit = poolDic[data].Pool.Get();
-                        poolDic[data].List.Add(enemyUnit);
+                   if (spawnDataEnemyCount >= waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Count)
+                   {
+                       spawnDataEnemyCount = 0;
+                       spawnDataIndex++;
+                       if (spawnDataIndex >= waveData[curWave - 1].MonsterSpawnInfos.Count)
+                       {
+                           spawnDataIndex = 0;
+                           isSpawnEnd = true;
 
-                        Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-                        enemyUnit.transform.position = pos;
-                        enemyUnit.transform.forward = spawnDirection.forward;
-                        enemyUnit.gameObject.SetActive(true);
-                        enemyUnit.Initialize(fortress.GetPosition(spawnCount));
-
-                        totalMonCount++;
-                        spawnDataEnemyCount++;
-                        spawnCount++;
-
-                        if (spawnDataEnemyCount >= waveData[curWave - 1].MonsterSpawnInfos[spawnDataIndex].Count)
-                        {
-                            spawnDataEnemyCount = 0;
-                            spawnDataIndex++;
-                            if (spawnDataIndex >= waveData[curWave - 1].MonsterSpawnInfos.Count)
-                            {
-                                spawnDataIndex = 0;
-                                isSpawnEnd = true;
-
-                                waveDelay = 1.0f;
-                            }
+                            waveDelay = 1.0f;
+                            
                         }
+                   }
 
-                    }
-                }
-            }
-        }
+               }
+           }
+       }
+
     }
 
     private EnemyUnit CreateEnemyUnit(EnemyUnitData data)
@@ -254,9 +250,15 @@ public class EnemyUnitSpawner : MonoBehaviour
 
     }
 
+    public void WaveEnd()
+    {
+        isWaveEnd = true;
+    }
+
     public void GameLose()
     {
         SoundManager.Instance.StopBGM();
         SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleLose]);
+        Time.timeScale = 0.0f;
     }
 }

@@ -60,4 +60,9 @@ namespace InputEventInterface
     {
         void OnESC(InputAction.CallbackContext context);
     }
+
+    public interface IInputOnSpace
+    {
+        void OnSpace(InputAction.CallbackContext context);
+    }
 }

@@ -516,7 +516,7 @@ public class AllyUnit : Unit
                                 isAvailableToSiege = false;
                                 
                                 if(selectedUnitUI != null && isSelected)
-                                    selectedUnitUI.ShowAllyUI(this, data);
+                                    selectedUnitUI.ShowAllyUI(this);
                             }
                         }
                     }
@@ -542,8 +542,9 @@ public class AllyUnit : Unit
                             changeDuration = 3.0f;
                             previousMode = mode;
 
+
                             if (selectedUnitUI != null && isSelected)
-                                selectedUnitUI.ShowAllyUI(this, data);
+                                selectedUnitUI.ShowAllyUI(this);
                         }
                     }
 
@@ -598,8 +599,12 @@ public class AllyUnit : Unit
                         upgradeDuraiton = 3.0f;
                         previousMode = mode;
 
-                        if(selectedUnitUI != null && isSelected)
-                            selectedUnitUI.ShowAllyUI(this, data);
+                        if (selectedUnitUI != null && isSelected)
+                        {
+                            selectedUnitUI.ShowAllyUI(this);
+                            Debug.Log(this.data.Name);
+                        }
+                            
                     }
                 }
 
@@ -747,6 +752,8 @@ public class AllyUnit : Unit
         else
         {
             UnitData upgradeUnitData = data.UpgradeUnits[index];
+            if (data.UpgradeUnits[index] == null)
+                return;
 
             selectedUnitUI.HideAllyUI();
 
@@ -765,14 +772,14 @@ public class AllyUnit : Unit
 
     public override void Die()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = false;
-        collider.enabled = false;
+        //navAgent.enabled = false;
+        //navObstacle.enabled = false;
+        //collider.enabled = false;
 
-        
+        base.Die();
 
         state = State.DEAD;
-        modelAnimator.SetTrigger("Die");
+        //modelAnimator.SetTrigger("Die");
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
         unitGrid.ClearTile();
 

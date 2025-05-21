@@ -109,14 +109,14 @@ public class SelectedUnitUI : MonoBehaviour
 
     public void HideHp()
     {
-        if(unitHPPrefab != null)
+        allyUnitUI.SetActive(false);
+        enemyUnitUI.SetActive(false);
+
+        if (unitHPPrefab != null)
         {
             unitHPPrefab.SetActive(false);
             unitInfoImage.gameObject.SetActive(false);
         }
-
-        allyUnitUI.SetActive(false);
-        enemyUnitUI.SetActive(false);
 
     }
 
@@ -135,7 +135,7 @@ public class SelectedUnitUI : MonoBehaviour
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
     }
 
-    public void ShowAllyUI(AllyUnit allyUnit, AllyUnitData allyUnitData)
+    public void ShowAllyUI(AllyUnit allyUnit)
     {
         if(selecteUnitManger.SelectedUnit == null)
             return;
@@ -204,7 +204,7 @@ public class SelectedUnitUI : MonoBehaviour
 
         unitImage.sprite = unitData.Icon;
         unitNameText.text = unitData.Name;
-        unitMentalText.text = unitData.Mental.ToString();
+        unitMentalText.text =  "멘탈 : " + unitData.Mental.ToString();
 
         unitHPImage.fillAmount = unitData.MaxHp / unitData.MaxHp;
         unitHPText.text = $"{unitData.MaxHp} / {unitData.MaxHp}";
@@ -255,7 +255,7 @@ public class SelectedUnitUI : MonoBehaviour
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.Data.Name;
-       unitMentalText.text = unit.Data.Mental.ToString();
+       unitMentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
 
         SetUnitTierIcon(unit.Data.Tier);
 

@@ -73,6 +73,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         {
                             selectedUnit.IsSelected = false;
                             selectedUnit.SetUnitUI(null);
+                            selectedUnit.SetSelectedUnit(null);
                         }
 
                         unit.IsSelected = true;
@@ -81,6 +82,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     }
                     else
                     {
+                        unit.SetSelectedUnit(this);
                         selectedUnit = unit;
                     }
 
@@ -94,7 +96,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     if (selectedUnit is AllyUnit)
                     {
                         selectedAllyUnit = (AllyUnit)selectedUnit;
-                        unitSelectUI.ShowAllyUI((AllyUnit)selectedUnit, (AllyUnitData)unitData);
+                        unitSelectUI.ShowAllyUI((AllyUnit)selectedUnit);
                     }
                     else
                     {
@@ -286,6 +288,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedAllyUnit != null)
             {
+                AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
+
+
                 if (selectedAllyUnit.ModeType == AllyUnit.Mode.CHANGE ||
                     selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
                     return;
@@ -301,10 +306,21 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if(selectedAllyUnit != null && isUpgradeOn)
             {
+                AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
+
+                if (allyUnitData.UpgradeUnits.Length <= 0)
+                    return;
+
                 string keyName = context.control.name;
 
                 if (int.TryParse(keyName, out int upgradeOption))
                 {
+                    if(upgradeOption == 2 && allyUnitData.UpgradeUnits.Length <= 1)
+                    {
+                        return;
+                    }
+                    
+
                     UpgradeSelectedUnit(upgradeOption - 1);
                     isUpgradeOn = false;
                 }
@@ -325,5 +341,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             unitSelectUI.HideUpgrdeUI();
             selectedUnit = null;
         }
+    }
+
+    public void SetSelectedUnit(Unit unit)
+    {
+        selectedUnit = unit;
+
+        if(selectedUnit is AllyUnit)
+            selectedAllyUnit = (AllyUnit)selectedUnit;
     }
 }

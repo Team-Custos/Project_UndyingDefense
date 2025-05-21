@@ -140,7 +140,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
-    [SerializeField] private AudioClip inGmaeBgm;
+    [SerializeField] private AudioClip inGameIntro;
 
     // public float ingameGold => InGameGold;
 
@@ -162,10 +162,10 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     private void Start()
     {
-        inGameGold = 5000;
+        inGameGold = 500;
         ingameScreenUI.SetGoldTextUI(inGameGold);
 
-        SoundManager.Instance.PlayBGM(inGmaeBgm);
+        SoundManager.Instance.PlaySFX(inGameIntro);
 
         inputEventManager.OnESCTarget = this;
     }
@@ -195,6 +195,7 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void LoadLobbyScene()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("LobbyScene_LoPol");
     }
 
@@ -228,4 +229,6 @@ public class InGameManager : MonoBehaviour, IInputESC
             ingameScreenUI.OnOffSetting();
         }
     }
+
+
 }

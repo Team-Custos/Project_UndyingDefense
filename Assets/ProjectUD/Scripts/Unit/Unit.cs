@@ -432,6 +432,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     protected SelectedUnitUI selectedUnitUI;
+    protected SelectedUnitManager selectedUnitManager;
 
     protected static AudioClip[] slashHitSFX;
     protected static AudioClip slashCritSFX;
@@ -550,6 +551,11 @@ public abstract class Unit : MonoBehaviour
     public void SetUnitUI(SelectedUnitUI selectedUnitUI)
     {
         this.selectedUnitUI = selectedUnitUI;
+    }
+
+    public void SetSelectedUnit(SelectedUnitManager selectedUnitManager)
+    {
+        this.selectedUnitManager = selectedUnitManager;
     }
 
     protected virtual void Update()
@@ -1038,6 +1044,9 @@ public abstract class Unit : MonoBehaviour
             hp = 0f;
             Die();
 
+            if (selectedUnitUI == null)
+                Debug.Log(1213);
+
             if (selectedUnitUI != null)
             {
                 // ui 제거
@@ -1064,6 +1073,11 @@ public abstract class Unit : MonoBehaviour
             collider.enabled = false;
 
             modelAnimator.SetTrigger("Die");
+
+            if(selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
+            {
+                selectedUnitManager.DeSelecteUnit();
+            }
 
             isDead = true;
         }

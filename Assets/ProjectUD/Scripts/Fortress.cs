@@ -17,7 +17,6 @@ public class Fortress : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] damageSound;
 
-    private bool isGameOver = true;
 
     private float hp;
 
@@ -37,12 +36,8 @@ public class Fortress : MonoBehaviour
             hp = 0f;
             // 게임 오버
 
-            if(isGameOver)
-            {
-                ingameUI.ShowResult(0, false);
-                enemyUnitSpawner.GameLose();
-                isGameOver = false;
-            }
+            ingameUI.ShowResult(0, false);
+            enemyUnitSpawner.GameLose();
         }
 
         enemyUnitSpawner.OnFortressAttacked();

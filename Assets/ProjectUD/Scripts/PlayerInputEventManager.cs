@@ -19,6 +19,7 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputUnitModeChange OnUnitModeChangeTarget { set; private get; }
     public IInputPerformUnitUpgrade OnPerformUnitUpgradeTarget { set; private get; }
     public IInputESC OnESCTarget { set; private get; } 
+    public IInputOnSpace OnSpaceTarget { set; private get; }
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -97,6 +98,12 @@ public class PlayerInputEventManager : MonoBehaviour
     {
         if (OnESCTarget != null)
             OnESCTarget.OnESC(context);
+    }
+
+    public void OnSpace(InputAction.CallbackContext context)
+    {
+        if (OnSpaceTarget != null)
+            OnSpaceTarget.OnSpace(context);
     }
 
 

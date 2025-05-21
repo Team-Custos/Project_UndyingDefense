@@ -533,7 +533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -8.309998, y: -6.0399933}
+  m_AnchoredPosition: {x: -8.309998, y: -6.039978}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5357930225089114192
@@ -797,12 +797,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7170138378423377461}
   m_Father: {fileID: 5185075614132274415}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 110}
+  m_AnchoredPosition: {x: 0, y: 110.00003}
   m_SizeDelta: {x: 90, y: 129}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &722841515293224767
@@ -1024,9 +1025,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8646598163649032712}
   - {fileID: 5149273796048458134}
-  - {fileID: 7170138378423377461}
+  - {fileID: 8646598163649032712}
   - {fileID: 4097692953962350450}
   - {fileID: 9211867374051294134}
   - {fileID: 9056092711753212781}
@@ -1089,8 +1089,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedUnitManager: {fileID: 0}
-  FirstUpgradeBtn: {fileID: 2879765180181268099}
-  SecondUpgradeBtn: {fileID: 7369594096935783451}
+  selectedUnitBackImage: {fileID: 0}
+  selectedUnitImage: {fileID: 0}
+  selectedUnitNameText: {fileID: 0}
+  selectedUnitAtTypeImage: {fileID: 0}
+  selectedUnitDfTypeImage: {fileID: 0}
+  selectedUnitTierImage: []
+  firstUpgradeUnitBackImage: {fileID: 0}
+  firstUpgradeUnitImage: {fileID: 0}
+  firstUpgradeBtn: {fileID: 0}
+  firstUpgradeUnitNameText: {fileID: 0}
+  firstUpgradeUnitAtTypeImage: {fileID: 0}
+  firstUpgradeUnitDfTypeImage: {fileID: 0}
+  firstUpgradeUnitTierImage: []
+  secondUpgradeUnitBackImage: {fileID: 0}
+  secondUpgradeBtn: {fileID: 0}
+  secondUpgradeUnitImage: {fileID: 0}
+  secondUpgradeUnitNameText: {fileID: 0}
+  secondUpgradeUnitAtTypeImage: {fileID: 0}
+  secondUpgradeUnitDfTypeImage: {fileID: 0}
+  secondUpgradeUnitTierImage: []
+  infoPanel: {fileID: 0}
+  infoText: {fileID: 0}
+  beforeHp: {fileID: 0}
+  afterHp: {fileID: 0}
+  infoHpText: {fileID: 0}
+  infoCrtiText: {fileID: 0}
+  infoMoveSpeedText: {fileID: 0}
+  infoAttackSpeedText: {fileID: 0}
+  infoGSkillImage: {fileID: 0}
+  infoGSkillText: {fileID: 0}
+  infoSSkillImage: {fileID: 0}
+  infoSSkillText: {fileID: 0}
+  infoGSkillDescript: {fileID: 0}
+  infoSSkillDescript: {fileID: 0}
+  upgradeCostTxt: {fileID: 0}
+  upgradePerformBtn: {fileID: 0}
+  unitBackImage: []
 --- !u!1 &8474593856847583602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1151,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8474593856847583602}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1125,11 +1160,11 @@ RectTransform:
   - {fileID: 3694319527644759951}
   - {fileID: 8338117052693164814}
   - {fileID: 3215223602573711731}
-  m_Father: {fileID: 5185075614132274415}
+  m_Father: {fileID: 8646598163649032712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -2.5, y: -105.9}
+  m_AnchoredPosition: {x: -2.5, y: 19.599976}
   m_SizeDelta: {x: 90, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1662846374539576942

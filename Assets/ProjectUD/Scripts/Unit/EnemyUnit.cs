@@ -419,9 +419,11 @@ public class EnemyUnit : Unit
     {
         if (!isDead)
         {
-            navAgent.enabled = false;
-            navObstacle.enabled = false;
-            collider.enabled = false;
+            //navAgent.enabled = false;
+            //navObstacle.enabled = false;
+            //collider.enabled = false;
+
+            base.Die();
 
             if(EnemyDeadSFX.Length > 0)
             {
@@ -431,7 +433,7 @@ public class EnemyUnit : Unit
 
             // 상태를 변경하고 에니메이션을 변경
             state = State.DEAD;
-            modelAnimator.SetTrigger("Die");
+            //modelAnimator.SetTrigger("Die");
             AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
             AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
 

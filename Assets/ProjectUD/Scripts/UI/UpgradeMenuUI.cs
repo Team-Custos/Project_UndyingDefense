@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
 {
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
 
     [Header(" ■ 선택된 유닛")]
@@ -49,21 +50,26 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text infoSSkillText;
     [SerializeField] private Text infoGSkillDescript;
     [SerializeField] private Text infoSSkillDescript;
+    [SerializeField] private Text infoMentalText;
 
-
+    [SerializeField] private RectTransform leftPos;
+    [SerializeField] private RectTransform middlePos;
 
     private UnitData currentUnitData;
     private UnitData firstUnitData;
     private UnitData secondUnitData;
 
+    [SerializeField] private  GameObject twoLine;
+    [SerializeField] private    GameObject oneLine;
 
-
+    [SerializeField] private Text currentGoldText;
     [SerializeField] private Text upgradeCostTxt;
     [SerializeField] private Button upgradePerformBtn;
 
     [SerializeField] private Sprite[] unitBackImage;
 
     private int upgradeIndex = -1;
+    private float cost;
 
     //public void UpgradeToFirstUnit()
     //{
@@ -87,9 +93,17 @@ public class UpgradeMenuUI : MonoBehaviour
         }
         else
         {
-            infoPanel.SetActive(true);
             upgradeIndex = index;
-            upgradePerformBtn.interactable = true;
+
+            if (cost < inGameManager.inGameGold)
+            {
+                upgradePerformBtn.interactable = true;
+            }
+            else // 돈 부족
+            {
+                upgradePerformBtn.interactable = false;
+            }
+
 
             if (index == 0)
             {
@@ -100,6 +114,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (firstUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
                 afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
+                infoMentalText.text = currentUnitData.Mental.ToString() + " + " + firstUnitData.Mental.ToString();
 
                 Unit firstUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
 
@@ -120,6 +135,9 @@ public class UpgradeMenuUI : MonoBehaviour
             }
             else if (index == 1)
             {
+                if (secondUnitData == null)
+                    return;
+
                 infoText.text = secondUnitData.Name;
                 infoCrtiText.text = "치명타율 : " + secondUnitData.CritChance.ToString();
                 infoMoveSpeedText.text = "이동속도 : " + secondUnitData.MoveSpeed.ToString();
@@ -127,6 +145,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
+                infoMentalText.text = currentUnitData.Mental.ToString() + " + " + secondUnitData.Mental.ToString();
 
                 Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[1].Prefab.GetComponent<Unit>();
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
@@ -137,6 +156,10 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoSSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
                 infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
+
+            
+            infoPanel.SetActive(true);
+
         }
 
     }
@@ -173,10 +196,73 @@ public class UpgradeMenuUI : MonoBehaviour
         }
 
 
-        AllyUnitData allyUnitData = (AllyUnitData)selectedUnit.Data;
+        AllyUnitData allyUnitData = (AllyUnitData)currentUnitData;
 
-        if(currentUnitData.Tier < 3)
+        if (allyUnitData.UpgradeUnits.Length <= 0)
+            return;
+
+        // 업그레이드 가능이 한가지인 경우
+        if(allyUnitData.UpgradeUnits.Length <= 1 || currentUnitData.Tier >= 3)
         {
+            secondUpgradeUnitBackImage.gameObject.SetActive(false);
+            twoLine.SetActive(false);
+            oneLine.SetActive(true);
+            firstUpgradeUnitBackImage.rectTransform.position = middlePos.position;
+
+            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
+            firstUnitData = firstUpgradeUnitData;
+
+            if (firstUpgradeUnitData != null)
+            {
+                // 첫번째 업그레이드 유닛
+                firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
+                firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
+                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
+                firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
+
+                for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
+                {
+                    if (i < firstUpgradeUnitData.Tier)
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
+                    else
+                        firstUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
+                }
+
+                AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
+
+                cost = upgradeUnitData.Cost;
+
+                if (inGameManager.inGameGold < upgradeUnitData.Cost) // 돈 부족
+                {
+                    upgradePerformBtn.interactable = false;
+                    currentGoldText.color = Color.red;
+                    currentGoldText.gameObject.SetActive(true);
+                    currentGoldText.text = inGameManager.inGameGold.ToString();
+                    upgradeCostTxt.text = " / " + upgradeUnitData.Cost.ToString();
+                }
+                else
+                {
+                    currentGoldText.gameObject.SetActive(false);
+                    upgradePerformBtn.interactable = true;
+                    upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
+                }
+
+                
+            }
+
+            return;
+
+        }
+
+        if (currentUnitData.Tier < 3 || allyUnitData.UpgradeUnits.Length >= 2)
+        {
+            firstUpgradeUnitBackImage.rectTransform.position = leftPos.position;
+
+            secondUpgradeUnitBackImage.gameObject.SetActive(true);
+            twoLine.SetActive(true);
+            oneLine.SetActive(false);
+        
+
             secondUpgradeBtn.interactable = true;
 
             UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
@@ -219,38 +305,25 @@ public class UpgradeMenuUI : MonoBehaviour
                 }
             }
             AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
-            upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
-        }
-        else
-        {
-            secondUpgradeBtn.interactable = false;
 
-            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
-            firstUnitData = firstUpgradeUnitData;
-            if (firstUpgradeUnitData != null)
+            cost = upgradeUnitData.Cost;
+
+            if (inGameManager.inGameGold < upgradeUnitData.Cost) // 돈 부족
             {
-                // 첫번째 업그레이드 유닛
-                firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
-                firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
-                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
-                firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
-
-                for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
-                {
-                    if (i < firstUpgradeUnitData.Tier)
-                        firstUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
-                    else
-                        firstUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
-                }
-
-                // 승급 비용
-
-                AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
+                upgradePerformBtn.interactable = false;
+                currentGoldText.color = Color.red;
+                currentGoldText.gameObject.SetActive(true);
+                currentGoldText.text = inGameManager.inGameGold.ToString() + " /";
+                upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
+            }
+            else
+            {
+                currentGoldText.gameObject.SetActive(false);
+                upgradePerformBtn.interactable = true;
                 upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
             }
         }
 
-        
 
         SetUnitBackImage(selectedUnit);
     }
@@ -278,4 +351,6 @@ public class UpgradeMenuUI : MonoBehaviour
             secondUpgradeUnitBackImage.sprite = unitBackImage[3];
         }
     }
+
+
 }
