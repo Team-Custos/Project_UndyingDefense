@@ -75,7 +75,7 @@ public class Effect : MonoBehaviour
 
     public virtual void Activate() // 효과를 발동할 때
     {
-        if (stack < maxStack)
+        if (stack < maxStack || maxStack == 0)
         {
             if (onActivate != null)
                 onActivate.Invoke();

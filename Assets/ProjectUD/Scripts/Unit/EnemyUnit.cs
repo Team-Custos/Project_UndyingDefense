@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using TMPro;
-using static AllyUnit;
-using Unity.Collections.LowLevel.Unsafe;
 
 public class EnemyUnit : Unit
 {
@@ -11,7 +8,8 @@ public class EnemyUnit : Unit
     {
         MOVE,
         COMBAT,
-        ATTACKFORTRESS
+        ATTACKFORTRESS,
+        STUN
     }
 
     private enum State
@@ -118,27 +116,12 @@ public class EnemyUnit : Unit
 
         switch(state)
         {
+            case State.STUN:
+                //{
+                //    return;
+                //}
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
-            case State.STUN:
-                {
-                    if (stateDuration <= 0f)
-                        return;
-                    if (stateDurationCheck < stateDuration)
-                    {
-                        stateDurationCheck += Time.deltaTime;
-                    }
-                    else
-                    {
-                        stateDurationCheck = 0f;
-                        stateDuration = 0f;
-
-                        state = State.IDLE;
-
-                        modelAnimator.SetBool("isStun", false);
-                    }
-                }
-                break;
             case State.BATTLECRY:
             case State.DEAD:
                 {
@@ -210,13 +193,15 @@ public class EnemyUnit : Unit
 
     private void UpdateMode()
     {
+        if (state == State.STUN)
+            return;
+
         switch (mode)
         {
+            case Mode.STUN:
+                break;
             case Mode.MOVE:
                 {
-                    if (state == State.STUN)
-                        return;
-
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
                     if(distance <= data.AttackRange)
@@ -279,9 +264,6 @@ public class EnemyUnit : Unit
                 break;
             case Mode.COMBAT:
                 {
-                    if (state == State.STUN)
-                        return;
-
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
                         if (IsTargetInRange(targetUnit, Data.AttackRange)) // 공격 사거리 내
@@ -406,12 +388,15 @@ public class EnemyUnit : Unit
     {
         base.GetStun();
         state = State.STUN;
+        mode = Mode.STUN;
     }
 
     public override void RemoveStun()
     {
         base.RemoveStun();
         state = State.IDLE;
+        mode = Mode.MOVE;
+        ForceMoveTo(fortressPos);
     }
 
 

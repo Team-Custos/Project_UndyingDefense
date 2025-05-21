@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 using ArmorType = Unit.ArmorType;
 
@@ -201,27 +202,28 @@ public class AttackSkill : SkillBase
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)//투사체 발사
     {
         // 투사체 발사
-        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
-        if (projectile.GetComponent<ArrowCtrl>() != null)
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
         {
-            ArrowCtrl arrowCtrl = projectile.GetComponent<ArrowCtrl>();
             arrowCtrl.SetTarget(target);
             arrowCtrl.SetEvent(() => {
                 Attack(unit, target);
             });
             arrowCtrl.CalculateTime(distance);
+            arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+
         }
-        if (projectile.GetComponent<GranadeCtrl>() != null)
+        if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
         {
             Vector3 targetPos = target.transform.position;
             projectile.transform.position = this.transform.position;
 
-            GranadeCtrl granadeCtrl = projectile.GetComponent<GranadeCtrl>();
-            float maxHeight = 1f;
-
-            granadeCtrl.JumpTowards(targetPos, maxHeight);
+            float durationTime = 1f;
+            granadeCtrl.SetData(data);
+            granadeCtrl.SetTargetLayer(unit.EnemyLayer);
+            granadeCtrl.JumpTowards(targetPos, durationTime);
         }
 
         // 람다식 Lambda Expression

@@ -11,7 +11,6 @@ public class AllyUnit : Unit
         SEIGE,
         CHANGE,
         UPGRADE
-        
     }
 
     public enum TargetingType    //아군 유닛의 타겟 선정 방식.
@@ -107,34 +106,37 @@ public class AllyUnit : Unit
         this.spawner = spawner;
     }
 
-
     protected override void Update()
     {
         base.Update();
 
         switch (state)
         {
+            case State.STUN:
+                //{
+                //    if (stateDuration <= 0f)
+                //        return;
+                //    if (stateDurationCheck < stateDuration)
+                //    {
+                //        stateDurationCheck += Time.deltaTime;
+                //        navAgent.speed = 0f;
+                //        navAgent.isStopped = true;
+                //    }
+                //    else
+                //    {
+                //        stateDurationCheck = 0f;
+                //        stateDuration = 0f;
+
+                //        state = State.IDLE;
+                //        navAgent.isStopped = false;
+                //        navAgent.speed = data.MoveSpeed * moveSpeedMultiplier;
+
+                //        modelAnimator.SetBool("isStun", false);
+                //    }
+                //}
+                //break;
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
-            case State.STUN:
-                {
-                    if (stateDuration <= 0f)
-                        return;
-                    if (stateDurationCheck < stateDuration)
-                    {
-                        stateDurationCheck += Time.deltaTime;
-                    }
-                    else
-                    {
-                        stateDurationCheck = 0f;
-                        stateDuration = 0f;
-
-                        state = State.IDLE;
-
-                        modelAnimator.SetBool("isStun", false);
-                    }
-                }
-                break;
             case State.DEAD:
                 {
                     if(state != State.DEAD)
@@ -148,7 +150,33 @@ public class AllyUnit : Unit
                         if (!navObstacle.enabled)
                             navObstacle.enabled = true;
                     }
-                    
+
+                    if (state == State.SPECIALSKILL)
+                    {
+                        SkillBase skill = GetSpecialSkill();
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
+                    }
+
+                    if (state == State.GENERALSKILL)
+                    {
+                        SkillBase skill = GetGeneralSkill();
+
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
+                    }
+
+
                     if (stateDuration <= 0f)
                         return;
 
@@ -304,6 +332,9 @@ public class AllyUnit : Unit
 
     private void UpdateMode()
     {
+        if(state == State.STUN)
+            return;
+
         switch (mode)
         {
             case Mode.SEIGE:
@@ -339,7 +370,9 @@ public class AllyUnit : Unit
                                                 modelAnimator.SetBool("isRunning", false);
                                             }
 
+
                                             ActivateSkill(skill, targetUnit);
+
                                             //modelAnimator.SetTrigger("GeneralSkill");
                                         }
                                         else
@@ -350,6 +383,13 @@ public class AllyUnit : Unit
                                 break;
                             case SkillBase.TargetType.ALLY:
                                 {
+                                    //if (stateDurationCheck >= stateDuration)
+                                    //{
+                                    //    ActivateSkill(skill, null);
+                                    //    stateDurationCheck = 0f;
+                                    //    stateDuration = 0f;
+                                    //}
+
                                     ActivateSkill(skill, null);
                                 }
                                 break;
@@ -416,6 +456,13 @@ public class AllyUnit : Unit
                                         if (IsTargetInRange(targetUnit, data.AttackRange))
                                         {
                                             ActivateSkill(skill, targetUnit);
+
+                                            if (stateDurationCheck >= stateDuration)
+                                            {
+                                                
+                                                stateDurationCheck = 0f;
+                                                stateDuration = 0f;
+                                            }
                                             return;
                                         }
                                     }
@@ -423,6 +470,13 @@ public class AllyUnit : Unit
                                 case SkillBase.TargetType.ALLY:
                                     {
                                         ActivateSkill(skill, null);
+
+                                        if (stateDurationCheck >= stateDuration)
+                                        {
+                                            
+                                            stateDurationCheck = 0f;
+                                            stateDuration = 0f;
+                                        }
                                     }
                                     return;
                             }
@@ -731,7 +785,7 @@ public class AllyUnit : Unit
         if (target != this)
             transform.LookAt(target.transform);
 
-        base.ActivateSkill(skill, target);
+        //base.ActivateSkill(skill, target);
     }
 
     public void ChangeMode(Mode mode)
