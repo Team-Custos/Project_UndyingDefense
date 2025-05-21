@@ -162,7 +162,7 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     private void Start()
     {
-        inGameGold = 500;
+        inGameGold = 100000;
         ingameScreenUI.SetGoldTextUI(inGameGold);
 
         SoundManager.Instance.PlaySFX(inGameIntro);
