@@ -85,7 +85,10 @@ public class SelectedUnitUI : MonoBehaviour
         {
             UpdateUI();
 
-            if(selecteUnitManger.SelectedUnit is AllyUnit)
+            if (selecteUnitManger.SelectedUnit.HpPercent <= 0)
+                return;
+
+            if (selecteUnitManger.SelectedUnit is AllyUnit)
             {
                 allyUnitUI.SetActive(true);
                 allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
