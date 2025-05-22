@@ -45,7 +45,9 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Text atSpeedText;
     [SerializeField] private Image[] tierImage;
     [SerializeField] private Text gSkillInfoText;
+    [SerializeField] private Text gSkillNameText;
     [SerializeField] private Text sSkillInfoText;
+    [SerializeField] private Text sSkilNameText;
     [SerializeField] private Image[] unitStateImage;
 
     [SerializeField] private TextMeshProUGUI unitGSkillText;
@@ -231,8 +233,11 @@ public class SelectedUnitUI : MonoBehaviour
             unitGSkillImage.gameObject.SetActive(true);
             unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
-            gSkillInfoText.text = unit.SpecialSkill.Data.Description;
-            sSkillInfoText.text = unit.GeneralSkill.Data.Description;
+            gSkillNameText.text = unit.GeneralSkill.Data.Name;
+            gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
+            sSkilNameText.text = unit.SpecialSkill.Data.Name;
+            sSkillInfoText.text = unit.SpecialSkill.Data.Description;
 
         }
         else
@@ -242,7 +247,7 @@ public class SelectedUnitUI : MonoBehaviour
 
         }
 
-        unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+        unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
         critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
@@ -277,7 +282,10 @@ public class SelectedUnitUI : MonoBehaviour
             unitGSkillImage.gameObject.SetActive(true);
             unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
-            gSkillInfoText.text = unit.SpecialSkill.Data.Description;
+            gSkillNameText.text = unit.GeneralSkill.Data.Name;
+            gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
+            sSkilNameText.text = unit.SpecialSkill.Data.Name;
             sSkillInfoText.text = unit.GeneralSkill.Data.Description;
 
         }
@@ -288,7 +296,7 @@ public class SelectedUnitUI : MonoBehaviour
             
         }
 
-       unitSSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+       unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
         critText.text = "치명타 율 : " + unit.Data.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();

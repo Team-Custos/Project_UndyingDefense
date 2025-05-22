@@ -25,6 +25,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image firstUpgradeUnitAtTypeImage;
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] firstUpgradeUnitTierImage;
+    [SerializeField] private Image lockImage;
 
     [Header(" ■ 두번째 업그레이드 유닛")]
     [SerializeField] private Image secondUpgradeUnitBackImage;
@@ -184,6 +185,9 @@ public class UpgradeMenuUI : MonoBehaviour
 
         upgradePerformBtn.interactable = false;
 
+        firstUpgradeBtn.interactable = true;
+        lockImage.gameObject.SetActive(false);
+
         // 현재 선택된 유닛
         selectedUnitImage.sprite = selectedUnit.Data.Icon;
         selectedUnitNameText.text = selectedUnit.Data.Name;
@@ -204,6 +208,12 @@ public class UpgradeMenuUI : MonoBehaviour
         // 업그레이드 가능이 한가지인 경우
         if(allyUnitData.UpgradeUnits.Length <= 1 || currentUnitData.Tier >= 3)
         {
+            if(currentUnitData.Name == "언월도병")
+            {
+                firstUpgradeBtn.interactable = false;
+                lockImage.gameObject.SetActive(true);
+            }
+
             secondUpgradeUnitBackImage.gameObject.SetActive(false);
             twoLine.SetActive(false);
             oneLine.SetActive(true);
@@ -236,14 +246,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 {
                     upgradePerformBtn.interactable = false;
                     currentGoldText.color = Color.red;
-                    currentGoldText.gameObject.SetActive(true);
                     currentGoldText.text = inGameManager.inGameGold.ToString();
-                    upgradeCostTxt.text = " / " + upgradeUnitData.Cost.ToString();
+                    upgradeCostTxt.text =  upgradeUnitData.Cost.ToString();
                 }
                 else
                 {
-                    currentGoldText.gameObject.SetActive(false);
                     upgradePerformBtn.interactable = true;
+                    currentGoldText.text = inGameManager.inGameGold.ToString();
                     upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
                 }
 
@@ -312,14 +321,13 @@ public class UpgradeMenuUI : MonoBehaviour
             {
                 upgradePerformBtn.interactable = false;
                 currentGoldText.color = Color.red;
-                currentGoldText.gameObject.SetActive(true);
-                currentGoldText.text = inGameManager.inGameGold.ToString() + " /";
+                currentGoldText.text = inGameManager.inGameGold.ToString();
                 upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
             }
             else
             {
-                currentGoldText.gameObject.SetActive(false);
                 upgradePerformBtn.interactable = true;
+                currentGoldText.text = inGameManager.inGameGold.ToString();
                 upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
             }
         }

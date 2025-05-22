@@ -15,10 +15,10 @@ MonoBehaviour:
   unitName: "\uC5B8\uC6D4\uB3C4\uBCD1"
   tier: 3
   armorType: 2
-  maxHp: 300
+  maxHp: 200
   critChance: 30
   mental: 2
-  moveSpeed: 2.3
+  moveSpeed: 6
   attackSpeed: 80
   sightRange: 20
   attackRange: 3
@@ -35,5 +35,6 @@ MonoBehaviour:
     \uC544\uAD70\uC774\uB77C\uB3C4 \uADFC\uCC98\uC5D0 \uAC00\uC9C0 \uC54A\uC73C\uB824\uACE0
     \uD55C\uB2E4."
   cost: 1500
-  upgradeUnits: []
+  upgradeUnits:
+  - {fileID: 11400000, guid: 7e27235f8da572e46a3aa37956adc044, type: 2}
   targetingType: 0

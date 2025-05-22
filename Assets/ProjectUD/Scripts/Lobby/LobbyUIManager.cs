@@ -178,7 +178,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 //SceneManager.LoadSceneAsync(2);
 
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0513");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0522");
 
                 if (GlobalSoundManager.instance != null)
                 {
