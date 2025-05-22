@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UserDataModel : MonoBehaviour
 {
+    [SerializeField] private AudioClip lobbyBgm;
+
     public static UserDataModel instance;
 
     public List<string> skillIDs = new List<string>();
@@ -12,5 +14,10 @@ public class UserDataModel : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+       SoundManager.Instance.PlayBGM(lobbyBgm);
     }
 }

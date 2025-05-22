@@ -23,9 +23,13 @@ public class TitleUIManager : MonoBehaviour
     float elapsedTime = 0f;
     public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
+    [SerializeField] private AudioClip titleBgm;
+
     // Start is called before the first frame update
     void Start()
     {
+        SoundManager.Instance.PlayBGM(titleBgm);
+
         if (loadingPanel != null)
         {
             loadingPanel.SetActive(false);
@@ -39,7 +43,8 @@ public class TitleUIManager : MonoBehaviour
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
-                LoadScene(1);
+
+                LoadingSceneManager.LoadScene("IntroScene");
             });
 
         }
