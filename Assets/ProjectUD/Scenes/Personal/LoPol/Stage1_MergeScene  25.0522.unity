@@ -6203,10 +6203,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0160b54853e8aa340869e7cea1043e63, type: 3}
-    m_FontSize: 38
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -6214,7 +6214,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uACB0\uACFC \uCF54\uBA58\uD2B8"
+  m_Text: "\uD55C \uAC78\uC74C \uBB3C\uB7EC\uB098 \uC9C0\uD61C\uB97C \uB3C4\uBAA8\uD574\uBD05\uC2DC\uB2E4."
 --- !u!222 &176780138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10961,7 +10961,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC124\uC815 \uCC3D"
+  m_Text: "\uC124\uC815"
 --- !u!222 &368757138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21400,7 +21400,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uD2B9\uC218\uC2A4\uD0AC"
+  m_Text: "\uD2B9\uC218 \uC2A4\uD0AC"
 --- !u!222 &708695356
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25833,6 +25833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGameGold: 500
   ingameScreenUI: {fileID: 959445840}
   inputEventManager: {fileID: 1590103094}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
@@ -31843,7 +31844,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uBA54\uC778\uD654\uBA74\uC73C\uB85C"
+  m_Text: "\uBA54\uC778\uC73C\uB85C"
 --- !u!222 &1032831260
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32988,7 +32989,7 @@ Transform:
   m_GameObject: {fileID: 1061626274}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.79, y: 0, z: -9.02}
+  m_LocalPosition: {x: 29.79, y: 0, z: -4.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35003,8 +35004,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -22.1}
-  m_SizeDelta: {x: 251.6, y: 33.4}
+  m_AnchoredPosition: {x: 89.1, y: -22.7}
+  m_SizeDelta: {x: 251.6, y: 33.47}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134662125
 MonoBehaviour:
@@ -35026,7 +35027,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCC99\uD6C4\uBCD1"
+  m_text: "\uAC70\uB8E9\uD55C \uD314\uB77C\uB518 \uC5D0\uB4DC\uC6CC\uB4DC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd641e64e9cda6248a2d6f26e31e0da2, type: 2}
   m_sharedMaterial: {fileID: -7777895569357558908, guid: bd641e64e9cda6248a2d6f26e31e0da2,
@@ -35061,7 +35062,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -35292,6 +35293,9 @@ MonoBehaviour:
   camManager: {fileID: 1346724712}
   commandSkillManager: {fileID: 1238902731}
   mouseIndicatorParticle: {fileID: 1132875222}
+  upgradeSfx: {fileID: 8300000, guid: 293f6e681f147024b907eb56848243e3, type: 3}
+  siegeSfx: {fileID: 8300000, guid: 0239c21a051d7794a9566bb2864be356, type: 3}
+  freeSfx: {fileID: 8300000, guid: 35feb7bbbaf1baf4aa26e07095d6af7e, type: 3}
 --- !u!4 &1137951089
 Transform:
   m_ObjectHideFlags: 0
@@ -51038,6 +51042,8 @@ MonoBehaviour:
   IsPrime: 0
   bgmAudio: {fileID: 1636126442}
   sfxAudio: {fileID: 1636126442}
+  uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
+  cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
   unitSfxClip: []
   uiSfxClip: []
 --- !u!1 &1636922422
@@ -51487,7 +51493,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uAE30\uBCF8\uC2A4\uD0AC"
+  m_Text: "\uAE30\uBCF8 \uC2A4\uD0AC"
 --- !u!222 &1649937503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -64130,7 +64136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB3CC\uC544\uAC00\uAE30"
+  m_Text: "\uBA54\uC778\uC73C\uB85C"
 --- !u!114 &8572175753060015470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64256,6 +64262,11 @@ PrefabInstance:
     - target: {fileID: 757294559213992132, guid: 57f4bc187590a164da4a60d150f66e39,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236322752746970380, guid: 57f4bc187590a164da4a60d150f66e39,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1313224220739195708, guid: 57f4bc187590a164da4a60d150f66e39,

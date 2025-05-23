@@ -81,6 +81,8 @@ public class LobbyUIManager : MonoBehaviour
     public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
 
+    [SerializeField] private AudioClip battleStartSfx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -105,6 +107,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
+                SoundManager.Instance.PlayUIClickSFX();
                 lobbySettingPanel.SetActive(true);
             });
         }
@@ -119,6 +122,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
+                SoundManager.Instance.playCancleSFX();
                 lobbySettingPanel.SetActive(false);
             });
         }
@@ -133,7 +137,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-
+                SoundManager.Instance.playCancleSFX();
                 EndGame();
             });
         }
@@ -176,7 +180,7 @@ public class LobbyUIManager : MonoBehaviour
         {
             stageStartBtn.onClick.AddListener(() =>
             {
-                //SceneManager.LoadSceneAsync(2);
+                SoundManager.Instance.PlaySFX(battleStartSfx);
 
                 LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0522");
 
@@ -189,15 +193,6 @@ public class LobbyUIManager : MonoBehaviour
 
         }
 
-        if (particleBtn != null)
-        {
-            particleBtn.onClick.AddListener(() =>
-            {
-                //GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                PlayParticleEffect();
-            });
-
-        }
 
         if (localSituationPanelCloseBtn != null)
         {
@@ -357,6 +352,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
+                SoundManager.Instance.PlayUIClickSFX();
                 creditPanel.SetActive(true);
             });
         }
@@ -370,6 +366,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
+                SoundManager.Instance.playCancleSFX();
                 creditPanel.SetActive(false);
             });
         }
@@ -722,6 +719,7 @@ public class LobbyUIManager : MonoBehaviour
 
     void EndGame()
     {
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

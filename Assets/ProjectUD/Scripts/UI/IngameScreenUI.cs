@@ -63,6 +63,7 @@ public class IngameScreenUI : MonoBehaviour
 
     public void HideTimer()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         noticeTimerUI.gameObject.SetActive(false);
     }
 
@@ -93,11 +94,14 @@ public class IngameScreenUI : MonoBehaviour
     {
         if (settingUI.activeSelf)
         {
+
+            SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
         }
         else
         {
+            SoundManager.Instance.PlayUIClickSFX();
             settingUI.SetActive(true);
             Time.timeScale = 0.0f;
         }
@@ -107,6 +111,7 @@ public class IngameScreenUI : MonoBehaviour
     {
         if (settingUI.activeSelf)
         {
+            SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
         }

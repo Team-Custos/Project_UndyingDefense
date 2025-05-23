@@ -128,6 +128,7 @@ public class SelectedUnitUI : MonoBehaviour
     public void HideUpgrdeUI()
     {
         unitUpgradeMenuPrefab.SetActive(false);
+        SoundManager.Instance.playCancleSFX();
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -135,6 +136,7 @@ public class SelectedUnitUI : MonoBehaviour
         if (unit.Data.Tier >= 4)
             return;
 
+        SoundManager.Instance.PlayUIClickSFX();
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
@@ -168,6 +170,7 @@ public class SelectedUnitUI : MonoBehaviour
     public void HideAllyUI()
     {
         unitMenuPrefab.SetActive(false);
+        SoundManager.Instance.PlayUIClickSFX();
         //selectedUnit = null;
     }
 
@@ -298,7 +301,7 @@ public class SelectedUnitUI : MonoBehaviour
 
        unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
-        critText.text = "치명타 율 : " + unit.Data.CritChance.ToString() + "%";
+        critText.text = "치명타율 : " + unit.Data.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
 

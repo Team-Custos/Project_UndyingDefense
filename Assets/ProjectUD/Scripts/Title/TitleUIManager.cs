@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cinemachine.Utility;
+using DG.Tweening;
 
 public class TitleUIManager : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class TitleUIManager : MonoBehaviour
     public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
     [SerializeField] private AudioClip titleBgm;
+    [SerializeField] private AudioClip startSfx;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +41,18 @@ public class TitleUIManager : MonoBehaviour
         {
             gameStartBtn.onClick.AddListener(() =>
             {
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
+                SoundManager.Instance.PlaySFX(startSfx);
 
                 LoadingSceneManager.LoadScene("IntroScene");
+
+                //DOTween.Sequence()
+                //.AppendInterval(startSfx.length)
+                //.OnComplete(() =>
+                //    {
+                //         LoadingSceneManager.LoadScene("IntroScene");
+                //     });
+
+                //SoundManager.Instance.StopBGM();
             });
 
         }
@@ -53,10 +61,6 @@ public class TitleUIManager : MonoBehaviour
         {
             gameEndBtn.onClick.AddListener(() =>
             {
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
                 EndGame();
             });
         }

@@ -136,7 +136,7 @@ using UnityEngine.SceneManagement;
 
 public class InGameManager : MonoBehaviour, IInputESC
 {
-    public float inGameGold { set; get; }
+    public float inGameGold;
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
@@ -162,7 +162,6 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     private void Start()
     {
-        inGameGold = 500;
         ingameScreenUI.SetGoldTextUI(inGameGold);
 
         SoundManager.Instance.PlaySFX(inGameIntro);
@@ -189,18 +188,21 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void ReLoadeCurrentScene()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadLobbyScene()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("LobbyScene_LoPol");
     }
 
     public void ExitGame()
     {
+        SoundManager.Instance.PlayUIClickSFX();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -210,6 +212,7 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void PauseGame()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         if (!isGamePause)
         {
             Time.timeScale = 0f;
@@ -226,6 +229,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
+            SoundManager.Instance.playCancleSFX();
             ingameScreenUI.OnOffSetting();
         }
     }

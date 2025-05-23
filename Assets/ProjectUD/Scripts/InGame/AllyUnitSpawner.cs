@@ -229,6 +229,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             selectedUnitUI.UpdateUnitInfoByBtn(units[index]);
         }
+
+        SoundManager.Instance.PlayUIClickSFX();
     }
 
     public void CancelSpawn()

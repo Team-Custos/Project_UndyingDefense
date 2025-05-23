@@ -437,6 +437,7 @@ MonoBehaviour:
   delayBetweenAnimations: 0.2
   minLoadingTime: 3
   titleBgm: {fileID: 8300000, guid: 146f5521753f3724c9610a12718f814c, type: 3}
+  startSfx: {fileID: 8300000, guid: 5687022b379ba514098df4ccdf408b61, type: 3}
 --- !u!4 &345741950
 Transform:
   m_ObjectHideFlags: 0
@@ -585,7 +586,7 @@ GameObject:
   - component: {fileID: 530951519}
   - component: {fileID: 530951518}
   m_Layer: 0
-  m_Name: BGMManager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -699,9 +700,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51cca3f673855e445bae703cd8f04134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsPrime: 0
+  IsPrime: 1
   bgmAudio: {fileID: 530951518}
-  sfxAudio: {fileID: 0}
+  sfxAudio: {fileID: 530951518}
+  uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
+  cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
   unitSfxClip: []
   uiSfxClip: []
 --- !u!4 &530951520
@@ -823,6 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc556fe42adde2e4c884eb59e5db1eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyBgm: {fileID: 0}
   skillIDs: []
 --- !u!4 &712085342
 Transform:

@@ -17,6 +17,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     [SerializeField] private ParticleSystem mouseIndicatorParticle;
 
 
+    [SerializeField] private AudioClip upgradeSfx;
+    [SerializeField] private AudioClip siegeSfx;
+    [SerializeField] private AudioClip freeSfx;
+
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
     private bool isUpgradeOn;
@@ -64,6 +68,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     {
                         return;
                     }
+
+                    SoundManager.Instance.PlayUIClickSFX();
 
                     camManager.FocusSelectedUnit(hit.transform.position);
 
@@ -194,6 +200,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             return;
         }
 
+        SoundManager.Instance.PlayUIClickSFX();
         unitSelectUI.ShowUpgradeMenu(selectedUnit);
     }
 
@@ -215,10 +222,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             return;
         }
 
+        SoundManager.Instance.PlayUIClickSFX();
+
         selectedAllyUnit.Upgrade(index);
 
         inGameManager.SetGold(nextUnitData.Cost, false);
         ingameScreenUI.SetspawnBtnPriceTextColor();
+
+        SoundManager.Instance.PlaySFX(upgradeSfx);
 
         unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();
@@ -228,6 +239,17 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if(!selectedAllyUnit.IsSelected)
             return;
+
+        SoundManager.Instance.PlayUIClickSFX();
+
+        if(selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE)
+        {
+            SoundManager.Instance.PlaySFX(siegeSfx);
+        }
+        else if (selectedAllyUnit.ModeType == AllyUnit.Mode.FREE)
+        {
+            SoundManager.Instance.PlaySFX(freeSfx);
+        }
 
         selectedAllyUnit.ChangeMode(AllyUnit.Mode.CHANGE);
         unitSelectUI.HideAllyUI();
@@ -308,7 +330,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             {
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 
-                if (allyUnitData.UpgradeUnits.Length <= 0)
+                if (allyUnitData.UpgradeUnits.Length <= 0 || selectedAllyUnit.Data.Name == "언월도병")
                     return;
 
                 string keyName = context.control.name;

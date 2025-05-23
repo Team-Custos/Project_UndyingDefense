@@ -91,6 +91,8 @@ public class UpgradeMenuUI : MonoBehaviour
             infoPanel.SetActive(false);
             upgradePerformBtn.interactable = false;
 
+            SoundManager.Instance.PlayUIClickSFX();
+
         }
         else
         {
@@ -158,7 +160,8 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
 
-            
+            SoundManager.Instance.PlayUIClickSFX();
+
             infoPanel.SetActive(true);
 
         }
@@ -170,6 +173,7 @@ public class UpgradeMenuUI : MonoBehaviour
         if (upgradeIndex == -1)
             return;
         selectedUnitManager.UpgradeSelectedUnit(upgradeIndex);
+        SoundManager.Instance.PlayUIClickSFX();
     }
 
     public void SetUnitUpgradeMenu(Unit selectedUnit)
@@ -252,6 +256,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 else
                 {
                     upgradePerformBtn.interactable = true;
+                    currentGoldText.color = Color.white;
                     currentGoldText.text = inGameManager.inGameGold.ToString();
                     upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
                 }
@@ -327,6 +332,7 @@ public class UpgradeMenuUI : MonoBehaviour
             else
             {
                 upgradePerformBtn.interactable = true;
+                currentGoldText.color = Color.white;
                 currentGoldText.text = inGameManager.inGameGold.ToString();
                 upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
             }

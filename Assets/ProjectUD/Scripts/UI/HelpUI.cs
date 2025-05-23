@@ -24,6 +24,7 @@ public class HelpUI : MonoBehaviour
 
     public void OnManuel()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         manulPanel.SetActive(true);
         attributePanel.SetActive(false);
         manulBtn.image.sprite = activSprite;
@@ -32,6 +33,7 @@ public class HelpUI : MonoBehaviour
 
     public void OnAttribute()
     {
+        SoundManager.Instance.PlayUIClickSFX();
         manulPanel.SetActive(false);
         attributePanel.SetActive(true);
         manulBtn.image.sprite = deactivSprite;
@@ -44,6 +46,7 @@ public class HelpUI : MonoBehaviour
         {
             currentIndex++;
             UpdatePanelPositions();
+            SoundManager.Instance.PlayUIClickSFX();
         }
     }
 
@@ -53,6 +56,7 @@ public class HelpUI : MonoBehaviour
         {
             currentIndex--;
             UpdatePanelPositions();
+            SoundManager.Instance.PlayUIClickSFX();
         }
     }
 
@@ -70,7 +74,7 @@ public class HelpUI : MonoBehaviour
 
     public void OpenHelp()
     {
-
+        SoundManager.Instance.PlayUIClickSFX();
         currentIndex = 0;
         ResetToFirstPanel();
         gameObject.SetActive(true);
@@ -78,6 +82,7 @@ public class HelpUI : MonoBehaviour
 
     public void CloseHelp()
     {
+        SoundManager.Instance.playCancleSFX();
         gameObject.SetActive(false);
     }
 

@@ -180,6 +180,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                     selectedUI0.gameObject.SetActive(true);
                     selectedUI1.gameObject.SetActive(false);
                     isSkillActivated = false;
+                    SoundManager.Instance.PlayUIClickSFX();
                 }
                 else if (idx == 1)
                 {
@@ -187,6 +188,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                     selectedUI1.gameObject.SetActive(true);
                     isSkillActivated = true;
                     circle.SetActive(true);
+                    SoundManager.Instance.PlayUIClickSFX();
                 }
 
             }
@@ -197,6 +199,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                 isSkillActivated = false;
                 circle.SetActive(false);
                 ActivateCommandSkill(skill[activatedSkillButtonIdx], BurningOilPos);
+                SoundManager.Instance.PlayUIClickSFX();
             }
             else
             {

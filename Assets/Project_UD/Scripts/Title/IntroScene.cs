@@ -9,19 +9,19 @@ using UnityEngine.Video;
 
 public class IntroScene : MonoBehaviour
 {
-    [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private VideoPlayer videoPlayer;       // 비디오 플레이어 (영상 재생)
     [SerializeField] private Animator animator;
-    private bool isSkipped = false;
+    private bool isSkipped = false;                         // 영상이 스킵되었는지 확인
 
-    [SerializeField] private AudioClip firstHalfBgm;
-    [SerializeField] private AudioClip secondHalfBgm;
-    [SerializeField] private AudioClip bgSfx;
-    [SerializeField] private AudioClip startSfx;
+    [SerializeField] private AudioClip firstHalfBgm;        
+    [SerializeField] private AudioClip secondHalfBgm;       
+    [SerializeField] private AudioClip bgSfx;               
+    [SerializeField] private AudioClip startSfx;            
 
-    [SerializeField] private float duration = 1.0f;
+    [SerializeField] private float duration = 1.0f;         
 
     //[SerializeField] private Image statementImage;
-    [SerializeField] private CanvasGroup statementCanvasGroup;
+    [SerializeField] private CanvasGroup statementCanvasGroup;              
     [SerializeField] private CanvasGroup declarationTransformCanvasGroup;
     [SerializeField] private CanvasGroup videoCanvasGroup;
     [SerializeField] private RectTransform declarationTransform;
@@ -29,7 +29,11 @@ public class IntroScene : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+
         videoPlayer.loopPointReached += OnVideoFinished;
+
+        // 영상 소리 페이드 아웃 예약
+        ScheduleVideoAudioFadeOut();
     }
 
     void Update()
@@ -46,7 +50,7 @@ public class IntroScene : MonoBehaviour
     private void OnVideoFinished(VideoPlayer vp)
     {
         // 1. 첫 BGM 재생
-        SoundManager.Instance.PlaySFX(firstHalfBgm);
+        SoundManager.Instance.PlayBGM(firstHalfBgm);
 
         // 2. statement 페이드 인
         FadeInStatementImage();
@@ -79,12 +83,35 @@ public class IntroScene : MonoBehaviour
         SoundManager.Instance.PlaySFX(bgSfx);
     }
 
+    private void ScheduleVideoAudioFadeOut()
+    {
+        double videoDuration = videoPlayer.length;
+
+        // 끝나기 1.5초 전에 페이드아웃 시작
+        double fadeOutStartTime = videoDuration - 3.0f;
+
+        if (fadeOutStartTime > 0)
+            Invoke(nameof(FadeOutVideoAudio), (float)fadeOutStartTime);
+    }
+
+    private void FadeOutVideoAudio()
+    {
+        float currentVolume = videoPlayer.GetDirectAudioVolume(0); // 첫 번째 오디오 트랙
+        DOTween.To(() => currentVolume, x =>
+        {
+            videoPlayer.SetDirectAudioVolume(0, x);
+        }, 0f, 1f); // 1.5초 동안 0까지 감소
+    }
+
     public void LoadScene()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Join(statementCanvasGroup.DOFade(0f, duration));
-        seq.Join(declarationTransformCanvasGroup.DOFade(0f, duration));
-        seq.Join(videoCanvasGroup.DOFade(0f, duration));
+
+        seq.Append(videoCanvasGroup.DOFade(0f, 0.5f));
+        seq.Join(statementCanvasGroup.DOFade(0f, 0.5f));
+
+        seq.Append(declarationTransformCanvasGroup.DOFade(0f, duration));
+
 
         SoundManager.Instance.PlaySFX(startSfx);
 
