@@ -8,8 +8,7 @@ public class EnemyUnit : Unit
     {
         MOVE,
         COMBAT,
-        ATTACKFORTRESS,
-        STUN
+        ATTACKFORTRESS
     }
 
     private enum State
@@ -36,6 +35,12 @@ public class EnemyUnit : Unit
         AGGRESSIVE
     }
 
+    private enum BehaviorPriority
+    {
+        Move,
+        Combat,
+    }
+
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
     private EnemyUnitSpawner enemySpawner;
@@ -43,9 +48,13 @@ public class EnemyUnit : Unit
     private Mode mode;
     private State state;
     private AIStance aiStance;
+    private BehaviorPriority behaviorPriority;
 
     private Fortress fortress;
     private Vector3 fortressPos;
+
+    [SerializeField] private float angerTriggerPercent; // 분노 발동 기준 퍼센트
+
 
     private bool hasExecutedMark = false;
 
@@ -58,6 +67,8 @@ public class EnemyUnit : Unit
     protected static AudioClip[] enemyDeadSFX;
 
     protected static GameObject coinDropVFX;
+
+    protected static GameObject warCryVFX;
 
     protected static AudioClip[] EnemyDeadSFX
     {
@@ -80,6 +91,18 @@ public class EnemyUnit : Unit
                 coinDropVFX = Resources.Load<GameObject>("Prefabs/VFX/UnitDeath/vfx_coinReward");
             }
             return coinDropVFX;
+        }
+    }
+
+    protected static GameObject WarCryVFX
+    {
+        get
+        {
+            if (warCryVFX == null)
+            {
+                warCryVFX = Resources.Load<GameObject>("Prefabs/VFX/WarCry/vfx_warCry");
+            }
+            return warCryVFX;
         }
     }
 
@@ -108,6 +131,7 @@ public class EnemyUnit : Unit
         state = State.BATTLECRY;
         isDead = false;
         aiStance = data.aiStance;
+        mode = Mode.MOVE;
     }
 
     protected override void Update()
@@ -198,8 +222,6 @@ public class EnemyUnit : Unit
 
         switch (mode)
         {
-            case Mode.STUN:
-                break;
             case Mode.MOVE:
                 {
                     float distance = Vector3.Distance(transform.position, fortressPos);
@@ -210,7 +232,17 @@ public class EnemyUnit : Unit
                         return;
                     }
 
-                    if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
+                    if (behaviorPriority == BehaviorPriority.Combat)
+                    {
+                        targetUnit = SearchTarget(data.SightRange);
+                        if (targetUnit != null)
+                        {
+                            mode = Mode.COMBAT;
+                            return;
+                        }
+                    }
+
+                    else if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
                     {
                         if (distance <= data.AttackRange)
                         {
@@ -311,7 +343,7 @@ public class EnemyUnit : Unit
                 break;
             case Mode.ATTACKFORTRESS:
                 {
-                    if (aiStance == AIStance.AGGRESSIVE)
+                    if (behaviorPriority == BehaviorPriority.Combat)
                     {
                         targetUnit = SearchTarget(data.SightRange);
                         if (targetUnit != null)
@@ -371,6 +403,19 @@ public class EnemyUnit : Unit
         }
     }
 
+    public override void TakeDamage(float Damage)
+    {
+        base.TakeDamage(Damage);
+        if (HpPercent * 100f <= angerTriggerPercent && !isDead)
+        {
+            if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
+            {
+                behaviorPriority = BehaviorPriority.Combat;
+                AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
+            }
+        }
+    }
+
     public override void GetProvoked(Unit ProvokedTarget)
     {
         Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
@@ -388,14 +433,12 @@ public class EnemyUnit : Unit
     {
         base.GetStun();
         state = State.STUN;
-        mode = Mode.STUN;
     }
 
     public override void RemoveStun()
     {
         base.RemoveStun();
-        state = State.IDLE;
-        mode = Mode.MOVE;
+        state = State.IDLE; //이전상태로 되돌아갈 수도 있는지 확인이 필요.
         ForceMoveTo(fortressPos);
     }
 

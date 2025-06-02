@@ -529,6 +529,7 @@ public abstract class Unit : MonoBehaviour
         critChance = Data.CritChance;
         critVulnerability = 0f;
         blockRate = 1f;
+        mental = Data.Mental;
 
         // 이동 속도
         moveSpeedMultiplier = 1f;
@@ -537,11 +538,23 @@ public abstract class Unit : MonoBehaviour
         attackSpeedMultiplier = 1f;
         attackSpeed = Data.AttackSpeed;
 
+        attackDamageMultiplier = 1f;
+
+        damageReductionMultiplier = 1f;
+
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
         navAgent.enabled = false;
         navObstacle.enabled = true;
         collider.enabled = true;
+
+        effectParent.gameObject.SetActive(true);
+        for (int idx = 0; idx < effectParent.childCount; idx++)
+        {
+            effectParent.GetChild(idx).gameObject.SetActive(false);
+        }
+
+        UpdateState();
 
 
         lastMoveTime = Time.time;
@@ -1085,6 +1098,7 @@ public abstract class Unit : MonoBehaviour
             navAgent.enabled = false;
             navObstacle.enabled = false;
             collider.enabled = false;
+            effectParent.gameObject.SetActive(false);
 
             modelAnimator.SetTrigger("Die");
 

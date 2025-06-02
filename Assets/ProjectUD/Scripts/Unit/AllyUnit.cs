@@ -90,6 +90,7 @@ public class AllyUnit : Unit
         base.Initialize();
         mode = Mode.SEIGE;
         previousMode = mode;
+        state = State.IDLE;
         //mode = Mode.FREE;
     }
 
@@ -154,6 +155,7 @@ public class AllyUnit : Unit
                     if (state == State.SPECIALSKILL)
                     {
                         SkillBase skill = GetSpecialSkill();
+                        Debug.Log("Special Skill " + skill + "사용");
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)

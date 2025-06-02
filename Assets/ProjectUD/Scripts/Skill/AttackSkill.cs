@@ -242,10 +242,14 @@ public class AttackSkill : SkillBase
         {
             unit.AddVFX(data.StartVFX);
         }
-        int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
-        if (data.StartSFX[randomSoundIdx] != null && data.StartSFX.Length > 0)
+        
+        if (data.StartSFX.Length > 0)
         {
-            SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
+            int randomSoundIdx = Random.Range(0, data.StartSFX.Length);
+            if (data.StartSFX[randomSoundIdx] != null)
+            {
+                SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
+            }
         }
 
 
