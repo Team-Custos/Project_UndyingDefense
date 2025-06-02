@@ -137,7 +137,7 @@ public class EnemyUnitSpawner : MonoBehaviour
            else     // 스폰 시작
            {
 
-                if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
+               if (spawnTimeCheck < spawnTime) // Enemy 생성 쿨 타임
                {
                    spawnTimeCheck += Time.deltaTime;
                }
@@ -154,13 +154,13 @@ public class EnemyUnitSpawner : MonoBehaviour
                    poolDic[data].List.Add(enemyUnit);
 
                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-                    enemySpawnVfx.transform.position = pos;
+                   enemySpawnVfx.transform.position = pos;
                    enemyUnit.transform.position = pos;
                    enemyUnit.transform.forward = spawnDirection.forward;
                    SoundManager.Instance.PlaySFX(enmeySpawnSfx);
-                    enemySpawnVfx.gameObject.SetActive(true);
-                    enemySpawnVfx.Play();
-                    enemyUnit.gameObject.SetActive(true);
+                   enemySpawnVfx.gameObject.SetActive(true);
+                   enemySpawnVfx.Play();
+                   enemyUnit.gameObject.SetActive(true);
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
 
                    totalMonCount++;

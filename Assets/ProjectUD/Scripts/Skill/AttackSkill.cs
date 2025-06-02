@@ -242,7 +242,7 @@ public class AttackSkill : SkillBase
         {
             unit.AddVFX(data.StartVFX);
         }
-
+        
         if (data.StartSFX.Length > 0)
         {
             int randomSoundIdx = Random.Range(0, data.StartSFX.Length);

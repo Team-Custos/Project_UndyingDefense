@@ -11,6 +11,7 @@ public class Fortress : MonoBehaviour
 
     [Header("■ Options")]
     [SerializeField] private float maxHp;
+    [SerializeField] private PositionsParentCtrl hitPositions;
     [SerializeField] private ListedPositions linePositions;
 
     [Header("■ Audio")]
@@ -50,7 +51,8 @@ public class Fortress : MonoBehaviour
 
     public Vector3 GetPosition(int index)
     {
-        return linePositions[index];
+        return hitPositions.Position(index);
+        //return linePositions[index];
     }
 
     
