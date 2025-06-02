@@ -535,6 +535,7 @@ public class AllyUnit : Unit
                             {
                                 transform.position = targetTile.transform.position;
                                 navObstacle.enabled = true;
+
                                 navAgent.enabled = false;
 
                             }

@@ -423,6 +423,7 @@ public abstract class Unit : MonoBehaviour
     public LayerMask EnemyLayer => enemyLayer;
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
+    public SkillBase PassiveSkill => passiveSkill;
     public List<Effect> EffectList => effectList;
     public bool IsSelected
     {

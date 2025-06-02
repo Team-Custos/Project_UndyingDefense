@@ -30,6 +30,8 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     [SerializeField] private float xMin = -40.0f;
     [SerializeField] private float zMax = 4.5f;
     [SerializeField] private float zMin = -25.0f;
+    
+    private Transform startTranfrom; // 카메라 시작 위치
 
     private Vector3 moveDirection = Vector3.zero; // 이동 방향 저장
 
@@ -39,6 +41,10 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         {
             framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
+
+        // startTranfrom 초기화
+        startTranfrom = new GameObject("StartPosition").transform;
+        startTranfrom.position = cameraPivot.position; // 카메라 시작 위치 저장
 
         inputEventManager.OnNavigateTarget = this;
         inputEventManager.OnScrollTarget = this;
@@ -117,6 +123,11 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         {
             if (selectedUnitManager.SelectedUnit != null)
                 FocusSelectedUnit(selectedUnitManager.SelectedUnit.transform.position);
+            else
+            {
+                FocusSelectedUnit(startTranfrom.position);
+            }
+
         }
     }
 

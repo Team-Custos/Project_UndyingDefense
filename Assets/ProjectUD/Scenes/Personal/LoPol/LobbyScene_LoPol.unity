@@ -2169,6 +2169,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HelpPanel 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8080511196138961425, guid: 249c4c40df871b043ba5fcb5c82e4ba6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9765,8 +9770,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc556fe42adde2e4c884eb59e5db1eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyBgm: {fileID: 8300000, guid: 7a5dca50312c6f04d89950884a0522fd, type: 3}
-  skillIDs: []
+  lobbyBgm: {fileID: 8300000, guid: 2080c7550c090c64e9fafa7a1690eb90, type: 3}
+  commandSkillDatas:
+  - {fileID: 11400000, guid: 11c11f6eee32d5f4c9ae03b0e9b06799, type: 2}
+  - {fileID: 11400000, guid: cbaca5eb6d56b2943bc6fedf32991fb2, type: 2}
+  - {fileID: 11400000, guid: 27e9ae8fd97398e498dc17b08cc8dca3, type: 2}
 --- !u!1 &1570110126
 GameObject:
   m_ObjectHideFlags: 0
@@ -11923,7 +11931,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

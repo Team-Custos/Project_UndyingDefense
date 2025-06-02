@@ -6,14 +6,17 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
-    [SerializeField] private GameObject tilePrefab; // 타일 프리팹
+    [SerializeField] private GameObject tilePrefab;
     [SerializeField] private Transform tileParent;
+    [SerializeField] private int xPos = -49;
+    [SerializeField] private int yPos = -15;
     [SerializeField] private int gridWidth = 40;
     [SerializeField] private int gridHeight = 12;
-    [SerializeField] private int tileSize = 1; // 타일 간격
-    [SerializeField] private MeshRenderer tileMeshRenderer; // 타일 메쉬 렌더러
+    [SerializeField] private int tileSize = 1;
+    [SerializeField] private MeshRenderer tileMeshRenderer;
+    [SerializeField] private LayerMask obstacleLayer;
+    private Vector3 checkBoxSize = new Vector3(1f, 1f, 1f);
 
-    private Vector3 cellSize = new Vector3(2f, 2f, 1f);
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +27,17 @@ public class TileManager : MonoBehaviour
 
     private void GenerateTileMap()
     {
-        for (int x = -55; x < gridWidth; x+=2)
+        for (int x = xPos; x < gridWidth; x+=2)
         {
-            for (int y = -15; y < gridHeight; y+=2)
+            for (int y = yPos; y < gridHeight; y+=2)
             {
-                Vector3 spawnPosition = new Vector3(x * tileSize, 0, y * tileSize);
-                Instantiate(tilePrefab, spawnPosition, Quaternion.identity, tileParent);
+                Vector3 tilePosition = new Vector3(x * tileSize, 0, y * tileSize);
+
+
+                if (!Physics.CheckBox(tilePosition, checkBoxSize * 0.5f, Quaternion.identity, obstacleLayer))
+                {
+                    Instantiate(tilePrefab, tilePosition, Quaternion.identity, tileParent);
+                }
             }
         }
     }

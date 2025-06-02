@@ -15,8 +15,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayBGM(AudioClip clip)
     {
-        if (bgmAudio.clip == clip)
-            return;
+        //if (bgmAudio.clip == clip)
+        //    return;
 
         bgmAudio.clip = clip;
         bgmAudio.Play();
@@ -24,7 +24,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void StopBGM()
     {
-        bgmAudio.Stop();
+        if(bgmAudio != null)
+            bgmAudio.Stop();
     }
 
     public void PlaySFX(AudioClip clip)

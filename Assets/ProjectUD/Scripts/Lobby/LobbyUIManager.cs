@@ -578,32 +578,32 @@ public class LobbyUIManager : MonoBehaviour
     }
 
     // 커맨더 스킬 저장
-    public void SaveCommandSkillList(Dictionary<string, string> skillData)
-    {
-        UserDataModel.instance.skillIDs.Clear();
-        List<string> skillIDs = new List<string>();
+    //public void SaveCommandSkillList(Dictionary<string, string> skillData)
+    //{
+    //    UserDataModel.instance.skillIDs.Clear();
+    //    List<string> skillIDs = new List<string>();
 
-        foreach (var skill in skillData)
-        {
-            skillIDs.Add(skill.Key);
-        }
+    //    foreach (var skill in skillData)
+    //    {
+    //        skillIDs.Add(skill.Key);
+    //    }
 
 
-        //foreach (var entry in skillData)
-        //{
-        //    // 스킬 ID와 이름을 각각 PlayerPrefs에 저장
-        //    PlayerPrefs.SetString(entry.Key, entry.Value);
-        //    skillIDs.Add(entry.Key);
-        //    UserDataModel.instance.skillIDs.Add(entry.Key);
-        //}
+    //    //foreach (var entry in skillData)
+    //    //{
+    //    //    // 스킬 ID와 이름을 각각 PlayerPrefs에 저장
+    //    //    PlayerPrefs.SetString(entry.Key, entry.Value);
+    //    //    skillIDs.Add(entry.Key);
+    //    //    UserDataModel.instance.skillIDs.Add(entry.Key);
+    //    //}
 
-        //// 모든 스킬 ID 리스트를 저장 (나중에 불러올 때 사용)
-        //PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
+    //    //// 모든 스킬 ID 리스트를 저장 (나중에 불러올 때 사용)
+    //    //PlayerPrefs.SetString("SkillIDList", string.Join(",", skillIDs));
 
-        //PlayerPrefs.Save(); // 저장
+    //    //PlayerPrefs.Save(); // 저장
 
-        Debug.Log("커맨더 스킬 저장");
-    }
+    //    Debug.Log("커맨더 스킬 저장");
+    //}
 
 
 
