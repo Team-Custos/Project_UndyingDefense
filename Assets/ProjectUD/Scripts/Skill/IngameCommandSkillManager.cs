@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class IngameCommandSkillManager : MonoBehaviour, IInputClick
+public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private InGameManager ingameManager;
     //[SerializeField] private GameObject mouseIndicator;
     [SerializeField] private Transform BurningOilPos;
     private Unit selectedTargetUnit;
@@ -174,6 +175,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
         {
             allyUnitSpawner.CancelSpawn();
             inputEventManager.OnClickTarget = this;
+            inputEventManager.OnESCTarget = this;
 
             if (isSkillActivated && activatedSkillButtonIdx == idx)
             {
@@ -234,5 +236,14 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
         selectedUI1.gameObject.SetActive(false);
         circle.SetActive(false);
         isSkillActivated = false;
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelSkill();
+            inputEventManager.OnESCTarget = ingameManager;
+        }
     }
 }

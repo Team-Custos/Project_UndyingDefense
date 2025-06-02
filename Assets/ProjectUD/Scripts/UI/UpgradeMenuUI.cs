@@ -373,7 +373,7 @@ public class UpgradeMenuUI : MonoBehaviour
         if(inGameManager.inGameGold >= cost)
         {
             currentGoldText.color = Color.white;
-            //upgradePerformBtn.interactable = true;
+            upgradePerformBtn.interactable = true;
         }
     }
 }
