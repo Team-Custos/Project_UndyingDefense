@@ -242,12 +242,15 @@ public class AttackSkill : SkillBase
         {
             unit.AddVFX(data.StartVFX);
         }
-        int randomSoundIdx = Random.Range(0,data.StartSFX.Length);
-        if (data.StartSFX[randomSoundIdx] != null && data.StartSFX.Length > 0)
-        {
-            SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
-        }
 
+        if (data.StartSFX.Length > 0)
+        {
+            int randomSoundIdx = Random.Range(0, data.StartSFX.Length);
+            if (data.StartSFX[randomSoundIdx] != null)
+            {
+                SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
+            }
+        }
 
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritChance + target.CritVulnerability + data.BonusCrit) * 0.01f;

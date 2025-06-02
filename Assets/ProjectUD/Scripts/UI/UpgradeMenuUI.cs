@@ -366,5 +366,14 @@ public class UpgradeMenuUI : MonoBehaviour
         }
     }
 
+    public void UpdateUpgradeCostTxt()
+    {
+        currentGoldText.text = inGameManager.inGameGold.ToString();
 
+        if(inGameManager.inGameGold >= cost)
+        {
+            currentGoldText.color = Color.white;
+            //upgradePerformBtn.interactable = true;
+        }
+    }
 }

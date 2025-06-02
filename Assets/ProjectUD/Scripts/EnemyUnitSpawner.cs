@@ -17,6 +17,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private Fortress fortress;
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private DollyCamera dollyCamera;
+    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
     [SerializeField] private WaveData[] waveData;
 
     [Header("■ Options")]
@@ -114,8 +115,9 @@ public class EnemyUnitSpawner : MonoBehaviour
 
                inGameManager.SetGold(waveData[curWave - 1].Reward, true);
                ingameScreenUI.SetspawnBtnPriceTextColor();
+               upgradeMenuUI.UpdateUpgradeCostTxt();
 
-               waveDelay = 4.0f;
+                waveDelay = 4.0f;
 
                curWave++;
 
@@ -206,6 +208,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         inGameManager.SetGold(enmeyUnitData.Gold, true);
         ingameScreenUI.SetspawnBtnPriceTextColor();
+        upgradeMenuUI.UpdateUpgradeCostTxt();
 
         //if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
         //{

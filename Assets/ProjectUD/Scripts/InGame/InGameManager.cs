@@ -190,14 +190,14 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         SoundManager.Instance.PlayUIClickSFX();
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadingSceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LoadLobbyScene()
     {
         SoundManager.Instance.PlayUIClickSFX();
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("LobbyScene_LoPol");
+        LoadingSceneManager.LoadScene("LobbyScene_LoPol");
     }
 
     public void ExitGame()

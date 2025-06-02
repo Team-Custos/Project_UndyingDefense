@@ -15,11 +15,12 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private SelectedUnitManager selecteUnitManger;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
 
-    [SerializeField] private GameObject unitHPPrefab;
+    [SerializeField] private Button upgradeBtn;
     [SerializeField] private Image unitHP;
     [SerializeField] private RectTransform hpRectTransform;
 
     [SerializeField] private GameObject unitMenuPrefab;
+    [SerializeField] private GameObject unitHPPrefab;
     [SerializeField] private GameObject unitUpgradeMenuPrefab;
 
     [SerializeField] private Image modeChangeBtnImage;
@@ -140,6 +141,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
+        selecteUnitManger.OnUpgrade(true);
     }
 
     public void ShowAllyUI(AllyUnit allyUnit)
@@ -159,6 +161,11 @@ public class SelectedUnitUI : MonoBehaviour
             modeChangeBtnImage.sprite = freeIcon;
         }
 
+        if (allyUnit.Data.Tier >= 4)
+            upgradeBtn.interactable = false;
+        else
+            upgradeBtn.interactable = true;
+
         unitMenuPrefab.SetActive(true);
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
@@ -172,6 +179,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitMenuPrefab.SetActive(false);
         SoundManager.Instance.PlayUIClickSFX();
         //selectedUnit = null;
+        selecteUnitManger.OnUpgrade(false);
     }
 
     private void UpdateUI()
@@ -228,29 +236,25 @@ public class SelectedUnitUI : MonoBehaviour
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
+        unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+
+        gSkillNameText.text = unit.GeneralSkill.Data.Name;
+        gSkillInfoText.text = unit.GeneralSkill.Data.Description;
 
         if (unit.SpecialSkill != null)
         {
-            //unitSSkillText.text = unit.SpecialSkill.Data.name;
-
-            unitGSkillImage.gameObject.SetActive(true);
-            unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
-
-            gSkillNameText.text = unit.GeneralSkill.Data.Name;
-            gSkillInfoText.text = unit.GeneralSkill.Data.Description;
-
+            unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
             sSkilNameText.text = unit.SpecialSkill.Data.Name;
             sSkillInfoText.text = unit.SpecialSkill.Data.Description;
 
         }
-        else
+        else if(unit.PassiveSkill != null)
         {
-           // unitSSkillText.text = " ";
-            unitGSkillImage.gameObject.SetActive(false);
-
+            unitSSkillImage.sprite = unit.PassiveSkill.Data.Icon;
+            sSkilNameText.text = unit.PassiveSkill.Data.Name;
+            sSkillInfoText.text = unit.PassiveSkill.Data.Description;
         }
 
-        unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
         critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
@@ -274,32 +278,28 @@ public class SelectedUnitUI : MonoBehaviour
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
        unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
-       //unitGSkillText.text = unit.GeneralSkill.Data.name;
+        //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
-        
+        unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
+        gSkillNameText.text = unit.GeneralSkill.Data.Name;
+        gSkillInfoText.text = unit.GeneralSkill.Data.Description;
 
         if (unit.SpecialSkill != null)
         {
-            //unitSSkillText.text = unit.SpecialSkill.Data.name;
-
-            unitGSkillImage.gameObject.SetActive(true);
-            unitGSkillImage.sprite = unit.SpecialSkill.Data.Icon;
-
-            gSkillNameText.text = unit.GeneralSkill.Data.Name;
-            gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+            unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
             sSkilNameText.text = unit.SpecialSkill.Data.Name;
-            sSkillInfoText.text = unit.GeneralSkill.Data.Description;
+            sSkillInfoText.text = unit.SpecialSkill.Data.Description;
 
         }
-        else
+        else if(unit.PassiveSkill != null)
         {
-            //unitSSkillText.text = " ";
-            unitGSkillImage.gameObject.SetActive(false);
-            
+            unitSSkillImage.sprite = unit.PassiveSkill.Data.Icon;
+
+            sSkilNameText.text = unit.PassiveSkill.Data.Name;
+            sSkillInfoText.text = unit.PassiveSkill.Data.Description;
         }
 
-       unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
         critText.text = "치명타율 : " + unit.Data.CritChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();

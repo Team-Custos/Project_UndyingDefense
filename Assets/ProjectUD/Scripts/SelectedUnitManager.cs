@@ -1,6 +1,7 @@
 using InputEventInterface;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick, IInputUnitDelete
     , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade
@@ -26,6 +27,18 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     private bool isUpgradeOn;
 
     public Unit SelectedUnit => selectedUnit;
+
+    public void OnUpgrade(bool on)
+    {
+        if(on)
+        {
+            isUpgradeOn = true;
+        }
+        else
+        {
+            isUpgradeOn = false;
+        }
+    }
 
 
     private void Start()
@@ -71,7 +84,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     SoundManager.Instance.PlayUIClickSFX();
 
-                    camManager.FocusSelectedUnit(hit.transform.position);
+                    //camManager.FocusSelectedUnit(hit.transform.position);
 
                     if (selectedUnit != null) // 새 유닛 선택
                     {
@@ -126,11 +139,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         // 시즈모드시 타일 누르면 선택 해제
                         if ((selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE))
                         {
-                            selectedUnit.IsSelected = false;
-                            selectedUnit = null;
-                            unitSelectUI.HideAllyUI();
-                            unitSelectUI.HideHp();
-                            unitSelectUI.HideUpgrdeUI();
+                            if(selectedUnit != null && selectedUnit is AllyUnit)
+                            {
+                                selectedUnit.IsSelected = false;
+                                selectedUnit = null;
+                                unitSelectUI.HideAllyUI();
+                                unitSelectUI.HideHp();
+                                unitSelectUI.HideUpgrdeUI();
+                            }
+
+                            
                         }
                         
                         // 프리 모드시 이동 불가 타일 확인
@@ -183,7 +201,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     unitSelectUI.HideUntInfo();
                 }
 
-                
+                commandSkillManager.CancelSkill();
+
+
 
                 allyUnitSpawner.CancelSpawn();
             }

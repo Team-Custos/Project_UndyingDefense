@@ -984,6 +984,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1564057690331497341, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564057690331497341, guid: 520c8f887221187439ed9066421682e1,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564057690331497341, guid: 520c8f887221187439ed9066421682e1,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564057690331497341, guid: 520c8f887221187439ed9066421682e1,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564057690331497341, guid: 520c8f887221187439ed9066421682e1,
+        type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
@@ -10032,7 +10052,7 @@ MonoBehaviour:
   enemyUnitSpawner: {fileID: 679628028}
   inGmaeBgm: {fileID: 8300000, guid: 021a972980663384d891f8e5ada12b30, type: 3}
   virtualCamera: {fileID: 633104415}
-  isCamPanning: 1
+  isCamPanning: 0
   panningDuration: 9
 --- !u!4 &316002283 stripped
 Transform:
@@ -11384,10 +11404,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2000216723}
   tileParent: {fileID: 387566689}
-  gridWidth: 34
+  xPos: -49
+  yPos: -15
+  gridWidth: 33
   gridHeight: 8
   tileSize: 1
   tileMeshRenderer: {fileID: 2000216729}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!483693784 &387566691
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -19186,7 +19211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &633104416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20582,6 +20607,7 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   dollyCamera: {fileID: 311500981}
+  upgradeMenuUI: {fileID: 217372397582191139}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
@@ -25833,7 +25859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameGold: 500
+  inGameGold: 1000
   ingameScreenUI: {fileID: 959445840}
   inputEventManager: {fileID: 1590103094}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
@@ -35027,7 +35053,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC70\uB8E9\uD55C \uD314\uB77C\uB518 \uC5D0\uB4DC\uC6CC\uB4DC"
+  m_text: "\uAC70\uB8E9\uD55C \uD314\uB77C\uB518 \uC5D0\uB4DC\uC6CC\uB4DC "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd641e64e9cda6248a2d6f26e31e0da2, type: 2}
   m_sharedMaterial: {fileID: -7777895569357558908, guid: bd641e64e9cda6248a2d6f26e31e0da2,
@@ -36740,12 +36766,27 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3114908097309628353, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3348485343350974348, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5060384626293753480, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418957447300609920, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011772003322581786, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -38176,6 +38217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedUnitManager: {fileID: 1137951088}
+  allyUnitSpawner: {fileID: 923510898}
   BurningOilPos: {fileID: 1061626275}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1590103094}
@@ -39861,10 +39903,11 @@ MonoBehaviour:
   mainCamera: {fileID: 1346724710}
   selecteUnitManger: {fileID: 1137951088}
   upgradeMenuUI: {fileID: 217372397582191139}
-  unitHPPrefab: {fileID: 659961443}
+  upgradeBtn: {fileID: 1668187697}
   unitHP: {fileID: 564626855}
   hpRectTransform: {fileID: 659961444}
   unitMenuPrefab: {fileID: 618903651}
+  unitHPPrefab: {fileID: 659961443}
   unitUpgradeMenuPrefab: {fileID: 8370161515349938936}
   modeChangeBtnImage: {fileID: 618903654}
   freeIcon: {fileID: 21300000, guid: e3a4dffe1ef52574f82f644a81751837, type: 3}
@@ -42218,8 +42261,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346724708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27972093, y: 0.19470434, z: -0.058041874, w: 0.9383377}
-  m_LocalPosition: {x: -93, y: 142.60696, z: -140.20903}
+  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
+  m_LocalPosition: {x: -35.000004, y: 49.497475, z: -35.000004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42244,12 +42287,12 @@ MonoBehaviour:
   cameraPivot: {fileID: 1555955064}
   moveSpeed: 20
   zoomSpeed: 2
-  zoomMin: 20
+  zoomMin: 25
   zoomMax: 60
-  xMax: 30
-  xMin: -40
-  zMax: 4.5
-  zMin: -25
+  xMax: 32
+  xMin: -55
+  zMax: 9
+  zMin: -17
 --- !u!114 &1346724713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51868,6 +51911,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &1668187697 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 607081665592034360, guid: 465dcfa83dfe92841b4b954b8a9ab1b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 618903647}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1668804947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63208,6 +63263,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HelpPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080511196138961425, guid: 249c4c40df871b043ba5fcb5c82e4ba6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

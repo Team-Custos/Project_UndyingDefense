@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     //[SerializeField] private GameObject mouseIndicator;
     [SerializeField] private Transform BurningOilPos;
     private Unit selectedTargetUnit;
@@ -160,52 +161,70 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
     public void GetClickControl(int idx)
     {
-        activatedSkillButtonIdx = idx;
-        if (!skill[activatedSkillButtonIdx].IsCoolDown)
+        if (!skill[idx].IsCoolDown)
         {
-            Debug.Log(skill[activatedSkillButtonIdx].name + "이 쿨타임 중...)");
+            Debug.Log(skill[idx].name + "이 쿨타임 중...)");
             return;
         }
-        else
+
+        CommandSkillData skillData = skill[idx].Data;
+
+        if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
+            || skillData.TargetType == CommandSkill.TargetType.UNIT)
         {
-            CommandSkillData skillData;
-            skillData = skill[activatedSkillButtonIdx].Data;
-            if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
-                || skillData.TargetType == CommandSkill.TargetType.UNIT)
+            allyUnitSpawner.CancelSpawn();
+            inputEventManager.OnClickTarget = this;
+
+            if (isSkillActivated && activatedSkillButtonIdx == idx)
             {
-                inputEventManager.OnClickTarget = this;
+                isSkillActivated = false;
                 if (idx == 0)
                 {
+                    selectedUI0.gameObject.SetActive(false);
                     circle.SetActive(false);
+                }
+                else if (idx == 1)
+                {
+                    selectedUI1.gameObject.SetActive(false);
+                    circle.SetActive(false);
+                }
+            }
+            else
+            {
+                if (isSkillActivated)
+                {
+                    if (activatedSkillButtonIdx == 0)
+                        selectedUI0.gameObject.SetActive(false);
+                    else if (activatedSkillButtonIdx == 1)
+                        selectedUI1.gameObject.SetActive(false);
+                    circle.SetActive(false);
+                }
+
+                activatedSkillButtonIdx = idx;
+                isSkillActivated = true;
+
+                if (idx == 0)
+                {
                     selectedUI0.gameObject.SetActive(true);
                     selectedUI1.gameObject.SetActive(false);
-                    isSkillActivated = false;
-                    SoundManager.Instance.PlayUIClickSFX();
+                    circle.SetActive(false);
                 }
                 else if (idx == 1)
                 {
                     selectedUI0.gameObject.SetActive(false);
                     selectedUI1.gameObject.SetActive(true);
-                    isSkillActivated = true;
                     circle.SetActive(true);
-                    SoundManager.Instance.PlayUIClickSFX();
                 }
-
             }
-            else if (skillData.TargetType == CommandSkill.TargetType.AREA)
-            {
-                selectedUI0.gameObject.SetActive(false);
-                selectedUI1.gameObject.SetActive(false);
-                isSkillActivated = false;
-                circle.SetActive(false);
-                ActivateCommandSkill(skill[activatedSkillButtonIdx], BurningOilPos);
-                SoundManager.Instance.PlayUIClickSFX();
-            }
-            else
-            {
-                //ActivateCommandSkill(skill[activatedSkillButtonIdx], );
-            }
-            
+        }
+        else if (skillData.TargetType == CommandSkill.TargetType.AREA)
+        {
+            selectedUI0.gameObject.SetActive(false);
+            selectedUI1.gameObject.SetActive(false);
+            isSkillActivated = false;
+            circle.SetActive(false);
+            ActivateCommandSkill(skill[idx], BurningOilPos);
+            SoundManager.Instance.PlayUIClickSFX();
         }
     }
 
@@ -213,5 +232,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     {
         selectedUI0.gameObject.SetActive(false);
         selectedUI1.gameObject.SetActive(false);
+        circle.SetActive(false);
+        isSkillActivated = false;
     }
 }
