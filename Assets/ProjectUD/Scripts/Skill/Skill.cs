@@ -39,6 +39,13 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         isCoolTimeOn = OnOff; // 쿨타임을 사용할지 말지 결정하는 변수
     }
 
+    public void Activate(Unit unit)
+    {
+        coolTimeCheck -= Data.CoolTime;
+        if (onActivate != null)
+            onActivate.Invoke(unit, null);
+    }
+
     public void Activate(Unit unit, Unit target)
     {
         coolTimeCheck -= Data.CoolTime;

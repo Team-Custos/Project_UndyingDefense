@@ -242,7 +242,6 @@ public class AttackSkill : SkillBase
         {
             unit.AddVFX(data.StartVFX);
         }
-        
         if (data.StartSFX.Length > 0)
         {
             int randomSoundIdx = Random.Range(0, data.StartSFX.Length);
@@ -328,7 +327,7 @@ public class AttackSkill : SkillBase
                 break;
         }
 
-        target.AddVFX(hitVFX);
+        target.AddVFX(hitVFX, unit.transform.position);
     }
 
     private void AddCritVFX(Unit unit, Unit target)
@@ -346,7 +345,7 @@ public class AttackSkill : SkillBase
                 critVFX = CrushCritVFX;
                 break;
         }
-        target.AddVFX(critVFX);
+        target.AddVFX(critVFX, unit.transform.position);
     }
 
     private bool IsBlocked(ArmorType armorType)

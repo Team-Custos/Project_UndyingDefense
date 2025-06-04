@@ -594,7 +594,7 @@ public abstract class Unit : MonoBehaviour
     {
         if (passiveSkill != null)
         {
-            passiveSkill.Activate(this, targetUnit);
+            passiveSkill.Activate(this);
         }
     }
 
@@ -1259,6 +1259,24 @@ public abstract class Unit : MonoBehaviour
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         Destroy(VFXobj, VFX.main.duration);
     }
+
+    public void AddVFX(ParticleSystem VFX, Vector3 LookPos)
+    {
+        GameObject VFXobj = Instantiate(VFX.gameObject);
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        if (LookPos != Vector3.zero)
+        {
+            VFXobj.transform.LookAt(LookPos);
+            //float yRotation = VFXobj.transform.localRotation.eulerAngles.y;
+            //VFXobj.transform.localRotation = Quaternion.Euler(0f, yRotation, 0f);
+            //VFXobj.transform.LookAt(new Vector3(LookPos.position.x, 1f, LookPos.position.z));
+        }
+
+        Destroy(VFXobj, VFX.main.duration);
+    }
+
+
 
     public void UpdateState()
     {
