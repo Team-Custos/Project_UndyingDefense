@@ -11467,10 +11467,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2000216723}
   tileParent: {fileID: 387566689}
+  xPos: -49
+  yPos: -15
   gridWidth: 34
   gridHeight: 8
   tileSize: 1
   tileMeshRenderer: {fileID: 2000216729}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!483693784 &387566691
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -16385,6 +16390,16 @@ PrefabInstance:
         type: 3}
     - target: {fileID: -336196044479407675, guid: 555973c0a0a4d0c49ba719af5738de1d,
         type: 3}
+      propertyPath: incomingDirection.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 555973c0a0a4d0c49ba719af5738de1d,
+        type: 3}
+      propertyPath: incomingDirection.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -336196044479407675, guid: 555973c0a0a4d0c49ba719af5738de1d,
+        type: 3}
       propertyPath: onActivateAtPos._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._X
       value: 3
       objectReference: {fileID: 0}
@@ -20665,8 +20680,9 @@ MonoBehaviour:
   fortress: {fileID: 987298097}
   inGameManager: {fileID: 856739625}
   dollyCamera: {fileID: 311500981}
+  upgradeMenuUI: {fileID: 217372397582191139}
   waveData:
-  - {fileID: 11400000, guid: 28e3ded3e3d3f7e48abe2677376e05cb, type: 2}
+  - {fileID: 11400000, guid: 52479bd51c675d244b26070d16c94a34, type: 2}
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
   - {fileID: 11400000, guid: b915d18fdc1070f4dad204380ed83748, type: 2}
@@ -31628,7 +31644,7 @@ PrefabInstance:
     - target: {fileID: 4867916327401294168, guid: cf16c39e35b497840b9a727ece7e63d3,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7111599022381917294, guid: cf16c39e35b497840b9a727ece7e63d3,
         type: 3}
@@ -36922,6 +36938,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9114994980541538243, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4244649750511672544, guid: 5ec72c3822f144d45a06ebf24515545e, type: 3}
@@ -38328,6 +38349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedUnitManager: {fileID: 1137951088}
+  allyUnitSpawner: {fileID: 923510898}
   BurningOilPos: {fileID: 1061626275}
   mainCamera: {fileID: 1346724710}
   inputEventManager: {fileID: 1590103094}
@@ -40013,10 +40035,11 @@ MonoBehaviour:
   mainCamera: {fileID: 1346724710}
   selecteUnitManger: {fileID: 1137951088}
   upgradeMenuUI: {fileID: 217372397582191139}
-  unitHPPrefab: {fileID: 659961443}
+  upgradeBtn: {fileID: 0}
   unitHP: {fileID: 564626855}
   hpRectTransform: {fileID: 659961444}
   unitMenuPrefab: {fileID: 618903651}
+  unitHPPrefab: {fileID: 659961443}
   unitUpgradeMenuPrefab: {fileID: 8370161515349938936}
   modeChangeBtnImage: {fileID: 618903654}
   freeIcon: {fileID: 21300000, guid: e3a4dffe1ef52574f82f644a81751837, type: 3}

@@ -12,9 +12,14 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     private ActiveCommandSkillData data;
 
+    protected static ParticleSystem slashHitVFX;
+    protected static ParticleSystem pierceHitVFX;
+    protected static ParticleSystem crushHitVFX;
+
     private LayerMask attackTargetLayer;
 
     private float AreaX, AreaY, AreaZ;
+    private Vector3 incomingDirection = Vector3.zero; // 공격이 들어오는 방향
 
     [SerializeField] private float tickTime = 0.1f;
     private float tickTimeCheck = 0f;
@@ -51,6 +56,45 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     {
         attackTargetLayer = targetLayer;
     }
+
+    public void SetIncomingDirection(Vector3 direction)
+    {
+        incomingDirection = direction;
+    }
+
+    protected static ParticleSystem SlashHitVFX
+    {
+        get
+        {
+            if (slashHitVFX == null)
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
+
+            return slashHitVFX;
+        }
+    }
+
+    protected static ParticleSystem PierceHitVFX
+    {
+        get
+        {
+            if (pierceHitVFX == null)
+                pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+
+            return pierceHitVFX;
+        }
+    }
+
+    protected static ParticleSystem CrushHitVFX
+    {
+        get
+        {
+            if (crushHitVFX == null)
+                crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
+
+            return crushHitVFX;
+        }
+    }
+
 
     private void PlayVFX()
     {
@@ -148,6 +192,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
         target.TakeDamage(calcDamage);
+        target.PlayHitSFX(data.AttackType);
+        AddHitVFX(target);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
             if (data.InduseEffct != null)
@@ -155,6 +201,25 @@ public class CommandSkillAttackTrigger : MonoBehaviour
                 target.AddEffect(target, data.InduseEffct.GetComponent<Effect>());
             }
         }
+    }
+
+    private void AddHitVFX(Unit target)
+    {
+        ParticleSystem hitVFX = null;
+        switch (data.AttackType)
+        {
+            case AttackType.SLASH:
+                hitVFX = SlashHitVFX;
+                break;
+            case AttackType.PIERCE:
+                hitVFX = PierceHitVFX;
+                break;
+            case AttackType.CRUSH:
+                hitVFX = CrushHitVFX;
+                break;
+        }
+
+        target.AddVFX(hitVFX, target.transform.position + incomingDirection);
     }
 
     private bool IsBlocked(ArmorType armorType)

@@ -14,6 +14,7 @@ public class ActiveCommandSkill : CommandSkill
 
     [Header("■ AreaTriggerObject")]
     [SerializeField] protected GameObject areaTriggerObject;
+    [SerializeField] protected Vector3 incomingDirection = Vector3.zero;
 
     public override CommandSkillData Data => data;
 
@@ -38,6 +39,7 @@ public class ActiveCommandSkill : CommandSkill
         trigger.SetTargetLayer(attackTargetLayer);
         trigger.SetTriggerType(AttackTriggerType.Shpere);
         trigger.SetArea(radius);
+        trigger.SetIncomingDirection(incomingDirection);
     }
 
     public void AreaAttack(Transform pivotTarget, float AreaX, float AreaY, float AreaZ, float tickTime = 0.1f, float lifeTime = 0f)//사각형 공격

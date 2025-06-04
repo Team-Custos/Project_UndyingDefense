@@ -154,6 +154,8 @@ public class AllyUnit : Unit
 
                     if (state == State.SPECIALSKILL)
                     {
+                        if(targetUnit != null)
+                            LookAt(targetUnit.transform.position);
                         SkillBase skill = GetSpecialSkill();
                         Debug.Log("Special Skill " + skill + "사용");
                         if (skill != null)
@@ -167,6 +169,8 @@ public class AllyUnit : Unit
 
                     if (state == State.GENERALSKILL)
                     {
+                        if(targetUnit != null)
+                            LookAt(targetUnit.transform.position);
                         SkillBase skill = GetGeneralSkill();
 
                         if (skill != null)
