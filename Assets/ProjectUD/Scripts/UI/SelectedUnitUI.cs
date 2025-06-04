@@ -1,4 +1,5 @@
 using Cinemachine;
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,17 +7,21 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
 
-public class SelectedUnitUI : MonoBehaviour
+public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager selecteUnitManger;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Ingame_CamManager ingameCamManager;
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private InGameManager inGameManager;
     private CinemachineFramingTransposer framingTransposer;
+
 
     [SerializeField] private Button upgradeBtn;
     [SerializeField] private Image unitHP;
@@ -152,6 +157,8 @@ public class SelectedUnitUI : MonoBehaviour
         SoundManager.Instance.PlayUIClickSFX();
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
+        inputEventManager.OnRightClickTarget = this;
+        inputEventManager.OnESCTarget = this;
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
         selecteUnitManger.OnUpgrade(true);
     }
@@ -179,6 +186,8 @@ public class SelectedUnitUI : MonoBehaviour
             upgradeBtn.interactable = true;
 
         unitMenuPrefab.SetActive(true);
+
+        
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
@@ -454,4 +463,23 @@ public class SelectedUnitUI : MonoBehaviour
     }
 
 
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            upgradeMenuUI.HideUpgradeUI();
+            inputEventManager.OnESCTarget = inGameManager;
+            selecteUnitManger.OnUpgrade(false);
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            upgradeMenuUI.HideUpgradeUI();
+            inputEventManager.OnESCTarget = selecteUnitManger;
+            selecteUnitManger.OnUpgrade(false);
+        }
+    }
 }

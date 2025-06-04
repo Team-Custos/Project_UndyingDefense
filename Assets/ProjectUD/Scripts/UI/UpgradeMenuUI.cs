@@ -6,11 +6,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class UpgradeMenuUI : MonoBehaviour, IInputESC, IInputRightClick
+public class UpgradeMenuUI : MonoBehaviour
 {
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
-    [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
 
     [Header(" ■ 선택된 유닛")]
@@ -185,8 +184,6 @@ public class UpgradeMenuUI : MonoBehaviour, IInputESC, IInputRightClick
         if (selectedUnit is EnemyUnit)
             return;
 
-        inputEventManager.OnESCTarget = this;
-        inputEventManager.OnRightClickTarget = this;
 
         infoPanel.SetActive(false);
 
@@ -390,23 +387,4 @@ public class UpgradeMenuUI : MonoBehaviour, IInputESC, IInputRightClick
         selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
     }
 
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            HideUpgradeUI();
-            inputEventManager.OnESCTarget = inGameManager;
-            selectedUnitManager.OnUpgrade(false);
-        }
-    }
-
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            HideUpgradeUI();
-            inputEventManager.OnRightClickTarget = selectedUnitManager;
-            selectedUnitManager.OnUpgrade(false);
-        }
-    }
 }

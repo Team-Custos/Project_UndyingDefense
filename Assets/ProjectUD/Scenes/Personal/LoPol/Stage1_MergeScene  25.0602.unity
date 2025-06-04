@@ -36852,12 +36852,27 @@ PrefabInstance:
     - target: {fileID: 1564164758381236993, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
       propertyPath: m_Size.x
-      value: 4
+      value: 3.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564164758381236993, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.61
       objectReference: {fileID: 0}
     - target: {fileID: 1564164758381236993, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
       propertyPath: m_Size.z
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564164758381236993, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564164758381236993, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.77
       objectReference: {fileID: 0}
     - target: {fileID: 1649418228444656898, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
@@ -36947,7 +36962,7 @@ PrefabInstance:
     - target: {fileID: 9114994980541538243, guid: 5ec72c3822f144d45a06ebf24515545e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.02
+      value: -13.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -40045,6 +40060,8 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 217372397582191139}
   virtualCamera: {fileID: 633104416}
   ingameCamManager: {fileID: 1346724712}
+  inputEventManager: {fileID: 1590103094}
+  inGameManager: {fileID: 856739625}
   upgradeBtn: {fileID: 618903649}
   unitHP: {fileID: 564626855}
   hpRectTransform: {fileID: 659961444}
