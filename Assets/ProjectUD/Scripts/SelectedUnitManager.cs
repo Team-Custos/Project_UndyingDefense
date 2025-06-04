@@ -381,6 +381,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             unitSelectUI.HideAllyUI();
             unitSelectUI.HideHp();
             unitSelectUI.HideUpgrdeUI();
+            unitSelectUI.HideUntInfo();
             selectedUnit = null;
         }
     }

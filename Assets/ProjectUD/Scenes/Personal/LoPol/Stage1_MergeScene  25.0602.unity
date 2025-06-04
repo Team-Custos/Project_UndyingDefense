@@ -10115,7 +10115,7 @@ MonoBehaviour:
   enemyUnitSpawner: {fileID: 679628028}
   inGmaeBgm: {fileID: 8300000, guid: 021a972980663384d891f8e5ada12b30, type: 3}
   virtualCamera: {fileID: 633104415}
-  isCamPanning: 1
+  isCamPanning: 0
   panningDuration: 9
 --- !u!4 &316002283 stripped
 Transform:
@@ -19286,7 +19286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &633104416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36939,6 +36939,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9114994980541538243, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 9114994980541538243, guid: 5ec72c3822f144d45a06ebf24515545e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -13.02
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4244649750511672544, guid: 5ec72c3822f144d45a06ebf24515545e, type: 3}
@@ -40032,6 +40042,8 @@ MonoBehaviour:
   mainCamera: {fileID: 1346724710}
   selecteUnitManger: {fileID: 1137951088}
   upgradeMenuUI: {fileID: 217372397582191139}
+  virtualCamera: {fileID: 633104416}
+  ingameCamManager: {fileID: 1346724712}
   upgradeBtn: {fileID: 618903649}
   unitHP: {fileID: 564626855}
   hpRectTransform: {fileID: 659961444}
@@ -40043,6 +40055,7 @@ MonoBehaviour:
   siegeIcon: {fileID: 21300000, guid: dca2e9756b2dcd5459cc622b960efeca, type: 3}
   yPos: 3.5
   xPos: 2
+  menuYpos: 1.5
   unitInfoImage: {fileID: 1326674666}
   unitImage: {fileID: 1918600564}
   unitNameText: {fileID: 1134662125}
@@ -42390,8 +42403,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346724708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27972093, y: 0.19470434, z: -0.058041874, w: 0.9383377}
-  m_LocalPosition: {x: -93, y: 142.60696, z: -140.20903}
+  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
+  m_LocalPosition: {x: -35.000004, y: 49.497475, z: -35.000004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52078,7 +52091,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.033333335
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: c819b977d83f2e54baf800aeada0e25d, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 0e9f12549de63884183d255504dece9c, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1666338089 stripped
 Transform:

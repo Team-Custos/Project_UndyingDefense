@@ -322,7 +322,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 inGameManager.SetGold(allyUnitData.Cost, false);
                 ingameScreenUI.SetspawnBtnPriceTextColor();
 
-                CancelSpawn();
+                if (inGameManager.inGameGold < allyUnitData.Cost)
+                    CancelSpawn();
             }
         }
     }

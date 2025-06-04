@@ -122,7 +122,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 lobbySettingPanel.SetActive(false);
             });
         }
@@ -137,7 +137,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 EndGame();
             });
         }
@@ -366,7 +366,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 creditPanel.SetActive(false);
             });
         }

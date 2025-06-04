@@ -95,7 +95,7 @@ public class IngameScreenUI : MonoBehaviour
         if (settingUI.activeSelf)
         {
 
-            SoundManager.Instance.playCancleSFX();
+            //SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
         }
@@ -111,7 +111,7 @@ public class IngameScreenUI : MonoBehaviour
     {
         if (settingUI.activeSelf)
         {
-            SoundManager.Instance.playCancleSFX();
+            //.Instance.playCancleSFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
         }

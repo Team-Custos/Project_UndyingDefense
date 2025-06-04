@@ -39,8 +39,8 @@ public class SoundManager : Singleton<SoundManager>
     }
 
 
-    public void playCancleSFX()
-    {
-        sfxAudio.PlayOneShot(cancleClip);
-    }
+    //public void playCancleSFX()
+    //{
+    //    sfxAudio.PlayOneShot(cancleClip);
+    //}
 }

@@ -98,7 +98,7 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             upgradeIndex = index;
 
-            if (cost < inGameManager.inGameGold)
+            if (cost <= inGameManager.inGameGold)
             {
                 upgradePerformBtn.interactable = true;
             }

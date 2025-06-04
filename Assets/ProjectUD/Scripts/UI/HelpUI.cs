@@ -82,7 +82,7 @@ public class HelpUI : MonoBehaviour
 
     public void CloseHelp()
     {
-        SoundManager.Instance.playCancleSFX();
+        //SoundManager.Instance.playCancleSFX();
         gameObject.SetActive(false);
     }
 

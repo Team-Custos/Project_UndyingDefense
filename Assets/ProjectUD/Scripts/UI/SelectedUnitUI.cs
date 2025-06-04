@@ -14,6 +14,9 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager selecteUnitManger;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private Ingame_CamManager ingameCamManager;
+    private CinemachineFramingTransposer framingTransposer;
 
     [SerializeField] private Button upgradeBtn;
     [SerializeField] private Image unitHP;
@@ -28,6 +31,7 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Sprite siegeIcon;
     [SerializeField] private float yPos;
     [SerializeField] private float xPos;
+    [SerializeField] private float menuYpos;
 
     [Header("■ UntiInfo")]
     [SerializeField] private Image unitInfoImage;
@@ -78,8 +82,13 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private GameObject allyUnitUI;
     [SerializeField] private GameObject enemyUnitUI;
 
-
-
+    private void Start()
+    {
+        if (virtualCamera != null)
+        {
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -129,7 +138,10 @@ public class SelectedUnitUI : MonoBehaviour
     public void HideUpgrdeUI()
     {
         unitUpgradeMenuPrefab.SetActive(false);
-        SoundManager.Instance.playCancleSFX();
+        //SoundManager.Instance.playCancleSFX();
+        selecteUnitManger.OnUpgrade(false);
+
+        ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -196,16 +208,29 @@ public class SelectedUnitUI : MonoBehaviour
                 unitHPPrefab.transform.position = screenPosition;
             }
 
-            if(unitMenuPrefab != null)
+            if (unitMenuPrefab != null)
             {
-                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
+                float currentFov = framingTransposer.m_CameraDistance;
+
+                float maxZoom = ingameCamManager.ZoomMax;
+                float minZoom = ingameCamManager.ZoomMin;
+
+                float zoomPercnet = (currentFov - minZoom) / (maxZoom - minZoom);
+
+                Debug.Log($"Zoom Percent: {zoomPercnet}");
+
+
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercnet + menuYpos);
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitMenuPrefab.transform.position = screenPosition;
+
             }
 
-            if(unitUpgradeMenuPrefab != null)
+
+            if (unitUpgradeMenuPrefab != null)
             {
+
                 Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
