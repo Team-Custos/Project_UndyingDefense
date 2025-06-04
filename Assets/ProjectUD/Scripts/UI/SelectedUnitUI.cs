@@ -147,6 +147,16 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         selecteUnitManger.OnUpgrade(false);
 
         ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
+
+        inputEventManager.OnESCTarget = selecteUnitManger;
+        inputEventManager.OnRightClickTarget = selecteUnitManger;
+    }
+
+    public void OffUpgradeUI()
+    {
+        unitUpgradeMenuPrefab.SetActive(false);
+        //SoundManager.Instance.playCancleSFX();
+        selecteUnitManger.OnUpgrade(false);
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -467,8 +477,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if (context.performed)
         {
-            upgradeMenuUI.HideUpgradeUI();
-            inputEventManager.OnESCTarget = inGameManager;
+            if(selecteUnitManger.SelectedUnit is AllyUnit)
+                upgradeMenuUI.HideUpgradeUI();
+
+            inputEventManager.OnESCTarget = selecteUnitManger;
+            inputEventManager.OnRightClickTarget = selecteUnitManger;
             selecteUnitManger.OnUpgrade(false);
         }
     }
@@ -477,7 +490,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if (context.performed)
         {
-            upgradeMenuUI.HideUpgradeUI();
+            if (selecteUnitManger.SelectedUnit is AllyUnit)
+                upgradeMenuUI.HideUpgradeUI();
+
+            inputEventManager.OnRightClickTarget = selecteUnitManger;
             inputEventManager.OnESCTarget = selecteUnitManger;
             selecteUnitManger.OnUpgrade(false);
         }

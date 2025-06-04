@@ -98,6 +98,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
+                        inputEventManager.OnESCTarget = ingameManager;
                         selectedUI0.gameObject.SetActive(false);
                         selectedUI1.gameObject.SetActive(false);
                         return;
@@ -116,6 +117,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
+                        inputEventManager.OnESCTarget = ingameManager;
                         selectedUI0.gameObject.SetActive(false);
                         selectedUI1.gameObject.SetActive(false);
                         circle.SetActive(false);
@@ -256,6 +258,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         {
             CancelSkill();
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
+            inputEventManager.OnESCTarget = ingameManager;
         }
     }
 }

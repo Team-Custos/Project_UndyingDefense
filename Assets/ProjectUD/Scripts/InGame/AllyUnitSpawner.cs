@@ -242,8 +242,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         spawn = false;
         indicator.SetActive(false);
         mouseIndicator.SetActive(false);
-        inputMng.OnClickTarget = selectedUnitManager; //  null;
+        inputMng.OnClickTarget = selectedUnitManager;
+        inputMng.OnESCTarget = inGameManager;
         unitSpawnUI.Deselect();
+        selectedUnitUI.HideUntInfo();
     }
 
     // 단축키로 유닛 스폰
@@ -334,8 +336,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if (context.performed)
         {
             CancelSpawn();
-            selectedUnitUI.HideUntInfo();
-            inputMng.OnESCTarget = inGameManager;
         }
     }
 
@@ -344,8 +344,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if(context.performed)
         {
             CancelSpawn();
-            selectedUnitUI.HideUntInfo();
-            inputMng.OnRightClickTarget = selectedUnitManager;
         }
     }
 }

@@ -25,6 +25,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
     private bool isUpgradeOn;
+    private bool rightClickOn;
+
+    public bool RightClickOn => rightClickOn;
 
     public Unit SelectedUnit => selectedUnit;
 
@@ -69,6 +72,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     allyUnitSpawner.CancelSpawn();
 
                     Unit unit = hit.collider.GetComponent<Unit>();
+
+                    unitSelectUI.OffUpgradeUI();
 
                     inputEventManager.OnESCTarget = this;
 
@@ -179,12 +184,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         }
     }
 
+
     // 마우스 우클릭은 선택 해제
     public void OnRightClick(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             DeSelecteUnit();
+            inputEventManager.OnESCTarget = inGameManager;
 
             //Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             //RaycastHit hit;
@@ -249,6 +256,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         SoundManager.Instance.PlayUIClickSFX();
 
         selectedAllyUnit.Upgrade(index);
+
+        inputEventManager.OnESCTarget = this;
+        inputEventManager.OnRightClickTarget = this;
 
         inGameManager.SetGold(nextUnitData.Cost, false);
         ingameScreenUI.SetspawnBtnPriceTextColor();

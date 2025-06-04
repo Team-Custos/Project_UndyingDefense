@@ -385,6 +385,7 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         gameObject.SetActive(false);
         selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
+
     }
 
 }
