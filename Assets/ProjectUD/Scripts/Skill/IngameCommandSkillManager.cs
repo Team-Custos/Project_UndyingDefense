@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC
+public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
@@ -176,6 +176,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC
             allyUnitSpawner.CancelSpawn();
             inputEventManager.OnClickTarget = this;
             inputEventManager.OnESCTarget = this;
+            inputEventManager.OnRightClickTarget = this;
 
             if (isSkillActivated && activatedSkillButtonIdx == idx)
             {
@@ -244,6 +245,15 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC
         {
             CancelSkill();
             inputEventManager.OnESCTarget = ingameManager;
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelSkill();
+            inputEventManager.OnRightClickTarget = SelectedUnitManager;
         }
     }
 }

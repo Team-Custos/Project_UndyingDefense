@@ -215,12 +215,13 @@ public class SelectedUnitUI : MonoBehaviour
                 float maxZoom = ingameCamManager.ZoomMax;
                 float minZoom = ingameCamManager.ZoomMin;
 
+
+
                 float zoomPercnet = (currentFov - minZoom) / (maxZoom - minZoom);
 
-                Debug.Log($"Zoom Percent: {zoomPercnet}");
+                menuYpos = Mathf.Lerp(2.0f, 3.0f, zoomPercnet);
 
-
-                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercnet + menuYpos);
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right *xPos + Vector3.down * (zoomPercnet * menuYpos);
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitMenuPrefab.transform.position = screenPosition;

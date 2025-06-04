@@ -11945,12 +11945,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402347607}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.30694142, z: 0, w: 0.95172846}
-  m_LocalPosition: {x: -21.7, y: 0, z: 5.6}
+  m_LocalRotation: {x: -0.34288085, y: -0.31391278, z: 0.5912514, w: 0.6590246}
+  m_LocalPosition: {x: -15.597149, y: -12.871029, z: 9.660003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1249955021}
   m_LocalEulerAnglesHint: {x: 0, y: -35.75, z: 0}
 --- !u!1001 &402784062
 PrefabInstance:
@@ -39048,7 +39048,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 402347608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 124.6, y: 145.087, z: 96.645}
 --- !u!114 &1249955022
@@ -40055,7 +40056,7 @@ MonoBehaviour:
   siegeIcon: {fileID: 21300000, guid: dca2e9756b2dcd5459cc622b960efeca, type: 3}
   yPos: 3.5
   xPos: 2
-  menuYpos: 1.5
+  menuYpos: 3
   unitInfoImage: {fileID: 1326674666}
   unitImage: {fileID: 1918600564}
   unitNameText: {fileID: 1134662125}
@@ -63414,6 +63415,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 959445839}
     m_Modifications:
+    - target: {fileID: 1673084567789709935, guid: 249c4c40df871b043ba5fcb5c82e4ba6,
+        type: 3}
+      propertyPath: inGameManager
+      value: 
+      objectReference: {fileID: 856739625}
+    - target: {fileID: 1673084567789709935, guid: 249c4c40df871b043ba5fcb5c82e4ba6,
+        type: 3}
+      propertyPath: inputEventManager
+      value: 
+      objectReference: {fileID: 1590103094}
     - target: {fileID: 6256330988995446641, guid: 249c4c40df871b043ba5fcb5c82e4ba6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -64984,9 +64995,19 @@ PrefabInstance:
       objectReference: {fileID: 896438340}
     - target: {fileID: 3251322997569019224, guid: 57f4bc187590a164da4a60d150f66e39,
         type: 3}
+      propertyPath: selectedUnitUI
+      value: 
+      objectReference: {fileID: 1285506504}
+    - target: {fileID: 3251322997569019224, guid: 57f4bc187590a164da4a60d150f66e39,
+        type: 3}
       propertyPath: currentGoldText
       value: 
       objectReference: {fileID: 88077583}
+    - target: {fileID: 3251322997569019224, guid: 57f4bc187590a164da4a60d150f66e39,
+        type: 3}
+      propertyPath: inputEventManager
+      value: 
+      objectReference: {fileID: 1590103094}
     - target: {fileID: 3251322997569019224, guid: 57f4bc187590a164da4a60d150f66e39,
         type: 3}
       propertyPath: selectedUnitManager
@@ -65532,7 +65553,6 @@ SceneRoots:
   - {fileID: 603068120}
   - {fileID: 311500979}
   - {fileID: 1346724711}
-  - {fileID: 402347608}
   - {fileID: 1249955021}
   - {fileID: 1889340050}
   - {fileID: 511252055}

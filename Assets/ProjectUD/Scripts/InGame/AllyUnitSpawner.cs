@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
 
-public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC
+public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
 {
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputMng;
@@ -209,6 +209,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         }
 
         inputMng.OnESCTarget = this;
+        inputMng.OnRightClickTarget = this;
 
         if (index == selectedIndex)
         {
@@ -335,6 +336,16 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             CancelSpawn();
             selectedUnitUI.HideUntInfo();
             inputMng.OnESCTarget = inGameManager;
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            CancelSpawn();
+            selectedUnitUI.HideUntInfo();
+            inputMng.OnRightClickTarget = selectedUnitManager;
         }
     }
 }

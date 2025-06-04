@@ -1,13 +1,17 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class UpgradeMenuUI : MonoBehaviour
+public class UpgradeMenuUI : MonoBehaviour, IInputESC, IInputRightClick
 {
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private SelectedUnitUI selectedUnitUI;
 
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
@@ -180,6 +184,9 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (selectedUnit is EnemyUnit)
             return;
+
+        inputEventManager.OnESCTarget = this;
+        inputEventManager.OnRightClickTarget = this;
 
         infoPanel.SetActive(false);
 
@@ -374,6 +381,32 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             currentGoldText.color = Color.white;
             upgradePerformBtn.interactable = true;
+        }
+    }
+
+    public void HideUpgradeUI()
+    {
+        gameObject.SetActive(false);
+        selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            HideUpgradeUI();
+            inputEventManager.OnESCTarget = inGameManager;
+            selectedUnitManager.OnUpgrade(false);
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            HideUpgradeUI();
+            inputEventManager.OnRightClickTarget = selectedUnitManager;
+            selectedUnitManager.OnUpgrade(false);
         }
     }
 }

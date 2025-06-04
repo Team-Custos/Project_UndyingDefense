@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick, IInputUnitDelete
-    , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade
+    , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade, IInputESC
 {
     [SerializeField] private SelectedUnitUI unitSelectUI;
     [SerializeField] private Camera mainCamera;
@@ -69,6 +69,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     allyUnitSpawner.CancelSpawn();
 
                     Unit unit = hit.collider.GetComponent<Unit>();
+
+                    inputEventManager.OnESCTarget = this;
 
                     if (unit is AllyUnit)
                     {
@@ -182,33 +184,35 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
-            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
+            DeSelecteUnit();
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (selectedUnit != null)
-                {
-                    selectedUnit.IsSelected = false;
-                    selectedUnit = null;
-                    unitSelectUI.HideAllyUI();
-                    unitSelectUI.HideHp();
-                    unitSelectUI.HideUpgrdeUI();
-                    unitSelectUI.HideUntInfo();
-                }
-                else
-                {
-                    unitSelectUI.HideUntInfo();
-                }
+            //Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            //RaycastHit hit;
 
-                commandSkillManager.CancelSkill();
+            //if (Physics.Raycast(ray, out hit))
+            //{
+            //    if (selectedUnit != null)
+            //    {
+            //        selectedUnit.IsSelected = false;
+            //        selectedUnit = null;
+            //        unitSelectUI.HideAllyUI();
+            //        unitSelectUI.HideHp();
+            //        unitSelectUI.HideUpgrdeUI();
+            //        unitSelectUI.HideUntInfo();
+            //    }
+            //    else
+            //    {
+            //        unitSelectUI.HideUntInfo();
+            //    }
+
+            //    commandSkillManager.CancelSkill();
 
 
 
-                allyUnitSpawner.CancelSpawn();
-            }
+            //    allyUnitSpawner.CancelSpawn();
+            //}
 
-            isUpgradeOn = false;
+            //isUpgradeOn = false;
         }
     }
 
@@ -369,6 +373,15 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 else
                     return;
             }
+        }
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            DeSelecteUnit();
+            inputEventManager.OnESCTarget = inGameManager;
         }
     }
 
