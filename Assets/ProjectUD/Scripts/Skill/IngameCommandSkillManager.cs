@@ -240,7 +240,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         selectedUI1.gameObject.SetActive(false);
         circle.SetActive(false);
         isSkillActivated = false;
-        inputEventManager.OnClickTarget = SelectedUnitManager;
+        
     }
 
     public void OnESC(InputAction.CallbackContext context)
@@ -249,6 +249,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         {
             CancelSkill();
             inputEventManager.OnESCTarget = ingameManager;
+            inputEventManager.OnRightClickTarget = SelectedUnitManager;
+            inputEventManager.OnClickTarget = SelectedUnitManager;
         }
     }
 
@@ -259,6 +261,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             CancelSkill();
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnESCTarget = ingameManager;
+            inputEventManager.OnClickTarget = SelectedUnitManager;
         }
     }
 }

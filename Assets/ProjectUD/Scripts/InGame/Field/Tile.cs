@@ -34,5 +34,6 @@ public class Tile : MonoBehaviour
     public void ClearUnit()
     {
         tileAllyUnit = null;
+        Debug.Log("유닛 클리어");
     }
 }

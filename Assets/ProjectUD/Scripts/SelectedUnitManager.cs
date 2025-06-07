@@ -71,11 +71,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 {
                     allyUnitSpawner.CancelSpawn();
 
+                    inputEventManager.OnRightClickTarget = this;
+                    inputEventManager.OnESCTarget = this;
+
                     Unit unit = hit.collider.GetComponent<Unit>();
 
                     unitSelectUI.OffUpgradeUI();
 
-                    inputEventManager.OnESCTarget = this;
 
                     if (unit is AllyUnit)
                     {
@@ -403,7 +405,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             selectedUnit = null;
             unitSelectUI.HideAllyUI();
             unitSelectUI.HideHp();
-            unitSelectUI.HideUpgrdeUI();
+            unitSelectUI.OffUpgradeUI();
             unitSelectUI.HideUntInfo();
             selectedUnit = null;
         }

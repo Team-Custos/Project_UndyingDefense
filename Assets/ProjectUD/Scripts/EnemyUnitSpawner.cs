@@ -43,6 +43,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     private bool isFortreessAttacked;
     private bool isWaveReady = true;
     private bool isGameOver = false;
+    public bool IsGameOver => isGameOver;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
@@ -262,6 +263,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     {
         SoundManager.Instance.StopBGM();
         SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleLose]);
+        isGameOver = true;
         Time.timeScale = 0.0f;
     }
 }

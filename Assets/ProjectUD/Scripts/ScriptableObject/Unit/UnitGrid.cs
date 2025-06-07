@@ -10,6 +10,7 @@ public class UnitGrid : MonoBehaviour
     public AllyUnit AllyUnit => allyUnit;
     public List<Tile> overlappedTiles { set; get; } = new List<Tile>();
     private Tile targetTile;
+    public Tile TargetTile => targetTile;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -88,7 +89,7 @@ public class UnitGrid : MonoBehaviour
     {
         if(targetTile != null)
         {
-
+            Debug.Log("타일 클리어");
             targetTile.ClearUnit();
             targetTile = null;
         }

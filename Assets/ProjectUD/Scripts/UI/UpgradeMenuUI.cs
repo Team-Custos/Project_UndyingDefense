@@ -55,6 +55,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Text infoGSkillDescript;
     [SerializeField] private Text infoSSkillDescript;
     [SerializeField] private Text infoMentalText;
+    [SerializeField] private Text infoAttackRangeText;
+    [SerializeField] private Text infoRecommendedRoleText;
 
     [SerializeField] private RectTransform leftPos;
     [SerializeField] private RectTransform middlePos;
@@ -117,10 +119,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoCrtiText.text = "치명타율 : " + firstUnitData.CritChance.ToString();
                 infoMoveSpeedText.text = "이동속도 : " + firstUnitData.MoveSpeed.ToString();
                 infoAttackSpeedText.text = "공격속도 : " + firstUnitData.AttackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + firstUnitData.Mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + firstUnitData.AttackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = RecommendRoleByString(firstUnitData);
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (firstUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
                 afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
-                infoMentalText.text = currentUnitData.Mental.ToString() + " + " + firstUnitData.Mental.ToString();
+                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + firstUnitData.Mental.ToString();
 
                 Unit firstUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
 
@@ -148,10 +153,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoCrtiText.text = "치명타율 : " + secondUnitData.CritChance.ToString();
                 infoMoveSpeedText.text = "이동속도 : " + secondUnitData.MoveSpeed.ToString();
                 infoAttackSpeedText.text = "공격속도 : " + secondUnitData.AttackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + secondUnitData.Mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + secondUnitData.AttackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = RecommendRoleByString(secondUnitData);
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
-                infoMentalText.text = currentUnitData.Mental.ToString() + " + " + secondUnitData.Mental.ToString();
+                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + secondUnitData.Mental.ToString();
 
                 Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[1].Prefab.GetComponent<Unit>();
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
@@ -386,6 +394,22 @@ public class UpgradeMenuUI : MonoBehaviour
         gameObject.SetActive(false);
         selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
 
+    }
+
+    private string RecommendRoleByString(UnitData unitData)
+    {
+        string recommendedRole = "";
+
+        if (unitData.AttackRange <= 5)
+        {
+            recommendedRole = "추천 역할 : 탱커";
+        }
+        else
+        {
+            recommendedRole = "추천 역할 : 딜러";
+        }
+
+        return recommendedRole;
     }
 
 }

@@ -139,6 +139,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     public float inGameGold;
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
     [SerializeField] private AudioClip inGameIntro;
 
@@ -229,6 +230,9 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
+            if (enemyUnitSpawner.IsGameOver)
+                return;
+
             //SoundManager.Instance.playCancleSFX();
             ingameScreenUI.OnOffSetting();
         }

@@ -30,6 +30,7 @@ public class AllyUnit : Unit
         DEAD
     }
 
+    private Tile tile;
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
     private Mode mode;
@@ -40,7 +41,6 @@ public class AllyUnit : Unit
     public override UnitData Data => data;
 
     private AllyUnitSpawner spawner;
-    private Grid grid;
 
     private float changeDuration = 3.0f;        // 모드 변경 시간
     private float upgradeDuraiton = 3.0f;
@@ -541,7 +541,6 @@ public class AllyUnit : Unit
                                 navObstacle.enabled = true;
 
                                 navAgent.enabled = false;
-
                             }
                             else
                             {
@@ -568,6 +567,11 @@ public class AllyUnit : Unit
                             {
                                 changeDuration -= Time.deltaTime;
                                 state = State.IDLE;
+
+                                if (selectedUnitUI != null)
+                                {
+                                    selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                                }
                             }
                             else
                             {
@@ -575,9 +579,12 @@ public class AllyUnit : Unit
                                 changeDuration = 3.0f;
                                 previousMode = mode;
                                 isAvailableToSiege = false;
-                                
-                                if(selectedUnitUI != null && isSelected)
+
+                                if (selectedUnitUI != null && isSelected)
+                                {
                                     selectedUnitUI.ShowAllyUI(this);
+                                    selectedUnitUI.HideUnitDuration();
+                                }
                             }
                         }
                     }
@@ -595,6 +602,12 @@ public class AllyUnit : Unit
                         {
                             changeDuration -= Time.deltaTime;
                             state = State.IDLE;
+
+                            if(selectedUnitUI != null)
+                            {
+                                selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                            }
+
                         }
                         else
                         {
@@ -605,7 +618,10 @@ public class AllyUnit : Unit
 
 
                             if (selectedUnitUI != null && isSelected)
+                            {
                                 selectedUnitUI.ShowAllyUI(this);
+                                selectedUnitUI.HideUnitDuration();
+                            }
                         }
                     }
 
@@ -645,6 +661,11 @@ public class AllyUnit : Unit
                     {
                         upgradeDuraiton -= Time.deltaTime;
                         state = State.IDLE;
+
+                        if (selectedUnitUI != null)
+                        {
+                            selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
+                        }
                     }
                     else
                     {
@@ -663,6 +684,7 @@ public class AllyUnit : Unit
                         if (selectedUnitUI != null && isSelected)
                         {
                             selectedUnitUI.ShowAllyUI(this);
+                            selectedUnitUI.HideUnitDuration();
                         }
                             
                     }
@@ -818,7 +840,7 @@ public class AllyUnit : Unit
             selectedUnitUI.HideAllyUI();
 
             GameObject obj = upgradeUnitData.Prefab;
-            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode);
+            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode, unitGrid.TargetTile);
 
             pool.Pool.Release(this);
             gameObject.SetActive(false);

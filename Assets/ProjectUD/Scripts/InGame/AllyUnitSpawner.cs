@@ -91,7 +91,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         return unit;
     }
 
-    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform, AllyUnit.Mode mode)
+    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform, AllyUnit.Mode mode,
+        Tile tile)
     {
         GameObject obj;
 
@@ -107,11 +108,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.previousMode = mode;
+                //upgradeUnit.UnitGrid.SetTargetTile(tile);
                 upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.IsSelected = true;
 
                 upgradeUnit.gameObject.SetActive(true);
+                upgradeUnit.UnitGrid.SetTargetTile(tile);
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
@@ -140,6 +143,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 selectedUnitManager.SetSelectedUnit(upgradeUnit);
                 upgradeUnit.gameObject.SetActive(true);
+                upgradeUnit.UnitGrid.SetTargetTile(tile);
 
 
                 upgradeUnit.transform.position = transform.position;
@@ -175,6 +179,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             upgradeUnit.IsSelected = true;
 
             upgradeUnit.gameObject.SetActive(true);
+            upgradeUnit.UnitGrid.SetTargetTile(tile);
             selectedUnitUI.ShowAllyUI(upgradeUnit);
 
 
@@ -214,6 +219,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if (index == selectedIndex)
         {
             CancelSpawn();
+            inputMng.OnESCTarget = inGameManager;
+            inputMng.OnRightClickTarget = selectedUnitManager;
+            inputMng.OnClickTarget = selectedUnitManager;
             selectedUnitUI.HideUntInfo();
         }
         else
@@ -242,8 +250,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         spawn = false;
         indicator.SetActive(false);
         mouseIndicator.SetActive(false);
-        inputMng.OnClickTarget = selectedUnitManager;
-        inputMng.OnESCTarget = inGameManager;
         unitSpawnUI.Deselect();
         selectedUnitUI.HideUntInfo();
     }
@@ -326,7 +332,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 ingameScreenUI.SetspawnBtnPriceTextColor();
 
                 if (inGameManager.inGameGold < allyUnitData.Cost)
+                {
                     CancelSpawn();
+                    inputMng.OnESCTarget = inGameManager;
+                    inputMng.OnRightClickTarget = selectedUnitManager;
+                    inputMng.OnClickTarget = selectedUnitManager;
+                }
+                    
             }
         }
     }
@@ -336,6 +348,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if (context.performed)
         {
             CancelSpawn();
+            inputMng.OnESCTarget = inGameManager;
+            inputMng.OnRightClickTarget = selectedUnitManager;
+            inputMng.OnClickTarget = selectedUnitManager;
         }
     }
 
@@ -344,6 +359,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if(context.performed)
         {
             CancelSpawn();
+            inputMng.OnESCTarget = inGameManager;
+            inputMng.OnRightClickTarget = selectedUnitManager;
+            inputMng.OnClickTarget = selectedUnitManager;
         }
     }
 }
