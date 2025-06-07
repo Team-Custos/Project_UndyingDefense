@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using InputEventInterface;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
-public class HelpUI : MonoBehaviour
+public class HelpUI : MonoBehaviour, IInputESC
 {
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private InGameManager inGameManager;
+
     [SerializeField] private Button manulBtn;
     [SerializeField] private Button attributeBtn;
 
@@ -78,12 +84,14 @@ public class HelpUI : MonoBehaviour
         currentIndex = 0;
         ResetToFirstPanel();
         gameObject.SetActive(true);
+        inputEventManager.OnESCTarget = this;
     }
 
     public void CloseHelp()
     {
-        SoundManager.Instance.playCancleSFX();
+        //SoundManager.Instance.playCancleSFX();
         gameObject.SetActive(false);
+        inputEventManager.OnESCTarget = inGameManager;
     }
 
     private void ResetToFirstPanel()
@@ -93,6 +101,14 @@ public class HelpUI : MonoBehaviour
             float targetX = (i - currentIndex) * panelSpacing;
             Vector2 targetPos = new Vector2(centerPosition.x + targetX, centerPosition.y);
             panels[i].anchoredPosition = targetPos;
+        }
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            CloseHelp();
         }
     }
 }

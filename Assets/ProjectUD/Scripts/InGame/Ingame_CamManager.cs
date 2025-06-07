@@ -35,6 +35,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     private Vector3 moveDirection = Vector3.zero; // 이동 방향 저장
 
+    public float ZoomMax => zoomMax;
+    public float ZoomMin => zoomMin;
+
     private void Start()
     {
         if (virtualCamera != null)

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UIElements;
 
-public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
+public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
 {
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputMng;
@@ -208,6 +208,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             return;
         }
 
+        inputMng.OnESCTarget = this;
+        inputMng.OnRightClickTarget = this;
+
         if (index == selectedIndex)
         {
             CancelSpawn();
@@ -239,8 +242,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         spawn = false;
         indicator.SetActive(false);
         mouseIndicator.SetActive(false);
-        inputMng.OnClickTarget = selectedUnitManager; //  null;
+        inputMng.OnClickTarget = selectedUnitManager;
+        inputMng.OnESCTarget = inGameManager;
         unitSpawnUI.Deselect();
+        selectedUnitUI.HideUntInfo();
     }
 
     // 단축키로 유닛 스폰
@@ -320,8 +325,25 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 inGameManager.SetGold(allyUnitData.Cost, false);
                 ingameScreenUI.SetspawnBtnPriceTextColor();
 
-                CancelSpawn();
+                if (inGameManager.inGameGold < allyUnitData.Cost)
+                    CancelSpawn();
             }
+        }
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelSpawn();
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            CancelSpawn();
         }
     }
 }

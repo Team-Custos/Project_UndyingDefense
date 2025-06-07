@@ -1,13 +1,16 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
 {
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
+    [SerializeField] private SelectedUnitUI selectedUnitUI;
 
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
@@ -98,7 +101,7 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             upgradeIndex = index;
 
-            if (cost < inGameManager.inGameGold)
+            if (cost <= inGameManager.inGameGold)
             {
                 upgradePerformBtn.interactable = true;
             }
@@ -180,6 +183,7 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (selectedUnit is EnemyUnit)
             return;
+
 
         infoPanel.SetActive(false);
 
@@ -373,7 +377,15 @@ public class UpgradeMenuUI : MonoBehaviour
         if(inGameManager.inGameGold >= cost)
         {
             currentGoldText.color = Color.white;
-            //upgradePerformBtn.interactable = true;
+            upgradePerformBtn.interactable = true;
         }
     }
+
+    public void HideUpgradeUI()
+    {
+        gameObject.SetActive(false);
+        selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
+
+    }
+
 }

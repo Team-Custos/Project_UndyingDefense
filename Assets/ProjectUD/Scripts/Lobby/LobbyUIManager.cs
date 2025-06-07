@@ -122,7 +122,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 lobbySettingPanel.SetActive(false);
             });
         }
@@ -137,7 +137,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 EndGame();
             });
         }
@@ -182,7 +182,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 SoundManager.Instance.PlaySFX(battleStartSfx);
 
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0522");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0602");
 
                 if (GlobalSoundManager.instance != null)
                 {
@@ -366,7 +366,7 @@ public class LobbyUIManager : MonoBehaviour
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
                 }
 
-                SoundManager.Instance.playCancleSFX();
+                //SoundManager.Instance.playCancleSFX();
                 creditPanel.SetActive(false);
             });
         }

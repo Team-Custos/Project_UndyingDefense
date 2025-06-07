@@ -1,4 +1,5 @@
 using Cinemachine;
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +7,21 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
 
-public class SelectedUnitUI : MonoBehaviour
+public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager selecteUnitManger;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private Ingame_CamManager ingameCamManager;
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private InGameManager inGameManager;
+    private CinemachineFramingTransposer framingTransposer;
+
 
     [SerializeField] private Button upgradeBtn;
     [SerializeField] private Image unitHP;
@@ -28,6 +36,7 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Sprite siegeIcon;
     [SerializeField] private float yPos;
     [SerializeField] private float xPos;
+    [SerializeField] private float menuYpos;
 
     [Header("■ UntiInfo")]
     [SerializeField] private Image unitInfoImage;
@@ -78,8 +87,13 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private GameObject allyUnitUI;
     [SerializeField] private GameObject enemyUnitUI;
 
-
-
+    private void Start()
+    {
+        if (virtualCamera != null)
+        {
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -129,7 +143,20 @@ public class SelectedUnitUI : MonoBehaviour
     public void HideUpgrdeUI()
     {
         unitUpgradeMenuPrefab.SetActive(false);
-        SoundManager.Instance.playCancleSFX();
+        //SoundManager.Instance.playCancleSFX();
+        selecteUnitManger.OnUpgrade(false);
+
+        ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
+
+        inputEventManager.OnESCTarget = selecteUnitManger;
+        inputEventManager.OnRightClickTarget = selecteUnitManger;
+    }
+
+    public void OffUpgradeUI()
+    {
+        unitUpgradeMenuPrefab.SetActive(false);
+        //SoundManager.Instance.playCancleSFX();
+        selecteUnitManger.OnUpgrade(false);
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -140,6 +167,8 @@ public class SelectedUnitUI : MonoBehaviour
         SoundManager.Instance.PlayUIClickSFX();
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
+        inputEventManager.OnRightClickTarget = this;
+        inputEventManager.OnESCTarget = this;
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
         selecteUnitManger.OnUpgrade(true);
     }
@@ -167,6 +196,8 @@ public class SelectedUnitUI : MonoBehaviour
             upgradeBtn.interactable = true;
 
         unitMenuPrefab.SetActive(true);
+
+        
 
         //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
 
@@ -196,16 +227,30 @@ public class SelectedUnitUI : MonoBehaviour
                 unitHPPrefab.transform.position = screenPosition;
             }
 
-            if(unitMenuPrefab != null)
+            if (unitMenuPrefab != null)
             {
-                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
+                float currentFov = framingTransposer.m_CameraDistance;
+
+                float maxZoom = ingameCamManager.ZoomMax;
+                float minZoom = ingameCamManager.ZoomMin;
+
+
+
+                float zoomPercnet = (currentFov - minZoom) / (maxZoom - minZoom);
+
+                menuYpos = Mathf.Lerp(2.0f, 3.0f, zoomPercnet);
+
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right *xPos + Vector3.down * (zoomPercnet * menuYpos);
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitMenuPrefab.transform.position = screenPosition;
+
             }
 
-            if(unitUpgradeMenuPrefab != null)
+
+            if (unitUpgradeMenuPrefab != null)
             {
+
                 Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * xPos;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
@@ -428,4 +473,29 @@ public class SelectedUnitUI : MonoBehaviour
     }
 
 
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if(selecteUnitManger.SelectedUnit is AllyUnit)
+                upgradeMenuUI.HideUpgradeUI();
+
+            inputEventManager.OnESCTarget = selecteUnitManger;
+            inputEventManager.OnRightClickTarget = selecteUnitManger;
+            selecteUnitManger.OnUpgrade(false);
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (selecteUnitManger.SelectedUnit is AllyUnit)
+                upgradeMenuUI.HideUpgradeUI();
+
+            inputEventManager.OnRightClickTarget = selecteUnitManger;
+            inputEventManager.OnESCTarget = selecteUnitManger;
+            selecteUnitManger.OnUpgrade(false);
+        }
+    }
 }

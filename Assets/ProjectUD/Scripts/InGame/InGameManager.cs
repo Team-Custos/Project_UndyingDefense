@@ -229,7 +229,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
-            SoundManager.Instance.playCancleSFX();
+            //SoundManager.Instance.playCancleSFX();
             ingameScreenUI.OnOffSetting();
         }
     }

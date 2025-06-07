@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class IngameCommandSkillManager : MonoBehaviour, IInputClick
+public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick
 {
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private InGameManager ingameManager;
     //[SerializeField] private GameObject mouseIndicator;
     [SerializeField] private Transform BurningOilPos;
     private Unit selectedTargetUnit;
@@ -106,6 +107,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
+                        inputEventManager.OnESCTarget = ingameManager;
                         selectedUI0.gameObject.SetActive(false);
                         selectedUI1.gameObject.SetActive(false);
                         return;
@@ -124,6 +126,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                         ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
+                        inputEventManager.OnESCTarget = ingameManager;
                         selectedUI0.gameObject.SetActive(false);
                         selectedUI1.gameObject.SetActive(false);
                         circle.SetActive(false);
@@ -185,6 +188,9 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
         {
             allyUnitSpawner.CancelSpawn();
             inputEventManager.OnClickTarget = this;
+            inputEventManager.OnESCTarget = this;
+            inputEventManager.OnRightClickTarget = this;
+            SelectedUnitManager.DeSelecteUnit();
 
             if (isSkillActivated && activatedSkillButtonIdx == idx)
             {
@@ -244,5 +250,25 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
         selectedUI1.gameObject.SetActive(false);
         circle.SetActive(false);
         isSkillActivated = false;
+        inputEventManager.OnClickTarget = SelectedUnitManager;
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelSkill();
+            inputEventManager.OnESCTarget = ingameManager;
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelSkill();
+            inputEventManager.OnRightClickTarget = SelectedUnitManager;
+            inputEventManager.OnESCTarget = ingameManager;
+        }
     }
 }
