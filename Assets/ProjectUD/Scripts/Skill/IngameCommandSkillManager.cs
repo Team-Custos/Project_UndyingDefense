@@ -13,6 +13,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
     [SerializeField] private Transform BurningOilPos;
     private Unit selectedTargetUnit;
     //[SerializeField] private Button[] skillButtons;
+    [SerializeField] private float skillCastDelayTime;
+    private float skillCastDelayCheck = 0f;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
@@ -26,6 +28,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
     private ActiveCommandSkill[] skill;
     private int activatedSkillButtonIdx = 0;
+
+    [SerializeField] private AudioClip[] btnClickSFX;
 
     void Update()
     {
@@ -54,6 +58,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
+        if (btnClickSFX[activatedSkillButtonIdx] != null)
+        {
+            SoundManager.Instance.PlaySFX(btnClickSFX[activatedSkillButtonIdx]);
+        }
+
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
@@ -169,6 +178,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
 
         CommandSkillData skillData = skill[idx].Data;
 
+        activatedSkillButtonIdx = idx;
+
         if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
             || skillData.TargetType == CommandSkill.TargetType.UNIT)
         {
@@ -200,7 +211,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick
                     circle.SetActive(false);
                 }
 
-                activatedSkillButtonIdx = idx;
                 isSkillActivated = true;
 
                 if (idx == 0)

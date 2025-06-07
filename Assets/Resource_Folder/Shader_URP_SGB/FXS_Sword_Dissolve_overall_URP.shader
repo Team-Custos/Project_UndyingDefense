@@ -13,6 +13,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 		[HDR]_Fresnel_color("Fresnel_color", Color) = (1,1,1,0)
 		_TextureSample0("Texture Sample 0", 2D) = "white" {}
 		_Sword_dissolve("Sword_dissolve", Float) = 0
+		[Toggle(_USE_CUSTOM_ON)] _USE_Custom("USE_Custom", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -239,6 +240,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 			#define ASE_NEEDS_FRAG_WORLD_VIEW_DIR
 			#define ASE_NEEDS_VERT_NORMAL
 			#define ASE_NEEDS_FRAG_COLOR
+			#pragma shader_feature_local _USE_CUSTOM_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -316,12 +318,11 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				float3 ase_normalWS = TransformObjectToWorldNormal( input.normalOS );
 				output.ase_texcoord6.xyz = ase_normalWS;
 				
-				output.ase_texcoord7.xy = input.texcoord.xy;
+				output.ase_texcoord7 = input.texcoord;
 				output.ase_color = input.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				output.ase_texcoord6.w = 0;
-				output.ase_texcoord7.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -487,11 +488,16 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				float2 texCoord77 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				
 				float2 uv_TextureSample0 = input.ase_texcoord7.xy * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
+				#ifdef _USE_CUSTOM_ON
+				float staticSwitch122 = input.ase_texcoord7.z;
+				#else
+				float staticSwitch122 = _Sword_dissolve;
+				#endif
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
 				float3 Color = ( ( ( _Fresnel_color * saturate( fresnelNode79 ) ) + ( _Base_color * ( 1.0 - ( texCoord77.x + _Color_Range ) ) ) ) * input.ase_color ).rgb;
-				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (_Sword_dissolve - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
+				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (staticSwitch122 - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -582,7 +588,8 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			
+			#pragma shader_feature_local _USE_CUSTOM_ON
+
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
 				#define ASE_SV_DEPTH SV_DepthLessEqual
@@ -647,10 +654,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 				output.ase_color = input.ase_color;
-				output.ase_texcoord3.xy = input.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord3.zw = 0;
+				output.ase_texcoord3 = input.ase_texcoord;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -792,9 +796,14 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				#endif
 
 				float2 uv_TextureSample0 = input.ase_texcoord3.xy * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
+				#ifdef _USE_CUSTOM_ON
+				float staticSwitch122 = input.ase_texcoord3.z;
+				#else
+				float staticSwitch122 = _Sword_dissolve;
+				#endif
 				
 
-				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (_Sword_dissolve - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
+				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (staticSwitch122 - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef ASE_DEPTH_WRITE_ON
@@ -875,7 +884,8 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
-			
+			#pragma shader_feature_local _USE_CUSTOM_ON
+
 
 			struct Attributes
 			{
@@ -936,10 +946,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 				output.ase_color = input.ase_color;
-				output.ase_texcoord.xy = input.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord.zw = 0;
+				output.ase_texcoord = input.ase_texcoord;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1052,9 +1059,14 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
 				float2 uv_TextureSample0 = input.ase_texcoord.xy * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
+				#ifdef _USE_CUSTOM_ON
+				float staticSwitch122 = input.ase_texcoord.z;
+				#else
+				float staticSwitch122 = _Sword_dissolve;
+				#endif
 				
 
-				surfaceDescription.Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (_Sword_dissolve - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
+				surfaceDescription.Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (staticSwitch122 - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -1132,7 +1144,8 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			
+			#pragma shader_feature_local _USE_CUSTOM_ON
+
 
 			struct Attributes
 			{
@@ -1192,10 +1205,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 				output.ase_color = input.ase_color;
-				output.ase_texcoord.xy = input.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord.zw = 0;
+				output.ase_texcoord = input.ase_texcoord;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
@@ -1306,9 +1316,14 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
 				float2 uv_TextureSample0 = input.ase_texcoord.xy * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
+				#ifdef _USE_CUSTOM_ON
+				float staticSwitch122 = input.ase_texcoord.z;
+				#else
+				float staticSwitch122 = _Sword_dissolve;
+				#endif
 				
 
-				surfaceDescription.Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (_Sword_dissolve - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
+				surfaceDescription.Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (staticSwitch122 - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -1395,7 +1410,8 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
             #endif
 
-			
+			#pragma shader_feature_local _USE_CUSTOM_ON
+
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
 				#define ASE_SV_DEPTH SV_DepthLessEqual
@@ -1464,10 +1480,7 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 				output.ase_color = input.ase_color;
-				output.ase_texcoord3.xy = input.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				output.ase_texcoord3.zw = 0;
+				output.ase_texcoord3 = input.ase_texcoord;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = input.positionOS.xyz;
 				#else
@@ -1594,9 +1607,14 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 				float4 ScreenPos = ComputeScreenPos( input.clipPosV );
 
 				float2 uv_TextureSample0 = input.ase_texcoord3.xy * _TextureSample0_ST.xy + _TextureSample0_ST.zw;
+				#ifdef _USE_CUSTOM_ON
+				float staticSwitch122 = input.ase_texcoord3.z;
+				#else
+				float staticSwitch122 = _Sword_dissolve;
+				#endif
 				
 
-				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (_Sword_dissolve - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
+				float Alpha = ( input.ase_color.a * saturate( ( tex2D( _TextureSample0, uv_TextureSample0 ).r + (-2.0 + (staticSwitch122 - 0.0) * (1.0 - -2.0) / (1.0 - 0.0)) ) ) );
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef ASE_DEPTH_WRITE_ON
@@ -1644,9 +1662,11 @@ Shader "Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall"
 }
 /*ASEBEGIN
 Version=19801
-Node;AmplifyShaderEditor.RangedFloatNode;81;-1363.493,670.8304;Float;False;Constant;_Float1;Float 1;10;0;Create;True;0;0;0;False;0;False;-2;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;82;-1340.493,773.8304;Float;False;Constant;_Float2;Float 2;10;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;83;-1365.61,542.7511;Float;False;Property;_Sword_dissolve;Sword_dissolve;8;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;83;-1680,512;Float;False;Property;_Sword_dissolve;Sword_dissolve;8;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TexCoordVertexDataNode;121;-1632,656;Inherit;False;0;4;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;81;-1328,864;Float;False;Constant;_Float1;Float 1;10;0;Create;True;0;0;0;False;0;False;-2;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;82;-1296,960;Float;False;Constant;_Float2;Float 2;10;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.StaticSwitch;122;-1408,608;Inherit;False;Property;_USE_Custom;USE_Custom;9;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;88;-1451.694,323.7765;Inherit;True;Property;_TextureSample0;Texture Sample 0;7;0;Create;True;0;0;0;False;0;False;-1;None;6928317b273a9cb4088693beddc52984;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TFHCRemapNode;89;-1136.493,575.8304;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;92;-991.3457,412.5688;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
@@ -1665,11 +1685,11 @@ Node;AmplifyShaderEditor.ColorNode;87;-1736.696,-167.7331;Float;False;Property;_
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;90;-1365.117,-3.777664;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;91;-1237.703,-304.0333;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;94;-1089.853,-102.0914;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;96;-1711.833,591.6108;Float;False;Property;_INS;INS;1;0;Create;True;0;0;0;False;0;False;0;5;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;97;-2245.374,-189.575;Inherit;True;Property;_Main_TEX;Main_TEX;0;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;98;-735.9492,296.801;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;99;-2556.382,-189.5733;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;100;-528,-160;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;96;-1872,672;Float;False;Property;_INS;INS;1;0;Create;True;0;0;0;False;0;False;0;5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;98;-592,288;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;111;48,-112;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;112;48,-112;Float;False;True;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;13;Amplify Shader/SGB/URP/FX_Sword_Dissolve_Overall;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;9;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;25;Surface;1;638796154315452985;  Blend;0;638796156417235116;Two Sided;1;638796160933903893;Alpha Clipping;0;638796160400726309;  Use Shadow Threshold;0;0;Forward Only;0;0;Cast Shadows;0;638796154376265655;Receive Shadows;0;638796160353476927;GPU Instancing;0;638796154381061795;LOD CrossFade;0;638796154383250567;Built-in Fog;0;638796154385173787;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;0;10;False;True;False;True;False;False;True;True;True;False;False;;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;113;48,-112;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
@@ -1680,7 +1700,9 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;117;48,-112;Float;False;Fal
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;118;48,-112;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ScenePickingPass;0;7;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;119;48,-112;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormals;0;8;DepthNormals;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=DepthNormalsOnly;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;120;48,-112;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormalsOnly;0;9;DepthNormalsOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=DepthNormalsOnly;False;True;9;d3d11;metal;vulkan;xboxone;xboxseries;playstation;ps4;ps5;switch;0;;0;0;Standard;0;False;0
-WireConnection;89;0;83;0
+WireConnection;122;1;83;0
+WireConnection;122;0;121;3
+WireConnection;89;0;122;0
 WireConnection;89;3;81;0
 WireConnection;89;4;82;0
 WireConnection;92;0;88;1
@@ -1698,11 +1720,11 @@ WireConnection;91;0;86;0
 WireConnection;91;1;85;0
 WireConnection;94;0;91;0
 WireConnection;94;1;90;0
-WireConnection;98;0;93;4
-WireConnection;98;1;95;0
 WireConnection;100;0;94;0
 WireConnection;100;1;93;0
+WireConnection;98;0;93;4
+WireConnection;98;1;95;0
 WireConnection;112;2;100;0
 WireConnection;112;3;98;0
 ASEEND*/
-//CHKSM=10F79DED431983A5CE89E114E8903139AD710D83
+//CHKSM=15F9DB65215930B466548A84A360DCBB578071C5
