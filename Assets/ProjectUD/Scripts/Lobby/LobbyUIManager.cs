@@ -182,7 +182,7 @@ public class LobbyUIManager : MonoBehaviour
             {
                 SoundManager.Instance.PlaySFX(battleStartSfx);
 
-                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0602");
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
 
                 if (GlobalSoundManager.instance != null)
                 {
