@@ -12,6 +12,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     [SerializeField] private InGameManager ingameManager;
     //[SerializeField] private GameObject mouseIndicator;
     [SerializeField] private Transform BurningOilPos;
+    [SerializeField] private CommandSkill_FireOilCtrl BurningOilCtrl;
     private Unit selectedTargetUnit;
     //[SerializeField] private Button[] skillButtons;
     [SerializeField] private float skillCastDelayTime;
@@ -64,6 +65,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             SoundManager.Instance.PlaySFX(btnClickSFX[activatedSkillButtonIdx]);
         }
 
+        if (skill.Data.StartSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX);
+        }
+
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
@@ -82,6 +88,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             case CommandSkill.TargetType.AREA:
                 Debug.Log("AreaSkill Activated");
                 skill.Activate(BurningOilPos);
+                BurningOilCtrl.SpawnStart();
                 break;
         }
     }

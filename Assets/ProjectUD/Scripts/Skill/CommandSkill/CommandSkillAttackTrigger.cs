@@ -24,6 +24,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     [SerializeField] private float tickTime = 0.1f;
     private float tickTimeCheck = 0f;
 
+    [SerializeField] private AudioClip loopSFX;
+
     // 범위를 가진 스킬
     protected Collider[] targets;
     protected const int maxTargetCount = 5;
@@ -115,9 +117,18 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
+    public void SetSFX(AudioClip loopSFX)
+    {
+        this.loopSFX = loopSFX;
+    }
+
     private void Start()
     {
         PlayVFX();
+        if (data.LoopSFX != null)
+        {
+            SoundManager.Instance.PlaySFXLoop(data.LoopSFX);
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -228,6 +239,11 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
+    }
+
+    private void OnDestroy()
+    {
+        SoundManager.Instance.StopSFXLoop();
     }
 
 

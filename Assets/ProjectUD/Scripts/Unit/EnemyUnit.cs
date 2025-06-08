@@ -411,7 +411,7 @@ public class EnemyUnit : Unit
             if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
             {
                 behaviorPriority = BehaviorPriority.Combat;
-                modelAnimator.SetTrigger("Rage");
+                //modelAnimator.SetTrigger("Rage");
                 AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
             }
         }

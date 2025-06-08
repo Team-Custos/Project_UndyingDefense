@@ -36,10 +36,14 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFXLoop(AudioClip clip)
     {
-        if (sfxAudio.clip == clip)
-            return;
-        sfxAudio.clip = clip;
-        sfxAudio.Play();
+        sfxLoopAudio.clip = clip;
+        sfxLoopAudio.Play();
+    }
+
+    public void StopSFXLoop()
+    {
+        if (sfxLoopAudio != null)
+            sfxLoopAudio.Stop();
     }
 
     public void PlayUIClickSFX()
