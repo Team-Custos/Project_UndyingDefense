@@ -6,6 +6,7 @@ public class SoundManager : Singleton<SoundManager>
 
     [SerializeField] private AudioSource bgmAudio;
     [SerializeField] private AudioSource sfxAudio;
+    [SerializeField] private AudioSource sfxLoopAudio;
 
     [SerializeField] private AudioClip uiClickClip;
     [SerializeField] private AudioClip cancleClip;
@@ -31,6 +32,18 @@ public class SoundManager : Singleton<SoundManager>
     public void PlaySFX(AudioClip clip)
     {
         sfxAudio.PlayOneShot(clip);
+    }
+
+    public void PlaySFXLoop(AudioClip clip)
+    {
+        sfxLoopAudio.clip = clip;
+        sfxLoopAudio.Play();
+    }
+
+    public void StopSFXLoop()
+    {
+        if (sfxLoopAudio != null)
+            sfxLoopAudio.Stop();
     }
 
     public void PlayUIClickSFX()

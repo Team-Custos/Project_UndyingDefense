@@ -8,7 +8,8 @@ public class CommandSkillData : ScriptableObject
     [SerializeField] private new string name;
     [SerializeField, TextArea] private string description;
     [SerializeField] private float coolTime;
-    [SerializeField] private AudioClip[] startSFX;
+    [SerializeField] private AudioClip startSFX;
+    [SerializeField] private AudioClip loopSFX;
     [SerializeField] private ParticleSystem startVFX;
     [SerializeField] private ParticleSystem loopVFX;
     [SerializeField] private Sprite icon;
@@ -17,7 +18,8 @@ public class CommandSkillData : ScriptableObject
     public string Name => name;
     public string Description => description;
     public float CoolTime => coolTime;
-    public AudioClip[] StartSFX => startSFX;
+    public AudioClip StartSFX => startSFX;
+    public AudioClip LoopSFX => loopSFX;
     public ParticleSystem StartVFX => startVFX;
     public ParticleSystem LoopVFX => loopVFX;
     public Sprite Icon => icon;

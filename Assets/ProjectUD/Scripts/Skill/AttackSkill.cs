@@ -166,7 +166,9 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        int targetCount = Physics.OverlapBoxNonAlloc(pivotTarget.transform.position + Vector3.forward * AreaZ * 0.5f,new Vector3(AreaX,AreaY,AreaZ),targets);
+        int targetCount = 
+            Physics.OverlapBoxNonAlloc(pivotTarget.transform.position + Vector3.forward * AreaZ * 0.5f
+                                        ,new Vector3(AreaX,AreaY,AreaZ), targets, Quaternion.identity, unit.EnemyLayer);
         for (int i = 0; i < targetCount; i++)
         {
             if (targets[i].TryGetComponent(out Unit target))

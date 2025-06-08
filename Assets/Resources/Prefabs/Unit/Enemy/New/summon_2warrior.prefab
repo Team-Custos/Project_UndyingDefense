@@ -94,10 +94,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1921490181596781310}
     m_Modifications:
+    - target: {fileID: 2018265794877018992, guid: 90fd6c1274949134690c92770f7888c3,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2c7c1f72901c5e54287c9c4888fa23b4, type: 2}
     - target: {fileID: 4731504696940483504, guid: 90fd6c1274949134690c92770f7888c3,
         type: 3}
       propertyPath: m_Name
       value: undead_warrior with weapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396014772146309386, guid: 90fd6c1274949134690c92770f7888c3,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396014772146309386, guid: 90fd6c1274949134690c92770f7888c3,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396014772146309386, guid: 90fd6c1274949134690c92770f7888c3,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 5396014772146309386, guid: 90fd6c1274949134690c92770f7888c3,
         type: 3}
@@ -148,6 +168,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396014772146309386, guid: 90fd6c1274949134690c92770f7888c3,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

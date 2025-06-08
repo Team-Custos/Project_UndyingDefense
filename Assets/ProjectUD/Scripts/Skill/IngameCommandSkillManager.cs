@@ -12,8 +12,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     [SerializeField] private InGameManager ingameManager;
     //[SerializeField] private GameObject mouseIndicator;
     [SerializeField] private Transform BurningOilPos;
+    [SerializeField] private CommandSkill_FireOilCtrl BurningOilCtrl;
     private Unit selectedTargetUnit;
     //[SerializeField] private Button[] skillButtons;
+    [SerializeField] private float skillCastDelayTime;
+    private float skillCastDelayCheck = 0f;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
@@ -27,6 +30,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     private ActiveCommandSkill[] skill;
     private int activatedSkillButtonIdx = 0;
+
+    [SerializeField] private AudioClip[] btnClickSFX;
 
     void Update()
     {
@@ -55,6 +60,16 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
+        if (btnClickSFX[activatedSkillButtonIdx] != null)
+        {
+            SoundManager.Instance.PlaySFX(btnClickSFX[activatedSkillButtonIdx]);
+        }
+
+        if (skill.Data.StartSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX);
+        }
+
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
@@ -73,6 +88,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             case CommandSkill.TargetType.AREA:
                 Debug.Log("AreaSkill Activated");
                 skill.Activate(BurningOilPos);
+                BurningOilCtrl.SpawnStart();
                 break;
         }
     }
@@ -172,6 +188,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
         CommandSkillData skillData = skill[idx].Data;
 
+        activatedSkillButtonIdx = idx;
+
         if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
             || skillData.TargetType == CommandSkill.TargetType.UNIT)
         {
@@ -206,7 +224,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                     circle.SetActive(false);
                 }
 
-                activatedSkillButtonIdx = idx;
                 isSkillActivated = true;
 
                 if (idx == 0)
