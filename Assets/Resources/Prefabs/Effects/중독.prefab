@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: Posion
+  effectName: "\uC911\uB3C5"
+  description: 
   maxStack: 3
   stackVFX: []
   endVFX: {fileID: 0}
@@ -52,6 +54,7 @@ MonoBehaviour:
     _PersistentCalls: []
   onMaxStack:
     _PersistentCalls: []
+  maxStackEffectPrefab: {fileID: 0}
   duration: 5
   tickTime: 1
   onTick:

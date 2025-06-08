@@ -5,6 +5,9 @@ public class Effect : MonoBehaviour
 {
     [Header("■ Effect Options")]
     [SerializeField] protected string id;
+    [SerializeField] protected string effectName;
+    [SerializeField, TextArea] protected string description;
+
     [SerializeField] protected int maxStack;
     [SerializeField] protected ParticleSystem[] stackVFX;
     [SerializeField] protected ParticleSystem endVFX;
@@ -21,6 +24,8 @@ public class Effect : MonoBehaviour
     protected Unit target;
 
     public string Id => id;
+    public string Name => effectName;
+    public string Description => description;
     public GameObject MaxStackEffectPrefab => maxStackEffectPrefab;
 
     public string MaxStackEffectId

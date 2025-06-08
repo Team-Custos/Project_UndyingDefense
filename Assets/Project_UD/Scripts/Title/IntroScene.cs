@@ -10,11 +10,10 @@ using UnityEngine.Video;
 public class IntroScene : MonoBehaviour
 {
     [SerializeField] private VideoPlayer videoPlayer;       // 비디오 플레이어 (영상 재생)
-    [SerializeField] private Animator animator;
-    private bool isSkipped = false;                         // 영상이 스킵되었는지 확인
+    private bool isVideoSkipped = false;                         // 영상이 스킵되었는지 확인
+    private bool isStatementSkipped = false;
 
     [SerializeField] private AudioClip firstHalfBgm;        
-    [SerializeField] private AudioClip secondHalfBgm;       
     [SerializeField] private AudioClip bgSfx;               
     [SerializeField] private AudioClip startSfx;            
 
@@ -25,6 +24,7 @@ public class IntroScene : MonoBehaviour
     [SerializeField] private CanvasGroup declarationTransformCanvasGroup;
     [SerializeField] private CanvasGroup videoCanvasGroup;
     [SerializeField] private RectTransform declarationTransform;
+    [SerializeField] private CanvasGroup dialogueCanvasGroup;
 
     // Start is called before the first frame update
     private void Start()
@@ -36,14 +36,32 @@ public class IntroScene : MonoBehaviour
         ScheduleVideoAudioFadeOut();
     }
 
-    void Update()
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space) && !isSkipped)
+    //    {
+    //        isSkipped = true;
+
+    //        videoPlayer.Stop();
+    //        OnVideoFinished(videoPlayer); // 강제로 처리
+    //    }
+    //}
+
+    public void SkipVideo()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isSkipped)
+        if(!isVideoSkipped)
         {
-            isSkipped = true;
+            isVideoSkipped = true;
 
             videoPlayer.Stop();
-            OnVideoFinished(videoPlayer); // 강제로 처리
+            OnVideoFinished(videoPlayer);
+        }
+        else
+        {
+            if(isStatementSkipped) return;
+
+            ShowDialogue();
+            isStatementSkipped = true;
         }
     }
 
@@ -70,14 +88,23 @@ public class IntroScene : MonoBehaviour
 
     private void OnFirstBgmEnded()
     {
-        // 4. 두 번째 BGM 재생
-        SoundManager.Instance.PlayBGM(secondHalfBgm);
+        if(isStatementSkipped) return;
 
-        // 5. 선언문 슬라이드 연출
-        PlayDeclarationDropAnimation();
+
+        // 대화창 
+        ShowDialogue();
     }
 
-    private void PlayDeclarationDropAnimation()
+    private void ShowDialogue()
+    {
+        dialogueCanvasGroup.gameObject.SetActive(true);
+
+        dialogueCanvasGroup.alpha = 0;
+        dialogueCanvasGroup.DOFade(1f, duration)
+            .SetEase(Ease.OutQuad);
+    }
+
+    public void PlayDeclarationDropAnimation()
     {
         declarationTransform.DOAnchorPosY(0, duration).SetEase(Ease.InOutSine);
         SoundManager.Instance.PlaySFX(bgSfx);
@@ -109,6 +136,7 @@ public class IntroScene : MonoBehaviour
 
         seq.Append(videoCanvasGroup.DOFade(0f, 0.5f));
         seq.Join(statementCanvasGroup.DOFade(0f, 0.5f));
+        seq.Join(dialogueCanvasGroup.DOFade(0f, 0.5f));
 
         seq.Append(declarationTransformCanvasGroup.DOFade(0f, duration));
 
@@ -121,9 +149,5 @@ public class IntroScene : MonoBehaviour
         });
     }
 
-    private void FadeOut()
-    {
-        animator.SetFloat("animationSpeed", 1f);
-    }
 
 }

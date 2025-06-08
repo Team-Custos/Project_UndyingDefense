@@ -43,13 +43,13 @@ public class LobbyManager : MonoBehaviour
 
     public void LoadCommandSkillData()
     {
-        string rawData = PlayerPrefs.GetString("지휘관 스킬");
-        string[] skills = rawData.Split(',');
+        //string rawData = PlayerPrefs.GetString("지휘관 스킬");
+        //string[] skills = rawData.Split(',');
 
-        for(int i = 0; i < skills.Length; i++)
-        {
-            commanderSkils[i] = Resources.Load("SkillData/Command/" + skills[i]) as CommandSkillData;
-        }
+        //for(int i = 0; i < skills.Length; i++)
+        //{
+        //    commanderSkils[i] = Resources.Load("SkillData/Command/" + skills[i]) as CommandSkillData;
+        //}
 
     }
 }

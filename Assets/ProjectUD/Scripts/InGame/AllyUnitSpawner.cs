@@ -210,7 +210,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if(inGameManager.inGameGold < units[index].Cost)
         {
             ingameScreenUI.ShowError("군자금이 모자랍니다!");
-            return;
         }
 
         inputMng.OnESCTarget = this;
@@ -286,11 +285,23 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 if (!hit.transform.CompareTag("Tile"))
                     return;
 
+
+
                 ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
                 AllyUnit unit = pool.Pool.Get();
 
                 var allyUnitData = unit.Data as AllyUnitData;
-                
+
+                if (inGameManager.inGameGold < allyUnitData.Cost)
+                {
+                    ingameScreenUI.ShowError("군자금이 모자랍니다!");
+                    return;
+                    //CancelSpawn();
+                    //inputMng.OnESCTarget = inGameManager;
+                    //inputMng.OnRightClickTarget = selectedUnitManager;
+                    //inputMng.OnClickTarget = selectedUnitManager;
+                }
+
 
                 // 유닛의 소환 방향 설정
                 unit.transform.forward = spawnDirection.forward;
@@ -333,10 +344,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 if (inGameManager.inGameGold < allyUnitData.Cost)
                 {
-                    CancelSpawn();
-                    inputMng.OnESCTarget = inGameManager;
-                    inputMng.OnRightClickTarget = selectedUnitManager;
-                    inputMng.OnClickTarget = selectedUnitManager;
+                    ingameScreenUI.ShowError("군자금이 모자랍니다!");
+                    //CancelSpawn();
+                    //inputMng.OnESCTarget = inGameManager;
+                    //inputMng.OnRightClickTarget = selectedUnitManager;
+                    //inputMng.OnClickTarget = selectedUnitManager;
                 }
                     
             }

@@ -65,10 +65,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Text sSkillInfoText;
     [SerializeField] private Text sSkilNameText;
     [SerializeField] private Image[] unitStateImage;
+    [SerializeField] private UnitStateUI[] unitStateUIs;
+    [SerializeField] private GameObject unitStatePanel;
 
-    [SerializeField] private TextMeshProUGUI unitGSkillText;
-    [SerializeField] private TextMeshProUGUI unitSSkillText;
-    [SerializeField] private TextMeshProUGUI unitDefenseTypeText;
+    [SerializeField] private TextMeshProUGUI attackTypeText;
+    [SerializeField] private TextMeshProUGUI attackTypeInfoText;
+    [SerializeField] private TextMeshProUGUI defenseTypeText;
+    [SerializeField] private TextMeshProUGUI defenseTypeInfoText;
 
     // 상태 아이콘
     [SerializeField] private Sprite bleedSprite;
@@ -153,7 +156,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         //SoundManager.Instance.playCancleSFX();
         selecteUnitManger.OnUpgrade(false);
 
-        ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
+        if(selecteUnitManger.SelectedUnit is AllyUnit)
+            ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
 
         inputEventManager.OnESCTarget = selecteUnitManger;
         inputEventManager.OnRightClickTarget = selecteUnitManger;
@@ -299,7 +303,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         atTypeIcon.sprite = unitData.AtTypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
-        unitDefenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
+        attackTypeText.text = unitData.AttackType;
+        attackTypeInfoText.text = GetAttackTypeInfo(unitData);
+
+        defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
+        defenseTypeInfoText.text = GetDefenseTypeInfo(unitData);
+
 
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
@@ -348,7 +357,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         atTypeIcon.sprite = unit.Data.AtTypeIcon;
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
-       unitDefenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
+        attackTypeText.text = unit.Data.AttackType;
+        attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
+
+        defenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
+        defenseTypeInfoText.text = GetDefenseTypeInfo(unit.Data);
+
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
@@ -384,6 +398,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     public void HideUntInfo()
     {
         unitInfoImage.gameObject.SetActive(false);
+        unitStatePanel.SetActive(false);
 
     }
 
@@ -396,7 +411,57 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-    public string ConvertDefenseName(string armorType)
+    
+
+    public void SetUnitTierIcon(int tier)
+    {
+        for (int i = 0; i < tierImage.Length; i++)
+        {
+            tierImage[i].gameObject.SetActive(i < tier);
+        }
+    }
+
+    private string GetAttackTypeInfo(UnitData unitData)
+    {
+        string attackTypeInfo = "";
+
+        if (unitData.AttackType == "베기")
+        {
+            attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+        else if (unitData.AttackType == "찌르기")
+        {
+            attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+        else if(unitData.AttackType == "때리기")
+        {
+            attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+
+        return attackTypeInfo;
+    }
+
+    private string GetDefenseTypeInfo(UnitData unitData)
+    {
+        string defensTypeInfo = "";
+
+        if (unitData.ArmorType == Unit.ArmorType.STEELPLATED)
+        {
+            defensTypeInfo = "베기에 강하다. 베기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+        else if (unitData.ArmorType == Unit.ArmorType.PADDED)
+        {
+            defensTypeInfo = "때리기에 강하다. 때리기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+        else if (unitData.ArmorType == Unit.ArmorType.ANTIPIERCING)
+        {
+            defensTypeInfo = "찌르기에 강하다. 찌르기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        }
+
+        return defensTypeInfo;
+    }
+
+    private string ConvertDefenseName(string armorType)
     {
         if (armorType == Unit.ArmorType.PADDED.ToString())
         {
@@ -414,28 +479,14 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             return "정보없음";
     }
 
-    public void SetUnitTierIcon(int tier)
-    {
-        for (int i = 0; i < tierImage.Length; i++)
-        {
-            tierImage[i].gameObject.SetActive(i < tier);
-        }
-    }
+
 
     public void UpdateUnitStateUI()
     {
-        if(selecteUnitManger.SelectedUnit != null)
+        if (selecteUnitManger.SelectedUnit != null)
         {
-            // 모든 이미지 끄기
-            for (int i = 0; i < unitStateImage.Length; i++)
-            {
-                unitStateImage[i].gameObject.SetActive(false);
-            }
-
             List<Effect> effects = selecteUnitManger.SelectedUnit.EffectList;
-
             HashSet<Sprite> usedSprites = new HashSet<Sprite>();
-
             int imageIndex = 0;
 
             for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
@@ -443,31 +494,38 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
                 Effect effect = effects[i];
                 Sprite sprite = GetSpriteForEffect(effect.Id);
 
-                // 스프라이트가 유효하고 중복이 아닐 때만 표시
                 if (sprite != null && !usedSprites.Contains(sprite))
                 {
                     usedSprites.Add(sprite);
 
-                    unitStateImage[imageIndex].sprite = sprite;
-                    unitStateImage[imageIndex].gameObject.SetActive(true);
+                    // Sprite가 다르면 Sprite 업데이트
+                    if (unitStateImage[imageIndex].sprite != sprite)
+                    {
+                        unitStateImage[imageIndex].sprite = sprite;
+                    }
+
+                    // 꺼져있으면 켜기
+                    if (!unitStateImage[imageIndex].gameObject.activeSelf)
+                    {
+                        unitStateImage[imageIndex].gameObject.SetActive(true);
+                    }
+
+                    // Effect도 갱신
+                    unitStateUIs[imageIndex].SetEffect(effect);
+
                     imageIndex++;
                 }
-                
             }
 
+            // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
             for (int i = imageIndex; i < unitStateImage.Length; i++)
             {
-                unitStateImage[i].gameObject.SetActive(false);
+                if (unitStateImage[i].gameObject.activeSelf)
+                {
+                    unitStateImage[i].gameObject.SetActive(false);
+                }
             }
-
-
-            //for (int i = imageIndex; i < unitStateImage.Length; i++)
-            //{
-            //    unitStateImage[i].gameObject.SetActive(false);
-            //}
         }
-
-        
     }
 
     // ID에 따라 스프라이트 결정

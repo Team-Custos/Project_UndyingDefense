@@ -121,7 +121,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoAttackSpeedText.text = "공격속도 : " + firstUnitData.AttackSpeed.ToString();
                 infoMentalText.text = "멘탈 : " + firstUnitData.Mental.ToString();
                 infoAttackRangeText.text = "공격범위 : " + firstUnitData.AttackRange.ToString() + "칸";
-                infoRecommendedRoleText.text = RecommendRoleByString(firstUnitData);
+                infoRecommendedRoleText.text = "추천역할 : " + firstUnitData.Role;
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (firstUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
                 afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
@@ -155,7 +155,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoAttackSpeedText.text = "공격속도 : " + secondUnitData.AttackSpeed.ToString();
                 infoMentalText.text = "멘탈 : " + secondUnitData.Mental.ToString();
                 infoAttackRangeText.text = "공격범위 : " + secondUnitData.AttackRange.ToString() + "칸";
-                infoRecommendedRoleText.text = RecommendRoleByString(secondUnitData);
+                infoRecommendedRoleText.text = "추천역할 : " + secondUnitData.Role;
                 infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
                 beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
@@ -396,20 +396,6 @@ public class UpgradeMenuUI : MonoBehaviour
 
     }
 
-    private string RecommendRoleByString(UnitData unitData)
-    {
-        string recommendedRole = "";
-
-        if (unitData.AttackRange <= 5)
-        {
-            recommendedRole = "추천 역할 : 탱커";
-        }
-        else
-        {
-            recommendedRole = "추천 역할 : 딜러";
-        }
-
-        return recommendedRole;
-    }
+    
 
 }

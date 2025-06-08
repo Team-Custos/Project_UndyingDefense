@@ -19,6 +19,8 @@ public class UnitData : ScriptableObject
     [SerializeField] private Sprite atTypeIcon;
     [SerializeField] private Sprite dfTypeIcon;
     [SerializeField, TextArea] private string description;
+    [SerializeField] private string attackType;
+    [SerializeField] private string role;
 
     public string Name => unitName;
     public int Tier => tier;
@@ -35,4 +37,6 @@ public class UnitData : ScriptableObject
     public Sprite DfTypeIcon => dfTypeIcon;
     public GameObject Prefab => prefab;
     public string Description => description;
+    public string AttackType => attackType;
+    public string Role => role;
 }
