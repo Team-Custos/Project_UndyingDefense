@@ -230,7 +230,10 @@ public class CommandSkillAttackTrigger : MonoBehaviour
                 break;
         }
 
-        target.AddVFX(hitVFX, target.transform.position + incomingDirection);
+        if (hitVFX != null)
+        {
+            target.AddVFX(hitVFX, target.transform.position + incomingDirection);
+        }
     }
 
     private bool IsBlocked(ArmorType armorType)
