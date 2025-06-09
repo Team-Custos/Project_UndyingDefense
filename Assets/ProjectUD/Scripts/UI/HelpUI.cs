@@ -22,6 +22,8 @@ public class HelpUI : MonoBehaviour, IInputESC
     [SerializeField] private Sprite deactivSprite;
 
     [SerializeField] private RectTransform[] panels;
+    [SerializeField] private RectTransform[] enemyPanels;
+
     private Vector2 centerPosition = Vector2.zero;
     [SerializeField] private float panelSpacing = 1920f; 
     [SerializeField] private float slideDuration = 0.5f;
@@ -66,6 +68,26 @@ public class HelpUI : MonoBehaviour, IInputESC
         }
     }
 
+    public void EnemySlideRight()
+    {
+        if (currentIndex < enemyPanels.Length - 1)
+        {
+            currentIndex++;
+            UpdateEnemyPanelPositions();
+            SoundManager.Instance.PlayUIClickSFX();
+        }
+    }
+
+    public void EnemySlideLeft()
+    {
+        if (currentIndex > 0)
+        {
+            currentIndex--;
+            UpdateEnemyPanelPositions();
+            SoundManager.Instance.PlayUIClickSFX();
+        }
+    }
+
     private void UpdatePanelPositions()
     {
         for (int i = 0; i < panels.Length; i++)
@@ -73,6 +95,18 @@ public class HelpUI : MonoBehaviour, IInputESC
             float targetX = (i - currentIndex) * panelSpacing;
             Vector2 targetPos = new Vector2(centerPosition.x + targetX, centerPosition.y);
             panels[i].DOAnchorPos(targetPos, slideDuration)
+                     .SetEase(Ease.OutCubic)
+                     .SetUpdate(true);
+        }
+    }
+
+    private void UpdateEnemyPanelPositions()
+    {
+        for (int i = 0; i < enemyPanels.Length; i++)
+        {
+            float targetX = (i - currentIndex) * panelSpacing;
+            Vector2 targetPos = new Vector2(centerPosition.x + targetX, centerPosition.y);
+            enemyPanels[i].DOAnchorPos(targetPos, slideDuration)
                      .SetEase(Ease.OutCubic)
                      .SetUpdate(true);
         }

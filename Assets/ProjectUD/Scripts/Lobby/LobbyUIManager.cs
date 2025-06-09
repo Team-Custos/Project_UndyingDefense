@@ -184,6 +184,8 @@ public class LobbyUIManager : MonoBehaviour
 
                 LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
 
+                UserDataModel.instance.SetGameFinished(true);
+
                 if (GlobalSoundManager.instance != null)
                 {
                     GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_battleStart);

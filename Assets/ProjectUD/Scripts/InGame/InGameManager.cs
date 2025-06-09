@@ -233,8 +233,10 @@ public class InGameManager : MonoBehaviour, IInputESC
             if (enemyUnitSpawner.IsGameOver)
                 return;
 
+            //inputEventManager.OnESCTarget = this;
+
             //SoundManager.Instance.playCancleSFX();
-            ingameScreenUI.OnOffSetting();
+            ingameScreenUI.OnOffSettingUI();
         }
     }
 

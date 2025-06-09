@@ -4,9 +4,14 @@ using TMPro;
 using System.Collections.Specialized;
 using InputEventInterface;
 
-public class IngameScreenUI : MonoBehaviour
+public class IngameScreenUI : MonoBehaviour//, IInputESC
 {
     [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private IngameCommandSkillManager ingameCommandSkillManager;
+    [SerializeField] private SelectedUnitManager selectedUnitManager;
+    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
 
     [Header("■ UI")]
     [SerializeField] private TextMeshProUGUI waveTextUI;
@@ -35,9 +40,9 @@ public class IngameScreenUI : MonoBehaviour
 
 
 
-    public void SetWaveNumber(int waveNum)
+    public void SetWaveNumber(int waveNum, int maxWave)
     {
-        waveTextUI.text = $"웨이브 {waveNum}";
+        waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
     }
 
     public void SetGoldTextUI(float gold)
@@ -94,7 +99,6 @@ public class IngameScreenUI : MonoBehaviour
     {
         if (settingUI.activeSelf)
         {
-
             //SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
@@ -103,6 +107,33 @@ public class IngameScreenUI : MonoBehaviour
         {
             SoundManager.Instance.PlayUIClickSFX();
             settingUI.SetActive(true);
+
+            allyUnitSpawner.CancelSpawn();
+            ingameCommandSkillManager.CancelSkill();
+            upgradeMenuUI.HideUpgradeUI();
+            selectedUnitManager.DeSelecteUnit();
+
+
+            Time.timeScale = 0.0f;
+        }
+
+        inputEventManager.OnESCTarget = inGameManager;
+    }
+
+    public void OnOffSettingUI()
+    {
+        if (settingUI.activeSelf)
+        {
+            //SoundManager.Instance.playCancleSFX();
+            settingUI.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+            settingUI.SetActive(true);
+
+
             Time.timeScale = 0.0f;
         }
     }

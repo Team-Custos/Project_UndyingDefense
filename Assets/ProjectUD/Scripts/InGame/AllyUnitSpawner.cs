@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
 {
@@ -17,6 +17,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Ingame_CursorManager cursorManager;
 
+    [SerializeField] private Image[] alarmImages;
+
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
 
@@ -27,6 +29,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private UnitSpawnUI unitSpawnUI;
     [SerializeField] private GameObject indicator;
     [SerializeField] private GameObject mouseIndicator;
+
+    
 
     [Header("■ Ground Layer")]
     [SerializeField] private LayerMask groundLayer;
@@ -225,6 +229,14 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         }
         else
         {
+            if (index >= 0 && index < alarmImages.Length)
+            {
+                if (alarmImages[index] != null)
+                {
+                    alarmImages[index].gameObject.SetActive(false);
+                }
+            }
+
             selectedUnitManager.DeSelecteUnit();
             commandSkillManager.CancelSkill();
             selectedIndex = index;

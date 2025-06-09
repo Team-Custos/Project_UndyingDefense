@@ -1,6 +1,7 @@
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+
+    [SerializeField] private Image[] upgardeImage;
 
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
@@ -60,6 +63,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
     [SerializeField] private RectTransform leftPos;
     [SerializeField] private RectTransform middlePos;
+    [SerializeField] private Transform selectedUI;
 
     private UnitData currentUnitData;
     private UnitData firstUnitData;
@@ -94,6 +98,7 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             upgradeIndex = -1;
             infoPanel.SetActive(false);
+            selectedUI.gameObject.SetActive(false);
             upgradePerformBtn.interactable = false;
 
             SoundManager.Instance.PlayUIClickSFX();
@@ -136,6 +141,8 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
                 infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
 
+                
+
 
 
                 //infoGSkillImage.sprite = firstUnitData.GeneralSkill.Icon;
@@ -171,6 +178,8 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
 
+            Select(index);
+
             SoundManager.Instance.PlayUIClickSFX();
 
             infoPanel.SetActive(true);
@@ -194,12 +203,12 @@ public class UpgradeMenuUI : MonoBehaviour
 
 
         infoPanel.SetActive(false);
+        upgradePerformBtn.interactable = false;
 
         upgradeIndex = -1;
 
         currentUnitData = selectedUnit.Data;
 
-        upgradePerformBtn.interactable = false;
 
         firstUpgradeBtn.interactable = true;
         lockImage.gameObject.SetActive(false);
@@ -267,7 +276,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 }
                 else
                 {
-                    upgradePerformBtn.interactable = true;
+                    //upgradePerformBtn.interactable = true;
                     currentGoldText.color = Color.white;
                     currentGoldText.text = inGameManager.inGameGold.ToString();
                     upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
@@ -343,7 +352,7 @@ public class UpgradeMenuUI : MonoBehaviour
             }
             else
             {
-                upgradePerformBtn.interactable = true;
+                //upgradePerformBtn.interactable = true;
                 currentGoldText.color = Color.white;
                 currentGoldText.text = inGameManager.inGameGold.ToString();
                 upgradeCostTxt.text = upgradeUnitData.Cost.ToString();
@@ -391,11 +400,20 @@ public class UpgradeMenuUI : MonoBehaviour
 
     public void HideUpgradeUI()
     {
+        selectedUI.gameObject.SetActive(false);
+
         gameObject.SetActive(false);
-        selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
+        if(selectedUnitManager.SelectedUnit is AllyUnit)
+            selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
+
 
     }
 
-    
 
+    public void Select(int index)
+    {
+        selectedUI.gameObject.SetActive(true);
+        Vector3 targetPos = upgardeImage[index].transform.position;
+        selectedUI.position = new Vector3(targetPos.x, targetPos.y, selectedUI.position.z);
+    }
 }

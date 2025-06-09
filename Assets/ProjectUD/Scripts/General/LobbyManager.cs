@@ -9,16 +9,18 @@ public class LobbyManager : MonoBehaviour
     private CommandSkillData[] commanderSkils;
     [SerializeField] private CommandSkillData[] commandSkillDatas;
 
+    [SerializeField] private GameObject rosterPanel;
+
 
     private void Start()
     {
        SoundManager.Instance.PlayBGM(lobbyBgm);
        LoadCommandSkillData();
 
-        for(int i = 0; i < commanderSkils.Length; i++)
-        {
-            commanderSkils[i] = commandSkillDatas[i];
-        }
+        //for(int i = 0; i < commanderSkils.Length; i++)
+        //{
+        //    commanderSkils[i] = commandSkillDatas[i];
+        //}
     }
 
     public void SaveCommandSkillData()
@@ -51,5 +53,19 @@ public class LobbyManager : MonoBehaviour
         //    commanderSkils[i] = Resources.Load("SkillData/Command/" + skills[i]) as CommandSkillData;
         //}
 
+    }
+
+    public void OpenRosterPanel()
+    {
+        if (rosterPanel != null)
+        {
+            rosterPanel.SetActive(true);
+        }
+    }
+
+    public void LoadTutorialScene()
+    {
+        LoadingSceneManager.LoadScene("TutorialScene");
+        UserDataModel.instance.SetTutorialEnd(true);
     }
 }

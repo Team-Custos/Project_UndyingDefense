@@ -77,7 +77,7 @@ public class EnemyUnitSpawner : MonoBehaviour
            waveDelay -= Time.deltaTime;
            if (waveDelay <= 0f)
            {
-               ingameScreenUI.SetWaveNumber(curWave);
+               ingameScreenUI.SetWaveNumber(curWave, waveData.Length);
 
                if (!oneTime)
                {

@@ -1,4 +1,5 @@
 using InputEventInterface;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     private ActiveCommandSkill[] skill;
     private int activatedSkillButtonIdx = 0;
+
+    [SerializeField] private Image[] alarmImages;
 
     [SerializeField] private AudioClip[] btnClickSFX;
 
@@ -199,6 +202,14 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             inputEventManager.OnRightClickTarget = this;
             SelectedUnitManager.DeSelecteUnit();
 
+            if (idx >= 0 && idx < alarmImages.Length)
+            {
+                if (alarmImages[idx] != null)
+                {
+                    alarmImages[idx].gameObject.SetActive(false);
+                }
+            }
+
             if (isSkillActivated && activatedSkillButtonIdx == idx)
             {
                 isSkillActivated = false;
@@ -242,6 +253,14 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         }
         else if (skillData.TargetType == CommandSkill.TargetType.AREA)
         {
+            if (idx >= 0 && idx < alarmImages.Length)
+            {
+                if (alarmImages[idx] != null)
+                {
+                    alarmImages[idx].gameObject.SetActive(false);
+                }
+            }
+
             selectedUI0.gameObject.SetActive(false);
             selectedUI1.gameObject.SetActive(false);
             isSkillActivated = false;
