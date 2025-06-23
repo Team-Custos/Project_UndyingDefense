@@ -18,6 +18,8 @@ public class LoadingSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SoundManager.Instance.StopBGM();
+
         StartCoroutine(LoadSceneProcess());
     }
 

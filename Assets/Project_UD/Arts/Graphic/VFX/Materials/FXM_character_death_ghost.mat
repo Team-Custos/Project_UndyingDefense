@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FXM_character_death_ghost
-  m_Shader: {fileID: 4800000, guid: 52e452f51c389c4499cac5fc5bae429d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6f6d9214b06ddc447a8bdbbc2d75085f, type: 3}
   m_ValidKeywords:
   - _COLOR_UV_CUSTOM_U
   m_InvalidKeywords: []
@@ -103,7 +103,10 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Color_UV_Custom: 0
     - _Cull: 2
+    - _CullMode: 2
     - _Cutoff: 0.5
+    - _DST: 10
+    - _DepthFade: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _Dissolve_Panner_Custom: 0
@@ -125,6 +128,7 @@ Material:
     - _Mask_Texcoord_Custom_on: 0
     - _Mask_Upanner: 0
     - _Mask_Vpanner: 0
+    - _Mask_power: 0
     - _Metallic: 0
     - _Normal_Strength: 0
     - _Normal_Upanner: 0
@@ -134,6 +138,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _SRC: 5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -142,6 +147,7 @@ Material:
     - _Step_Value: 0.1
     - _Surface: 0
     - _USE_Dissolve_On: 0
+    - _USE_Ins_Custom: 0
     - _USE_Normal_ON: 0
     - _USE_Sub_Color: 0
     - _VertexNormal_Offset: 0
