@@ -33,6 +33,7 @@ public class AllyUnit : Unit
     private Tile tile;
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
+
     private Mode mode;
     public Mode ModeType => mode;
 

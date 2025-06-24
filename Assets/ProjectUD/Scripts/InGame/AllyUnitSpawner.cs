@@ -16,6 +16,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private SelectedUnitUI selectedUnitUI;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Ingame_CursorManager cursorManager;
+    [SerializeField] private UnitDataLoader unitDataLoader;
 
     [SerializeField] private Image[] alarmImages;
 
@@ -249,7 +250,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
 
 
-            selectedUnitUI.UpdateUnitInfoByBtn(units[index]);
+            selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
         }
 
         SoundManager.Instance.PlayUIClickSFX();
@@ -320,6 +321,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 // 소환진 설정
                 UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
+
 
                 Tile tile = hit.transform.GetComponent<Tile>();
                 if (tile.SetAllyUnit(unit) == null)

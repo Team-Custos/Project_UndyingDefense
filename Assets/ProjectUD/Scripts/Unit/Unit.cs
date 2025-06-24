@@ -381,6 +381,10 @@ public abstract class Unit : MonoBehaviour
     protected float damageReductionMultiplier; // 피해량 감소 비율
     protected float attackDamageMultiplier; // 공격력 증가 비율
 
+    private NewUnitData newUnitData;
+    [SerializeField] private UnitDataLoader unitDataLoader;
+    [SerializeField] private string unitId;
+
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
 
@@ -397,8 +401,6 @@ public abstract class Unit : MonoBehaviour
     protected float stateDurationCheck;
 
     private List<Effect> effectList = new List<Effect>();
-
-
 
     protected const int maxTargetCount = 10;
 
@@ -425,6 +427,8 @@ public abstract class Unit : MonoBehaviour
     public SkillBase SpecialSkill => specialSkill;
     public SkillBase PassiveSkill => passiveSkill;
     public List<Effect> EffectList => effectList;
+    public string UnitId => unitId;
+    public NewUnitData NewUnitData => newUnitData;
     public bool IsSelected
     {
         get => isSelected;
@@ -534,7 +538,7 @@ public abstract class Unit : MonoBehaviour
 
         // 이동 속도
         moveSpeedMultiplier = 1f;
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
+        
 
         attackSpeedMultiplier = 1f;
         attackSpeed = Data.AttackSpeed;
@@ -557,8 +561,44 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
 
+        SetNewUnitData();
+        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
 
         lastMoveTime = Time.time;
+    }
+
+    public void SetUnitDataLoader(UnitDataLoader newUnitData)
+    {
+        this.unitDataLoader = newUnitData;
+    }
+
+    public void SetNewUnitData()
+    {
+        if (this.unitDataLoader == null)
+            return;
+
+        newUnitData = this.unitDataLoader.GetUnitDataById(unitId, this);
+
+        if (newUnitData != null)
+        {
+            Debug.Log($"Unit ID: {newUnitData.id}, Name: {newUnitData.unitName}, Tier: {newUnitData.tier}, " +
+                $"Max HP: {newUnitData.maxHp}, Cost: {newUnitData.cost} Attack Speed: {newUnitData.attackSpeed}, " +
+                $"Move Speed: {newUnitData.moveSpeed}," + $" Sight Range: {newUnitData.sightRange}, " +
+                $"Attack Range: {newUnitData.attackRange}, Mental: {newUnitData.mental}, Crit Change: {newUnitData.critChance}");
+
+            maxhp = newUnitData.maxHp;
+            hp = newUnitData.maxHp;
+            critChance = newUnitData.critChance;
+            attackSpeed = newUnitData.attackSpeed;
+            mental = newUnitData.mental;
+            Data.MoveSpeed = newUnitData.moveSpeed;
+
+
+            
+        }
+        else
+            Debug.Log("데이터 없음");
+
     }
 
     public void SetUnitUI(SelectedUnitUI selectedUnitUI)

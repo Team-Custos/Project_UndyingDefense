@@ -21,6 +21,7 @@ public class UnitData : ScriptableObject
     [SerializeField, TextArea] private string description;
     [SerializeField] private string attackType;
     [SerializeField] private string role;
+    
 
     public string Name => unitName;
     public int Tier => tier;
@@ -28,7 +29,11 @@ public class UnitData : ScriptableObject
     public float MaxHp => maxHp;
     public float CritChance => critChance;
     public float Mental => mental;
-    public float MoveSpeed => moveSpeed;
+    public float MoveSpeed
+    {
+        get => moveSpeed;
+        set => moveSpeed = value;
+    }
     public float AttackSpeed => attackSpeed;
     public float SightRange => sightRange;
     public float AttackRange => attackRange;
@@ -39,4 +44,5 @@ public class UnitData : ScriptableObject
     public string Description => description;
     public string AttackType => attackType;
     public string Role => role;
+
 }

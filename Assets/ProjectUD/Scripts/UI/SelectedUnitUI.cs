@@ -3,13 +3,13 @@ using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnitDataManager;
 using static UnityEngine.UI.CanvasScaler;
 
 public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
@@ -21,6 +21,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Ingame_CamManager ingameCamManager;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private UnitDataLoader unitDataLoader;
     private CinemachineFramingTransposer framingTransposer;
 
 
@@ -287,18 +288,23 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-    public void UpdateUnitInfoByBtn(UnitData unitData)
+    public void UpdateUnitInfoByBtn(UnitData unitData, UnitDataLoader unitDataLoader)
     {
+        Unit unit = unitData.Prefab.GetComponent<Unit>();
+
+        NewUnitData newUnitData = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+
         unitInfoImage.gameObject.SetActive(true);
 
+
         unitImage.sprite = unitData.Icon;
-        unitNameText.text = unitData.Name;
-        unitMentalText.text =  "멘탈 : " + unitData.Mental.ToString();
+        unitNameText.text = newUnitData.unitName;
+        unitMentalText.text =  "멘탈 : " + newUnitData.mental .ToString();
 
-        unitHPImage.fillAmount = unitData.MaxHp / unitData.MaxHp;
-        unitHPText.text = $"{unitData.MaxHp} / {unitData.MaxHp}";
+        unitHPImage.fillAmount = newUnitData.maxHp / newUnitData.maxHp;
+        unitHPText.text = $"{newUnitData.maxHp} / {newUnitData.maxHp}";
 
-        SetUnitTierIcon(unitData.Tier);
+        SetUnitTierIcon(newUnitData.tier);
 
         atTypeIcon.sprite = unitData.AtTypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
@@ -308,9 +314,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
         defenseTypeInfoText.text = GetDefenseTypeInfo(unitData);
-
-
-        Unit unit = unitData.Prefab.GetComponent<Unit>();
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
@@ -347,10 +350,16 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        unitInfoImage.gameObject.SetActive(true);
 
+        if(unit.NewUnitData == null)
+        {
+            Debug.Log("데이터 없음");
+            return;
+        }
+
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
-       unitNameText.text = unit.Data.Name;
-       unitMentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
+       unitNameText.text = unit.NewUnitData.unitName;
+        unitMentalText.text = "멘탈 : " + unit.NewUnitData.mental.ToString();
 
         SetUnitTierIcon(unit.Data.Tier);
 
@@ -406,7 +415,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if(unit != null)
         {
-            unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
+            unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";
             unitHPImage.fillAmount = unit.HpPercent;
         }
     }

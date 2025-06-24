@@ -18,6 +18,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private WaveData[] waveData;
 
     [Header("■ Options")]
@@ -154,7 +155,11 @@ public class EnemyUnitSpawner : MonoBehaviour
                    EnemyUnit enemyUnit = poolDic[data].Pool.Get();
                    poolDic[data].List.Add(enemyUnit);
 
-                   Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+                    Unit unit = enemyUnit.GetComponent<Unit>();
+
+                    unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+
+                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
                    enemySpawnVfx.transform.position = pos;
                    enemyUnit.transform.position = pos;
                    enemyUnit.transform.forward = spawnDirection.forward;

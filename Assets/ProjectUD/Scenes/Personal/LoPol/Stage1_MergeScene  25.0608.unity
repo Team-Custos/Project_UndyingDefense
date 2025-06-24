@@ -1922,6 +1922,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 79.4, y: 4.71, z: 3.8}
   m_Center: {x: -0.95, y: 0, z: 0.14}
+--- !u!1 &34717628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 34717630}
+  - component: {fileID: 34717629}
+  m_Layer: 0
+  m_Name: ExcelDataReader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &34717629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34717628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188990b4b4d306d4ab367a9c31622920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitDataTable: {fileID: 4900000, guid: 3df81d7c6d1d4bb49afaac9d81b869a4, type: 3}
+--- !u!4 &34717630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34717628}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -68.9, y: 5.67, z: -3.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &35039892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -10302,7 +10347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &282221629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21606,6 +21651,7 @@ MonoBehaviour:
   inGameManager: {fileID: 856739625}
   dollyCamera: {fileID: 311500981}
   upgradeMenuUI: {fileID: 5963399257725955338}
+  unitDataLoader: {fileID: 34717629}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
@@ -29217,6 +29263,7 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1285506504}
   commandSkillManager: {fileID: 1238902731}
   cursorManager: {fileID: 1133855604}
+  unitDataLoader: {fileID: 34717629}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -42069,6 +42116,7 @@ MonoBehaviour:
   ingameCamManager: {fileID: 1346724712}
   inputEventManager: {fileID: 1590103094}
   inGameManager: {fileID: 856739625}
+  unitDataLoader: {fileID: 34717629}
   upgradeBtn: {fileID: 618903649}
   unitHP: {fileID: 564626855}
   unitDuration: {fileID: 857208347}
@@ -67766,6 +67814,7 @@ SceneRoots:
   - {fileID: 1137951089}
   - {fileID: 1238902732}
   - {fileID: 1133855605}
+  - {fileID: 34717630}
   - {fileID: 876444785}
   - {fileID: 1893194894}
   - {fileID: 1061626275}
