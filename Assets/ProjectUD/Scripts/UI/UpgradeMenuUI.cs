@@ -12,6 +12,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private UnitDataLoader unitDataLoader;
 
     [SerializeField] private Image[] upgardeImage;
 
@@ -69,6 +70,10 @@ public class UpgradeMenuUI : MonoBehaviour
     private UnitData firstUnitData;
     private UnitData secondUnitData;
 
+    private Unit currentUnit;
+    private Unit firstUpgradeUnit;
+    private Unit secondUpgradeUnit;
+
     [SerializeField] private  GameObject twoLine;
     [SerializeField] private    GameObject oneLine;
 
@@ -81,15 +86,6 @@ public class UpgradeMenuUI : MonoBehaviour
     private int upgradeIndex = -1;
     private float cost;
 
-    //public void UpgradeToFirstUnit()
-    //{
-    //    selectedUnitManager.UpgradeSelectedUnit(0);
-    //}
-
-    //public void UpgradeToSecondUnit()
-    //{
-    //    selectedUnitManager.UpgradeSelectedUnit(1);
-    //}
 
     public void ToggleUpgradeUnit(int index)
     {
@@ -120,19 +116,23 @@ public class UpgradeMenuUI : MonoBehaviour
 
             if (index == 0)
             {
-                infoText.text = firstUnitData.Name;
-                infoCrtiText.text = "치명타율 : " + firstUnitData.CritChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + firstUnitData.MoveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + firstUnitData.AttackSpeed.ToString();
-                infoMentalText.text = "멘탈 : " + firstUnitData.Mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + firstUnitData.AttackRange.ToString() + "칸";
-                infoRecommendedRoleText.text = "추천역할 : " + firstUnitData.Role;
-                infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (firstUnitData.MaxHp - currentUnitData.MaxHp).ToString();
-                beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
-                afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
-                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + firstUnitData.Mental.ToString();
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(firstUpgradeUnit.UnitId, firstUpgradeUnit);
 
-                Unit firstUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
+                firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
+
+                infoText.text = unitStats.unitName;
+                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
+                infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
+                beforeHp.fillAmount = currentUnit.Maxhp / 500; //firstUnitData.MaxHp;
+                afterHp.fillAmount = unitStats.maxHp / 500; // firstUnitData.MaxHp;
+                //infoMentalText.text = currentUnit.Mental.ToString() + " + " + unitStats.mental.ToString();
+
+                
 
                 infoGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
                 infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
@@ -141,34 +141,28 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
                 infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
 
-                
-
-
-
-                //infoGSkillImage.sprite = firstUnitData.GeneralSkill.Icon;
-                //infoGSkillText.text = secondUnitData.GSkillName;
-                //infoSSkillImage.sprite = secondUnitData.SSkillIcon;
-                //infoSSkillText.text = secondUnitData.SSkillName;
-
             }
             else if (index == 1)
             {
                 if (secondUnitData == null)
                     return;
 
-                infoText.text = secondUnitData.Name;
-                infoCrtiText.text = "치명타율 : " + secondUnitData.CritChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + secondUnitData.MoveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + secondUnitData.AttackSpeed.ToString();
-                infoMentalText.text = "멘탈 : " + secondUnitData.Mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + secondUnitData.AttackRange.ToString() + "칸";
-                infoRecommendedRoleText.text = "추천역할 : " + secondUnitData.Role;
-                infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
-                beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
-                afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
-                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + secondUnitData.Mental.ToString();
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(secondUpgradeUnit.UnitId, secondUpgradeUnit);
 
-                Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[1].Prefab.GetComponent<Unit>();
+                secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
+
+                infoText.text = unitStats.unitName;
+                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
+                infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
+                beforeHp.fillAmount = currentUnit.Maxhp / 500;// secondUnitData.MaxHp;
+                afterHp.fillAmount = unitStats.maxHp / 500; // secondUnitData.MaxHp;
+                //infoMentalText.text = currentUnit.Mental.ToString() + " + " + unitStats.mental.ToString();
+
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
                 infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
                 infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
@@ -192,6 +186,7 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (upgradeIndex == -1)
             return;
+        selectedUI.gameObject.SetActive(false);
         selectedUnitManager.UpgradeSelectedUnit(upgradeIndex);
         SoundManager.Instance.PlayUIClickSFX();
     }
@@ -208,6 +203,9 @@ public class UpgradeMenuUI : MonoBehaviour
         upgradeIndex = -1;
 
         currentUnitData = selectedUnit.Data;
+        currentUnit = selectedUnit;
+        if (currentUnit.UnitStats == null)
+            Debug.Log("fef");
 
 
         firstUpgradeBtn.interactable = true;
@@ -246,6 +244,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
             UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
             firstUnitData = firstUpgradeUnitData;
+            firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
 
             if (firstUpgradeUnitData != null)
             {
@@ -289,6 +288,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
         }
 
+        // 업그레이드 가능이 두가지인 경우
         if (currentUnitData.Tier < 3 || allyUnitData.UpgradeUnits.Length >= 2)
         {
             firstUpgradeUnitBackImage.rectTransform.position = leftPos.position;
@@ -304,7 +304,10 @@ public class UpgradeMenuUI : MonoBehaviour
             UnitData secondUpgradeUnitData = allyUnitData.UpgradeUnits[1];
 
             firstUnitData = firstUpgradeUnitData;
+            firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
+
             secondUnitData = secondUpgradeUnitData;
+            secondUpgradeUnit = secondUpgradeUnitData.Prefab.GetComponent<Unit>();
 
             if (firstUpgradeUnitData != null)
             {

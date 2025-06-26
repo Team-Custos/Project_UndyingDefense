@@ -57,6 +57,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             int index = i;
             unitPools.Add(new ObjectPoolWithList<AllyUnit>(() => CreateUnit(index)));
             spawnPointPool = new ObjectPoolWithList<UnitSpawnPoint>(CreateSpawnPoint);
+            //Unit unit = units[i].Prefab.GetComponent<Unit>();
 
             // UI 설정
             AllyUnitData data = units[i];
@@ -113,7 +114,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.previousMode = mode;
-                //upgradeUnit.UnitGrid.SetTargetTile(tile);
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.IsSelected = true;
@@ -142,6 +143,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.previousMode = mode;
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.IsSelected = true;
@@ -178,11 +180,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
             upgradeUnit.previousMode = mode;
+            upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
             selectedUnitManager.SetSelectedUnit(upgradeUnit);
             upgradeUnit.IsSelected = true;
 
+            
             upgradeUnit.gameObject.SetActive(true);
             upgradeUnit.UnitGrid.SetTargetTile(tile);
             selectedUnitUI.ShowAllyUI(upgradeUnit);
@@ -314,6 +318,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     //inputMng.OnRightClickTarget = selectedUnitManager;
                     //inputMng.OnClickTarget = selectedUnitManager;
                 }
+
+                unit.SetUnitDataLoader(unitDataLoader);
 
 
                 // 유닛의 소환 방향 설정

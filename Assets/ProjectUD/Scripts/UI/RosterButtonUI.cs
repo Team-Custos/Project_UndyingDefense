@@ -55,22 +55,22 @@ public class RosterButtonUI : MonoBehaviour
 
         SetUnitTierImage(unitData.Tier);
 
-        hp.fillAmount = unitData.MaxHp / 500f;
-        hpText.text = $"{unitData.MaxHp}";
+        //hp.fillAmount = unitData.MaxHp / 500f;
+        //hpText.text = $"{unitData.MaxHp}";
 
         attackTypeImage.sprite = unitData.AtTypeIcon;
-        attackTypeText.text = unitData.AttackType;
+        //attackTypeText.text = unitData.AttackType;
         attackTypeInfoText.text = GetAttackTypeInfo(unitData); //.AttackType;
 
         defenseTypeImage.sprite = unitData.DfTypeIcon;
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
         defenseTypeInfoText.text = GetDefenseTypeInfo(unitData); //.ArmorType.ToString();
 
-        crtiText.text = "치명타율 : " + unitData.CritChance;
-        moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed;
-        attackSpeedText.text = "공격속도 : " + unitData.AttackSpeed;
-        mentalText.text = "정신력 : " + unitData.Mental;
-        attackRangeText.text = "공격범위 : " + unitData.AttackRange/2 + "칸";
+        //crtiText.text = "치명타율 : " + unitData.CritChance;
+        //moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed;
+        //attackSpeedText.text = "공격속도 : " + unitData.AttackSpeed;
+        //mentalText.text = "정신력 : " + unitData.Mental;
+        //attackRangeText.text = "공격범위 : " + unitData.AttackRange/2 + "칸";
 
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
@@ -120,18 +120,18 @@ public class RosterButtonUI : MonoBehaviour
     {
         string attackTypeInfo = "";
 
-        if (unitData.AttackType == "베기")
-        {
-            attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.AttackType == "찌르기")
-        {
-            attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.AttackType == "때리기")
-        {
-            attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
+        //if (unitData.AttackType == "베기")
+        //{
+        //    attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
+        //else if (unitData.AttackType == "찌르기")
+        //{
+        //    attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
+        //else if (unitData.AttackType == "때리기")
+        //{
+        //    attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
 
         return attackTypeInfo;
     }

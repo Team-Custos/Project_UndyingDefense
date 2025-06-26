@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewUnitData    // 엑셀로 불러온 유닛 데이터 클래스
+public class UnitStats   // 엑셀로 불러온 유닛 데이터 클래스
 {
     public string id;
     public int cost;
     public int tier;
     public string unitName;
-    public int maxHp;
+    public float maxHp;
     public float moveSpeed;
-    public int attackSpeed;
-    public int sightRange;
-    public int attackRange;
-    public int mental;
-    public int critChance;
+    public float attackSpeed;
+    public float sightRange;
+    public float attackRange;
+    public float mental;
+    public float critChance;
+    public string role;
 
 }
 
@@ -22,8 +23,8 @@ public class UnitDataLoader : MonoBehaviour
 {
     [SerializeField] private TextAsset unitDataTable;   // 유닛 데이터가 저장된 CSV 파일
 
-    private Dictionary<string, NewUnitData> unitDataDictionary = new Dictionary<string, NewUnitData>();     // 유닛 데이터 딕셔너리
-    public Dictionary<string, NewUnitData> UnitDataDictionary => unitDataDictionary;
+    private Dictionary<string, UnitStats> unitDataDictionary = new Dictionary<string, UnitStats>();     // 유닛 데이터 딕셔너리
+    public Dictionary<string, UnitStats> UnitDataDictionary => unitDataDictionary;
 
     private void Start()
     {
@@ -47,28 +48,29 @@ public class UnitDataLoader : MonoBehaviour
 
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            NewUnitData newUnitData = new NewUnitData
+            UnitStats unitStats = new UnitStats
             {
-                id = values[0],
-                unitName = values[1],
-                tier = int.Parse(values[2]),
-                maxHp = int.Parse(values[3]),
-                cost = int.Parse(values[4]),
-                moveSpeed = float.Parse(values[5]),
-                attackSpeed = int.Parse(values[6]),
-                sightRange = int.Parse(values[7]),
-                attackRange = int.Parse(values[8]),
-                mental = int.Parse(values[9]),
-                critChance = int.Parse(values[10])
+                id = values[0],                                                            
+                unitName = values[1],                                                      
+                tier = int.Parse(values[2]),                                               
+                maxHp = float.Parse(values[3]),                                              
+                cost = int.Parse(values[4]),                                               
+                moveSpeed = float.Parse(values[5]),                                        
+                attackSpeed = float.Parse(values[6]),
+                sightRange = float.Parse(values[7]),
+                attackRange = float.Parse(values[8]),
+                mental = float.Parse(values[9]),
+                critChance = float.Parse(values[10]),
+                role = values[11]
             };
 
-            unitDataDictionary.Add(newUnitData.id, newUnitData);
+            unitDataDictionary.Add(unitStats.id, unitStats);
 
             
         }
     }
 
-    public NewUnitData GetUnitDataById(string id, Unit unit)
+    public UnitStats GetUnitDataById(string id, Unit unit)
     {
         unit.SetUnitDataLoader(this);
 

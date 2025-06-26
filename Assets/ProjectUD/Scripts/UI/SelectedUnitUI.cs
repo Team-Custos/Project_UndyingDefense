@@ -292,24 +292,24 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
-        NewUnitData newUnitData = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+        UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
 
         unitInfoImage.gameObject.SetActive(true);
 
 
         unitImage.sprite = unitData.Icon;
-        unitNameText.text = newUnitData.unitName;
-        unitMentalText.text =  "멘탈 : " + newUnitData.mental .ToString();
 
-        unitHPImage.fillAmount = newUnitData.maxHp / newUnitData.maxHp;
-        unitHPText.text = $"{newUnitData.maxHp} / {newUnitData.maxHp}";
+        unitNameText.text = unitStats.unitName;
+        unitMentalText.text =  "멘탈 : " + unitStats.mental .ToString();
+        unitHPImage.fillAmount = unitStats.maxHp / unitStats.maxHp;
+        unitHPText.text = $"{unitStats.maxHp} / {unitStats.maxHp}";
 
-        SetUnitTierIcon(newUnitData.tier);
+        SetUnitTierIcon(unitData.Tier);
 
         atTypeIcon.sprite = unitData.AtTypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
-        attackTypeText.text = unitData.AttackType;
+        //attackTypeText.text = unitData.AttackType;
         attackTypeInfoText.text = GetAttackTypeInfo(unitData);
 
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
@@ -337,11 +337,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-        critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitData.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unitData.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unitData.Mental.ToString();
+        critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
+        moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+        atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
+        mentalText.text = "멘탈 : " + unitStats.mental.ToString();
     }
 
     public void UpdateUnitInfo(Unit unit)
@@ -350,7 +350,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        unitInfoImage.gameObject.SetActive(true);
 
-        if(unit.NewUnitData == null)
+        if(unit.UnitStats == null)
         {
             Debug.Log("데이터 없음");
             return;
@@ -358,15 +358,15 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
-       unitNameText.text = unit.NewUnitData.unitName;
-        unitMentalText.text = "멘탈 : " + unit.NewUnitData.mental.ToString();
+       unitNameText.text = unit.UnitStats.unitName;
+       unitMentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 
         SetUnitTierIcon(unit.Data.Tier);
 
         atTypeIcon.sprite = unit.Data.AtTypeIcon;
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
-        attackTypeText.text = unit.Data.AttackType;
+        //attackTypeText.text = unit.Data.AttackType;
         attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
 
         defenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
@@ -395,11 +395,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-        critText.text = "치명타율 : " + unit.Data.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unit.Data.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
+        critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
+        moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed.ToString();
+        atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
+        mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 
         UpdateUnitStateUI();
     }
@@ -434,18 +434,18 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         string attackTypeInfo = "";
 
-        if (unitData.AttackType == "베기")
-        {
-            attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.AttackType == "찌르기")
-        {
-            attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if(unitData.AttackType == "때리기")
-        {
-            attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
+        //if (unitData.AttackType == "베기")
+        //{
+        //    attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
+        //else if (unitData.AttackType == "찌르기")
+        //{
+        //    attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
+        //else if(unitData.AttackType == "때리기")
+        //{
+        //    attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
+        //}
 
         return attackTypeInfo;
     }

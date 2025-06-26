@@ -336,6 +336,7 @@
 #endregion
 
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackSkill.AttackType;
@@ -381,8 +382,8 @@ public abstract class Unit : MonoBehaviour
     protected float damageReductionMultiplier; // 피해량 감소 비율
     protected float attackDamageMultiplier; // 공격력 증가 비율
 
-    private NewUnitData newUnitData;
-    [SerializeField] private UnitDataLoader unitDataLoader;
+    protected UnitStats unitStats;
+    private UnitDataLoader unitDataLoader;
     [SerializeField] private string unitId;
 
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
@@ -415,7 +416,7 @@ public abstract class Unit : MonoBehaviour
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
-    public float HpPercent => hp / Data.MaxHp;// * 100f;
+    public float HpPercent => hp / Maxhp;
     public float Mental => mental;
     public float CritChance => critChance;
     public float CritVulnerability => critVulnerability;
@@ -428,7 +429,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase PassiveSkill => passiveSkill;
     public List<Effect> EffectList => effectList;
     public string UnitId => unitId;
-    public NewUnitData NewUnitData => newUnitData;
+    public UnitStats UnitStats => unitStats;
     public bool IsSelected
     {
         get => isSelected;
@@ -530,18 +531,19 @@ public abstract class Unit : MonoBehaviour
         if (pathForSearch == null)
             pathForSearch = new NavMeshPath();
 
-        hp = Data.MaxHp;
-        critChance = Data.CritChance;
+        //hp = Data.MaxHp;
+        //critChance = Data.CritChance;
         critVulnerability = 0f;
         blockRate = 1f;
-        mental = Data.Mental;
+        //mental = Data.Mental;
+
+        SetUnitStats();
 
         // 이동 속도
         moveSpeedMultiplier = 1f;
         
 
         attackSpeedMultiplier = 1f;
-        attackSpeed = Data.AttackSpeed;
 
         attackDamageMultiplier = 1f;
 
@@ -561,8 +563,9 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
 
-        SetNewUnitData();
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
+        
+        navAgent.speed = unitStats.moveSpeed * moveSpeedMultiplier;
+        attackSpeed = unitStats.attackSpeed;
 
         lastMoveTime = Time.time;
     }
@@ -572,33 +575,39 @@ public abstract class Unit : MonoBehaviour
         this.unitDataLoader = newUnitData;
     }
 
-    public void SetNewUnitData()
+    public void SetUnitStats()
     {
         if (this.unitDataLoader == null)
             return;
 
-        newUnitData = this.unitDataLoader.GetUnitDataById(unitId, this);
+        unitStats = this.unitDataLoader.GetUnitDataById(unitId, this);
 
-        if (newUnitData != null)
+        if (unitStats != null)
         {
-            Debug.Log($"Unit ID: {newUnitData.id}, Name: {newUnitData.unitName}, Tier: {newUnitData.tier}, " +
-                $"Max HP: {newUnitData.maxHp}, Cost: {newUnitData.cost} Attack Speed: {newUnitData.attackSpeed}, " +
-                $"Move Speed: {newUnitData.moveSpeed}," + $" Sight Range: {newUnitData.sightRange}, " +
-                $"Attack Range: {newUnitData.attackRange}, Mental: {newUnitData.mental}, Crit Change: {newUnitData.critChance}");
+            Debug.Log($"Unit ID: {unitStats.id}, Name: {unitStats.unitName}, Tier: {unitStats.tier}, " +
+                $"Max HP: {unitStats.maxHp}, Cost: {unitStats.cost} Attack Speed: {unitStats.attackSpeed}, " +
+                $"Move Speed: {unitStats.moveSpeed}," + $" Sight Range: {unitStats.sightRange}, " +
+                $"Attack Range: {unitStats.attackRange}, Mental: {unitStats.mental}, Crit Change: {unitStats.critChance}, role :{unitStats.role}");
 
-            maxhp = newUnitData.maxHp;
-            hp = newUnitData.maxHp;
-            critChance = newUnitData.critChance;
-            attackSpeed = newUnitData.attackSpeed;
-            mental = newUnitData.mental;
-            Data.MoveSpeed = newUnitData.moveSpeed;
+            maxhp = unitStats.maxHp;
+            hp = unitStats.maxHp;
+            critChance = unitStats.critChance;
+            attackSpeed = unitStats.attackSpeed;
+            mental = unitStats.mental;
 
-
-            
         }
         else
             Debug.Log("데이터 없음");
 
+    }
+
+    public void SetUnitStatsByUpgradeUI(UnitStats unitStats)
+    {
+        maxhp = unitStats.maxHp;
+        hp = unitStats.maxHp;
+        critChance = unitStats.critChance;
+        attackSpeed = unitStats.attackSpeed;
+        mental = unitStats.mental;
     }
 
     public void SetUnitUI(SelectedUnitUI selectedUnitUI)
@@ -974,7 +983,7 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-            navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
+            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
@@ -1003,7 +1012,7 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-            navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
+            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
@@ -1038,7 +1047,7 @@ public abstract class Unit : MonoBehaviour
                 if (navAgent.isStopped)
                     navAgent.isStopped = false;
 
-                navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
+                navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
                 navAgent.SetPath(path);
                 lastMoveTime = Time.time;
                 return;
@@ -1160,7 +1169,7 @@ public abstract class Unit : MonoBehaviour
         if (moveSpeedMultiplier < 0f)
             moveSpeedMultiplier = 0f;
 
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
+        navAgent.speed = unitStats.moveSpeed * moveSpeedMultiplier;
     }
 
     public void AddMental(float amount)
@@ -1174,7 +1183,7 @@ public abstract class Unit : MonoBehaviour
         if (attackSpeedMultiplier < 0f)
             attackSpeedMultiplier = 0f;
 
-        attackSpeed = Data.AttackSpeed * attackSpeedMultiplier;
+        attackSpeed = unitStats.attackSpeed * attackSpeedMultiplier;
     }
 
     public void AddCriticalVulnerability(float amount)

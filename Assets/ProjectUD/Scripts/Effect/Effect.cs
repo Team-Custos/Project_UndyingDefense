@@ -151,7 +151,7 @@ public class Effect : MonoBehaviour
     /// </summary>
     public void DealDamagePercent(float percent)
     {
-        target.TakeDamage(target.Data.MaxHp * 0.01f * percent);
+        target.TakeDamage(target.UnitStats.maxHp * 0.01f * percent);
     }
 
     public virtual void AddMoveSpeedPercent(float percent)

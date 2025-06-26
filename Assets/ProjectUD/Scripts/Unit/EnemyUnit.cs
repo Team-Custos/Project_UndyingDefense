@@ -226,7 +226,7 @@ public class EnemyUnit : Unit
                 {
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
-                    if(distance <= data.AttackRange)
+                    if(distance <= UnitStats.attackRange)
                     {
                         mode = Mode.ATTACKFORTRESS;
                         return;
@@ -234,7 +234,7 @@ public class EnemyUnit : Unit
 
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
-                        targetUnit = SearchTarget(data.SightRange);
+                        targetUnit = SearchTarget(UnitStats.sightRange);
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;
@@ -244,7 +244,7 @@ public class EnemyUnit : Unit
 
                     else if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
                     {
-                        if (distance <= data.AttackRange)
+                        if (distance <= UnitStats.attackRange)
                         {
                             mode = Mode.ATTACKFORTRESS;
                         }
@@ -252,14 +252,14 @@ public class EnemyUnit : Unit
                         {
                             if (navAgent.enabled)
                             {
-                                targetUnit = SearchTarget(data.SightRange);
+                                targetUnit = SearchTarget(UnitStats.sightRange);
                             }
                             else
                             {
                                 navObstacle.enabled = false;
                                 navAgent.enabled = true;
 
-                                targetUnit = SearchTarget(data.SightRange);
+                                targetUnit = SearchTarget(UnitStats.sightRange);
 
                                 navAgent.enabled = false;
                                 navObstacle.enabled = true;
@@ -298,7 +298,7 @@ public class EnemyUnit : Unit
                 {
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
-                        if (IsTargetInRange(targetUnit, Data.AttackRange)) // 공격 사거리 내
+                        if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내
                         {
                             if (navAgent.enabled && !navAgent.isStopped)
                             {
@@ -313,12 +313,12 @@ public class EnemyUnit : Unit
                                 ActivateSkill(skill, targetUnit);
                             }
                         }
-                        else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
+                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 공격 사거리 < 대상 < 시야 사거리
                         {
                             MoveTo(targetUnit); 
                             if(path.status != NavMeshPathStatus.PathComplete)
                             {
-                                targetUnit = SearchTarget(data.SightRange);
+                                targetUnit = SearchTarget(UnitStats.sightRange);
                                 if (targetUnit == null)
                                 {
                                     mode = Mode.MOVE;
@@ -345,7 +345,7 @@ public class EnemyUnit : Unit
                 {
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
-                        targetUnit = SearchTarget(data.SightRange);
+                        targetUnit = SearchTarget(UnitStats.sightRange);
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;

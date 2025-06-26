@@ -362,14 +362,14 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.ENEMY:
                                 {
-                                    if (SearchMarkedTarget(data.SightRange) != null)
+                                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
                                     {
-                                        targetUnit = SearchMarkedTarget(data.SightRange);
+                                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
                                     }
 
                                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
                                     {
-                                        if (IsTargetInRange(targetUnit, data.AttackRange))
+                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                         {
                                             if (navAgent.enabled && !navAgent.isStopped)
                                             {
@@ -385,7 +385,7 @@ public class AllyUnit : Unit
                                         else
                                             targetUnit = null;
                                     }
-                                    else targetUnit = SearchTarget(data.SightRange);
+                                    else targetUnit = SearchTarget(UnitStats.sightRange);
                                 }
                                 break;
                             case SkillBase.TargetType.ALLY:
@@ -405,7 +405,7 @@ public class AllyUnit : Unit
                     else
                     {
                         if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
-                            targetUnit = SearchTarget(data.SightRange);
+                            targetUnit = SearchTarget(UnitStats.sightRange);
                         else
                             LookAt(targetUnit.transform.position);   
                     }
@@ -435,15 +435,15 @@ public class AllyUnit : Unit
                                 modelAnimator.SetBool("isRunning", false);
                                 destinationPosition = Vector3.zero;
                                 isMoving = false;
-                                targetUnit = SearchTarget(data.SightRange);
+                                targetUnit = SearchTarget(UnitStats.sightRange);
                                 navAgent.stoppingDistance = 2.4f;
                             }
                         }
                     }
 
-                    if (SearchMarkedTarget(data.SightRange) != null)
+                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
                     {
-                        targetUnit = SearchMarkedTarget(data.SightRange);
+                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
                     }
 
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
@@ -460,7 +460,7 @@ public class AllyUnit : Unit
                             {
                                 case SkillBase.TargetType.ENEMY:
                                     {
-                                        if (IsTargetInRange(targetUnit, data.AttackRange))
+                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                         {
                                             ActivateSkill(skill, targetUnit);
 
@@ -489,12 +489,12 @@ public class AllyUnit : Unit
                             }
                         }
 
-                        if(IsTargetInAttackRange(targetUnit, data.AttackRange))
+                        if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
                         {
                             return;
                         }
 
-                        if (IsTargetInRange(targetUnit, data.SightRange))
+                        if (IsTargetInRange(targetUnit, UnitStats.sightRange))
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
@@ -516,7 +516,7 @@ public class AllyUnit : Unit
                             navAgent.enabled = true;
                         }
 
-                        targetUnit = SearchReachableTarget(data.SightRange);
+                        targetUnit = SearchReachableTarget(UnitStats.sightRange);
 
                         if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
                         {

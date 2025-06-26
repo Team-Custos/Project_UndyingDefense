@@ -166,8 +166,8 @@ public class EnemyUnitSpawner : MonoBehaviour
                    SoundManager.Instance.PlaySFX(enmeySpawnSfx);
                    enemySpawnVfx.gameObject.SetActive(true);
                    enemySpawnVfx.Play();
-                   enemyUnit.gameObject.SetActive(true);
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
+                   enemyUnit.gameObject.SetActive(true);
 
                    totalMonCount++;
                    spawnDataEnemyCount++;
