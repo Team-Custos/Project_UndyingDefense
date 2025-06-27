@@ -158,7 +158,7 @@ public class AllyUnit : Unit
                         if(targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetSpecialSkill();
-                        Debug.Log("Special Skill " + skill + "사용");
+                        //Debug.Log("Special Skill " + skill + "사용");
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)

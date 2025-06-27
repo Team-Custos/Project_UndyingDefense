@@ -584,10 +584,10 @@ public abstract class Unit : MonoBehaviour
 
         if (unitStats != null)
         {
-            Debug.Log($"Unit ID: {unitStats.id}, Name: {unitStats.unitName}, Tier: {unitStats.tier}, " +
-                $"Max HP: {unitStats.maxHp}, Cost: {unitStats.cost} Attack Speed: {unitStats.attackSpeed}, " +
-                $"Move Speed: {unitStats.moveSpeed}," + $" Sight Range: {unitStats.sightRange}, " +
-                $"Attack Range: {unitStats.attackRange}, Mental: {unitStats.mental}, Crit Change: {unitStats.critChance}, role :{unitStats.role}");
+            //Debug.Log($"Unit ID: {unitStats.id}, Name: {unitStats.unitName}, Tier: {unitStats.tier}, " +
+            //    $"Max HP: {unitStats.maxHp}, Cost: {unitStats.cost} Attack Speed: {unitStats.attackSpeed}, " +
+            //    $"Move Speed: {unitStats.moveSpeed}," + $" Sight Range: {unitStats.sightRange}, " +
+            //    $"Attack Range: {unitStats.attackRange}, Mental: {unitStats.mental}, Crit Change: {unitStats.critChance}, role :{unitStats.role}");
 
             maxhp = unitStats.maxHp;
             hp = unitStats.maxHp;
