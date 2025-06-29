@@ -15,9 +15,13 @@ public class UnitStateUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private RectTransform unitStatePanelRectTransform;
     private RectTransform iconRectTransform;
 
+<<<<<<< Updated upstream
     
 
     private Effect effect;
+=======
+    private DurationEffect effect;
+>>>>>>> Stashed changes
 
     private void Start()
     {
@@ -40,17 +44,29 @@ public class UnitStateUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Vector3 offset = new Vector3(0, yPos, 0); // 원하는 offset
         unitStatePanelRectTransform.position = iconWorldPos + offset;
 
+<<<<<<< Updated upstream
         ShowUnitState(effect);
 
     }
 
     private void ShowUnitState(Effect effect)
+=======
+        // ShowUnitState(effect);
+
+    }
+
+    private void ShowUnitState(DurationEffect effect)
+>>>>>>> Stashed changes
     {
         stateNameText.text = effect.Name;
         stateDescriptionText.text = effect.Description;
     }
 
+<<<<<<< Updated upstream
     public void SetEffect(Effect effect)
+=======
+    public void SetEffect(DurationEffect effect)
+>>>>>>> Stashed changes
     {
         this.effect = effect;
     }

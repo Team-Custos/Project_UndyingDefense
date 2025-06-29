@@ -18,8 +18,18 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+<<<<<<< Updated upstream
     [SerializeField] private WaveData[] waveData;
 
+=======
+    [SerializeField] private UnitDataLoader unitDataLoader;
+    [SerializeField] private DurationEffectPool durationEffectPool;
+
+    [Header("■ Wave Data")]
+    [SerializeField] private WaveData[] waveData;
+
+
+>>>>>>> Stashed changes
     [Header("■ Options")]
     [SerializeField] private float spawnTime;
     [SerializeField] private Transform[] spawnPoints;
@@ -154,15 +164,28 @@ public class EnemyUnitSpawner : MonoBehaviour
                    EnemyUnit enemyUnit = poolDic[data].Pool.Get();
                    poolDic[data].List.Add(enemyUnit);
 
+<<<<<<< Updated upstream
                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+=======
+                    Unit unit = enemyUnit.GetComponent<Unit>();
+
+                    unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+
+                    Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+>>>>>>> Stashed changes
                    enemySpawnVfx.transform.position = pos;
                    enemyUnit.transform.position = pos;
                    enemyUnit.transform.forward = spawnDirection.forward;
                    SoundManager.Instance.PlaySFX(enmeySpawnSfx);
                    enemySpawnVfx.gameObject.SetActive(true);
                    enemySpawnVfx.Play();
+<<<<<<< Updated upstream
                    enemyUnit.gameObject.SetActive(true);
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
+=======
+                   enemyUnit.Initialize(fortress.GetPosition(spawnCount));
+                   enemyUnit.gameObject.SetActive(true);
+>>>>>>> Stashed changes
 
                    totalMonCount++;
                    spawnDataEnemyCount++;
@@ -195,6 +218,10 @@ public class EnemyUnitSpawner : MonoBehaviour
         if (obj.TryGetComponent(out EnemyUnit enemy))
         {
             enemy.Initialize(data, poolDic[data], fortress, this);
+<<<<<<< Updated upstream
+=======
+            enemy.SetDurationEffectPool(durationEffectPool);
+>>>>>>> Stashed changes
             return enemy;
         }
         else

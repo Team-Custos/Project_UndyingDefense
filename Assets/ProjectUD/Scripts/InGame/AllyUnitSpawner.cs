@@ -16,6 +16,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private SelectedUnitUI selectedUnitUI;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Ingame_CursorManager cursorManager;
+<<<<<<< Updated upstream
+=======
+    [SerializeField] private UnitDataLoader unitDataLoader;
+    [SerializeField] private DurationEffectPool durationEffectPool;
+>>>>>>> Stashed changes
 
     [SerializeField] private Image[] alarmImages;
 
@@ -28,7 +33,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [Header("■ UI")]
     [SerializeField] private UnitSpawnUI unitSpawnUI;
     [SerializeField] private GameObject indicator;
+<<<<<<< Updated upstream
     //[SerializeField] private GameObject mouseIndicator;
+=======
+    [SerializeField] private GameObject mouseIndicator;
+
+    
+>>>>>>> Stashed changes
 
     [Header("■ Ground Layer")]
     [SerializeField] private LayerMask groundLayer;
@@ -54,6 +65,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             int index = i;
             unitPools.Add(new ObjectPoolWithList<AllyUnit>(() => CreateUnit(index)));
             spawnPointPool = new ObjectPoolWithList<UnitSpawnPoint>(CreateSpawnPoint);
+<<<<<<< Updated upstream
+=======
+            //Unit unit = units[i].Prefab.GetComponent<Unit>();
+>>>>>>> Stashed changes
 
             // UI 설정
             AllyUnitData data = units[i];
@@ -77,6 +92,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 if (!hit.transform.CompareTag("Tile"))
                     return;
 
+<<<<<<< Updated upstream
                 indicator.transform.position = 
                     grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f) 
                     + Vector3.up * 0.01f;
@@ -84,6 +100,14 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             }
         }
     }
+=======
+                indicator.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+                mouseIndicator.transform.position = hit.point;
+            }
+        }
+    }
+
+>>>>>>> Stashed changes
     private AllyUnit CreateUnit(int index)
     {
         AllyUnitData data = units[index];
@@ -91,6 +115,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this);
+<<<<<<< Updated upstream
+=======
+        unit.SetDurationEffectPool(durationEffectPool);
+
+>>>>>>> Stashed changes
         return unit;
     }
 
@@ -110,8 +139,14 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+<<<<<<< Updated upstream
                 upgradeUnit.previousMode = mode;
                 //upgradeUnit.UnitGrid.SetTargetTile(tile);
+=======
+                upgradeUnit.SetDurationEffectPool(durationEffectPool);
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
+>>>>>>> Stashed changes
                 upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.IsSelected = true;
@@ -139,7 +174,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+<<<<<<< Updated upstream
                 upgradeUnit.previousMode = mode;
+=======
+                upgradeUnit.SetDurationEffectPool(durationEffectPool);
+                upgradeUnit.previousMode = mode;
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
+>>>>>>> Stashed changes
                 upgradeUnit.UpgradeInitialize();
 
                 upgradeUnit.IsSelected = true;
@@ -175,12 +216,22 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+<<<<<<< Updated upstream
             upgradeUnit.previousMode = mode;
+=======
+            upgradeUnit.SetDurationEffectPool(durationEffectPool);
+            upgradeUnit.previousMode = mode;
+            upgradeUnit.SetUnitDataLoader(unitDataLoader);
+>>>>>>> Stashed changes
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
             selectedUnitManager.SetSelectedUnit(upgradeUnit);
             upgradeUnit.IsSelected = true;
 
+<<<<<<< Updated upstream
+=======
+            
+>>>>>>> Stashed changes
             upgradeUnit.gameObject.SetActive(true);
             upgradeUnit.UnitGrid.SetTargetTile(tile);
             selectedUnitUI.ShowAllyUI(upgradeUnit);
@@ -241,14 +292,22 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             selectedIndex = index;
             spawn = true;
             indicator.SetActive(true);
+<<<<<<< Updated upstream
             //mouseIndicator.SetActive(true);
+=======
+            mouseIndicator.SetActive(true);
+>>>>>>> Stashed changes
             inputMng.OnClickTarget = this;
             unitSpawnUI.Select(index);
 
             //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
 
 
+<<<<<<< Updated upstream
             selectedUnitUI.UpdateUnitInfoByBtn(units[index]);
+=======
+            selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
+>>>>>>> Stashed changes
         }
 
         SoundManager.Instance.PlayUIClickSFX();
@@ -259,7 +318,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         selectedIndex = -1;
         spawn = false;
         indicator.SetActive(false);
+<<<<<<< Updated upstream
         //mouseIndicator.SetActive(false);
+=======
+        mouseIndicator.SetActive(false);
+>>>>>>> Stashed changes
         unitSpawnUI.Deselect();
         selectedUnitUI.HideUntInfo();
     }
@@ -313,6 +376,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     //inputMng.OnClickTarget = selectedUnitManager;
                 }
 
+<<<<<<< Updated upstream
+=======
+                unit.SetUnitDataLoader(unitDataLoader);
+
+>>>>>>> Stashed changes
 
                 // 유닛의 소환 방향 설정
                 unit.transform.forward = spawnDirection.forward;
@@ -320,6 +388,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 // 소환진 설정
                 UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
                 Tile tile = hit.transform.GetComponent<Tile>();
                 if (tile.SetAllyUnit(unit) == null)
                 {

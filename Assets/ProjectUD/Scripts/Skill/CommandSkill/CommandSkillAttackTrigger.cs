@@ -1,6 +1,11 @@
 using UnityEngine;
+<<<<<<< Updated upstream
 using static AttackSkill;
 using static Unit;
+=======
+using static Unit;
+using AttackType = AttackData.AttackType;
+>>>>>>> Stashed changes
 
 public class CommandSkillAttackTrigger : MonoBehaviour
 {
@@ -196,26 +201,41 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
         {
+<<<<<<< Updated upstream
             float calcBlockRate = 1f - (0.3f * target.BlockRate);
             calcDamage *= calcBlockRate;
         }
 
         calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
+=======
+            float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
+            calcDamage *= calcBlockRate;
+        }
+
+        calcDamage *= target.DamageTakenMult;
+>>>>>>> Stashed changes
 
         target.TakeDamage(calcDamage);
         target.PlayHitSFX(data.AttackType);
         AddHitVFX(target);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
+<<<<<<< Updated upstream
             if (data.InduseEffct != null)
             {
                 target.AddEffect(target, data.InduseEffct.GetComponent<Effect>());
+=======
+            if (data.InduseEffectPrefab != null)
+            {
+                target.AddEffect(data.InduseEffectPrefab);
+>>>>>>> Stashed changes
             }
         }
     }
 
     private void AddHitVFX(Unit target)
     {
+<<<<<<< Updated upstream
         ParticleSystem hitVFX = null;
         switch (data.AttackType)
         {
@@ -234,6 +254,26 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         {
             target.AddVFX(hitVFX, target.transform.position + incomingDirection);
         }
+=======
+        //ParticleSystem hitVFX = null;
+        //switch (data.AttackType)
+        //{
+        //    case AttackType.SLASH:
+        //        hitVFX = SlashHitVFX;
+        //        break;
+        //    case AttackType.PIERCE:
+        //        hitVFX = PierceHitVFX;
+        //        break;
+        //    case AttackType.CRUSH:
+        //        hitVFX = CrushHitVFX;
+        //        break;
+        //}
+
+        //if (hitVFX != null)
+        //{
+        //    target.AddVFX(hitVFX, target.transform.position + incomingDirection);
+        //}
+>>>>>>> Stashed changes
     }
 
     private bool IsBlocked(ArmorType armorType)

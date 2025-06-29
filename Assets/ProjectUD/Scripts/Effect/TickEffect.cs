@@ -1,4 +1,5 @@
 using UnityEngine;
+<<<<<<< Updated upstream
 using UltEvents;
 
 public class TickEffect : DurationEffect
@@ -22,11 +23,29 @@ public class TickEffect : DurationEffect
             tickCount++;
             if (onTick != null)
                 onTick.Invoke();
+=======
+
+public abstract class TickEffect : DurationEffect
+{
+    [Header("■ TickEffect Options")]
+    [SerializeField] protected float tickTime;
+
+    protected float tickTimeCheck;
+
+    protected override void Update()
+    {
+        tickTimeCheck += Time.deltaTime;
+        if (tickTimeCheck >= tickTime)
+        {
+            tickTimeCheck -= tickTime;
+            OnTick();
+>>>>>>> Stashed changes
         }
 
         base.Update();
     }
 
+<<<<<<< Updated upstream
     public override void AddStack()
     {
         base.AddStack();
@@ -70,4 +89,13 @@ public class TickEffect : DurationEffect
         float removeValue = -percent * 0.01f * (stack + 1) * tickCount;
         onRemove.AddListener(() => AddBlockRate(removeValue));
     }
+=======
+    public override void Reapply(GameObject effectPrefab)
+    {
+        base.Reapply(effectPrefab);
+        tickTimeCheck = 0f;
+    }
+
+    protected abstract void OnTick();
+>>>>>>> Stashed changes
 }

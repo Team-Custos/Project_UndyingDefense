@@ -226,7 +226,11 @@ public class EnemyUnit : Unit
                 {
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
+<<<<<<< Updated upstream
                     if(distance <= data.AttackRange)
+=======
+                    if(distance <= UnitStats.attackRange)
+>>>>>>> Stashed changes
                     {
                         mode = Mode.ATTACKFORTRESS;
                         return;
@@ -234,7 +238,11 @@ public class EnemyUnit : Unit
 
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
+<<<<<<< Updated upstream
                         targetUnit = SearchTarget(data.SightRange);
+=======
+                        targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;
@@ -244,7 +252,11 @@ public class EnemyUnit : Unit
 
                     else if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
                     {
+<<<<<<< Updated upstream
                         if (distance <= data.AttackRange)
+=======
+                        if (distance <= UnitStats.attackRange)
+>>>>>>> Stashed changes
                         {
                             mode = Mode.ATTACKFORTRESS;
                         }
@@ -252,14 +264,22 @@ public class EnemyUnit : Unit
                         {
                             if (navAgent.enabled)
                             {
+<<<<<<< Updated upstream
                                 targetUnit = SearchTarget(data.SightRange);
+=======
+                                targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
                             }
                             else
                             {
                                 navObstacle.enabled = false;
                                 navAgent.enabled = true;
 
+<<<<<<< Updated upstream
                                 targetUnit = SearchTarget(data.SightRange);
+=======
+                                targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
 
                                 navAgent.enabled = false;
                                 navObstacle.enabled = true;
@@ -298,7 +318,11 @@ public class EnemyUnit : Unit
                 {
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
+<<<<<<< Updated upstream
                         if (IsTargetInRange(targetUnit, Data.AttackRange)) // 공격 사거리 내
+=======
+                        if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내
+>>>>>>> Stashed changes
                         {
                             if (navAgent.enabled && !navAgent.isStopped)
                             {
@@ -313,12 +337,20 @@ public class EnemyUnit : Unit
                                 ActivateSkill(skill, targetUnit);
                             }
                         }
+<<<<<<< Updated upstream
                         else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
+=======
+                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 공격 사거리 < 대상 < 시야 사거리
+>>>>>>> Stashed changes
                         {
                             MoveTo(targetUnit); 
                             if(path.status != NavMeshPathStatus.PathComplete)
                             {
+<<<<<<< Updated upstream
                                 targetUnit = SearchTarget(data.SightRange);
+=======
+                                targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
                                 if (targetUnit == null)
                                 {
                                     mode = Mode.MOVE;
@@ -345,7 +377,11 @@ public class EnemyUnit : Unit
                 {
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
+<<<<<<< Updated upstream
                         targetUnit = SearchTarget(data.SightRange);
+=======
+                        targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;
