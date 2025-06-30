@@ -1124,7 +1124,7 @@ public abstract class Unit : MonoBehaviour
             Die();
 
 
-            if (selectedUnitUI != null)
+            if (selectedUnitUI != null && isSelected)
             {
                 // ui 제거
                 selectedUnitUI.HideHp();
@@ -1135,7 +1135,7 @@ public abstract class Unit : MonoBehaviour
 
         }
 
-        if (selectedUnitUI != null)
+        if (selectedUnitUI != null && IsSelected)
         {
             selectedUnitUI.UpdateHPUI(this);
         }

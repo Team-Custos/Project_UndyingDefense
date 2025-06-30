@@ -260,31 +260,31 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             }
 
 
-            if (unitUpgradeMenuPrefab != null)
-            {
+            //if (unitUpgradeMenuPrefab != null)
+            //{
 
-                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * upgradeXpos;
-                //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+            //    Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * upgradeXpos;
+            //    Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
-                //unitUpgradeMenuPrefab.transform.position = screenPosition;
-                // 1️⃣ 유닛의 월드 좌표 가져오기
-                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position;
+            //    unitUpgradeMenuPrefab.transform.position = screenPosition;
+            //    1️⃣ 유닛의 월드 좌표 가져오기
+            //    Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position;
 
-                //// 2️⃣ 월드 좌표 → 화면 좌표로 변환
-                //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+            //    // 2️⃣ 월드 좌표 → 화면 좌표로 변환
+            //    Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
-                //// 3️⃣ 오른쪽으로 픽셀 이동 (upgradeXpos 사용)
-                //screenPosition.x += upgradeXpos;
+            //    // 3️⃣ 오른쪽으로 픽셀 이동 (upgradeXpos 사용)
+            //    screenPosition.x += upgradeXpos;
 
-                //// 4️⃣ 화면 경계에서 벗어나지 않도록 클램핑
-                //float marginX = 300f;
-                //float marginY = 300f;
-                //float clampedX = Mathf.Clamp(screenPosition.x, marginX, Screen.width - marginX);
-                //float clampedY = Mathf.Clamp(screenPosition.y, marginY, Screen.height - marginY);
+            //    // 4️⃣ 화면 경계에서 벗어나지 않도록 클램핑
+            //    float marginX = 300f;
+            //    float marginY = 300f;
+            //    float clampedX = Mathf.Clamp(screenPosition.x, marginX, Screen.width - marginX);
+            //    float clampedY = Mathf.Clamp(screenPosition.y, marginY, Screen.height - marginY);
 
-                //// 5️⃣ 버튼 위치 설정
-                //unitUpgradeMenuPrefab.transform.position = new Vector3(clampedX, clampedY, screenPosition.z);
-            }
+            //    // 5️⃣ 버튼 위치 설정
+            //    unitUpgradeMenuPrefab.transform.position = new Vector3(clampedX, clampedY, screenPosition.z);
+            //}
         }
     }
 
@@ -293,6 +293,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+
+        for(int i = 0; i < unitStateImage.Length; i++)
+        {
+            unitStateImage[i].gameObject.SetActive(false);
+        }
 
         unitInfoImage.gameObject.SetActive(true);
 
@@ -526,7 +531,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
                 }
             }
 
-            // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
             for (int i = imageIndex; i < unitStateImage.Length; i++)
             {
                 if (unitStateImage[i].gameObject.activeSelf)
