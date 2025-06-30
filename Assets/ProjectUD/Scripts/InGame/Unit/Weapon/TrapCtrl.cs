@@ -1,11 +1,30 @@
 using UnityEngine;
+<<<<<<< HEAD
 //using AttackType = AttackSkill.AttackType;
+=======
+<<<<<<< Updated upstream
+//using AttackType = AttackSkill.AttackType;
+=======
+using AttackType = AttackData.AttackType;
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
 public class TrapCtrl : AttackSkill
 {
     private Animator modelAnimator;
+<<<<<<< HEAD
     [SerializeField] private AttackType attackType;
     [SerializeField] private Effect effectToAdd;
+=======
+<<<<<<< Updated upstream
+    [SerializeField] private AttackType attackType;
+    [SerializeField] private Effect effectToAdd;
+=======
+    [SerializeField] private AttackData attackData;
+    [SerializeField] private GameObject bindEffectPrefab;
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     private float damage;
 
     private void Start()
@@ -25,11 +44,27 @@ public class TrapCtrl : AttackSkill
         {
             
             float calcDamage = damage;
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
            
             calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
             target.TakeDamage(calcDamage);
             target.AddEffect(target, effectToAdd);
+<<<<<<< HEAD
+=======
+=======
+
+            // calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
+            // calcDamage *= unit.AttackDamageMultiplier;
+            calcDamage *= target.DamageTakenMult;
+
+            target.TakeDamage(calcDamage);
+            target.AddEffect(bindEffectPrefab);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
         }
     }
 

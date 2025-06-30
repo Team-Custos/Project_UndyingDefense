@@ -1922,6 +1922,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 79.4, y: 4.71, z: 3.8}
   m_Center: {x: -0.95, y: 0, z: 0.14}
+<<<<<<< HEAD
 --- !u!1 &34717628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,6 +1968,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> KimJK
 --- !u!4 &35039892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -10347,7 +10350,11 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+<<<<<<< HEAD
   m_IsActive: 0
+=======
+  m_IsActive: 1
+>>>>>>> KimJK
 --- !u!224 &282221629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15348,6 +15355,12 @@ Transform:
   - {fileID: 2131315957}
   - {fileID: 825525762}
   - {fileID: 1615164033}
+<<<<<<< HEAD
+=======
+  - {fileID: 754875855}
+  - {fileID: 1553022671}
+  - {fileID: 1415704159}
+>>>>>>> KimJK
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &473320457
@@ -21648,6 +21661,7 @@ MonoBehaviour:
   inGameManager: {fileID: 856739625}
   dollyCamera: {fileID: 311500981}
   upgradeMenuUI: {fileID: 5963399257725955338}
+<<<<<<< HEAD
   unitDataLoader: {fileID: 34717629}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
@@ -21670,6 +21684,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e772f182d431e884dbb6905fbc9e486e, type: 2}
   - {fileID: 11400000, guid: 6eba989f4246a9441914730ca1757994, type: 2}
   - {fileID: 11400000, guid: ccae55c9b4cead04a8781bb12b20da0b, type: 2}
+=======
+  waveData:
+  - {fileID: 11400000, guid: 28e3ded3e3d3f7e48abe2677376e05cb, type: 2}
+>>>>>>> KimJK
   spawnTime: 1.5
   spawnPoints:
   - {fileID: 227319632}
@@ -23907,6 +23925,53 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+<<<<<<< HEAD
+=======
+--- !u!1 &754875854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754875855}
+  - component: {fileID: 754875856}
+  m_Layer: 0
+  m_Name: UnitUpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &754875855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754875854}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 472590888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &754875856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754875854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8096a0c15a5464741a2fcb5b447f42e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+>>>>>>> KimJK
 --- !u!1001 &755884107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29216,7 +29281,10 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1285506504}
   commandSkillManager: {fileID: 1238902731}
   cursorManager: {fileID: 1133855604}
+<<<<<<< HEAD
   unitDataLoader: {fileID: 34717629}
+=======
+>>>>>>> KimJK
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -29225,7 +29293,10 @@ MonoBehaviour:
     type: 3}
   unitSpawnUI: {fileID: 418159408}
   indicator: {fileID: 1915988911}
+<<<<<<< HEAD
   mouseIndicator: {fileID: 124077941}
+=======
+>>>>>>> KimJK
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -42069,7 +42140,10 @@ MonoBehaviour:
   ingameCamManager: {fileID: 1346724712}
   inputEventManager: {fileID: 1590103094}
   inGameManager: {fileID: 856739625}
+<<<<<<< HEAD
   unitDataLoader: {fileID: 34717629}
+=======
+>>>>>>> KimJK
   upgradeBtn: {fileID: 618903649}
   unitHP: {fileID: 564626855}
   unitDuration: {fileID: 857208347}
@@ -46640,6 +46714,119 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1429676097}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+=======
+--- !u!1 &1415704158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1415704159}
+  - component: {fileID: 1415704160}
+  m_Layer: 0
+  m_Name: CommanderSkillManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1415704159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415704158}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 472590888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1415704160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415704158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e42d8d2d31810418b36793bdb0a63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Order_SkillData:
+  - type: 0
+    SkillCode: 101
+    Name: "\uC9D1\uC911 \uACF5\uACA9"
+    Description: "5\uCD08 \uB3D9\uC548 \uD544\uB4DC \uB0B4 \uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC774
+      \uD2F0\uC5B4\uAC00 \uAC00\uC7A5 \uB192\uC740 \uC801\uC744 \uC9D1\uC911 \uACF5\uACA9"
+    CoolDown: 20
+    isTargetEnemy: 0
+  - type: 0
+    SkillCode: 102
+    Name: "\uC804\uC9C4 \uBA85\uB839"
+    Description: "5\uCD08 \uB3D9\uC548 \uD544\uB4DC \uB0B4 \uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758
+      \uC774\uB3D9 \uC18D\uB3C4 20% \uC99D\uAC00"
+    CoolDown: 20
+    isTargetEnemy: 0
+  - type: 0
+    SkillCode: 103
+    Name: "\uAE30\uBCF8 \uAD6C\uAE09\uC57D \uBCF4\uAE09"
+    Description: "5\uCD08 \uB3D9\uC548 \uC601\uC5ED \uB0B4\uC758 \uBCD1\uC0AC\uB4E4\uC758
+      \uCD08\uB2F9 \uCCB4\uB825 5 \uD68C\uBCF5"
+    CoolDown: 15
+    isTargetEnemy: 0
+  Surpport_SkillData:
+  - type: 1
+    SkillCode: 101
+    Name: "\uD654\uC0B4 \uBE44 \uB0B4\uB9AC\uAE30"
+    Description: "5\uCD08 \uB3D9\uC548 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C
+      \uCD08\uB2F9 10 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9"
+    CoolDown: 20
+    isTargetEnemy: 1
+  - type: 1
+    SkillCode: 102
+    Name: "\uBD88 \uBD99\uC740 \uAE30\uB984 \uBD93\uAE30"
+    Description: "5\uCD08 \uB3D9\uC548 \uC131\uBCBD \uC55E\uC5D0 \uBD88 \uBD99\uC740
+      \uAE30\uB984\uC744 \uBD80\uC5B4 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C
+      \uC791\uC5F4 \uD6A8\uACFC"
+    CoolDown: 20
+    isTargetEnemy: 0
+  - type: 1
+    SkillCode: 103
+    Name: "\uBC14\uC704 \uAD74\uB9AC\uAE30"
+    Description: "3\uCD08 \uB3D9\uC548 \uBC14\uC704\uB97C \uD55C \uBC29\uD5A5\uC73C\uB85C
+      \uAD74\uB824 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C \uCDA9\uACA9 \uD6A8\uACFC"
+    CoolDown: 20
+    isTargetEnemy: 0
+  Morale_SkillData:
+  - type: 2
+    SkillCode: 101
+    Name: "\uC0BC\uACC4\uD0D5 \uD2B9\uC2DD"
+    Description: "\uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758 \uCD5C\uB300 \uCCB4\uB825
+      2 \uC99D\uAC00"
+    CoolDown: 0
+    isTargetEnemy: 0
+  - type: 2
+    SkillCode: 102
+    Name: "\uBE44\uC7A5\uD55C \uCD9C\uC0AC"
+    Description: "\uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758 \uC2A4\uD0AC \uACF5\uACA9
+      \uB370\uBBF8\uC9C0 2% \uC99D\uAC00"
+    CoolDown: 0
+    isTargetEnemy: 0
+  - type: 2
+    SkillCode: 103
+    Name: "\uC804\uB9AC\uD488 \uC218\uAE09"
+    Description: "\uC801 \uCC98\uCE58\uC2DC \uC5BB\uB294 \uACE8\uB4DC\uB7C9 1% \uC99D\uAC00"
+    CoolDown: 0
+    isTargetEnemy: 0
+>>>>>>> KimJK
 --- !u!1 &1419104130
 GameObject:
   m_ObjectHideFlags: 0
@@ -51074,6 +51261,68 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1551661919}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+=======
+--- !u!1 &1553022670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1553022671}
+  - component: {fileID: 1553022673}
+  - component: {fileID: 1553022672}
+  m_Layer: 0
+  m_Name: UnitDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1553022671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553022670}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1547.8699, y: 572.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 472590888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1553022672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553022670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df0d221b4df048b48b66ee6c5ddd97bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filePath: charData
+  unitExcelDataManager: {fileID: 1553022673}
+--- !u!114 &1553022673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553022670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145092c959d1a8145b440c6104709d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+>>>>>>> KimJK
 --- !u!4 &1553937564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -60035,7 +60284,11 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+<<<<<<< HEAD
   m_IsActive: 1
+=======
+  m_IsActive: 0
+>>>>>>> KimJK
 --- !u!23 &1915988913
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -60056,7 +60309,11 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+<<<<<<< HEAD
   - {fileID: 2100000, guid: ea1d47c4a5b06c245ba9d8d6e455530b, type: 2}
+=======
+  - {fileID: 2100000, guid: 885b53398a0f30a4f90f348735194fd6, type: 2}
+>>>>>>> KimJK
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -60085,7 +60342,11 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915988911}
+<<<<<<< HEAD
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+=======
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+>>>>>>> KimJK
 --- !u!4 &1915988915
 Transform:
   m_ObjectHideFlags: 0
@@ -60095,8 +60356,13 @@ Transform:
   m_GameObject: {fileID: 1915988911}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: 0, y: -1.7, z: 0}
   m_LocalScale: {x: 2, y: 0.2, z: 2}
+=======
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
+>>>>>>> KimJK
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -66260,11 +66526,14 @@ PrefabInstance:
       objectReference: {fileID: 1285506504}
     - target: {fileID: 6387479899022941365, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
         type: 3}
+<<<<<<< HEAD
       propertyPath: unitDataLoader
       value: 
       objectReference: {fileID: 34717629}
     - target: {fileID: 6387479899022941365, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
         type: 3}
+=======
+>>>>>>> KimJK
       propertyPath: selectedUnitManager
       value: 
       objectReference: {fileID: 1137951088}
@@ -66298,11 +66567,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 6997145059741789233, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+=======
+>>>>>>> KimJK
     - target: {fileID: 8674156283768515463, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
         type: 3}
       propertyPath: m_Name
@@ -67608,7 +67880,10 @@ SceneRoots:
   - {fileID: 1137951089}
   - {fileID: 1238902732}
   - {fileID: 1133855605}
+<<<<<<< HEAD
   - {fileID: 34717630}
+=======
+>>>>>>> KimJK
   - {fileID: 876444785}
   - {fileID: 1893194894}
   - {fileID: 1061626275}

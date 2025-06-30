@@ -34,5 +34,12 @@ public class Tile : MonoBehaviour
     public void ClearUnit()
     {
         tileAllyUnit = null;
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+        Debug.Log("유닛 클리어");
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 }

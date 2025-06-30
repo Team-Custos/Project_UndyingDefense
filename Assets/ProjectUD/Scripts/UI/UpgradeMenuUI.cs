@@ -12,7 +12,14 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+<<<<<<< HEAD
     [SerializeField] private UnitDataLoader unitDataLoader;
+=======
+<<<<<<< Updated upstream
+=======
+    [SerializeField] private UnitDataLoader unitDataLoader;
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
     [SerializeField] private Image[] upgardeImage;
 
@@ -70,10 +77,19 @@ public class UpgradeMenuUI : MonoBehaviour
     private UnitData firstUnitData;
     private UnitData secondUnitData;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> KimJK
     private Unit currentUnit;
     private Unit firstUpgradeUnit;
     private Unit secondUpgradeUnit;
 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     [SerializeField] private  GameObject twoLine;
     [SerializeField] private    GameObject oneLine;
 
@@ -86,6 +102,21 @@ public class UpgradeMenuUI : MonoBehaviour
     private int upgradeIndex = -1;
     private float cost;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+    //public void UpgradeToFirstUnit()
+    //{
+    //    selectedUnitManager.UpgradeSelectedUnit(0);
+    //}
+
+    //public void UpgradeToSecondUnit()
+    //{
+    //    selectedUnitManager.UpgradeSelectedUnit(1);
+    //}
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
     public void ToggleUpgradeUnit(int index)
     {
@@ -116,6 +147,24 @@ public class UpgradeMenuUI : MonoBehaviour
 
             if (index == 0)
             {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+                infoText.text = firstUnitData.Name;
+                infoCrtiText.text = "치명타율 : " + firstUnitData.CritChance.ToString();
+                infoMoveSpeedText.text = "이동속도 : " + firstUnitData.MoveSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + firstUnitData.AttackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + firstUnitData.Mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + firstUnitData.AttackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = "추천역할 : " + firstUnitData.Role;
+                infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (firstUnitData.MaxHp - currentUnitData.MaxHp).ToString();
+                beforeHp.fillAmount = currentUnitData.MaxHp / 500; //firstUnitData.MaxHp;
+                afterHp.fillAmount = firstUnitData.MaxHp / 500; // firstUnitData.MaxHp;
+                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + firstUnitData.Mental.ToString();
+
+                Unit firstUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[0].Prefab.GetComponent<Unit>();
+=======
+>>>>>>> KimJK
                 UnitStats unitStats = unitDataLoader.GetUnitDataById(firstUpgradeUnit.UnitId, firstUpgradeUnit);
 
                 firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
@@ -133,6 +182,10 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = currentUnit.Mental.ToString() + " + " + unitStats.mental.ToString();
 
                 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
                 infoGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
                 infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
@@ -141,12 +194,45 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
                 infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+                
+
+
+
+                //infoGSkillImage.sprite = firstUnitData.GeneralSkill.Icon;
+                //infoGSkillText.text = secondUnitData.GSkillName;
+                //infoSSkillImage.sprite = secondUnitData.SSkillIcon;
+                //infoSSkillText.text = secondUnitData.SSkillName;
+
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
             }
             else if (index == 1)
             {
                 if (secondUnitData == null)
                     return;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+                infoText.text = secondUnitData.Name;
+                infoCrtiText.text = "치명타율 : " + secondUnitData.CritChance.ToString();
+                infoMoveSpeedText.text = "이동속도 : " + secondUnitData.MoveSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + secondUnitData.AttackSpeed.ToString();
+                infoMentalText.text = "멘탈 : " + secondUnitData.Mental.ToString();
+                infoAttackRangeText.text = "공격범위 : " + secondUnitData.AttackRange.ToString() + "칸";
+                infoRecommendedRoleText.text = "추천역할 : " + secondUnitData.Role;
+                infoHpText.text = currentUnitData.MaxHp.ToString() + " + " + (secondUnitData.MaxHp - currentUnitData.MaxHp).ToString();
+                beforeHp.fillAmount = currentUnitData.MaxHp / 500;// secondUnitData.MaxHp;
+                afterHp.fillAmount = secondUnitData.MaxHp / 500; // secondUnitData.MaxHp;
+                //infoMentalText.text = currentUnitData.Mental.ToString() + " + " + secondUnitData.Mental.ToString();
+
+                Unit secondUpgradeUnit = (selectedUnitManager.SelectedUnit.Data as AllyUnitData).UpgradeUnits[1].Prefab.GetComponent<Unit>();
+=======
+>>>>>>> KimJK
                 UnitStats unitStats = unitDataLoader.GetUnitDataById(secondUpgradeUnit.UnitId, secondUpgradeUnit);
 
                 secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
@@ -163,6 +249,10 @@ public class UpgradeMenuUI : MonoBehaviour
                 afterHp.fillAmount = unitStats.maxHp / 500; // secondUnitData.MaxHp;
                 //infoMentalText.text = currentUnit.Mental.ToString() + " + " + unitStats.mental.ToString();
 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
                 infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
                 infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
@@ -186,7 +276,14 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (upgradeIndex == -1)
             return;
+<<<<<<< HEAD
         selectedUI.gameObject.SetActive(false);
+=======
+<<<<<<< Updated upstream
+=======
+        selectedUI.gameObject.SetActive(false);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
         selectedUnitManager.UpgradeSelectedUnit(upgradeIndex);
         SoundManager.Instance.PlayUIClickSFX();
     }
@@ -203,9 +300,18 @@ public class UpgradeMenuUI : MonoBehaviour
         upgradeIndex = -1;
 
         currentUnitData = selectedUnit.Data;
+<<<<<<< HEAD
         currentUnit = selectedUnit;
         if (currentUnit.UnitStats == null)
             Debug.Log("fef");
+=======
+<<<<<<< Updated upstream
+=======
+        currentUnit = selectedUnit;
+        if (currentUnit.UnitStats == null)
+            Debug.Log("fef");
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
 
         firstUpgradeBtn.interactable = true;
@@ -244,7 +350,14 @@ public class UpgradeMenuUI : MonoBehaviour
 
             UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
             firstUnitData = firstUpgradeUnitData;
+<<<<<<< HEAD
             firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
+=======
+<<<<<<< Updated upstream
+=======
+            firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
             if (firstUpgradeUnitData != null)
             {
@@ -288,7 +401,14 @@ public class UpgradeMenuUI : MonoBehaviour
 
         }
 
+<<<<<<< HEAD
         // 업그레이드 가능이 두가지인 경우
+=======
+<<<<<<< Updated upstream
+=======
+        // 업그레이드 가능이 두가지인 경우
+>>>>>>> Stashed changes
+>>>>>>> KimJK
         if (currentUnitData.Tier < 3 || allyUnitData.UpgradeUnits.Length >= 2)
         {
             firstUpgradeUnitBackImage.rectTransform.position = leftPos.position;
@@ -304,10 +424,20 @@ public class UpgradeMenuUI : MonoBehaviour
             UnitData secondUpgradeUnitData = allyUnitData.UpgradeUnits[1];
 
             firstUnitData = firstUpgradeUnitData;
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+            secondUnitData = secondUpgradeUnitData;
+=======
+>>>>>>> KimJK
             firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
 
             secondUnitData = secondUpgradeUnitData;
             secondUpgradeUnit = secondUpgradeUnitData.Prefab.GetComponent<Unit>();
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
             if (firstUpgradeUnitData != null)
             {

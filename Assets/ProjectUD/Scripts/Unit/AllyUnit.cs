@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 using System.Security.Cryptography;
 using Unity.VisualScripting;
+=======
+>>>>>>> KimJK
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,7 +36,14 @@ public class AllyUnit : Unit
     private Tile tile;
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
+<<<<<<< HEAD
 
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     private Mode mode;
     public Mode ModeType => mode;
 
@@ -158,7 +168,15 @@ public class AllyUnit : Unit
                         if(targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetSpecialSkill();
+<<<<<<< HEAD
                         //Debug.Log("Special Skill " + skill + "사용");
+=======
+<<<<<<< Updated upstream
+                        Debug.Log("Special Skill " + skill + "사용");
+=======
+                        //Debug.Log("Special Skill " + skill + "사용");
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
@@ -211,7 +229,15 @@ public class AllyUnit : Unit
                     if (mode == Mode.CHANGE)
                     {
                         modelAnimator.SetBool("isRunning", false);
+<<<<<<< HEAD
                         navAgent.enabled = false;
+=======
+<<<<<<< Updated upstream
+                        //navAgent.enabled = false;
+=======
+                        navAgent.enabled = false;
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                     }
                     else
                     {
@@ -362,14 +388,34 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.ENEMY:
                                 {
+<<<<<<< HEAD
                                     if (SearchMarkedTarget(UnitStats.sightRange) != null)
                                     {
                                         targetUnit = SearchMarkedTarget(UnitStats.sightRange);
+=======
+<<<<<<< Updated upstream
+                                    if (SearchMarkedTarget(data.SightRange) != null)
+                                    {
+                                        targetUnit = SearchMarkedTarget(data.SightRange);
+=======
+                                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
+                                    {
+                                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                     }
 
                                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
                                     {
+<<<<<<< HEAD
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+=======
+<<<<<<< Updated upstream
+                                        if (IsTargetInRange(targetUnit, data.AttackRange))
+=======
+                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                         {
                                             if (navAgent.enabled && !navAgent.isStopped)
                                             {
@@ -385,7 +431,15 @@ public class AllyUnit : Unit
                                         else
                                             targetUnit = null;
                                     }
+<<<<<<< HEAD
                                     else targetUnit = SearchTarget(UnitStats.sightRange);
+=======
+<<<<<<< Updated upstream
+                                    else targetUnit = SearchTarget(data.SightRange);
+=======
+                                    else targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                 }
                                 break;
                             case SkillBase.TargetType.ALLY:
@@ -405,7 +459,15 @@ public class AllyUnit : Unit
                     else
                     {
                         if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
+<<<<<<< HEAD
                             targetUnit = SearchTarget(UnitStats.sightRange);
+=======
+<<<<<<< Updated upstream
+                            targetUnit = SearchTarget(data.SightRange);
+=======
+                            targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                         else
                             LookAt(targetUnit.transform.position);   
                     }
@@ -435,15 +497,35 @@ public class AllyUnit : Unit
                                 modelAnimator.SetBool("isRunning", false);
                                 destinationPosition = Vector3.zero;
                                 isMoving = false;
+<<<<<<< HEAD
                                 targetUnit = SearchTarget(UnitStats.sightRange);
+=======
+<<<<<<< Updated upstream
+                                targetUnit = SearchTarget(data.SightRange);
+=======
+                                targetUnit = SearchTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                 navAgent.stoppingDistance = 2.4f;
                             }
                         }
                     }
 
+<<<<<<< HEAD
                     if (SearchMarkedTarget(UnitStats.sightRange) != null)
                     {
                         targetUnit = SearchMarkedTarget(UnitStats.sightRange);
+=======
+<<<<<<< Updated upstream
+                    if (SearchMarkedTarget(data.SightRange) != null)
+                    {
+                        targetUnit = SearchMarkedTarget(data.SightRange);
+=======
+                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
+                    {
+                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                     }
 
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
@@ -460,7 +542,15 @@ public class AllyUnit : Unit
                             {
                                 case SkillBase.TargetType.ENEMY:
                                     {
+<<<<<<< HEAD
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+=======
+<<<<<<< Updated upstream
+                                        if (IsTargetInRange(targetUnit, data.AttackRange))
+=======
+                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                         {
                                             ActivateSkill(skill, targetUnit);
 
@@ -489,12 +579,28 @@ public class AllyUnit : Unit
                             }
                         }
 
+<<<<<<< HEAD
                         if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
+=======
+<<<<<<< Updated upstream
+                        if(IsTargetInAttackRange(targetUnit, data.AttackRange))
+=======
+                        if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                         {
                             return;
                         }
 
+<<<<<<< HEAD
                         if (IsTargetInRange(targetUnit, UnitStats.sightRange))
+=======
+<<<<<<< Updated upstream
+                        if (IsTargetInRange(targetUnit, data.SightRange))
+=======
+                        if (IsTargetInRange(targetUnit, UnitStats.sightRange))
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
@@ -509,6 +615,28 @@ public class AllyUnit : Unit
                     }
                     else
                     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+                        //SetNavMode(true);
+
+                        //bool navAgentEnabled = navAgent.enabled;
+                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+                        //{
+                        //    navObstacle.enabled = false;
+                        //    navAgent.enabled = true;
+                        //}
+
+                        targetUnit = SearchReachableTarget(data.SightRange);
+
+                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+                        //{
+                        //    navObstacle.enabled = false;
+                        //    navAgent.enabled = true;
+                        //}
+                        //SetNavMode(true);
+=======
+>>>>>>> KimJK
                         bool navAgentEnabled = navAgent.enabled;
                         if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
                         {
@@ -523,6 +651,10 @@ public class AllyUnit : Unit
                             navObstacle.enabled = false;
                             navAgent.enabled = true;
                         }
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                     }
                 }
                 break;
@@ -540,7 +672,14 @@ public class AllyUnit : Unit
                             {
                                 transform.position = targetTile.transform.position;
                                 navObstacle.enabled = true;
+<<<<<<< HEAD
 
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                                 navAgent.enabled = false;
                             }
                             else
@@ -548,8 +687,17 @@ public class AllyUnit : Unit
                                 mode = Mode.FREE;
                                 return;
                             }
+<<<<<<< HEAD
                                 
 
+=======
+<<<<<<< Updated upstream
+                           
+=======
+                                
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                             //transform.position = unitGrid.GetAvailableTile().transform.position;
 
                             OnOffSiefeEffect(false);
@@ -559,7 +707,14 @@ public class AllyUnit : Unit
                             isSiegeActive = false;
 
                             isAvailableToSiege = true;
+<<<<<<< HEAD
 
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                         }
 
                         if (isAvailableToSiege)
@@ -603,8 +758,17 @@ public class AllyUnit : Unit
                         {
                             changeDuration -= Time.deltaTime;
                             state = State.IDLE;
+<<<<<<< HEAD
 
                             if(selectedUnitUI != null)
+=======
+<<<<<<< Updated upstream
+                            if (selectedUnitUI != null)
+=======
+
+                            if(selectedUnitUI != null)
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                             {
                                 selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                             }
@@ -613,11 +777,25 @@ public class AllyUnit : Unit
                         else
                         {
                             mode = Mode.FREE;
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+                            SetNavMode(true);
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
                             changeDuration = 3.0f;
                             previousMode = mode;
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                             if (selectedUnitUI != null && isSelected)
                             {
                                 selectedUnitUI.ShowAllyUI(this);
@@ -625,9 +803,18 @@ public class AllyUnit : Unit
                             }
                         }
                     }
+<<<<<<< HEAD
 
 
 
+=======
+<<<<<<< Updated upstream
+=======
+
+
+
+>>>>>>> Stashed changes
+>>>>>>> KimJK
                     //if (changeDuration >= 0)
                     //{
                     //    changeDuration -= Time.deltaTime;

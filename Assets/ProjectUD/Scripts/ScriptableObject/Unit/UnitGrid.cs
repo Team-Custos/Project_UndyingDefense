@@ -89,6 +89,10 @@ public class UnitGrid : MonoBehaviour
     {
         if(targetTile != null)
         {
+<<<<<<< HEAD
+=======
+            Debug.Log("타일 클리어");
+>>>>>>> KimJK
             targetTile.ClearUnit();
             targetTile = null;
         }

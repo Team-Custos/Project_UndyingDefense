@@ -11,8 +11,16 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         SELF
     }
 
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< Updated upstream
+
+
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     [Header("■ Events")]
     [SerializeField] private UltEvent<Unit, Unit> onActivate; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit, Fortress> onAttackFortress; // 발동했을 때 실행할 이벤트

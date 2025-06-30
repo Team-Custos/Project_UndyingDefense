@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 using System.Runtime.InteropServices;
 using UnityEngine;
+=======
+<<<<<<< Updated upstream
+using System.Runtime.InteropServices;
+using UnityEngine;
+=======
+using UnityEngine;
+using AttackType = AttackData.AttackType;
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 using ArmorType = Unit.ArmorType;
 
 public class AttackSkill : SkillBase
 {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
     public enum AttackType
     {
         SLASH,
@@ -12,6 +26,11 @@ public class AttackSkill : SkillBase
         NONE
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     [Header("■ Data")]
     [SerializeField] private AttackSkillData data;
 
@@ -19,6 +38,10 @@ public class AttackSkill : SkillBase
     protected Collider[] targets;
     protected const int maxTargetCount = 5;
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
     protected static Effect slashCritEffect;
     protected static Effect pierceCritEffect;
     protected static Effect crushCritEffect;
@@ -130,6 +153,118 @@ public class AttackSkill : SkillBase
     
 
     public AttackType GetAttackType() => data.AttackType;
+<<<<<<< HEAD
+=======
+=======
+    //protected static Effect slashCritEffect;
+    //protected static Effect pierceCritEffect;
+    //protected static Effect crushCritEffect;
+
+    //protected static ParticleSystem slashHitVFX;
+    //protected static ParticleSystem pierceHitVFX;
+    //protected static ParticleSystem crushHitVFX;
+    //protected static ParticleSystem slashCritVFX;
+    //protected static ParticleSystem pierceCritVFX;
+    //protected static ParticleSystem crushCritVFX;
+
+    public override SkillData Data => data;
+
+    //protected static Effect SlashCritEffect
+    //{
+    //    get
+    //    {
+    //        if (slashCritEffect == null)
+    //            slashCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Bleed").GetComponent<Effect>();
+
+    //        return slashCritEffect;
+    //    }
+    //}
+    //protected static Effect PierceCritEffect
+    //{
+    //    get
+    //    {
+    //        if (pierceCritEffect == null)
+    //            pierceCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Pain").GetComponent<Effect>();
+
+    //        return pierceCritEffect;
+    //    }
+    //}
+    //protected static Effect CrushCritEffect
+    //{
+    //    get
+    //    {
+    //        if (crushCritEffect == null)
+    //            crushCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Shock").GetComponent<Effect>();
+
+    //        return crushCritEffect;
+    //    }
+    //}
+
+
+    //protected static ParticleSystem SlashHitVFX
+    //{
+    //    get
+    //    {
+    //        if (slashHitVFX == null)
+    //            slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
+
+    //        return slashHitVFX;
+    //    }
+    //}
+
+    //protected static ParticleSystem PierceHitVFX
+    //{
+    //    get
+    //    {
+    //        if (pierceHitVFX == null)
+    //            pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+
+    //        return pierceHitVFX;
+    //    }
+    //}
+
+    //protected static ParticleSystem CrushHitVFX
+    //{
+    //    get
+    //    {
+    //        if (crushHitVFX == null)
+    //            crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
+
+    //        return crushHitVFX;
+    //    }
+    //}
+
+    //protected static ParticleSystem SlashCritVFX
+    //{
+    //    get
+    //    {
+    //        if (slashCritVFX == null)
+    //            slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit_New").GetComponent<ParticleSystem>();
+    //        return slashCritVFX;
+    //    }
+    //}
+
+    //protected static ParticleSystem PierceCritVFX
+    //{
+    //    get
+    //    {
+    //        if (pierceCritVFX == null)
+    //            pierceCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceCrit").GetComponent<ParticleSystem>();
+    //        return pierceCritVFX;
+    //    }
+    //}
+
+    //protected static ParticleSystem CrushCritVFX
+    //{
+    //    get
+    //    {
+    //        if (crushCritVFX == null)
+    //            crushCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushCrit").GetComponent<ParticleSystem>();
+    //        return crushCritVFX;
+    //    }
+    //}
+>>>>>>> Stashed changes
+>>>>>>> KimJK
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle) //부채꼴 공격
     {
@@ -180,7 +315,15 @@ public class AttackSkill : SkillBase
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
+<<<<<<< HEAD
         if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp > 0)
+=======
+<<<<<<< Updated upstream
+        if (unit.Hp <= unit.Data.MaxHp * hpToTrigger * 0.01f && unit.Hp > 0)
+=======
+        if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp > 0)
+>>>>>>> Stashed changes
+>>>>>>> KimJK
         {
             if(BoomEffectPrefab != null)
             {
@@ -240,6 +383,10 @@ public class AttackSkill : SkillBase
 
     public void Attack(Unit unit, Unit target)
     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
         if (data.StartVFX != null)
         {
             unit.AddVFX(data.StartVFX);
@@ -268,11 +415,51 @@ public class AttackSkill : SkillBase
         if (Random.Range(0f, 1f) <= calcCrit)
         {
             target.PlayCritSFX(data.AttackType);
+<<<<<<< HEAD
+=======
+=======
+        //if (data.StartVFX != null)
+        //{
+        //    unit.AddVFX(data.StartVFX);
+        //}
+        //if (data.StartSFX.Length > 0)
+        //{
+        //    int randomSoundIdx = Random.Range(0, data.StartSFX.Length);
+        //    if (data.StartSFX[randomSoundIdx] != null)
+        //    {
+        //        SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
+        //    }
+        //}
+
+        float calcDamage = data.Damage;
+        float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
+        if (IsBlocked(target.Data.ArmorType))
+        {
+            float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
+            calcDamage *= calcBlockRate;
+        }
+
+        calcDamage *= Mathf.Max(0f, unit.AtkMult);
+        calcDamage *= Mathf.Max(0f, target.DamageTakenMult);
+
+        //calcDamage += calcDamage * unit.AttackDamageMultiplier * 0.01f;
+        //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
+
+        target.TakeDamage(calcDamage);
+        if (Random.Range(0f, 1f) <= calcCrit)
+        {
+            // target.PlayCritSFX(data.Info.Type);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
             AddCritVFX(unit, target);
             ActivateCriticalEffect(unit, target);
         }
         else
         {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
             target.PlayHitSFX(data.AttackType);
             AddHitVFX(unit, target);
         }
@@ -285,6 +472,22 @@ public class AttackSkill : SkillBase
                 target.AddEffect(unit, data.InduseEffect);
             }
         }
+<<<<<<< HEAD
+=======
+=======
+            //target.PlayHitSFX(data.AttackType);
+            AddHitVFX(unit, target);
+        }
+        
+        //if (data.InduseEffect != null)
+        //{
+        //    if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
+        //    {
+        //        target.AddEffect(unit, data.InduseEffect);
+        //    }
+        //}
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 
     public void AttackFortress(Unit unit, Fortress fortress, UnitData data)
@@ -296,6 +499,10 @@ public class AttackSkill : SkillBase
 
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
         Effect critEffect = null;
         switch(data.AttackType)
         {
@@ -311,10 +518,34 @@ public class AttackSkill : SkillBase
         }
 
         target.AddEffect(unit, critEffect);
+<<<<<<< HEAD
+=======
+=======
+        //Effect critEffect = null;
+        //switch(data.AttackType)
+        //{
+        //    case AttackType.SLASH:
+        //        critEffect = SlashCritEffect;
+        //        break;
+        //    case AttackType.PIERCE:
+        //        critEffect = PierceCritEffect;
+        //        break;
+        //    case AttackType.CRUSH:
+        //        critEffect = CrushCritEffect;
+        //        break;
+        //}
+
+        target.AddEffect(data.Info.CritEffectPrefab);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 
     private void AddHitVFX(Unit unit, Unit target)
     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
         ParticleSystem hitVFX = null;
         switch (data.AttackType)
         {
@@ -330,10 +561,34 @@ public class AttackSkill : SkillBase
         }
 
         target.AddVFX(hitVFX, unit.transform.position);
+<<<<<<< HEAD
+=======
+=======
+        //ParticleSystem hitVFX = null;
+        //switch (data.AttackType)
+        //{
+        //    case AttackType.SLASH:
+        //        hitVFX = SlashHitVFX;
+        //        break;
+        //    case AttackType.PIERCE:
+        //        hitVFX = PierceHitVFX;
+        //        break;
+        //    case AttackType.CRUSH:
+        //        hitVFX = CrushHitVFX;
+        //        break;
+        //}
+
+        // target.AddVFX(hitVFX, unit.transform.position);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 
     private void AddCritVFX(Unit unit, Unit target)
     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> KimJK
         ParticleSystem critVFX = null;
         switch (data.AttackType)
         {
@@ -348,13 +603,44 @@ public class AttackSkill : SkillBase
                 break;
         }
         target.AddVFX(critVFX, unit.transform.position);
+<<<<<<< HEAD
+=======
+=======
+        //ParticleSystem critVFX = null;
+        //switch (data.AttackType)
+        //{
+        //    case AttackType.SLASH:
+        //        critVFX = SlashCritVFX;
+        //        break;
+        //    case AttackType.PIERCE:
+        //        critVFX = PierceCritVFX;
+        //        break;
+        //    case AttackType.CRUSH:
+        //        critVFX = CrushCritVFX;
+        //        break;
+        //}
+        //target.AddVFX(critVFX, unit.transform.position);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 
     private bool IsBlocked(ArmorType armorType)
     {
         return
+<<<<<<< HEAD
             (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
+=======
+<<<<<<< Updated upstream
+            (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
+            (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
+            (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
+=======
+            (data.Info.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
+            (data.Info.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
+            (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
+>>>>>>> Stashed changes
+>>>>>>> KimJK
     }
 }
