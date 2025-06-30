@@ -226,15 +226,7 @@ public class EnemyUnit : Unit
                 {
                     float distance = Vector3.Distance(transform.position, fortressPos);
 
-<<<<<<< HEAD
                     if(distance <= UnitStats.attackRange)
-=======
-<<<<<<< Updated upstream
-                    if(distance <= data.AttackRange)
-=======
-                    if(distance <= UnitStats.attackRange)
->>>>>>> Stashed changes
->>>>>>> KimJK
                     {
                         mode = Mode.ATTACKFORTRESS;
                         return;
@@ -242,15 +234,7 @@ public class EnemyUnit : Unit
 
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
-<<<<<<< HEAD
                         targetUnit = SearchTarget(UnitStats.sightRange);
-=======
-<<<<<<< Updated upstream
-                        targetUnit = SearchTarget(data.SightRange);
-=======
-                        targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
->>>>>>> KimJK
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;
@@ -260,15 +244,7 @@ public class EnemyUnit : Unit
 
                     else if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
                     {
-<<<<<<< HEAD
                         if (distance <= UnitStats.attackRange)
-=======
-<<<<<<< Updated upstream
-                        if (distance <= data.AttackRange)
-=======
-                        if (distance <= UnitStats.attackRange)
->>>>>>> Stashed changes
->>>>>>> KimJK
                         {
                             mode = Mode.ATTACKFORTRESS;
                         }
@@ -276,30 +252,14 @@ public class EnemyUnit : Unit
                         {
                             if (navAgent.enabled)
                             {
-<<<<<<< HEAD
                                 targetUnit = SearchTarget(UnitStats.sightRange);
-=======
-<<<<<<< Updated upstream
-                                targetUnit = SearchTarget(data.SightRange);
-=======
-                                targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
->>>>>>> KimJK
                             }
                             else
                             {
                                 navObstacle.enabled = false;
                                 navAgent.enabled = true;
 
-<<<<<<< HEAD
                                 targetUnit = SearchTarget(UnitStats.sightRange);
-=======
-<<<<<<< Updated upstream
-                                targetUnit = SearchTarget(data.SightRange);
-=======
-                                targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
->>>>>>> KimJK
 
                                 navAgent.enabled = false;
                                 navObstacle.enabled = true;
@@ -338,15 +298,7 @@ public class EnemyUnit : Unit
                 {
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
-<<<<<<< HEAD
                         if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내
-=======
-<<<<<<< Updated upstream
-                        if (IsTargetInRange(targetUnit, Data.AttackRange)) // 공격 사거리 내
-=======
-                        if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내
->>>>>>> Stashed changes
->>>>>>> KimJK
                         {
                             if (navAgent.enabled && !navAgent.isStopped)
                             {
@@ -361,28 +313,12 @@ public class EnemyUnit : Unit
                                 ActivateSkill(skill, targetUnit);
                             }
                         }
-<<<<<<< HEAD
                         else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 공격 사거리 < 대상 < 시야 사거리
-=======
-<<<<<<< Updated upstream
-                        else if (IsTargetInRange(targetUnit, Data.SightRange)) // 공격 사거리 < 대상 < 시야 사거리
-=======
-                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 공격 사거리 < 대상 < 시야 사거리
->>>>>>> Stashed changes
->>>>>>> KimJK
                         {
                             MoveTo(targetUnit); 
                             if(path.status != NavMeshPathStatus.PathComplete)
                             {
-<<<<<<< HEAD
                                 targetUnit = SearchTarget(UnitStats.sightRange);
-=======
-<<<<<<< Updated upstream
-                                targetUnit = SearchTarget(data.SightRange);
-=======
-                                targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
->>>>>>> KimJK
                                 if (targetUnit == null)
                                 {
                                     mode = Mode.MOVE;
@@ -409,15 +345,7 @@ public class EnemyUnit : Unit
                 {
                     if (behaviorPriority == BehaviorPriority.Combat)
                     {
-<<<<<<< HEAD
                         targetUnit = SearchTarget(UnitStats.sightRange);
-=======
-<<<<<<< Updated upstream
-                        targetUnit = SearchTarget(data.SightRange);
-=======
-                        targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
->>>>>>> KimJK
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;

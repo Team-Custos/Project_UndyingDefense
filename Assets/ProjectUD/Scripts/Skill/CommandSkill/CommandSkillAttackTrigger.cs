@@ -1,16 +1,6 @@
 using UnityEngine;
-<<<<<<< HEAD
 using static AttackSkill;
 using static Unit;
-=======
-<<<<<<< Updated upstream
-using static AttackSkill;
-using static Unit;
-=======
-using static Unit;
-using AttackType = AttackData.AttackType;
->>>>>>> Stashed changes
->>>>>>> KimJK
 
 public class CommandSkillAttackTrigger : MonoBehaviour
 {
@@ -206,56 +196,26 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
         {
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
->>>>>>> KimJK
             float calcBlockRate = 1f - (0.3f * target.BlockRate);
             calcDamage *= calcBlockRate;
         }
 
         calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
-<<<<<<< HEAD
-=======
-=======
-            float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
-            calcDamage *= calcBlockRate;
-        }
-
-        calcDamage *= target.DamageTakenMult;
->>>>>>> Stashed changes
->>>>>>> KimJK
 
         target.TakeDamage(calcDamage);
         target.PlayHitSFX(data.AttackType);
         AddHitVFX(target);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
-<<<<<<< HEAD
             if (data.InduseEffct != null)
             {
                 target.AddEffect(target, data.InduseEffct.GetComponent<Effect>());
-=======
-<<<<<<< Updated upstream
-            if (data.InduseEffct != null)
-            {
-                target.AddEffect(target, data.InduseEffct.GetComponent<Effect>());
-=======
-            if (data.InduseEffectPrefab != null)
-            {
-                target.AddEffect(data.InduseEffectPrefab);
->>>>>>> Stashed changes
->>>>>>> KimJK
             }
         }
     }
 
     private void AddHitVFX(Unit target)
     {
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
->>>>>>> KimJK
         ParticleSystem hitVFX = null;
         switch (data.AttackType)
         {
@@ -274,29 +234,6 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         {
             target.AddVFX(hitVFX, target.transform.position + incomingDirection);
         }
-<<<<<<< HEAD
-=======
-=======
-        //ParticleSystem hitVFX = null;
-        //switch (data.AttackType)
-        //{
-        //    case AttackType.SLASH:
-        //        hitVFX = SlashHitVFX;
-        //        break;
-        //    case AttackType.PIERCE:
-        //        hitVFX = PierceHitVFX;
-        //        break;
-        //    case AttackType.CRUSH:
-        //        hitVFX = CrushHitVFX;
-        //        break;
-        //}
-
-        //if (hitVFX != null)
-        //{
-        //    target.AddVFX(hitVFX, target.transform.position + incomingDirection);
-        //}
->>>>>>> Stashed changes
->>>>>>> KimJK
     }
 
     private bool IsBlocked(ArmorType armorType)

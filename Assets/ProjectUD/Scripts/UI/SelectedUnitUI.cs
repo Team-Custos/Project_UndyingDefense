@@ -1,6 +1,5 @@
 using Cinemachine;
 using InputEventInterface;
-<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +11,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
-=======
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
-<<<<<<< Updated upstream
-using static UnitDataManager;
-using static UnityEngine.UI.CanvasScaler;
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
 
 public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 {
@@ -34,14 +21,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Ingame_CamManager ingameCamManager;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private InGameManager inGameManager;
-<<<<<<< HEAD
     [SerializeField] private UnitDataLoader unitDataLoader;
-=======
-<<<<<<< Updated upstream
-=======
-    [SerializeField] private UnitDataLoader unitDataLoader;
->>>>>>> Stashed changes
->>>>>>> KimJK
     private CinemachineFramingTransposer framingTransposer;
 
 
@@ -280,7 +260,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             }
 
 
-<<<<<<< HEAD
             //if (unitUpgradeMenuPrefab != null)
             //{
 
@@ -309,62 +288,17 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-=======
-            if (unitUpgradeMenuPrefab != null)
-            {
-
-                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * upgradeXpos;
-                //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
-
-                //unitUpgradeMenuPrefab.transform.position = screenPosition;
-                // 1️⃣ 유닛의 월드 좌표 가져오기
-                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position;
-
-                //// 2️⃣ 월드 좌표 → 화면 좌표로 변환
-                //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
-
-                //// 3️⃣ 오른쪽으로 픽셀 이동 (upgradeXpos 사용)
-                //screenPosition.x += upgradeXpos;
-
-                //// 4️⃣ 화면 경계에서 벗어나지 않도록 클램핑
-                //float marginX = 300f;
-                //float marginY = 300f;
-                //float clampedX = Mathf.Clamp(screenPosition.x, marginX, Screen.width - marginX);
-                //float clampedY = Mathf.Clamp(screenPosition.y, marginY, Screen.height - marginY);
-
-                //// 5️⃣ 버튼 위치 설정
-                //unitUpgradeMenuPrefab.transform.position = new Vector3(clampedX, clampedY, screenPosition.z);
-            }
-        }
-    }
-
-<<<<<<< Updated upstream
-    public void UpdateUnitInfoByBtn(UnitData unitData)
-    {
-        unitInfoImage.gameObject.SetActive(true);
-
-        unitImage.sprite = unitData.Icon;
-        unitNameText.text = unitData.Name;
-        unitMentalText.text =  "멘탈 : " + unitData.Mental.ToString();
-
-        unitHPImage.fillAmount = unitData.MaxHp / unitData.MaxHp;
-        unitHPText.text = $"{unitData.MaxHp} / {unitData.MaxHp}";
-=======
->>>>>>> KimJK
     public void UpdateUnitInfoByBtn(UnitData unitData, UnitDataLoader unitDataLoader)
     {
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
 
-<<<<<<< HEAD
         for(int i = 0; i < unitStateImage.Length; i++)
         {
             unitStateImage[i].gameObject.SetActive(false);
         }
 
-=======
->>>>>>> KimJK
         unitInfoImage.gameObject.SetActive(true);
 
 
@@ -374,39 +308,18 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         unitMentalText.text =  "멘탈 : " + unitStats.mental .ToString();
         unitHPImage.fillAmount = unitStats.maxHp / unitStats.maxHp;
         unitHPText.text = $"{unitStats.maxHp} / {unitStats.maxHp}";
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
 
         SetUnitTierIcon(unitData.Tier);
 
         atTypeIcon.sprite = unitData.AtTypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
-<<<<<<< HEAD
         //attackTypeText.text = unitData.AttackType;
-=======
-<<<<<<< Updated upstream
-        attackTypeText.text = unitData.AttackType;
-=======
-        //attackTypeText.text = unitData.AttackType;
->>>>>>> Stashed changes
->>>>>>> KimJK
         attackTypeInfoText.text = GetAttackTypeInfo(unitData);
 
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
         defenseTypeInfoText.text = GetDefenseTypeInfo(unitData);
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-
-        Unit unit = unitData.Prefab.GetComponent<Unit>();
-
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
@@ -429,25 +342,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitData.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unitData.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unitData.Mental.ToString();
-=======
->>>>>>> KimJK
         critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
         atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unitStats.mental.ToString();
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
     }
 
     public void UpdateUnitInfo(Unit unit)
@@ -456,15 +355,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        unitInfoImage.gameObject.SetActive(true);
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-       UpdateHPUI(unit);
-       unitImage.sprite = unit.Data.Icon;
-       unitNameText.text = unit.Data.Name;
-       unitMentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
-=======
->>>>>>> KimJK
         if(unit.UnitStats == null)
         {
             Debug.Log("데이터 없음");
@@ -475,25 +365,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.UnitStats.unitName;
        unitMentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
 
         SetUnitTierIcon(unit.Data.Tier);
 
         atTypeIcon.sprite = unit.Data.AtTypeIcon;
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
-<<<<<<< HEAD
         //attackTypeText.text = unit.Data.AttackType;
-=======
-<<<<<<< Updated upstream
-        attackTypeText.text = unit.Data.AttackType;
-=======
-        //attackTypeText.text = unit.Data.AttackType;
->>>>>>> Stashed changes
->>>>>>> KimJK
         attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
 
         defenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
@@ -522,25 +400,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        critText.text = "치명타율 : " + unit.Data.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unit.Data.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
-=======
->>>>>>> KimJK
         critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed.ToString();
         atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
 
         UpdateUnitStateUI();
     }
@@ -556,29 +420,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if(unit != null)
         {
-<<<<<<< HEAD
             unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";
-=======
-<<<<<<< Updated upstream
-            unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
-=======
-            unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";
->>>>>>> Stashed changes
->>>>>>> KimJK
             unitHPImage.fillAmount = unit.HpPercent;
         }
     }
 
-<<<<<<< HEAD
     
 
-=======
-<<<<<<< Updated upstream
-=======
-    
-
->>>>>>> Stashed changes
->>>>>>> KimJK
     public void SetUnitTierIcon(int tier)
     {
         for (int i = 0; i < tierImage.Length; i++)
@@ -591,23 +439,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         string attackTypeInfo = "";
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        if (unitData.AttackType == "베기")
-        {
-            attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.AttackType == "찌르기")
-        {
-            attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if(unitData.AttackType == "때리기")
-        {
-            attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-=======
->>>>>>> KimJK
         //if (unitData.AttackType == "베기")
         //{
         //    attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
@@ -620,10 +451,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         //{
         //    attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
         //}
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> KimJK
 
         return attackTypeInfo;
     }
@@ -672,32 +499,14 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if (selecteUnitManger.SelectedUnit != null)
         {
-<<<<<<< HEAD
             List<Effect> effects = selecteUnitManger.SelectedUnit.EffectList;
-=======
-<<<<<<< Updated upstream
-            List<Effect> effects = selecteUnitManger.SelectedUnit.EffectList;
-=======
-            IReadOnlyList<DurationEffect> effects = selecteUnitManger.SelectedUnit.EffectList;
->>>>>>> Stashed changes
->>>>>>> KimJK
             HashSet<Sprite> usedSprites = new HashSet<Sprite>();
             int imageIndex = 0;
 
             for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
             {
-<<<<<<< HEAD
                 Effect effect = effects[i];
                 Sprite sprite = GetSpriteForEffect(effect.Id);
-=======
-<<<<<<< Updated upstream
-                Effect effect = effects[i];
-                Sprite sprite = GetSpriteForEffect(effect.Id);
-=======
-                DurationEffect effect = effects[i];
-                Sprite sprite = GetSpriteForEffect(/*effect.Id*/ string.Empty);
->>>>>>> Stashed changes
->>>>>>> KimJK
 
                 if (sprite != null && !usedSprites.Contains(sprite))
                 {
@@ -722,10 +531,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
                 }
             }
 
-<<<<<<< HEAD
-=======
-            // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
->>>>>>> KimJK
             for (int i = imageIndex; i < unitStateImage.Length; i++)
             {
                 if (unitStateImage[i].gameObject.activeSelf)
