@@ -11736,6 +11736,8 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 697713692}
   commandSkillManager: {fileID: 387297606}
   cursorManager: {fileID: 852121041}
+  unitDataLoader: {fileID: 1943153814}
+  durationEffectPool: {fileID: 1376648097}
   alarmImages:
   - {fileID: 1896428217}
   - {fileID: 1998401896}
@@ -28900,10 +28902,6 @@ Transform:
   - {fileID: 1391571423}
   - {fileID: 2131315957}
   - {fileID: 825525762}
-  - {fileID: 1615164033}
-  - {fileID: 754875855}
-  - {fileID: 1553022671}
-  - {fileID: 1415704159}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &473320457
@@ -41052,6 +41050,8 @@ MonoBehaviour:
   inGameManager: {fileID: 856739625}
   dollyCamera: {fileID: 311500981}
   upgradeMenuUI: {fileID: 217372397582191139}
+  unitDataLoader: {fileID: 0}
+  durationEffectPool: {fileID: 0}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
@@ -41089,6 +41089,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ddee68419c04a1140862d6acc79e7f97, type: 3}
   - {fileID: 8300000, guid: 1ea391a1a6b307145843ca6145392c29, type: 3}
   - {fileID: 8300000, guid: 0a31c120bf2f99741b7d3883bf410662, type: 3}
+  infinitMode: 0
+  infinitWaveCount: 1
   enmeySpawnSfx: {fileID: 8300000, guid: 06c1084867c7a294fb37432085d67799, type: 3}
   enemySpawnVfx: {fileID: 2004833654}
   ingameScreenUI: {fileID: 959445840}
@@ -42131,6 +42133,7 @@ MonoBehaviour:
   ingameCamManager: {fileID: 1842150498}
   inputEventManager: {fileID: 1311904121}
   inGameManager: {fileID: 318867822}
+  unitDataLoader: {fileID: 0}
   upgradeBtn: {fileID: 1717244587}
   unitHP: {fileID: 1958258463}
   unitDuration: {fileID: 803197502}
@@ -45323,50 +45326,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 832646334}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &754875854
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 754875855}
-  - component: {fileID: 754875856}
-  m_Layer: 0
-  m_Name: UnitUpgradeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &754875855
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754875854}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 472590888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &754875856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754875854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8096a0c15a5464741a2fcb5b447f42e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &755884107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55109,6 +55068,8 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1285506504}
   commandSkillManager: {fileID: 1238902731}
   cursorManager: {fileID: 1133855604}
+  unitDataLoader: {fileID: 0}
+  durationEffectPool: {fileID: 0}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -63668,7 +63629,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1 / 5 \uC6E8\uC774\uBE0C"
+  m_text: "1 / \u221E \uC6E8\uC774\uBE0C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd641e64e9cda6248a2d6f26e31e0da2, type: 2}
   m_sharedMaterial: {fileID: -7777895569357558908, guid: bd641e64e9cda6248a2d6f26e31e0da2,
@@ -78341,6 +78302,7 @@ MonoBehaviour:
   ingameCamManager: {fileID: 1346724712}
   inputEventManager: {fileID: 1590103094}
   inGameManager: {fileID: 856739625}
+  unitDataLoader: {fileID: 0}
   upgradeBtn: {fileID: 618903649}
   unitHP: {fileID: 564626855}
   unitDuration: {fileID: 0}
@@ -84763,6 +84725,50 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1 &1376648096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1376648098}
+  - component: {fileID: 1376648097}
+  m_Layer: 0
+  m_Name: DurationEffectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1376648097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376648096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30dad9773e80f004683b67ea01cf73c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1376648098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376648096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1376675518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87009,116 +87015,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1429676097}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1415704158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1415704159}
-  - component: {fileID: 1415704160}
-  m_Layer: 0
-  m_Name: CommanderSkillManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1415704159
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415704158}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 472590888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1415704160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415704158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e42d8d2d31810418b36793bdb0a63b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Order_SkillData:
-  - type: 0
-    SkillCode: 101
-    Name: "\uC9D1\uC911 \uACF5\uACA9"
-    Description: "5\uCD08 \uB3D9\uC548 \uD544\uB4DC \uB0B4 \uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC774
-      \uD2F0\uC5B4\uAC00 \uAC00\uC7A5 \uB192\uC740 \uC801\uC744 \uC9D1\uC911 \uACF5\uACA9"
-    CoolDown: 20
-    isTargetEnemy: 0
-  - type: 0
-    SkillCode: 102
-    Name: "\uC804\uC9C4 \uBA85\uB839"
-    Description: "5\uCD08 \uB3D9\uC548 \uD544\uB4DC \uB0B4 \uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758
-      \uC774\uB3D9 \uC18D\uB3C4 20% \uC99D\uAC00"
-    CoolDown: 20
-    isTargetEnemy: 0
-  - type: 0
-    SkillCode: 103
-    Name: "\uAE30\uBCF8 \uAD6C\uAE09\uC57D \uBCF4\uAE09"
-    Description: "5\uCD08 \uB3D9\uC548 \uC601\uC5ED \uB0B4\uC758 \uBCD1\uC0AC\uB4E4\uC758
-      \uCD08\uB2F9 \uCCB4\uB825 5 \uD68C\uBCF5"
-    CoolDown: 15
-    isTargetEnemy: 0
-  Surpport_SkillData:
-  - type: 1
-    SkillCode: 101
-    Name: "\uD654\uC0B4 \uBE44 \uB0B4\uB9AC\uAE30"
-    Description: "5\uCD08 \uB3D9\uC548 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C
-      \uCD08\uB2F9 10 \uB370\uBBF8\uC9C0\uC758 \uAD00\uD1B5 \uACF5\uACA9"
-    CoolDown: 20
-    isTargetEnemy: 1
-  - type: 1
-    SkillCode: 102
-    Name: "\uBD88 \uBD99\uC740 \uAE30\uB984 \uBD93\uAE30"
-    Description: "5\uCD08 \uB3D9\uC548 \uC131\uBCBD \uC55E\uC5D0 \uBD88 \uBD99\uC740
-      \uAE30\uB984\uC744 \uBD80\uC5B4 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C
-      \uC791\uC5F4 \uD6A8\uACFC"
-    CoolDown: 20
-    isTargetEnemy: 0
-  - type: 1
-    SkillCode: 103
-    Name: "\uBC14\uC704 \uAD74\uB9AC\uAE30"
-    Description: "3\uCD08 \uB3D9\uC548 \uBC14\uC704\uB97C \uD55C \uBC29\uD5A5\uC73C\uB85C
-      \uAD74\uB824 \uC601\uC5ED \uB0B4 \uC801\uB4E4\uC5D0\uAC8C \uCDA9\uACA9 \uD6A8\uACFC"
-    CoolDown: 20
-    isTargetEnemy: 0
-  Morale_SkillData:
-  - type: 2
-    SkillCode: 101
-    Name: "\uC0BC\uACC4\uD0D5 \uD2B9\uC2DD"
-    Description: "\uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758 \uCD5C\uB300 \uCCB4\uB825
-      2 \uC99D\uAC00"
-    CoolDown: 0
-    isTargetEnemy: 0
-  - type: 2
-    SkillCode: 102
-    Name: "\uBE44\uC7A5\uD55C \uCD9C\uC0AC"
-    Description: "\uBAA8\uB4E0 \uBCD1\uC0AC\uB4E4\uC758 \uC2A4\uD0AC \uACF5\uACA9
-      \uB370\uBBF8\uC9C0 2% \uC99D\uAC00"
-    CoolDown: 0
-    isTargetEnemy: 0
-  - type: 2
-    SkillCode: 103
-    Name: "\uC804\uB9AC\uD488 \uC218\uAE09"
-    Description: "\uC801 \uCC98\uCE58\uC2DC \uC5BB\uB294 \uACE8\uB4DC\uB7C9 1% \uC99D\uAC00"
-    CoolDown: 0
-    isTargetEnemy: 0
 --- !u!1001 &1417848734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95950,65 +95846,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1551661919}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1553022670
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1553022671}
-  - component: {fileID: 1553022673}
-  - component: {fileID: 1553022672}
-  m_Layer: 0
-  m_Name: UnitDataManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1553022671
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553022670}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1547.8699, y: 572.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 472590888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1553022672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553022670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df0d221b4df048b48b66ee6c5ddd97bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  filePath: charData
-  unitExcelDataManager: {fileID: 1553022673}
---- !u!114 &1553022673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553022670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 145092c959d1a8145b440c6104709d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1553937564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -99865,71 +99702,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
---- !u!1 &1615164032
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1615164033}
-  - component: {fileID: 1615164034}
-  m_Layer: 0
-  m_Name: WaveUIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1615164033
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615164032}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 472590888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1615164034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615164032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1883f678a89c5da43bb9a7d59365817a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waveCount: 99
-  waveCountText: {fileID: 0}
-  waveCountTextPanel: {fileID: 0}
-  waveStartText: {fileID: 0}
-  waveStartPanel: {fileID: 0}
-  waveResultWinPanel: {fileID: 0}
-  waveResultLosePanel: {fileID: 0}
-  isCurrentWaveSucceed: 0
-  nextWavBtn: {fileID: 0}
-  waveCountSkipBtn: {fileID: 0}
-  isCountDownIng: 1
-  winWaveRestartBtn: {fileID: 0}
-  Winlobbybtn: {fileID: 0}
-  loseWaveRestartBtn: {fileID: 0}
-  loselobbybtn: {fileID: 0}
-  waveStepSuccessPanel: {fileID: 0}
-  waveStepText: {fileID: 0}
-  curWaveStepText: {fileID: 0}
-  waveWarnningPanel: {fileID: 0}
-  fadeDuration: 0.3
-  onClickClip: {fileID: 0}
 --- !u!1001 &1615747289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -117788,6 +117560,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1 &1943153813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943153815}
+  - component: {fileID: 1943153814}
+  m_Layer: 0
+  m_Name: ExcelDataReader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1943153814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943153813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 188990b4b4d306d4ab367a9c31622920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitDataTable: {fileID: 4900000, guid: 3df81d7c6d1d4bb49afaac9d81b869a4, type: 3}
+--- !u!4 &1943153815
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943153813}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -68.9, y: 5.67, z: -3.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1944589954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -122332,12 +122149,11 @@ MonoBehaviour:
   inGameManager: {fileID: 318867822}
   dollyCamera: {fileID: 1936867425}
   upgradeMenuUI: {fileID: 653731106}
+  unitDataLoader: {fileID: 1943153814}
+  durationEffectPool: {fileID: 1376648097}
   waveData:
   - {fileID: 11400000, guid: cdda6989d70747b40922338d56289dec, type: 2}
   - {fileID: 11400000, guid: 4e26773490b9d6940845f225e4ec74f7, type: 2}
-  - {fileID: 11400000, guid: 5e0da5e3633e5b04985b129f02dcfc6c, type: 2}
-  - {fileID: 11400000, guid: 26132365c3a9f7e43b65116a067dc447, type: 2}
-  - {fileID: 11400000, guid: 792e9e1a06fe72c4b88ce0210d74cf69, type: 2}
   spawnTime: 1.5
   spawnPoints:
   - {fileID: 1213982568}
@@ -122354,6 +122170,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ddee68419c04a1140862d6acc79e7f97, type: 3}
   - {fileID: 8300000, guid: 1ea391a1a6b307145843ca6145392c29, type: 3}
   - {fileID: 8300000, guid: 0a31c120bf2f99741b7d3883bf410662, type: 3}
+  infinitMode: 1
+  infinitWaveCount: 1
   enmeySpawnSfx: {fileID: 8300000, guid: 06c1084867c7a294fb37432085d67799, type: 3}
   enemySpawnVfx: {fileID: 1430894732}
   ingameScreenUI: {fileID: 1541778265}
@@ -131035,6 +130853,8 @@ SceneRoots:
   - {fileID: 175711731}
   - {fileID: 318867823}
   - {fileID: 2136790966}
+  - {fileID: 1376648098}
+  - {fileID: 1943153815}
   - {fileID: 2030995723}
   - {fileID: 1094198685}
   - {fileID: 1254454471}

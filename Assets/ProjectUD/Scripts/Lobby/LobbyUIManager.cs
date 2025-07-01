@@ -127,24 +127,7 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-        if(endGameBtn != null)
-        {
-
-            endGameBtn.onClick.AddListener(() =>
-            {
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
-
-                //SoundManager.Instance.playCancleSFX();
-                EndGame();
-            });
-        }
-
-
-
-
+        
 
 
         //if (battleStartBtn != null)
@@ -661,73 +644,10 @@ public class LobbyUIManager : MonoBehaviour
         StartCoroutine(AnimateUI(ui, false, 0.2f)); // 작아지면서 사라지는 연출
     }
 
-    private void PlayParticleEffect()
-    {
-        if (buttonParticleEffect != null)
-        {
-            buttonParticleEffect.Play();  // 파티클 효과 실행
-        }
-    }
 
 
-    // 페이드 인/아웃을 위한 코루틴 함수
-    public IEnumerator FadeUI(GameObject uiElement, bool isFadeIn, float duration = 0.2f)
-    {
-        CanvasGroup canvasGroup = uiElement.GetComponent<CanvasGroup>();
 
-        if (canvasGroup == null)
-        {
-            canvasGroup = uiElement.AddComponent<CanvasGroup>();
-        }
-
-        float startAlpha;
-        float endAlpha;
-
-        if (isFadeIn)
-        {
-            startAlpha = 0;
-            endAlpha = 1;
-        }
-        else
-        {
-            startAlpha = 1;
-            endAlpha = 0;
-        }
-
-        float time = 0f;
-
-        // 애니메이션 진행 시간에 따라 alpha 값을 변화
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, time / duration);
-            yield return null;
-        }
-
-        canvasGroup.alpha = endAlpha;
-
-        if (!isFadeIn)
-        {
-            canvasGroup.blocksRaycasts = true;
-            uiElement.SetActive(false);
-        }
-        else
-        {
-            canvasGroup.blocksRaycasts = false;
-            uiElement.SetActive(true);
-        }
-    }
-
-
-    void EndGame()
-    {
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-    }
+    
 
     //public void LoadScene(int sceneNumber)
     //{

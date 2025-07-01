@@ -40,9 +40,12 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
 
 
-    public void SetWaveNumber(int waveNum, int maxWave)
+    public void SetWaveNumber(int waveNum, int maxWave, bool infinite)
     {
-        waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
+        if(infinite)
+            waveTextUI.text = $" {waveNum} / ∞ 웨이브";
+        else
+            waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
     }
 
     public void SetGoldTextUI(float gold)

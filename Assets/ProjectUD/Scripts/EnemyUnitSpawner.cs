@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -34,6 +35,8 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private float waveTimer = 20f;
     [SerializeField] private int totalMonCount = 0;
     [SerializeField] AudioClip[] waveSfxClip;
+    [SerializeField] private bool infinitMode = false;
+    [SerializeField] private int infinitWaveCount = 1;
 
     [SerializeField] private AudioClip enmeySpawnSfx;
     [SerializeField] private ParticleSystem enemySpawnVfx;
@@ -70,19 +73,35 @@ public class EnemyUnitSpawner : MonoBehaviour
            // 게임 성공
            if (curWave > waveData.Length && totalMonCount <= 0)
            {
-               SoundManager.Instance.StopBGM();
-               SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
-               ingameScreenUI.ShowResult(100, true);
-               Time.timeScale = 0.0f;
-                isGameOver = true;
-                return;
+               if(infinitMode)
+               {
+                    curWave = 1;
+               }
+               else
+               {
+                    SoundManager.Instance.StopBGM();
+                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
+                    ingameScreenUI.ShowResult(100, true);
+                    Time.timeScale = 0.0f;
+                    isGameOver = true;
+                    return;
+               }
+               
            }
 
 
            waveDelay -= Time.deltaTime;
            if (waveDelay <= 0f)
            {
-               ingameScreenUI.SetWaveNumber(curWave, waveData.Length);
+               if(infinitMode)
+               {
+                    ingameScreenUI.SetWaveNumber(infinitWaveCount,0, true);
+                }
+               else
+               {
+                    ingameScreenUI.SetWaveNumber(curWave, waveData.Length, false);
+               }
+               
 
                if (!oneTime)
                {
@@ -103,8 +122,12 @@ public class EnemyUnitSpawner : MonoBehaviour
                    waveTimer = 20f;
 
                    ingameScreenUI.HideTimer();
+                   
+                    if(infinitMode)
+                        ingameScreenUI.ShowNotice(infinitWaveCount + "차 침공 시작");
+                    else
+                        ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
 
-                   ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
                }
            }
@@ -126,8 +149,9 @@ public class EnemyUnitSpawner : MonoBehaviour
                 waveDelay = 4.0f;
 
                curWave++;
+               infinitWaveCount++;
 
-               isFortreessAttacked = false;
+                isFortreessAttacked = false;
            }
            else if (isSpawnEnd)
             {
