@@ -5,11 +5,14 @@ using UnityEngine;
 public class LobbyManager : MonoBehaviour
 {
     [SerializeField] private AudioClip lobbyBgm;
+    [SerializeField] private AudioClip battleStartSfx;
+    [SerializeField] private AudioClip endGameSfx;
 
     private CommandSkillData[] commanderSkils;
     [SerializeField] private CommandSkillData[] commandSkillDatas;
 
     [SerializeField] private GameObject rosterPanel;
+    [SerializeField] private float endDelay = 0.5f;
 
 
     private void Start()
@@ -17,10 +20,21 @@ public class LobbyManager : MonoBehaviour
        SoundManager.Instance.PlayBGM(lobbyBgm);
        LoadCommandSkillData();
 
-        //for(int i = 0; i < commanderSkils.Length; i++)
-        //{
-        //    commanderSkils[i] = commandSkillDatas[i];
-        //}
+    }
+    public void EndGame()
+    {
+        SoundManager.Instance.PlaySFX(endGameSfx);
+
+        Invoke(nameof(QuitGame), endDelay);
+    }
+
+    private void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
     }
 
     public void SaveCommandSkillData()
@@ -65,7 +79,16 @@ public class LobbyManager : MonoBehaviour
 
     public void LoadTutorialScene()
     {
+        SoundManager.Instance.PlaySFX(battleStartSfx);
         LoadingSceneManager.LoadScene("TutorialScene");
         UserDataModel.instance.SetTutorialEnd(true);
+    }
+
+    public void LoadInGameScene()
+    {
+        SoundManager.Instance.PlaySFX(battleStartSfx);
+        Debug.Log(111);
+        LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
+        UserDataModel.instance.SetGameFinished(true);
     }
 }

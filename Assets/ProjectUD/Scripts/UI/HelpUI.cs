@@ -125,7 +125,9 @@ public class HelpUI : MonoBehaviour, IInputESC
     {
         //SoundManager.Instance.playCancleSFX();
         gameObject.SetActive(false);
-        inputEventManager.OnESCTarget = inGameManager;
+
+        if(inGameManager != null)
+            inputEventManager.OnESCTarget = inGameManager;
     }
 
     private void ResetToFirstPanel()
