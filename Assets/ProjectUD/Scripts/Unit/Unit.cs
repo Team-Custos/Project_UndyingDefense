@@ -338,12 +338,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-<<<<<<< Updated upstream
-using static UnityEditor.PlayerSettings;
-using AttackType = AttackSkill.AttackType;
-=======
 using AttackType = AttackData.AttackType;
->>>>>>> Stashed changes
 
 public abstract class Unit : MonoBehaviour
 {
@@ -375,25 +370,11 @@ public abstract class Unit : MonoBehaviour
 
     protected float maxhp;
     protected float hp;
-<<<<<<< Updated upstream
-    protected float critChance;
-=======
     protected float critPercent;
->>>>>>> Stashed changes
     protected float critVulnerability; // 치명타를 받을 확률.
     protected float attackSpeed;
     protected float mental; // 정신력
     // protected float moveSpeed;
-<<<<<<< Updated upstream
-    protected float attackSpeedMultiplier;
-    protected float moveSpeedMultiplier;
-    protected float blockRate; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
-    protected float damageReductionMultiplier; // 피해량 감소 비율
-    protected float attackDamageMultiplier; // 공격력 증가 비율
-
-    protected Collider[] collidersInRange = new Collider[maxTargetCount];
-    protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
-=======
     protected float attackSpeedMult;
     protected float moveSpeedMult;
     protected float damageTakenMult; // 피해량 비율
@@ -407,7 +388,6 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
->>>>>>> Stashed changes
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -421,11 +401,7 @@ public abstract class Unit : MonoBehaviour
     protected float stateDuration;
     protected float stateDurationCheck;
 
-<<<<<<< Updated upstream
-    private List<Effect> effectList = new List<Effect>();
-=======
     private List<DurationEffect> effectList = new List<DurationEffect>();
->>>>>>> Stashed changes
 
     protected const int maxTargetCount = 10;
 
@@ -434,25 +410,12 @@ public abstract class Unit : MonoBehaviour
     protected const float moveThresholdOnStop = float.MaxValue;
 
     protected bool isDead;
-<<<<<<< Updated upstream
-    private bool isNavModeChanging;
-=======
->>>>>>> Stashed changes
 
     public Transform EffectParent => effectParent;
 
     public abstract UnitData Data { get; }
     public float Maxhp => maxhp;
     public float Hp => hp;
-<<<<<<< Updated upstream
-    public float HpPercent => hp / Data.MaxHp;// * 100f;
-    public float Mental => mental;
-    public float CritChance => critChance;
-    public float CritVulnerability => critVulnerability;
-    public float BlockRate => blockRate;
-    public float DamageReductionMultiplier => damageReductionMultiplier;
-    public float AttackDamageMultiplier => attackDamageMultiplier;
-=======
     public float HpPercent => hp / Maxhp;
     public float Mental => mental;
     public float CritPercent => critPercent;
@@ -460,18 +423,13 @@ public abstract class Unit : MonoBehaviour
     public float BlockPercent => blockPercent;
     public float DamageTakenMult => damageTakenMult;
     public float AtkMult => atkMult;
->>>>>>> Stashed changes
     public LayerMask EnemyLayer => enemyLayer;
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
     public SkillBase PassiveSkill => passiveSkill;
-<<<<<<< Updated upstream
-    public List<Effect> EffectList => effectList;
-=======
     public IReadOnlyList<DurationEffect> EffectList => effectList;
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
->>>>>>> Stashed changes
     public bool IsSelected
     {
         get => isSelected;
@@ -490,11 +448,8 @@ public abstract class Unit : MonoBehaviour
 
     protected static GameObject unitDeathVFX;
 
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
     protected static AudioClip[] SlashHitSFX
     {
         get
@@ -573,24 +528,6 @@ public abstract class Unit : MonoBehaviour
         if (pathForSearch == null)
             pathForSearch = new NavMeshPath();
 
-<<<<<<< Updated upstream
-        hp = Data.MaxHp;
-        critChance = Data.CritChance;
-        critVulnerability = 0f;
-        blockRate = 1f;
-        mental = Data.Mental;
-
-        // 이동 속도
-        moveSpeedMultiplier = 1f;
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
-
-        attackSpeedMultiplier = 1f;
-        attackSpeed = Data.AttackSpeed;
-
-        attackDamageMultiplier = 1f;
-
-        damageReductionMultiplier = 1f;
-=======
         //hp = Data.MaxHp;
         //critChance = Data.CritChance;
         critVulnerability = 0f;
@@ -604,7 +541,6 @@ public abstract class Unit : MonoBehaviour
         attackSpeedMult = 1f;
         atkMult = 1f;
         damageTakenMult = 1f;
->>>>>>> Stashed changes
 
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
@@ -620,18 +556,13 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
 
-<<<<<<< Updated upstream
-=======
         
         navAgent.speed = unitStats.moveSpeed * moveSpeedMult;
         attackSpeed = unitStats.attackSpeed;
->>>>>>> Stashed changes
 
         lastMoveTime = Time.time;
     }
 
-<<<<<<< Updated upstream
-=======
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
     {
         this.durationEffectPool = durationEffectPool;
@@ -677,7 +608,6 @@ public abstract class Unit : MonoBehaviour
         mental = unitStats.mental;
     }
 
->>>>>>> Stashed changes
     public void SetUnitUI(SelectedUnitUI selectedUnitUI)
     {
         this.selectedUnitUI = selectedUnitUI;
@@ -691,11 +621,7 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Update()
     {
         PassiveSkillCheck();
-<<<<<<< Updated upstream
-        UpdateNavMode();
-=======
 
->>>>>>> Stashed changes
         //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
         //    lastMoveTime = Time.time;
 
@@ -733,56 +659,9 @@ public abstract class Unit : MonoBehaviour
         //}   
     }
 
-<<<<<<< Updated upstream
-    public void ToggleNavMode()
-    {
-        if(navAgent.enabled)
-        {
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
-        else
-        {
-            isNavModeChanging = true;
-            navObstacle.enabled = false;
-        }
-    }
-
-    public void SetNavMode(bool activateAgent)
-    {
-        if(activateAgent)
-        {
-            isNavModeChanging = true;
-            navObstacle.enabled = false;
-        }
-        else
-        {
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
-    }
-
-    private void UpdateNavMode()
-    {
-        if(isNavModeChanging)
-        {
-            if(NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, pathForSearch))
-            {
-                isNavModeChanging = false;
-                navAgent.enabled = true;
-            }    
-        }
-    }
-
-    protected bool IsReachable(Vector3 pos)
-    {
-        // navAgent.CalculatePath(pos, pathForSearch);
-        NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, pathForSearch);
-=======
     protected bool IsReachable(Vector3 pos)
     {
         navAgent.CalculatePath(pos, pathForSearch);
->>>>>>> Stashed changes
         return pathForSearch.status == NavMeshPathStatus.PathComplete;
     }
 
@@ -799,11 +678,7 @@ public abstract class Unit : MonoBehaviour
             {
                 Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
                 Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-<<<<<<< Updated upstream
-                NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch);
-=======
                 navAgent.CalculatePath(targetPos, pathForSearch);
->>>>>>> Stashed changes
                 if (pathForSearch.status == NavMeshPathStatus.PathComplete)
                     return true;
             }
@@ -1093,22 +968,6 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Vector3 pos)
     {
-<<<<<<< Updated upstream
-        //NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, pathForSearch);
-        //if (path.status == NavMeshPathStatus.PathComplete)
-        //{
-        //    if (navAgent.isStopped)
-        //        navAgent.isStopped = false;
-
-        //    navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
-        //    navAgent.SetPath(path);
-        //    lastMoveTime = Time.time;
-        //    return;
-        //}
-
-        #region 250618_기존 코드
-=======
->>>>>>> Stashed changes
         bool navAgentEnabled = navAgent.enabled;
         if (!navAgentEnabled)
         {
@@ -1122,11 +981,7 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-<<<<<<< Updated upstream
-            navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
-=======
             navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
->>>>>>> Stashed changes
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
@@ -1139,10 +994,6 @@ public abstract class Unit : MonoBehaviour
             navAgent.enabled = false;
             navObstacle.enabled = true;
         }
-<<<<<<< Updated upstream
-        #endregion
-=======
->>>>>>> Stashed changes
     }
 
     public virtual void ForceMoveTo(Vector3 pos)
@@ -1159,11 +1010,7 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-<<<<<<< Updated upstream
-            navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
-=======
             navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
->>>>>>> Stashed changes
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
@@ -1180,21 +1027,12 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Unit target)
     {
-<<<<<<< Updated upstream
-        //bool navAgentEnabled = navAgent.enabled;
-        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-        //{
-        //    navObstacle.enabled = false;
-        //    navAgent.enabled = true;
-        //}
-=======
         bool navAgentEnabled = navAgent.enabled;
         if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
         {
             navObstacle.enabled = false;
             navAgent.enabled = true;
         }
->>>>>>> Stashed changes
 
         Vector3 startDir = (transform.position - target.transform.position).normalized;
         for (float i = 0f; i < 6f; i++)
@@ -1207,26 +1045,13 @@ public abstract class Unit : MonoBehaviour
                 if (navAgent.isStopped)
                     navAgent.isStopped = false;
 
-<<<<<<< Updated upstream
-                navObstacle.carvingMoveThreshold = Data.MoveSpeed * 0.1f;
-=======
                 navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
->>>>>>> Stashed changes
                 navAgent.SetPath(path);
                 lastMoveTime = Time.time;
                 return;
             }
         }
 
-<<<<<<< Updated upstream
-        //// 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        //if (!navAgentEnabled)
-        //{
-        //    // 다시 비활성화 상태로 원상복구.
-        //    navAgent.enabled = false;
-        //    navObstacle.enabled = true;
-        //}
-=======
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
         if (!navAgentEnabled)
         {
@@ -1234,7 +1059,6 @@ public abstract class Unit : MonoBehaviour
             navAgent.enabled = false;
             navObstacle.enabled = true;
         }
->>>>>>> Stashed changes
     }
 
     public void LookAt(Vector3 pos)
@@ -1337,20 +1161,10 @@ public abstract class Unit : MonoBehaviour
 
     public void SetStateDuration(float duration) => stateDuration = duration;
 
-<<<<<<< Updated upstream
-    public void AddMoveSpeedMultiplier(float value)
-    {
-        moveSpeedMultiplier += value;
-        if (moveSpeedMultiplier < 0f)
-            moveSpeedMultiplier = 0f;
-
-        navAgent.speed = Data.MoveSpeed * moveSpeedMultiplier;
-=======
     public void AddMoveSpeedMult(float percent)
     {
         moveSpeedMult += percent * 0.01f;
         navAgent.speed = unitStats.moveSpeed * Mathf.Max(0f, moveSpeedMult);
->>>>>>> Stashed changes
     }
 
     public void AddMental(float amount)
@@ -1358,35 +1172,19 @@ public abstract class Unit : MonoBehaviour
         mental += amount;
     }
 
-<<<<<<< Updated upstream
-    public void AddAttackSpeedMultiplier(float value)
-    {
-        attackSpeedMultiplier += value;
-        if (attackSpeedMultiplier < 0f)
-            attackSpeedMultiplier = 0f;
-
-        attackSpeed = Data.AttackSpeed * attackSpeedMultiplier;
-=======
     public void AddAttackSpeedMult(float percent)
     {
         attackSpeedMult += percent * 0.01f;
         attackSpeed = unitStats.attackSpeed * Mathf.Max(0f, attackSpeedMult);
->>>>>>> Stashed changes
     }
 
     public void AddCriticalVulnerability(float amount)
     {
         critVulnerability += amount;
     }
-<<<<<<< Updated upstream
-    public void AddBlockRate(float amount)
-    {
-        blockRate += amount;
-=======
     public void AddBlockPercent(float percent)
     {
         blockPercent += percent;
->>>>>>> Stashed changes
     }
 
     public void AddAttackSpeed(float speed)
@@ -1394,18 +1192,6 @@ public abstract class Unit : MonoBehaviour
         attackSpeed += speed;
     }
 
-<<<<<<< Updated upstream
-    public void AddAdditionalDamage(float percent)
-    {
-        // 추가 피해량
-        attackDamageMultiplier += percent;
-    }
-
-    public void AddDamageReduction(float percent)
-    {
-        // 받는 피해량 감소
-        damageReductionMultiplier += percent;
-=======
     public void AddAtkMult(float percent)
     {
         // 추가 피해량
@@ -1416,7 +1202,6 @@ public abstract class Unit : MonoBehaviour
     {
         // 받는 피해량
         damageTakenMult += percent * 0.01f;
->>>>>>> Stashed changes
     }
 
     public abstract void GetProvoked(Unit ProvokedTarget);
@@ -1434,39 +1219,6 @@ public abstract class Unit : MonoBehaviour
         modelAnimator.SetBool("isStun", false);
     }
 
-<<<<<<< Updated upstream
-
-
-    public void AddEffect(Unit unit, Effect effect)
-    {
-        Effect prevEffect = effectList.Find(effect.IsSameEffect);
-        Effect prevMaxStackEffect = effectList.Find(effect.IsMaxStackEffect);
-
-        if (prevMaxStackEffect != null && prevMaxStackEffect.gameObject.activeInHierarchy)
-            return;
-
-        // 효과 목록 중에 오브젝트로서 이미 추가된 적이 있는 효과가 존재할 경우.
-        if (prevEffect != null)
-        {
-            if (!prevEffect.gameObject.activeInHierarchy)
-            {
-                prevEffect.gameObject.SetActive(true);
-                prevEffect.Initialize();
-            }
-            else
-            {
-                prevEffect.AddStack();
-            }
-            prevEffect.Activate();
-        }
-        else //맨 처음 효과 오브젝트가 추가될 때.
-        {
-            GameObject obj = Instantiate(effect.gameObject);
-            obj.transform.SetParent(effectParent);
-            effect = obj.GetComponent<Effect>();
-            effect.Initialize(unit, this);
-            effect.Activate();
-=======
     public void AddEffect(GameObject effectPrefab)
     {
         DurationEffect prevEffect = effectList.Find(effect => effect.Prefab == effectPrefab);
@@ -1483,55 +1235,16 @@ public abstract class Unit : MonoBehaviour
             effect.SetTarget(this);
             effect.Activate();
             effect.gameObject.SetActive(true);
->>>>>>> Stashed changes
 
             effectList.Add(effect);
         }
 
         UpdateState();
-<<<<<<< Updated upstream
-
-        //Effect prevEffect = effectsList.Find(item => item.Id == effect.Id);
-        //if (prevEffect != null)
-        //{
-        //    if(!prevEffect.gameObject.activeInHierarchy)
-        //    {
-        //        prevEffect.gameObject.SetActive(true);
-        //    }
-        //    prevEffect.AddStack();
-        //    prevEffect.Activate();
-
-        //    //effectsList.Add(effect);
-        //    UpdateState();
-        //}
-        //else
-        //{
-        //    Effect maxStackEffect = effectsList.Find(effect.HasMaxStackEffect);
-        //    if (maxStackEffect == null)
-        //    {
-        //        GameObject obj = Instantiate(effect.gameObject);
-        //        obj.transform.SetParent(effectParent);
-        //        effect = obj.GetComponent<Effect>();
-        //        effect.Initialize(unit, this);
-        //        effect.Activate();
-
-        //        if (effect is DurationEffect)
-        //        {
-        //            DurationEffect durationEffect = effect as DurationEffect;
-
-        //            effectsList.Add(durationEffect);
-
-        //            UpdateState();
-        //        }
-        //    }
-        //}
-=======
     }
 
     public void RemoveEffect(DurationEffect effect)
     {
         effectList.Remove(effect);
->>>>>>> Stashed changes
     }
 
     public void AddVFX(ParticleSystem VFX)

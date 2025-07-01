@@ -28,10 +28,6 @@ public class HealSkill : SkillBase
 
     public void ActivateSkill(Unit target)
     {
-<<<<<<< Updated upstream
-        target.TakeDamage(-1 * (target.Data.MaxHp * 0.01f * data.HealAmountPercent));
-=======
         target.TakeDamage(-1 * (target.UnitStats.maxHp * 0.01f * data.HealAmountPercent));
->>>>>>> Stashed changes
     }
 }

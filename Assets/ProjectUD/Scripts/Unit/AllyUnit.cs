@@ -31,10 +31,7 @@ public class AllyUnit : Unit
     private Tile tile;
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
     private Mode mode;
     public Mode ModeType => mode;
 
@@ -159,11 +156,7 @@ public class AllyUnit : Unit
                         if(targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetSpecialSkill();
-<<<<<<< Updated upstream
-                        Debug.Log("Special Skill " + skill + "사용");
-=======
                         //Debug.Log("Special Skill " + skill + "사용");
->>>>>>> Stashed changes
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
@@ -216,11 +209,7 @@ public class AllyUnit : Unit
                     if (mode == Mode.CHANGE)
                     {
                         modelAnimator.SetBool("isRunning", false);
-<<<<<<< Updated upstream
-                        //navAgent.enabled = false;
-=======
                         navAgent.enabled = false;
->>>>>>> Stashed changes
                     }
                     else
                     {
@@ -371,24 +360,14 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.ENEMY:
                                 {
-<<<<<<< Updated upstream
-                                    if (SearchMarkedTarget(data.SightRange) != null)
-                                    {
-                                        targetUnit = SearchMarkedTarget(data.SightRange);
-=======
                                     if (SearchMarkedTarget(UnitStats.sightRange) != null)
                                     {
                                         targetUnit = SearchMarkedTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
                                     }
 
                                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
                                     {
-<<<<<<< Updated upstream
-                                        if (IsTargetInRange(targetUnit, data.AttackRange))
-=======
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
->>>>>>> Stashed changes
                                         {
                                             if (navAgent.enabled && !navAgent.isStopped)
                                             {
@@ -404,11 +383,7 @@ public class AllyUnit : Unit
                                         else
                                             targetUnit = null;
                                     }
-<<<<<<< Updated upstream
-                                    else targetUnit = SearchTarget(data.SightRange);
-=======
                                     else targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
                                 }
                                 break;
                             case SkillBase.TargetType.ALLY:
@@ -428,11 +403,7 @@ public class AllyUnit : Unit
                     else
                     {
                         if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
-<<<<<<< Updated upstream
-                            targetUnit = SearchTarget(data.SightRange);
-=======
                             targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
                         else
                             LookAt(targetUnit.transform.position);   
                     }
@@ -462,25 +433,15 @@ public class AllyUnit : Unit
                                 modelAnimator.SetBool("isRunning", false);
                                 destinationPosition = Vector3.zero;
                                 isMoving = false;
-<<<<<<< Updated upstream
-                                targetUnit = SearchTarget(data.SightRange);
-=======
                                 targetUnit = SearchTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
                                 navAgent.stoppingDistance = 2.4f;
                             }
                         }
                     }
 
-<<<<<<< Updated upstream
-                    if (SearchMarkedTarget(data.SightRange) != null)
-                    {
-                        targetUnit = SearchMarkedTarget(data.SightRange);
-=======
                     if (SearchMarkedTarget(UnitStats.sightRange) != null)
                     {
                         targetUnit = SearchMarkedTarget(UnitStats.sightRange);
->>>>>>> Stashed changes
                     }
 
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
@@ -497,11 +458,7 @@ public class AllyUnit : Unit
                             {
                                 case SkillBase.TargetType.ENEMY:
                                     {
-<<<<<<< Updated upstream
-                                        if (IsTargetInRange(targetUnit, data.AttackRange))
-=======
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
->>>>>>> Stashed changes
                                         {
                                             ActivateSkill(skill, targetUnit);
 
@@ -530,20 +487,12 @@ public class AllyUnit : Unit
                             }
                         }
 
-<<<<<<< Updated upstream
-                        if(IsTargetInAttackRange(targetUnit, data.AttackRange))
-=======
                         if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
->>>>>>> Stashed changes
                         {
                             return;
                         }
 
-<<<<<<< Updated upstream
-                        if (IsTargetInRange(targetUnit, data.SightRange))
-=======
                         if (IsTargetInRange(targetUnit, UnitStats.sightRange))
->>>>>>> Stashed changes
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
@@ -558,25 +507,6 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-<<<<<<< Updated upstream
-                        //SetNavMode(true);
-
-                        //bool navAgentEnabled = navAgent.enabled;
-                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        //{
-                        //    navObstacle.enabled = false;
-                        //    navAgent.enabled = true;
-                        //}
-
-                        targetUnit = SearchReachableTarget(data.SightRange);
-
-                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        //{
-                        //    navObstacle.enabled = false;
-                        //    navAgent.enabled = true;
-                        //}
-                        //SetNavMode(true);
-=======
                         bool navAgentEnabled = navAgent.enabled;
                         if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
                         {
@@ -591,7 +521,6 @@ public class AllyUnit : Unit
                             navObstacle.enabled = false;
                             navAgent.enabled = true;
                         }
->>>>>>> Stashed changes
                     }
                 }
                 break;
@@ -609,10 +538,7 @@ public class AllyUnit : Unit
                             {
                                 transform.position = targetTile.transform.position;
                                 navObstacle.enabled = true;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
                                 navAgent.enabled = false;
                             }
                             else
@@ -620,12 +546,8 @@ public class AllyUnit : Unit
                                 mode = Mode.FREE;
                                 return;
                             }
-<<<<<<< Updated upstream
-                           
-=======
                                 
 
->>>>>>> Stashed changes
                             //transform.position = unitGrid.GetAvailableTile().transform.position;
 
                             OnOffSiefeEffect(false);
@@ -635,10 +557,7 @@ public class AllyUnit : Unit
                             isSiegeActive = false;
 
                             isAvailableToSiege = true;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
                         }
 
                         if (isAvailableToSiege)
@@ -682,12 +601,8 @@ public class AllyUnit : Unit
                         {
                             changeDuration -= Time.deltaTime;
                             state = State.IDLE;
-<<<<<<< Updated upstream
-                            if (selectedUnitUI != null)
-=======
 
                             if(selectedUnitUI != null)
->>>>>>> Stashed changes
                             {
                                 selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                             }
@@ -696,18 +611,11 @@ public class AllyUnit : Unit
                         else
                         {
                             mode = Mode.FREE;
-<<<<<<< Updated upstream
-                            SetNavMode(true);
-=======
->>>>>>> Stashed changes
 
                             changeDuration = 3.0f;
                             previousMode = mode;
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
                             if (selectedUnitUI != null && isSelected)
                             {
                                 selectedUnitUI.ShowAllyUI(this);
@@ -715,12 +623,9 @@ public class AllyUnit : Unit
                             }
                         }
                     }
-<<<<<<< Updated upstream
-=======
 
 
 
->>>>>>> Stashed changes
                     //if (changeDuration >= 0)
                     //{
                     //    changeDuration -= Time.deltaTime;

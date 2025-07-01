@@ -1,14 +1,6 @@
-<<<<<<< Updated upstream
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static AttackSkill;
-using static Unit;
-=======
 using UnityEngine;
 using static Unit;
 using AttackType = AttackData.AttackType;
->>>>>>> Stashed changes
 
 public class SkillAttackTrigger : MonoBehaviour
 {
@@ -32,16 +24,6 @@ public class SkillAttackTrigger : MonoBehaviour
 
     private void PlayVFX()
     {
-<<<<<<< Updated upstream
-        if (data.StartVFX != null)
-        {
-            GameObject VFXobj = Instantiate(data.StartVFX.gameObject);
-            VFXobj.transform.SetParent(transform);
-            VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-            Destroy(VFXobj, data.StartVFX.main.duration);
-        }
-=======
         //if (data.StartVFX != null)
         //{
         //    GameObject VFXobj = Instantiate(data.StartVFX.gameObject);
@@ -50,7 +32,6 @@ public class SkillAttackTrigger : MonoBehaviour
         //    VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         //    Destroy(VFXobj, data.StartVFX.main.duration);
         //}
->>>>>>> Stashed changes
     }
 
     private void Start()
@@ -94,16 +75,6 @@ public class SkillAttackTrigger : MonoBehaviour
     public void Attack(Unit target)
     {
         float calcDamage = data.Damage;
-<<<<<<< Updated upstream
-        float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
-        if (IsBlocked(target.Data.ArmorType))
-        {
-            float calcBlockRate = 1f - (0.3f * target.BlockRate);
-            calcDamage *= calcBlockRate;
-        }
-
-        calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
-=======
         float calcCrit = (target.CritVulnerability + data.BonusCritPercent) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
         {
@@ -112,20 +83,13 @@ public class SkillAttackTrigger : MonoBehaviour
         }
 
         calcDamage *= target.DamageTakenMult;
->>>>>>> Stashed changes
 
         target.TakeDamage(calcDamage);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
-<<<<<<< Updated upstream
-            if (data.InduseEffect != null)
-            {
-                target.AddEffect(target, data.InduseEffect.GetComponent<Effect>());
-=======
             if (data.InduseEffectPrefab != null)
             {
                 target.AddEffect(data.InduseEffectPrefab);
->>>>>>> Stashed changes
             }
         }
     }
@@ -133,14 +97,8 @@ public class SkillAttackTrigger : MonoBehaviour
     private bool IsBlocked(ArmorType armorType)
     {
         return
-<<<<<<< Updated upstream
-            (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
-            (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
-            (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
-=======
             (data.Info.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.Info.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
->>>>>>> Stashed changes
     }
 }

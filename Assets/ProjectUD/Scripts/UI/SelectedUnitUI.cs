@@ -5,11 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-<<<<<<< Updated upstream
-using static UnitDataManager;
-using static UnityEngine.UI.CanvasScaler;
-=======
->>>>>>> Stashed changes
 
 public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 {
@@ -20,10 +15,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Ingame_CamManager ingameCamManager;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private InGameManager inGameManager;
-<<<<<<< Updated upstream
-=======
     [SerializeField] private UnitDataLoader unitDataLoader;
->>>>>>> Stashed changes
     private CinemachineFramingTransposer framingTransposer;
 
 
@@ -290,18 +282,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-<<<<<<< Updated upstream
-    public void UpdateUnitInfoByBtn(UnitData unitData)
-    {
-        unitInfoImage.gameObject.SetActive(true);
-
-        unitImage.sprite = unitData.Icon;
-        unitNameText.text = unitData.Name;
-        unitMentalText.text =  "멘탈 : " + unitData.Mental.ToString();
-
-        unitHPImage.fillAmount = unitData.MaxHp / unitData.MaxHp;
-        unitHPText.text = $"{unitData.MaxHp} / {unitData.MaxHp}";
-=======
     public void UpdateUnitInfoByBtn(UnitData unitData, UnitDataLoader unitDataLoader)
     {
         Unit unit = unitData.Prefab.GetComponent<Unit>();
@@ -317,29 +297,18 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         unitMentalText.text =  "멘탈 : " + unitStats.mental .ToString();
         unitHPImage.fillAmount = unitStats.maxHp / unitStats.maxHp;
         unitHPText.text = $"{unitStats.maxHp} / {unitStats.maxHp}";
->>>>>>> Stashed changes
 
         SetUnitTierIcon(unitData.Tier);
 
         atTypeIcon.sprite = unitData.AtTypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
-<<<<<<< Updated upstream
-        attackTypeText.text = unitData.AttackType;
-=======
         //attackTypeText.text = unitData.AttackType;
->>>>>>> Stashed changes
         attackTypeInfoText.text = GetAttackTypeInfo(unitData);
 
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
         defenseTypeInfoText.text = GetDefenseTypeInfo(unitData);
 
-<<<<<<< Updated upstream
-
-        Unit unit = unitData.Prefab.GetComponent<Unit>();
-
-=======
->>>>>>> Stashed changes
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
@@ -362,19 +331,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-<<<<<<< Updated upstream
-        critText.text = "치명타율 : " + unitData.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitData.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unitData.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unitData.Mental.ToString();
-=======
         critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
         atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unitStats.mental.ToString();
->>>>>>> Stashed changes
     }
 
     public void UpdateUnitInfo(Unit unit)
@@ -383,12 +344,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        unitInfoImage.gameObject.SetActive(true);
 
-<<<<<<< Updated upstream
-       UpdateHPUI(unit);
-       unitImage.sprite = unit.Data.Icon;
-       unitNameText.text = unit.Data.Name;
-       unitMentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
-=======
         if(unit.UnitStats == null)
         {
             Debug.Log("데이터 없음");
@@ -399,18 +354,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
        unitImage.sprite = unit.Data.Icon;
        unitNameText.text = unit.UnitStats.unitName;
        unitMentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
->>>>>>> Stashed changes
 
         SetUnitTierIcon(unit.Data.Tier);
 
         atTypeIcon.sprite = unit.Data.AtTypeIcon;
        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
-<<<<<<< Updated upstream
-        attackTypeText.text = unit.Data.AttackType;
-=======
         //attackTypeText.text = unit.Data.AttackType;
->>>>>>> Stashed changes
         attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
 
         defenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
@@ -439,19 +389,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
 
 
-<<<<<<< Updated upstream
-        critText.text = "치명타율 : " + unit.Data.CritChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unit.Data.MoveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.Data.AttackSpeed.ToString();
-        atRangeText.text = "공격거리 : " + (unit.Data.AttackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unit.Data.Mental.ToString();
-=======
         critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
         atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed.ToString();
         atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
->>>>>>> Stashed changes
 
         UpdateUnitStateUI();
     }
@@ -467,20 +409,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if(unit != null)
         {
-<<<<<<< Updated upstream
-            unitHPText.text = $"{unit.Hp} / {unit.Data.MaxHp}";
-=======
             unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";
->>>>>>> Stashed changes
             unitHPImage.fillAmount = unit.HpPercent;
         }
     }
 
-<<<<<<< Updated upstream
-=======
     
 
->>>>>>> Stashed changes
     public void SetUnitTierIcon(int tier)
     {
         for (int i = 0; i < tierImage.Length; i++)
@@ -493,20 +428,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         string attackTypeInfo = "";
 
-<<<<<<< Updated upstream
-        if (unitData.AttackType == "베기")
-        {
-            attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.AttackType == "찌르기")
-        {
-            attackTypeInfo = "방탄갑에 약하다. 방탄갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if(unitData.AttackType == "때리기")
-        {
-            attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-=======
         //if (unitData.AttackType == "베기")
         //{
         //    attackTypeInfo = "철갑에 약하다. 철갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
@@ -519,7 +440,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         //{
         //    attackTypeInfo = "완충갑에 약하다. 완충갑을 입은 대상에게 주는 총 데미지 30% 감소, 치명타율 총 30% 감소";
         //}
->>>>>>> Stashed changes
 
         return attackTypeInfo;
     }
@@ -568,23 +488,14 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if (selecteUnitManger.SelectedUnit != null)
         {
-<<<<<<< Updated upstream
-            List<Effect> effects = selecteUnitManger.SelectedUnit.EffectList;
-=======
             IReadOnlyList<DurationEffect> effects = selecteUnitManger.SelectedUnit.EffectList;
->>>>>>> Stashed changes
             HashSet<Sprite> usedSprites = new HashSet<Sprite>();
             int imageIndex = 0;
 
             for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
             {
-<<<<<<< Updated upstream
-                Effect effect = effects[i];
-                Sprite sprite = GetSpriteForEffect(effect.Id);
-=======
                 DurationEffect effect = effects[i];
                 Sprite sprite = GetSpriteForEffect(/*effect.Id*/ string.Empty);
->>>>>>> Stashed changes
 
                 if (sprite != null && !usedSprites.Contains(sprite))
                 {

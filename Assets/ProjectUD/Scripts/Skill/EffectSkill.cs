@@ -1,8 +1,4 @@
 using UnityEngine;
-<<<<<<< Updated upstream
-using static AttackSkill;
-=======
->>>>>>> Stashed changes
 
 public class EffectSkill : SkillBase
 {
@@ -33,13 +29,8 @@ public class EffectSkill : SkillBase
     {
         if (Random.Range(0f, 1f) <= data.SuccessRate * 0.01f)
         {
-<<<<<<< Updated upstream
-            Debug.Log($"[EffectSkill] {target.name}에게 {data.Effect} 효과를 부여합니다.");
-            target.AddEffect(target, data.Effect);
-=======
             //Debug.Log($"[EffectSkill] {target.name}에게 {data.Effect} 효과를 부여합니다.");
             target.AddEffect(data.EffectPrefab);
->>>>>>> Stashed changes
         }
     }
 }

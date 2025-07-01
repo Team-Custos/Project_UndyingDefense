@@ -1,21 +1,12 @@
 using UnityEngine;
-<<<<<<< Updated upstream
-//using AttackType = AttackSkill.AttackType;
-=======
 using AttackType = AttackData.AttackType;
->>>>>>> Stashed changes
 
 public class TrapCtrl : AttackSkill
 {
     private Animator modelAnimator;
-<<<<<<< Updated upstream
-    [SerializeField] private AttackType attackType;
-    [SerializeField] private Effect effectToAdd;
-=======
     [SerializeField] private AttackData attackData;
     [SerializeField] private GameObject bindEffectPrefab;
 
->>>>>>> Stashed changes
     private float damage;
 
     private void Start()
@@ -35,13 +26,6 @@ public class TrapCtrl : AttackSkill
         {
             
             float calcDamage = damage;
-<<<<<<< Updated upstream
-           
-            calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
-
-            target.TakeDamage(calcDamage);
-            target.AddEffect(target, effectToAdd);
-=======
 
             // calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
             // calcDamage *= unit.AttackDamageMultiplier;
@@ -49,7 +33,6 @@ public class TrapCtrl : AttackSkill
 
             target.TakeDamage(calcDamage);
             target.AddEffect(bindEffectPrefab);
->>>>>>> Stashed changes
         }
     }
 
