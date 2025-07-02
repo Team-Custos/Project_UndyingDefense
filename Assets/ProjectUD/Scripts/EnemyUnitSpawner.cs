@@ -21,6 +21,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Wave Data")]
     [SerializeField] private WaveData[] waveData;
@@ -139,6 +140,8 @@ public class EnemyUnitSpawner : MonoBehaviour
                SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
                ingameScreenUI.ShowNotice("방어 성공!");
 
+               
+    
                isSpawnEnd = false;
                isWaveEnd = true;
 
@@ -152,7 +155,8 @@ public class EnemyUnitSpawner : MonoBehaviour
                infinitWaveCount++;
 
                 isFortreessAttacked = false;
-           }
+
+            }
            else if (isSpawnEnd)
             {
                 enemySpawnVfx.gameObject.SetActive(false);

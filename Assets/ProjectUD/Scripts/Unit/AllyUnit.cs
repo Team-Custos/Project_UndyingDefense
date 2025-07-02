@@ -106,6 +106,7 @@ public class AllyUnit : Unit
         this.spawner = spawner;
     }
 
+
     protected override void Update()
     {
         base.Update();
@@ -218,6 +219,11 @@ public class AllyUnit : Unit
                             state = State.RUN;
                             modelAnimator.SetBool("isRunning", true);
                         }
+                        
+                        if(spawner != null && targetUnit == null)
+                            spawner.ResetAllyUnitRotation(this);
+
+
                     }
 
                     UpdateMode();
@@ -516,11 +522,11 @@ public class AllyUnit : Unit
 
                         targetUnit = SearchReachableTarget(UnitStats.sightRange);
 
-                        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        {
-                            navObstacle.enabled = false;
-                            navAgent.enabled = true;
-                        }
+                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+                        //{
+                        //    navObstacle.enabled = false;
+                        //    navAgent.enabled = true;
+                        //}
                     }
                 }
                 break;
