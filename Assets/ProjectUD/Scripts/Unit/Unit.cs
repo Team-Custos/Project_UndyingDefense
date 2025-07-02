@@ -1232,6 +1232,7 @@ public abstract class Unit : MonoBehaviour
         {
             DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
             effect.transform.SetParent(effectParent);
+            effect.transform.localPosition = Vector3.zero;
             effect.SetTarget(this);
             effect.Activate();
             effect.gameObject.SetActive(true);
