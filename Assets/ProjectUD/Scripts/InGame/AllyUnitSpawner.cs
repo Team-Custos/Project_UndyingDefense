@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
 {
@@ -96,6 +97,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this);
         unit.SetDurationEffectPool(durationEffectPool);
+        unitPools[index].List.Add(unit);
 
         return unit;
     }
@@ -401,5 +403,15 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
         }
+    }
+
+    public void ResetAllyUnitRotation(AllyUnit allyUnit)
+    {
+        //allyUnit.transform.forward = spawnDirection.forward;
+
+        Vector3 direction = spawnDirection.forward;
+        Quaternion rot = Quaternion.LookRotation(direction);
+        allyUnit.transform.rotation = Quaternion.Slerp(allyUnit.transform.rotation, rot, Time.deltaTime * 10.0f);
+
     }
 }

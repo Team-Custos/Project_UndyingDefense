@@ -41052,6 +41052,7 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 217372397582191139}
   unitDataLoader: {fileID: 0}
   durationEffectPool: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
   - {fileID: 11400000, guid: 5e68d731f661d63488b5e1abbdfc819d, type: 2}
@@ -66012,7 +66013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1094198684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111659,8 +111660,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842150496}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: -35.000004, y: 49.497475, z: -35.000004}
+  m_LocalRotation: {x: 0.27972093, y: 0.19470434, z: -0.058041874, w: 0.9383377}
+  m_LocalPosition: {x: -93, y: 142.60696, z: -140.20903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117219,7 +117220,7 @@ MonoBehaviour:
   enemyUnitSpawner: {fileID: 2030995722}
   inGmaeBgm: {fileID: 8300000, guid: 021a972980663384d891f8e5ada12b30, type: 3}
   virtualCamera: {fileID: 1094198683}
-  isCamPanning: 0
+  isCamPanning: 1
   panningDuration: 9
 --- !u!114 &1936867426
 MonoBehaviour:
@@ -122151,6 +122152,7 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 653731106}
   unitDataLoader: {fileID: 1943153814}
   durationEffectPool: {fileID: 1376648097}
+  allyUnitSpawner: {fileID: 0}
   waveData:
   - {fileID: 11400000, guid: cdda6989d70747b40922338d56289dec, type: 2}
   - {fileID: 11400000, guid: 4e26773490b9d6940845f225e4ec74f7, type: 2}

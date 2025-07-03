@@ -338,6 +338,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.PlayerSettings;
 using AttackType = AttackData.AttackType;
 
 public abstract class Unit : MonoBehaviour
@@ -546,6 +547,7 @@ public abstract class Unit : MonoBehaviour
 
         navAgent.enabled = false;
         navObstacle.enabled = true;
+
         collider.enabled = true;
 
         effectParent.gameObject.SetActive(true);
@@ -582,11 +584,6 @@ public abstract class Unit : MonoBehaviour
 
         if (unitStats != null)
         {
-            //Debug.Log($"Unit ID: {unitStats.id}, Name: {unitStats.unitName}, Tier: {unitStats.tier}, " +
-            //    $"Max HP: {unitStats.maxHp}, Cost: {unitStats.cost} Attack Speed: {unitStats.attackSpeed}, " +
-            //    $"Move Speed: {unitStats.moveSpeed}," + $" Sight Range: {unitStats.sightRange}, " +
-            //    $"Attack Range: {unitStats.attackRange}, Mental: {unitStats.mental}, Crit Change: {unitStats.critChance}, role :{unitStats.role}");
-
             maxhp = unitStats.maxHp;
             hp = unitStats.maxHp;
             critPercent = unitStats.critChance;
@@ -661,7 +658,8 @@ public abstract class Unit : MonoBehaviour
 
     protected bool IsReachable(Vector3 pos)
     {
-        navAgent.CalculatePath(pos, pathForSearch);
+        //navAgent.CalculatePath(pos, pathForSearch);
+        NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, pathForSearch);
         return pathForSearch.status == NavMeshPathStatus.PathComplete;
     }
 
@@ -678,7 +676,8 @@ public abstract class Unit : MonoBehaviour
             {
                 Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
                 Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-                navAgent.CalculatePath(targetPos, pathForSearch);
+                //navAgent.CalculatePath(targetPos, pathForSearch);
+                NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
                 if (pathForSearch.status == NavMeshPathStatus.PathComplete)
                     return true;
             }
@@ -968,14 +967,17 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Vector3 pos)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled)
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled)
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
 
-        navAgent.CalculatePath(pos, path); // 경로 계산
+        //navAgent.CalculatePath(pos, path); // 경로 계산
+
+        NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path);
+
         if (path.status == NavMeshPathStatus.PathComplete)
         {
             if (navAgent.isStopped)
@@ -988,12 +990,12 @@ public abstract class Unit : MonoBehaviour
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public virtual void ForceMoveTo(Vector3 pos)
@@ -1005,10 +1007,11 @@ public abstract class Unit : MonoBehaviour
             navAgent.enabled = true;
         }
 
-        if (navAgent.CalculatePath(pos, path))
+        //if (navAgent.CalculatePath(pos, path))
+        if (NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path))
         {
-            if (navAgent.isStopped)
-                navAgent.isStopped = false;
+            //if (navAgent.isStopped)
+            //    navAgent.isStopped = false;
 
             navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
@@ -1017,12 +1020,12 @@ public abstract class Unit : MonoBehaviour
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public virtual void MoveTo(Unit target)
@@ -1039,7 +1042,8 @@ public abstract class Unit : MonoBehaviour
         {
             Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
             Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-            navAgent.CalculatePath(targetPos, path);
+            //navAgent.CalculatePath(targetPos, path);
+            NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, path);
             if (path.status == NavMeshPathStatus.PathComplete)
             {
                 if (navAgent.isStopped)
@@ -1053,12 +1057,12 @@ public abstract class Unit : MonoBehaviour
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public void LookAt(Vector3 pos)
@@ -1145,6 +1149,7 @@ public abstract class Unit : MonoBehaviour
         {
             navAgent.enabled = false;
             navObstacle.enabled = false;
+
             collider.enabled = false;
             effectParent.gameObject.SetActive(false);
 
