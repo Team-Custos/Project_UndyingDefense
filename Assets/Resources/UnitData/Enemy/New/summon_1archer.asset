@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: summon_1archer
   m_EditorClassIdentifier: 
-  unitName: "\uD65C\uC744 \uB4E0 \uB9DD\uB839"
   tier: 1
+  unitName: "\uD65C\uC744 \uB4E0 \uB9DD\uB839"
   armorType: 1
-  maxHp: 120
-  critChance: 10
-  mental: 1
-  moveSpeed: 2
-  attackSpeed: 80
-  sightRange: 20
-  attackRange: 9
+  id: summon_1archer
   icon: {fileID: 21300000, guid: 4b1182f0e889a6c41aa0f2ae6f550070, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 46c6d8d1e3ce77f4194819f6c1357616, type: 3}
   atTypeIcon: {fileID: 21300000, guid: 7fb0557ae02dc9a4d87c3ca6e671f10c, type: 3}
@@ -33,8 +27,6 @@ MonoBehaviour:
     \uBE7C\uC557\uAE30\uACE0 \uB9DD\uB839\uC774 \uB418\uC5C8\uB2E4. \uC624\uC9C1
     \uC18C\uD658\uD55C \uC8FC\uC778\uC758 \uBA85\uB839\uC5D0 \uBCF5\uC885\uD558\uC5EC
     \uB354\uB4EC\uB354\uB4EC \uD65C\uC744 \uACA8\uB208\uB2E4."
-  attackType: "\uCC0C\uB974\uAE30"
-  role: 
   gold: 10
   targetingType: 0
   aiStance: 0

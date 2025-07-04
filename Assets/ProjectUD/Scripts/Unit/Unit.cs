@@ -338,7 +338,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
 using AttackType = AttackData.AttackType;
 
 public abstract class Unit : MonoBehaviour

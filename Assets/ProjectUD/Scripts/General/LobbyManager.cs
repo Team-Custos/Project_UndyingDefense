@@ -87,7 +87,6 @@ public class LobbyManager : MonoBehaviour
     public void LoadInGameScene()
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
-        Debug.Log(111);
         LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
         UserDataModel.instance.SetGameFinished(true);
     }
