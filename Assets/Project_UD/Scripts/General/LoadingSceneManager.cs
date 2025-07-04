@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoadingSceneManager : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class LoadingSceneManager : MonoBehaviour
     [SerializeField] private Text progressText;
     [SerializeField] private float loadingTime = 3.0f;
 
-    
+    [SerializeField] private TextMeshProUGUI tipText;
+    [SerializeField] private TipTextData[] tipTextData;
+
+
 
 
     // Start is called before the first frame update
@@ -21,12 +25,15 @@ public class LoadingSceneManager : MonoBehaviour
         SoundManager.Instance.StopBGM();
 
         StartCoroutine(LoadSceneProcess());
+
+        SetTipText();
     }
 
     public static void LoadScene(string sceneName)
     {
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
+
     }
 
 
@@ -60,5 +67,14 @@ public class LoadingSceneManager : MonoBehaviour
             yield return null;
         }
 
+    }
+
+    public void SetTipText()
+    {
+        int randomIndex = Random.Range(0, tipTextData.Length);
+
+        string tip = tipTextData[randomIndex].TipText;
+
+        tipText.text = tip;
     }
 }
