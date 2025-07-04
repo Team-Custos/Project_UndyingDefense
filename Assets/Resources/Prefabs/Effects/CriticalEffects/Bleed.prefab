@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7331682342289549304}
   - component: {fileID: 1520245206588382908}
+  - component: {fileID: 4265159661407975170}
   m_Layer: 0
   m_Name: Bleed
   m_TagString: Untagged
@@ -56,6 +57,19 @@ MonoBehaviour:
   tickTime: 1
   maxStack: 3
   damagePerStack: 2
+--- !u!114 &4265159661407975170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099222559418409559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476767b7089217a4caf11cbde404d29f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 1
 --- !u!1 &4470761834283951775
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,20 +243,50 @@ PrefabInstance:
       propertyPath: looping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1235029965188449644, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: InitialModule.rotation3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235029965188449644, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235029965188449644, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245512757860305909, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245512757860305909, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245512757860305909, guid: 6205d62c5f464174ea312e61b63dea8b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6682525470897430245, guid: 6205d62c5f464174ea312e61b63dea8b,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6682525470897430245, guid: 6205d62c5f464174ea312e61b63dea8b,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6682525470897430245, guid: 6205d62c5f464174ea312e61b63dea8b,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6682525470897430245, guid: 6205d62c5f464174ea312e61b63dea8b,
         type: 3}
