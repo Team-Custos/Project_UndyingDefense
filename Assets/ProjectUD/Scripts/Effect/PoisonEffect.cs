@@ -7,7 +7,7 @@ public class PoisonEffect : TickEffect
 
     public override void Activate() { }
 
-    public override void Remove() { }
+    public override void OnRemove() { }
 
     protected override void OnTick()
     {

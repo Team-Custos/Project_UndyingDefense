@@ -10,7 +10,7 @@ public class FocusEffect : DurationEffect
         target.AddMental(mental);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddMental(-mental);
     }

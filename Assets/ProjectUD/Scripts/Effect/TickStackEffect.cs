@@ -7,8 +7,9 @@ public abstract class TickStackEffect : TickEffect
 
     protected int stack;
 
-    public override void Activate()
+    public override void Reapply(GameObject effectPrefab)
     {
+        base.Reapply(effectPrefab);
         if (stack < maxStack)
         {
             stack++;
@@ -18,6 +19,17 @@ public abstract class TickStackEffect : TickEffect
             Remove();
             OnMaxStack();
         }
+    }
+
+    public override void Initialize(Unit target)
+    {
+        base.Initialize(target);
+        stack = 0;
+    }
+
+    public override void Activate()
+    {
+        stack++;
     }
 
     protected abstract void OnMaxStack();

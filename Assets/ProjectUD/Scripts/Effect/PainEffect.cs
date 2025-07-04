@@ -10,7 +10,7 @@ public class PainEffect : DurationEffect
         target.AddBlockPercent(blockPercent);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddBlockPercent(-blockPercent);
     }

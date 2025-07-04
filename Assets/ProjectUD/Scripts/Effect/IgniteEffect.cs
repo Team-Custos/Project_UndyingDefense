@@ -10,10 +10,11 @@ public class IgniteEffect : TickStackEffect
         // 작열 효과
     }
 
+    public override void Activate() { }
     protected override void OnTick()
     {
         target.TakeDamage(damagePerStack * stack);
     }
 
-    public override void Remove() { }
+    public override void OnRemove() { }
 }

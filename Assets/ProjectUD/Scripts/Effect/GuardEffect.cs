@@ -9,7 +9,7 @@ public class GuardEffect : DurationEffect
         target.AddDamageTakenMult(damageTakenMult);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddDamageTakenMult(-damageTakenMult);
     }

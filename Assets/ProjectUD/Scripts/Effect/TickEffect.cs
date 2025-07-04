@@ -25,5 +25,11 @@ public abstract class TickEffect : DurationEffect
         tickTimeCheck = 0f;
     }
 
+    public override void Initialize(Unit target)
+    {
+        base.Initialize(target);
+        tickTimeCheck = 0f;
+    }
+
     protected abstract void OnTick();
 }

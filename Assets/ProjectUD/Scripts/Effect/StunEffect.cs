@@ -2,13 +2,20 @@ using UnityEngine;
 
 public class StunEffect : DurationEffect
 {
+    [SerializeField] private GameObject shockEffectPrefab; 
+
     public override void Activate()
     {
         target.GetStun();
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.RemoveStun();
+    }
+
+    public override bool IsSameType(GameObject effectPrefab)
+    {
+        return prefab == effectPrefab || prefab == shockEffectPrefab;
     }
 }

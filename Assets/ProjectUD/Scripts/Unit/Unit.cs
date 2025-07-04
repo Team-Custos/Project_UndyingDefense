@@ -1226,19 +1226,20 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(GameObject effectPrefab)
     {
-        DurationEffect prevEffect = effectList.Find(effect => effect.Prefab == effectPrefab);
+        DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
 
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
-            prevEffect.Reapply(effectPrefab);
+            if(prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
+                prevEffect.Reapply(effectPrefab);
         }
         else //맨 처음 효과 오브젝트가 추가될 때.
         {
             DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
             effect.transform.SetParent(effectParent);
             effect.transform.localPosition = Vector3.zero;
-            effect.SetTarget(this);
+            effect.Initialize(this);
             effect.Activate();
             effect.gameObject.SetActive(true);
 
