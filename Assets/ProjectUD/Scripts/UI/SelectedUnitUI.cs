@@ -556,7 +556,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             case "Fortitude": return fortitudeSprite;
 
             default:
-                Debug.LogWarning($"Effect ID '{id}'에 해당하는 스프라이트가 없습니다.");
+                //Debug.LogWarning($"Effect ID '{id}'에 해당하는 스프라이트가 없습니다.");
                 return null;
         }
     }

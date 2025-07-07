@@ -70,7 +70,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 if (hit.collider.CompareTag("Unit"))
                 {
                     allyUnitSpawner.CancelSpawn();
-
                     inputEventManager.OnRightClickTarget = this;
                     inputEventManager.OnESCTarget = this;
 
@@ -93,30 +92,37 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     SoundManager.Instance.PlayUIClickSFX();
 
-                    //camManager.FocusSelectedUnit(hit.transform.position);
 
-                    if (selectedUnit != null) // 새 유닛 선택
+                    if (selectedUnit != null)   // 선택한 유닛이 잇음
                     {
-                        if(unit != selectedUnit)
+                        if(unit != selectedUnit)    // 선택한 유닛이 새 유닛
                         {
+                            // 기존 유닛 해제
                             selectedUnit.IsSelected = false;
                             selectedUnit.SetUnitUI(null);
                             selectedUnit.SetSelectedUnit(null);
+                            selectedUnit = null;
+
+                            // 새 유닛 설정
+                            selectedUnit = unit;
+                            selectedUnit.SetSelectedUnit(this);
+                            selectedUnit.SetUnitUI(unitSelectUI);
+                            selectedUnit.IsSelected = true;
+                            
                         }
 
-                        unit.IsSelected = true;
-
-                        selectedUnit = unit;
                     }
                     else
                     {
-                        unit.SetSelectedUnit(this);
+                        // 새 유닛 설정
                         selectedUnit = unit;
+                        selectedUnit.SetSelectedUnit(this);
+                        selectedUnit.SetUnitUI(unitSelectUI);
+                        selectedUnit.IsSelected = true;
                     }
 
                     UnitData unitData = selectedUnit.Data;
 
-                    selectedUnit.IsSelected = true;
 
                     unitSelectUI.UpdateUnitInfo(selectedUnit);
 

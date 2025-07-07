@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class RosterButtonUI : MonoBehaviour
 {
     [SerializeField] private UnitData unitData;
-    [SerializeField] private string unitId;
+    private string unitId;
     [SerializeField] private Image unitImage;
     [SerializeField] private TextMeshProUGUI unitNameText;
     [SerializeField] private Sprite popupSprite;
@@ -50,6 +50,7 @@ public class RosterButtonUI : MonoBehaviour
         unitNameText.text = unitData.Name;
 
         unit = unitData.Prefab.GetComponent<Unit>();
+        unitId = unit.UnitId;
         unitStats = unitDataLoader.GetUnitDataById(unitId, unit);
     }
 
