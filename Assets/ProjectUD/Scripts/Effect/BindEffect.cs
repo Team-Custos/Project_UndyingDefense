@@ -9,7 +9,7 @@ public class BindEffect : DurationEffect
         target.AddMoveSpeedMult(-1f);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddMoveSpeedMult(1f);
     }

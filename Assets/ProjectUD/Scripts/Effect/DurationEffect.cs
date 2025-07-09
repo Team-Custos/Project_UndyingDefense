@@ -5,6 +5,7 @@ public abstract class DurationEffect : MonoBehaviour
     [Header("■ Data")]
     [SerializeField] protected string id;
     [SerializeField] protected string effectName;
+    [SerializeField] protected Sprite iconSprite;
     [SerializeField, TextArea] protected string description;
 
     [Header("■ Options")]
@@ -25,9 +26,10 @@ public abstract class DurationEffect : MonoBehaviour
         this.pool = pool;
     }
 
-    public virtual void SetTarget(Unit target) // 처음 효과가 유닛에 추가되었을 때
+    public virtual void Initialize(Unit target) // 처음 효과가 유닛에 추가되었을 때
     {
         this.target = target;
+        durationCheck = 0f;
     }
 
     public virtual void Reapply(GameObject effectPrefab) // 효과를 재적용하는 함수.
@@ -41,16 +43,25 @@ public abstract class DurationEffect : MonoBehaviour
         if (durationCheck >= duration)
         {
             durationCheck = 0f;
-
-            target.RemoveEffect(this);
             Remove();
-            transform.SetParent(null);
-            gameObject.SetActive(false);
         }
     }
 
     public abstract void Activate();
-    public abstract void Remove();
+    public abstract void OnRemove();
+
+    protected virtual void Remove()
+    {
+        target.RemoveEffect(this);
+        OnRemove();
+        transform.SetParent(null);
+        gameObject.SetActive(false);
+    }
+
+    public virtual bool IsSameType(GameObject effectPrefab)
+    {
+        return prefab == effectPrefab;
+    }
 
     private void OnDisable()
     {

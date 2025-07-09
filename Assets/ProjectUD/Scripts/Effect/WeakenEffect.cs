@@ -10,7 +10,7 @@ public class WeakenEffect : DurationEffect
         target.AddDamageTakenMult(damageTakenPercent);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddDamageTakenMult(-damageTakenPercent);
     }

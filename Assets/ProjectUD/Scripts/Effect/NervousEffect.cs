@@ -15,7 +15,7 @@ public class NervousEffect : StackEffect
         // 공포 효과 추가
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddAtkMult(-atkPercent * stack);
     }

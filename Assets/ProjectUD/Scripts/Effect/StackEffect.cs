@@ -10,12 +10,7 @@ public abstract class StackEffect : DurationEffect
     public override void Reapply(GameObject effectPrefab)
     {
         base.Reapply(effectPrefab);
-        stack = 0;
-    }
-
-    public override void Activate()
-    {
-        if(stack < maxStack)
+        if (stack < maxStack)
         {
             stack++;
             OnStack();
@@ -27,6 +22,19 @@ public abstract class StackEffect : DurationEffect
         }
     }
 
+    public override void Initialize(Unit target)
+    {
+        base.Initialize(target);
+        stack = 0;
+    }
+
+    public override void Activate()
+    {
+        stack++;
+        OnStack();
+    }
+
     protected abstract void OnStack();
+
     protected abstract void OnMaxStack();
 }

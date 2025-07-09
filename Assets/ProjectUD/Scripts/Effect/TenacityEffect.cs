@@ -10,7 +10,7 @@ public class TenacityEffect : DurationEffect
         target.AddAttackSpeedMult(attackSpeedPercent);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddAttackSpeedMult(-attackSpeedPercent);
     }

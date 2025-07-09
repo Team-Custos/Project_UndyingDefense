@@ -10,7 +10,7 @@ public class HasteEffect : DurationEffect
         target.AddMoveSpeedMult(moveSpeedPercent);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddMoveSpeedMult(-moveSpeedPercent);
     }

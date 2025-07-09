@@ -12,7 +12,7 @@ public class FearEffect : DurationEffect
         target.AddMental(mental);
     }
 
-    public override void Remove()
+    public override void OnRemove()
     {
         target.AddAtkMult(-atkPercent);
         target.AddMental(-mental);

@@ -7,6 +7,8 @@ public class BleedEffect : TickStackEffect
 
     private const float baseDamage = 1f;
 
+    public override void Activate() { }
+
     protected override void OnMaxStack()
     {
         // 과다 출혈 효과
@@ -17,5 +19,5 @@ public class BleedEffect : TickStackEffect
         target.TakeDamage(baseDamage + (damagePerStack * stack));
     }
 
-    public override void Remove() { }
+    public override void OnRemove() { }
 }
