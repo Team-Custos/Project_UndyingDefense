@@ -859,9 +859,9 @@ public class AllyUnit : Unit
 
     public override void Die()
     {
-        //navAgent.enabled = false;
-        //navObstacle.enabled = false;
-        //collider.enabled = false;
+        navAgent.enabled = false;
+        navObstacle.enabled = false;
+        collider.enabled = false;
 
         base.Die();
 

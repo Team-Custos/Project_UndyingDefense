@@ -8,10 +8,14 @@ using UnityEngine.UI;
 public class RosterButtonUI : MonoBehaviour
 {
     [SerializeField] private UnitData unitData;
+    private string unitId;
     [SerializeField] private Image unitImage;
     [SerializeField] private TextMeshProUGUI unitNameText;
     [SerializeField] private Sprite popupSprite;
     [SerializeField] private GameObject popUpPanel;
+    [SerializeField] private UnitDataLoader unitDataLoader;
+    private Unit unit;
+    private UnitStats unitStats;
 
 
     [Header("■ PopUp")]
@@ -38,25 +42,28 @@ public class RosterButtonUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sSkillText;
     [SerializeField] private TextMeshProUGUI sSkillInfoText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    
 
     private void Start()
     {
         unitImage.sprite = unitData.Icon;
         unitNameText.text = unitData.Name;
+
+        unit = unitData.Prefab.GetComponent<Unit>();
+        unitId = unit.UnitId;
+        unitStats = unitDataLoader.GetUnitDataById(unitId, unit);
     }
 
     public void UpdatePopUpInfo()
     {
-        //unitData = this.unitData;
-
         nameText.text = unitData.Name;
 
         popupImage.sprite = popupSprite;
 
         SetUnitTierImage(unitData.Tier);
 
-        //hp.fillAmount = unitData.MaxHp / 500f;
-        //hpText.text = $"{unitData.MaxHp}";
+        hp.fillAmount = unitStats.maxHp / 500f;
+        hpText.text = $"{unitStats.maxHp}";
 
         attackTypeImage.sprite = unitData.AtTypeIcon;
         //attackTypeText.text = unitData.AttackType;
@@ -66,11 +73,11 @@ public class RosterButtonUI : MonoBehaviour
         defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
         defenseTypeInfoText.text = GetDefenseTypeInfo(unitData); //.ArmorType.ToString();
 
-        //crtiText.text = "치명타율 : " + unitData.CritChance;
-        //moveSpeedText.text = "이동속도 : " + unitData.MoveSpeed;
-        //attackSpeedText.text = "공격속도 : " + unitData.AttackSpeed;
-        //mentalText.text = "정신력 : " + unitData.Mental;
-        //attackRangeText.text = "공격범위 : " + unitData.AttackRange/2 + "칸";
+        crtiText.text = "치명타율 : " + unitStats.critChance;
+        moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed;
+        attackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+        mentalText.text = "정신력 : " + unitStats.mental;
+        attackRangeText.text = "공격범위 : " + unitStats.attackRange/2 + "칸";
 
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
