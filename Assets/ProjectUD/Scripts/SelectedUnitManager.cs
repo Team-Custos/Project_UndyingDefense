@@ -157,6 +157,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                             if(selectedUnit != null && selectedUnit is AllyUnit)
                             {
                                 selectedUnit.IsSelected = false;
+                                selectedUnit.SetUnitUI(null);
+                                selectedUnit.SetSelectedUnit(null);
                                 selectedUnit = null;
                                 unitSelectUI.HideAllyUI();
                                 unitSelectUI.HideHp();
@@ -263,7 +265,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
         SoundManager.Instance.PlayUIClickSFX();
 
-        selectedAllyUnit.Upgrade(index);
+        selectedAllyUnit.RequestUpgrade(index);
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnRightClickTarget = this;
@@ -408,7 +410,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         if (selectedUnit != null)
         {
             selectedUnit.IsSelected = false;
-            selectedUnit = null;
+            selectedUnit.SetUnitUI(null);
+            selectedUnit.SetSelectedUnit(null);
             unitSelectUI.HideAllyUI();
             unitSelectUI.HideHp();
             unitSelectUI.OffUpgradeUI();

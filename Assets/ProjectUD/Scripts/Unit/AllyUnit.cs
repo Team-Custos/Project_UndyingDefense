@@ -453,6 +453,7 @@ public class AllyUnit : Unit
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
                        && !isMoving)
                     {
+
                         SkillBase skill = GetAvailableSkill();
                         if(skill != null)
                         {
@@ -466,6 +467,14 @@ public class AllyUnit : Unit
                                     {
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                         {
+                                            //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+
+                                            //Debug.Log(dist);
+
+                                            //if (dist > UnitStats.attackRange)
+                                            //    return;
+                                            
+
                                             ActivateSkill(skill, targetUnit);
 
                                             if (stateDurationCheck >= stateDuration)
@@ -493,8 +502,10 @@ public class AllyUnit : Unit
                             }
                         }
 
+
                         if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
                         {
+                            // 공격 범위 내에 적이 있으면 코드 종료
                             return;
                         }
 
@@ -674,13 +685,28 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (previousMode == Mode.FREE)
+                        // 새 유닛 생성 & 교체
+                        if (requestedUpgradeIndex >= 0 && spawner != null)
                         {
-                            mode = Mode.FREE;
-                        }
-                        else if (previousMode == Mode.SEIGE)
-                        {
-                            mode = Mode.SEIGE;
+                            UnitData upgradeUnitData = data.UpgradeUnits[requestedUpgradeIndex];
+                            if (upgradeUnitData != null)
+                            {
+                                GameObject prefab = upgradeUnitData.Prefab;
+
+                                AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, previousMode, unitGrid.TargetTile);
+
+                                if (previousMode == Mode.FREE)
+                                    upgradedUnit.ChangeMode(Mode.FREE);
+                                else if (previousMode == Mode.SEIGE)
+                                    upgradedUnit.ChangeMode(Mode.SEIGE);
+                            }
+
+                            
+
+                            pool.Pool.Release(this);
+                            gameObject.SetActive(false);
+
+                            requestedUpgradeIndex = -1;
                         }
 
                         upgradeDuraiton = 3.0f;
@@ -691,8 +717,28 @@ public class AllyUnit : Unit
                             selectedUnitUI.ShowAllyUI(this);
                             selectedUnitUI.HideUnitDuration();
                         }
-                            
                     }
+                    //else
+                    //{
+                    //    if (previousMode == Mode.FREE)
+                    //    {
+                    //        mode = Mode.FREE;
+                    //    }
+                    //    else if (previousMode == Mode.SEIGE)
+                    //    {
+                    //        mode = Mode.SEIGE;
+                    //    }
+
+                    //    upgradeDuraiton = 3.0f;
+                    //    previousMode = mode;
+
+                    //    if (selectedUnitUI != null && isSelected)
+                    //    {
+                    //        selectedUnitUI.ShowAllyUI(this);
+                    //        selectedUnitUI.HideUnitDuration();
+                    //    }
+
+                    //}
                 }
 
                 break;
@@ -857,6 +903,21 @@ public class AllyUnit : Unit
         // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
     }
 
+    private int requestedUpgradeIndex = -1;
+
+    public void RequestUpgrade(int index)
+    {
+        requestedUpgradeIndex = index;
+        mode = Mode.UPGRADE;
+        state = State.IDLE;
+
+        upgradeDuraiton = 3.0f;
+        if (selectedUnitUI != null)
+        {
+            selectedUnitUI.ShowUnitDurtion(0f);
+        }
+    }
+
     public override void Die()
     {
         navAgent.enabled = false;
@@ -910,7 +971,7 @@ public class AllyUnit : Unit
         }
     }
 
-    
-    
+
+   
 
 }
