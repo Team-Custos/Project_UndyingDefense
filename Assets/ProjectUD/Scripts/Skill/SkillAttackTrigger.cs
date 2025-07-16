@@ -90,8 +90,15 @@ public class SkillAttackTrigger : MonoBehaviour
             if (data.InduseEffectPrefab != null)
             {
                 target.AddEffect(data.InduseEffectPrefab);
+                Debug.Log("상태 적용");
             }
         }
+        else
+        {
+            Debug.Log(111);
+        }
+        
+        
     }
 
     private bool IsBlocked(ArmorType armorType)

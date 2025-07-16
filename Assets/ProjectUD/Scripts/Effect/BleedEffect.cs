@@ -12,7 +12,7 @@ public class BleedEffect : TickStackEffect
 
     public override void Activate() 
     {
-        OnTick();
+        //OnTick();
         Vfx.SetActive(true);
     }
 
@@ -24,6 +24,8 @@ public class BleedEffect : TickStackEffect
     protected override void OnTick()
     {
         target.TakeDamage(baseDamage + (damagePerStack * stack));
+        float a = baseDamage + (damagePerStack * stack);
+        Debug.Log("스텍 :" + stack + ", 피해 :" + a);
     }
 
     public override void OnRemove()

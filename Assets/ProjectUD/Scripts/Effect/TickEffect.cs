@@ -13,7 +13,10 @@ public abstract class TickEffect : DurationEffect
         if (tickTimeCheck >= tickTime)
         {
             tickTimeCheck -= tickTime;
+            
             OnTick();
+            Debug.Log("aa");
+            
         }
 
         base.Update();
