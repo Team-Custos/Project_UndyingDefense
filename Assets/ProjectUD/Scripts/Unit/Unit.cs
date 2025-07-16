@@ -1188,7 +1188,7 @@ public abstract class Unit : MonoBehaviour
     }
     public void AddBlockPercent(float percent)
     {
-        blockPercent += percent;
+        blockPercent += percent * 0.01f;    // 단위 수정_AYO
     }
 
     public void AddAttackSpeed(float speed)
