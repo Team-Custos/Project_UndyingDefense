@@ -5,9 +5,16 @@ public class BleedEffect : TickStackEffect
     [Header("■ Bleed Options")]
     [SerializeField] private float damagePerStack;
 
+    [Header("■ VFX")]
+    [SerializeField] private GameObject Vfx;
+
     private const float baseDamage = 1f;
 
-    public override void Activate() { }
+    public override void Activate() 
+    {
+        OnTick();
+        Vfx.SetActive(true);
+    }
 
     protected override void OnMaxStack()
     {
@@ -19,5 +26,8 @@ public class BleedEffect : TickStackEffect
         target.TakeDamage(baseDamage + (damagePerStack * stack));
     }
 
-    public override void OnRemove() { }
+    public override void OnRemove()
+    {
+        Vfx.SetActive(false);
+    }
 }

@@ -875,33 +875,33 @@ public class AllyUnit : Unit
             selectedUnitUI.HideAllyUI();
     }
 
-    public void Upgrade(int index)
-    {
-        if (data.UpgradeUnits.Length <= 0)
-        {
-            Debug.Log("데이터가 없습니다.");
-            return;
-        }
-        else
-        {
-            UnitData upgradeUnitData = data.UpgradeUnits[index];
-            if (data.UpgradeUnits[index] == null)
-                return;
+    //public void Upgrade(int index)
+    //{
+    //    if (data.UpgradeUnits.Length <= 0)
+    //    {
+    //        Debug.Log("데이터가 없습니다.");
+    //        return;
+    //    }
+    //    else
+    //    {
+    //        UnitData upgradeUnitData = data.UpgradeUnits[index];
+    //        if (data.UpgradeUnits[index] == null)
+    //            return;
 
-            selectedUnitUI.HideAllyUI();
+    //        selectedUnitUI.HideAllyUI();
 
-            GameObject obj = upgradeUnitData.Prefab;
-            spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode, unitGrid.TargetTile);
+    //        GameObject obj = upgradeUnitData.Prefab;
+    //        spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, this.transform, this.mode, unitGrid.TargetTile);
 
-            pool.Pool.Release(this);
-            gameObject.SetActive(false);
+    //        pool.Pool.Release(this);
+    //        gameObject.SetActive(false);
 
-        }
+    //    }
 
 
-        // 새 유닛 데이터를 가져와 스포너 방식의 풀로
-        // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
-    }
+    //    // 새 유닛 데이터를 가져와 스포너 방식의 풀로
+    //    // 프리팹 데이터를 가져옴, 기존 유닛 반환후 새 유닛생성, 생성된 유닛으로 풀 생성 -> 키 : 프리팹 , 벨류 allyunit 
+    //}
 
     private int requestedUpgradeIndex = -1;
 
