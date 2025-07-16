@@ -321,10 +321,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 {
                     ingameScreenUI.ShowError("군자금이 모자랍니다!");
                     return;
-                    //CancelSpawn();
-                    //inputMng.OnESCTarget = inGameManager;
-                    //inputMng.OnRightClickTarget = selectedUnitManager;
-                    //inputMng.OnClickTarget = selectedUnitManager;
                 }
 
                 unit.SetUnitDataLoader(unitDataLoader);
@@ -369,15 +365,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 inGameManager.SetGold(allyUnitData.Cost, false);
                 ingameScreenUI.SetspawnBtnPriceTextColor();
-
-                if (inGameManager.inGameGold < allyUnitData.Cost)
-                {
-                    ingameScreenUI.ShowError("군자금이 모자랍니다!");
-                    //CancelSpawn();
-                    //inputMng.OnESCTarget = inGameManager;
-                    //inputMng.OnRightClickTarget = selectedUnitManager;
-                    //inputMng.OnClickTarget = selectedUnitManager;
-                }
                     
             }
         }
