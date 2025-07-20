@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class IgniteEffect : TickStackEffect
@@ -5,16 +6,30 @@ public class IgniteEffect : TickStackEffect
     [Header("■ Ignite Options")]
     [SerializeField] private float damagePerStack;
 
+    [Header("■ VFX")]
+    [SerializeField] private GameObject Vfx;
+    [SerializeField] private GameObject infernoVfx;
+
+    [SerializeField] private InfernoEffect infernoEffect;
+
+
     protected override void OnMaxStack()
     {
-        // 작열 효과
+        infernoEffect.Activate();
+        target.AddEffect(infernoVfx);
     }
 
-    public override void Activate() { }
+    public override void Activate() 
+    {
+        Vfx.SetActive(true);
+    }
     protected override void OnTick()
     {
-        target.TakeDamage(damagePerStack * stack);
+        target.TakeDamage(damagePerStack);
     }
 
-    public override void OnRemove() { }
+    public override void OnRemove() 
+    {
+        Vfx.SetActive(false);
+    }
 }

@@ -247,6 +247,7 @@ public class AttackSkill : SkillBase
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
+            Debug.Log(calcDamage);
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);

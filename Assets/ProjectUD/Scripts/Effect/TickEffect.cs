@@ -15,8 +15,6 @@ public abstract class TickEffect : DurationEffect
             tickTimeCheck -= tickTime;
             
             OnTick();
-            Debug.Log("aa");
-            
         }
 
         base.Update();

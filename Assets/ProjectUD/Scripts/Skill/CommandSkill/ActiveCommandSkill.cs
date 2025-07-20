@@ -62,10 +62,12 @@ public class ActiveCommandSkill : CommandSkill
         trigger.SetTriggerType(AttackTriggerType.Box);
         trigger.SetArea(AreaX, AreaY, AreaZ);
 
+
     }
 
     public void Attack(Unit target)
     {
+
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))

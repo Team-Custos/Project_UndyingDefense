@@ -7,6 +7,7 @@ public class BleedEffect : TickStackEffect
 
     [Header("■ VFX")]
     [SerializeField] private GameObject Vfx;
+    [SerializeField] private GameObject overBleedVfx;
 
     private const float baseDamage = 1f;
 
@@ -19,6 +20,8 @@ public class BleedEffect : TickStackEffect
     protected override void OnMaxStack()
     {
         // 과다 출혈 효과
+        target.AddImmediateEffect(overBleedVfx);
+        target.TakeDamage(20); 
     }
 
     protected override void OnTick()
