@@ -1023,15 +1023,15 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void ForceMoveTo(Vector3 pos)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled)
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled)
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
 
         //if (navAgent.CalculatePath(pos, path))
-        if (navAgent.CalculatePath(pos, path))
+        if (NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path))
         {
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
@@ -1043,30 +1043,30 @@ public abstract class Unit : MonoBehaviour
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public virtual void MoveTo(Unit target)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
 
         Vector3 startDir = (transform.position - target.transform.position).normalized;
         for (float i = 0f; i < 6f; i++)
         {
             Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
             Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-            navAgent.CalculatePath(targetPos, path);
-            //NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, path);
+            //navAgent.CalculatePath(targetPos, path);
+            NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
             if (path.status == NavMeshPathStatus.PathComplete)
             { 
                 if (navAgent.isStopped)
@@ -1080,12 +1080,12 @@ public abstract class Unit : MonoBehaviour
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public void LookAt(Vector3 pos)
