@@ -24,7 +24,7 @@ public abstract class TickStackEffect : TickEffect
     public override void Initialize(Unit target)
     {
         base.Initialize(target);
-        stack = 0;
+        stack = 1;
     }
 
     public override void Activate()

@@ -15,6 +15,7 @@ public class ActiveCommandSkillData : CommandSkillData
     [SerializeField] protected GameObject induseEffectPrefab;
     [SerializeField] protected float induseEffectSuccessRate;
 
+    [SerializeField] private GameObject critEffectPrefab;
 
     public float Damage => damage;
     public AttackType AttackType => attackType;
@@ -22,4 +23,5 @@ public class ActiveCommandSkillData : CommandSkillData
     public GameObject AttackTrigger => attackTrigger;
     public GameObject InduseEffectPrefab => induseEffectPrefab;
     public float InduseEffectSuccessRate => induseEffectSuccessRate;
+    public GameObject CritEffectPrefab => critEffectPrefab;
 }
