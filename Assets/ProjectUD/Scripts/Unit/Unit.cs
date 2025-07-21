@@ -1266,6 +1266,7 @@ public abstract class Unit : MonoBehaviour
     public void RemoveEffect(DurationEffect effect)
     {
         effectList.Remove(effect);
+        UpdateState();
     }
 
     public void AddVFX(ParticleSystem VFX)

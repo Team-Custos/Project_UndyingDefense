@@ -58,7 +58,10 @@ MonoBehaviour:
   damage: 8
   igniteEffect: {fileID: 3099222559418409559, guid: 1d67be841e8b62a49ba48e257c12ad90,
     type: 3}
-  Vfx: {fileID: 1041660720878291270}
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  vfx: {fileID: 264433529073477998, guid: 1887a9c4faa07b543b3a8bbfc438be39, type: 3}
 --- !u!114 &4265159661407975170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,12 +303,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1887a9c4faa07b543b3a8bbfc438be39, type: 3}
---- !u!1 &1041660720878291270 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 264433529073477998, guid: 1887a9c4faa07b543b3a8bbfc438be39,
-    type: 3}
-  m_PrefabInstance: {fileID: 999741997890478120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7559466736919521368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7293389375951669360, guid: 1887a9c4faa07b543b3a8bbfc438be39,

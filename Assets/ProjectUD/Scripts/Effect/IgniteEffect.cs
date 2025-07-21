@@ -16,6 +16,7 @@ public class IgniteEffect : TickStackEffect
     protected override void OnMaxStack()
     {
         infernoEffect.Activate();
+        SetCaster(target);
         target.AddEffect(infernoVfx);
     }
 

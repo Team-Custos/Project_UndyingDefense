@@ -38,7 +38,7 @@ public class UnitStateUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Vector3 offset = new Vector3(0, yPos, 0); // 원하는 offset
         unitStatePanelRectTransform.position = iconWorldPos + offset;
 
-        // ShowUnitState(effect);
+         ShowUnitState(effect);
 
     }
 
