@@ -1251,6 +1251,7 @@ public abstract class Unit : MonoBehaviour
         else //맨 처음 효과 오브젝트가 추가될 때.
         {
             DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
+
             effect.transform.SetParent(effectParent);
             effect.transform.localPosition = Vector3.zero;
             effect.Initialize(this);
@@ -1261,6 +1262,18 @@ public abstract class Unit : MonoBehaviour
         }
 
         UpdateState();
+    }
+
+    public bool HasEffect<T>() where T : DurationEffect // 상위 이펙트가 적용되어있는지 확인
+    {
+        foreach (var effect in effectList)
+        {
+            if (effect is T)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void RemoveEffect(DurationEffect effect)

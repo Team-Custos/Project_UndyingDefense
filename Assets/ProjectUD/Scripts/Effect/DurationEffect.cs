@@ -17,6 +17,7 @@ public abstract class DurationEffect : MonoBehaviour
     protected Unit target;
     protected ObjectPoolWithList<DurationEffect> pool;
 
+    public string Id => id;
     public string Name => effectName;
     public string Description => description;
     public GameObject Prefab => prefab;

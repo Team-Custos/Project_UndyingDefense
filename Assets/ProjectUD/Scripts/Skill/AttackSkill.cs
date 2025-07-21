@@ -301,6 +301,13 @@ public class AttackSkill : SkillBase
         //        break;
         //}
 
+        if (target.HasEffect<StunEffect>())
+        {
+            Debug.Log("Stun 적용중");
+            return;
+        }
+            
+
         target.AddEffect(data.Info.CritEffectPrefab);
     }
 
