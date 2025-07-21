@@ -15,6 +15,7 @@ public class CommandSkillData : ScriptableObject
     [SerializeField] private Sprite icon;
     [SerializeField] private TargetType targetType;
 
+
     public string Name => name;
     public string Description => description;
     public float CoolTime => coolTime;
@@ -23,6 +24,5 @@ public class CommandSkillData : ScriptableObject
     public ParticleSystem StartVFX => startVFX;
     public ParticleSystem LoopVFX => loopVFX;
     public Sprite Icon => icon;
-
     public TargetType TargetType => targetType;
 }

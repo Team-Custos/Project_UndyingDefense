@@ -32,6 +32,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     private AttackTriggerType triggerType;
 
+    [SerializeField] private IgniteEffect IgniteEffect;
+
     public void SetTriggerType(AttackTriggerType Type)
     {
         triggerType = Type;
@@ -169,6 +171,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(target);
+
+                
             }
         }
     }
@@ -186,6 +190,11 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(target);
+
+                if (data.CritEffectPrefab != null)
+                {
+                    target.AddEffect(data.CritEffectPrefab);
+                }
             }
         }
     }

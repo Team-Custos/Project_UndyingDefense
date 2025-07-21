@@ -13,6 +13,7 @@ public abstract class TickEffect : DurationEffect
         if (tickTimeCheck >= tickTime)
         {
             tickTimeCheck -= tickTime;
+            
             OnTick();
         }
 

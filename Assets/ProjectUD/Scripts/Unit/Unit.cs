@@ -1143,6 +1143,11 @@ public abstract class Unit : MonoBehaviour
     {
         hp -= Damage;
 
+        if(this is EnemyUnit)
+        {
+            //Debug.Log(Damage);
+        }
+
         if (hp <= 0)
         {
             hp = 0f;
@@ -1245,6 +1250,16 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveStun()
     {
         modelAnimator.SetBool("isStun", false);
+    }
+
+    public void AddImmediateEffect(GameObject effectPrefab)
+    {
+        DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
+        effect.transform.SetParent(effectParent);
+        effect.transform.localPosition = Vector3.zero;
+        effect.Initialize(this);
+        //effect.Activate();
+        effect.gameObject.SetActive(true);
     }
 
     public void AddEffect(GameObject effectPrefab)
