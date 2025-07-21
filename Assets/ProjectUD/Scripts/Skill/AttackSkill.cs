@@ -15,9 +15,9 @@ public class AttackSkill : SkillBase
     //protected static Effect pierceCritEffect;
     //protected static Effect crushCritEffect;
 
-    //protected static ParticleSystem slashHitVFX;
-    //protected static ParticleSystem pierceHitVFX;
-    //protected static ParticleSystem crushHitVFX;
+    protected static ParticleSystem slashHitVFX;
+    protected static ParticleSystem pierceHitVFX;
+    protected static ParticleSystem crushHitVFX;
     //protected static ParticleSystem slashCritVFX;
     //protected static ParticleSystem pierceCritVFX;
     //protected static ParticleSystem crushCritVFX;
@@ -55,40 +55,40 @@ public class AttackSkill : SkillBase
     //    }
     //}
 
+    //------------------------------------------------------------------------------------------------------------------------
+    protected static ParticleSystem SlashHitVFX
+    {
+        get
+        {
+            if (slashHitVFX == null)
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem SlashHitVFX
-    //{
-    //    get
-    //    {
-    //        if (slashHitVFX == null)
-    //            slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
+            return slashHitVFX;
+        }
+    }
 
-    //        return slashHitVFX;
-    //    }
-    //}
+    protected static ParticleSystem PierceHitVFX
+    {
+        get
+        {
+            if (pierceHitVFX == null)
+                pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem PierceHitVFX
-    //{
-    //    get
-    //    {
-    //        if (pierceHitVFX == null)
-    //            pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+            return pierceHitVFX;
+        }
+    }
 
-    //        return pierceHitVFX;
-    //    }
-    //}
+    protected static ParticleSystem CrushHitVFX
+    {
+        get
+        {
+            if (crushHitVFX == null)
+                crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem CrushHitVFX
-    //{
-    //    get
-    //    {
-    //        if (crushHitVFX == null)
-    //            crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
-
-    //        return crushHitVFX;
-    //    }
-    //}
-
+            return crushHitVFX;
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------
     //protected static ParticleSystem SlashCritVFX
     //{
     //    get
