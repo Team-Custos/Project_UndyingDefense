@@ -178,7 +178,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                             //    return;
                             //}
 
-                            selectedAllyUnit.DestinationPosition = hit.point;
+                            //selectedAllyUnit.DestinationPosition = hit.point;
+                            selectedAllyUnit.SetDestination(hit.point);
                             mouseIndicatorParticle.gameObject.SetActive(true);
                             mouseIndicatorParticle.Play();
                             mouseIndicatorParticle.transform.position = hit.point;

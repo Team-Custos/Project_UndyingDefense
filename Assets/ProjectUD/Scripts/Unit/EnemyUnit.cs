@@ -153,7 +153,7 @@ public class EnemyUnit : Unit
                     {
                         if (navAgent.enabled)
                         {
-                            navAgent.enabled = false;
+                            SetNavMeshAgentEnabled(false);
                             modelAnimator.SetBool("isRunning", false);
                         }
 
@@ -199,13 +199,8 @@ public class EnemyUnit : Unit
                 {
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        if (navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
-                        }
-
                         state = State.IDLE;
+                        SetNavMeshAgentEnabled(false);
                         modelAnimator.SetBool("isRunning", false);
                     }
 
@@ -250,20 +245,21 @@ public class EnemyUnit : Unit
                         }
                         else
                         {
-                            if (navAgent.enabled)
-                            {
-                                targetUnit = SearchTarget(UnitStats.sightRange);
-                            }
-                            else
-                            {
-                                navObstacle.enabled = false;
-                                navAgent.enabled = true;
+                            targetUnit = SearchTarget(UnitStats.sightRange);
+                            //if (navAgent.enabled)
+                            //{
+                            //    targetUnit = SearchTarget(UnitStats.sightRange);
+                            //}
+                            //else
+                            //{
+                            //    //navObstacle.enabled = false;
+                            //    //navAgent.enabled = true;
 
-                                targetUnit = SearchTarget(UnitStats.sightRange);
+                            //    targetUnit = SearchTarget(UnitStats.sightRange);
 
-                                navAgent.enabled = false;
-                                navObstacle.enabled = true;
-                            }
+                            //    //navAgent.enabled = false;
+                            //    //navObstacle.enabled = true;
+                            //}
                         }
 
                         if (targetUnit != null)

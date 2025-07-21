@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -77,11 +78,7 @@ public class AllyUnit : Unit
         }
     }
 
-    public Vector3 DestinationPosition
-    {
-        get => destinationPosition;
-        set => destinationPosition = value;
-    }
+    public Vector3 DestinationPosition => destinationPosition;
 
 
     public override void Initialize()
@@ -140,48 +137,58 @@ public class AllyUnit : Unit
             case State.SPECIALSKILL:
             case State.DEAD:
                 {
-                    if(state != State.DEAD)
+                    switch(state)
                     {
-                        if (navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            modelAnimator.SetBool("isRunning", false);
-                        }
-
-                        if (!navObstacle.enabled)
-                            navObstacle.enabled = true;
-                    }
-
-                    if (state == State.SPECIALSKILL)
-                    {
-                        if(targetUnit != null)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetSpecialSkill();
-                        //Debug.Log("Special Skill " + skill + "사용");
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skill.AnimationStateTime)
+                        case State.GENERALSKILL:
                             {
-                                base.ActivateSkill(skill, targetUnit);
+                                LookAt(targetUnit.transform.position);
                             }
-                        }
+                            break;
                     }
 
-                    if (state == State.GENERALSKILL)
-                    {
-                        if(targetUnit != null)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetGeneralSkill();
+                    #region 250721_기존 코드
+                    //if(state != State.DEAD)
+                    //{
+                    //    if (navAgent.enabled)
+                    //    {
+                    //        navAgent.enabled = false;
+                    //        modelAnimator.SetBool("isRunning", false);
+                    //    }
 
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skill.AnimationStateTime)
-                            {
-                                base.ActivateSkill(skill, targetUnit);
-                            }
-                        }
-                    }
+                    //    if (!navObstacle.enabled)
+                    //        navObstacle.enabled = true;
+                    //}
 
+                    //if (state == State.SPECIALSKILL)
+                    //{
+                    //    if(targetUnit != null)
+                    //        LookAt(targetUnit.transform.position);
+                    //    SkillBase skill = GetSpecialSkill();
+                    //    //Debug.Log("Special Skill " + skill + "사용");
+                    //    if (skill != null)
+                    //    {
+                    //        if (stateDurationCheck >= skill.AnimationStateTime)
+                    //        {
+                    //            base.ActivateSkill(skill, targetUnit);
+                    //        }
+                    //    }
+                    //}
+
+                    //if (state == State.GENERALSKILL)
+                    //{
+                    //    if(targetUnit != null)
+                    //        LookAt(targetUnit.transform.position);
+                    //    SkillBase skill = GetGeneralSkill();
+
+                    //    if (skill != null)
+                    //    {
+                    //        if (stateDurationCheck >= skill.AnimationStateTime)
+                    //        {
+                    //            base.ActivateSkill(skill, targetUnit);
+                    //        }
+                    //    }
+                    //}
+                    #endregion
 
                     if (stateDuration <= 0f)
                         return;
@@ -209,6 +216,8 @@ public class AllyUnit : Unit
                 {
                     if (mode == Mode.CHANGE)
                     {
+                        SetNavMeshAgentEnabled(false);
+
                         modelAnimator.SetBool("isRunning", false);
                         navAgent.enabled = false;
                     }
@@ -220,10 +229,9 @@ public class AllyUnit : Unit
                             modelAnimator.SetBool("isRunning", true);
                         }
                         
+                        // 250721_JK : 왜 Spawner가 회전을 시키는지?
                         if(spawner != null && targetUnit == null)
                             spawner.ResetAllyUnitRotation(this);
-
-
                     }
 
                     UpdateMode();
@@ -233,11 +241,13 @@ public class AllyUnit : Unit
                 {
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        if(navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
-                        }
+                        SetNavMeshAgentEnabled(false);
+
+                        //if(navAgent.enabled)
+                        //{
+                        //    navAgent.enabled = false;
+                        //    navObstacle.enabled = true;
+                        //}
 
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
@@ -381,7 +391,6 @@ public class AllyUnit : Unit
                                                 modelAnimator.SetBool("isRunning", false);
                                             }
 
-
                                             ActivateSkill(skill, targetUnit);
 
                                             //modelAnimator.SetTrigger("GeneralSkill");
@@ -524,12 +533,12 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        bool navAgentEnabled = navAgent.enabled;
-                        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        {
-                            navObstacle.enabled = false;
-                            navAgent.enabled = true;
-                        }
+                        //bool navAgentEnabled = navAgent.enabled;
+                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+                        //{
+                        //    navObstacle.enabled = false;
+                        //    navAgent.enabled = true;
+                        //}
 
                         targetUnit = SearchReachableTarget(UnitStats.sightRange);
 
@@ -554,9 +563,7 @@ public class AllyUnit : Unit
                             if (targetTile != null)
                             {
                                 transform.position = targetTile.transform.position;
-                                navObstacle.enabled = true;
-
-                                navAgent.enabled = false;
+                                SetNavMeshAgentEnabled(false);
                             }
                             else
                             {
@@ -923,6 +930,7 @@ public class AllyUnit : Unit
         navAgent.enabled = false;
         navObstacle.enabled = false;
         collider.enabled = false;
+        navMeshAgentState = NavMeshAgentState.DISABLED;
 
         base.Die();
 
@@ -971,7 +979,10 @@ public class AllyUnit : Unit
         }
     }
 
-
+    public void SetDestination(Vector3 pos)
+    {
+        destinationPosition = pos;
+    }
    
 
 }

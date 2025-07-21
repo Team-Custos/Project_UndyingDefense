@@ -402,8 +402,9 @@ public abstract class Unit : MonoBehaviour
 
     private float lastMoveTime;
 
-    protected NavMeshPath path = new NavMeshPath(); // 경로 설정용
-    protected NavMeshPath pathForSearch = new NavMeshPath(); // 경로 탐색용
+    protected bool hasMoveCommand;
+    protected NavMeshPath path; // 경로 설정용
+    protected NavMeshPath pathForSearch; // 경로 탐색용
 
     protected float stateDuration;
     protected float stateDurationCheck;
@@ -456,9 +457,6 @@ public abstract class Unit : MonoBehaviour
     protected static AudioClip crushCritSFX;
 
     protected static GameObject unitDeathVFX;
-
-
-
     protected static AudioClip[] SlashHitSFX
     {
         get
@@ -531,11 +529,11 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Initialize()
     {
-        //if (path == null)
-        //    path = new NavMeshPath();
+        if (path == null)
+            path = new NavMeshPath();
 
-        //if (pathForSearch == null)
-        //    pathForSearch = new NavMeshPath();
+        if (pathForSearch == null)
+            pathForSearch = new NavMeshPath();
 
         //hp = Data.MaxHp;
         //critChance = Data.CritChance;
@@ -567,7 +565,6 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
 
-        
         navAgent.speed = unitStats.moveSpeed * moveSpeedMult;
         attackSpeed = unitStats.attackSpeed;
 
@@ -580,7 +577,10 @@ public abstract class Unit : MonoBehaviour
             return;
 
         if(enabled)
+        {
             navMeshAgentState = NavMeshAgentState.PROCESSING;
+            navObstacle.enabled = false;
+        }
         else
         {
             navMeshAgentState = NavMeshAgentState.DISABLED;
@@ -642,6 +642,17 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Update()
     {
         PassiveSkillCheck();
+
+        // disable -> enable로 변경하는 과정.
+        if(navMeshAgentState == NavMeshAgentState.PROCESSING)
+        {
+            Vector3 pos = transform.position;
+            if(NavMesh.CalculatePath(pos, pos, navAgent.areaMask, path))
+            {
+                navMeshAgentState = NavMeshAgentState.ENABLED;
+                navAgent.enabled = true;
+            }
+        }
 
         //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
         //    lastMoveTime = Time.time;
@@ -991,6 +1002,7 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Vector3 pos)
     {
+        #region 250721_기존 코드
         //bool navAgentEnabled = navAgent.enabled;
         //if (!navAgentEnabled)
         //{
@@ -1000,17 +1012,17 @@ public abstract class Unit : MonoBehaviour
 
         // navAgent.CalculatePath(pos, path); // 경로 계산
 
-        NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path);
-        if (path.status == NavMeshPathStatus.PathComplete)
-        {
-            if (navAgent.isStopped)
-                navAgent.isStopped = false;
+        //NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path);
+        //if (path.status == NavMeshPathStatus.PathComplete)
+        //{
+        //    if (navAgent.isStopped)
+        //        navAgent.isStopped = false;
 
-            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
-            navAgent.SetPath(path);
-            lastMoveTime = Time.time;
-            return;
-        }
+        //    navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+        //    navAgent.SetPath(path);
+        //    lastMoveTime = Time.time;
+        //    return;
+        //}
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
         //if (!navAgentEnabled)
@@ -1019,10 +1031,31 @@ public abstract class Unit : MonoBehaviour
         //    navAgent.enabled = false;
         //    navObstacle.enabled = true;
         //}
+        #endregion
+
+        NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path);
+        if (path.status == NavMeshPathStatus.PathComplete)
+        {
+            if (navAgent.enabled)
+            {
+                if (navAgent.isStopped)
+                    navAgent.isStopped = false;
+
+                navAgent.SetPath(path);
+                lastMoveTime = Time.time;
+            }
+            else
+            {
+                SetNavMeshAgentEnabled(true);
+                navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+                hasMoveCommand = true;
+            }
+        }
     }
 
     public virtual void ForceMoveTo(Vector3 pos)
     {
+        #region 250721_기존 코드
         //bool navAgentEnabled = navAgent.enabled;
         //if (!navAgentEnabled)
         //{
@@ -1030,17 +1063,19 @@ public abstract class Unit : MonoBehaviour
         //    navAgent.enabled = true;
         //}
 
-        //if (navAgent.CalculatePath(pos, path))
-        if (NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path))
-        {
-            if (navAgent.isStopped)
-                navAgent.isStopped = false;
+        ////if (navAgent.CalculatePath(pos, path))
+        //if (NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path))
+        //{
+        //    // SetNavMeshAgentEnabled(true);
 
-            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
-            navAgent.SetPath(path);
-            lastMoveTime = Time.time;
-            return;
-        }
+        //    if (navAgent.isStopped)
+        //        navAgent.isStopped = false;
+
+        //    navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+        //    navAgent.SetPath(path);
+        //    lastMoveTime = Time.time;
+        //    return;
+        //}
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
         //if (!navAgentEnabled)
@@ -1049,16 +1084,61 @@ public abstract class Unit : MonoBehaviour
         //    navAgent.enabled = false;
         //    navObstacle.enabled = true;
         //}
+        #endregion
+
+        if (NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path))
+        {
+            if (navAgent.enabled)
+            {
+                navAgent.SetPath(path);
+                lastMoveTime = Time.time;
+            }
+            else
+            {
+                SetNavMeshAgentEnabled(true);
+                navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+                hasMoveCommand = true;
+            }
+        }
     }
 
     public virtual void MoveTo(Unit target)
     {
+        #region 250721_기존 코드
         //bool navAgentEnabled = navAgent.enabled;
         //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
         //{
         //    navObstacle.enabled = false;
         //    navAgent.enabled = true;
         //}
+
+        //Vector3 startDir = (transform.position - target.transform.position).normalized;
+        //for (float i = 0f; i < 6f; i++)
+        //{
+        //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
+        //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
+        //    //navAgent.CalculatePath(targetPos, path);
+        //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
+        //    if (path.status == NavMeshPathStatus.PathComplete)
+        //    { 
+        //        if (navAgent.isStopped)
+        //            navAgent.isStopped = false;
+
+        //        navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+        //        navAgent.SetPath(path);
+        //        lastMoveTime = Time.time;
+        //        return;
+        //    }
+        //}
+
+        // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
+        #endregion
 
         Vector3 startDir = (transform.position - target.transform.position).normalized;
         for (float i = 0f; i < 6f; i++)
@@ -1068,24 +1148,23 @@ public abstract class Unit : MonoBehaviour
             //navAgent.CalculatePath(targetPos, path);
             NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
             if (path.status == NavMeshPathStatus.PathComplete)
-            { 
-                if (navAgent.isStopped)
-                    navAgent.isStopped = false;
+            {
+                if (navAgent.enabled)
+                {
+                    if (navAgent.isStopped)
+                        navAgent.isStopped = false;
 
-                navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
-                navAgent.SetPath(path);
-                lastMoveTime = Time.time;
+                    navAgent.SetPath(path);
+                    lastMoveTime = Time.time;
+                }
+                else
+                {
+                    navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+                    hasMoveCommand = true;
+                }
                 return;
             }
         }
-
-        // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        //if (!navAgentEnabled)
-        //{
-        //    // 다시 비활성화 상태로 원상복구.
-        //    navAgent.enabled = false;
-        //    navObstacle.enabled = true;
-        //}
     }
 
     public void LookAt(Vector3 pos)
