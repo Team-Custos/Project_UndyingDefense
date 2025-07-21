@@ -262,12 +262,14 @@ public class AttackSkill : SkillBase
             // target.PlayCritSFX(data.Info.Type);
             AddCritVFX(unit, target);
             ActivateCriticalEffect(unit, target);
+            return;
         }
-        else
-        {
-            //target.PlayHitSFX(data.AttackType);
-            AddHitVFX(unit, target);
-        }
+        AddHitVFX(unit, target);
+        //else
+        //{
+        //    //target.PlayHitSFX(data.AttackType);
+        //    AddHitVFX(unit, target);
+        //}
         
         //if (data.InduseEffect != null)
         //{
@@ -321,6 +323,12 @@ public class AttackSkill : SkillBase
         //}
 
         // target.AddVFX(hitVFX, unit.transform.position);
+
+        GameObject hitVFX = data.Info.HitEffectPrefab;
+        if (hitVFX != null)
+        {
+            target.AddVFX(hitVFX);
+        }
     }
 
     private void AddCritVFX(Unit unit, Unit target)

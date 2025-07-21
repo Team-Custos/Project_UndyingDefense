@@ -13,8 +13,9 @@ public class AttackData : ScriptableObject
 
     [SerializeField] private AttackType type;
     [SerializeField] private GameObject critEffectPrefab;
-    [SerializeField] private GameObject hitEffetPrefab;
+    [SerializeField] private GameObject hitEffectPrefab;
 
     public AttackType Type => type;
     public GameObject CritEffectPrefab => critEffectPrefab;
+    public GameObject HitEffectPrefab => hitEffectPrefab;
 }

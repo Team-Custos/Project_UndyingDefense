@@ -1268,6 +1268,14 @@ public abstract class Unit : MonoBehaviour
         effectList.Remove(effect);
     }
 
+    public void AddVFX(GameObject effectPrefab)
+    {
+        GameObject VFXobj = Instantiate(effectPrefab.gameObject);
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+    }
+
     public void AddVFX(ParticleSystem VFX)
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
