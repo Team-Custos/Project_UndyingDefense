@@ -15,9 +15,9 @@ public class AttackSkill : SkillBase
     //protected static Effect pierceCritEffect;
     //protected static Effect crushCritEffect;
 
-    //protected static ParticleSystem slashHitVFX;
-    //protected static ParticleSystem pierceHitVFX;
-    //protected static ParticleSystem crushHitVFX;
+    protected static ParticleSystem slashHitVFX;
+    protected static ParticleSystem pierceHitVFX;
+    protected static ParticleSystem crushHitVFX;
     //protected static ParticleSystem slashCritVFX;
     //protected static ParticleSystem pierceCritVFX;
     //protected static ParticleSystem crushCritVFX;
@@ -55,40 +55,40 @@ public class AttackSkill : SkillBase
     //    }
     //}
 
+    //------------------------------------------------------------------------------------------------------------------------
+    protected static ParticleSystem SlashHitVFX
+    {
+        get
+        {
+            if (slashHitVFX == null)
+                slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem SlashHitVFX
-    //{
-    //    get
-    //    {
-    //        if (slashHitVFX == null)
-    //            slashHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashHit_New").GetComponent<ParticleSystem>();
+            return slashHitVFX;
+        }
+    }
 
-    //        return slashHitVFX;
-    //    }
-    //}
+    protected static ParticleSystem PierceHitVFX
+    {
+        get
+        {
+            if (pierceHitVFX == null)
+                pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem PierceHitVFX
-    //{
-    //    get
-    //    {
-    //        if (pierceHitVFX == null)
-    //            pierceHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceHit").GetComponent<ParticleSystem>();
+            return pierceHitVFX;
+        }
+    }
 
-    //        return pierceHitVFX;
-    //    }
-    //}
+    protected static ParticleSystem CrushHitVFX
+    {
+        get
+        {
+            if (crushHitVFX == null)
+                crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
 
-    //protected static ParticleSystem CrushHitVFX
-    //{
-    //    get
-    //    {
-    //        if (crushHitVFX == null)
-    //            crushHitVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushHit").GetComponent<ParticleSystem>();
-
-    //        return crushHitVFX;
-    //    }
-    //}
-
+            return crushHitVFX;
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------
     //protected static ParticleSystem SlashCritVFX
     //{
     //    get
@@ -247,7 +247,6 @@ public class AttackSkill : SkillBase
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
-            Debug.Log(calcDamage);
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);
@@ -257,6 +256,8 @@ public class AttackSkill : SkillBase
         //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
         target.TakeDamage(calcDamage);
+
+        Debug.Log(calcCrit);
         if (Random.Range(0f, 1f) <= calcCrit)
         {
             // target.PlayCritSFX(data.Info.Type);
@@ -264,10 +265,12 @@ public class AttackSkill : SkillBase
             ActivateCriticalEffect(unit, target);
         }
         else
-        {
-            //target.PlayHitSFX(data.AttackType);
             AddHitVFX(unit, target);
-        }
+        //else
+        //{
+        //    //target.PlayHitSFX(data.AttackType);
+        //    AddHitVFX(unit, target);
+        //}
         
         //if (data.InduseEffect != null)
         //{
@@ -287,6 +290,8 @@ public class AttackSkill : SkillBase
 
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
+        target.AddEffect(data.Info.CritEffectPrefab);
+
         //Effect critEffect = null;
         //switch(data.AttackType)
         //{
@@ -301,11 +306,29 @@ public class AttackSkill : SkillBase
         //        break;
         //}
 
+        //if (target.HasEffect<StunEffect>())
+        //{
+        //    Debug.Log("Stun 적용중");
+        //    return;
+        //}
+
         target.AddEffect(data.Info.CritEffectPrefab);
+    }
+
+    public void ProvokeUnits(Unit unit, Unit target)
+    {
+
     }
 
     private void AddHitVFX(Unit unit, Unit target)
     {
+        GameObject hitVFX = data.Info.HitVFX;
+        float effectduration = data.Info.VFXDuration;
+        if (hitVFX != null)
+        {
+            target.AddVFX(hitVFX, effectduration);
+        }
+
         //ParticleSystem hitVFX = null;
         //switch (data.AttackType)
         //{
@@ -325,6 +348,13 @@ public class AttackSkill : SkillBase
 
     private void AddCritVFX(Unit unit, Unit target)
     {
+        GameObject critVFX = data.Info.CritVFX;
+        float effectduration = data.Info.VFXDuration;
+        if (critVFX != null)
+        {
+            target.AddVFX(critVFX, effectduration);
+        }
+
         //ParticleSystem critVFX = null;
         //switch (data.AttackType)
         //{

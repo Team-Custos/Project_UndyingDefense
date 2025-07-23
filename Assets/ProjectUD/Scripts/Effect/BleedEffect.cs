@@ -28,7 +28,6 @@ public class BleedEffect : TickStackEffect
     {
         target.TakeDamage(baseDamage + (damagePerStack * stack));
         float a = baseDamage + (damagePerStack * stack);
-        Debug.Log("스텍 :" + stack + ", 피해 :" + a);
     }
 
     public override void OnRemove()

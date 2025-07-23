@@ -13,12 +13,15 @@ public abstract class DurationEffect : MonoBehaviour
 
     protected float durationCheck;      // 지속 시간을 체크하는 변수
     protected GameObject prefab;
+    protected Unit caster;      // 상태를 발동 시킨 유닛
     protected Unit target;
     protected ObjectPoolWithList<DurationEffect> pool;
 
+    public string Id => id;
     public string Name => effectName;
     public string Description => description;
     public GameObject Prefab => prefab;
+    public Sprite IconSprite => iconSprite;
 
     public void Initialize(GameObject prefab, ObjectPoolWithList<DurationEffect> pool)
     {
@@ -30,6 +33,11 @@ public abstract class DurationEffect : MonoBehaviour
     {
         this.target = target;
         durationCheck = 0f;
+    }
+
+    public virtual void SetCaster(Unit caster) // 상태를 발동 시킨 유닛을 설정하는 함수.
+    {
+        this.caster = caster;
     }
 
     public virtual void Reapply(GameObject effectPrefab) // 효과를 재적용하는 함수.

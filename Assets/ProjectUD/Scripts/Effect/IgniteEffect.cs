@@ -10,13 +10,21 @@ public class IgniteEffect : TickStackEffect
     [SerializeField] private GameObject Vfx;
     [SerializeField] private GameObject infernoVfx;
 
-    [SerializeField] private InfernoEffect infernoEffect;
 
 
     protected override void OnMaxStack()
     {
-        infernoEffect.Activate();
+        //if(!target.HasEffect<InfernoEffect>())
+        //{
+        //    target.AddEffect(infernoVfx);
+        //}
+
         target.AddEffect(infernoVfx);
+
+        //infernoEffect.Activate();
+        SetCaster(target);
+        
+        Remove();
     }
 
     public override void Activate() 
@@ -32,4 +40,10 @@ public class IgniteEffect : TickStackEffect
     {
         Vfx.SetActive(false);
     }
+
+    public override bool IsSameType(GameObject effectPrefab)
+    {
+        return prefab == effectPrefab || infernoVfx == effectPrefab;
+    }
+
 }

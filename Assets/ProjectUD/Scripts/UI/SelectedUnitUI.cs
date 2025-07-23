@@ -68,25 +68,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private TextMeshProUGUI defenseTypeText;
     [SerializeField] private TextMeshProUGUI defenseTypeInfoText;
 
-    // 상태 아이콘
-    [SerializeField] private Sprite bleedSprite;
-    [SerializeField] private Sprite painSprite;
-    [SerializeField] private Sprite shockSprite;
-    [SerializeField] private Sprite stunSprite;
-    [SerializeField] private Sprite trappedSprite;
-    [SerializeField] private Sprite fearSprite;
-    [SerializeField] private Sprite provokeSprite;
-    [SerializeField] private Sprite weakenSprite;
-    [SerializeField] private Sprite fastMoveSprite;
-    [SerializeField] private Sprite shrinkSprite;
-    [SerializeField] private Sprite burnSprite;
-    [SerializeField] private Sprite igniteSprite;
-    [SerializeField] private Sprite posionSprite;
-    [SerializeField] private Sprite focusSprite;
-    [SerializeField] private Sprite executeSprite;
-    [SerializeField] private Sprite defenseSprite;
-    [SerializeField] private Sprite fortitudeSprite;
-    [SerializeField] private Sprite crushSprite;
 
     [SerializeField] private GameObject allyUnitUI;
     [SerializeField] private GameObject enemyUnitUI;
@@ -336,6 +317,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         atSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
         atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unitStats.mental.ToString();
+
+        // 상태 이미지 끄기
+        for(int i = 0; i < unitStateImage.Length; i++)
+        {
+            unitStateImage[i].gameObject.SetActive(false);
+        }
     }
 
     public void UpdateUnitInfo(Unit unit)
@@ -489,35 +476,37 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         if (selecteUnitManger.SelectedUnit != null)
         {
             IReadOnlyList<DurationEffect> effects = selecteUnitManger.SelectedUnit.EffectList;
-            HashSet<Sprite> usedSprites = new HashSet<Sprite>();
+            //HashSet<Sprite> usedSprites = new HashSet<Sprite>();
             int imageIndex = 0;
 
             for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
             {
-                DurationEffect effect = effects[i];
-                Sprite sprite = GetSpriteForEffect(/*effect.Id*/ string.Empty);
+                unitStateImage[imageIndex].sprite = effects[imageIndex].IconSprite;
+                unitStateImage[imageIndex].gameObject.SetActive(true);
+                unitStateUIs[imageIndex].SetEffect(effects[imageIndex]);
+                imageIndex++;
 
-                if (sprite != null && !usedSprites.Contains(sprite))
-                {
-                    usedSprites.Add(sprite);
+                //if (sprite != null && !usedSprites.Contains(sprite))
+                //{
+                //    usedSprites.Add(sprite);
 
-                    // Sprite가 다르면 Sprite 업데이트
-                    if (unitStateImage[imageIndex].sprite != sprite)
-                    {
-                        unitStateImage[imageIndex].sprite = sprite;
-                    }
+                //    // Sprite가 다르면 Sprite 업데이트
+                //    if (unitStateImage[imageIndex].sprite != sprite)
+                //    {
+                //        unitStateImage[imageIndex].sprite = sprite;
+                //    }
 
-                    // 꺼져있으면 켜기
-                    if (!unitStateImage[imageIndex].gameObject.activeSelf)
-                    {
-                        unitStateImage[imageIndex].gameObject.SetActive(true);
-                    }
+                //    // 꺼져있으면 켜기
+                //    if (!unitStateImage[imageIndex].gameObject.activeSelf)
+                //    {
+                //        unitStateImage[imageIndex].gameObject.SetActive(true);
+                //    }
 
-                    // Effect도 갱신
-                    unitStateUIs[imageIndex].SetEffect(effect);
+                //    // Effect도 갱신
+                //    unitStateUIs[imageIndex].SetEffect(effect);
 
-                    imageIndex++;
-                }
+                //    imageIndex++;
+                //}
             }
 
             // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
@@ -528,35 +517,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
                     unitStateImage[i].gameObject.SetActive(false);
                 }
             }
-        }
-    }
-
-    // ID에 따라 스프라이트 결정
-    private Sprite GetSpriteForEffect(string id)
-    {
-        switch (id)
-        {
-            case "Bleed": return bleedSprite;
-            case "OverBleed": return bleedSprite;
-            case "Pain": return painSprite;
-            case "Shock": return shockSprite;
-            case "Stun": return stunSprite;
-            case "Trapped": return trappedSprite;
-            case "Fear": return fearSprite;
-            case "Provoke": return provokeSprite;
-            case "Weaken": return weakenSprite;
-            case "FastMove": return fastMoveSprite;
-            case "Shrink": return shrinkSprite;
-            case "Burn": return burnSprite;
-            case "Ignite": return igniteSprite;
-            case "Posion": return posionSprite;
-            case "Focus": return focusSprite;
-            case "Execute": return executeSprite;
-            case "Defense": return defenseSprite;
-            case "Fortitude": return fortitudeSprite;
-
-            default:
-                return null;
         }
     }
 

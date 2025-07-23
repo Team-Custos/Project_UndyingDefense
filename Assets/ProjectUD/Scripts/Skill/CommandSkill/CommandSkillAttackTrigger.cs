@@ -195,6 +195,14 @@ public class CommandSkillAttackTrigger : MonoBehaviour
                 {
                     target.AddEffect(data.CritEffectPrefab);
                 }
+                //if (target.HasEffect<InfernoEffect>())
+                //{
+                //    continue;
+                //}
+                //else
+                //{
+
+                //}
             }
         }
     }
@@ -216,10 +224,10 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         AddHitVFX(target);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
-            if (data.InduseEffectPrefab != null)
-            {
-                target.AddEffect(data.InduseEffectPrefab);
-            }
+            //if (data.InduseEffectPrefab != null)
+            //{
+            //    target.AddEffect(data.InduseEffectPrefab);
+            //}
         }
     }
 

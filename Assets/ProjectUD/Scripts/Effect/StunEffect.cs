@@ -16,6 +16,6 @@ public class StunEffect : DurationEffect
 
     public override bool IsSameType(GameObject effectPrefab)
     {
-        return prefab == effectPrefab || prefab == shockEffectPrefab;
+        return prefab == effectPrefab || shockEffectPrefab == effectPrefab;
     }
 }
