@@ -1288,11 +1288,20 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
+    public void AddVFX(GameObject effectPrefab, float duration)
+    {
+        GameObject VFXobj = Instantiate(effectPrefab.gameObject);
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.localPosition =  Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        Destroy(VFXobj, duration);
+    }
+
     public void AddVFX(ParticleSystem VFX)
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         Destroy(VFXobj, VFX.main.duration);
     }
@@ -1301,7 +1310,7 @@ public abstract class Unit : MonoBehaviour
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition = Vector3.zero + Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localPosition =  Vector3.up * VFXobj.transform.localPosition.y;
         if (LookPos != Vector3.zero)
         {
             VFXobj.transform.LookAt(LookPos);
