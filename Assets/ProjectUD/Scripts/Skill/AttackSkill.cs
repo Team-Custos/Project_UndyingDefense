@@ -262,9 +262,9 @@ public class AttackSkill : SkillBase
             // target.PlayCritSFX(data.Info.Type);
             AddCritVFX(unit, target);
             ActivateCriticalEffect(unit, target);
-            return;
         }
-        AddHitVFX(unit, target);
+        else
+            AddHitVFX(unit, target);
         //else
         //{
         //    //target.PlayHitSFX(data.AttackType);
@@ -289,6 +289,8 @@ public class AttackSkill : SkillBase
 
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
+        target.AddEffect(data.Info.CritEffectPrefab);
+
         //Effect critEffect = null;
         //switch(data.AttackType)
         //{
@@ -302,12 +304,17 @@ public class AttackSkill : SkillBase
         //        critEffect = CrushCritEffect;
         //        break;
         //}
-
-        target.AddEffect(data.Info.CritEffectPrefab);
     }
 
     private void AddHitVFX(Unit unit, Unit target)
     {
+        GameObject hitVFX = data.Info.HitVFX;
+        float effectduration = data.Info.VFXDuration;
+        if (hitVFX != null)
+        {
+            target.AddVFX(hitVFX, effectduration);
+        }
+
         //ParticleSystem hitVFX = null;
         //switch (data.AttackType)
         //{
@@ -323,16 +330,17 @@ public class AttackSkill : SkillBase
         //}
 
         // target.AddVFX(hitVFX, unit.transform.position);
-
-        GameObject hitVFX = data.Info.HitEffectPrefab;
-        if (hitVFX != null)
-        {
-            target.AddVFX(hitVFX);
-        }
     }
 
     private void AddCritVFX(Unit unit, Unit target)
     {
+        GameObject critVFX = data.Info.CritVFX;
+        float effectduration = data.Info.VFXDuration;
+        if (critVFX != null)
+        {
+            target.AddVFX(critVFX, effectduration);
+        }
+
         //ParticleSystem critVFX = null;
         //switch (data.AttackType)
         //{
