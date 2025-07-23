@@ -481,8 +481,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
             for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
             {
-                //DurationEffect effect = effects[i];
-                Debug.Log(effects[imageIndex].Name);
                 unitStateImage[imageIndex].sprite = effects[imageIndex].IconSprite;
                 unitStateImage[imageIndex].gameObject.SetActive(true);
                 unitStateUIs[imageIndex].SetEffect(effects[imageIndex]);

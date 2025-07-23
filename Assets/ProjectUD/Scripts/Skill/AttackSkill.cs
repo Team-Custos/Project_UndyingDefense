@@ -247,7 +247,6 @@ public class AttackSkill : SkillBase
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
-            Debug.Log(calcDamage);
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);
@@ -257,6 +256,8 @@ public class AttackSkill : SkillBase
         //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
         target.TakeDamage(calcDamage);
+
+        Debug.Log(calcCrit);
         if (Random.Range(0f, 1f) <= calcCrit)
         {
             // target.PlayCritSFX(data.Info.Type);
@@ -301,14 +302,18 @@ public class AttackSkill : SkillBase
         //        break;
         //}
 
-        if (target.HasEffect<StunEffect>())
-        {
-            Debug.Log("Stun 적용중");
-            return;
-        }
-            
+        //if (target.HasEffect<StunEffect>())
+        //{
+        //    Debug.Log("Stun 적용중");
+        //    return;
+        //}
 
         target.AddEffect(data.Info.CritEffectPrefab);
+    }
+
+    public void ProvokeUnits(Unit unit, Unit target)
+    {
+
     }
 
     private void AddHitVFX(Unit unit, Unit target)
