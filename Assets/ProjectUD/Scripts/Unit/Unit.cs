@@ -645,6 +645,8 @@ public abstract class Unit : MonoBehaviour
     {
         skill.Activate(this, target);
 
+        Debug.Log(skill.name);
+
         //if (stateDurationCheck < skill.AnimationStateTime)
         //{
         //    stateDurationCheck += Time.deltaTime;
@@ -1244,10 +1246,10 @@ public abstract class Unit : MonoBehaviour
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
-            Debug.Log(effectPrefab.name);
-
             if (prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
+            {
                 prevEffect.Reapply(effectPrefab);
+            }
             else
             {
                 Debug.Log("상위 이펙트 적용중");
@@ -1270,17 +1272,17 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    public bool HasEffect<T>() where T : DurationEffect // 이펙트가 있는지 확인
-    {
-        foreach (var effect in effectList)
-        {
-            if (effect is T)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    //public bool HasEffect<T>() where T : DurationEffect // 이펙트가 있는지 확인
+    //{
+    //    foreach (var effect in effectList)
+    //    {
+    //        if (effect is T)
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
 
     public void RemoveEffect(DurationEffect effect)
     {

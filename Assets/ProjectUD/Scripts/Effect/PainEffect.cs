@@ -8,12 +8,10 @@ public class PainEffect : DurationEffect
     public override void Activate()
     {
         target.AddCriticalVulnerability(critPercent);
-        Debug.Log("Add");
     }
 
     public override void OnRemove()
     {
         target.AddCriticalVulnerability(-critPercent);
-        Debug.Log("Remove");
     }
 }

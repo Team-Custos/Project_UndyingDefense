@@ -255,9 +255,13 @@ public class AttackSkill : SkillBase
         //calcDamage += calcDamage * unit.AttackDamageMultiplier * 0.01f;
         //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
 
+        //if (target is EnemyUnit)
+        //    Debug.Log(calcDamage);
+
         target.TakeDamage(calcDamage);
 
-        Debug.Log(calcCrit);
+        Debug.Log(calcDamage);
+
         if (Random.Range(0f, 1f) <= calcCrit)
         {
             // target.PlayCritSFX(data.Info.Type);
@@ -312,7 +316,7 @@ public class AttackSkill : SkillBase
         //    return;
         //}
 
-        target.AddEffect(data.Info.CritEffectPrefab);
+        //target.AddEffect(data.Info.CritEffectPrefab);
     }
 
     public void ProvokeUnits(Unit unit, Unit target)

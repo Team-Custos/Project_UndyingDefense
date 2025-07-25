@@ -62,6 +62,8 @@ public class AllyUnit : Unit
     private bool isSiegeActive = false;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
     private bool isSpawned = true;
+    [SerializeField] private bool alternativeSkill;
+    private bool skillFlague;
 
     protected static AudioClip[] allyDeadSFX;
 
@@ -162,6 +164,7 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
+                                Debug.Log(skill.name);
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -177,6 +180,7 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
+                                Debug.Log(skill.name);
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -851,15 +855,43 @@ public class AllyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target)
     {
-        if (skill == GeneralSkill)
+        if (alternativeSkill)
         {
-            state = State.GENERALSKILL;
-            modelAnimator.SetTrigger("GeneralSkill");
+            if (skill != null)
+            {
+                if (skillFlague)
+                {
+                    modelAnimator.SetTrigger("GeneralSkill");
+                }
+                else
+                {
+                    modelAnimator.SetTrigger("SpecialSkill");
+                }
+
+                if (skill == GeneralSkill)
+                {
+                    state = State.GENERALSKILL;
+                }
+                else if (skill == SpecialSkill)
+                {
+                    state = State.SPECIALSKILL;
+                }
+            }
+
+            skillFlague = !skillFlague;
         }
-        else if (skill == SpecialSkill)
+        else
         {
-            state = State.SPECIALSKILL;
-            modelAnimator.SetTrigger("SpecialSkill");
+            if (skill == GeneralSkill)
+            {
+                state = State.GENERALSKILL;
+                modelAnimator.SetTrigger("GeneralSkill");
+            }
+            else if (skill == SpecialSkill)
+            {
+                state = State.SPECIALSKILL;
+                modelAnimator.SetTrigger("SpecialSkill");
+            }
         }
 
         if (target != this)
