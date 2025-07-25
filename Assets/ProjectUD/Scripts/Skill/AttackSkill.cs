@@ -311,8 +311,6 @@ public class AttackSkill : SkillBase
         //    Debug.Log("Stun 적용중");
         //    return;
         //}
-
-        target.AddEffect(data.Info.CritEffectPrefab);
     }
 
     public void ProvokeUnits(Unit unit, Unit target)
