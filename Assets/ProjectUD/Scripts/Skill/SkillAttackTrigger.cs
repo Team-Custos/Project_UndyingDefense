@@ -46,6 +46,8 @@ public class SkillAttackTrigger : MonoBehaviour
             targets = new Collider[maxTargetCount];
         int targetCount = Physics.OverlapSphereNonAlloc
             (pivotTarget.transform.position, radius, targets, attackTargetLayer);
+
+        Debug.Log(targetCount);
         for (int i = 0; i < targetCount; i++)
         {
             if (targets[i].TryGetComponent(out Unit target))
@@ -85,6 +87,8 @@ public class SkillAttackTrigger : MonoBehaviour
         calcDamage *= target.DamageTakenMult;
 
         target.TakeDamage(calcDamage);
+
+        Debug.Log(calcDamage);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
             if (data.InduseEffectPrefab != null)
@@ -93,10 +97,7 @@ public class SkillAttackTrigger : MonoBehaviour
                 Debug.Log("상태 적용");
             }
         }
-        else
-        {
-            Debug.Log(111);
-        }
+        
         
         
     }

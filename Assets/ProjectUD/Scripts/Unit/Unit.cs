@@ -645,8 +645,6 @@ public abstract class Unit : MonoBehaviour
     {
         skill.Activate(this, target);
 
-        Debug.Log(skill.name);
-
         //if (stateDurationCheck < skill.AnimationStateTime)
         //{
         //    stateDurationCheck += Time.deltaTime;

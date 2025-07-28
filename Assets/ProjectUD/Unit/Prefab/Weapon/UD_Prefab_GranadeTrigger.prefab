@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 699766227634234583}
   - component: {fileID: 4531771575809438098}
   - component: {fileID: 6428117456143693999}
+  - component: {fileID: 4381227454948671877}
   m_Layer: 10
   m_Name: UD_Prefab_GranadeTrigger
   m_TagString: Attack
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -19.76, y: -0.8, z: -4.92}
-  m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2894117673707934760}
@@ -231,6 +232,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4381227454948671877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826453539395977001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bba1dff98817c74eaaf694b5e72c29f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2424540981926877746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -239,6 +252,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8556152022676578444}
     m_Modifications:
+    - target: {fileID: 688007983350157355, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983525416474, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983525416474, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983525416474, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983797809555, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983820520752, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007983858568350, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688007984566734385, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1357510671938195697, guid: 7af8ed74744c9464aaea9307d5c2ed6f,
         type: 3}
       propertyPath: m_LocalScale.x

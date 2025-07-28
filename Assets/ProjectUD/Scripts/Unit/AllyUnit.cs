@@ -180,7 +180,6 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
-                                Debug.Log(skill.name);
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }

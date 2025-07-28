@@ -185,10 +185,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         }
                     }
                 }
-                else
-                {
-                    Debug.Log(hit.collider.name);
-                }
+                //else
+                //{
+                //    Debug.Log(hit.collider.name);
+                //}
 
             }
         }
