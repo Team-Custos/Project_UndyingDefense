@@ -65431,17 +65431,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a3a2265fbc3b842995c94aaac1baa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectpool:
-  - {fileID: 7634729572610837984, guid: 2299e8dd551ffb04b8d861d75a73229b, type: 3}
-  - {fileID: 8807926741949980622, guid: 75f52365a58cc4f43ad39c94e0f8df8a, type: 3}
-  - {fileID: 8677827740427285886, guid: 1a9c6d286e23a0f468d5d72ca9f46cf2, type: 3}
   vfxDatas:
-  - vfx: {fileID: 7634729572610837984, guid: 2299e8dd551ffb04b8d861d75a73229b, type: 3}
+  - vfxName: 1
+    vfx: {fileID: 7634729572610837984, guid: 2299e8dd551ffb04b8d861d75a73229b, type: 3}
     count: 5
-  - vfx: {fileID: 8807926741949980622, guid: 75f52365a58cc4f43ad39c94e0f8df8a, type: 3}
+  - vfxName: 2
+    vfx: {fileID: 8807926741949980622, guid: 75f52365a58cc4f43ad39c94e0f8df8a, type: 3}
     count: 5
-  - vfx: {fileID: 8677827740427285886, guid: 1a9c6d286e23a0f468d5d72ca9f46cf2, type: 3}
+  - vfxName: 3
+    vfx: {fileID: 8677827740427285886, guid: 1a9c6d286e23a0f468d5d72ca9f46cf2, type: 3}
     count: 5
+  vfxParent: {fileID: 2139549571}
 --- !u!4 &2139549571
 Transform:
   m_ObjectHideFlags: 0

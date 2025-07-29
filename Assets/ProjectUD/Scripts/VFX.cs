@@ -9,6 +9,8 @@ public class VFX : MonoBehaviour
 
     public void OnDisable()
     {
+        if(queue.Contains(gameObject))
+            return;
         queue.Enqueue(gameObject);
     }
 

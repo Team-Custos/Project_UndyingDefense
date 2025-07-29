@@ -24,6 +24,8 @@ public class ObjectPoolTest : MonoBehaviour
 
     [SerializeField] private List<VFXData> vfxDatas = new List<VFXData>();
 
+    [SerializeField] Transform vfxParent;
+
     private Dictionary<string, Queue<GameObject>> vfxDic = new Dictionary<string, Queue<GameObject>>();
 
     private VFX v;
@@ -31,10 +33,21 @@ public class ObjectPoolTest : MonoBehaviour
 
     public void Start()
     {
-        InstantiateVFX();
+        InitializeVFXPool();
     }
 
-    public void InstantiateVFX()
+    public void InstantiateVFX(GameObject gameObject, Queue<GameObject> queue)
+    {
+        GameObject obj = Instantiate(gameObject);
+        obj.transform.SetParent(vfxParent);
+        queue.Enqueue(obj);
+        v = obj.GetComponent<VFX>();
+        v.InitializePool(queue);
+        obj.SetActive(false);
+        Debug.Log(queue.Count);
+    }
+
+    public void InitializeVFXPool()
     {
         for(int i = 0; i< vfxDatas.Count; i++)
         {
@@ -44,11 +57,13 @@ public class ObjectPoolTest : MonoBehaviour
 
             for (int j = 0; j < vfxDatas[i].count; j++)
             {
-                GameObject vfx = Instantiate (vfxDatas[i].vfx);
-                // 비활성화
-                q.Enqueue (vfx);
-                v = vfx.GetComponent<VFX> ();
-                v.InitializePool(q);
+                InstantiateVFX(vfxDatas[i].vfx, q);
+                //GameObject obj = Instantiate (vfxDatas[i].vfx);
+                //obj.SetActive (false);
+                //obj.transform.SetParent(vfxParent);
+                //q.Enqueue (obj);
+                //v = obj.GetComponent<VFX> ();
+                //v.InitializePool(q);
 
             }
         }
@@ -70,13 +85,18 @@ public class ObjectPoolTest : MonoBehaviour
                 //        result = vfxDatas[i];
                 //    }
                 //}
+
                 VFXData result = vfxDatas.Find(item => item.vfxName == name);
+
                 if(result != null)
                 {
-                    GameObject obj = Instantiate(result.vfx);
-                    q.Enqueue(obj);
-                    v = obj.GetComponent<VFX>();
-                    v.InitializePool(q);
+                    InstantiateVFX(result.vfx, q);
+                    //GameObject obj = Instantiate(result.vfx);
+                    //obj.SetActive(false);
+                    //obj.transform.SetParent(vfxParent);
+                    //q.Enqueue(obj);
+                    //v = obj.GetComponent<VFX>();
+                    //v.InitializePool(q);
                 }
                 else
                 {

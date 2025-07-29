@@ -19,10 +19,12 @@ public class AttackData : ScriptableObject
     [SerializeField] private GameObject critVFX;
     [SerializeField] private GameObject hitVFX;
     [SerializeField] private float vfxDuration;
+    [SerializeField] private string vfxName;
 
     public AttackType Type => type;
     public GameObject CritEffectPrefab => critEffectPrefab;
     public GameObject CritVFX => critVFX;
     public GameObject HitVFX => hitVFX;
     public float VFXDuration => vfxDuration;
+    public string VFXName => vfxName;
 }
