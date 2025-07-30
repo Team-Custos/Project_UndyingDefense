@@ -19,6 +19,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private Ingame_CursorManager cursorManager;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
+    [SerializeField] private ObjectPoolTest hitVFXPool;
 
     [SerializeField] private Image[] alarmImages;
 
@@ -97,6 +98,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this);
         unit.SetDurationEffectPool(durationEffectPool);
+        unit.SetHitVFXPool(hitVFXPool);
         unitPools[index].List.Add(unit);
 
         return unit;
@@ -119,6 +121,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
+                upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
                 upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
@@ -149,6 +152,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
+                upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
                 upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
@@ -187,6 +191,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
             upgradeUnit.SetDurationEffectPool(durationEffectPool);
+            upgradeUnit.SetHitVFXPool(hitVFXPool);
             upgradeUnit.previousMode = mode;
             upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.UpgradeInitialize();

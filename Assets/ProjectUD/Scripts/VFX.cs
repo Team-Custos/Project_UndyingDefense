@@ -4,8 +4,23 @@ using UnityEngine;
 
 public class VFX : MonoBehaviour
 {
+    [SerializeField] float durationTime;
     private Queue<GameObject> queue;
+    private Transform vfxParent;
+    private float activeTimer = 0;
 
+    private void Update()
+    {
+        if (activeTimer > 0)
+        {
+            activeTimer -= Time.deltaTime;
+            if (activeTimer <= 0)
+            {
+                transform.SetParent(vfxParent);
+                gameObject.SetActive(false);
+            }
+        }
+    }
 
     public void OnDisable()
     {
@@ -14,8 +29,15 @@ public class VFX : MonoBehaviour
         queue.Enqueue(gameObject);
     }
 
-    public void InitializePool(Queue<GameObject> q)
+    public void OnEnable()
+    {
+        activeTimer = durationTime;
+    }
+
+    public void InitializePool(Queue<GameObject> q, Transform parent)
     {
         queue = q;
+        vfxParent = parent;
     }
+
 }

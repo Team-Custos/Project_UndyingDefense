@@ -388,6 +388,7 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
+    protected ObjectPoolTest hitVFXPool;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -562,6 +563,11 @@ public abstract class Unit : MonoBehaviour
         attackSpeed = unitStats.attackSpeed;
 
         lastMoveTime = Time.time;
+    }
+
+    public void SetHitVFXPool(ObjectPoolTest hitVFXPool)
+    {
+        this.hitVFXPool = hitVFXPool;
     }
 
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
@@ -1288,7 +1294,17 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    public void AddVFX(GameObject effectPrefab, float duration)
+    public void AddVFX(GameObject vfx, float duration) // hitVFX 추가
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx);
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.SetActive(true);
+        VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        //Destroy(VFXobj, duration);
+    }
+
+    public void AddCritVFX(GameObject effectPrefab, float duration) // critVFX 추가에서 사용중 -> 후에 hitVFX 와 같은 방식으로 바꾸기
     {
         GameObject VFXobj = Instantiate(effectPrefab.gameObject);
         VFXobj.transform.SetParent(VFXParent);

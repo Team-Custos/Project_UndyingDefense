@@ -321,8 +321,6 @@ public class AttackSkill : SkillBase
     private void AddHitVFX(Unit unit, Unit target)
     {
         GameObject hitVFX = data.Info.HitVFX;
-        string vfxName = data.Info.VFXName;
-        //GameObject hitVFX = 
         float effectduration = data.Info.VFXDuration;
         if (hitVFX != null)
         {
@@ -352,7 +350,7 @@ public class AttackSkill : SkillBase
         float effectduration = data.Info.VFXDuration;
         if (critVFX != null)
         {
-            target.AddVFX(critVFX, effectduration);
+            target.AddCritVFX(critVFX, effectduration);
         }
 
         //ParticleSystem critVFX = null;

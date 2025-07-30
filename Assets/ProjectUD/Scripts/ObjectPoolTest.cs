@@ -28,12 +28,13 @@ public class ObjectPoolTest : MonoBehaviour
 
     private Dictionary<string, Queue<GameObject>> vfxDic = new Dictionary<string, Queue<GameObject>>();
 
+    private Dictionary<GameObject, Queue<GameObject>> newVFXDic = new Dictionary<GameObject, Queue<GameObject>>();
     private VFX v;
 
 
     public void Start()
     {
-        InitializeVFXPool();
+
     }
 
     public void InstantiateVFX(GameObject gameObject, Queue<GameObject> queue)
@@ -42,71 +43,93 @@ public class ObjectPoolTest : MonoBehaviour
         obj.transform.SetParent(vfxParent);
         queue.Enqueue(obj);
         v = obj.GetComponent<VFX>();
-        v.InitializePool(queue);
+        v.InitializePool(queue, vfxParent);
         obj.SetActive(false);
         Debug.Log(queue.Count);
     }
 
-    public void InitializeVFXPool()
+    #region 20250730_기존 InitializeVFXPool()
+    //public void InitializeVFXPool()
+    //{
+    //    for(int i = 0; i< vfxDatas.Count; i++)
+    //    {
+    //        string name = vfxDatas[i].vfxName;
+    //        Queue<GameObject> q = new Queue<GameObject>();
+    //        vfxDic.Add(name, q );
+
+    //        for (int j = 0; j < vfxDatas[i].count; j++)
+    //        {
+    //            InstantiateVFX(vfxDatas[i].vfx, q);
+    //            //GameObject obj = Instantiate (vfxDatas[i].vfx);
+    //            //obj.SetActive (false);
+    //            //obj.transform.SetParent(vfxParent);
+    //            //q.Enqueue (obj);
+    //            //v = obj.GetComponent<VFX> ();
+    //            //v.InitializePool(q);
+
+    //        }
+    //    }
+    //}
+    #endregion
+
+    public GameObject GetVFX(GameObject vfx)
     {
-        for(int i = 0; i< vfxDatas.Count; i++)
+        #region 250730_기존 코드
+        //if (vfxDic.ContainsKey(name))
+        //{
+        //    Queue<GameObject> q = vfxDic[name];
+
+        //    if (q.Count <= 0)
+        //    {
+        //        //VFXData result = null;
+        //        //for(int i =0; i< vfxDatas.Count; i++)
+        //        //{
+        //        //    if(vfxDatas[i].vfxName == name)
+        //        //    {
+        //        //        result = vfxDatas[i];
+        //        //    }
+        //        //}
+
+        //        VFXData result = vfxDatas.Find(item => item.vfxName == name);
+
+        //        if(result != null)
+        //        {
+        //            InstantiateVFX(result.vfx, q);
+        //            //GameObject obj = Instantiate(result.vfx);
+        //            //obj.SetActive(false);
+        //            //obj.transform.SetParent(vfxParent);
+        //            //q.Enqueue(obj);
+        //            //v = obj.GetComponent<VFX>();
+        //            //v.InitializePool(q);
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+
+        //    return q.Dequeue();
+
+        //}
+        //return null;
+        #endregion
+
+        if (newVFXDic.ContainsKey(vfx))
         {
-            string name = vfxDatas[i].vfxName;
-            Queue<GameObject> q = new Queue<GameObject>();
-            vfxDic.Add(name, q );
-
-            for (int j = 0; j < vfxDatas[i].count; j++)
-            {
-                InstantiateVFX(vfxDatas[i].vfx, q);
-                //GameObject obj = Instantiate (vfxDatas[i].vfx);
-                //obj.SetActive (false);
-                //obj.transform.SetParent(vfxParent);
-                //q.Enqueue (obj);
-                //v = obj.GetComponent<VFX> ();
-                //v.InitializePool(q);
-
-            }
-        }
-    }
-
-    public GameObject GetVFX(string name)
-    {
-        if (vfxDic.ContainsKey(name))
-        {
-            Queue<GameObject> q = vfxDic[name];
+            Queue<GameObject> q = newVFXDic[vfx];
 
             if (q.Count <= 0)
             {
-                //VFXData result = null;
-                //for(int i =0; i< vfxDatas.Count; i++)
-                //{
-                //    if(vfxDatas[i].vfxName == name)
-                //    {
-                //        result = vfxDatas[i];
-                //    }
-                //}
-
-                VFXData result = vfxDatas.Find(item => item.vfxName == name);
-
-                if(result != null)
-                {
-                    InstantiateVFX(result.vfx, q);
-                    //GameObject obj = Instantiate(result.vfx);
-                    //obj.SetActive(false);
-                    //obj.transform.SetParent(vfxParent);
-                    //q.Enqueue(obj);
-                    //v = obj.GetComponent<VFX>();
-                    //v.InitializePool(q);
-                }
-                else
-                {
-                    return null;
-                }
+                InstantiateVFX(vfx, q);
             }
-
             return q.Dequeue();
-
         }
-        return null;
+        else
+        {
+            Queue<GameObject> q = new Queue<GameObject>();
+            newVFXDic.Add(vfx, q);
+            InstantiateVFX(vfx, q);
+            return q.Dequeue();
+        }
     }
 }

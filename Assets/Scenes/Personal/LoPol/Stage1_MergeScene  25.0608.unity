@@ -21682,6 +21682,7 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 5963399257725955338}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
+  hitVFXPool: {fileID: 2139549570}
   allyUnitSpawner: {fileID: 923510898}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
@@ -29260,6 +29261,7 @@ MonoBehaviour:
   cursorManager: {fileID: 1133855604}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
+  hitVFXPool: {fileID: 2139549570}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -65432,13 +65434,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxDatas:
-  - vfxName: 1
+  - vfxName: vfx_crushHit
     vfx: {fileID: 7634729572610837984, guid: 2299e8dd551ffb04b8d861d75a73229b, type: 3}
     count: 5
-  - vfxName: 2
+  - vfxName: vfx_pierceHit
     vfx: {fileID: 8807926741949980622, guid: 75f52365a58cc4f43ad39c94e0f8df8a, type: 3}
     count: 5
-  - vfxName: 3
+  - vfxName: vfx_slashHit
     vfx: {fileID: 8677827740427285886, guid: 1a9c6d286e23a0f468d5d72ca9f46cf2, type: 3}
     count: 5
   vfxParent: {fileID: 2139549571}
