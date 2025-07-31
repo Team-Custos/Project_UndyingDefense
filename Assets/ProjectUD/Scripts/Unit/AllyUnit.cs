@@ -146,12 +146,12 @@ public class AllyUnit : Unit
                     {
                         if (navAgent.enabled)
                         {
-                            navAgent.enabled = false;
+                            //navAgent.enabled = false;
                             modelAnimator.SetBool("isRunning", false);
                         }
 
-                        if (!navObstacle.enabled)
-                            navObstacle.enabled = true;
+                        //if (!navObstacle.enabled)
+                        //    navObstacle.enabled = true;
                     }
 
                     if (state == State.SPECIALSKILL)
@@ -164,7 +164,6 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
-                                Debug.Log(skill.name);
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -203,8 +202,8 @@ public class AllyUnit : Unit
 
                         state = State.IDLE;
 
-                        if(mode == Mode.FREE)
-                            navObstacle.enabled = false;
+                        //if(mode == Mode.FREE)
+                        //    navObstacle.enabled = false;
                     }
                 }
                 break;
@@ -213,7 +212,7 @@ public class AllyUnit : Unit
                     if (mode == Mode.CHANGE)
                     {
                         modelAnimator.SetBool("isRunning", false);
-                        navAgent.enabled = false;
+                        //navAgent.enabled = false;
                     }
                     else
                     {
@@ -236,11 +235,11 @@ public class AllyUnit : Unit
                 {
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        if(navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
-                        }
+                        //if(navAgent.enabled)
+                        //{
+                        //    navAgent.enabled = false;
+                        //    navObstacle.enabled = true;
+                        //}
 
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
@@ -356,8 +355,6 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(true);
                     chagneEffet.SetActive(false);
 
-                    //navObstacle.enabled = true;
-
                     SkillBase skill = GetAvailableSkill();
                     if (skill != null) // 사용 가능한 스킬이 존재할 경우
                     {
@@ -420,10 +417,12 @@ public class AllyUnit : Unit
                 break;
             case Mode.FREE:
                 {
+                    //navAgent.enabled = true;
+                    
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
 
-                    if (destinationPosition != Vector3.zero)
+                    if (destinationPosition != Vector3.zero) // 이동 명령
                     {
                         targetUnit = null;
 
@@ -444,104 +443,79 @@ public class AllyUnit : Unit
                                 isMoving = false;
                                 targetUnit = SearchTarget(UnitStats.sightRange);
                                 navAgent.stoppingDistance = 2.4f;
+
+                                // 이동 종료
                             }
                         }
                     }
-
-                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
-                    {
-                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
+                    else        // 이동 명령 없음 or 종료 -> 적 탐색
+                    {    if (targetUnit == null)
+                        {
+                            targetUnit = SearchTarget(UnitStats.sightRange);
+                        }
                     }
+
 
                     if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy
                        && !isMoving)
                     {
-
-                        SkillBase skill = GetAvailableSkill();
-                        if(skill != null)
+                        if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange))// + targetUnit.NearbyDistance)) // 목표가 공격 범위 내 -> 공격
                         {
-                            if (state == State.STUN)
-                                return;
+                            modelAnimator.SetBool("isRunning", false);
 
-                            SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
-                            switch (skillTargetType)
+                            SkillBase skill = GetAvailableSkill();
+                            if (skill != null)
                             {
-                                case SkillBase.TargetType.ENEMY:
-                                    {
-                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                if (state == State.STUN)
+                                    return;
+
+                                SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                                switch (skillTargetType)
+                                {
+                                    case SkillBase.TargetType.ENEMY:
                                         {
-                                            //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-
-                                            //Debug.Log(dist);
-
-                                            //if (dist > UnitStats.attackRange)
-                                            //    return;
-                                            
-
                                             ActivateSkill(skill, targetUnit);
 
                                             if (stateDurationCheck >= stateDuration)
                                             {
-                                                
+
                                                 stateDurationCheck = 0f;
                                                 stateDuration = 0f;
                                             }
                                             return;
                                         }
-                                    }
-                                    break;
-                                case SkillBase.TargetType.ALLY:
-                                    {
-                                        ActivateSkill(skill, null);
-
-                                        if (stateDurationCheck >= stateDuration)
+                                    case SkillBase.TargetType.ALLY:
                                         {
-                                            
-                                            stateDurationCheck = 0f;
-                                            stateDuration = 0f;
+                                            ActivateSkill(skill, null);
+
+                                            if (stateDurationCheck >= stateDuration)
+                                            {
+
+                                                stateDurationCheck = 0f;
+                                                stateDuration = 0f;
+                                            }
                                         }
-                                    }
-                                    return;
+                                        return;
+                                }
                             }
                         }
-
-
-                        if(IsTargetInAttackRange(targetUnit, UnitStats.attackRange))
-                        {
-                            // 공격 범위 내에 적이 있으면 코드 종료
-                            return;
-                        }
-
-                        if (IsTargetInRange(targetUnit, UnitStats.sightRange))
+                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
                         {
                             MoveTo(targetUnit);
                             modelAnimator.SetBool("isRunning", true);
                             if (path.status != NavMeshPathStatus.PathComplete)
                                 targetUnit = null;
+
+                            float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+                            //Debug.Log($"Target Distance: {dist}");
                         }
                         else
                         {
                             targetUnit = null;
                         }
-
                     }
                     else
-                    {
-                        bool navAgentEnabled = navAgent.enabled;
-                        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        {
-                            navObstacle.enabled = false;
-                            navAgent.enabled = true;
-                        }
-
-                        targetUnit = SearchReachableTarget(UnitStats.sightRange);
-
-                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        //{
-                        //    navObstacle.enabled = false;
-                        //    navAgent.enabled = true;
-                        //}
-                    }
+                        targetUnit = null;
                 }
                 break;
             case Mode.CHANGE:
@@ -557,9 +531,9 @@ public class AllyUnit : Unit
                             if (targetTile != null)
                             {
                                 transform.position = targetTile.transform.position;
-                                navObstacle.enabled = true;
 
                                 navAgent.enabled = false;
+                                navObstacle.enabled = true;
                             }
                             else
                             {
@@ -617,23 +591,42 @@ public class AllyUnit : Unit
                         particleDuration = 0.3f;
                         isSiegeActive = false;
 
-                        if (changeDuration >= 0)
+                        if (changeDuration >= 0) // 체인지 상태
                         {
                             changeDuration -= Time.deltaTime;
                             state = State.IDLE;
 
-                            if(selectedUnitUI != null)
+                            navObstacle.enabled = false;
+
+                            if (selectedUnitUI != null)
                             {
                                 selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                             }
 
+                            
+
                         }
-                        else
+                        else    // 체인지 상태 끝 -> 프리 모드 전환 완료
                         {
                             mode = Mode.FREE;
 
                             changeDuration = 3.0f;
                             previousMode = mode;
+
+                            
+                            navAgent.enabled = true;
+                            //navAgent.Warp(transform.position);
+
+                            //NavMeshHit hit;
+                            //if (NavMesh.SamplePosition(transform.position, out hit, 1.5f, navAgent.areaMask))
+                            //{
+                            //    transform.position = hit.position;
+                            //    navAgent.enabled = true;
+                            //}
+                            //else
+                            //{
+                            //    Debug.Log("NavMesh 위의 유효한 위치를 찾을 수 없습니다.");
+                            //}
 
 
                             if (selectedUnitUI != null && isSelected)
@@ -747,6 +740,7 @@ public class AllyUnit : Unit
                 break;
         }
     }
+
 
     public override void GetProvoked(Unit ProvokedTarget)
     {

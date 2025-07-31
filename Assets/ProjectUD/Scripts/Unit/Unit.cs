@@ -430,6 +430,7 @@ public abstract class Unit : MonoBehaviour
     public IReadOnlyList<DurationEffect> EffectList => effectList;
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
+    public float NearbyDistance => nearbyDistance;
     public bool IsSelected
     {
         get => isSelected;
@@ -544,8 +545,8 @@ public abstract class Unit : MonoBehaviour
 
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
-        navAgent.enabled = false;
-        navObstacle.enabled = true;
+        //navAgent.enabled = true;
+        //navObstacle.enabled = true;
 
         collider.enabled = true;
 
@@ -966,14 +967,14 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Vector3 pos)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled)
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled)
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
 
-        navAgent.CalculatePath(pos, path); // 경로 계산
+        //navAgent.CalculatePath(pos, path); // 경로 계산
 
         NavMesh.CalculatePath(transform.position, pos, navAgent.areaMask, path);
 
@@ -982,86 +983,93 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+            //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public virtual void ForceMoveTo(Vector3 pos)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled)
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled)
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
 
-        //if (navAgent.CalculatePath(pos, path))
         if (navAgent.CalculatePath(pos, path))
         {
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-            navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+            //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
             lastMoveTime = Time.time;
             return;
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public virtual void MoveTo(Unit target)
     {
-        bool navAgentEnabled = navAgent.enabled;
-        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-        {
-            navObstacle.enabled = false;
-            navAgent.enabled = true;
-        }
+        //bool navAgentEnabled = navAgent.enabled;
+        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
+        //{
+        //    navObstacle.enabled = false;
+        //    navAgent.enabled = true;
+        //}
+
 
         Vector3 startDir = (transform.position - target.transform.position).normalized;
         for (float i = 0f; i < 6f; i++)
         {
             Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
             Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-            navAgent.CalculatePath(targetPos, path);
-            //NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, path);
+
+            NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
             if (path.status == NavMeshPathStatus.PathComplete)
             { 
                 if (navAgent.isStopped)
                     navAgent.isStopped = false;
 
-                navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
+
+                //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
                 navAgent.SetPath(path);
                 lastMoveTime = Time.time;
+
+                Debug.Log(navAgent.remainingDistance);
                 return;
+            }
+            else if(path.status == NavMeshPathStatus.PathPartial)
+            {
+                Debug.Log(1111);
             }
         }
 
         // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        if (!navAgentEnabled)
-        {
-            // 다시 비활성화 상태로 원상복구.
-            navAgent.enabled = false;
-            navObstacle.enabled = true;
-        }
+        //if (!navAgentEnabled)
+        //{
+        //    // 다시 비활성화 상태로 원상복구.
+        //    navAgent.enabled = false;
+        //    navObstacle.enabled = true;
+        //}
     }
 
     public void LookAt(Vector3 pos)
@@ -1151,8 +1159,8 @@ public abstract class Unit : MonoBehaviour
     {
         if (!isDead)
         {
-            navAgent.enabled = false;
-            navObstacle.enabled = false;
+            //navAgent.enabled = false;
+            //navObstacle.enabled = false;
 
             collider.enabled = false;
             effectParent.gameObject.SetActive(false);
@@ -1250,7 +1258,6 @@ public abstract class Unit : MonoBehaviour
             }
             else
             {
-                Debug.Log("상위 이펙트 적용중");
                 return;
             }
                
@@ -1320,6 +1327,11 @@ public abstract class Unit : MonoBehaviour
         }
 
         Destroy(VFXobj, VFX.main.duration);
+    }
+
+    public void SetAgentPriority(int priority)
+    {
+        navAgent.avoidancePriority = priority;
     }
 
 

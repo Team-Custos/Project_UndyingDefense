@@ -50,6 +50,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     private bool isFortreessAttacked;
     private bool isWaveReady = true;
     private bool isGameOver = false;
+    private int enemyPriority = 0;
     public bool IsGameOver => isGameOver;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
@@ -187,6 +188,7 @@ public class EnemyUnitSpawner : MonoBehaviour
 
                     Unit unit = enemyUnit.GetComponent<Unit>();
 
+
                     unitDataLoader.GetUnitDataById(unit.UnitId, unit);
 
                     Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
@@ -199,7 +201,15 @@ public class EnemyUnitSpawner : MonoBehaviour
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
                    enemyUnit.gameObject.SetActive(true);
 
-                   totalMonCount++;
+
+                    enemyUnit.SetAgentPriority(enemyPriority);
+                    enemyPriority++;
+
+                    if (enemyPriority > 50)
+                        enemyPriority = 0;
+
+
+                    totalMonCount++;
                    spawnDataEnemyCount++;
                    spawnCount++;
 
