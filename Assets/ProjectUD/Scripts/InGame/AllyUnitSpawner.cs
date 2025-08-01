@@ -19,7 +19,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private Ingame_CursorManager cursorManager;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
-    [SerializeField] private ObjectPoolTest hitVFXPool;
+    [SerializeField] private VFXObjectPool hitVFXPool;
 
     [SerializeField] private Image[] alarmImages;
 

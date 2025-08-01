@@ -100,7 +100,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     }
 
 
-    private void PlayVFX()
+
+    private void PlayVFX()  // 영역 연출
     {
         if (data.StartVFX != null)
         {

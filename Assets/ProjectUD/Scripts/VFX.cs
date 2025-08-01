@@ -9,6 +9,9 @@ public class VFX : MonoBehaviour
     private Transform vfxParent;
     private float activeTimer = 0;
 
+    // ObjectPoolWithList 사용 변수
+    private ObjectPoolWithList<GameObject> pool;
+
     private void Update()
     {
         if (activeTimer > 0)
@@ -27,6 +30,10 @@ public class VFX : MonoBehaviour
         if(queue.Contains(gameObject))
             return;
         queue.Enqueue(gameObject);
+
+        // ObjectPoolWithList 사용 변수
+        //pool.Pool.Release(gameObject);
+        //pool.List.Remove(gameObject);
     }
 
     public void OnEnable()
@@ -37,6 +44,12 @@ public class VFX : MonoBehaviour
     public void InitializePool(Queue<GameObject> q, Transform parent)
     {
         queue = q;
+        vfxParent = parent;
+    }
+
+    public void InitializePool(ObjectPoolWithList<GameObject> pool, Transform parent)   // ObjectPoolWithList용 대리자 메서드
+    {
+        this.pool = pool;
         vfxParent = parent;
     }
 

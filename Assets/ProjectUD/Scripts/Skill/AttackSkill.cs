@@ -350,7 +350,7 @@ public class AttackSkill : SkillBase
         float effectduration = data.Info.VFXDuration;
         if (critVFX != null)
         {
-            target.AddCritVFX(critVFX, effectduration);
+            target.AddVFX(critVFX, effectduration);
         }
 
         //ParticleSystem critVFX = null;

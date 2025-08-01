@@ -19,7 +19,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
-    [SerializeField] private ObjectPoolTest hitVFXPool;
+    [SerializeField] private VFXObjectPool hitVFXPool;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Wave Data")]

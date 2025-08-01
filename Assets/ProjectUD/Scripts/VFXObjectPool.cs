@@ -3,39 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[System.Serializable]
-public class VFXData
+
+
+public class VFXObjectPool : MonoBehaviour
 {
-    public string vfxName;
-    public GameObject vfx;
-    public int count;
-}
-
-public class ObjectPoolTest : MonoBehaviour
-{
-    //[SerializeField] private List<GameObject> objectpool = new List<GameObject>();
-
-    //private ObjectPool<GameObject> pools = new ObjectPool<GameObject>(null, null);
-    //private List<GameObject> objects = new List<GameObject>();
-    //// vfx를 불러올때 선별해서 골라와야하기 때문에 Dic 선언
-    //private Dictionary <string, List<GameObject>> vfxDic = new Dictionary<string, List<GameObject>>();
-    //// 추가용
-    //private Dictionary<string, GameObject> addVFXDic = new Dictionary<string, GameObject>();
-
-    [SerializeField] private List<VFXData> vfxDatas = new List<VFXData>();
-
     [SerializeField] Transform vfxParent;
 
-    private Dictionary<string, Queue<GameObject>> vfxDic = new Dictionary<string, Queue<GameObject>>();
-
-    private Dictionary<GameObject, Queue<GameObject>> newVFXDic = new Dictionary<GameObject, Queue<GameObject>>();
+    private Dictionary<GameObject, Queue<GameObject>> vfxDic = new Dictionary<GameObject, Queue<GameObject>>();
     private VFX v;
 
-
-    public void Start()
-    {
-
-    }
 
     public void InstantiateVFX(GameObject gameObject, Queue<GameObject> queue)
     {
@@ -114,9 +90,9 @@ public class ObjectPoolTest : MonoBehaviour
         //return null;
         #endregion
 
-        if (newVFXDic.ContainsKey(vfx))
+        if (vfxDic.ContainsKey(vfx))
         {
-            Queue<GameObject> q = newVFXDic[vfx];
+            Queue<GameObject> q = vfxDic[vfx];
 
             if (q.Count <= 0)
             {
@@ -127,7 +103,7 @@ public class ObjectPoolTest : MonoBehaviour
         else
         {
             Queue<GameObject> q = new Queue<GameObject>();
-            newVFXDic.Add(vfx, q);
+            vfxDic.Add(vfx, q);
             InstantiateVFX(vfx, q);
             return q.Dequeue();
         }

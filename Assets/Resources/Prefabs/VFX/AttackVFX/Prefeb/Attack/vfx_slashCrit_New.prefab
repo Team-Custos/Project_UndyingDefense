@@ -4908,6 +4908,7 @@ GameObject:
   - component: {fileID: 7395845986886446095}
   - component: {fileID: 8718364052038040160}
   - component: {fileID: 5327221896833936780}
+  - component: {fileID: -4799748504256462952}
   m_Layer: 0
   m_Name: vfx_slashCrit_New
   m_TagString: Untagged
@@ -9731,6 +9732,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-4799748504256462952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3813291615887312286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ed8f66f65d3f24faa2d069a57d2c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationTime: 1
 --- !u!1 &6573917914659228419
 GameObject:
   m_ObjectHideFlags: 0

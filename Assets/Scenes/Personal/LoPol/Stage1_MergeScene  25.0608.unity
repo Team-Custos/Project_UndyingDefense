@@ -21682,7 +21682,7 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 5963399257725955338}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
-  hitVFXPool: {fileID: 2139549570}
+  hitVFXPool: {fileID: 2139549572}
   allyUnitSpawner: {fileID: 923510898}
   waveData:
   - {fileID: 11400000, guid: fd01c41154132284391174efa0bab347, type: 2}
@@ -29261,7 +29261,7 @@ MonoBehaviour:
   cursorManager: {fileID: 1133855604}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
-  hitVFXPool: {fileID: 2139549570}
+  hitVFXPool: {fileID: 2139549572}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -65413,7 +65413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139549571}
-  - component: {fileID: 2139549570}
+  - component: {fileID: 2139549572}
   m_Layer: 0
   m_Name: ObjectPoolTest
   m_TagString: Untagged
@@ -65421,29 +65421,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2139549570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2139549569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88a3a2265fbc3b842995c94aaac1baa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vfxDatas:
-  - vfxName: vfx_crushHit
-    vfx: {fileID: 7634729572610837984, guid: 2299e8dd551ffb04b8d861d75a73229b, type: 3}
-    count: 5
-  - vfxName: vfx_pierceHit
-    vfx: {fileID: 8807926741949980622, guid: 75f52365a58cc4f43ad39c94e0f8df8a, type: 3}
-    count: 5
-  - vfxName: vfx_slashHit
-    vfx: {fileID: 8677827740427285886, guid: 1a9c6d286e23a0f468d5d72ca9f46cf2, type: 3}
-    count: 5
-  vfxParent: {fileID: 2139549571}
 --- !u!4 &2139549571
 Transform:
   m_ObjectHideFlags: 0
@@ -65459,6 +65436,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2139549572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139549569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49684aca9a1564d4ea196ea49b3e5388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxParent: {fileID: 2139549571}
 --- !u!4 &2139874771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,

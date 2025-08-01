@@ -21,6 +21,10 @@ public class AttackData : ScriptableObject
     [SerializeField] private float vfxDuration;
     [SerializeField] private string vfxName;
 
+    [Header("■ SFX")]
+    [SerializeField] private AudioClip hitSFXClip;
+    [SerializeField] private AudioClip critSFXClip;
+
     public AttackType Type => type;
     public GameObject CritEffectPrefab => critEffectPrefab;
     public GameObject CritVFX => critVFX;

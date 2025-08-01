@@ -388,7 +388,7 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
-    protected ObjectPoolTest hitVFXPool;
+    protected VFXObjectPool hitVFXPool;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -565,7 +565,7 @@ public abstract class Unit : MonoBehaviour
         lastMoveTime = Time.time;
     }
 
-    public void SetHitVFXPool(ObjectPoolTest hitVFXPool)
+    public void SetHitVFXPool(VFXObjectPool hitVFXPool)
     {
         this.hitVFXPool = hitVFXPool;
     }
