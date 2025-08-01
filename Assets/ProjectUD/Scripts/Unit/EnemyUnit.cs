@@ -149,26 +149,10 @@ public class EnemyUnit : Unit
             case State.BATTLECRY:
             case State.DEAD:
                 {
-                    if (state != State.DEAD)
-                    {
-                        if (navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            modelAnimator.SetBool("isRunning", false);
-                        }
+                    modelAnimator.SetBool("isRunning", false);
 
-                        if (!navObstacle.enabled)
-                            navObstacle.enabled = true;
-                    }
-
-                    if (stateDuration <= 0f)
-                        return;
-
-                    if (stateDurationCheck < stateDuration)
-                    {
-                        stateDurationCheck += Time.deltaTime;
-                    }    
-                    else
+                    stateDurationCheck += Time.deltaTime;
+                    if(stateDurationCheck >= stateDuration)
                     {
                         stateDurationCheck = 0f;
                         stateDuration = 0f;
@@ -179,14 +163,12 @@ public class EnemyUnit : Unit
                             gameObject.SetActive(false);
 
                         state = State.IDLE;
-
-                        navObstacle.enabled = false;
                     }
                 }
                 break;
             case State.IDLE:
                 {
-                    if (navAgent.enabled && navAgent.velocity.magnitude > 0f)
+                    if (navAgent.velocity.magnitude > 0f)
                     {
                         state = State.RUN;
                         modelAnimator.SetBool("isRunning", true);
@@ -197,14 +179,8 @@ public class EnemyUnit : Unit
                 break;
             case State.RUN:
                 {
-                    if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
+                    if (navAgent.velocity.magnitude <= 0f)
                     {
-                        if (navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
-                        }
-
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
                     }
@@ -224,8 +200,8 @@ public class EnemyUnit : Unit
         {
             case Mode.MOVE:
                 {
+                    // 성이 공격 범위에 있을 경우 성을 우선 공격
                     float distance = Vector3.Distance(transform.position, fortressPos);
-
                     if(distance <= UnitStats.attackRange)
                     {
                         mode = Mode.ATTACKFORTRESS;
@@ -238,10 +214,8 @@ public class EnemyUnit : Unit
                         if (targetUnit != null)
                         {
                             mode = Mode.COMBAT;
-                            return;
                         }
                     }
-
                     else if (navAgent.pathStatus != NavMeshPathStatus.PathComplete)
                     {
                         if (distance <= UnitStats.attackRange)
@@ -250,20 +224,7 @@ public class EnemyUnit : Unit
                         }
                         else
                         {
-                            if (navAgent.enabled)
-                            {
-                                targetUnit = SearchTarget(UnitStats.sightRange);
-                            }
-                            else
-                            {
-                                navObstacle.enabled = false;
-                                navAgent.enabled = true;
-
-                                targetUnit = SearchTarget(UnitStats.sightRange);
-
-                                navAgent.enabled = false;
-                                navObstacle.enabled = true;
-                            }
+                            targetUnit = SearchTarget(UnitStats.sightRange);
                         }
 
                         if (targetUnit != null)
@@ -278,7 +239,7 @@ public class EnemyUnit : Unit
                         {
                             if (Vector3.Distance(transform.position, path.corners[length - 1]) <= navAgent.stoppingDistance)
                             {
-                                if (navAgent.enabled && !navAgent.isStopped)
+                                if (!navAgent.isStopped)
                                 {
                                     navAgent.isStopped = true;
                                     modelAnimator.SetBool("isRunning", false);
@@ -289,7 +250,7 @@ public class EnemyUnit : Unit
                             }
                         }  
 
-                        if (!navAgent.enabled)
+                        // if (!navAgent.enabled)
                             MoveTo(fortressPos);
                     }
                 }
@@ -300,7 +261,7 @@ public class EnemyUnit : Unit
                     {
                         if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내
                         {
-                            if (navAgent.enabled && !navAgent.isStopped)
+                            if (!navAgent.isStopped)
                             {
                                 navAgent.isStopped = true;
                                 modelAnimator.SetBool("isRunning", false);
@@ -387,12 +348,7 @@ public class EnemyUnit : Unit
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
     {
         transform.LookAt(fortress.transform.position);
-
-        if (navAgent.enabled)
-        {
-            navAgent.isStopped = true;
-        }
-
+        navAgent.isStopped = true;
 
         attackCool -= Time.deltaTime;
         if(attackCool <= 0f)

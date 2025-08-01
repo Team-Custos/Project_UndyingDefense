@@ -142,58 +142,44 @@ public class AllyUnit : Unit
             case State.SPECIALSKILL:
             case State.DEAD:
                 {
-                    if(state != State.DEAD)
+                    modelAnimator.SetBool("isRunning", false);
+                    switch (state)
                     {
-                        if (navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            modelAnimator.SetBool("isRunning", false);
-                        }
-
-                        if (!navObstacle.enabled)
-                            navObstacle.enabled = true;
-                    }
-
-                    if (state == State.SPECIALSKILL)
-                    {
-                        if(targetUnit != null)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetSpecialSkill();
-                        //Debug.Log("Special Skill " + skill + "사용");
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skill.AnimationStateTime)
+                        case State.GENERALSKILL:
                             {
-                                Debug.Log(skill.name);
-                                base.ActivateSkill(skill, targetUnit);
+                                if (targetUnit != null)
+                                    LookAt(targetUnit.transform.position);
+                                SkillBase skill = GetGeneralSkill();
+
+                                if (skill != null)
+                                {
+                                    if (stateDurationCheck >= skill.AnimationStateTime)
+                                    {
+                                        base.ActivateSkill(skill, targetUnit);
+                                    }
+                                }
                             }
-                        }
-                    }
-
-                    if (state == State.GENERALSKILL)
-                    {
-                        if(targetUnit != null)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetGeneralSkill();
-
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            break;
+                        case State.SPECIALSKILL:
                             {
-                                base.ActivateSkill(skill, targetUnit);
+                                if (targetUnit != null)
+                                    LookAt(targetUnit.transform.position);
+
+                                SkillBase skill = GetSpecialSkill();
+                                if (skill != null)
+                                {
+                                    if (stateDurationCheck >= skill.AnimationStateTime)
+                                    {
+                                        Debug.Log(skill.name);
+                                        base.ActivateSkill(skill, targetUnit);
+                                    }
+                                }
                             }
-                        }
+                            break;
                     }
 
-
-                    if (stateDuration <= 0f)
-                        return;
-
+                    stateDurationCheck += Time.deltaTime;
                     if (stateDurationCheck < stateDuration)
-                    {
-                        stateDurationCheck += Time.deltaTime;
-                    }
-                    else
                     {
                         stateDurationCheck = 0f;
                         stateDuration = 0f;
@@ -202,9 +188,6 @@ public class AllyUnit : Unit
                             gameObject.SetActive(false);
 
                         state = State.IDLE;
-
-                        if(mode == Mode.FREE)
-                            navObstacle.enabled = false;
                     }
                 }
                 break;
@@ -213,11 +196,10 @@ public class AllyUnit : Unit
                     if (mode == Mode.CHANGE)
                     {
                         modelAnimator.SetBool("isRunning", false);
-                        navAgent.enabled = false;
                     }
                     else
                     {
-                        if (navAgent.enabled && navAgent.velocity.magnitude > 0f)
+                        if (navAgent.velocity.magnitude > 0f)
                         {
                             state = State.RUN;
                             modelAnimator.SetBool("isRunning", true);
@@ -225,8 +207,6 @@ public class AllyUnit : Unit
                         
                         if(spawner != null && targetUnit == null)
                             spawner.ResetAllyUnitRotation(this);
-
-
                     }
 
                     UpdateMode();
@@ -234,14 +214,8 @@ public class AllyUnit : Unit
                 break;
             case State.RUN:
                 {
-                    if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
+                    if (navAgent.velocity.magnitude <= 0f)
                     {
-                        if(navAgent.enabled)
-                        {
-                            navAgent.enabled = false;
-                            navObstacle.enabled = true;
-                        }
-
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
                     }
@@ -353,7 +327,7 @@ public class AllyUnit : Unit
         {
             case Mode.SEIGE:
                 {
-                    OnOffSiefeEffect(true);
+                    ShowSiegeVFX(true);
                     chagneEffet.SetActive(false);
 
                     //navObstacle.enabled = true;
@@ -378,7 +352,7 @@ public class AllyUnit : Unit
                                     {
                                         if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                         {
-                                            if (navAgent.enabled && !navAgent.isStopped)
+                                            if (!navAgent.isStopped)
                                             {
                                                 navAgent.isStopped = true;
                                                 modelAnimator.SetBool("isRunning", false);
@@ -420,7 +394,7 @@ public class AllyUnit : Unit
                 break;
             case Mode.FREE:
                 {
-                    OnOffSiefeEffect(false);
+                    ShowSiegeVFX(false);
                     chagneEffet.SetActive(false);
 
                     if (destinationPosition != Vector3.zero)
@@ -527,20 +501,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        bool navAgentEnabled = navAgent.enabled;
-                        if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        {
-                            navObstacle.enabled = false;
-                            navAgent.enabled = true;
-                        }
-
                         targetUnit = SearchReachableTarget(UnitStats.sightRange);
-
-                        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-                        //{
-                        //    navObstacle.enabled = false;
-                        //    navAgent.enabled = true;
-                        //}
                     }
                 }
                 break;
@@ -557,9 +518,6 @@ public class AllyUnit : Unit
                             if (targetTile != null)
                             {
                                 transform.position = targetTile.transform.position;
-                                navObstacle.enabled = true;
-
-                                navAgent.enabled = false;
                             }
                             else
                             {
@@ -570,7 +528,7 @@ public class AllyUnit : Unit
 
                             //transform.position = unitGrid.GetAvailableTile().transform.position;
 
-                            OnOffSiefeEffect(false);
+                            ShowSiegeVFX(false);
                             chagneEffet.SetActive(true);
 
                             particleDuration = 0.3f;
@@ -611,7 +569,7 @@ public class AllyUnit : Unit
                     {
                         unitGrid.ClearTile();
 
-                        OnOffSiefeEffect(false);
+                        ShowSiegeVFX(false);
                         chagneEffet.SetActive(true);
 
                         particleDuration = 0.3f;
@@ -670,7 +628,7 @@ public class AllyUnit : Unit
 
             case Mode.UPGRADE:
                 {
-                    OnOffSiefeEffect(false);
+                    ShowSiegeVFX(false);
                     chagneEffet.SetActive(true);
 
                     particleDuration = 0.3f;
@@ -951,8 +909,6 @@ public class AllyUnit : Unit
 
     public override void Die()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = false;
         collider.enabled = false;
 
         base.Die();
@@ -974,7 +930,7 @@ public class AllyUnit : Unit
 
     
 
-    private void OnOffSiefeEffect(bool isSiege)
+    private void ShowSiegeVFX(bool isSiege)
     {
         if (isSiege)
         {
@@ -1001,8 +957,4 @@ public class AllyUnit : Unit
             siegeEffect.SetActive(false);
         }
     }
-
-
-   
-
 }
