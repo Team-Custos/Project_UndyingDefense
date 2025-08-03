@@ -17,6 +17,9 @@ public class ActiveCommandSkillData : CommandSkillData
 
     [SerializeField] private GameObject critEffectPrefab;
 
+    [Header("■ Data")]
+    [SerializeField] protected AttackData attackData;
+
     public float Damage => damage;
     public AttackType AttackType => attackType;
     public float BonusCrit => bonusCrit;
@@ -24,4 +27,5 @@ public class ActiveCommandSkillData : CommandSkillData
     public GameObject InduseEffectPrefab => induseEffectPrefab;
     public float InduseEffectSuccessRate => induseEffectSuccessRate;
     public GameObject CritEffectPrefab => critEffectPrefab;
+    public AttackData AttackData => attackData;
 }

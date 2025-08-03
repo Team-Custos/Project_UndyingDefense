@@ -22,7 +22,7 @@ public class AttackData : ScriptableObject
     [SerializeField] private string vfxName;
 
     [Header("■ SFX")]
-    [SerializeField] private AudioClip hitSFXClip;
+    [SerializeField] private AudioClip[] hitSFXClip;
     [SerializeField] private AudioClip critSFXClip;
 
     public AttackType Type => type;
