@@ -62,7 +62,6 @@ public class ActiveCommandSkill : CommandSkill
         trigger.SetTriggerType(AttackTriggerType.Box);
         trigger.SetArea(AreaX, AreaY, AreaZ);
 
-
     }
 
     public void Attack(Unit target)
@@ -112,8 +111,8 @@ public class ActiveCommandSkill : CommandSkill
     private bool IsBlocked(ArmorType armorType)
     {
         return
-            (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
-            (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
-            (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
+            (data.AttackData.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
+            (data.AttackData.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
+            (data.AttackData.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 }

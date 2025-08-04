@@ -368,6 +368,17 @@ public class AttackSkill : SkillBase
         //}
         //target.AddVFX(critVFX, unit.transform.position);
     }
+    public void AddHitSFX()
+    {
+        AudioClip[] audios = data.Info.HitSFXClip;
+        AudioClip audio = audios[Random.Range(0, 1)];
+        SoundManager.Instance.PlaySFX(audio);
+    }
+
+    public void AddCritSFX()
+    {
+        SoundManager.Instance.PlaySFX(data.Info.CritSFXClip);
+    }
 
     private bool IsBlocked(ArmorType armorType)
     {

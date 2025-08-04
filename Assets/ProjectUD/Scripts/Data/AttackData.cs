@@ -31,4 +31,6 @@ public class AttackData : ScriptableObject
     public GameObject HitVFX => hitVFX;
     public float VFXDuration => vfxDuration;
     public string VFXName => vfxName;
+    public AudioClip[] HitSFXClip => hitSFXClip;
+    public AudioClip CritSFXClip => critSFXClip;
 }

@@ -1078,27 +1078,27 @@ public abstract class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
     }
 
-    public void PlayHitSFX(AttackType attackType)
-    {
-        AudioClip[] hitSFX = null;
-        switch (attackType)
-        {
-            case AttackType.SLASH:
-                hitSFX = SlashHitSFX;
-                break;
-            case AttackType.PIERCE:
-                hitSFX = PierceHitSFX;
-                break;
-            case AttackType.CRUSH:
-                hitSFX = CrushHitSFX;
-                break;
-        }
-        if (hitSFX != null)
-        {
-            int randomIndex = Random.Range(0, hitSFX.Length);
-            SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
-        }
-    }
+    //public void PlayHitSFX(AttackType attackType)
+    //{
+    //    AudioClip[] hitSFX = null;
+    //    switch (attackType)
+    //    {
+    //        case AttackType.SLASH:
+    //            hitSFX = SlashHitSFX;
+    //            break;
+    //        case AttackType.PIERCE:
+    //            hitSFX = PierceHitSFX;
+    //            break;
+    //        case AttackType.CRUSH:
+    //            hitSFX = CrushHitSFX;
+    //            break;
+    //    }
+    //    if (hitSFX != null)
+    //    {
+    //        int randomIndex = Random.Range(0, hitSFX.Length);
+    //        SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
+    //    }
+    //}
 
     public void PlayCritSFX(AttackType attackType)
     {
