@@ -1054,7 +1054,6 @@ public abstract class Unit : MonoBehaviour
                 navAgent.SetPath(path);
                 lastMoveTime = Time.time;
 
-                Debug.Log(navAgent.remainingDistance);
                 return;
             }
             else if(path.status == NavMeshPathStatus.PathPartial)
@@ -1159,7 +1158,7 @@ public abstract class Unit : MonoBehaviour
     {
         if (!isDead)
         {
-            //navAgent.enabled = false;
+            navAgent.enabled = false;
             //navObstacle.enabled = false;
 
             collider.enabled = false;

@@ -507,7 +507,7 @@ public class AllyUnit : Unit
                                 targetUnit = null;
 
                             float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-                            //Debug.Log($"Target Distance: {dist}");
+                            Debug.Log($"Target Distance: {dist}");
                         }
                         else
                         {
@@ -615,18 +615,6 @@ public class AllyUnit : Unit
 
                             
                             navAgent.enabled = true;
-                            //navAgent.Warp(transform.position);
-
-                            //NavMeshHit hit;
-                            //if (NavMesh.SamplePosition(transform.position, out hit, 1.5f, navAgent.areaMask))
-                            //{
-                            //    transform.position = hit.position;
-                            //    navAgent.enabled = true;
-                            //}
-                            //else
-                            //{
-                            //    Debug.Log("NavMesh 위의 유효한 위치를 찾을 수 없습니다.");
-                            //}
 
 
                             if (selectedUnitUI != null && isSelected)
@@ -692,7 +680,11 @@ public class AllyUnit : Unit
                                 AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, previousMode, unitGrid.TargetTile);
 
                                 if (previousMode == Mode.FREE)
+                                {
                                     upgradedUnit.ChangeMode(Mode.FREE);
+                                    upgradedUnit.navAgent.enabled = true;
+                                    upgradedUnit.navObstacle.enabled = false;
+                                }
                                 else if (previousMode == Mode.SEIGE)
                                     upgradedUnit.ChangeMode(Mode.SEIGE);
                             }
