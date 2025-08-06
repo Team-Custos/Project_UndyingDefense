@@ -32,7 +32,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [Header("■ UI")]
     [SerializeField] private UnitSpawnUI unitSpawnUI;
     [SerializeField] private GameObject indicator;
-    [SerializeField] private GameObject mouseIndicator;
 
     
 
@@ -82,10 +81,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (!hit.transform.CompareTag("Tile"))
+                {
+                    indicator.SetActive(false);
                     return;
+                }
 
-                indicator.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
-                mouseIndicator.transform.position = hit.point;
+                indicator.transform.position = grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0.1f, grid.cellSize.y * 0.5f);
+                indicator.SetActive(true);
             }
         }
     }
@@ -259,8 +261,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             commandSkillManager.CancelSkill();
             selectedIndex = index;
             spawn = true;
-            indicator.SetActive(true);
-            mouseIndicator.SetActive(true);
+            //indicator.SetActive(true);
             inputMng.OnClickTarget = this;
             unitSpawnUI.Select(index);
 
@@ -278,7 +279,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         selectedIndex = -1;
         spawn = false;
         indicator.SetActive(false);
-        mouseIndicator.SetActive(false);
+        //mouseIndicator.SetActive(false);
         unitSpawnUI.Deselect();
         selectedUnitUI.HideUntInfo();
     }
