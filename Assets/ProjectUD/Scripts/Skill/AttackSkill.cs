@@ -249,8 +249,8 @@ public class AttackSkill : SkillBase
             calcDamage *= calcBlockRate;
         }
 
-        calcDamage *= Mathf.Max(0f, unit.AtkMult);
-        calcDamage *= Mathf.Max(0f, target.DamageTakenMult);
+        calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
+        calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
 
         //calcDamage += calcDamage * unit.AttackDamageMultiplier * 0.01f;
         //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
@@ -262,10 +262,15 @@ public class AttackSkill : SkillBase
         {
             // target.PlayCritSFX(data.Info.Type);
             AddCritVFX(unit, target);
+            AddCritSFX();
             ActivateCriticalEffect(unit, target);
         }
         else
+        {
             AddHitVFX(unit, target);
+            AddHitSFX();
+        }
+        
         //else
         //{
         //    //target.PlayHitSFX(data.AttackType);
@@ -321,10 +326,9 @@ public class AttackSkill : SkillBase
     private void AddHitVFX(Unit unit, Unit target)
     {
         GameObject hitVFX = data.Info.HitVFX;
-        float effectduration = data.Info.VFXDuration;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX, effectduration);
+            target.AddVFX(hitVFX);
         }
 
         //ParticleSystem hitVFX = null;
@@ -347,10 +351,9 @@ public class AttackSkill : SkillBase
     private void AddCritVFX(Unit unit, Unit target)
     {
         GameObject critVFX = data.Info.CritVFX;
-        float effectduration = data.Info.VFXDuration;
         if (critVFX != null)
         {
-            target.AddVFX(critVFX, effectduration);
+            target.AddVFX(critVFX);
         }
 
         //ParticleSystem critVFX = null;
@@ -371,7 +374,7 @@ public class AttackSkill : SkillBase
     public void AddHitSFX()
     {
         AudioClip[] audios = data.Info.HitSFXClip;
-        AudioClip audio = audios[Random.Range(0, 1)];
+        AudioClip audio = audios[Random.Range(0, audios.Length)];
         SoundManager.Instance.PlaySFX(audio);
     }
 

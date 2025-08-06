@@ -211,7 +211,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     {
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
-        if (IsBlocked(target.Data.ArmorType))
+        if (data.AttackData != null && IsBlocked(target.Data.ArmorType))
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
             calcDamage *= calcBlockRate;
@@ -221,10 +221,11 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
         target.TakeDamage(calcDamage);
         //target.PlayHitSFX(data.AttackType);       // Unit 에서 주석처리한 메서드
-        AudioClip[] audios = data.AttackData.HitSFXClip;
-        AudioClip audio = audios[Random.Range(0,audios.Length)];
-        SoundManager.Instance.PlaySFX(audio);
-        AddHitVFX(target);
+        if (data.AttackData != null)
+        {
+            AddHitSFX();
+            AddHitVFX(target);
+        }
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
             //if (data.InduseEffectPrefab != null)
@@ -234,13 +235,19 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
+    public void AddHitSFX()
+    {
+        AudioClip[] audios = data.AttackData.HitSFXClip;
+        AudioClip audio = audios[Random.Range(0, audios.Length)];
+        SoundManager.Instance.PlaySFX(audio);
+    }
+
     private void AddHitVFX(Unit target)     // 피격 연출
     {
         GameObject hitVFX = data.AttackData.HitVFX;
-        float effectduration = data.AttackData.VFXDuration;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX, effectduration);
+            target.AddVFX(hitVFX);
         }
 
         //ParticleSystem hitVFX = null;

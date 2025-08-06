@@ -1294,23 +1294,13 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    public void AddVFX(GameObject vfx, float duration) // hitVFX 추가
+    public void AddVFX(GameObject vfx) // hit & Crit VFX (오브젝트풀링 사용)
     {
         GameObject VFXobj = hitVFXPool.GetVFX(vfx);
         VFXobj.transform.SetParent(VFXParent);
         VFXobj.SetActive(true);
         VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        //Destroy(VFXobj, duration);
-    }
-
-    public void AddCritVFX(GameObject effectPrefab, float duration) // critVFX 추가에서 사용중 -> 후에 hitVFX 와 같은 방식으로 바꾸기
-    {
-        GameObject VFXobj = Instantiate(effectPrefab.gameObject);
-        VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition =  Vector3.up * VFXobj.transform.localPosition.y;
-        VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        Destroy(VFXobj, duration);
     }
 
     public void AddVFX(ParticleSystem VFX)

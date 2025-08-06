@@ -18,7 +18,7 @@ public class AttackData : ScriptableObject
     [Header("■ VFX")]
     [SerializeField] private GameObject critVFX;
     [SerializeField] private GameObject hitVFX;
-    [SerializeField] private float vfxDuration;
+    //[SerializeField] private float vfxDuration;     // VFX 스스로가 가질 데이터로 변경
     [SerializeField] private string vfxName;
 
     [Header("■ SFX")]
@@ -29,7 +29,7 @@ public class AttackData : ScriptableObject
     public GameObject CritEffectPrefab => critEffectPrefab;
     public GameObject CritVFX => critVFX;
     public GameObject HitVFX => hitVFX;
-    public float VFXDuration => vfxDuration;
+    //public float VFXDuration => vfxDuration;
     public string VFXName => vfxName;
     public AudioClip[] HitSFXClip => hitSFXClip;
     public AudioClip CritSFXClip => critSFXClip;
