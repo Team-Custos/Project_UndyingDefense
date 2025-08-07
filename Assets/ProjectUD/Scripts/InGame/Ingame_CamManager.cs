@@ -17,6 +17,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     [SerializeField] private SelectedUnitManager    selectedUnitManager;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private Transform cameraPivot;
+    [SerializeField] private Transform virtualCamPos;
     private CinemachineFramingTransposer framingTransposer;
 
     [Header("■ Cam Controll")]
@@ -24,6 +25,10 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     [SerializeField] private float zoomSpeed = 2.0f;
     [SerializeField] private float zoomMin = 5.0f;
     [SerializeField] private float zoomMax = 20.0f;
+    [SerializeField] private float maxRotationX = 60f;
+    [SerializeField] private float minRotationX = 30f;
+    private float targetRotationX;
+    private float rotationVelocityX;
 
     [Header("■ Cam Limtis")]
     [SerializeField] private float xMax = 30.0f;
@@ -52,6 +57,8 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         inputEventManager.OnNavigateTarget = this;
         inputEventManager.OnScrollTarget = this;
         inputEventManager.OnSpaceTarget = this;
+
+        targetRotationX = virtualCamPos.eulerAngles.x;
     }
 
     private void Update()
@@ -66,6 +73,14 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
             clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
             cameraPivot.position = clampedPosition;
+        }
+
+        if (!dollyCamera.IsCamPanning)
+        {
+            float currentRotationX = virtualCamPos.eulerAngles.x;
+            float dampedRotationX = Mathf.SmoothDampAngle(currentRotationX, targetRotationX, ref rotationVelocityX, 0.2f);
+
+            virtualCamPos.eulerAngles = new Vector3(dampedRotationX, virtualCamPos.eulerAngles.y, virtualCamPos.eulerAngles.z);
         }
     }
 
@@ -110,6 +125,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             currentFov -= scrollInput * zoomSpeed * Time.deltaTime;
             currentFov = Mathf.Clamp(currentFov, zoomMin, zoomMax);
             framingTransposer.m_CameraDistance = currentFov;
+
+            float ratio = (currentFov - zoomMin) / (zoomMax - zoomMin);
+            targetRotationX = Mathf.Lerp(minRotationX, maxRotationX, ratio);
 
         }
     }

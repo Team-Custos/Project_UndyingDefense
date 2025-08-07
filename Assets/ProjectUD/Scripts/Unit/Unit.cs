@@ -380,6 +380,9 @@ public abstract class Unit : MonoBehaviour
     protected float damageTakenMult; // 피해량 비율
     protected float atkMult; // 공격력 비율
     protected float blockPercent; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
+    protected float interval; // 유닛의 공격 간격(속도) interval 마다 스킬 사용 가능
+    protected float intervalCheck; // interval 체크용
+    protected float intervalMultiplier = 1f;
 
     protected UnitStats unitStats;
     private UnitDataLoader unitDataLoader;
@@ -430,6 +433,7 @@ public abstract class Unit : MonoBehaviour
     public IReadOnlyList<DurationEffect> EffectList => effectList;
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
+    public float Interval => interval;
     public bool IsSelected
     {
         get => isSelected;
@@ -535,6 +539,8 @@ public abstract class Unit : MonoBehaviour
         //mental = Data.Mental;
 
         SetUnitStats();
+        intervalCheck = interval;
+        interval = 0;
 
         // 이동 속도
         moveSpeedMult = 1f;
@@ -588,7 +594,7 @@ public abstract class Unit : MonoBehaviour
             critPercent = unitStats.critChance;
             attackSpeed = unitStats.attackSpeed;
             mental = unitStats.mental;
-
+            interval = unitStats.interval;
         }
         else
             Debug.Log("데이터 없음");
@@ -641,7 +647,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void ActivateSkill(SkillBase skill, Unit target)
+    protected virtual void ActivateSkill(SkillBase skill, Unit target) // 실제 스킬 사용 부분
     {
         skill.Activate(this, target);
 
@@ -940,7 +946,7 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()
     {
-        if (specialSkill != null && specialSkill.IsCoolDown && !generalSkill.IsCoolDown)
+        if (specialSkill != null && specialSkill.IsCoolDown )//&& !generalSkill.IsCoolDown)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown)
             return generalSkill;
@@ -1168,6 +1174,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+
     public void SetStateDuration(float duration) => stateDuration = duration;
 
     public void AddMoveSpeedMult(float percent)
@@ -1213,6 +1220,22 @@ public abstract class Unit : MonoBehaviour
         damageTakenMult += percent * 0.01f;
     }
 
+    public void ChangeInterval(float percent) // interval을 변화시키는 함수
+    {
+        intervalMultiplier += percent * 0.01f; 
+
+
+        //intervalMultiplier = 1f - (percent * 0.01f);    // ex) 0.7
+        interval = intervalCheck * intervalMultiplier;
+        // intervalMultiplier = 1f;
+    }
+
+    public void RevertInterval(float percent)    // interval을 원래 값으로 되돌리는 함수
+    {
+        float multiplier = 1f - (percent * 0.01f); // 예: 30 → 0.7
+
+        interval = interval / multiplier;
+    }
     public abstract void GetProvoked(Unit ProvokedTarget);
 
     public virtual void RemoveProvoked()
@@ -1241,6 +1264,7 @@ public abstract class Unit : MonoBehaviour
     public void AddEffect(GameObject effectPrefab)
     {
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
+
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
@@ -1250,7 +1274,6 @@ public abstract class Unit : MonoBehaviour
             }
             else
             {
-                Debug.Log("상위 이펙트 적용중");
                 return;
             }
                
@@ -1269,19 +1292,6 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
     }
-
-    //public bool HasEffect<T>() where T : DurationEffect // 이펙트가 있는지 확인
-    //{
-    //    foreach (var effect in effectList)
-    //    {
-    //        if (effect is T)
-    //        {
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
-
     public void RemoveEffect(DurationEffect effect)
     {
         effectList.Remove(effect);

@@ -164,7 +164,6 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
-                                Debug.Log(skill.name);
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -172,6 +171,7 @@ public class AllyUnit : Unit
 
                     if (state == State.GENERALSKILL)
                     {
+
                         if(targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetGeneralSkill();
@@ -356,72 +356,75 @@ public class AllyUnit : Unit
                     OnOffSiefeEffect(true);
                     chagneEffet.SetActive(false);
 
-                    //navObstacle.enabled = true;
+                    if (state == State.STUN)
+                        return;
 
-                    SkillBase skill = GetAvailableSkill();
-                    if (skill != null) // 사용 가능한 스킬이 존재할 경우
+                    interval -= Time.deltaTime;
+                    
+                    if(interval <= 0)
                     {
-                        if (state == State.STUN)
-                            return;
+                        SkillBase skill = GetAvailableSkill();
 
-                        SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
-                        switch (skillTargetType)
+                        if (skill != null) // 사용 가능한 스킬이 존재할 경우
                         {
-                            case SkillBase.TargetType.ENEMY:
-                                {
-                                    if (SearchMarkedTarget(UnitStats.sightRange) != null)
-                                    {
-                                        targetUnit = SearchMarkedTarget(UnitStats.sightRange);
-                                    }
 
-                                    if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
+                            SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                            switch (skillTargetType)
+                            {
+                                case SkillBase.TargetType.ENEMY:
                                     {
-                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                        if (SearchMarkedTarget(UnitStats.sightRange) != null)
                                         {
-                                            if (navAgent.enabled && !navAgent.isStopped)
-                                            {
-                                                navAgent.isStopped = true;
-                                                modelAnimator.SetBool("isRunning", false);
-                                            }
-
-
-                                            ActivateSkill(skill, targetUnit);
-
-                                            //modelAnimator.SetTrigger("GeneralSkill");
+                                            targetUnit = SearchMarkedTarget(UnitStats.sightRange);
                                         }
-                                        else
-                                            targetUnit = null;
-                                    }
-                                    else targetUnit = SearchTarget(UnitStats.sightRange);
-                                }
-                                break;
-                            case SkillBase.TargetType.ALLY:
-                                {
-                                    //if (stateDurationCheck >= stateDuration)
-                                    //{
-                                    //    ActivateSkill(skill, null);
-                                    //    stateDurationCheck = 0f;
-                                    //    stateDuration = 0f;
-                                    //}
 
-                                    ActivateSkill(skill, null);
-                                }
-                                break;
+                                        if (targetUnit != null && targetUnit.HpPercent > 0f && targetUnit.gameObject.activeInHierarchy)
+                                        {
+                                            if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                            {
+                                                if (navAgent.enabled && !navAgent.isStopped)
+                                                {
+                                                    navAgent.isStopped = true;
+                                                    modelAnimator.SetBool("isRunning", false);
+                                                }
+
+
+                                                ActivateSkill(skill, targetUnit);
+                                                interval = intervalCheck;
+
+                                            }
+                                            else
+                                                targetUnit = null;
+                                        }
+                                        else targetUnit = SearchTarget(UnitStats.sightRange);
+                                    }
+                                    break;
+                                case SkillBase.TargetType.SELF:
+                                    {
+                                        ActivateSkill(skill, this);
+                                        interval = intervalCheck;
+                                    }
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
-                            targetUnit = SearchTarget(UnitStats.sightRange);
+                        }
                         else
-                            LookAt(targetUnit.transform.position);   
-                    }
+                        {
+                            if (targetUnit == null || targetUnit.HpPercent <= 0f || !targetUnit.gameObject.activeInHierarchy)
+                                targetUnit = SearchTarget(UnitStats.sightRange);
+                            else
+                                LookAt(targetUnit.transform.position);
+                       }
+
                 }
                 break;
             case Mode.FREE:
                 {
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
+
+                    if (state == State.STUN)
+                        return;
 
                     if (destinationPosition != Vector3.zero)
                     {
@@ -457,52 +460,65 @@ public class AllyUnit : Unit
                        && !isMoving)
                     {
 
-                        SkillBase skill = GetAvailableSkill();
-                        if(skill != null)
+                        interval -= Time.deltaTime;
+
+                        if (interval <= 0)
                         {
-                            if (state == State.STUN)
-                                return;
 
-                            SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
-                            switch (skillTargetType)
+                            SkillBase skill = GetAvailableSkill();
+                            if (skill != null)
                             {
-                                case SkillBase.TargetType.ENEMY:
-                                    {
-                                        if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                               
+
+                                SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                                switch (skillTargetType)
+                                {
+                                    case SkillBase.TargetType.ENEMY:
                                         {
-                                            //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+                                            if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                            {
+                                                //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
 
-                                            //Debug.Log(dist);
+                                                //Debug.Log(dist);
 
-                                            //if (dist > UnitStats.attackRange)
-                                            //    return;
-                                            
+                                                //if (dist > UnitStats.attackRange)
+                                                //    return;
 
-                                            ActivateSkill(skill, targetUnit);
+
+                                                ActivateSkill(skill, targetUnit);
+
+                                                interval = intervalCheck;
+
+                                                if (stateDurationCheck >= stateDuration)
+                                                {
+
+                                                    stateDurationCheck = 0f;
+                                                    stateDuration = 0f;
+                                                }
+                                                return;
+                                            }
+                                        }
+                                        break;
+                                    case SkillBase.TargetType.ALLY:
+                                        {
+                                            ActivateSkill(skill, null);
+
+                                            interval = intervalCheck;
 
                                             if (stateDurationCheck >= stateDuration)
                                             {
-                                                
+
                                                 stateDurationCheck = 0f;
                                                 stateDuration = 0f;
                                             }
-                                            return;
                                         }
-                                    }
-                                    break;
-                                case SkillBase.TargetType.ALLY:
-                                    {
-                                        ActivateSkill(skill, null);
+                                        return;
+                                }
 
-                                        if (stateDurationCheck >= stateDuration)
-                                        {
-                                            
-                                            stateDurationCheck = 0f;
-                                            stateDuration = 0f;
-                                        }
-                                    }
-                                    return;
+                                
                             }
+
+                            
                         }
 
 

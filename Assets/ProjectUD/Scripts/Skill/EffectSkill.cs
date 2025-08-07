@@ -4,8 +4,10 @@ public class EffectSkill : SkillBase
 {
     [Header("■ Data")]
     [SerializeField] private EffectSkillData data; // 스킬 데이터
+    [SerializeField] private GameObject effectObject;
     public override SkillData Data => data; // 스킬 데이터
     [SerializeField] private LayerMask targetLayerMask; // 스킬이 적용될 대상 레이어 마스크
+    [SerializeField] private TargetType targetType;
     private Unit unit;
 
     // 범위를 가진 스킬
@@ -34,14 +36,9 @@ public class EffectSkill : SkillBase
         }
     }
 
-    public void ActivateSkill(Unit target)
+    public void ActivateSkill(Unit caster)
     {
-        target.GetProvoked(unit);
-
-        //if (Random.Range(0f, 1f) <= data.SuccessRate * 0.01f)
-        //{
-        //    target.GetProvoked(target); // 대상이 도발 상태가 되도록 함
-        //    //target.AddEffect(data.EffectPrefab);
-        //}
+        caster.AddEffect(effectObject);
     }
+
 }

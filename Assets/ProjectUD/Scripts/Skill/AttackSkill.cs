@@ -260,7 +260,6 @@ public class AttackSkill : SkillBase
 
         target.TakeDamage(calcDamage);
 
-        Debug.Log(calcDamage);
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {

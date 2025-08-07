@@ -25,7 +25,6 @@ public class ShockEffect : StackEffect
         currentVfx = Vfx[stack - 1];
         currentVfx.SetActive(true);
 
-        Debug.Log(stack);
     }
 
     protected override void OnMaxStack()

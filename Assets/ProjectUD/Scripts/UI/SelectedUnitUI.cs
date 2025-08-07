@@ -314,7 +314,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unitStats.interval.ToString();
         atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unitStats.mental.ToString();
 
@@ -378,7 +378,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed.ToString();
+        atSpeedText.text = "공격속도 : " + unit.UnitStats.interval.ToString();
         atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 

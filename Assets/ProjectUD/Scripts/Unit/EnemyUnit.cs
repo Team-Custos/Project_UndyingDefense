@@ -306,12 +306,21 @@ public class EnemyUnit : Unit
                                 modelAnimator.SetBool("isRunning", false);
                             }
 
-                            // 스킬 관련 처리
-                            SkillBase skill = GetAvailableSkill();
-                            if (skill != null)
+                            interval -= Time.deltaTime; // 공격 간격 감소
+
+                            if (interval <= 0)
                             {
-                                ActivateSkill(skill, targetUnit);
+                                // 스킬 관련 처리
+                                SkillBase skill = GetAvailableSkill();
+
+                                if (skill != null)
+                                {
+                                    ActivateSkill(skill, targetUnit);
+                                }
+
+                                interval = intervalCheck;
                             }
+                            
                         }
                         else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 공격 사거리 < 대상 < 시야 사거리
                         {

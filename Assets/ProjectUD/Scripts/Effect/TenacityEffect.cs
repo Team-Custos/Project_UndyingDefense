@@ -3,15 +3,17 @@ using UnityEngine;
 public class TenacityEffect : DurationEffect
 {
     [Header("■ Tenacity Options")]
-    [SerializeField] private float attackSpeedPercent;
+    [SerializeField] private float intervalPercent;
 
     public override void Activate()
     {
-        target.AddAttackSpeedMult(attackSpeedPercent);
+        target.ChangeInterval(intervalPercent);
+        Debug.Log(target.Interval + " activate");
     }
 
     public override void OnRemove()
     {
-        target.AddAttackSpeedMult(-attackSpeedPercent);
+        target.RevertInterval(intervalPercent);
+        Debug.Log(target.Interval + " remove");
     }
 }
