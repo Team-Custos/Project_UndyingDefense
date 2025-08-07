@@ -1222,20 +1222,16 @@ public abstract class Unit : MonoBehaviour
 
     public void ChangeInterval(float percent) // interval을 변화시키는 함수
     {
-        intervalMultiplier += percent * 0.01f; 
-
-
-        //intervalMultiplier = 1f - (percent * 0.01f);    // ex) 0.7
+        intervalMultiplier -= percent * 0.01f; 
         interval = intervalCheck * intervalMultiplier;
-        // intervalMultiplier = 1f;
     }
 
-    public void RevertInterval(float percent)    // interval을 원래 값으로 되돌리는 함수
+    public void RevertInterval(float percent)
     {
-        float multiplier = 1f - (percent * 0.01f); // 예: 30 → 0.7
-
-        interval = interval / multiplier;
+        intervalMultiplier += percent * 0.01f;
+        interval = intervalCheck * intervalMultiplier;
     }
+
     public abstract void GetProvoked(Unit ProvokedTarget);
 
     public virtual void RemoveProvoked()
