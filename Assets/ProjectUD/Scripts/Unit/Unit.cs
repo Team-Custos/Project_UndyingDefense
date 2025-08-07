@@ -391,6 +391,7 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
+    protected VFXObjectPool hitVFXPool;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -568,6 +569,11 @@ public abstract class Unit : MonoBehaviour
         attackSpeed = unitStats.attackSpeed;
 
         lastMoveTime = Time.time;
+    }
+
+    public void SetHitVFXPool(VFXObjectPool hitVFXPool)
+    {
+        this.hitVFXPool = hitVFXPool;
     }
 
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
@@ -1078,27 +1084,27 @@ public abstract class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
     }
 
-    public void PlayHitSFX(AttackType attackType)
-    {
-        AudioClip[] hitSFX = null;
-        switch (attackType)
-        {
-            case AttackType.SLASH:
-                hitSFX = SlashHitSFX;
-                break;
-            case AttackType.PIERCE:
-                hitSFX = PierceHitSFX;
-                break;
-            case AttackType.CRUSH:
-                hitSFX = CrushHitSFX;
-                break;
-        }
-        if (hitSFX != null)
-        {
-            int randomIndex = Random.Range(0, hitSFX.Length);
-            SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
-        }
-    }
+    //public void PlayHitSFX(AttackType attackType)
+    //{
+    //    AudioClip[] hitSFX = null;
+    //    switch (attackType)
+    //    {
+    //        case AttackType.SLASH:
+    //            hitSFX = SlashHitSFX;
+    //            break;
+    //        case AttackType.PIERCE:
+    //            hitSFX = PierceHitSFX;
+    //            break;
+    //        case AttackType.CRUSH:
+    //            hitSFX = CrushHitSFX;
+    //            break;
+    //    }
+    //    if (hitSFX != null)
+    //    {
+    //        int randomIndex = Random.Range(0, hitSFX.Length);
+    //        SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
+    //    }
+    //}
 
     public void PlayCritSFX(AttackType attackType)
     {
@@ -1294,13 +1300,13 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    public void AddVFX(GameObject effectPrefab, float duration)
+    public void AddVFX(GameObject vfx) // hit & Crit VFX (오브젝트풀링 사용)
     {
-        GameObject VFXobj = Instantiate(effectPrefab.gameObject);
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition =  Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.SetActive(true);
+        VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        Destroy(VFXobj, duration);
     }
 
     public void AddVFX(ParticleSystem VFX)

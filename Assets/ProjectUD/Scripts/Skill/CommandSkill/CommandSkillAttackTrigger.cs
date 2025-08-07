@@ -34,6 +34,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     [SerializeField] private IgniteEffect IgniteEffect;
 
+
     public void SetTriggerType(AttackTriggerType Type)
     {
         triggerType = Type;
@@ -100,7 +101,8 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     }
 
 
-    private void PlayVFX()
+
+    private void PlayVFX()  // 영역 연출
     {
         if (data.StartVFX != null)
         {
@@ -171,8 +173,6 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(target);
-
-                
             }
         }
     }
@@ -211,7 +211,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     {
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
-        if (IsBlocked(target.Data.ArmorType))
+        if (data.AttackData != null && IsBlocked(target.Data.ArmorType))
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
             calcDamage *= calcBlockRate;
@@ -220,8 +220,12 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         calcDamage *= target.DamageTakenMult;
 
         target.TakeDamage(calcDamage);
-        target.PlayHitSFX(data.AttackType);
-        AddHitVFX(target);
+        //target.PlayHitSFX(data.AttackType);       // Unit 에서 주석처리한 메서드
+        if (data.AttackData != null)
+        {
+            AddHitSFX();
+            AddHitVFX(target);
+        }
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
             //if (data.InduseEffectPrefab != null)
@@ -231,8 +235,21 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
-    private void AddHitVFX(Unit target)
+    public void AddHitSFX()
     {
+        AudioClip[] audios = data.AttackData.HitSFXClip;
+        AudioClip audio = audios[Random.Range(0, audios.Length)];
+        SoundManager.Instance.PlaySFX(audio);
+    }
+
+    private void AddHitVFX(Unit target)     // 피격 연출
+    {
+        GameObject hitVFX = data.AttackData.HitVFX;
+        if (hitVFX != null)
+        {
+            target.AddVFX(hitVFX);
+        }
+
         //ParticleSystem hitVFX = null;
         //switch (data.AttackType)
         //{
@@ -256,9 +273,9 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     private bool IsBlocked(ArmorType armorType)
     {
         return
-            (data.AttackType == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
-            (data.AttackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
-            (data.AttackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
+            (data.AttackData.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
+            (data.AttackData.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
+            (data.AttackData.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
     private void OnDestroy()

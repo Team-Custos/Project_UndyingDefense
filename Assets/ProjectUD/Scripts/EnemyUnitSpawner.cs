@@ -19,6 +19,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
+    [SerializeField] private VFXObjectPool hitVFXPool;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Wave Data")]
@@ -231,6 +232,7 @@ public class EnemyUnitSpawner : MonoBehaviour
         {
             enemy.Initialize(data, poolDic[data], fortress, this);
             enemy.SetDurationEffectPool(durationEffectPool);
+            enemy.SetHitVFXPool(hitVFXPool);
             return enemy;
         }
         else
