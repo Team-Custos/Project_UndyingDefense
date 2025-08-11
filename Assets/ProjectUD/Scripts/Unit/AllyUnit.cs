@@ -596,15 +596,17 @@ public class AllyUnit : Unit
                             changeDuration -= Time.deltaTime;
                             state = State.IDLE;
 
-                            navObstacle.enabled = false;
+                            float progress = 1 - (changeDuration / 3.0f);
+
+                            if (progress >= 0.9f && navObstacle.enabled) // 진행도 90% 이상일 때
+                            {
+                                navObstacle.enabled = false;
+                            }
 
                             if (selectedUnitUI != null)
                             {
                                 selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                             }
-
-                            
-
                         }
                         else    // 체인지 상태 끝 -> 프리 모드 전환 완료
                         {
