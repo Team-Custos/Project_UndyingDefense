@@ -358,8 +358,6 @@ public class AllyUnit : Unit
                     if (state == State.STUN)
                         return;
 
-
-                    
                     
                     interval -= Time.deltaTime;
                     
@@ -371,7 +369,6 @@ public class AllyUnit : Unit
 
                         if (skill != null) // 사용 가능한 스킬이 존재할 경우
                         {
-
                             SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                             switch (skillTargetType)
                             {
@@ -419,13 +416,13 @@ public class AllyUnit : Unit
                             else
                                 LookAt(targetUnit.transform.position);
                        }
+                    break;
 
                 }
-                break;
             case Mode.FREE:
                 {
                     //navAgent.enabled = true;
-                    
+
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
 
@@ -460,7 +457,8 @@ public class AllyUnit : Unit
                         }
                     }
                     else        // 이동 명령 없음 or 종료 -> 적 탐색
-                    {    if (targetUnit == null)
+                    {
+                        if (targetUnit == null)
                         {
                             targetUnit = SearchTarget(UnitStats.sightRange);
                         }
@@ -474,35 +472,52 @@ public class AllyUnit : Unit
                         {
                             modelAnimator.SetBool("isRunning", false);
 
-                        interval -= Time.deltaTime;
+                            interval -= Time.deltaTime;
 
-                        if (interval <= 0)
-                        {
-
-                            SkillBase skill = GetAvailableSkill();
-                            if (skill != null)
+                            if (interval <= 0)
                             {
-                                if (state == State.STUN)
-                                    return;
-                               
 
-                                SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
-                                switch (skillTargetType)
+                                SkillBase skill = GetAvailableSkill();
+                                if (skill != null)
                                 {
-                                    case SkillBase.TargetType.ENEMY:
-                                        {
-                                            ActivateSkill(skill, targetUnit);
-                                            if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                    if (state == State.STUN)
+                                        return;
+
+
+                                    SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                                    switch (skillTargetType)
+                                    {
+                                        case SkillBase.TargetType.ENEMY:
                                             {
-                                                //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-
-                                                //Debug.Log(dist);
-
-                                                //if (dist > UnitStats.attackRange)
-                                                //    return;
-
-
                                                 ActivateSkill(skill, targetUnit);
+                                                if (IsTargetInRange(targetUnit, UnitStats.attackRange))
+                                                {
+                                                    //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+
+                                                    //Debug.Log(dist);
+
+                                                    //if (dist > UnitStats.attackRange)
+                                                    //    return;
+
+
+                                                    ActivateSkill(skill, targetUnit);
+
+                                                    interval = intervalCheck;
+
+                                                    if (stateDurationCheck >= stateDuration)
+                                                    {
+
+                                                        stateDurationCheck = 0f;
+                                                        stateDuration = 0f;
+                                                    }
+                                                    return;
+                                                }
+                                                break;
+                                            }
+
+                                        case SkillBase.TargetType.ALLY:
+                                            {
+                                                ActivateSkill(skill, null);
 
                                                 interval = intervalCheck;
 
@@ -512,279 +527,266 @@ public class AllyUnit : Unit
                                                     stateDurationCheck = 0f;
                                                     stateDuration = 0f;
                                                 }
-                                                return;
+                                                break;
                                             }
-                                        }
-                                        break;
-                                    case SkillBase.TargetType.ALLY:
-                                        {
-                                            ActivateSkill(skill, null);
-
-                                            interval = intervalCheck;
-
-                                            if (stateDurationCheck >= stateDuration)
+                                        case SkillBase.TargetType.SELF:
                                             {
+                                                ActivateSkill(skill, null);
+                                                interval = intervalCheck;
 
-                                                stateDurationCheck = 0f;
-                                                stateDuration = 0f;
+                                                if (stateDurationCheck >= stateDuration)
+                                                {
+
+                                                    stateDurationCheck = 0f;
+                                                    stateDuration = 0f;
+                                                }
+                                                break;
                                             }
-                                        }
-                                    case SkillBase.TargetType.ALLY:
-                                        {
-                                            ActivateSkill(skill, null);
-
-                                            if (stateDurationCheck >= stateDuration)
-                                            {
-
-                                                stateDurationCheck = 0f;
-                                                stateDuration = 0f;
-                                            }
-                                        }
-                                        return;
-                                }
-                                        return;
+                                    }
                                 }
 
-                                
+
                             }
+                            else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
+                            {
+                                MoveTo(targetUnit);
+                                modelAnimator.SetBool("isRunning", true);
+                                if (path.status != NavMeshPathStatus.PathComplete)
+                                    targetUnit = null;
 
-                            
-                        }
-                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
-                        {
-                            MoveTo(targetUnit);
-                            modelAnimator.SetBool("isRunning", true);
-                            if (path.status != NavMeshPathStatus.PathComplete)
+                                float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+                                Debug.Log($"Target Distance: {dist}");
+                            }
+                            else
+                            {
                                 targetUnit = null;
-
-                            float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-                            Debug.Log($"Target Distance: {dist}");
+                            }
                         }
                         else
-                        {
                             targetUnit = null;
-                        }
                     }
-                    else
-                        targetUnit = null;
+                    break;
                 }
-                break;
+
             case Mode.CHANGE:
                 {
                     destinationPosition = Vector3.zero;
 
-                    if (previousMode == Mode.FREE)      // 시즈로 변경
-                    {
-                        if (!isAvailableToSiege)
-                        {
-                            Tile targetTile = unitGrid.GetAvailableTile();
+                     if (previousMode == Mode.FREE)      // 시즈로 변경
+                     {
+                         if (!isAvailableToSiege)
+                         {
+                             Tile targetTile = unitGrid.GetAvailableTile();
 
-                            if (targetTile != null)
-                            {
-                                transform.position = targetTile.transform.position;
+                             if (targetTile != null)
+                             {
+                                 transform.position = targetTile.transform.position;
 
-                                navAgent.enabled = false;
-                                navObstacle.enabled = true;
-                            }
-                            else
-                            {
-                                mode = Mode.FREE;
-                                return;
-                            }
-                                
-
-                            //transform.position = unitGrid.GetAvailableTile().transform.position;
-
-                            OnOffSiefeEffect(false);
-                            chagneEffet.SetActive(true);
-
-                            particleDuration = 0.3f;
-                            isSiegeActive = false;
-
-                            isAvailableToSiege = true;
-
-                        }
-
-                        if (isAvailableToSiege)
-                        {
-                            if (changeDuration >= 0)
-                            {
-                                changeDuration -= Time.deltaTime;
-                                state = State.IDLE;
-
-                                if (selectedUnitUI != null)
-                                {
-                                    selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
-                                }
-                            }
-                            else
-                            {
-                                mode = Mode.SEIGE;
-                                changeDuration = 3.0f;
-                                previousMode = mode;
-                                isAvailableToSiege = false;
-
-                                if (selectedUnitUI != null && isSelected)
-                                {
-                                    selectedUnitUI.ShowAllyUI(this);
-                                    selectedUnitUI.HideUnitDuration();
-                                }
-                            }
-                        }
-                    }
-                    else if (previousMode == Mode.SEIGE)
-                    {
-                        unitGrid.ClearTile();
-
-                        OnOffSiefeEffect(false);
-                        chagneEffet.SetActive(true);
-
-                        particleDuration = 0.3f;
-                        isSiegeActive = false;
-
-                        if (changeDuration >= 0) // 체인지 상태
-                        {
-                            changeDuration -= Time.deltaTime;
-                            state = State.IDLE;
-
-                            float progress = 1 - (changeDuration / 3.0f);
-
-                            if (progress >= 0.9f && navObstacle.enabled) // 진행도 90% 이상일 때
-                            {
-                                navObstacle.enabled = false;
-                            }
-
-                            if (selectedUnitUI != null)
-                            {
-                                selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
-                            }
-                        }
-                        else    // 체인지 상태 끝 -> 프리 모드 전환 완료
-                        {
-                            mode = Mode.FREE;
-
-                            changeDuration = 3.0f;
-                            previousMode = mode;
-
-                            
-                            navAgent.enabled = true;
+                                 navAgent.enabled = false;
+                                 navObstacle.enabled = true;
+                             }
+                             else
+                             {
+                                 mode = Mode.FREE;
+                                 return;
+                             }
 
 
-                            if (selectedUnitUI != null && isSelected)
-                            {
-                                selectedUnitUI.ShowAllyUI(this);
-                                selectedUnitUI.HideUnitDuration();
-                            }
-                        }
-                    }
+                             //transform.position = unitGrid.GetAvailableTile().transform.position;
+
+                             OnOffSiefeEffect(false);
+                             chagneEffet.SetActive(true);
+
+                             particleDuration = 0.3f;
+                             isSiegeActive = false;
+
+                             isAvailableToSiege = true;
+
+                         }
+
+                         if (isAvailableToSiege)
+                         {
+                             if (changeDuration >= 0)
+                             {
+                                 changeDuration -= Time.deltaTime;
+                                 state = State.IDLE;
+
+                                 if (selectedUnitUI != null)
+                                 {
+                                     selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                                 }
+                             }
+                             else
+                             {
+                                 mode = Mode.SEIGE;
+                                 changeDuration = 3.0f;
+                                 previousMode = mode;
+                                 isAvailableToSiege = false;
+
+                                 if (selectedUnitUI != null && isSelected)
+                                 {
+                                     selectedUnitUI.ShowAllyUI(this);
+                                     selectedUnitUI.HideUnitDuration();
+                                 }
+                             }
+                         }
+                     }
+                     else if (previousMode == Mode.SEIGE)
+                     {
+                         unitGrid.ClearTile();
+
+                         OnOffSiefeEffect(false);
+                         chagneEffet.SetActive(true);
+
+                         particleDuration = 0.3f;
+                         isSiegeActive = false;
+
+                         if (changeDuration >= 0) // 체인지 상태
+                         {
+                             changeDuration -= Time.deltaTime;
+                             state = State.IDLE;
+
+                             float progress = 1 - (changeDuration / 3.0f);
+
+                             if (progress >= 0.9f && navObstacle.enabled) // 진행도 90% 이상일 때
+                             {
+                                 navObstacle.enabled = false;
+                             }
+
+                             if (selectedUnitUI != null)
+                             {
+                                 selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                             }
+                         }
+                         else    // 체인지 상태 끝 -> 프리 모드 전환 완료
+                         {
+                             mode = Mode.FREE;
+
+                             changeDuration = 3.0f;
+                             previousMode = mode;
+
+
+                             navAgent.enabled = true;
+
+
+                             if (selectedUnitUI != null && isSelected)
+                             {
+                                 selectedUnitUI.ShowAllyUI(this);
+                                 selectedUnitUI.HideUnitDuration();
+                             }
+                         }
+                     }
 
 
 
-                    //if (changeDuration >= 0)
-                    //{
-                    //    changeDuration -= Time.deltaTime;
-                    //    state = State.IDLE;
-                    //}
-                    //else
-                    //{
-                    //    if (previousMode == Mode.FREE)
-                    //    {
-                    //        mode = Mode.SEIGE;
-                    //    }
-                    //    else if (previousMode == Mode.SEIGE)
-                    //    {
-                    //        mode = Mode.FREE;
-                    //    }
+                     //if (changeDuration >= 0)
+                     //{
+                     //    changeDuration -= Time.deltaTime;
+                     //    state = State.IDLE;
+                     //}
+                     //else
+                     //{
+                     //    if (previousMode == Mode.FREE)
+                     //    {
+                     //        mode = Mode.SEIGE;
+                     //    }
+                     //    else if (previousMode == Mode.SEIGE)
+                     //    {
+                     //        mode = Mode.FREE;
+                     //    }
 
-                    //    changeDuration = 3.0f;
-                    //    previousMode = mode;
-                    //}
-                }
-                break;
+                     //    changeDuration = 3.0f;
+                     //    previousMode = mode;
+                     //}
+             }
+             break;
 
-            case Mode.UPGRADE:
-                {
-                    OnOffSiefeEffect(false);
-                    chagneEffet.SetActive(true);
+             case Mode.UPGRADE:
+                 {
+                     OnOffSiefeEffect(false);
+                     chagneEffet.SetActive(true);
 
-                    particleDuration = 0.3f;
-                    isSiegeActive = false;
+                     particleDuration = 0.3f;
+                     isSiegeActive = false;
 
-                    if (upgradeDuraiton >= 0)
-                    {
-                        upgradeDuraiton -= Time.deltaTime;
-                        state = State.IDLE;
+                     if (upgradeDuraiton >= 0)
+                     {
+                         upgradeDuraiton -= Time.deltaTime;
+                         state = State.IDLE;
 
-                        if (selectedUnitUI != null)
-                        {
-                            selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
-                        }
-                    }
-                    else
-                    {
-                        // 새 유닛 생성 & 교체
-                        if (requestedUpgradeIndex >= 0 && spawner != null)
-                        {
-                            UnitData upgradeUnitData = data.UpgradeUnits[requestedUpgradeIndex];
-                            if (upgradeUnitData != null)
-                            {
-                                GameObject prefab = upgradeUnitData.Prefab;
+                         if (selectedUnitUI != null)
+                         {
+                             selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
+                         }
+                     }
+                     else
+                     {
+                         // 새 유닛 생성 & 교체
+                         if (requestedUpgradeIndex >= 0 && spawner != null)
+                         {
+                             UnitData upgradeUnitData = data.UpgradeUnits[requestedUpgradeIndex];
+                             if (upgradeUnitData != null)
+                             {
+                                 GameObject prefab = upgradeUnitData.Prefab;
 
-                                AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, previousMode, unitGrid.TargetTile);
+                                 AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, previousMode, unitGrid.TargetTile);
 
-                                if (previousMode == Mode.FREE)
-                                {
-                                    upgradedUnit.ChangeMode(Mode.FREE);
-                                    upgradedUnit.navAgent.enabled = true;
-                                    upgradedUnit.navObstacle.enabled = false;
-                                }
-                                else if (previousMode == Mode.SEIGE)
-                                    upgradedUnit.ChangeMode(Mode.SEIGE);
-                            }
+                                 if (previousMode == Mode.FREE)
+                                 {
+                                     upgradedUnit.ChangeMode(Mode.FREE);
+                                     upgradedUnit.navAgent.enabled = true;
+                                     upgradedUnit.navObstacle.enabled = false;
+                                 }
+                                 else if (previousMode == Mode.SEIGE)
+                                     upgradedUnit.ChangeMode(Mode.SEIGE);
+                             }
 
-                            
 
-                            pool.Pool.Release(this);
-                            gameObject.SetActive(false);
 
-                            requestedUpgradeIndex = -1;
-                        }
+                             pool.Pool.Release(this);
+                             gameObject.SetActive(false);
 
-                        upgradeDuraiton = 3.0f;
-                        previousMode = mode;
+                             requestedUpgradeIndex = -1;
+                         }
 
-                        if (selectedUnitUI != null && isSelected)
-                        {
-                            selectedUnitUI.ShowAllyUI(this);
-                            selectedUnitUI.HideUnitDuration();
-                        }
-                    }
-                    //else
-                    //{
-                    //    if (previousMode == Mode.FREE)
-                    //    {
-                    //        mode = Mode.FREE;
-                    //    }
-                    //    else if (previousMode == Mode.SEIGE)
-                    //    {
-                    //        mode = Mode.SEIGE;
-                    //    }
+                         upgradeDuraiton = 3.0f;
+                         previousMode = mode;
 
-                    //    upgradeDuraiton = 3.0f;
-                    //    previousMode = mode;
+                         if (selectedUnitUI != null && isSelected)
+                         {
+                             selectedUnitUI.ShowAllyUI(this);
+                             selectedUnitUI.HideUnitDuration();
+                         }
+                     }
+                     //else
+                     //{
+                     //    if (previousMode == Mode.FREE)
+                     //    {
+                     //        mode = Mode.FREE;
+                     //    }
+                     //    else if (previousMode == Mode.SEIGE)
+                     //    {
+                     //        mode = Mode.SEIGE;
+                     //    }
 
-                    //    if (selectedUnitUI != null && isSelected)
-                    //    {
-                    //        selectedUnitUI.ShowAllyUI(this);
-                    //        selectedUnitUI.HideUnitDuration();
-                    //    }
+                     //    upgradeDuraiton = 3.0f;
+                     //    previousMode = mode;
 
-                    //}
-                }
+                     //    if (selectedUnitUI != null && isSelected)
+                     //    {
+                     //        selectedUnitUI.ShowAllyUI(this);
+                     //        selectedUnitUI.HideUnitDuration();
+                     //    }
 
-                break;
+                     //}
+                 }
+
+                 break;
         }
+                
     }
+
+    
 
 
     public override void GetProvoked(Unit ProvokedTarget)
