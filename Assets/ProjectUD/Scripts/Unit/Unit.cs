@@ -1230,10 +1230,12 @@ public abstract class Unit : MonoBehaviour
     {
         intervalMultiplier -= percent * 0.01f; 
         interval = intervalCheck * intervalMultiplier;
+        intervalCheck = interval;
     }
 
     public void RevertInterval(float percent)
     {
+        intervalCheck = unitStats.interval;
         intervalMultiplier += percent * 0.01f;
         interval = intervalCheck * intervalMultiplier;
     }
