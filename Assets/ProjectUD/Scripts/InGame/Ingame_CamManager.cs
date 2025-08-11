@@ -73,10 +73,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
             clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
             cameraPivot.position = clampedPosition;
-
         }
 
-        if(!dollyCamera.IsCamPanning)
+        if (!dollyCamera.IsCamPanning)
         {
             float currentRotationX = virtualCamPos.eulerAngles.x;
             float dampedRotationX = Mathf.SmoothDampAngle(currentRotationX, targetRotationX, ref rotationVelocityX, 0.2f);
@@ -128,14 +127,8 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             framingTransposer.m_CameraDistance = currentFov;
 
             float ratio = (currentFov - zoomMin) / (zoomMax - zoomMin);
-
             targetRotationX = Mathf.Lerp(minRotationX, maxRotationX, ratio);
-            //targetRotationX = Mathf.Clamp(targetRotationX, minRotationX, maxRotationX);
 
-            //float currentRotationX = virtualCamPos.eulerAngles.x;
-            //currentRotationX -= scrollInput * zoomSpeed * Time.deltaTime;
-            //currentRotationX = Mathf.Clamp(currentRotationX, minRotationX, maxRotationX);
-            //virtualCamPos.eulerAngles = new Vector3(currentRotationX, virtualCamPos.eulerAngles.y, virtualCamPos.eulerAngles.z);
         }
     }
 

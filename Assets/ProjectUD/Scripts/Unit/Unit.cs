@@ -380,6 +380,9 @@ public abstract class Unit : MonoBehaviour
     protected float damageTakenMult; // 피해량 비율
     protected float atkMult; // 공격력 비율
     protected float blockPercent; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
+    protected float interval; // 유닛의 공격 간격(속도) interval 마다 스킬 사용 가능
+    protected float intervalCheck; // interval 체크용
+    protected float intervalMultiplier = 1f;
 
     protected UnitStats unitStats;
     private UnitDataLoader unitDataLoader;
@@ -388,6 +391,7 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
+    protected VFXObjectPool hitVFXPool;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -431,6 +435,7 @@ public abstract class Unit : MonoBehaviour
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
     public float NearbyDistance => nearbyDistance;
+    public float Interval => interval;
     public bool IsSelected
     {
         get => isSelected;
@@ -536,6 +541,8 @@ public abstract class Unit : MonoBehaviour
         //mental = Data.Mental;
 
         SetUnitStats();
+        intervalCheck = interval;
+        interval = 0;
 
         // 이동 속도
         moveSpeedMult = 1f;
@@ -565,6 +572,11 @@ public abstract class Unit : MonoBehaviour
         lastMoveTime = Time.time;
     }
 
+    public void SetHitVFXPool(VFXObjectPool hitVFXPool)
+    {
+        this.hitVFXPool = hitVFXPool;
+    }
+
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
     {
         this.durationEffectPool = durationEffectPool;
@@ -589,7 +601,7 @@ public abstract class Unit : MonoBehaviour
             critPercent = unitStats.critChance;
             attackSpeed = unitStats.attackSpeed;
             mental = unitStats.mental;
-
+            interval = unitStats.interval;
         }
         else
             Debug.Log("데이터 없음");
@@ -642,7 +654,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void ActivateSkill(SkillBase skill, Unit target)
+    protected virtual void ActivateSkill(SkillBase skill, Unit target) // 실제 스킬 사용 부분
     {
         skill.Activate(this, target);
 
@@ -941,7 +953,7 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()
     {
-        if (specialSkill != null && specialSkill.IsCoolDown && !generalSkill.IsCoolDown)
+        if (specialSkill != null && specialSkill.IsCoolDown )//&& !generalSkill.IsCoolDown)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown)
             return generalSkill;
@@ -1079,27 +1091,27 @@ public abstract class Unit : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.1f);
     }
 
-    public void PlayHitSFX(AttackType attackType)
-    {
-        AudioClip[] hitSFX = null;
-        switch (attackType)
-        {
-            case AttackType.SLASH:
-                hitSFX = SlashHitSFX;
-                break;
-            case AttackType.PIERCE:
-                hitSFX = PierceHitSFX;
-                break;
-            case AttackType.CRUSH:
-                hitSFX = CrushHitSFX;
-                break;
-        }
-        if (hitSFX != null)
-        {
-            int randomIndex = Random.Range(0, hitSFX.Length);
-            SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
-        }
-    }
+    //public void PlayHitSFX(AttackType attackType)
+    //{
+    //    AudioClip[] hitSFX = null;
+    //    switch (attackType)
+    //    {
+    //        case AttackType.SLASH:
+    //            hitSFX = SlashHitSFX;
+    //            break;
+    //        case AttackType.PIERCE:
+    //            hitSFX = PierceHitSFX;
+    //            break;
+    //        case AttackType.CRUSH:
+    //            hitSFX = CrushHitSFX;
+    //            break;
+    //    }
+    //    if (hitSFX != null)
+    //    {
+    //        int randomIndex = Random.Range(0, hitSFX.Length);
+    //        SoundManager.Instance.PlaySFX(hitSFX[randomIndex]);
+    //    }
+    //}
 
     public void PlayCritSFX(AttackType attackType)
     {
@@ -1175,6 +1187,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+
     public void SetStateDuration(float duration) => stateDuration = duration;
 
     public void AddMoveSpeedMult(float percent)
@@ -1220,6 +1233,20 @@ public abstract class Unit : MonoBehaviour
         damageTakenMult += percent * 0.01f;
     }
 
+    public void ChangeInterval(float percent) // interval을 변화시키는 함수
+    {
+        intervalMultiplier -= percent * 0.01f; 
+        interval = intervalCheck * intervalMultiplier;
+        intervalCheck = interval;
+    }
+
+    public void RevertInterval(float percent)
+    {
+        intervalCheck = unitStats.interval;
+        intervalMultiplier += percent * 0.01f;
+        interval = intervalCheck * intervalMultiplier;
+    }
+
     public abstract void GetProvoked(Unit ProvokedTarget);
 
     public virtual void RemoveProvoked()
@@ -1248,6 +1275,7 @@ public abstract class Unit : MonoBehaviour
     public void AddEffect(GameObject effectPrefab)
     {
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
+
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
@@ -1275,32 +1303,19 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
     }
-
-    //public bool HasEffect<T>() where T : DurationEffect // 이펙트가 있는지 확인
-    //{
-    //    foreach (var effect in effectList)
-    //    {
-    //        if (effect is T)
-    //        {
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
-
     public void RemoveEffect(DurationEffect effect)
     {
         effectList.Remove(effect);
         UpdateState();
     }
 
-    public void AddVFX(GameObject effectPrefab, float duration)
+    public void AddVFX(GameObject vfx) // hit & Crit VFX (오브젝트풀링 사용)
     {
-        GameObject VFXobj = Instantiate(effectPrefab.gameObject);
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx);
         VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.localPosition =  Vector3.up * VFXobj.transform.localPosition.y;
+        VFXobj.SetActive(true);
+        VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        Destroy(VFXobj, duration);
     }
 
     public void AddVFX(ParticleSystem VFX)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6269494010747422287}
   - component: {fileID: 7696536780613182330}
   - component: {fileID: 6001839070627142797}
+  - component: {fileID: 6255746371956998676}
   m_Layer: 0
   m_Name: vfx_pierceCrit
   m_TagString: Untagged
@@ -4834,6 +4835,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &6255746371956998676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5068946420594393271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ed8f66f65d3f24faa2d069a57d2c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  durationTime: 1
 --- !u!1 &6118816741710901715
 GameObject:
   m_ObjectHideFlags: 0
