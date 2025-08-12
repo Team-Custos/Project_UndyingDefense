@@ -731,15 +731,22 @@ public class AllyUnit : Unit
 
                                  AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, previousMode, unitGrid.TargetTile);
 
-                                 if (previousMode == Mode.FREE)
-                                 {
-                                     upgradedUnit.ChangeMode(Mode.FREE);
-                                     upgradedUnit.navAgent.enabled = true;
-                                     upgradedUnit.navObstacle.enabled = false;
-                                 }
-                                 else if (previousMode == Mode.SEIGE)
-                                     upgradedUnit.ChangeMode(Mode.SEIGE);
-                             }
+                                upgradedUnit.ChangeMode(previousMode);
+
+                                if (isSelected && selectedUnitUI != null)
+                                {
+                                    isSelected = false;
+                                    //selectedUnitManager.SetSelectedUnit(null);
+
+                                    upgradedUnit.isSelected = true;
+                                    selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                                    selectedUnitManager.SetSelectedUnit(upgradedUnit);
+
+                                    
+                                    selectedUnitUI.ShowAllyUI(upgradedUnit);
+                                    selectedUnitUI.ShowHp(upgradedUnit);
+                                }                               
+                            }
 
 
 

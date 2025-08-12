@@ -339,6 +339,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
+using UltEvents;
+using UnityEngine.Windows.Speech;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -347,6 +349,11 @@ public abstract class Unit : MonoBehaviour
         PADDED,         // 완충갑
         ANTIPIERCING,   // 방탄갑
         STEELPLATED     // 철갑
+    }
+
+    public enum EventState
+    {
+        TAKEDAMAGE
     }
 
     [Header("■ Components")]
@@ -367,6 +374,9 @@ public abstract class Unit : MonoBehaviour
 
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
+
+    [Header("■ State Events")]
+    [SerializeField] private UltEvent<Unit>[] stateEvents;
 
     protected float maxhp;
     protected float hp;
@@ -436,6 +446,8 @@ public abstract class Unit : MonoBehaviour
     public UnitStats UnitStats => unitStats;
     public float NearbyDistance => nearbyDistance;
     public float Interval => interval;
+    public bool IsDead => isDead;
+
     public bool IsSelected
     {
         get => isSelected;
@@ -629,7 +641,7 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        PassiveSkillCheck();
+        //PassiveSkillCheck();
 
         //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
         //    lastMoveTime = Time.time;
@@ -1137,28 +1149,12 @@ public abstract class Unit : MonoBehaviour
     public virtual void TakeDamage(float Damage)
     {
         hp -= Damage;
-
-        if(this is EnemyUnit)
-        {
-            //Debug.Log(Damage);
-        }
-
         if (hp <= 0)
         {
-            hp = 0f;
             Die();
-
-
-            if (selectedUnitUI != null)
-            {
-                // ui 제거
-                selectedUnitUI.HideHp();
-                selectedUnitUI.HideAllyUI();
-                selectedUnitUI.HideUpgrdeUI();
-                selectedUnitUI.HideUntInfo();
-            }
-
         }
+
+        InvokeEvent(EventState.TAKEDAMAGE);
 
         if (selectedUnitUI != null)
         {
@@ -1170,6 +1166,8 @@ public abstract class Unit : MonoBehaviour
     {
         if (!isDead)
         {
+            hp = 0f;
+
             navAgent.enabled = false;
             //navObstacle.enabled = false;
 
@@ -1178,7 +1176,16 @@ public abstract class Unit : MonoBehaviour
 
             modelAnimator.SetTrigger("Die");
 
-            if(selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
+            if (selectedUnitUI != null)
+            {
+                // ui 제거
+                selectedUnitUI.HideHp();
+                selectedUnitUI.HideAllyUI();
+                selectedUnitUI.HideUpgrdeUI();
+                selectedUnitUI.HideUntInfo();
+            }
+
+            if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
             {
                 selectedUnitManager.DeSelecteUnit();
             }
@@ -1343,12 +1350,15 @@ public abstract class Unit : MonoBehaviour
         Destroy(VFXobj, VFX.main.duration);
     }
 
-    public void SetAgentPriority(int priority)
+    public void InvokeEvent(EventState state)
     {
-        navAgent.avoidancePriority = priority;
+        if(stateEvents == null || stateEvents.Length <= (int)state)
+            return;
+
+        UltEvent<Unit> stateEvent = stateEvents[(int)state];
+        if (stateEvent != null)
+            stateEvent.Invoke(this);
     }
-
-
 
     public void UpdateState()
     {

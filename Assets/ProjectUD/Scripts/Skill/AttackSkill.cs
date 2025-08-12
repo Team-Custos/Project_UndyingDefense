@@ -168,7 +168,7 @@ public class AttackSkill : SkillBase
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
-        if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp > 0)
+        if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp >= 0f)
         {
             if(BoomEffectPrefab != null)
             {
@@ -185,7 +185,10 @@ public class AttackSkill : SkillBase
                     Attack(unit, target);
                 }
             }
-            unit.TakeDamage(9999);
+            //unit.TakeDamage(9999);
+            unit.Die();
+
+            Debug.Log("자폭");
         }
     }
 
