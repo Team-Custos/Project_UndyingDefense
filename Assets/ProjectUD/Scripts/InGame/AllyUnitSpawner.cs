@@ -128,7 +128,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
-                upgradeUnit.IsSelected = true;
+                //upgradeUnit.IsSelected = true;
 
                 upgradeUnit.gameObject.SetActive(true);
                 upgradeUnit.UnitGrid.SetTargetTile(tile);
@@ -138,10 +138,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 upgradeUnit.transform.position = transform.position;
                 upgradeUnit.transform.rotation = transform.rotation;
 
-                upgradeUnit.IsSelected = true;
+                //upgradeUnit.IsSelected = true;
 
-                selectedUnitManager.SetSelectedUnit(upgradeUnit);
-                selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+                //selectedUnitManager.SetSelectedUnit(upgradeUnit);
+                //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
 
 
@@ -159,9 +159,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
-                upgradeUnit.IsSelected = true;
+                //upgradeUnit.IsSelected = true;
 
-                selectedUnitManager.SetSelectedUnit(upgradeUnit);
+                //selectedUnitManager.SetSelectedUnit(upgradeUnit);
                 upgradeUnit.gameObject.SetActive(true);
                 upgradeUnit.UnitGrid.SetTargetTile(tile);
 
@@ -173,7 +173,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 
 
-                selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+                //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
                 return upgradeUnit;
             }
@@ -198,13 +198,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
-            selectedUnitManager.SetSelectedUnit(upgradeUnit);
-            upgradeUnit.IsSelected = true;
+            //selectedUnitManager.SetSelectedUnit(upgradeUnit);
+            //upgradeUnit.IsSelected = true;
 
             
             upgradeUnit.gameObject.SetActive(true);
             upgradeUnit.UnitGrid.SetTargetTile(tile);
-            selectedUnitUI.ShowAllyUI(upgradeUnit);
+            //selectedUnitUI.ShowAllyUI(upgradeUnit);
 
 
             upgradeUnit.transform.position = transform.position;
@@ -212,7 +212,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
-            selectedUnitUI.UpdateUnitInfo(upgradeUnit);
+            //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
 
             return upgradeUnit;
         }

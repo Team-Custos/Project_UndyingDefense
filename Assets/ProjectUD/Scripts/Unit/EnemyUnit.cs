@@ -53,8 +53,8 @@ public class EnemyUnit : Unit
     private Fortress fortress;
     private Vector3 fortressPos;
 
-    [SerializeField] private float angerTriggerPercent; // 분노 발동 기준 퍼센트
-
+    //[SerializeField] private float angerTriggerPercent; // 분노 발동 기준 퍼센트
+    private const float angerTriggerPercent = 50f; // 분노 발동 기준 퍼센트
 
     private bool hasExecutedMark = false;
 
@@ -132,6 +132,7 @@ public class EnemyUnit : Unit
         isDead = false;
         aiStance = data.aiStance;
         mode = Mode.MOVE;
+        behaviorPriority = BehaviorPriority.Combat;
     }
 
     protected override void Update()

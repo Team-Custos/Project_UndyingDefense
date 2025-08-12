@@ -21,7 +21,7 @@ public class VFXObjectPool : MonoBehaviour
         v = obj.GetComponent<VFX>();
         v.InitializePool(queue, vfxParent);
         obj.SetActive(false);
-        Debug.Log(queue.Count);
+        //Debug.Log(queue.Count);
     }
 
     #region 20250730_기존 InitializeVFXPool()
