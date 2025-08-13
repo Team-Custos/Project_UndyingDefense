@@ -53,7 +53,6 @@ public class EnemyUnit : Unit
     private Fortress fortress;
     private Vector3 fortressPos;
 
-    //[SerializeField] private float angerTriggerPercent; // 분노 발동 기준 퍼센트
     private const float angerTriggerPercent = 50f; // 분노 발동 기준 퍼센트
 
     private bool hasExecutedMark = false;
@@ -132,7 +131,7 @@ public class EnemyUnit : Unit
         isDead = false;
         aiStance = data.aiStance;
         mode = Mode.MOVE;
-        behaviorPriority = BehaviorPriority.Combat;
+        behaviorPriority = BehaviorPriority.Move;
     }
 
     protected override void Update()
@@ -401,6 +400,7 @@ public class EnemyUnit : Unit
         base.TakeDamage(Damage);
         if (HpPercent * 100f <= angerTriggerPercent && !isDead)
         {
+            Debug.Log(11);
             if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
             {
                 behaviorPriority = BehaviorPriority.Combat;

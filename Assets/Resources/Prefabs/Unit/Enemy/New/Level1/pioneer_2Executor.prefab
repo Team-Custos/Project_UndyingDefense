@@ -361,6 +361,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pioneer_2Executor
       objectReference: {fileID: 0}
+    - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -436,6 +441,26 @@ PrefabInstance:
       propertyPath: angerTriggerPercent
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 495269266809009476}
+    - target: {fileID: 7911353692556451451, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -457,6 +482,18 @@ PrefabInstance:
       addedObject: {fileID: 3633911564466656388}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62ba26cf95997ba469d44a0b8a93bc48, type: 3}
+--- !u!114 &495269266809009476 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+    type: 3}
+  m_PrefabInstance: {fileID: 8051028340682961104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10692d4c233e38c4a88efe46b5130c9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1921490181596781310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8435381453930932782, guid: 62ba26cf95997ba469d44a0b8a93bc48,

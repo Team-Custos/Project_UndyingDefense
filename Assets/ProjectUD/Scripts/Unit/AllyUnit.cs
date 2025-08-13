@@ -364,7 +364,6 @@ public class AllyUnit : Unit
                     if(interval <= 0)
                     {
 
-
                         SkillBase skill = GetAvailableSkill();
 
                         if (skill != null) // 사용 가능한 스킬이 존재할 경우
@@ -421,12 +420,9 @@ public class AllyUnit : Unit
                 }
             case Mode.FREE:
                 {
-                    //navAgent.enabled = true;
-
                     OnOffSiefeEffect(false);
                     chagneEffet.SetActive(false);
 
-                    //if (destinationPosition != Vector3.zero) // 이동 명령
                     if (state == State.STUN)
                         return;
 
@@ -480,26 +476,15 @@ public class AllyUnit : Unit
                                 SkillBase skill = GetAvailableSkill();
                                 if (skill != null)
                                 {
-                                    if (state == State.STUN)
-                                        return;
-
-
                                     SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
                                     switch (skillTargetType)
                                     {
                                         case SkillBase.TargetType.ENEMY:
                                             {
-                                                ActivateSkill(skill, targetUnit);
+                                                navAgent.isStopped = true; // 스킬 사용시 이동 불가
+
                                                 if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                                 {
-                                                    //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-
-                                                    //Debug.Log(dist);
-
-                                                    //if (dist > UnitStats.attackRange)
-                                                    //    return;
-
-
                                                     ActivateSkill(skill, targetUnit);
 
                                                     interval = intervalCheck;
@@ -536,35 +521,35 @@ public class AllyUnit : Unit
 
                                                 if (stateDurationCheck >= stateDuration)
                                                 {
-
                                                     stateDurationCheck = 0f;
                                                     stateDuration = 0f;
                                                 }
                                                 break;
                                             }
                                     }
+                                    navAgent.isStopped = false;
                                 }
 
 
                             }
-                            else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
-                            {
-                                MoveTo(targetUnit);
-                                modelAnimator.SetBool("isRunning", true);
-                                if (path.status != NavMeshPathStatus.PathComplete)
-                                    targetUnit = null;
-
-                                float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-                                Debug.Log($"Target Distance: {dist}");
-                            }
-                            else
-                            {
+                        }
+                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
+                        {
+                            MoveTo(targetUnit);
+                            modelAnimator.SetBool("isRunning", true);
+                            if (path.status != NavMeshPathStatus.PathComplete)
                                 targetUnit = null;
-                            }
+
+                            float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+                            Debug.Log($"Target Distance: {dist}");
                         }
                         else
+                        {
                             targetUnit = null;
+                        }
                     }
+                    else
+                        targetUnit = null;
                     break;
                 }
 
@@ -1002,6 +987,9 @@ public class AllyUnit : Unit
         navAgent.enabled = false;
         navObstacle.enabled = false;
         collider.enabled = false;
+
+        if (state == State.STUN)
+            RemoveStun();
 
         base.Die();
 

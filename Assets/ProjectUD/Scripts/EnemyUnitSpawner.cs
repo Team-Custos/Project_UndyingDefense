@@ -203,11 +203,11 @@ public class EnemyUnitSpawner : MonoBehaviour
                    enemyUnit.gameObject.SetActive(true);
 
 
-                    enemyUnit.SetAgentPriority(enemyPriority);
-                    enemyPriority++;
+                    //enemyUnit.SetAgentPriority(enemyPriority);
+                    //enemyPriority++;
 
-                    if (enemyPriority > 50)
-                        enemyPriority = 0;
+                    //if (enemyPriority > 50)
+                    //    enemyPriority = 0;
 
 
                     totalMonCount++;
