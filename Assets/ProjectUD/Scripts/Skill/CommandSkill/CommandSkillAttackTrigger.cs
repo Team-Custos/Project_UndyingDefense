@@ -193,7 +193,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
                 if (data.CritEffectPrefab != null)
                 {
-                    target.AddEffect(data.CritEffectPrefab);
+                    target.AddEffect(data.CritEffectPrefab, target);
                 }
                 //if (target.HasEffect<InfernoEffect>())
                 //{

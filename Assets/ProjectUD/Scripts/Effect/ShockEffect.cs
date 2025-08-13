@@ -30,7 +30,7 @@ public class ShockEffect : StackEffect
     protected override void OnMaxStack()
     {
         // 기절 효과 추가.
-        target.AddEffect(maxStackEffectPrefab);
+        target.AddEffect(maxStackEffectPrefab, target);
     }
 
     public override void OnRemove()

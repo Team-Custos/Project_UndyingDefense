@@ -19,7 +19,7 @@ public class IgniteEffect : TickStackEffect
         //    target.AddEffect(infernoVfx);
         //}
 
-        target.AddEffect(infernoVfx);
+        target.AddEffect(infernoVfx, target);
 
         //infernoEffect.Activate();
         SetCaster(target);

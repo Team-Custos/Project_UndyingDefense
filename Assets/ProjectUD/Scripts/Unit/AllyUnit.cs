@@ -236,12 +236,6 @@ public class AllyUnit : Unit
                 {
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        //if(navAgent.enabled)
-                        //{
-                        //    navAgent.enabled = false;
-                        //    navObstacle.enabled = true;
-                        //}
-
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
                     }
@@ -250,98 +244,6 @@ public class AllyUnit : Unit
                 }
                 break;
         }
-
-        
-        /*SkillBase skill = GetAvailableSkill();
-        //if (skill != null) // 사용 가능한 스킬이 존재할 경우
-        //{
-        //    SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
-        //    switch (skillTargetType)
-        //    {
-        //        case SkillBase.TargetType.ENEMY:
-        //            {
-        //                if (skillTarget != null && skillTarget.gameObject.activeInHierarchy)
-        //                {
-        //                    if (IsTargetInRange(skillTarget, Data.AttackRange))
-        //                    {
-        //                        ActivateSkill(skill, skillTarget);
-        //                        return;
-        //                    }
-        //                    else if (IsTargetInRange(skillTarget, Data.SightRange))
-        //                    {
-        //                        // 추적
-        //                        chaseTarget = skillTarget;
-        //                        skillTarget = null;
-
-        //                        Vector3 targetPos = chaseTarget.transform.position;
-        //                        LookAt(targetPos);
-        //                        if (mode == Mode.FREE)
-        //                            SetDestination(targetPos);
-
-        //                        return;
-        //                    }
-        //                    else
-        //                    {
-        //                        skillTarget = null;
-        //                        chaseTarget = null;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    // 대상이 있긴 한데, 활성화 상태가 아닌 경우
-        //                    if (skillTarget != null)
-        //                        skillTarget = null;
-
-        //                    switch (Data.TargetingType)
-        //                    {
-        //                        case TargetingType.NEAR:
-        //                            {
-        //                                chaseTarget = SearchNearestTarget(Data.SightRange);
-        //                            }
-        //                            break;
-        //                        case TargetingType.LOWHP:
-        //                            {
-        //                                chaseTarget = SearchLowHPTarget(Data.SightRange);
-        //                            }
-        //                            break;
-        //                        case TargetingType.HIGHTIER:
-        //                            {
-        //                                chaseTarget = SearchHighTierTarget(Data.SightRange);
-        //                            }
-        //                            break;
-        //                    }
-
-        //                    if (chaseTarget != null)
-        //                    {
-        //                        if (IsTargetInRange(chaseTarget, Data.AttackRange))
-        //                        {
-        //                            // 스킬 발동
-        //                            skillTarget = chaseTarget;
-        //                            ActivateSkill(skill, skillTarget);
-        //                            return;
-        //                        }
-        //                        else
-        //                        {
-        //                            // 추적
-        //                            Vector3 targetPos = chaseTarget.transform.position;
-        //                            LookAt(targetPos);
-        //                            if (mode == Mode.FREE)
-        //                                SetDestination(targetPos);
-
-        //                            return;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            break;
-        //        case SkillBase.TargetType.ALLY:
-        //            {
-        //                ActivateSkill(skill, null);
-        //            }
-        //            break;
-        //    }
-        //}
-        */
     }
 
     private void UpdateMode()
@@ -988,11 +890,15 @@ public class AllyUnit : Unit
         navObstacle.enabled = false;
         collider.enabled = false;
 
-        if (state == State.STUN)
-            RemoveStun();
 
         base.Die();
 
+        if (state == State.STUN)
+        {
+            base.RemoveStun();
+            Debug.Log(1111);
+        }
+            
         state = State.DEAD;
         //modelAnimator.SetTrigger("Die");
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());

@@ -89,7 +89,7 @@ public class ActiveCommandSkill : CommandSkill
 
     public void ApplyEffect(Unit target, GameObject effectPrefab)
     {
-        target.AddEffect(effectPrefab);
+        target.AddEffect(effectPrefab, target);
     }
 
     public void GetMark(Unit target)

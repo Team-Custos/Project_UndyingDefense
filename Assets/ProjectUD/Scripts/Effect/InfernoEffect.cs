@@ -53,7 +53,7 @@ public class InfernoEffect : TickEffect
 
                 if (Random.value <= 0.5f) // 50% 확률로 작열 효과 적용
                 {
-                    unit.AddEffect(igniteEffect);
+                    unit.AddEffect(igniteEffect, unit);
                 }
 
                 //if (!unit.HasEffect<InfernoEffect>()) //Random.value <= 0.5f)

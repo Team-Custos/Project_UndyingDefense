@@ -301,7 +301,7 @@ public class AttackSkill : SkillBase
 
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
-        target.AddEffect(data.Info.CritEffectPrefab);
+        target.AddEffect(data.Info.CritEffectPrefab, target);
 
         //Effect critEffect = null;
         //switch(data.AttackType)

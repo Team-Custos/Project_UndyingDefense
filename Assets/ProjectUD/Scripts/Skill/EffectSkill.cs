@@ -38,7 +38,7 @@ public class EffectSkill : SkillBase
 
     public void ActivateSkill(Unit caster)
     {
-        caster.AddEffect(effectObject);
+        caster.AddEffect(effectObject, caster);
     }
 
 }

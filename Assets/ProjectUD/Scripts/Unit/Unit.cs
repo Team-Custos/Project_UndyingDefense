@@ -1174,6 +1174,7 @@ public abstract class Unit : MonoBehaviour
             collider.enabled = false;
             effectParent.gameObject.SetActive(false);
 
+
             modelAnimator.SetTrigger("Die");
 
             if (selectedUnitUI != null)
@@ -1279,8 +1280,11 @@ public abstract class Unit : MonoBehaviour
         effect.gameObject.SetActive(true);
     }
 
-    public void AddEffect(GameObject effectPrefab)
+    public void AddEffect(GameObject effectPrefab ,Unit unit)
     {
+        if (unit.HpPercent <= 0f)
+            return;
+
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
 
         // 효과 목록 중에 추가된 효과가 존재할 경우.

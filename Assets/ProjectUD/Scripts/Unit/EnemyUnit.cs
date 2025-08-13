@@ -258,6 +258,7 @@ public class EnemyUnit : Unit
 
                     if (pathState)
                     {
+                        navAgent.isStopped = false;
                         navAgent.SetPath(path);
                         if (path.status == NavMeshPathStatus.PathPartial) // 막혀 있음
                         {
@@ -447,7 +448,13 @@ public class EnemyUnit : Unit
 
             base.Die();
 
-            if(EnemyDeadSFX.Length > 0)
+            if (state == State.STUN)
+            {
+                base.RemoveStun();
+                Debug.Log(22222);
+            }
+
+            if (EnemyDeadSFX.Length > 0)
             {
                 AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
                 SoundManager.Instance.PlaySFX(clip);
