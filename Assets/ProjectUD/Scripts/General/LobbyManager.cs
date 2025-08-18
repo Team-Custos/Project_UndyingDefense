@@ -13,12 +13,16 @@ public class LobbyManager : MonoBehaviour
 
     [SerializeField] private GameObject rosterPanel;
     [SerializeField] private float endDelay = 0.5f;
+    
+    private ScriptableObject[] so;
 
 
     private void Start()
     {
        SoundManager.Instance.PlayBGM(lobbyBgm);
        LoadCommandSkillData();
+
+        so = Resources.LoadAll<ScriptableObject>("Data/UnitData");
 
     }
     public void EndGame()
