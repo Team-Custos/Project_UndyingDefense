@@ -187,8 +187,6 @@ public class AttackSkill : SkillBase
             }
             //unit.TakeDamage(9999);
             unit.Die();
-
-            Debug.Log("자폭");
         }
     }
 

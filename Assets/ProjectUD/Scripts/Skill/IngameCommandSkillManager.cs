@@ -17,7 +17,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     private Unit selectedTargetUnit;
     //[SerializeField] private Button[] skillButtons;
     [SerializeField] private float skillCastDelayTime;
-    private float skillCastDelayCheck = 0f;
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;

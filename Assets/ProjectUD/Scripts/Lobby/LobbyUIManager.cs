@@ -77,8 +77,6 @@ public class LobbyUIManager : MonoBehaviour
     public float animationDuration = 0.5f; // 연출 지속 시간
     public float delayBetweenAnimations = 0.2f; // 각 ui delay 시간
 
-    float elapsedTime = 0f;
-    public float minLoadingTime = 3f; // 씬 로딩 시간 3초로 고정
 
 
     [SerializeField] private AudioClip battleStartSfx;

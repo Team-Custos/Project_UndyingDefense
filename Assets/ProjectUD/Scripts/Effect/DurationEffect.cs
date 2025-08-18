@@ -64,7 +64,6 @@ public abstract class DurationEffect : MonoBehaviour
         OnRemove();
         transform.SetParent(null);
 
-        Debug.Log(this);
 
         gameObject.SetActive(false);
     }

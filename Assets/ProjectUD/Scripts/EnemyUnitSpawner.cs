@@ -49,9 +49,8 @@ public class EnemyUnitSpawner : MonoBehaviour
     private float waveDelay = 4.0f; // 웨이브 시작간 대기 시간 1초
     private int spawnCount; // 총 스폰 횟수
     private bool isFortreessAttacked;
-    private bool isWaveReady = true;
     private bool isGameOver = false;
-    private int enemyPriority = 0;
+    //private int enemyPriority = 0;
     public bool IsGameOver => isGameOver;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =

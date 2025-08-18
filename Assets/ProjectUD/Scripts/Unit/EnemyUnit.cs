@@ -141,9 +141,7 @@ public class EnemyUnit : Unit
         switch(state)
         {
             case State.STUN:
-                //{
-                //    return;
-                //}
+                return;
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.BATTLECRY:
@@ -219,8 +217,8 @@ public class EnemyUnit : Unit
 
     private void UpdateMode()
     {
-        if (state == State.STUN)
-            return;
+        //if (state == State.STUN)
+        //    return;
 
         switch (mode)
         {
@@ -401,10 +399,10 @@ public class EnemyUnit : Unit
         base.TakeDamage(Damage);
         if (HpPercent * 100f <= angerTriggerPercent && !isDead)
         {
-            Debug.Log(11);
             if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
             {
                 behaviorPriority = BehaviorPriority.Combat;
+                Debug.Log(behaviorPriority);
                 //modelAnimator.SetTrigger("Rage");
                 AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
             }

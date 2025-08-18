@@ -1282,7 +1282,7 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(GameObject effectPrefab ,Unit unit)
     {
-        if (unit.HpPercent <= 0f)
+        if (unit.IsDead)
             return;
 
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));

@@ -61,7 +61,6 @@ public class AllyUnit : Unit
 
     private bool isSiegeActive = false;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
-    private bool isSpawned = true;
     [SerializeField] private bool alternativeSkill;
     private bool skillFlague;
 
@@ -116,6 +115,10 @@ public class AllyUnit : Unit
         switch (state)
         {
             case State.STUN:
+                {
+                    return;
+                }
+
                 //{
                 //    if (stateDuration <= 0f)
                 //        return;
@@ -248,8 +251,12 @@ public class AllyUnit : Unit
 
     private void UpdateMode()
     {
-        if(state == State.STUN)
-            return;
+        //if(state == State.STUN)
+        //{
+        //    Debug.Log("Stun");
+        //    return;
+        //}
+            
 
         switch (mode)
         {
@@ -332,6 +339,7 @@ public class AllyUnit : Unit
                     {
                         targetUnit = null;
 
+                        navAgent.isStopped = false;
                         navAgent.SetDestination(destinationPosition);
                         modelAnimator.SetBool("isRunning", true);
                         navAgent.stoppingDistance = 0.1f;
@@ -368,7 +376,7 @@ public class AllyUnit : Unit
                     {
                         if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange))// + targetUnit.NearbyDistance)) // 목표가 공격 범위 내 -> 공격
                         {
-                            modelAnimator.SetBool("isRunning", false);
+                            //modelAnimator.SetBool("isRunning", false);
 
                             interval -= Time.deltaTime;
 
@@ -384,6 +392,7 @@ public class AllyUnit : Unit
                                         case SkillBase.TargetType.ENEMY:
                                             {
                                                 navAgent.isStopped = true; // 스킬 사용시 이동 불가
+                                                modelAnimator.SetBool("isRunning", false);
 
                                                 if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                                 {
@@ -442,8 +451,8 @@ public class AllyUnit : Unit
                             if (path.status != NavMeshPathStatus.PathComplete)
                                 targetUnit = null;
 
-                            float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
-                            Debug.Log($"Target Distance: {dist}");
+                            //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
+                            //Debug.Log($"Target Distance: {dist}");
                         }
                         else
                         {
@@ -596,12 +605,20 @@ public class AllyUnit : Unit
                      particleDuration = 0.3f;
                      isSiegeActive = false;
 
-                     if (upgradeDuraiton >= 0)
+                    
+
+
+                    if (upgradeDuraiton >= 0)
                      {
                          upgradeDuraiton -= Time.deltaTime;
                          state = State.IDLE;
+                        if(navAgent.enabled)
+                            navAgent.isStopped = true;
+                        modelAnimator.SetBool("isRunning", false);
 
-                         if (selectedUnitUI != null)
+                        // 업그레이드 진행 중
+
+                        if (selectedUnitUI != null)
                          {
                              selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
                          }
@@ -837,7 +854,15 @@ public class AllyUnit : Unit
     public void ChangeMode(Mode mode)
     {
         this.mode = mode;
-        if(selectedUnitUI != null)
+
+        if(mode == Mode.FREE)
+        {
+            navObstacle.enabled = false;
+            navAgent.enabled = true;
+        }
+            
+
+        if (selectedUnitUI != null)
             selectedUnitUI.HideAllyUI();
     }
 
@@ -890,14 +915,15 @@ public class AllyUnit : Unit
         navObstacle.enabled = false;
         collider.enabled = false;
 
-
-        base.Die();
-
         if (state == State.STUN)
         {
             base.RemoveStun();
             Debug.Log(1111);
         }
+        
+
+        base.Die();
+
             
         state = State.DEAD;
         //modelAnimator.SetTrigger("Die");
