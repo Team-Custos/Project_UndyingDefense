@@ -42,6 +42,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     private bool spawn;
     private List<ObjectPoolWithList<AllyUnit>> unitPools;
     private ObjectPoolWithList<UnitSpawnPoint> spawnPointPool;
+    private int priority = 51;
 
     private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic =
         new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
@@ -98,6 +99,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         GameObject obj = Instantiate(data.Prefab);
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
+        unit.SetUnitDataLoader(unitDataLoader);
         unit.Initialize(data, unitPools[index], this);
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetHitVFXPool(hitVFXPool);
@@ -329,7 +331,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     return;
                 }
 
-                unit.SetUnitDataLoader(unitDataLoader);
+                
 
 
                 // 유닛의 소환 방향 설정
@@ -368,6 +370,15 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 spawnPoint.gameObject.SetActive(true);
                 SoundManager.Instance.PlaySFX(allySummon);
                 spawnPoint.Initialize(unit);
+
+                
+                //unit.Setpriority(priority);
+                //if (priority > 100)
+                //{
+                //    priority = 51; // 우선순위 초기화
+                //}
+                //else
+                //    priority++;
 
                 inGameManager.SetGold(allyUnitData.Cost, false);
                 ingameScreenUI.SetspawnBtnPriceTextColor();

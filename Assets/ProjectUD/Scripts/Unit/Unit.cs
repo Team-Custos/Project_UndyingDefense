@@ -359,7 +359,6 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Components")]
     [SerializeField] protected Animator modelAnimator;
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] protected NavMeshObstacle navObstacle;
     [SerializeField] protected new Collider collider;
     [SerializeField] protected Transform effectParent;
     [SerializeField] protected Transform VFXParent;
@@ -382,7 +381,6 @@ public abstract class Unit : MonoBehaviour
     protected float hp;
     protected float critPercent;
     protected float critVulnerability; // 치명타를 받을 확률.
-    protected float attackSpeed;
     protected float mental; // 정신력
     // protected float moveSpeed;
     protected float attackSpeedMult;
@@ -407,7 +405,6 @@ public abstract class Unit : MonoBehaviour
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit;
 
-    private float lastMoveTime;
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -552,9 +549,8 @@ public abstract class Unit : MonoBehaviour
         blockPercent = 1f;
         //mental = Data.Mental;
 
-        SetUnitStats();
-        intervalCheck = interval;
-        interval = 0;
+        //SetUnitStats();
+        
 
         // 이동 속도
         moveSpeedMult = 1f;
@@ -562,7 +558,6 @@ public abstract class Unit : MonoBehaviour
         atkMult = 1f;
         damageTakenMult = 1f;
 
-        navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
         //navAgent.enabled = true;
         //navObstacle.enabled = true;
@@ -578,10 +573,7 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
 
         
-        navAgent.speed = unitStats.moveSpeed * moveSpeedMult;
-        attackSpeed = unitStats.attackSpeed;
 
-        lastMoveTime = Time.time;
     }
 
     public void SetHitVFXPool(VFXObjectPool hitVFXPool)
@@ -599,7 +591,7 @@ public abstract class Unit : MonoBehaviour
         this.unitDataLoader = newUnitData;
     }
 
-    public void SetUnitStats()
+    protected void SetUnitStats()
     {
         if (this.unitDataLoader == null)
             return;
@@ -611,9 +603,15 @@ public abstract class Unit : MonoBehaviour
             maxhp = unitStats.maxHp;
             hp = unitStats.maxHp;
             critPercent = unitStats.critChance;
-            attackSpeed = unitStats.attackSpeed;
             mental = unitStats.mental;
             interval = unitStats.interval;
+
+            intervalCheck = interval;
+            interval = 0;
+            navAgent.speed = unitStats.moveSpeed;
+            navAgent.stoppingDistance = UnitStats.attackRange - 1.0f;
+
+
         }
         else
             Debug.Log("데이터 없음");
@@ -625,7 +623,6 @@ public abstract class Unit : MonoBehaviour
         maxhp = unitStats.maxHp;
         hp = unitStats.maxHp;
         critPercent = unitStats.critChance;
-        attackSpeed = unitStats.attackSpeed;
         mental = unitStats.mental;
     }
 
@@ -1009,7 +1006,6 @@ public abstract class Unit : MonoBehaviour
 
             //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
-            lastMoveTime = Time.time;
             return;
         }
 
@@ -1038,7 +1034,6 @@ public abstract class Unit : MonoBehaviour
 
             //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
-            lastMoveTime = Time.time;
             return;
         }
 
@@ -1076,13 +1071,16 @@ public abstract class Unit : MonoBehaviour
 
                 //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
                 navAgent.SetPath(path);
-                lastMoveTime = Time.time;
+
+                //float distance = Vector3.Distance(transform.position, targetPos);
+                //Debug.Log($"1 :  {distance}");
 
                 return;
             }
             else if(path.status == NavMeshPathStatus.PathPartial)
             {
-                Debug.Log(1111);
+                navAgent.SetPath(path);
+                return;
             }
         }
 
@@ -1212,7 +1210,7 @@ public abstract class Unit : MonoBehaviour
     public void AddAttackSpeedMult(float percent)
     {
         attackSpeedMult += percent * 0.01f;
-        attackSpeed = unitStats.attackSpeed * Mathf.Max(0f, attackSpeedMult);
+        //attackSpeed = unitStats.attackSpeed * Mathf.Max(0f, attackSpeedMult);
     }
 
     public void AddCriticalVulnerability(float amount)
@@ -1224,10 +1222,7 @@ public abstract class Unit : MonoBehaviour
         blockPercent += percent * 0.01f;    // 단위 수정_AYO
     }
 
-    public void AddAttackSpeed(float speed)
-    {
-        attackSpeed += speed;
-    }
+    
 
     public void AddAtkMult(float percent)
     {
@@ -1372,4 +1367,9 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+
+    public void Setpriority(int priority)
+    {
+        navAgent.avoidancePriority = priority;
+    }
 }

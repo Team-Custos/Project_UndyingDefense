@@ -50,7 +50,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     private int spawnCount; // 총 스폰 횟수
     private bool isFortreessAttacked;
     private bool isGameOver = false;
-    //private int enemyPriority = 0;
+    private int priority = 1;
     public bool IsGameOver => isGameOver;
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
@@ -200,6 +200,11 @@ public class EnemyUnitSpawner : MonoBehaviour
                    enemySpawnVfx.Play();
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
                    enemyUnit.gameObject.SetActive(true);
+                    enemyUnit.Setpriority(priority);
+                    //if(priority > 50)
+                    //    priority = 1;
+                    //else
+                    //    priority++;
 
 
                     //enemyUnit.SetAgentPriority(enemyPriority);
@@ -239,6 +244,7 @@ public class EnemyUnitSpawner : MonoBehaviour
         obj.SetActive(false);
         if (obj.TryGetComponent(out EnemyUnit enemy))
         {
+            enemy.SetUnitDataLoader(unitDataLoader);
             enemy.Initialize(data, poolDic[data], fortress, this);
             enemy.SetDurationEffectPool(durationEffectPool);
             enemy.SetHitVFXPool(hitVFXPool);

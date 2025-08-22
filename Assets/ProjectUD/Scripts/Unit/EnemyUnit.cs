@@ -53,7 +53,7 @@ public class EnemyUnit : Unit
     private Fortress fortress;
     private Vector3 fortressPos;
 
-    private const float angerTriggerPercent = 50f; // 분노 발동 기준 퍼센트
+    private const float angerTriggerPercent = 99f; // 분노 발동 기준 퍼센트
 
     private bool hasExecutedMark = false;
 
@@ -116,6 +116,7 @@ public class EnemyUnit : Unit
         this.pool = pool;
         this.fortress = fortress;
         this.enemySpawner = enemySpawner;
+        SetUnitStats();
     }
 
     public void Initialize(Vector3 fortressPos)
@@ -132,6 +133,7 @@ public class EnemyUnit : Unit
         aiStance = data.aiStance;
         mode = Mode.MOVE;
         behaviorPriority = BehaviorPriority.Move;
+        navAgent.avoidancePriority = 1;
     }
 
     protected override void Update()
@@ -277,7 +279,7 @@ public class EnemyUnit : Unit
                 {
                     if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
                     {
-                        if (IsTargetInRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
+                        if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
                         {
                             if (navAgent.enabled && !navAgent.isStopped)
                             {
@@ -402,7 +404,6 @@ public class EnemyUnit : Unit
             if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
             {
                 behaviorPriority = BehaviorPriority.Combat;
-                Debug.Log(behaviorPriority);
                 //modelAnimator.SetTrigger("Rage");
                 AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
             }
