@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: moor_2Archer
   m_EditorClassIdentifier: 
-  unitName: "\uD6C8\uB828\uB41C \uAD81\uC218"
   tier: 2
+  unitName: "\uD6C8\uB828\uB41C \uAD81\uC218"
   armorType: 0
-  maxHp: 160
-  critChance: 20
-  mental: 1
-  moveSpeed: 3
-  attackSpeed: 60
-  sightRange: 20
-  attackRange: 9
+  id: 
   icon: {fileID: 21300000, guid: d7189556b7e151c42a43adfee215098f, type: 3}
   prefab: {fileID: 7352368399694971929, guid: c80361af91ae92f42b797c79c316ddde, type: 3}
   atTypeIcon: {fileID: 21300000, guid: 7fb0557ae02dc9a4d87c3ca6e671f10c, type: 3}
@@ -35,8 +29,9 @@ MonoBehaviour:
     \uB192\uB2E4. \uBC1B\uC740 \uB9CC\uD07C \uACF5\uACA9\uD558\uAE30 \uB54C\uBB38\uC5D0
     \uC794\uD639\uD558\uB3C4\uB85D \uAE54\uB054\uD558\uACE0 \uBE60\uB974\uAC8C \uD65C\uC744
     \uC3D8\uB294 \uAC83\uC774 \uD2B9\uC9D5\uC774\uB2E4."
-  attackType: "\uCC0C\uB974\uAE30"
-  role: 
+  generalSkill: {fileID: 11400000, guid: 4a04b7e9511f0694b88fd7bddb96e987, type: 2}
+  specialSkill: {fileID: 11400000, guid: 4374ccc1bb3a9884ba29c694709c47cd, type: 2}
+  campName: moor
   gold: 20
   targetingType: 0
   aiStance: 0

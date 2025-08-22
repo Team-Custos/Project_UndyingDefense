@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: moor_2Assassin
   m_EditorClassIdentifier: 
-  unitName: "\uD6C8\uB828\uB41C \uC0B4\uC218"
   tier: 2
+  unitName: "\uD6C8\uB828\uB41C \uC0B4\uC218"
   armorType: 0
-  maxHp: 160
-  critChance: 20
-  mental: 1
-  moveSpeed: 3
-  attackSpeed: 100
-  sightRange: 20
-  attackRange: 3
+  id: 
   icon: {fileID: 21300000, guid: 3c4d6aaf64582314dbd2223c8afccebb, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 4d368c97b6ff02142a741b773422b134, type: 3}
   atTypeIcon: {fileID: 21300000, guid: 6d6e5457083da4d43a7ecc50ce7bee01, type: 3}
@@ -36,8 +30,9 @@ MonoBehaviour:
     \uBAA9\uACA9\uB41C\uB2E4. \uC870\uC120\uC758 \uD669\uAE08\uBE5B \uB4E4\uB158\uC5D0
     \uC0AC\uB9C9\uC758 \uD5A5\uC218\uB97C \uB290\uAEF4 \uACBD\uACC4\uC2EC\uC774 \uD750\uD2B8\uB7EC\uC84C\uB2E4\uB294
     \uC124\uC774 \uC720\uB825\uD558\uB2E4."
-  attackType: "\uBCA0\uAE30"
-  role: "\uB51C"
+  generalSkill: {fileID: 11400000, guid: ec10a229e3c96094c94cf6dc6073ce6d, type: 2}
+  specialSkill: {fileID: 11400000, guid: b00162fbcaabae54da661ab16b47c85d, type: 2}
+  campName: moor
   gold: 20
   targetingType: 0
   aiStance: 0

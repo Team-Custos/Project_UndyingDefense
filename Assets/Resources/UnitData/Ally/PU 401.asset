@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb1bf43607bc474c9ae334c68431224, type: 3}
   m_Name: PU 401
   m_EditorClassIdentifier: 
-  unitName: "\uB0AD\uC120\uCC28\uC0AC"
   tier: 4
+  unitName: "\uB0AD\uC120\uCC28\uC0AC"
   armorType: 2
-  maxHp: 400
-  critChance: 40
-  mental: 3
-  moveSpeed: 3.5
-  attackSpeed: 80
-  sightRange: 20
-  attackRange: 5
+  id: 
   icon: {fileID: 21300000, guid: b89e72dae6367b54e8a04d0a160fc69c, type: 3}
   prefab: {fileID: 1396008811870586196, guid: bb8c568195d4d8c46b4ef0fa1c5eb498, type: 3}
   atTypeIcon: {fileID: 21300000, guid: 7fb0557ae02dc9a4d87c3ca6e671f10c, type: 3}
@@ -33,8 +27,9 @@ MonoBehaviour:
     \uB418\uB294 \uC218\uAC00 \uC788\uB2E4. \uD55C \uBC88 \uCC0C\uB974\uBA74 \uB458,
     \uC14B\uC774 \uB3D9\uC2DC\uC5D0 \uBB34\uB108\uC9C0\uB2C8, \uADF8 \uD1B5\uCF8C\uD55C
     \uAE30\uC138\uC5D0 \uC544\uAD70\uC758 \uC0AC\uAE30\uB3C4 \uC624\uB97C \uC218\uBC16\uC5D0."
-  attackType: "\uCC0C\uB974\uAE30"
-  role: "\uB51C\uB7EC"
+  generalSkill: {fileID: 11400000, guid: 03acf4624329d3641bad61bcaac74ec2, type: 2}
+  specialSkill: {fileID: 11400000, guid: b35a25eab1016e241a54c1c1c9429353, type: 2}
+  campName: ally
   cost: 600
   upgradeUnits: []
   targetingType: 0

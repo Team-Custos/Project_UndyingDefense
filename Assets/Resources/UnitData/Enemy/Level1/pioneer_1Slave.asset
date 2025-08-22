@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: pioneer_1Slave
   m_EditorClassIdentifier: 
-  unitName: "\uC138\uB1CC\uB41C \uB178\uC608"
   tier: 1
+  unitName: "\uC138\uB1CC\uB41C \uB178\uC608"
   armorType: 0
-  maxHp: 120
-  critChance: 10
-  mental: 1
-  moveSpeed: 3
-  attackSpeed: 80
-  sightRange: 20
-  attackRange: 3
+  id: 
   icon: {fileID: 21300000, guid: 770aca11ab10ec3459a11fa513d3247e, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 534f524aaa188ff4fb17a77cca797a15, type: 3}
   atTypeIcon: {fileID: 21300000, guid: a70f9bcf7f0b83a459c658cb6c98e58e, type: 3}
@@ -36,8 +30,9 @@ MonoBehaviour:
     \uB530\uB978\uB2E4. \uAD50\uB2E8\uC740 \uACE0\uB41C \uC77C\uACFC \uACE0\uBB38\uC73C\uB85C
     \uC0C1\uD574\uBC84\uB9B0 \uADF8\uB4E4\uC758 \uBAB8\uC744 \uC54C\uB730\uD788 \uBC29\uD328\uB9C9\uC774\uB85C
     \uC0BC\uB294\uB2E4."
-  attackType: "\uB54C\uB9AC\uAE30"
-  role: "\uD0F1\uCEE4"
+  generalSkill: {fileID: 11400000, guid: 061dd7a719722f84a974d6d1c4407a90, type: 2}
+  specialSkill: {fileID: 11400000, guid: 158c6c31f8e239143a0965e2ef7fddbc, type: 2}
+  campName: pioneer
   gold: 10
   targetingType: 0
   aiStance: 0

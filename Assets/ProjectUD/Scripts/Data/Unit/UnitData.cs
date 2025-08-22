@@ -23,6 +23,10 @@ public class UnitData : ScriptableObject
     [SerializeField] private Sprite dfTypeIcon;
     [SerializeField, TextArea] private string description;
 
+    [SerializeField] private SkillData generalSkill;
+    [SerializeField] private SkillData specialSkill;
+    [SerializeField] private string campName;   // 유닛의 진영 정보 (도감 UI에 필요)
+
     public string Name => unitName;
     public ArmorType ArmorType => armorType;
     public Sprite Icon => icon;

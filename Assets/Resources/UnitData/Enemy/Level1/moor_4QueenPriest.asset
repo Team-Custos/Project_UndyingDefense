@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: moor_4QueenPriest
   m_EditorClassIdentifier: 
-  unitName: "\uD669\uD63C\uC758 \uC5EC\uC81C \uAC00\uB728\uB9B0\uB290"
   tier: 4
+  unitName: "\uD669\uD63C\uC758 \uC5EC\uC81C \uAC00\uB728\uB9B0\uB290"
   armorType: 0
-  maxHp: 400
-  critChance: 40
-  mental: 3
-  moveSpeed: 3
-  attackSpeed: 80
-  sightRange: 20
-  attackRange: 9
+  id: 
   icon: {fileID: 21300000, guid: 9c47ef022d082044eaa89902e931dbe6, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 8282819f05bb5364087be4c808429d39, type: 3}
   atTypeIcon: {fileID: 21300000, guid: a70f9bcf7f0b83a459c658cb6c98e58e, type: 3}
@@ -36,8 +30,9 @@ MonoBehaviour:
     \uB2F4\uACA8 \uC788\uB2E4. \uADF8\uB140\uC758 \uC55E\uC5D0\uC11C \uBB34\uB98E
     \uAFC7\uB294 \uAC74 \uC2E0\uC559\uC778\uAC00, \uACF5\uD3EC\uC778\uAC00. \uC5B4\uB290
     \uCABD\uC774\uB4E0 \uACB0\uACFC\uB294 \uAC19\uB2E4. \uBCF5\uC885\uBFD0."
-  attackType: "\uB54C\uB9AC\uAE30"
-  role: "\uB51C"
+  generalSkill: {fileID: 11400000, guid: 5bc90d42d0e195944ac055fd539a5b6a, type: 2}
+  specialSkill: {fileID: 11400000, guid: 944885250bafdcf4dbc8d577f01abcab, type: 2}
+  campName: moor
   gold: 40
   targetingType: 0
   aiStance: 0
