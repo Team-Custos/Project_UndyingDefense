@@ -36,6 +36,9 @@ public class UnitData : ScriptableObject
     public string Description => description;
     //public string Role => role;
     public string Id => id;
+    public string CampName => campName;
+    public SkillData SpecialSkill => specialSkill;
+    public SkillData GeneralSkill => generalSkill;
 
 
     //public float MaxHp => maxHp;
