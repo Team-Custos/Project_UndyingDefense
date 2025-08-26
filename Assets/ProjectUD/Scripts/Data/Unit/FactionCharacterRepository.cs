@@ -26,12 +26,17 @@ public class FactionCharacterRepository : MonoBehaviour
         factions.Add(summonSO);
     }
 
-    public void SetRosterDic()
+    public void SetFactionDic()
     {
         for (int i = 0; i < factions.Count; i++)
         {
-            string faction = factions[i].ToString();    // 이거 아님 고쳐야함
-            //factionDic.Add();
+            UnitData uData = factions[i][0];
+            string faction = uData.CampName;    
+
+            if(!factionDic.ContainsKey(faction))
+            {
+                factionDic.Add(faction, factions[i]);
+            }
         }
     }
 }
