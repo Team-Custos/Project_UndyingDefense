@@ -7,15 +7,21 @@ public class CharacterArchiveUI : MonoBehaviour
     [SerializeField] private FactionCharacterRepository fRepository;
     [SerializeField] private CharacterButtonUI[] characterBtnArray;
     private int index;
+    private string fName;
 
-    public void OnButtonClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
+    public void OnTabBtnClick(string name)  // 버튼 클릭 이벤트용 함수
+    {
+        fName = name;
+    }
+
+    public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
     {
         index = buttonIndex;
     }
 
-    public void SetButtonData(int i, Sprite image, string text)
+    public void SetButtonData(int i, Sprite image, string cName)
     {
-        characterBtnArray[i].SetButton(image, text);
+        characterBtnArray[i].SetButton(image, cName);
         characterBtnArray[i].gameObject.SetActive(true);
     }
 
