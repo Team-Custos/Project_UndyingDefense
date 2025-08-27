@@ -414,7 +414,7 @@ public abstract class Unit : MonoBehaviour
 
     private List<DurationEffect> effectList = new List<DurationEffect>();
 
-    protected const int maxTargetCount = 10;
+    protected const int maxTargetCount = 100;
 
     protected bool isSelected;
 
@@ -543,6 +543,9 @@ public abstract class Unit : MonoBehaviour
         if (pathForSearch == null)
             pathForSearch = new NavMeshPath();
 
+
+        maxhp = UnitStats.maxHp;
+        hp = maxhp;
         //hp = Data.MaxHp;
         //critChance = Data.CritChance;
         critVulnerability = 0f;
@@ -564,6 +567,8 @@ public abstract class Unit : MonoBehaviour
 
         collider.enabled = true;
 
+        RemoveAllEffect();
+
         effectParent.gameObject.SetActive(true);
         for (int idx = 0; idx < effectParent.childCount; idx++)
         {
@@ -572,7 +577,10 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
 
-        
+        for(int i = 0; i < VFXParent.childCount; i++)
+        {
+            VFXParent.GetChild(i).gameObject.SetActive(false);
+        }
 
     }
 
@@ -722,7 +730,6 @@ public abstract class Unit : MonoBehaviour
                     continue;
 
                 float dst = Vector3.Distance(transform.position, unit.transform.position);
-
 
                 if (dst < minDst)
                 {
@@ -1174,8 +1181,8 @@ public abstract class Unit : MonoBehaviour
             collider.enabled = false;
             effectParent.gameObject.SetActive(false);
 
-
             modelAnimator.SetTrigger("Die");
+                
 
             if (selectedUnitUI != null)
             {
@@ -1317,9 +1324,20 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
+    public void RemoveAllEffect()
+    {
+        for (int i = effectList.Count - 1; i >= 0; i--)
+        {
+            effectList.Remove(effectList[i]);
+        }
+    }
+
     public void AddVFX(GameObject vfx) // hit & Crit VFX (오브젝트풀링 사용)
     {
-        GameObject VFXobj = hitVFXPool.GetVFX(vfx);
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return;
+
         VFXobj.transform.SetParent(VFXParent);
         VFXobj.SetActive(true);
         VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;

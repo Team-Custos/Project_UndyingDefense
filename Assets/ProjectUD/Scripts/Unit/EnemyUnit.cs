@@ -128,6 +128,7 @@ public class EnemyUnit : Unit
     public override void Initialize()
     {
         base.Initialize();
+        navAgent.enabled = true;
         state = State.BATTLECRY;
         isDead = false;
         aiStance = data.aiStance;
@@ -155,6 +156,7 @@ public class EnemyUnit : Unit
                     {
                         modelAnimator.SetBool("isRunning", false);
 
+
                         //if (navAgent.enabled)
                         //{
                         //    navAgent.enabled = false;
@@ -163,6 +165,36 @@ public class EnemyUnit : Unit
 
                         //if (!navObstacle.enabled)
                         //    navObstacle.enabled = true;
+                    }
+
+                    if (state == State.SPECIALSKILL)
+                    {
+                        if (targetUnit != null)
+                            LookAt(targetUnit.transform.position);
+                        SkillBase skill = GetSpecialSkill();
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
+                    }
+
+                    if (state == State.GENERALSKILL)
+                    {
+
+                        if (targetUnit != null)
+                            LookAt(targetUnit.transform.position);
+                        SkillBase skill = GetGeneralSkill();
+
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                base.ActivateSkill(skill, targetUnit);
+                            }
+                        }
                     }
 
                     if (stateDuration <= 0f)
@@ -174,13 +206,25 @@ public class EnemyUnit : Unit
                     }    
                     else
                     {
+
                         stateDurationCheck = 0f;
                         stateDuration = 0f;
 
                         if (state == State.BATTLECRY)
                             MoveTo(fortressPos);
                         else if (state == State.DEAD)
+                        {
+                            //for (int i = 0; i < VFXParent.childCount; i++)
+                            //{
+                            //    Transform child = VFXParent.GetChild(i);
+                            //    child.gameObject.SetActive(false);
+                            //    Debug.Log(child.gameObject.name);
+                            //}
+
                             gameObject.SetActive(false);
+                            pool.Pool.Release(this);
+                        }
+                            
 
                         state = State.IDLE;
 
@@ -375,7 +419,7 @@ public class EnemyUnit : Unit
         if (target != this)
             transform.LookAt(target.transform);
 
-        base.ActivateSkill(skill, target);
+        //base.ActivateSkill(skill, target);
         interval = intervalCheck;
     }
 
@@ -411,6 +455,7 @@ public class EnemyUnit : Unit
                 AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
             }
         }
+
     }
 
     public override void GetProvoked(Unit ProvokedTarget)

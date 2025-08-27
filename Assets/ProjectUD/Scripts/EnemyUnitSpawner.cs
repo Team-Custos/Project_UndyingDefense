@@ -263,6 +263,8 @@ public class EnemyUnitSpawner : MonoBehaviour
         inGameManager.SetGold(enmeyUnitData.Gold, true);
         ingameScreenUI.SetspawnBtnPriceTextColor();
         upgradeMenuUI.UpdateUpgradeCostTxt();
+        
+        
 
         //if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
         //{

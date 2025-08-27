@@ -5,6 +5,7 @@ using UnityEngine;
 public class VFX : MonoBehaviour
 {
     [SerializeField] float durationTime;
+    private Unit unit;
     private Queue<GameObject> queue;
     private Transform vfxParent;
     private float activeTimer = 0;
@@ -41,10 +42,11 @@ public class VFX : MonoBehaviour
         activeTimer = durationTime;
     }
 
-    public void InitializePool(Queue<GameObject> q, Transform parent)
+    public void InitializePool(Queue<GameObject> q, Transform parent, Unit unit)
     {
         queue = q;
         vfxParent = parent;
+        this.unit = unit;
     }
 
     public void InitializePool(ObjectPoolWithList<GameObject> pool, Transform parent)   // ObjectPoolWithList용 대리자 메서드

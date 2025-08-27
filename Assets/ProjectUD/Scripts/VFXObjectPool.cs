@@ -8,18 +8,19 @@ using UnityEngine.Rendering;
 public class VFXObjectPool : MonoBehaviour
 {
     [SerializeField] Transform vfxParent;
+    private Unit unit;
 
     private Dictionary<GameObject, Queue<GameObject>> vfxDic = new Dictionary<GameObject, Queue<GameObject>>();
     private VFX v;
 
 
-    public void InstantiateVFX(GameObject gameObject, Queue<GameObject> queue)
+    public void InstantiateVFX(GameObject gameObject, Queue<GameObject> queue, Unit unit)
     {
         GameObject obj = Instantiate(gameObject);
         obj.transform.SetParent(vfxParent);
         queue.Enqueue(obj);
         v = obj.GetComponent<VFX>();
-        v.InitializePool(queue, vfxParent);
+        v.InitializePool(queue, vfxParent, unit);
         obj.SetActive(false);
         //Debug.Log(queue.Count);
     }
@@ -48,7 +49,7 @@ public class VFXObjectPool : MonoBehaviour
     //}
     #endregion
 
-    public GameObject GetVFX(GameObject vfx)
+    public GameObject GetVFX(GameObject vfx, Unit unit)
     {
         #region 250730_기존 코드
         //if (vfxDic.ContainsKey(name))
@@ -90,22 +91,34 @@ public class VFXObjectPool : MonoBehaviour
         //return null;
         #endregion
 
+        this.unit = unit;
+
+        if (unit.HpPercent < 0.1f)
+            return null;
+
         if (vfxDic.ContainsKey(vfx))
         {
             Queue<GameObject> q = vfxDic[vfx];
 
             if (q.Count <= 0)
             {
-                InstantiateVFX(vfx, q);
+                InstantiateVFX(vfx, q, unit);
             }
+
             return q.Dequeue();
         }
         else
         {
             Queue<GameObject> q = new Queue<GameObject>();
             vfxDic.Add(vfx, q);
-            InstantiateVFX(vfx, q);
+            InstantiateVFX(vfx, q, unit);
+
             return q.Dequeue();
         }
+    }
+
+    public void SetUnit(Unit unit)
+    {
+        this.unit = unit;
     }
 }

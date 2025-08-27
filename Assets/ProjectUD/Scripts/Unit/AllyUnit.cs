@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class AllyUnit : Unit
 {
@@ -89,6 +90,11 @@ public class AllyUnit : Unit
     public override void Initialize()
     {
         base.Initialize();
+        isDead = false;
+        navAgent.enabled = false;
+        navObstacle.enabled = true;
+        collider.enabled = true;
+
         mode = Mode.SEIGE;
         previousMode = mode;
         state = State.IDLE;
@@ -176,11 +182,14 @@ public class AllyUnit : Unit
                     }
                     else
                     {
+                        if (state == State.DEAD)
+                        {
+                            gameObject.SetActive(false);
+                            pool.Pool.Release(this);
+                        }
+
                         stateDurationCheck = 0f;
                         stateDuration = 0f;
-
-                        if (state == State.DEAD)
-                            gameObject.SetActive(false);
 
                         state = State.IDLE;
 
@@ -883,32 +892,37 @@ public class AllyUnit : Unit
 
     public override void Die()
     {
-        navAgent.enabled = false;
-        navObstacle.enabled = false;
-        collider.enabled = false;
-
-        if (state == State.STUN)
+        if (!isDead)
         {
-            base.RemoveStun();
-            Debug.Log(1111);
-        }
-        
 
-        base.Die();
+            navAgent.enabled = false;
+            navObstacle.enabled = false;
+            collider.enabled = false;
 
-            
-        state = State.DEAD;
-        //modelAnimator.SetTrigger("Die");
-        AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
-        unitGrid.ClearTile();
+            if (state == State.STUN)
+            {
+                base.RemoveStun();
+                Debug.Log(1111);
+            }
 
-        if (allyDeadSFX == null)
-            return;
 
-        if (allyDeadSFX.Length > 0)
-        {
-            AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
-            SoundManager.Instance.PlaySFX(clip);
+            base.Die();
+
+            state = State.DEAD;
+            //modelAnimator.SetTrigger("Die");
+            AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
+            unitGrid.ClearTile();
+
+            if (allyDeadSFX == null)
+                return;
+
+            if (allyDeadSFX.Length > 0)
+            {
+                AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
+                SoundManager.Instance.PlaySFX(clip);
+            }
+
+            isDead = true;
         }
     }
 
