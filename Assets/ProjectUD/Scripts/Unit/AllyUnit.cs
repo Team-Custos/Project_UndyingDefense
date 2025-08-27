@@ -115,7 +115,9 @@ public class AllyUnit : Unit
 
     protected override void Update()
     {
-        base.Update();
+        //base.Update();
+
+        interval -= Time.deltaTime;
 
         switch (state)
         {
@@ -133,18 +135,17 @@ public class AllyUnit : Unit
                         }
                     }
 
+
                     if (state == State.SPECIALSKILL)
                     {
-                        if(targetUnit != null)
+                        if (targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetSpecialSkill();
-                        //Debug.Log("Special Skill " + skill + "사용");
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
                                 base.ActivateSkill(skill, targetUnit);
-                                Debug.Log(SpecialSkill.Data.Name);
                             }
                         }
                     }
@@ -152,7 +153,7 @@ public class AllyUnit : Unit
                     if (state == State.GENERALSKILL)
                     {
 
-                        if(targetUnit != null)
+                        if (targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetGeneralSkill();
 
@@ -161,7 +162,6 @@ public class AllyUnit : Unit
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
                                 base.ActivateSkill(skill, targetUnit);
-                                //Debug.Log(GeneralSkill.Data.name);
                             }
                         }
                     }
@@ -249,11 +249,8 @@ public class AllyUnit : Unit
                         return;
 
                     
-                    interval -= Time.deltaTime;
-                    
                     if(interval <= 0)
                     {
-
                         SkillBase skill = GetAvailableSkill();
 
                         if (skill != null) // 사용 가능한 스킬이 존재할 경우
@@ -280,7 +277,7 @@ public class AllyUnit : Unit
 
 
                                                 ActivateSkill(skill, targetUnit);
-                                                interval = intervalCheck;
+                                                //interval = intervalCheck;
 
                                             }
                                             else
@@ -292,7 +289,7 @@ public class AllyUnit : Unit
                                 case SkillBase.TargetType.SELF:
                                     {
                                         ActivateSkill(skill, this);
-                                        interval = intervalCheck;
+                                        //interval = intervalCheck;
                                     }
                                     break;
                             }
@@ -357,13 +354,8 @@ public class AllyUnit : Unit
                     {
                         if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange))// + targetUnit.NearbyDistance)) // 목표가 공격 범위 내 -> 공격
                         {
-                            //modelAnimator.SetBool("isRunning", false);
-
-                            interval -= Time.deltaTime;
-
                             if (interval <= 0)
                             {
-
                                 SkillBase skill = GetAvailableSkill();
                                 if (skill != null)
                                 {
@@ -378,8 +370,6 @@ public class AllyUnit : Unit
                                                 if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                                 {
                                                     ActivateSkill(skill, targetUnit);
-
-                                                    interval = intervalCheck;
 
                                                     if (stateDurationCheck >= stateDuration)
                                                     {
@@ -396,7 +386,6 @@ public class AllyUnit : Unit
                                             {
                                                 ActivateSkill(skill, null);
 
-                                                interval = intervalCheck;
 
                                                 if (stateDurationCheck >= stateDuration)
                                                 {
@@ -409,7 +398,6 @@ public class AllyUnit : Unit
                                         case SkillBase.TargetType.SELF:
                                             {
                                                 ActivateSkill(skill, null);
-                                                interval = intervalCheck;
 
                                                 if (stateDurationCheck >= stateDuration)
                                                 {
@@ -619,13 +607,16 @@ public class AllyUnit : Unit
                                 if (isSelected && selectedUnitUI != null)
                                 {
                                     isSelected = false;
-                                    //selectedUnitManager.SetSelectedUnit(null);
-
                                     upgradedUnit.isSelected = true;
-                                    selectedUnitUI.UpdateUnitInfo(upgradedUnit);
-                                    selectedUnitManager.SetSelectedUnit(upgradedUnit);
 
-                                    
+
+                                    selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+
+
+                                    upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
+                                    upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
+
+
                                     selectedUnitUI.ShowAllyUI(upgradedUnit);
                                     selectedUnitUI.ShowHp(upgradedUnit);
                                 }                               
@@ -826,6 +817,8 @@ public class AllyUnit : Unit
 
         if (target != null && target != this)
             transform.LookAt(target.transform);
+
+        interval = intervalCheck;
 
         //base.ActivateSkill(skill, target);
     }

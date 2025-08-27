@@ -138,9 +138,11 @@ public class EnemyUnit : Unit
 
     protected override void Update()
     {
-        base.Update();
+        //base.Update();
 
-        switch(state)
+        interval -= Time.deltaTime;
+
+        switch (state)
         {
             case State.STUN:
                 return;
@@ -277,7 +279,7 @@ public class EnemyUnit : Unit
                 break;
             case Mode.COMBAT:
                 {
-                    if (targetUnit.HpPercent > 0f || !targetUnit.gameObject.activeInHierarchy)
+                    if (targetUnit.HpPercent > 0f || targetUnit.gameObject.activeInHierarchy)
                     {
                         if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
                         {
@@ -287,7 +289,6 @@ public class EnemyUnit : Unit
                                 modelAnimator.SetBool("isRunning", false);
                             }
 
-                            interval -= Time.deltaTime; // 공격 간격 감소
 
                             if (interval <= 0)
                             {
@@ -299,7 +300,7 @@ public class EnemyUnit : Unit
                                     ActivateSkill(skill, targetUnit);
                                 }
 
-                                interval = intervalCheck;
+                                
                             }
                             
                         }
@@ -375,6 +376,7 @@ public class EnemyUnit : Unit
             transform.LookAt(target.transform);
 
         base.ActivateSkill(skill, target);
+        interval = intervalCheck;
     }
 
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
@@ -399,6 +401,7 @@ public class EnemyUnit : Unit
     public override void TakeDamage(float Damage)
     {
         base.TakeDamage(Damage);
+
         if (HpPercent * 100f <= angerTriggerPercent && !isDead)
         {
             if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)

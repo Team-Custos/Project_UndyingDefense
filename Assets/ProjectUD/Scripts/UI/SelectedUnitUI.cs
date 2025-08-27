@@ -327,7 +327,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
     public void UpdateUnitInfo(Unit unit)
     {
-       unit.SetUnitUI(this);
+       unit.SetSelectedUnitUI(this);
 
        unitInfoImage.gameObject.SetActive(true);
 

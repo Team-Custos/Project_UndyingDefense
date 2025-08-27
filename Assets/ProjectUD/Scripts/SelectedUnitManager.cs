@@ -99,14 +99,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         {
                             // 기존 유닛 해제
                             selectedUnit.IsSelected = false;
-                            selectedUnit.SetUnitUI(null);
-                            selectedUnit.SetSelectedUnit(null);
+                            selectedUnit.SetSelectedUnitUI(null);
+                            selectedUnit.SetSelectedUnitManager(null);
                             selectedUnit = null;
 
                             // 새 유닛 설정
                             selectedUnit = unit;
-                            selectedUnit.SetSelectedUnit(this);
-                            selectedUnit.SetUnitUI(unitSelectUI);
+                            selectedUnit.SetSelectedUnitManager(this);
+                            selectedUnit.SetSelectedUnitUI(unitSelectUI);
                             selectedUnit.IsSelected = true;
                             
                         }
@@ -116,8 +116,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     {
                         // 새 유닛 설정
                         selectedUnit = unit;
-                        selectedUnit.SetSelectedUnit(this);
-                        selectedUnit.SetUnitUI(unitSelectUI);
+                        selectedUnit.SetSelectedUnitManager(this);
+                        selectedUnit.SetSelectedUnitUI(unitSelectUI);
                         selectedUnit.IsSelected = true;
                     }
 
@@ -157,8 +157,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                             if(selectedUnit != null && selectedUnit is AllyUnit)
                             {
                                 selectedUnit.IsSelected = false;
-                                selectedUnit.SetUnitUI(null);
-                                selectedUnit.SetSelectedUnit(null);
+                                selectedUnit.SetSelectedUnitUI(null);
+                                selectedUnit.SetSelectedUnitManager(null);
                                 selectedUnit = null;
                                 unitSelectUI.HideAllyUI();
                                 unitSelectUI.HideHp();
@@ -259,7 +259,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         if (inGameManager.inGameGold < nextUnitData.Cost)
         {
             Debug.Log("골드 부족");
-            unitSelectUI.HideUpgrdeUI();
+            //unitSelectUI.HideUpgrdeUI();
+            // 승급불과 효과음 추가 예정
             return;
         }
 
@@ -410,8 +411,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         if (selectedUnit != null)
         {
             selectedUnit.IsSelected = false;
-            selectedUnit.SetUnitUI(null);
-            selectedUnit.SetSelectedUnit(null);
+            selectedUnit.SetSelectedUnitUI(null);
+            selectedUnit.SetSelectedUnitManager(null);
             unitSelectUI.HideAllyUI();
             unitSelectUI.HideHp();
             unitSelectUI.OffUpgradeUI();

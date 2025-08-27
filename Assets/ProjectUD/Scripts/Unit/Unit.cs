@@ -626,12 +626,12 @@ public abstract class Unit : MonoBehaviour
         mental = unitStats.mental;
     }
 
-    public void SetUnitUI(SelectedUnitUI selectedUnitUI)
+    public void SetSelectedUnitUI(SelectedUnitUI selectedUnitUI)
     {
         this.selectedUnitUI = selectedUnitUI;
     }
 
-    public void SetSelectedUnit(SelectedUnitManager selectedUnitManager)
+    public void SetSelectedUnitManager(SelectedUnitManager selectedUnitManager)
     {
         this.selectedUnitManager = selectedUnitManager;
     }
@@ -722,6 +722,8 @@ public abstract class Unit : MonoBehaviour
                     continue;
 
                 float dst = Vector3.Distance(transform.position, unit.transform.position);
+
+
                 if (dst < minDst)
                 {
                     minDst = dst;

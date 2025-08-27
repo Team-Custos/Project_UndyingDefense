@@ -123,11 +123,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
 
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
                 upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
-                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
                 //upgradeUnit.IsSelected = true;
@@ -154,11 +154,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
+                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
                 upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
-                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.UpgradeInitialize();
 
                 //upgradeUnit.IsSelected = true;
@@ -193,11 +193,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
+            upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
             upgradeUnit.SetDurationEffectPool(durationEffectPool);
             upgradeUnit.SetHitVFXPool(hitVFXPool);
             upgradeUnit.previousMode = mode;
-            upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.UpgradeInitialize();
             //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
             //selectedUnitManager.SetSelectedUnit(upgradeUnit);

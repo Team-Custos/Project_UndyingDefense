@@ -200,7 +200,7 @@ public class EnemyUnitSpawner : MonoBehaviour
                    enemySpawnVfx.Play();
                    enemyUnit.Initialize(fortress.GetPosition(spawnCount));
                    enemyUnit.gameObject.SetActive(true);
-                    enemyUnit.Setpriority(priority);
+                    //enemyUnit.Setpriority(priority);
                     //if(priority > 50)
                     //    priority = 1;
                     //else
