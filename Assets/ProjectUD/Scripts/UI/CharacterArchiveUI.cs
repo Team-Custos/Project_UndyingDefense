@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class CharacterArchiveUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private FactionCharacterRepository fRepository;
+    [SerializeField] private CharacterButtonUI[] characterBtnArray;
+    private int index;
+
+    public void OnButtonClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
     {
-        
+        index = buttonIndex;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetButtonData(int i, Sprite image, string text)
     {
-        
+        characterBtnArray[i].SetButton(image, text);
+        characterBtnArray[i].gameObject.SetActive(true);
+    }
+
+    public void ResetButton()
+    {
+        for (int i = 0; i < characterBtnArray.Length; i++)
+        {
+            characterBtnArray[i].gameObject.SetActive(false);
+            characterBtnArray[i].ResetButton();
+        }
     }
 }

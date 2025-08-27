@@ -4,39 +4,29 @@ using UnityEngine;
 
 public class FactionCharacterRepository : MonoBehaviour
 {
-    private UnitData[] allySO;
-    private UnitData[] moorSO;
-    private UnitData[] pioneerSO;
-    private UnitData[] summonSO;
-
-    private List<UnitData[]> factions;
-
-    private Dictionary<string, UnitData[]> factionDic;
+    private Dictionary<string, UnitData[]> factionDic = new Dictionary<string, UnitData[]>();
 
     private void Start()
     {
-        allySO = Resources.LoadAll<UnitData>("UnitData/Ally/AllyArchive");
-        moorSO = Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/moorArchive");
-        pioneerSO = Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/pioneerArchive");
-        summonSO = Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/summonArchive");
-
-        factions.Add(allySO);
-        factions.Add(moorSO);
-        factions.Add(pioneerSO);
-        factions.Add(summonSO);
+        SetFactionDic();
     }
 
     public void SetFactionDic()
     {
-        for (int i = 0; i < factions.Count; i++)
-        {
-            UnitData uData = factions[i][0];
-            string faction = uData.CampName;    
+        factionDic.Add("ally", Resources.LoadAll<UnitData>("UnitData/Ally/AllyArchive"));
+        factionDic.Add("moor", Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/moorArchive"));
+        factionDic.Add("pioneer", Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/pioneerArchive"));
+        factionDic.Add("summon", Resources.LoadAll<UnitData>("UnitData/Enemy/Level1/summonArchive"));
 
-            if(!factionDic.ContainsKey(faction))
-            {
-                factionDic.Add(faction, factions[i]);
-            }
-        }
+    }
+
+    public UnitData[] GetFactionArray(string fName)
+    {
+        return factionDic[fName];
+    }
+
+    public UnitData GetUnitData(string fName, int i)
+    {
+        return factionDic[fName][i];
     }
 }
