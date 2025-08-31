@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class CharacterButtonUI : MonoBehaviour
 {
-    private Image buttonImage;
-    private TextMeshProUGUI buttonText;
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private TextMeshProUGUI buttonText;
 
     public void SetButton(Sprite image, string text)
     {
