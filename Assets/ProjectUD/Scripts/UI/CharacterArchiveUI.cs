@@ -9,17 +9,13 @@ public class CharacterArchiveUI : MonoBehaviour
     [SerializeField] private CharacterButtonUI[] characterBtnArray;
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private TextMeshProUGUI unitFactionName;
+    [SerializeField] private FactionNameTextTable fNameTextTable;
     private UnitData[] units = new UnitData[] { };
     private int unitCount = 0;
     private int unitIndex = 0;
     private int pageNum = 1;
     private string fName;
 
-
-    private void Start()
-    {
-        pageNum = 1;
-    }
 
     public void OnTabBtnClick(string name)  // 버튼 클릭 이벤트용 함수
     {
@@ -31,6 +27,7 @@ public class CharacterArchiveUI : MonoBehaviour
 
     public void SetFactionName(string kFactionName)
     {
+        // 텍스트테이블로부터 이름 가져오기
         unitFactionName.text = kFactionName;
     }
 
