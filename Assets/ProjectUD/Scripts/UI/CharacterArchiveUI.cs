@@ -24,6 +24,7 @@ public class CharacterArchiveUI : MonoBehaviour
     public void OnTabBtnClick(string name)  // 버튼 클릭 이벤트용 함수
     {
         fName = name;
+        pageNum = 1;
         SetPage();
         ShowUnit();
     }
@@ -50,15 +51,18 @@ public class CharacterArchiveUI : MonoBehaviour
         ShowUnit();
     }
 
-    public void ResetButton()
+    public void ResetCharacterBtn()
     {
         for (int i = 0; i < characterBtnArray.Length; i++)
         {
             characterBtnArray[i].gameObject.SetActive(false);
             characterBtnArray[i].ResetButton();
         }
+    }
 
-        for(int i = 0; i < pageBtnArray.Length; i++)
+    public void ResetPageBtn()
+    {
+        for (int i = 0; i < pageBtnArray.Length; i++)
         {
             pageBtnArray[i].gameObject.SetActive(false);
         }
@@ -66,15 +70,16 @@ public class CharacterArchiveUI : MonoBehaviour
 
     public void SetPage()
     {
-        ResetButton();
+        ResetPageBtn();
+        ResetCharacterBtn();
 
         units = fRepository.GetFactionArray(fName);
         unitCount = units.Length;
 
-        int pageCount = (unitCount / 9) + 1;    // 표시될 페이지 수 
-        // To do : 딱 나눠 떨어질때 버튼이 하나 더 생성됨. 에외처리 해주기
+        // 페이지 버튼 개수
+        int pageCount = (unitCount % 9 == 0) ? unitCount / 9 : (unitCount / 9) + 1;
 
-        for(int i = 0; i < pageCount; i++) 
+        for (int i = 0; i < pageCount; i++) 
         {
             // 미리 만들어 놓고 활성화
             pageBtnArray[i].gameObject.SetActive(true);
@@ -84,9 +89,11 @@ public class CharacterArchiveUI : MonoBehaviour
 
     public void ShowUnit()
     {
+        ResetCharacterBtn();
+
         int toShow = unitCount - ((pageNum - 1) * 9);
-        int temp = (toShow > 9) ? 9 : toShow;
-        //int temp2 = Mathf.Min(toShow, 9);
+        //int temp = (toShow > 9) ? 9 : toShow;
+        int temp = Mathf.Min(toShow, 9);
 
         
         for (int i = 0;i < temp;i++)
