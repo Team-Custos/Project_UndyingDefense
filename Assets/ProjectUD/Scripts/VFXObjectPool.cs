@@ -93,7 +93,7 @@ public class VFXObjectPool : MonoBehaviour
 
         this.unit = unit;
 
-        if (unit.HpPercent < 0.1f)
+        if (unit.IsDead)
             return null;
 
         if (vfxDic.ContainsKey(vfx))

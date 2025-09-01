@@ -179,9 +179,7 @@ public class InGameManager : MonoBehaviour, IInputESC
         }
         else
         {
-            {
-                inGameGold -= gold;
-            }
+            inGameGold -= gold;
         }
 
         ingameScreenUI.SetGoldTextUI(inGameGold);

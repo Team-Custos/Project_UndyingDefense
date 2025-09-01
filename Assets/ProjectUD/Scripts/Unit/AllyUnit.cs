@@ -343,7 +343,7 @@ public class AllyUnit : Unit
                                 destinationPosition = Vector3.zero;
                                 isMoving = false;
                                 targetUnit = SearchTarget(UnitStats.sightRange);
-                                navAgent.stoppingDistance = UnitStats.attackRange - 1.0f;
+                                navAgent.stoppingDistance = 1.0f;
 
                                 // 이동 종료
                             }

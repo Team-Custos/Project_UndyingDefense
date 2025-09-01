@@ -259,8 +259,7 @@ public class AttackSkill : SkillBase
         //if (target is EnemyUnit)
         //    Debug.Log(calcDamage);
 
-        target.TakeDamage(calcDamage);
-
+        
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {
@@ -274,13 +273,15 @@ public class AttackSkill : SkillBase
             AddHitVFX(unit, target);
             AddHitSFX();
         }
-        
+
+        target.TakeDamage(calcDamage);
+
         //else
         //{
         //    //target.PlayHitSFX(data.AttackType);
         //    AddHitVFX(unit, target);
         //}
-        
+
         //if (data.InduseEffect != null)
         //{
         //    if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)

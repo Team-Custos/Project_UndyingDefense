@@ -544,7 +544,6 @@ public abstract class Unit : MonoBehaviour
             pathForSearch = new NavMeshPath();
 
 
-        maxhp = UnitStats.maxHp;
         hp = maxhp;
         //hp = Data.MaxHp;
         //critChance = Data.CritChance;
@@ -617,7 +616,7 @@ public abstract class Unit : MonoBehaviour
             intervalCheck = interval;
             interval = 0;
             navAgent.speed = unitStats.moveSpeed;
-            navAgent.stoppingDistance = UnitStats.attackRange - 1.0f;
+            navAgent.stoppingDistance = 1.0f;
 
 
         }
