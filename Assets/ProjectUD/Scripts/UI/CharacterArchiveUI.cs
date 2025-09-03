@@ -16,19 +16,19 @@ public class CharacterArchiveUI : MonoBehaviour
     private int pageNum = 1;
     private string fName;
 
+    private void Start()
+    {
+        //ShowCharacterArchive();
+    }
+
 
     public void OnTabBtnClick(string name)  // 버튼 클릭 이벤트용 함수
     {
         fName = name;
         pageNum = 1;
+        unitFactionName.text = fNameTextTable.GetName(name);
         SetPage();
         ShowUnit();
-    }
-
-    public void SetFactionName(string kFactionName)
-    {
-        // 텍스트테이블로부터 이름 가져오기
-        unitFactionName.text = kFactionName;
     }
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
@@ -100,5 +100,17 @@ public class CharacterArchiveUI : MonoBehaviour
             characterBtnArray[i].gameObject.SetActive(true);
         }
         
+    }
+
+    public void ShowCharacterArchive()  // 로비 버튼용
+    {
+        gameObject.SetActive(true);
+        string name = "ally";
+        OnTabBtnClick(name);    // 도감창 열면 보여질 첫 페이지
+    }
+
+    public void HideCharacterArchive()  // 도감창 뒤로가기 버튼용
+    {
+        gameObject.SetActive(false);
     }
 }
