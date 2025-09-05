@@ -36,9 +36,10 @@ public class CharacterArchiveUI : MonoBehaviour
         unitIndex = buttonIndex;
     }
 
-    public void SetButtonData(int i, Sprite image, string cName)
+    public void SetCharacterBtn(int i, UnitData unit)
     {
-        characterBtnArray[i].SetButton(image, cName);
+        characterBtnArray[i].SetButton(unit.Icon, unit.Name);
+        characterBtnArray[i].SetUnitData(unit);
         characterBtnArray[i].gameObject.SetActive(true);
     }
 
@@ -96,7 +97,7 @@ public class CharacterArchiveUI : MonoBehaviour
         for (int i = 0;i < temp;i++)
         {
             UnitData unit = units[((pageNum - 1) * 9) + i];     // 보여줘야할 데이터 순번
-            SetButtonData(i, unit.Icon, unit.Name);
+            SetCharacterBtn(i, unit);
             characterBtnArray[i].gameObject.SetActive(true);
         }
         

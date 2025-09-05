@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7236572718218338851}
   - component: {fileID: 2972267254401087762}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 532827786441845546}
   - component: {fileID: 7908418668080100468}
   m_Layer: 5
-  m_Name: SkillName
+  m_Name: General
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1427584129559536189}
   - component: {fileID: 1054922666995635136}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: moveSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -673,7 +673,7 @@ GameObject:
   - component: {fileID: 1226095460940608119}
   - component: {fileID: 2299685785004178514}
   m_Layer: 5
-  m_Name: SkillImage
+  m_Name: GeneralSkillImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 9119538974138182544}
   - component: {fileID: 4005510721239163614}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: role
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1191,7 +1191,7 @@ GameObject:
   - component: {fileID: 2935110140817822602}
   - component: {fileID: 4062363324279956447}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: mental
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1461,7 +1461,7 @@ GameObject:
   - component: {fileID: 538105231097563319}
   - component: {fileID: 6768997374126815353}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: attackSpeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1596,7 +1596,7 @@ GameObject:
   - component: {fileID: 740680482450675042}
   - component: {fileID: 7274624636937433167}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2213,7 +2213,7 @@ GameObject:
   - component: {fileID: 5743092535947811824}
   - component: {fileID: 3012383324534336982}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: critChance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2348,7 +2348,7 @@ GameObject:
   - component: {fileID: 4673345917945453548}
   - component: {fileID: 3363078143347866620}
   m_Layer: 5
-  m_Name: defenseType
+  m_Name: ArmorType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2655,7 +2655,7 @@ GameObject:
   - component: {fileID: 5872408145979698152}
   - component: {fileID: 6902827212613440826}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: maxHp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2790,7 +2790,7 @@ GameObject:
   - component: {fileID: 4381776530916561705}
   - component: {fileID: 9083994358842633558}
   m_Layer: 5
-  m_Name: SkillName
+  m_Name: Special
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3332,7 +3332,7 @@ GameObject:
   - component: {fileID: 921264289529326230}
   - component: {fileID: 4712891457395897297}
   m_Layer: 5
-  m_Name: critRate
+  m_Name: critChance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4298,7 +4298,7 @@ GameObject:
   - component: {fileID: 7239492634095648142}
   - component: {fileID: 5279621725405770982}
   m_Layer: 5
-  m_Name: SkillImage (1)
+  m_Name: SpecialSkillImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4374,7 +4374,7 @@ GameObject:
   - component: {fileID: 2521501899801940990}
   - component: {fileID: 7086281460255823347}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: armorType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4778,6 +4778,7 @@ GameObject:
   - component: {fileID: 8965209438721078483}
   - component: {fileID: 8449969695936370210}
   - component: {fileID: 272916719902761097}
+  - component: {fileID: 1593930250622631843}
   m_Layer: 5
   m_Name: Info_Panel
   m_TagString: Untagged
@@ -4846,6 +4847,39 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1593930250622631843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8355203682576580649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c542f3e13fd37254aba7233b424095ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loader: {fileID: 0}
+  icon: {fileID: 4810003333003716769}
+  name: {fileID: 5234870401908221625}
+  tier: {fileID: 5690892387201473166}
+  cost: {fileID: 2972267254401087762}
+  tendency: {fileID: 7274624636937433167}
+  role: {fileID: 4005510721239163614}
+  generalSkill: {fileID: 7908418668080100468}
+  specialSkill: {fileID: 9083994358842633558}
+  passiveSkill: {fileID: 4032111881621576115}
+  generalIcon: {fileID: 2299685785004178514}
+  specialIcon: {fileID: 5279621725405770982}
+  passiveIcon: {fileID: 8459000664242604045}
+  hp: {fileID: 6902827212613440826}
+  attackSpeed: {fileID: 6768997374126815353}
+  armorType: {fileID: 7086281460255823347}
+  critChance: {fileID: 3012383324534336982}
+  moveSpeed: {fileID: 1054922666995635136}
+  mental: {fileID: 4062363324279956447}
+  attackRange: {fileID: 4175765502122598026}
+  story: {fileID: 2958058278298309761}
 --- !u!1 &8478027050193504928
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,7 +4971,7 @@ GameObject:
   - component: {fileID: 4283004312883583247}
   - component: {fileID: 4175765502122598026}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: attackRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

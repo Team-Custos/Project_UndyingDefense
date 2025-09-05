@@ -81,6 +81,16 @@ public class UnitDataLoader : MonoBehaviour
             Debug.Log("해당 아이디 없음");
             return null;
         }
-            
+    }
+
+    public UnitStats GetUnitDataById(string id)
+    {
+        if (unitDataDictionary.ContainsKey(id))
+            return unitDataDictionary[id];
+        else
+        {
+            Debug.Log("해당 아이디 없음");
+            return null;
+        }
     }
 }
