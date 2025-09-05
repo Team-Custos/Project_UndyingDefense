@@ -33,6 +33,7 @@ public class CharacterArchiveUI : MonoBehaviour
         unitFactionName.text = fNameTextTable.GetName(name);
         SetPage();
         ShowUnit();
+        OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
     }
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
@@ -51,6 +52,7 @@ public class CharacterArchiveUI : MonoBehaviour
     {
         pageNum = num;
         ShowUnit();
+        OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
     }
 
     public void ResetCharacterBtn()

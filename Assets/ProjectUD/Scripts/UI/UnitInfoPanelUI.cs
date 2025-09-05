@@ -87,6 +87,9 @@ public class UnitInfoPanelUI : MonoBehaviour
         mental.text = stats.mental.ToString();
         attackRange.text = stats.attackRange.ToString();
 
+        // story
+        story.text = unitData.Description;
+
     }
 
     public void SetAllyInfo()
