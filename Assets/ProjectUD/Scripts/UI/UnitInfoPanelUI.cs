@@ -46,6 +46,15 @@ public class UnitInfoPanelUI : MonoBehaviour
     {
         this.unitData = unitData;
         stats = loader.GetUnitDataById(unitData.Id);
+
+        if(unitData is AllyUnitData)
+        {
+            SetAllyInfo();
+        }
+        else
+        {
+            SetEnemyInfo();
+        }
     }
 
     public void ConvertInfo()

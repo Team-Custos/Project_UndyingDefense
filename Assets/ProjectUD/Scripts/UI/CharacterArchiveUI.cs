@@ -10,6 +10,10 @@ public class CharacterArchiveUI : MonoBehaviour
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private TextMeshProUGUI unitFactionName;
     [SerializeField] private FactionNameTextTable fNameTextTable;
+
+    [Header("UnitInfoPanel")]
+    [SerializeField] private UnitInfoPanelUI unitInfoPanel;
+
     private UnitData[] units = new UnitData[] { };
     private int unitCount = 0;
     private int unitIndex = 0;
@@ -33,17 +37,17 @@ public class CharacterArchiveUI : MonoBehaviour
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
     {
-        unitIndex = buttonIndex;
+        unitIndex = ((pageNum - 1) * 9) + buttonIndex;
+        unitInfoPanel.SetUnitData(units[unitIndex]);
     }
 
-    public void SetCharacterBtn(int i, UnitData unit)
+    public void SetCharacterBtn(int i, Sprite image, string text)
     {
-        characterBtnArray[i].SetButton(unit.Icon, unit.Name);
-        characterBtnArray[i].SetUnitData(unit);
+        characterBtnArray[i].SetButton(image, text);
         characterBtnArray[i].gameObject.SetActive(true);
     }
 
-    public void OnPageBtnClick(int num)
+    public void OnPageBtnClick(int num)     // 버튼 클릭 이벤트용 함수
     {
         pageNum = num;
         ShowUnit();
@@ -97,7 +101,7 @@ public class CharacterArchiveUI : MonoBehaviour
         for (int i = 0;i < temp;i++)
         {
             UnitData unit = units[((pageNum - 1) * 9) + i];     // 보여줘야할 데이터 순번
-            SetCharacterBtn(i, unit);
+            SetCharacterBtn(i, unit.Icon, unit.Name);
             characterBtnArray[i].gameObject.SetActive(true);
         }
         
