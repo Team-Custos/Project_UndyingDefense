@@ -14,11 +14,18 @@ public class CharacterArchiveUI : MonoBehaviour
     [Header("UnitInfoPanel")]
     [SerializeField] private UnitInfoPanelUI unitInfoPanel;
 
+    [Header("UnitDetail")]
+    [SerializeField] private GameObject unitDetailPanel;
+
+    [Header("Indicator")]
+    [SerializeField] private RectTransform indicator;
+
     private UnitData[] units = new UnitData[] { };
     private int unitCount = 0;
     private int unitIndex = 0;
     private int pageNum = 1;
     private string fName;
+    private bool isDetailOn = false;
 
     private void Start()
     {
@@ -34,13 +41,36 @@ public class CharacterArchiveUI : MonoBehaviour
         SetPage();
         ShowUnit();
         OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
+
+        unitDetailPanel.SetActive(false);
+        isDetailOn = false;
     }
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
     {
         unitIndex = ((pageNum - 1) * 9) + buttonIndex;
         unitInfoPanel.SetUnitData(units[unitIndex]);
+        indicator.transform.position = characterBtnArray[buttonIndex].transform.position;
+        indicator.gameObject.SetActive(true);
+
+        unitDetailPanel.SetActive(false);
+        isDetailOn = false;
     }
+
+    public void ToggleUnitDetailBtn()
+    {
+        if (isDetailOn)
+        {
+            unitDetailPanel.SetActive(false);
+            isDetailOn = false;
+        }
+        else
+        {
+            unitDetailPanel.SetActive(true);
+            isDetailOn = true;
+        }
+    }
+
 
     public void SetCharacterBtn(int i, Sprite image, string text)
     {
