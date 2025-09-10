@@ -9,7 +9,7 @@ public class AttackSkill : SkillBase
 
     // 범위를 가진 스킬
     protected Collider[] targets;
-    protected const int maxTargetCount = 5;
+    protected const int maxTargetCount = 100;
 
     //protected static Effect slashCritEffect;
     //protected static Effect pierceCritEffect;

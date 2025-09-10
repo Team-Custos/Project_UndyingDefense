@@ -51,7 +51,7 @@ public class RosterButtonUI : MonoBehaviour
 
         unit = unitData.Prefab.GetComponent<Unit>();
         unitId = unit.UnitId;
-        unitStats = unitDataLoader.GetUnitDataById(unitId, unit);
+        unitStats = unitDataLoader.GetUnitDataById(unitId);
     }
 
     public void UpdatePopUpInfo()

@@ -116,7 +116,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
             if (index == 0)
             {
-                UnitStats unitStats = unitDataLoader.GetUnitDataById(firstUpgradeUnit.UnitId, firstUpgradeUnit);
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(firstUpgradeUnit.UnitId);
 
                 firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
@@ -147,7 +147,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 if (secondUnitData == null)
                     return;
 
-                UnitStats unitStats = unitDataLoader.GetUnitDataById(secondUpgradeUnit.UnitId, secondUpgradeUnit);
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(secondUpgradeUnit.UnitId);
 
                 secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 

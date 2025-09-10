@@ -44,6 +44,7 @@ public class EnemyUnit : Unit
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
     private EnemyUnitSpawner enemySpawner;
+    private WaveManager waveManager;
 
     private Mode mode;
     private State state;
@@ -116,7 +117,6 @@ public class EnemyUnit : Unit
         this.pool = pool;
         this.fortress = fortress;
         this.enemySpawner = enemySpawner;
-        SetUnitStats();
     }
 
     public void Initialize(Vector3 fortressPos)
@@ -137,9 +137,19 @@ public class EnemyUnit : Unit
         navAgent.avoidancePriority = 1;
     }
 
+    public void SetWaveManager(WaveManager waveManager)
+    {
+        this.waveManager = waveManager;
+    }
+
+
     protected override void Update()
     {
         //base.Update();
+
+        if (isStop)
+            return;
+            
 
         interval -= Time.deltaTime;
 
@@ -498,7 +508,6 @@ public class EnemyUnit : Unit
             if (state == State.STUN)
             {
                 base.RemoveStun();
-                Debug.Log(22222);
             }
 
             if (EnemyDeadSFX.Length > 0)
@@ -513,7 +522,7 @@ public class EnemyUnit : Unit
             AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
             AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
 
-            enemySpawner.OnEnemyDead(data);
+            enemySpawner.OnEnemyDead(data, this);
 
             isDead = true;
         }

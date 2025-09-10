@@ -1,10 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static WaveManager;
 
 public class Fortress : MonoBehaviour
 {
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private WaveManager waveManager;
 
     [Header("■ UI")]
     [SerializeField] private IngameScreenUI ingameUI;
@@ -17,6 +21,8 @@ public class Fortress : MonoBehaviour
     [Header("■ Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] damageSound;
+    
+    private bool isFortressAttacked = false;
 
 
     private float hp;
@@ -29,8 +35,16 @@ public class Fortress : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if(hp <= 0f)
+            return;
+
         hp -= damage;
-        //데미지를 입을때 사운드 출력
+
+        if (!isFortressAttacked)
+        {
+            ingameUI.ShowPerWaveNotice();
+            isFortressAttacked = true;
+        }
 
         if (hp <= 0f)
         {
@@ -38,10 +52,15 @@ public class Fortress : MonoBehaviour
             // 게임 오버
 
             ingameUI.ShowResult(0, false);
-            enemyUnitSpawner.GameLose();
+            SoundManager.Instance.StopBGM();
+
+            inGameManager.LoseGame();
+            waveManager.PlayLoseSfx();
+
+            
         }
 
-        enemyUnitSpawner.OnFortressAttacked();
+        //waveManager.OnFortressAttacked();
 
         ingameUI.SetHP(hp, maxHp);
 
@@ -55,5 +74,8 @@ public class Fortress : MonoBehaviour
         //return linePositions[index];
     }
 
-    
+    public void ResetFortressState()
+    {
+        isFortressAttacked = false;
+    }
 }

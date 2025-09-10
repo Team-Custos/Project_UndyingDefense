@@ -7,6 +7,7 @@ public class DollyCamera : MonoBehaviour
 {
     [SerializeField] private CinemachineDollyCart dollyCart;
     [SerializeField] private IngameScreenUI ingameScreenUI;
+    [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
     [SerializeField] private AudioClip inGmaeBgm;
@@ -45,12 +46,15 @@ public class DollyCamera : MonoBehaviour
             {
                 SoundManager.Instance.PlayBGM(inGmaeBgm);
                 isCamPanning = false;
+                waveManager.StartWave();
             }    
 
             if (dollyCart.m_Position >= dollyCart.m_Path.MaxPos && panningDuration < 3.0f)
             {
                 virtualCamera.SetActive(true);
+                ingameScreenUI.OnOffInGameUI(true);
             }
+
         }
 
     }

@@ -115,13 +115,13 @@ public class AllyUnit : Unit
         this.data = data;
         this.pool = pool;
         this.spawner = spawner;
-        SetUnitStats();
     }
 
 
     protected override void Update()
     {
-        //base.Update();
+        if (isStop)
+            return;
 
         interval -= Time.deltaTime;
 
@@ -200,26 +200,36 @@ public class AllyUnit : Unit
                 break;
             case State.IDLE:
                 {
+                    if(mode == Mode.FREE)
+                        navAgent.isStopped = true;
+
                     if (mode == Mode.CHANGE)
                     {
                         modelAnimator.SetBool("isRunning", false);
                     }
                     else
                     {
-                        if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동중일 때
+                        if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동 중일 때
                         {
-                            if(targetUnit !=null || isMoving)
+                            state = State.RUN;
+                            modelAnimator.SetBool("isRunning", true);
+                        }
+                        else
+                        {
+                            if (targetUnit == null)
                             {
-                                state = State.RUN;
-                                modelAnimator.SetBool("isRunning", true);
+                                Vector3 direction = Vector3.left; //spawnDirection.forward; // 나중에 수정할 것!
+                                Quaternion rot = Quaternion.LookRotation(direction);
+                                transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10.0f);
+                                modelAnimator.SetBool("isRunning", false);
                             }
                         }
-                        
-                        if(spawner != null && targetUnit == null)
-                        {
-                            spawner.ResetAllyUnitRotation(this);
-                            modelAnimator.SetBool("isRunning", false);
-                        }
+
+                        //if(spawner != null && targetUnit == null && !isMoving)
+                        //{
+                        //    spawner.ResetAllyUnitRotation(this);
+                        //    modelAnimator.SetBool("isRunning", false);
+                        //}
                     }
 
                     UpdateMode();
@@ -227,7 +237,9 @@ public class AllyUnit : Unit
                 break;
             case State.RUN:
                 {
-                    if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f || targetUnit == null)
+                    navAgent.isStopped = false;
+
+                    if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
                         state = State.IDLE;
                         modelAnimator.SetBool("isRunning", false);
@@ -351,10 +363,15 @@ public class AllyUnit : Unit
                     }
                     else        // 이동 명령 없음 or 종료 -> 적 탐색
                     {
-                        if (targetUnit == null)
-                        {
-                            targetUnit = SearchTarget(UnitStats.sightRange);
-                        }
+                        targetUnit = SearchTarget(UnitStats.sightRange);
+
+                        if(targetUnit == null)
+                            state = State.IDLE;
+
+                        //if (targetUnit == null)
+                        //{
+                        //    targetUnit = SearchTarget(UnitStats.sightRange);
+                        //}
                     }
 
 
@@ -612,6 +629,7 @@ public class AllyUnit : Unit
 
                                 upgradedUnit.ChangeMode(previousMode);
                                 upgradedUnit.navAgent.avoidancePriority = navAgent.avoidancePriority;
+                                upgradedUnit.navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
                                 if (isSelected && selectedUnitUI != null)
                                 {
@@ -624,7 +642,6 @@ public class AllyUnit : Unit
 
                                     upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
                                     upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
-
 
                                     selectedUnitUI.ShowAllyUI(upgradedUnit);
                                     selectedUnitUI.ShowHp(upgradedUnit);
@@ -841,7 +858,8 @@ public class AllyUnit : Unit
             navObstacle.enabled = false;
             navAgent.enabled = true;
         }
-            
+
+
 
         if (selectedUnitUI != null)
             selectedUnitUI.HideAllyUI();

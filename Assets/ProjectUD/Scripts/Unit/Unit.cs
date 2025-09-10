@@ -340,7 +340,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
-using UnityEngine.Windows.Speech;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -391,9 +390,9 @@ public abstract class Unit : MonoBehaviour
     protected float interval; // 유닛의 공격 간격(속도) interval 마다 스킬 사용 가능
     protected float intervalCheck; // interval 체크용
     protected float intervalMultiplier = 1f;
+    protected bool isStop = false;
 
     protected UnitStats unitStats;
-    private UnitDataLoader unitDataLoader;
     [SerializeField] private string unitId;
 
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
@@ -566,7 +565,6 @@ public abstract class Unit : MonoBehaviour
 
         collider.enabled = true;
 
-        RemoveAllEffect();
 
         effectParent.gameObject.SetActive(true);
         for (int idx = 0; idx < effectParent.childCount; idx++)
@@ -593,17 +591,9 @@ public abstract class Unit : MonoBehaviour
         this.durationEffectPool = durationEffectPool;
     }
 
-    public void SetUnitDataLoader(UnitDataLoader newUnitData)
+    public void SetUnitStats(UnitStats unitStats)
     {
-        this.unitDataLoader = newUnitData;
-    }
-
-    protected void SetUnitStats()
-    {
-        if (this.unitDataLoader == null)
-            return;
-
-        unitStats = this.unitDataLoader.GetUnitDataById(unitId, this);
+        this.unitStats = unitStats;
 
         if (unitStats != null)
         {
@@ -1174,11 +1164,10 @@ public abstract class Unit : MonoBehaviour
         {
             hp = 0f;
 
-            navAgent.enabled = false;
-            //navObstacle.enabled = false;
 
+            navAgent.enabled = false;
             collider.enabled = false;
-            effectParent.gameObject.SetActive(false);
+            //effectParent.gameObject.SetActive(false);
 
             modelAnimator.SetTrigger("Die");
                 
@@ -1198,6 +1187,7 @@ public abstract class Unit : MonoBehaviour
             }
 
             isDead = true;
+            
         }
     }
 
@@ -1325,10 +1315,18 @@ public abstract class Unit : MonoBehaviour
 
     public void RemoveAllEffect()
     {
-        for (int i = effectList.Count - 1; i >= 0; i--)
-        {
-            effectList.Remove(effectList[i]);
-        }
+
+        //if (effectList.Count > 0)
+        //{
+        //    Debug.Log(effectList.Count);
+
+        //    for(int i = 0; i <= effectList.Count; i++)
+        //    {
+        //        effectList.Remove(effectList[i]);
+        //    }
+
+        //    UpdateState();
+        //}
     }
 
     public void AddVFX(GameObject vfx) // hit & Crit VFX (오브젝트풀링 사용)
@@ -1390,5 +1388,14 @@ public abstract class Unit : MonoBehaviour
     public void Setpriority(int priority)
     {
         navAgent.avoidancePriority = priority;
+    }
+
+    public void StopUnit()
+    {
+        isStop = true;
+
+        if (navAgent.enabled)
+            navAgent.isStopped = true;
+        modelAnimator.SetBool("isRunning", false);
     }
 }

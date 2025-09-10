@@ -67,15 +67,12 @@ public class UnitDataLoader : MonoBehaviour
             };
 
             unitDataDictionary.Add(unitStats.id, unitStats);
-
-            
+   
         }
     }
 
-    public UnitStats GetUnitDataById(string id, Unit unit)
+    public UnitStats GetUnitDataById(string id)
     {
-        unit.SetUnitDataLoader(this);
-
         if (unitDataDictionary.ContainsKey(id))
             return unitDataDictionary[id];
         else
@@ -83,6 +80,18 @@ public class UnitDataLoader : MonoBehaviour
             Debug.Log("해당 아이디 없음");
             return null;
         }
-            
+
     }
+
+    // // 250905 에이요님께서 메서드 작성할 예정.
+    //public UnitStats GetUnitDataById(string id)
+    //{
+    //    if (unitDataDictionary.ContainsKey(id))
+    //        return unitDataDictionary[id];
+    //    else
+    //    {
+    //        Debug.Log("해당 아이디 없음");
+    //        return null;
+    //    }
+    //}
 }

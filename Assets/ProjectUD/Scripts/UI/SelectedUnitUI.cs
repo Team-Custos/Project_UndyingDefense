@@ -267,7 +267,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
-        UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId, unit);
+        UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
 
         unitInfoImage.gameObject.SetActive(true);
 

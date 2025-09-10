@@ -20,6 +20,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
+    [SerializeField] private DollyCamera dollyCamera;
 
     [SerializeField] private Image[] alarmImages;
 
@@ -99,8 +100,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         GameObject obj = Instantiate(data.Prefab);
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
-        unit.SetUnitDataLoader(unitDataLoader);
         unit.Initialize(data, unitPools[index], this);
+
+        UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
+        unit.SetUnitStats(unitStats);
+
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetHitVFXPool(hitVFXPool);
         unitPools[index].List.Add(unit);
@@ -122,9 +126,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 obj.SetActive(false);
 
                 AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
-
-                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
+                upgradeUnit.SetUnitStats(unitStats);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
                 upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
@@ -154,8 +158,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
 
-                upgradeUnit.SetUnitDataLoader(unitDataLoader);
                 upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+
+                UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
+                upgradeUnit.SetUnitStats(unitStats);
+
+                unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
                 upgradeUnit.SetDurationEffectPool(durationEffectPool);
                 upgradeUnit.SetHitVFXPool(hitVFXPool);
                 upgradeUnit.previousMode = mode;
@@ -192,9 +200,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             }));
 
             AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
-
-            upgradeUnit.SetUnitDataLoader(unitDataLoader);
             upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+
+            UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
+            upgradeUnit.SetUnitStats(unitStats);
+            
             upgradeUnit.SetDurationEffectPool(durationEffectPool);
             upgradeUnit.SetHitVFXPool(hitVFXPool);
             upgradeUnit.previousMode = mode;
@@ -289,6 +299,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
+        if (dollyCamera.IsCamPanning)
+            return;
+
         if (selectedUnitManager.SelectedUnit != null)
             return;
 
@@ -417,5 +430,26 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         Quaternion rot = Quaternion.LookRotation(direction);
         allyUnit.transform.rotation = Quaternion.Slerp(allyUnit.transform.rotation, rot, Time.deltaTime * 10.0f);
 
+    }
+
+    public void StopActivateAlly()
+    {
+        foreach (var pool in unitPools)
+        {
+            foreach (var unit in pool.List)
+            {
+                if (unit != null)
+                    unit.StopUnit();
+            }
+        }
+
+        foreach (var kvp in upgradeUnitPoolsDic)
+        {
+            foreach (var unit in kvp.Value.List)
+            {
+                if (unit != null)
+                    unit.StopUnit();
+            }
+        }
     }
 }

@@ -38,6 +38,13 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private Image[] spawnBtnsImages;
     [SerializeField] private int spawnCost;
 
+    [SerializeField] private GameObject fortressPanel;
+    [SerializeField] private GameObject goldPanel;
+    [SerializeField] private GameObject wavePanel;
+    [SerializeField] private GameObject settingBtn;
+    [SerializeField] private GameObject commandSkillPanel;
+    [SerializeField] private GameObject spawnPanel;
+
 
 
     public void SetWaveNumber(int waveNum, int maxWave, bool infinite)
@@ -81,7 +88,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     }
 
 
-    public void ShowPreWaveNotice()
+    public void ShowPerWaveNotice()
     {
         noticeUI.SetText("성이 현재 공격받고있습니다!", true);
     }
@@ -178,5 +185,15 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     public void ShowRegionName()
     {
         regionNameUI.gameObject.SetActive(true);
+    }
+
+    public void OnOffInGameUI(bool on)
+    {
+        fortressPanel.SetActive(on);
+        goldPanel.SetActive(on);
+        wavePanel.SetActive(on);
+        settingBtn.SetActive(on);
+        commandSkillPanel.SetActive(on);
+        spawnPanel.SetActive(on);
     }
 }

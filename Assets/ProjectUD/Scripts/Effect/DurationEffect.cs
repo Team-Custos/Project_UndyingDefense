@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public abstract class DurationEffect : MonoBehaviour
 {
@@ -48,11 +49,13 @@ public abstract class DurationEffect : MonoBehaviour
     protected virtual void Update()
     {
         durationCheck += Time.deltaTime;
-        if (durationCheck >= duration)
+        if (durationCheck >= duration || target.IsDead)
         {
             durationCheck = 0f;
             Remove();
         }
+
+
     }
 
     public abstract void Activate();
