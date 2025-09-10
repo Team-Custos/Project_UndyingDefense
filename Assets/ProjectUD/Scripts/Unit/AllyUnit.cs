@@ -442,9 +442,9 @@ public class AllyUnit : Unit
                         else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
                         {
                             MoveTo(targetUnit);
-                            modelAnimator.SetBool("isRunning", true);
-                            if (path.status != NavMeshPathStatus.PathComplete)
-                                targetUnit = null;
+                            //modelAnimator.SetBool("isRunning", true);
+                            //if (path.status != NavMeshPathStatus.PathComplete)
+                            //    targetUnit = null;
 
                             //float dist = Vector3.Distance(transform.position, targetUnit.transform.position);
                             //Debug.Log($"2 : {dist}");

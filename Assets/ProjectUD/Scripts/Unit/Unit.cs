@@ -1073,12 +1073,10 @@ public abstract class Unit : MonoBehaviour
                 //float distance = Vector3.Distance(transform.position, targetPos);
                 //Debug.Log($"1 :  {distance}");
 
-                return;
             }
             else if(path.status == NavMeshPathStatus.PathPartial)
             {
                 navAgent.SetPath(path);
-                return;
             }
         }
 
