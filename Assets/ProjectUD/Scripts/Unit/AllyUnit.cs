@@ -209,6 +209,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
+
                         if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동 중일 때
                         {
                             state = State.RUN;
@@ -225,11 +226,6 @@ public class AllyUnit : Unit
                             }
                         }
 
-                        //if(spawner != null && targetUnit == null && !isMoving)
-                        //{
-                        //    spawner.ResetAllyUnitRotation(this);
-                        //    modelAnimator.SetBool("isRunning", false);
-                        //}
                     }
 
                     UpdateMode();
@@ -363,10 +359,12 @@ public class AllyUnit : Unit
                     }
                     else        // 이동 명령 없음 or 종료 -> 적 탐색
                     {
-                        targetUnit = SearchTarget(UnitStats.sightRange);
-
                         if(targetUnit == null)
+                        {
+                            targetUnit = SearchTarget(UnitStats.sightRange);
                             state = State.IDLE;
+                        }
+                            
 
                         //if (targetUnit == null)
                         //{
