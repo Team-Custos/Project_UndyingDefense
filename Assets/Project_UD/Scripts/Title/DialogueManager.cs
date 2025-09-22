@@ -37,6 +37,7 @@ public class DialogueManager : MonoBehaviour
     {
         //StartDialogue(dialogueData);
         ShowDialogue(speakingArray);
+        //ShowDialogue();
     }
 
     protected void StartDialogue(DialogueData dialogueData)
