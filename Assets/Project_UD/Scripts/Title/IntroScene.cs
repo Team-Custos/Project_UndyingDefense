@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UltEvents;
 
 public class IntroScene : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class IntroScene : MonoBehaviour
     [SerializeField] private CanvasGroup videoCanvasGroup;
     [SerializeField] private RectTransform declarationTransform;
     [SerializeField] private CanvasGroup dialogueCanvasGroup;
+    [SerializeField] private UltEvent nextDialogue;
 
     // Start is called before the first frame update
     private void Start()
@@ -97,6 +99,7 @@ public class IntroScene : MonoBehaviour
 
     private void ShowDialogue()
     {
+        nextDialogue.Invoke();
         dialogueCanvasGroup.gameObject.SetActive(true);
 
         dialogueCanvasGroup.alpha = 0;
@@ -141,7 +144,7 @@ public class IntroScene : MonoBehaviour
         seq.Append(declarationTransformCanvasGroup.DOFade(0f, duration));
 
 
-        SoundManager.Instance.PlaySFX(startSfx);
+        //SoundManager.Instance.PlaySFX(startSfx);
 
         seq.OnComplete(() =>
         {

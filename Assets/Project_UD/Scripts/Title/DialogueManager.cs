@@ -23,10 +23,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialTextTableLoader tableLoader;
     [SerializeField] private DialogueUI dialogueui; // DialogueUI.cs 레퍼런스
     [SerializeField] private TextMeshProUGUI dialogueLine;
-    [SerializeField] private SpeakingArray speakingArray;
+    //[SerializeField] private SpeakingArray speakingArray;
 
-    private int i;  // 현재 내가 출력해야할 대사의 줄 번호
-    private int j;  // 현재 내가 출력해야할 speaking의 번호
+    private int i=0;  // 현재 내가 출력해야할 대사의 줄 번호
+    private int j=0;  // 현재 내가 출력해야할 speaking의 번호
     private Speaking currentSpeaking;
     private SpeakingArray currentSpeakingArray;
     private List<string> lines;
@@ -36,8 +36,7 @@ public class DialogueManager : MonoBehaviour
     protected virtual void Start()
     {
         //StartDialogue(dialogueData);
-        ShowDialogue(speakingArray);
-        //ShowDialogue();
+        //ShowDialogue(speakingArray);
     }
 
     protected void StartDialogue(DialogueData dialogueData)
@@ -115,6 +114,7 @@ public class DialogueManager : MonoBehaviour
     protected virtual void EndDialogue()
     {
         nextBtn.gameObject.SetActive(false);
+        currentSpeakingArray.InvokeNextEvent();
 
         acceptBtn.gameObject.SetActive(true);
         refuseBtn.gameObject.SetActive(true);

@@ -5,14 +5,17 @@ using UnityEngine;
 public class LobbyDialogueManager : DialogueManager
 {
     [SerializeField] private DialogueData ingameDialogueData;
+    [SerializeField] private SpeakingArray speakingArray;
     protected override void Start()
     {
         if(UserDataModel.instance.IsGameFinshed)
             this.gameObject.SetActive(false);
+        ShowDialogue(speakingArray);
 
         if (UserDataModel.instance.IsTutorialEnd)
         {
-            StartDialogue(ingameDialogueData);
+            //StartDialogue(ingameDialogueData);
+            ShowDialogue(speakingArray);
         }
         else
         {
