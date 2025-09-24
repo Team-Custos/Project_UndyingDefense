@@ -333,7 +333,7 @@ public class AttackSkill : SkillBase
         GameObject hitVFX = data.Info.HitVFX;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX);
+            target.AddVFX(hitVFX, unit.transform);
         }
 
         //ParticleSystem hitVFX = null;
@@ -358,7 +358,7 @@ public class AttackSkill : SkillBase
         GameObject critVFX = data.Info.CritVFX;
         if (critVFX != null)
         {
-            target.AddVFX(critVFX);
+            target.AddVFX(critVFX, unit.transform);
         }
 
         //ParticleSystem critVFX = null;

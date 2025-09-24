@@ -112,83 +112,34 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         return unit;
     }
 
-    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform, AllyUnit.Mode mode,
+    public AllyUnit CreateUpgradeUnit(GameObject allyUnitPrefab, AllyUnitData allyUnitData, Transform transform,
         Tile tile)
     {
         GameObject obj;
+        AllyUnit upgradeUnit;
 
         // 해당 유닛의 값이 있는지 확인
         if (upgradeUnitPoolsDic.ContainsKey(allyUnitPrefab))
         {
-            if (upgradeUnitPoolsDic[allyUnitPrefab].List.Count <= 0)
+            if (upgradeUnitPoolsDic[allyUnitPrefab].List.Count <= 0)    // 값은 있는데 남은 유닛이 없음
             {
                 obj = Instantiate(allyUnitPrefab);
                 obj.SetActive(false);
 
-                AllyUnit upgradeUnit = obj.GetComponent<AllyUnit>();
-                upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-                UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
-                upgradeUnit.SetUnitStats(unitStats);
-                upgradeUnit.SetDurationEffectPool(durationEffectPool);
-                upgradeUnit.SetHitVFXPool(hitVFXPool);
-                upgradeUnit.previousMode = mode;
-                upgradeUnit.UpgradeInitialize();
-
-                //upgradeUnit.IsSelected = true;
-
-                upgradeUnit.gameObject.SetActive(true);
-                upgradeUnit.UnitGrid.SetTargetTile(tile);
+                upgradeUnit = obj.GetComponent<AllyUnit>();
 
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
-
-                upgradeUnit.transform.position = transform.position;
-                upgradeUnit.transform.rotation = transform.rotation;
-
-                //upgradeUnit.IsSelected = true;
-
-                //selectedUnitManager.SetSelectedUnit(upgradeUnit);
-                //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
-
-
-
-                return upgradeUnit;
             }
-            else
+            else    // 값도 있고 남은 유닛도 있음
             {
 
-                AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
-
-                upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-
-                UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
-                upgradeUnit.SetUnitStats(unitStats);
-
+                upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
                 unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
-                upgradeUnit.SetDurationEffectPool(durationEffectPool);
-                upgradeUnit.SetHitVFXPool(hitVFXPool);
-                upgradeUnit.previousMode = mode;
-                upgradeUnit.UpgradeInitialize();
-
-                //upgradeUnit.IsSelected = true;
-
-                //selectedUnitManager.SetSelectedUnit(upgradeUnit);
-                upgradeUnit.gameObject.SetActive(true);
-                upgradeUnit.UnitGrid.SetTargetTile(tile);
-
-
-                upgradeUnit.transform.position = transform.position;
-                upgradeUnit.transform.rotation = transform.rotation;
-
                 upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
-
-                
-
-                //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
-
-                return upgradeUnit;
+                //return upgradeUnit;
             }
         }
-        else
+        else    // 해당 유닛의 값이 없음
         {
             upgradeUnitPoolsDic.Add(allyUnitPrefab, new ObjectPoolWithList<AllyUnit>(() =>
             {
@@ -199,36 +150,31 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 return upgradeUnit;
             }));
 
-            AllyUnit upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
-            upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
-
-            UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
-            upgradeUnit.SetUnitStats(unitStats);
-            
-            upgradeUnit.SetDurationEffectPool(durationEffectPool);
-            upgradeUnit.SetHitVFXPool(hitVFXPool);
-            upgradeUnit.previousMode = mode;
-            upgradeUnit.UpgradeInitialize();
-            //upgradeUnit.ModeType = upgradeUnit.PreviousMode;
-            //selectedUnitManager.SetSelectedUnit(upgradeUnit);
-            //upgradeUnit.IsSelected = true;
-
-            
-            upgradeUnit.gameObject.SetActive(true);
-            upgradeUnit.UnitGrid.SetTargetTile(tile);
-            //selectedUnitUI.ShowAllyUI(upgradeUnit);
-
-
-            upgradeUnit.transform.position = transform.position;
-            upgradeUnit.transform.rotation = transform.rotation;
-
+            upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
-            //selectedUnitUI.UpdateUnitInfo(upgradeUnit);
-
-            return upgradeUnit;
+            //return upgradeUnit;
         }
 
+        UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile);
+        return upgradeUnit;
+    }
+
+    private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, Transform transform, Tile tile)
+    {
+        upgradeUnit.Initialize();
+        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
+        UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
+        upgradeUnit.SetUnitStats(unitStats);
+
+        upgradeUnit.SetDurationEffectPool(durationEffectPool);
+        upgradeUnit.SetHitVFXPool(hitVFXPool);
+
+        upgradeUnit.transform.position = transform.position;
+        upgradeUnit.transform.rotation = transform.rotation;
+
+        upgradeUnit.gameObject.SetActive(true);
+        upgradeUnit.UnitGrid.SetTargetTile(tile);
     }
 
     private UnitSpawnPoint CreateSpawnPoint()
@@ -343,9 +289,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     ingameScreenUI.ShowError("군자금이 모자랍니다!");
                     return;
                 }
-
-                
-
 
                 // 유닛의 소환 방향 설정
                 unit.transform.forward = spawnDirection.forward;

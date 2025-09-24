@@ -38,6 +38,8 @@ public class UnitSpawnPoint : MonoBehaviour
                 isUnitSpawned = true;
                 unit.transform.position = transform.position;
                 unit.Initialize();
+                
+                //unit.ChangeMode(AllyUnit.Mode.SEIGE);
                 unit.gameObject.SetActive(true);
                 SoundManager.Instance.PlaySFX(allySpawn);
             }

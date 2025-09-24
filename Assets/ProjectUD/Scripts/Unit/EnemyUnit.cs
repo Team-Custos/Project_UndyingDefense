@@ -497,35 +497,57 @@ public class EnemyUnit : Unit
 
     public override void Die()
     {
-        if (!isDead)
+        if (isDead) return;
+
+        if (state == State.STUN)
         {
-            //navAgent.enabled = false;
-            //navObstacle.enabled = false;
-            //collider.enabled = false;
-
-            base.Die();
-
-            if (state == State.STUN)
-            {
-                base.RemoveStun();
-            }
-
-            if (EnemyDeadSFX.Length > 0)
-            {
-                AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
-                SoundManager.Instance.PlaySFX(clip);
-            }
-
-            // 상태를 변경하고 에니메이션을 변경
-            state = State.DEAD;
-            //modelAnimator.SetTrigger("Die");
-            AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
-            AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
-
-            enemySpawner.OnEnemyDead(data, this);
-
-            isDead = true;
+            RemoveStun();
         }
+
+        base.Die();
+
+        if (EnemyDeadSFX.Length > 0)
+        {
+            AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
+            SoundManager.Instance.PlaySFX(clip);
+        }
+
+        // 상태를 변경하고 에니메이션을 변경
+        state = State.DEAD;
+        AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
+        AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
+
+        enemySpawner.OnEnemyDead(data, this);
+
+        //if (!isDead)
+        //{
+        //    //navAgent.enabled = false;
+        //    //navObstacle.enabled = false;
+        //    //collider.enabled = false;
+
+        //    base.Die();
+
+        //    if (state == State.STUN)
+        //    {
+        //        base.RemoveStun();
+        //    }
+
+        //    if (EnemyDeadSFX.Length > 0)
+        //    {
+        //        AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
+        //        SoundManager.Instance.PlaySFX(clip);
+        //    }
+
+        //    // 상태를 변경하고 에니메이션을 변경
+        //    state = State.DEAD;
+        //    //modelAnimator.SetTrigger("Die");
+        //    AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
+        //    AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
+
+        //    enemySpawner.OnEnemyDead(data, this);
+
+        //    isDead = true;
+        //}
 
     }
 

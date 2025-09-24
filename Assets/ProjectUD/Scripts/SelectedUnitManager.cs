@@ -81,7 +81,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     if (unit is AllyUnit)
                     {
                         AllyUnit allyUnit = unit as AllyUnit;
-                        if (allyUnit.ModeType == AllyUnit.Mode.CHANGE || allyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                        if (allyUnit.IsChange || allyUnit.ModeType == AllyUnit.Mode.UPGRADE)
                             return;
                     }
 
@@ -178,7 +178,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                             //    return;
                             //}
 
-                            selectedAllyUnit.DestinationPosition = hit.point;
+                            selectedAllyUnit.MoveCommandDestination(hit.point);
                             mouseIndicatorParticle.gameObject.SetActive(true);
                             mouseIndicatorParticle.Play();
                             mouseIndicatorParticle.transform.position = hit.point;
@@ -296,7 +296,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             SoundManager.Instance.PlaySFX(freeSfx);
         }
 
-        selectedAllyUnit.ChangeMode(AllyUnit.Mode.CHANGE);
+        selectedAllyUnit.ModeToChange();
         unitSelectUI.HideAllyUI();
     }
 
@@ -327,7 +327,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
-                if (selectedAllyUnit.ModeType == AllyUnit.Mode.CHANGE ||
+                if (selectedAllyUnit.IsChange ||
                     selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
                     return;
 
@@ -358,7 +358,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 
 
-                if (selectedAllyUnit.ModeType == AllyUnit.Mode.CHANGE ||
+                if (selectedAllyUnit.IsChange ||
                     selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
                     return;
 

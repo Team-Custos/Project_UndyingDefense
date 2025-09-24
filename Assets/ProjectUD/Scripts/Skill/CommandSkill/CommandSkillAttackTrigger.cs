@@ -247,7 +247,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         GameObject hitVFX = data.AttackData.HitVFX;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX);
+            target.AddVFX(hitVFX, null);
         }
 
         //ParticleSystem hitVFX = null;
