@@ -10,7 +10,6 @@ public class LobbyDialogueManager : DialogueManager
     {
         if(UserDataModel.instance.IsGameFinshed)
             this.gameObject.SetActive(false);
-        ShowDialogue(speakingArray);
 
         if (UserDataModel.instance.IsTutorialEnd)
         {
@@ -19,26 +18,28 @@ public class LobbyDialogueManager : DialogueManager
         }
         else
         {
-            StartDialogue(dialogueData);
+            //StartDialogue(dialogueData);
+            ShowDialogue(speakingArray);
         }
     }
 
-    protected override void EndDialogue()
-    {
-        this.gameObject.SetActive(false);
-    }
+    //protected override void EndDialogue()
+    //{
+        //this.gameObject.SetActive(false);
+        
+    //}
 
-    public void OnNextButtonClick()
-    {
-        currentLineIndex++;  // 인덱스 먼저 증가 (첫 대사가 이미 나왔으니까)
+    //public void OnNextButtonClick()
+    //{
+    //    currentLineIndex++;  // 인덱스 먼저 증가 (첫 대사가 이미 나왔으니까)
 
-        if (currentLineIndex < dialogueData.Lines.Length)
-        {
-            ShowDialogueLine();
-        }
-        else
-        {
-            EndDialogue();
-        }
-    }
+    //    if (currentLineIndex < dialogueData.Lines.Length)
+    //    {
+    //        ShowDialogueLine();
+    //    }
+    //    else
+    //    {
+    //        EndDialogue();
+    //    }
+    //}
 }

@@ -7,6 +7,12 @@ using UltEvents;
 public class ChoiceUI : MonoBehaviour
 {
     [SerializeField] private ChoiceButtonUI[] buttonUIArray;
+    [SerializeField] private Image selectIndicator;
+
+    private void Start()
+    {
+       // selectIndicator.transform.position = buttonUIArray[0].transform.position;
+    }
 
     public void SetButtonData(int j, string choiceText, UltEvent choiceEvent)
     {
@@ -25,5 +31,10 @@ public class ChoiceUI : MonoBehaviour
     public int GetButtonCount()
     {
         return buttonUIArray.Length;
+    }
+
+    public ChoiceButtonUI GetButton(int i)
+    {
+        return buttonUIArray[i];
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UltEvents;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -13,7 +14,12 @@ public class LobbyManager : MonoBehaviour
 
     [SerializeField] private GameObject rosterPanel;
     [SerializeField] private float endDelay = 0.5f;
-    
+
+    [SerializeField] private DialogueUI dialogueUI;
+    [SerializeField] private UltEvent isTutorialEnd;
+    [SerializeField]private UltEvent beforeTuorial;
+
+
     private ScriptableObject[] so;
 
 
@@ -23,6 +29,18 @@ public class LobbyManager : MonoBehaviour
        LoadCommandSkillData();
 
         so = Resources.LoadAll<ScriptableObject>("Data/UnitData");
+
+        if (UserDataModel.instance.IsGameFinshed)
+            dialogueUI.gameObject.SetActive(false);
+
+        if (UserDataModel.instance.IsTutorialEnd)
+        {
+            isTutorialEnd.Invoke();
+        }
+        else
+        {
+            beforeTuorial.Invoke();
+        }
 
     }
     public void EndGame()

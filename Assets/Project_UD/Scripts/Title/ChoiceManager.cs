@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChoiceManager : MonoBehaviour
 {
     [SerializeField] private DialTextTableLoader dialTextLoader;
     [SerializeField] private GameObject choiceUI; // choiceUI GameObject 자체 (활성/비활성 제어용)
     [SerializeField] private ChoiceUI choiceui;   // ChoiceUI 컴포넌트 (실제 UI 요소 제어용)
+    [SerializeField] private Image selectIndicator;
 
     private ChoiceArray choicearray; // currentChoiceArray 등으로 이름 변경 고려
 
@@ -16,6 +18,7 @@ public class ChoiceManager : MonoBehaviour
         {
             choiceUI.SetActive(false);
         }
+
     }
 
     public void ShowChoiceArray(ChoiceArray choiceArrayData) // 매개변수 이름 변경 (필드와 구분)
@@ -35,6 +38,8 @@ public class ChoiceManager : MonoBehaviour
 
         choiceui.ResetButton();
         this.choicearray = choiceArrayData;
+
+        selectIndicator.transform.position = choiceui.GetButton(0).transform.position;
 
         int visibleButtonIndex = 0; // 실제로 화면에 표시될 버튼의 인덱스
         
