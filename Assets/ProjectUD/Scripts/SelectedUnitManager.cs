@@ -81,7 +81,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     if (unit is AllyUnit)
                     {
                         AllyUnit allyUnit = unit as AllyUnit;
-                        if (allyUnit.IsChange || allyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                        if (allyUnit.IsChange || allyUnit.IsUpgrade)
                             return;
                     }
 
@@ -328,7 +328,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
                 if (selectedAllyUnit.IsChange ||
-                    selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                    selectedAllyUnit.IsUpgrade)
                     return;
 
                 ShowUpgradeMenu();
@@ -359,7 +359,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
 
                 if (selectedAllyUnit.IsChange ||
-                    selectedAllyUnit.ModeType == AllyUnit.Mode.UPGRADE)
+                    selectedAllyUnit.IsUpgrade)
                     return;
 
                 ModeChangeSelectedUnit();
