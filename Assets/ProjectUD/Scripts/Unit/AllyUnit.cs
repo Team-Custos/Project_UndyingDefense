@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class AllyUnit : Unit
 {
@@ -101,7 +100,7 @@ public class AllyUnit : Unit
         isDead = false;
         collider.enabled = true;
         state = State.IDLE;
-        
+
         navAgent.avoidancePriority = 2;
         //OnOffSiefeEffect(true);
 
@@ -142,7 +141,7 @@ public class AllyUnit : Unit
             case State.SPECIALSKILL:
             case State.DEAD:
                 {
-                    if(state != State.DEAD)
+                    if (state != State.DEAD)
                     {
                         if (navAgent.enabled)
                         {
@@ -255,14 +254,14 @@ public class AllyUnit : Unit
         //    Debug.Log("Stun");
         //    return;
         //}
-            
+
 
         switch (mode)
         {
             case Mode.SEIGE:
                 {
                     if (!navObstacle.enabled)
-                        Debug.Log(1111);
+                        Debug.Log("obstacle off");
 
 
                     //OnOffSiefeEffect(true);
@@ -300,7 +299,7 @@ public class AllyUnit : Unit
                                         }
                                         else targetUnit = SearchTarget(UnitStats.sightRange);
 
-                                        
+
                                     }
                                     break;
                                 case SkillBase.TargetType.SELF:
@@ -324,7 +323,10 @@ public class AllyUnit : Unit
                 }
             case Mode.FREE:
                 {
-                    switch(freeModeState)
+                    if (!navAgent.enabled)
+                        break;
+
+                    switch (freeModeState)
                     {
                         case FreeModeState.MOVECOMMAND:
 
@@ -338,9 +340,9 @@ public class AllyUnit : Unit
 
                         case FreeModeState.COMBAT:
 
-                            if (targetUnit != null) 
+                            if (targetUnit != null)
                             {
-                                if(targetUnit.IsDead)
+                                if (targetUnit.IsDead)
                                 {
                                     targetUnit = null;
                                     return;
@@ -388,7 +390,7 @@ public class AllyUnit : Unit
                                 }
                                 else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
                                 {
-                                        MoveTo(targetUnit);
+                                    MoveTo(targetUnit);
                                 }
                                 else
                                 {
@@ -399,10 +401,10 @@ public class AllyUnit : Unit
                             {
                                 targetUnit = SearchTarget(UnitStats.sightRange);
 
-                                if(targetUnit == null) // 찾아도 적이 없으면 idle 로
+                                if (targetUnit == null) // 찾아도 적이 없으면 idle 로
                                     state = State.IDLE;
                             }
-                                
+
                             break;
                     }
 
@@ -443,7 +445,7 @@ public class AllyUnit : Unit
                     //        targetUnit = SearchTarget(UnitStats.sightRange);
                     //        state = State.IDLE;
                     //    }
-                            
+
 
                     //}
 
@@ -669,60 +671,60 @@ public class AllyUnit : Unit
             // }
             // break;
 
-             case Mode.UPGRADE:
-                 {
-                     OnOffSiefeEffect(false);
-                     chagneEffet.SetActive(true);
+            case Mode.UPGRADE:
+                {
+                    OnOffSiefeEffect(false);
+                    chagneEffet.SetActive(true);
 
-                     particleDuration = 0.3f;
-                     isSiegeActive = false;
+                    particleDuration = 0.3f;
+                    isSiegeActive = false;
 
                     if (upgradeDuraiton >= 0)
-                     {
-                         upgradeDuraiton -= Time.deltaTime;
-                         state = State.IDLE;
-                        if(navAgent.enabled)
+                    {
+                        upgradeDuraiton -= Time.deltaTime;
+                        state = State.IDLE;
+                        if (navAgent.enabled)
                             navAgent.isStopped = true;
                         modelAnimator.SetBool("isRunning", false);
 
                         // 업그레이드 진행 중
 
                         if (selectedUnitUI != null)
-                         {
-                             selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
-                         }
-                     }
-                     else
-                     {
+                        {
+                            selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
+                        }
+                    }
+                    else
+                    {
                         // 새 유닛 생성 & 교체
                         if (requestedUpgradeIndex >= 0 && spawner != null)
-                         {
+                        {
                             UnitData upgradeUnitData = data.UpgradeUnits[requestedUpgradeIndex];
                             if (upgradeUnitData != null)
-                             {
+                            {
                                 GameObject prefab = upgradeUnitData.Prefab;
 
                                 AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(prefab, (AllyUnitData)upgradeUnitData, transform, unitGrid.TargetTile);
 
                                 //upgradedUnit.ChangeMode(previousMode);
-                               //upgradedUnit.navAgent.avoidancePriority = navAgent.avoidancePriority;
-                               //upgradedUnit.navObstacle.carvingMoveThreshold = moveThresholdOnStop;
+                                //upgradedUnit.navAgent.avoidancePriority = navAgent.avoidancePriority;
+                                //upgradedUnit.navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
-                               if (isSelected && selectedUnitUI != null)
-                               {
-                                   isSelected = false;
-                                   upgradedUnit.isSelected = true;
-
-
-                                   selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                                if (isSelected && selectedUnitUI != null)
+                                {
+                                    isSelected = false;
+                                    upgradedUnit.isSelected = true;
 
 
-                                   upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
-                                   upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
+                                    selectedUnitUI.UpdateUnitInfo(upgradedUnit);
 
-                                   selectedUnitUI.ShowAllyUI(upgradedUnit);
-                                   selectedUnitUI.ShowHp(upgradedUnit);
-                               }
+
+                                    upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
+                                    upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
+
+                                    selectedUnitUI.ShowAllyUI(upgradedUnit);
+                                    selectedUnitUI.ShowHp(upgradedUnit);
+                                }
                             }
 
 
@@ -731,46 +733,46 @@ public class AllyUnit : Unit
                             //mode = Mode.SEIGE;
 
                             requestedUpgradeIndex = -1;
-                         }
+                        }
 
-                         upgradeDuraiton = 3.0f;
-                         previousMode = mode;
+                        upgradeDuraiton = 3.0f;
+                        previousMode = mode;
 
-                         if (selectedUnitUI != null && isSelected)
-                         {
-                             selectedUnitUI.ShowAllyUI(this);
-                             selectedUnitUI.HideUnitDuration();
-                         }
-                     }
-                     //else
-                     //{
-                     //    if (previousMode == Mode.FREE)
-                     //    {
-                     //        mode = Mode.FREE;
-                     //    }
-                     //    else if (previousMode == Mode.SEIGE)
-                     //    {
-                     //        mode = Mode.SEIGE;
-                     //    }
+                        if (selectedUnitUI != null && isSelected)
+                        {
+                            selectedUnitUI.ShowAllyUI(this);
+                            selectedUnitUI.HideUnitDuration();
+                        }
+                    }
+                    //else
+                    //{
+                    //    if (previousMode == Mode.FREE)
+                    //    {
+                    //        mode = Mode.FREE;
+                    //    }
+                    //    else if (previousMode == Mode.SEIGE)
+                    //    {
+                    //        mode = Mode.SEIGE;
+                    //    }
 
-                     //    upgradeDuraiton = 3.0f;
-                     //    previousMode = mode;
+                    //    upgradeDuraiton = 3.0f;
+                    //    previousMode = mode;
 
-                     //    if (selectedUnitUI != null && isSelected)
-                     //    {
-                     //        selectedUnitUI.ShowAllyUI(this);
-                     //        selectedUnitUI.HideUnitDuration();
-                     //    }
+                    //    if (selectedUnitUI != null && isSelected)
+                    //    {
+                    //        selectedUnitUI.ShowAllyUI(this);
+                    //        selectedUnitUI.HideUnitDuration();
+                    //    }
 
-                     //}
-                 }
+                    //}
+                }
 
-                 break;
+                break;
         }
-                
+
     }
 
-    
+
 
 
     public override void GetProvoked(Unit ProvokedTarget)
@@ -936,84 +938,141 @@ public class AllyUnit : Unit
     {
         isChange = true;
 
-        if (selectedUnitUI != null) 
-            selectedUnitUI.HideAllyUI(); 
+        if (selectedUnitUI != null)
+            selectedUnitUI.HideAllyUI();
     }
 
-    public void ChangeMode() 
+    public void ChangeMode()
     {
         changeDuration -= Time.deltaTime;
+        state = State.IDLE;
 
-
-        if(changeDuration > 0f)
+        switch (mode)
         {
-            
-            
-            
-            
-            
+            case Mode.SEIGE:     // 프리로 변경
+                {
+                    if (changeDuration > 0)      // 변경 중
+                    {
 
 
-            
+                        if (selectedUnitUI != null)
+                        {
+                            selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                        }
 
+                    }
+                    else    // 변경 끝
+                    {
 
-            
-            
-            
+                        unitGrid.ClearTile();
+                        navObstacle.enabled = false;
 
+                        Debug.Log(1111);
 
-            
-            
+                        NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, path);
+                        if (path.status == NavMeshPathStatus.PathComplete)
+                        {
+                            Debug.Log(2222);
 
-            
-        }
-        else
-        {
+                            if (selectedUnitUI != null)
+                            {
+                                selectedUnitUI.ShowAllyUI(this);
+                                selectedUnitUI.HideUnitDuration();
+                            }
 
-            isChange = false;
-            changeDuration = 3.0f;
-        }
-        
+                            mode = Mode.FREE;
+                            freeModeState = FreeModeState.COMBAT;
 
-        if (mode == Mode.SEIGE) 
-        {
-            navAgent.enabled = false; 
-            navObstacle.enabled = true; 
-        } 
-        else if (mode == Mode.FREE) 
-        {
-            navObstacle.enabled = false; 
-            navAgent.enabled = true;
-            freeModeState = FreeModeState.COMBAT; 
+                            navAgent.enabled = true;
+
+                            changeDuration = 3f;
+                            isChange = false;
+                        }
+                    }
+                }
+                break;
+
+            case Mode.FREE:    // 시즈로 변경
+                {
+                    if (!isAvailableToSiege)
+                    {
+                        Tile targetTile = unitGrid.GetAvailableTile();
+
+                        if (targetTile != null)
+                        {
+                            transform.position = targetTile.transform.position;
+
+                            navAgent.enabled = false;
+                            navObstacle.enabled = true;
+                        }
+                        else // 주변 가능 타일이 없으면 변경 취소
+                        {
+                            mode = Mode.FREE;
+                            isChange = false;
+                            break;
+                        }
+                        isAvailableToSiege = true;
+                    }
+
+                    if (isAvailableToSiege)
+                    {
+                        if (changeDuration > 0)
+                        {
+                            state = State.IDLE;
+
+                            if (selectedUnitUI != null)
+                            {
+                                selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
+                            }
+                        }
+                        else
+                        {
+                            if (selectedUnitUI != null)
+                            {
+                                selectedUnitUI.ShowAllyUI(this);
+                                selectedUnitUI.HideUnitDuration();
+                            }
+
+                            //navAgent.enabled = false;
+                            isAvailableToSiege = false;
+                            mode = Mode.SEIGE;
+                            changeDuration = 3f;
+                            isChange = false;
+                        }
+                    }
+                }
+                break;
+
         }
 
         //this.mode = mode;
+
+
+        //public void ChangeMode(Mode newMode)
+        //{
+
+        //    switch (newMode)
+        //    {
+        //        case Mode.CHANGE:
+        //            newMode = Mode.CHANGE;
+        //            if(selectedUnitUI != null)
+        //                selectedUnitUI.HideAllyUI();
+        //            break;
+
+        //        case Mode.SEIGE:
+        //            navAgent.enabled = false;
+        //            navObstacle.enabled = true;
+        //            break;
+
+        //        case Mode.FREE:
+        //            navObstacle.enabled = false;
+        //            navAgent.enabled = true;
+        //            freeModeState = FreeModeState.COMBAT;
+        //            break;
+        //    }
+
+        //}
     }
-
-    //public void ChangeMode(Mode newMode)
-    //{
-
-    //    switch (newMode)
-    //    {
-    //        case Mode.CHANGE:
-    //            newMode = Mode.CHANGE;
-    //            if(selectedUnitUI != null)
-    //                selectedUnitUI.HideAllyUI();
-    //            break;
-
-    //        case Mode.SEIGE:
-    //            navAgent.enabled = false;
-    //            navObstacle.enabled = true;
-    //            break;
-
-    //        case Mode.FREE:
-    //            navObstacle.enabled = false;
-    //            navAgent.enabled = true;
-    //            freeModeState = FreeModeState.COMBAT;
-    //            break;
-    //    }
-
-    //}
 
 
     private int requestedUpgradeIndex = -1;
@@ -1080,7 +1139,7 @@ public class AllyUnit : Unit
         //}
     }
 
-    
+
 
     private void OnOffSiefeEffect(bool isSiege)
     {
