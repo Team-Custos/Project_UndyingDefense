@@ -92,11 +92,14 @@ public class DialogueManager : MonoBehaviour
     }
     public void ReadLine()  // 다른곳에서 불러올 이벤트로
     {
-        if ( currentLineIndex < lines.Count - 1)
+        if (currentLineIndex < lines.Count - 1)
         {
             currentLineIndex++;
             dialogueLine.text = lines[currentLineIndex];
-            return;
+            if (currentLineIndex == lines.Count - 1)
+                nextBtn.gameObject.SetActive(false);
+
+            //return;
         }
 
         if (currentLineIndex >= lines.Count - 1)

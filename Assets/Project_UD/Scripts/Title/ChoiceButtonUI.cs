@@ -9,6 +9,8 @@ public class ChoiceButtonUI : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public Button button;
+    private int index;
+    private UltEvent nextEvent;
 
     private void Start()
     {
@@ -16,15 +18,26 @@ public class ChoiceButtonUI : MonoBehaviour
         button = GetComponent<Button>();
     }
 
-    public void SetButton(string buttonText, UltEvent buttonEvent)
+    public void SetButton(int i, string buttonText, UltEvent buttonEvent)
     {
+        index = i;
         text.text = buttonText;
-        button.onClick.AddListener(() => buttonEvent.Invoke());
+        nextEvent = buttonEvent;
+        //button.onClick.AddListener(() => buttonEvent.Invoke());
     }
 
     public void ResetButton()
     {
         text.text = "";
         button.onClick.RemoveAllListeners();
+    }
+
+    public int GetIndex()
+    {
+        return index;
+    }
+    public UltEvent GetEvent()
+    {
+        return nextEvent;
     }
 }

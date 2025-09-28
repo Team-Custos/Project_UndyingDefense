@@ -16,7 +16,7 @@ public class ChoiceUI : MonoBehaviour
 
     public void SetButtonData(int j, string choiceText, UltEvent choiceEvent)
     {
-        buttonUIArray[j].SetButton(choiceText, choiceEvent);
+        buttonUIArray[j].SetButton(j, choiceText, choiceEvent);
         buttonUIArray[j].gameObject.SetActive(true);
     }
 
