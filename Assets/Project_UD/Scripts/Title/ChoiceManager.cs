@@ -110,15 +110,15 @@ public class ChoiceManager : MonoBehaviour
         if (choice.GetIndex() == indicatorIndex)
         {
             choice.GetEvent().Invoke();
-            selectedUI.transform.position = choice.transform.position;
-            selectedUI.gameObject.SetActive(true);
+            //selectedUI.transform.position = choice.transform.position;
+            //selectedUI.gameObject.SetActive(true);
             //HideAndResetChoiceUI();
-            StartCoroutine(SelectedCoroutine());
+            //StartCoroutine(SelectedCoroutine());
         }
         else
         {
             indicatorIndex = choice.GetIndex();
-            selectedUI.gameObject.SetActive(false);
+            //selectedUI.gameObject.SetActive(false);
             selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
         }
 

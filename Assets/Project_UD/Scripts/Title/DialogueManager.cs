@@ -1,11 +1,13 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static DialogueData;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : MonoBehaviour, IInputOnSpace
 {
     //[SerializeField] protected DialogueData dialogueData;
     //[SerializeField] protected DialogueData ingamedialogueData;
@@ -20,6 +22,8 @@ public class DialogueManager : MonoBehaviour
     //protected int currentLineIndex = 0;
 
     //------------------------------------------------------
+    [Header("PlayerInputManager")]
+    [SerializeField] private PlayerInputEventManager inputManager;
     [SerializeField] protected DialTextTableLoader tableLoader;
     [SerializeField] protected DialogueUI dialogueui; // DialogueUI.cs 레퍼런스
     [SerializeField] protected TextMeshProUGUI dialogueLine;
@@ -61,7 +65,7 @@ public class DialogueManager : MonoBehaviour
         //    EndDialogue();
         //}
         //----------------
-        ReadLine();
+        //ReadLine();
     }
 
     //protected void ShowDialogueLine()
@@ -73,6 +77,7 @@ public class DialogueManager : MonoBehaviour
     // 선택지 이벤트에 넣어줄 함수
     public void ShowDialogue(SpeakingArray speakingArray)
     {
+        inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
         dialogueui.gameObject.SetActive(true);
         ShowDialogue();
@@ -110,6 +115,7 @@ public class DialogueManager : MonoBehaviour
             if (currentSpeakingIndex >= currentSpeakingArray.GetArrayLength())      // firstSpeakingArray
             {
                 currentSpeakingIndex = 0;
+                inputManager.OnSpaceTarget = null;
                 EndSpeaking();
                 return;
             }
@@ -137,5 +143,13 @@ public class DialogueManager : MonoBehaviour
     public void RetrunTitle()   // 거절
     {
         LoadingSceneManager.LoadScene("TitleScene_LoPol");
+    }
+
+    public void OnSpace(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ReadLine();
+        }
     }
 }
