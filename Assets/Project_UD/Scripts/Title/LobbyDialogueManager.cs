@@ -5,6 +5,7 @@ using UnityEngine;
 public class LobbyDialogueManager : DialogueManager
 {
     [SerializeField] private DialogueData ingameDialogueData;
+    [SerializeField] private SpeakingArray speakingArray;
     protected override void Start()
     {
         if(UserDataModel.instance.IsGameFinshed)
@@ -12,30 +13,33 @@ public class LobbyDialogueManager : DialogueManager
 
         if (UserDataModel.instance.IsTutorialEnd)
         {
-            StartDialogue(ingameDialogueData);
+            //StartDialogue(ingameDialogueData);
+            ShowDialogue(speakingArray);
         }
         else
         {
-            StartDialogue(dialogueData);
+            //StartDialogue(dialogueData);
+            ShowDialogue(speakingArray);
         }
     }
 
-    protected override void EndDialogue()
-    {
-        this.gameObject.SetActive(false);
-    }
+    //protected override void EndDialogue()
+    //{
+        //this.gameObject.SetActive(false);
+        
+    //}
 
-    public void OnNextButtonClick()
-    {
-        currentLineIndex++;  // 인덱스 먼저 증가 (첫 대사가 이미 나왔으니까)
+    //public void OnNextButtonClick()
+    //{
+    //    currentLineIndex++;  // 인덱스 먼저 증가 (첫 대사가 이미 나왔으니까)
 
-        if (currentLineIndex < dialogueData.Lines.Length)
-        {
-            ShowDialogueLine();
-        }
-        else
-        {
-            EndDialogue();
-        }
-    }
+    //    if (currentLineIndex < dialogueData.Lines.Length)
+    //    {
+    //        ShowDialogueLine();
+    //    }
+    //    else
+    //    {
+    //        EndDialogue();
+    //    }
+    //}
 }

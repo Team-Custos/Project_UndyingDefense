@@ -42,7 +42,7 @@ public class FactionNameTextTable : MonoBehaviour
         }
     }
 
-    public void SetTextTable()
+    public void SetTextTable()  // 사용 안함
     {
         fNameTextTable.Add("ally", "조선 의병 목록");
         fNameTextTable.Add("moor", "무어 용병단 목록");

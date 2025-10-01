@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UltEvents;
 
 public class IntroScene : MonoBehaviour
 {
@@ -25,11 +26,12 @@ public class IntroScene : MonoBehaviour
     [SerializeField] private CanvasGroup videoCanvasGroup;
     [SerializeField] private RectTransform declarationTransform;
     [SerializeField] private CanvasGroup dialogueCanvasGroup;
+    [SerializeField] private UltEvent nextDialogue;
+    [SerializeField] private GameObject skipBtn;
 
     // Start is called before the first frame update
     private void Start()
     {
-
         videoPlayer.loopPointReached += OnVideoFinished;
 
         // 영상 소리 페이드 아웃 예약
@@ -55,6 +57,7 @@ public class IntroScene : MonoBehaviour
 
             videoPlayer.Stop();
             OnVideoFinished(videoPlayer);
+            skipBtn.SetActive(false);
         }
         else
         {
@@ -97,6 +100,7 @@ public class IntroScene : MonoBehaviour
 
     private void ShowDialogue()
     {
+        nextDialogue.Invoke();
         dialogueCanvasGroup.gameObject.SetActive(true);
 
         dialogueCanvasGroup.alpha = 0;
@@ -141,7 +145,7 @@ public class IntroScene : MonoBehaviour
         seq.Append(declarationTransformCanvasGroup.DOFade(0f, duration));
 
 
-        SoundManager.Instance.PlaySFX(startSfx);
+        //SoundManager.Instance.PlaySFX(startSfx);
 
         seq.OnComplete(() =>
         {
