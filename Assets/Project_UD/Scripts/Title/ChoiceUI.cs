@@ -9,11 +9,6 @@ public class ChoiceUI : MonoBehaviour
     [SerializeField] private ChoiceButtonUI[] buttonUIArray;
     [SerializeField] private Image selectIndicator;
 
-    private void Start()
-    {
-       // selectIndicator.transform.position = buttonUIArray[0].transform.position;
-    }
-
     public void SetButtonData(int j, string choiceText, UltEvent choiceEvent)
     {
         buttonUIArray[j].SetButton(j, choiceText, choiceEvent);

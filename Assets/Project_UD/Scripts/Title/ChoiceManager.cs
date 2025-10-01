@@ -82,7 +82,6 @@ public class ChoiceManager : MonoBehaviour
         if (choiceUIObj != null)
         {
             choiceUIObj.SetActive(false);
-            selectedUI.gameObject.SetActive(false);
         }
         if (choiceui != null)
         {
@@ -112,7 +111,7 @@ public class ChoiceManager : MonoBehaviour
             choice.GetEvent().Invoke();
             //selectedUI.transform.position = choice.transform.position;
             //selectedUI.gameObject.SetActive(true);
-            //HideAndResetChoiceUI();
+            HideAndResetChoiceUI();
             //StartCoroutine(SelectedCoroutine());
         }
         else
