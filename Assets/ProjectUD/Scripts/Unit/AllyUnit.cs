@@ -37,6 +37,7 @@ public class AllyUnit : Unit
     private ObjectPoolWithList<AllyUnit> pool;
 
     private Mode mode;
+
     private bool isChange = false;
     private bool isUpgrade = false;
     private int upgradeIndex = -1;
@@ -56,7 +57,6 @@ public class AllyUnit : Unit
     private float changeDuration = 3.0f;        // 모드 변경 시간
     private float upgradeDuraiton = 3.0f;
 
-    public Mode previousMode;                  // 이전 모드 확인을 위한 변수
 
     [SerializeField] private NavMeshObstacle navObstacle;
     [SerializeField] private GameObject changeEffet;
@@ -70,10 +70,11 @@ public class AllyUnit : Unit
 
     [SerializeField] private float siegeEffectInterval = 0.3f;
 
-    private bool isSiegeActive = false;
+    private bool isSiegeActivated = true;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
     [SerializeField] private bool alternativeSkill;
     private bool skillFlague;
+
 
     protected static AudioClip[] allyDeadSFX;
 
@@ -107,11 +108,12 @@ public class AllyUnit : Unit
         navAgent.enabled = false;
 
         mode = Mode.SEIGE;
+        isSiegeActivated = true;
+        siegeEffectInterval = 0.3f;
 
         navAgent.avoidancePriority = 2;
-        //OnOffSiefeEffect(true);
 
-        //navObstacle.carvingMoveThreshold = moveThresholdOnStop;
+        navObstacle.carvingMoveThreshold = moveThresholdOnStop;
         //mode = Mode.FREE;
     }
 
@@ -135,15 +137,25 @@ public class AllyUnit : Unit
         if (isStop)
             return;
 
+        //if (navObstacle.enabled)
+        //    navObstacle.transform.rotation = Quaternion.identity;
+
+
         interval -= Time.deltaTime;
 
         if (isChange)
+        {
             ChangeMode();
+            return;
+        }
+            
 
         if(isUpgrade)
+        {
             UpgradeUnit();
-
-
+            return;
+        }
+            
         switch (state)
         {
             case State.STUN:
@@ -225,6 +237,7 @@ public class AllyUnit : Unit
 
                     if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동 중일 때
                     {
+                        navAgent.isStopped = false;
                         state = State.RUN;
                         modelAnimator.SetBool("isRunning", true);
                     }
@@ -258,6 +271,7 @@ public class AllyUnit : Unit
         }
     }
 
+
     private void UpdateMode()
     {
         //if(state == State.STUN)
@@ -272,9 +286,24 @@ public class AllyUnit : Unit
             case Mode.SEIGE:
                 {
                     if (!navObstacle.enabled)
-                        Debug.Log("obstacle 꺼짐");
+                        Debug.Log("obstacle 꺼져있음");
 
+                    if(isSiegeActivated)
+                    {
+                        siegeEffectInterval -= Time.deltaTime;
 
+                        if(siegeEffectInterval > 0)
+                        {
+                            activeSiegeEffect.SetActive(true);
+                        }
+                        else
+                        {
+                            activeSiegeEffect.SetActive(false);
+                            defaultSiegeEffect.SetActive(true);
+                            siegeEffectInterval = 0.3f;
+                            isSiegeActivated = false;
+                        }
+                    }
                     //OnOffSiefeEffect(true);
                     //chagneEffet.SetActive(false);
 
@@ -413,7 +442,10 @@ public class AllyUnit : Unit
                                 targetUnit = SearchTarget(UnitStats.sightRange);
 
                                 if (targetUnit == null) // 찾아도 적이 없으면 idle 로
+                                {
                                     state = State.IDLE;
+                                    navAgent.isStopped = true;
+                                }
                             }
 
                             break;
@@ -428,9 +460,10 @@ public class AllyUnit : Unit
 
     public void ChangeMode()
     {
-        changeDuration -= Time.deltaTime;
         state = State.IDLE;
+        modelAnimator.SetBool("isRunning", false);
 
+        changeDuration -= Time.deltaTime;
 
         switch (mode)
         {
@@ -493,7 +526,7 @@ public class AllyUnit : Unit
                             navAgent.enabled = false;
                             navObstacle.enabled = true;
                         }
-                        else // 주변 가능 타일이 없으면 변경 취소
+                        else // 주변 이동 가능 타일이 없으면 변경 취소
                         {
                             mode = Mode.FREE;
                             isChange = false;
@@ -522,29 +555,16 @@ public class AllyUnit : Unit
                                 selectedUnitUI.HideUnitDuration();
                             }
 
-                             siegeEffectInterval -= Time.deltaTime;
-
-                            if(siegeEffectInterval > 0)
-                            {
-                                activeSiegeEffect.SetActive(true);
-                                changeEffet.SetActive(false);
-                            }
-                            else
-                            {
-                                activeSiegeEffect.SetActive(false);
-                                
-                                defaultSiegeEffect.SetActive(true);
-
-                                isAvailableToSiege = false;
-                                mode = Mode.SEIGE;
+                            changeEffet.SetActive(false);
 
 
-                                changeDuration = 3f;
-                                siegeEffectInterval = 0.3f;
-                                isChange = false;
-                            }
+                            isAvailableToSiege = false;
+                            mode = Mode.SEIGE;
+                            isSiegeActivated = true;
 
-                            
+                            changeDuration = 3f;
+                            isChange = false;
+
                         }
                     }
                 }
@@ -552,7 +572,7 @@ public class AllyUnit : Unit
         }
     }
 
-    public void ModeToChange()
+    public void ChangeOrder()
     {
         isChange = true;
 
@@ -562,7 +582,10 @@ public class AllyUnit : Unit
 
     private void UpgradeUnit()
     {
+        if (isDead) return;
+
         state = State.IDLE;
+        modelAnimator.SetBool("isRunning", false);
 
         upgradeDuraiton -= Time.deltaTime;
 
@@ -574,6 +597,8 @@ public class AllyUnit : Unit
             if (!changeEffet.activeSelf)
                 changeEffet.SetActive(true);
 
+            defaultSiegeEffect.SetActive(false);
+
             if (selectedUnitUI != null)
             {
                 selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
@@ -583,80 +608,51 @@ public class AllyUnit : Unit
         {
             UnitData upgradeUnitData = data.UpgradeUnits[upgradeIndex];
 
-            if (upgradeUnitData)
+            GameObject obj = upgradeUnitData.Prefab;
+
+            AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, transform, unitGrid.TargetTile);
+            upgradedUnit.mode = mode;
+
+            if (mode == Mode.SEIGE)
             {
-                GameObject obj = upgradeUnitData.Prefab;
-
-                AllyUnit upgradedUnit = spawner.CreateUpgradeUnit(obj, (AllyUnitData)upgradeUnitData, transform, unitGrid.TargetTile);
-                upgradedUnit.mode = mode;
-
-                if(mode == Mode.SEIGE)
-                {
-                    upgradedUnit.navAgent.enabled = false;
-                    upgradedUnit.navObstacle.enabled = true;
-                }
-                else
-                {
-                    upgradedUnit.navAgent.enabled = true;
-                    upgradedUnit.navObstacle.enabled = false;
-                    upgradedUnit.freeModeState = FreeModeState.COMBAT;
-                }
-
-                Debug.Log(upgradedUnit.mode);
-
-                if (isSelected)
-                {
-                    isSelected = false;
-                    upgradedUnit.isSelected = true;
-
-                    selectedUnitUI.UpdateUnitInfo(upgradedUnit);
-
-
-                    upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
-                    upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
-
-                    selectedUnitUI.ShowAllyUI(upgradedUnit);
-                    selectedUnitUI.ShowHp(upgradedUnit);
-                }
-
-                pool.Pool.Release(this);
-                gameObject.SetActive(false);
-
-                
-
-                if (upgradedUnit.mode == Mode.SEIGE)
-                {
-                    siegeEffectInterval -= Time.deltaTime;
-
-                    if (siegeEffectInterval > 0)
-                    {
-                        upgradedUnit.activeSiegeEffect.SetActive(true);
-                        //changeEffet.SetActive(false);
-                    }
-                    else
-                    {
-                        upgradedUnit.activeSiegeEffect.SetActive(false);
-                        upgradedUnit.defaultSiegeEffect.SetActive(true);
-
-                        upgradeIndex = -1;
-                        siegeEffectInterval = 0.3f;
-                        upgradeDuraiton = 3f;
-                    }
-
-                    isUpgrade = false;
-                }
-                else
-                {
-                    upgradeIndex = -1;
-                    upgradeDuraiton = 3f;
-                    isUpgrade = false;
-                }
+                upgradedUnit.navAgent.enabled = false;
+                upgradedUnit.navObstacle.enabled = true;
             }
+            else
+            {
+                upgradedUnit.navAgent.enabled = true;
+                upgradedUnit.navObstacle.enabled = false;
+                upgradedUnit.freeModeState = FreeModeState.COMBAT;
+            }
+
+            Debug.Log(upgradedUnit.mode);
+
+            if (isSelected)
+            {
+                isSelected = false;
+                upgradedUnit.isSelected = true;
+
+                selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+
+
+                upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
+                upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
+
+                selectedUnitUI.ShowAllyUI(upgradedUnit);
+                selectedUnitUI.ShowHp(upgradedUnit);
+            }
+
+            upgradeIndex = -1;
+            upgradeDuraiton = 3f;
+            isUpgrade = false;
+
+            pool.Pool.Release(this);
+            gameObject.SetActive(false);
         }
     }
 
     
-    public void RequestUpgrade(int index)
+    public void UpgradeOrder(int index)
     {
         isUpgrade = true;
         upgradeIndex = index;
@@ -833,6 +829,23 @@ public class AllyUnit : Unit
 
         navObstacle.enabled = false;
 
+        // 체인지 또는 업그레이드 중 사망 시
+        if(isChange)
+        {
+            changeDuration = 3.0f;
+            changeEffet.SetActive(false);
+            isChange = false;
+        }
+
+        if(isUpgrade)
+        {
+            upgradeDuraiton = 3.0f;
+            changeEffet.SetActive(false);
+            isUpgrade = false;
+        }
+
+        
+
         if (state == State.STUN)
         {
             base.RemoveStun();
@@ -843,6 +856,7 @@ public class AllyUnit : Unit
 
         state = State.DEAD;
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
+
         unitGrid.ClearTile();
 
         if (allyDeadSFX == null)
@@ -854,55 +868,6 @@ public class AllyUnit : Unit
             SoundManager.Instance.PlaySFX(clip);
         }
 
-        //if (!isDead)
-        //{
-
-        //    state = State.DEAD;
-        //    //modelAnimator.SetTrigger("Die");
-        //    AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
-        //    unitGrid.ClearTile();
-
-        //    if (allyDeadSFX == null)
-        //        return;
-
-        //    if (allyDeadSFX.Length > 0)
-        //    {
-        //        AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
-        //        SoundManager.Instance.PlaySFX(clip);
-        //    }
-
-        //    isDead = true;
-        //}
-    }
-
-
-
-    private void OnOffSiefeEffect(bool isSiege)
-    {
-        if (isSiege)
-        {
-            if (!isSiegeActive)
-            {
-                activeSiegeEffect.gameObject.SetActive(true);
-                isSiegeActive = true;
-            }
-
-            if (siegeEffectInterval > 0)
-            {
-                siegeEffectInterval -= Time.deltaTime;
-            }
-            else
-            {
-                activeSiegeEffect.gameObject.SetActive(false);
-                defaultSiegeEffect.SetActive(true);
-                isSiegeActive = false;
-            }
-        }
-        else
-        {
-            activeSiegeEffect.gameObject.SetActive(false);
-            defaultSiegeEffect.SetActive(false);
-        }
     }
 
 }

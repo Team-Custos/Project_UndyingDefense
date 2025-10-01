@@ -224,13 +224,6 @@ public class EnemyUnit : Unit
                             MoveTo(fortressPos);
                         else if (state == State.DEAD)
                         {
-                            //for (int i = 0; i < VFXParent.childCount; i++)
-                            //{
-                            //    Transform child = VFXParent.GetChild(i);
-                            //    child.gameObject.SetActive(false);
-                            //    Debug.Log(child.gameObject.name);
-                            //}
-
                             gameObject.SetActive(false);
                             pool.Pool.Release(this);
                         }
@@ -238,7 +231,6 @@ public class EnemyUnit : Unit
 
                         state = State.IDLE;
 
-                        //navObstacle.enabled = false;
                     }
                 }
                 break;

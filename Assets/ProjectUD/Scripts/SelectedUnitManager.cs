@@ -266,7 +266,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
         SoundManager.Instance.PlayUIClickSFX();
 
-        selectedAllyUnit.RequestUpgrade(index);
+        selectedAllyUnit.UpgradeOrder(index);
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnRightClickTarget = this;
@@ -296,7 +296,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             SoundManager.Instance.PlaySFX(freeSfx);
         }
 
-        selectedAllyUnit.ModeToChange();
+        selectedAllyUnit.ChangeOrder();
         unitSelectUI.HideAllyUI();
     }
 

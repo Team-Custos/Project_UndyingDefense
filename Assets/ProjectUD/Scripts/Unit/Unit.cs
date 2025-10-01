@@ -823,6 +823,8 @@ public abstract class Unit : MonoBehaviour
 
         isDead = true;
 
+        stateDurationCheck = 0f;
+
         navAgent.enabled = false;
         collider.enabled = false;
 
@@ -843,32 +845,7 @@ public abstract class Unit : MonoBehaviour
             selectedUnitManager.DeSelecteUnit();
         }
 
-        //if (!isDead)
-        //{
-            
-
-        //    navAgent.enabled = false;
-        //    collider.enabled = false;
-        //    //effectParent.gameObject.SetActive(false);
-
-        //    modelAnimator.SetTrigger("Die");
-
-        //    if (selectedUnitUI != null)
-        //    {
-        //        // ui 제거
-        //        selectedUnitUI.HideHp();
-        //        selectedUnitUI.HideAllyUI();
-        //        selectedUnitUI.HideUpgrdeUI();
-        //        selectedUnitUI.HideUntInfo();
-        //    }
-
-        //    if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
-        //    {
-        //        selectedUnitManager.DeSelecteUnit();
-        //    }
-
-        //    isDead = true;
-        //}
+        
     }
 
 
