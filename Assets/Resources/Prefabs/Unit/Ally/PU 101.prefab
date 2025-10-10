@@ -9878,7 +9878,7 @@ GameObject:
   - component: {fileID: 6652912997925030086}
   - component: {fileID: 5323278441165249073}
   m_Layer: 0
-  m_Name: SiegeEffect
+  m_Name: DefaultSiegeEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14699,6 +14699,54 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &7834373598891932443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8698825686051193163}
+  - component: {fileID: 7436588532328285134}
+  m_Layer: 0
+  m_Name: Obstacle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8698825686051193163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7834373598891932443}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2355019241190910409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &7436588532328285134
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7834373598891932443}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 0.5, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0
 --- !u!1 &9140029880975843469
 GameObject:
   m_ObjectHideFlags: 0
@@ -20232,7 +20280,7 @@ PrefabInstance:
     - target: {fileID: 3875590891261279862, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
       propertyPath: m_Name
-      value: SiegeParticle
+      value: ActiveSiegeEffect
       objectReference: {fileID: 0}
     - target: {fileID: 3875590891261279862, guid: ce31f74dfe311b843bb7f97834aea7b2,
         type: 3}
@@ -20270,6 +20318,12 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 5802263493490016326}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7299519734250126896 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3875590891261279862, guid: ce31f74dfe311b843bb7f97834aea7b2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5802263493490016326}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8895545269760743112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3167882859084928654, guid: ce31f74dfe311b843bb7f97834aea7b2,
@@ -20301,6 +20355,16 @@ PrefabInstance:
       objectReference: {fileID: 4675377490651548500}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
+      propertyPath: changeEffet
+      value: 
+      objectReference: {fileID: 4675377490651548500}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: navObstacle
+      value: 
+      objectReference: {fileID: 7436588532328285134}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
       propertyPath: siegeEffect
       value: 
       objectReference: {fileID: 5390564945056155046}
@@ -20329,6 +20393,16 @@ PrefabInstance:
       propertyPath: siegeParticle
       value: 
       objectReference: {fileID: 4243460302086427906}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: activeSiegeEffect
+      value: 
+      objectReference: {fileID: 7299519734250126896}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: defaultSiegeEffect
+      value: 
+      objectReference: {fileID: 5390564945056155046}
     - target: {fileID: 748263312291810464, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: m_Enabled
@@ -20342,6 +20416,31 @@ PrefabInstance:
     - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: m_Carve
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Shape
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Extents.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Extents.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Extents.z
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
@@ -20412,6 +20511,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1472676039765192220}
+    - targetCorrespondingSourceObject: {fileID: 6668875141408910835, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8698825686051193163}
     - targetCorrespondingSourceObject: {fileID: 6124276177035537338, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       insertIndex: -1
@@ -20427,15 +20530,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3957897032017846769, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4675377490651548497}
+    - targetCorrespondingSourceObject: {fileID: 3957897032017846769, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8288883585725570947}
     - targetCorrespondingSourceObject: {fileID: 3957897032017846769, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8895545269760743112}
-    - targetCorrespondingSourceObject: {fileID: 3957897032017846769, guid: 90d6c0b244efaa84793a2f190b4dff8d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4675377490651548497}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90d6c0b244efaa84793a2f190b4dff8d, type: 3}
 --- !u!4 &2355019241190910409 stripped

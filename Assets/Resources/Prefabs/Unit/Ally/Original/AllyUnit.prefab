@@ -19706,7 +19706,6 @@ GameObject:
   - component: {fileID: 6668875141408910835}
   - component: {fileID: 2157011060848587651}
   - component: {fileID: 748263312291810464}
-  - component: {fileID: 2635317832878904254}
   - component: {fileID: 551603424968508796}
   m_Layer: 6
   m_Name: AllyUnit
@@ -19779,22 +19778,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!208 &2635317832878904254
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8033772474009387374}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 1, y: 0.5, z: 1}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!114 &551603424968508796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19809,20 +19792,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelAnimator: {fileID: 0}
   navAgent: {fileID: 748263312291810464}
-  navObstacle: {fileID: 2635317832878904254}
   collider: {fileID: 2157011060848587651}
   effectParent: {fileID: 2239828172175953702}
   VFXParent: {fileID: 3957897032017846769}
   generalSkill: {fileID: 0}
   specialSkill: {fileID: 0}
+  passiveSkill: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   nearbyDistance: 1.2
-  chagneEffet: {fileID: 0}
-  siegeEffect: {fileID: 0}
-  siegeParticle: {fileID: 0}
-  particleDuration: 0.3
+  stateEvents: []
+  unitId: 
+  previousMode: 0
+  navObstacle: {fileID: 0}
+  changeEffet: {fileID: 0}
+  defaultSiegeEffect: {fileID: 0}
+  activeSiegeEffect: {fileID: 0}
+  unitGrid: {fileID: 0}
+  siegeEffectInterval: 0.3
+  alternativeSkill: 0
 --- !u!1 &8918324146885326228
 GameObject:
   m_ObjectHideFlags: 0
