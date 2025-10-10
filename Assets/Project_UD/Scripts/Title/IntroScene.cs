@@ -13,6 +13,7 @@ public class IntroScene : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;       // 비디오 플레이어 (영상 재생)
     private bool isVideoSkipped = false;                         // 영상이 스킵되었는지 확인
     private bool isStatementSkipped = false;
+    
 
     [SerializeField] private AudioClip firstHalfBgm;        
     [SerializeField] private AudioClip bgSfx;               
@@ -74,19 +75,21 @@ public class IntroScene : MonoBehaviour
         SoundManager.Instance.PlayBGM(firstHalfBgm);
 
         // 2. statement 페이드 인
-        FadeInStatementImage();
+        //FadeInStatementImage();
+        statementCanvasGroup.gameObject.SetActive(true);
 
         // 3. firstHalfBgm 길이만큼 후에 다음 단계 실행
-        Invoke(nameof(OnFirstBgmEnded), firstHalfBgm.length);
+        //Invoke(nameof(OnFirstBgmEnded), firstHalfBgm.length);
     }
 
     private void FadeInStatementImage()
     {
         if (statementCanvasGroup == null) return;
 
-        statementCanvasGroup.alpha = 0;
-        statementCanvasGroup.DOFade(1f, duration)
-            .SetEase(Ease.OutQuad);
+        //statementCanvasGroup.gameObject.SetActive(true);
+        //statementCanvasGroup.alpha = 0;
+        //statementCanvasGroup.DOFade(1f, duration)
+        //    .SetEase(Ease.OutQuad);
     }
 
     private void OnFirstBgmEnded()
@@ -103,9 +106,9 @@ public class IntroScene : MonoBehaviour
         nextDialogue.Invoke();
         dialogueCanvasGroup.gameObject.SetActive(true);
 
-        dialogueCanvasGroup.alpha = 0;
-        dialogueCanvasGroup.DOFade(1f, duration)
-            .SetEase(Ease.OutQuad);
+        //dialogueCanvasGroup.alpha = 0;
+        //dialogueCanvasGroup.DOFade(1f, duration)
+        //    .SetEase(Ease.OutQuad);
     }
 
     public void PlayDeclarationDropAnimation()
