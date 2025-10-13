@@ -59,7 +59,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         }
         skill = GetComponentsInChildren<ActiveCommandSkill>();
     }
-
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
         if (btnClickSFX[activatedSkillButtonIdx] != null)
