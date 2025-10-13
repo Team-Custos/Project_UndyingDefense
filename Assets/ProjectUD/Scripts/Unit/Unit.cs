@@ -67,7 +67,6 @@ public abstract class Unit : MonoBehaviour
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit;
 
-
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
 
@@ -83,7 +82,6 @@ public abstract class Unit : MonoBehaviour
     protected const float moveThresholdOnStop = float.MaxValue;
 
     protected bool isDead;
-
     public Transform EffectParent => effectParent;
 
     public abstract UnitData Data { get; }
