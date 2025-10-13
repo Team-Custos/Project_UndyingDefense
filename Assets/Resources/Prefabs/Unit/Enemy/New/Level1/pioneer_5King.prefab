@@ -86,6 +86,111 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022dc3484a117af40b2cdc1cca3a9a2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &2487589959281711530
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1921490181596781310}
+    m_Modifications:
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4041841316640310094, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      propertyPath: m_Name
+      value: Henry with weapon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4041841316640310094, guid: 276b51bd600a998419182b49096749cf,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7171867686148414674}
+  m_SourcePrefab: {fileID: 100100000, guid: 276b51bd600a998419182b49096749cf, type: 3}
+--- !u!4 &1286305513079242846 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3700923084327852532, guid: 276b51bd600a998419182b49096749cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 2487589959281711530}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1914646255624477412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4041841316640310094, guid: 276b51bd600a998419182b49096749cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 2487589959281711530}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7171867686148414674
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914646255624477412}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: c7f24dc6038db3a41ac5393c6e489af1, type: 3}
+  m_Controller: {fileID: 22100000, guid: 90550cef7c4934647851cd0127d6cf78, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &5151814170623470298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -281,17 +386,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: undead_king with weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 8743741705706920842, guid: 726fcf17936d25346953f608ae0e2dc5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 726fcf17936d25346953f608ae0e2dc5, type: 3}
---- !u!95 &3082841871138121127 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8239685891259876438, guid: 726fcf17936d25346953f608ae0e2dc5,
-    type: 3}
-  m_PrefabInstance: {fileID: 6381964544611492337}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5789316249493299078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 632336301638909559, guid: 726fcf17936d25346953f608ae0e2dc5,
@@ -310,6 +414,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pioneer_5King
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751510430542804131, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
@@ -385,7 +494,22 @@ PrefabInstance:
         type: 3}
       propertyPath: modelAnimator
       value: 
-      objectReference: {fileID: 3082841871138121127}
+      objectReference: {fileID: 7171867686148414674}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: db0cea76f027bc04fadae246bf33a24a, type: 3}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 397c3a544e4dec244934f06995938c45, type: 3}
     - target: {fileID: 7911353692556451451, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_Enabled
@@ -398,6 +522,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3871593182386674755}
+    - targetCorrespondingSourceObject: {fileID: 8435381453930932782, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1286305513079242846}
     - targetCorrespondingSourceObject: {fileID: 8435381453930932782, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       insertIndex: -1

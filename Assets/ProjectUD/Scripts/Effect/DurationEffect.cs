@@ -49,7 +49,7 @@ public abstract class DurationEffect : MonoBehaviour
     protected virtual void Update()
     {
         durationCheck += Time.deltaTime;
-        if (durationCheck >= duration || target.IsDead)
+        if (durationCheck >= duration)
         {
             durationCheck = 0f;
             Remove();
@@ -61,13 +61,18 @@ public abstract class DurationEffect : MonoBehaviour
     public abstract void Activate();
     public abstract void OnRemove();
 
-    protected virtual void Remove()
+    protected virtual void Remove()  // 지속시간 지나면 호출
     {
         target.RemoveEffect(this);
         OnRemove();
         transform.SetParent(null);
+        gameObject.SetActive(false);
+    }
 
-
+    public void RemoveEffect()      // 유닛이 죽으면 호출
+    {
+        OnRemove();
+        transform.SetParent(null);
         gameObject.SetActive(false);
     }
 

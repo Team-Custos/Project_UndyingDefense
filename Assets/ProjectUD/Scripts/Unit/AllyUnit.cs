@@ -63,6 +63,7 @@ public class AllyUnit : Unit
     [SerializeField] private GameObject defaultSiegeEffect;
     [SerializeField] private GameObject activeSiegeEffect;
     [SerializeField] private UnitGrid unitGrid;
+    [SerializeField] private AudioClip[] allyDeadSFX;
 
     public UnitGrid UnitGrid => unitGrid;
 
@@ -76,19 +77,18 @@ public class AllyUnit : Unit
     private bool skillFlague;
 
 
-    protected static AudioClip[] allyDeadSFX;
 
-    protected static AudioClip[] AllyDeadSFX
-    {
-        get
-        {
-            if (allyDeadSFX == null)
-            {
-                allyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/AllyDeath");
-            }
-            return allyDeadSFX;
-        }
-    }
+    //protected static AudioClip[] AllyDeadSFX
+    //{
+    //    get
+    //    {
+    //        if (allyDeadSFX == null)
+    //        {
+    //            allyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/AllyDeath");
+    //        }
+    //        return allyDeadSFX;
+    //    }
+    //}
 
     public void MoveCommandDestination(Vector3 pos)
     {
@@ -159,11 +159,12 @@ public class AllyUnit : Unit
         switch (state)
         {
             case State.STUN:
-                return;
+                break;
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.DEAD:
                 {
+
                     if (state != State.DEAD)
                     {
                         if (navAgent.enabled)
@@ -203,6 +204,7 @@ public class AllyUnit : Unit
                         }
                     }
 
+                    
 
                     if (stateDuration <= 0f)
                         return;
@@ -274,19 +276,13 @@ public class AllyUnit : Unit
 
     private void UpdateMode()
     {
-        //if(state == State.STUN)
-        //{
-        //    Debug.Log("Stun");
-        //    return;
-        //}
-
 
         switch (mode)
         {
             case Mode.SEIGE:
                 {
-                    if (!navObstacle.enabled)
-                        Debug.Log("obstacle 꺼져있음");
+                    //if (!navObstacle.enabled)
+                    //    Debug.Log("obstacle 꺼져있음");
 
                     if(isSiegeActivated)
                     {
@@ -490,8 +486,6 @@ public class AllyUnit : Unit
                         NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, path);
                         if (path.status == NavMeshPathStatus.PathComplete)
                         {
-                            Debug.Log("경로 탐색 완료");
-
                             if (selectedUnitUI != null)
                             {
                                 selectedUnitUI.ShowAllyUI(this);
@@ -677,7 +671,9 @@ public class AllyUnit : Unit
     public override void RemoveStun()
     {
         base.RemoveStun();
-        state = State.IDLE;
+
+        if(!isDead)
+            state = State.IDLE;
     }
 
     private Unit SearchTarget(float range)
@@ -768,6 +764,8 @@ public class AllyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target)
     {
+        if(isDead) return;
+
         if (alternativeSkill)
         {
             if (skill != null)
@@ -827,6 +825,15 @@ public class AllyUnit : Unit
     {
         if (isDead) return;
 
+        isDead = true;
+
+        if(state == State.STUN)
+        {
+            base.RemoveStun();
+        }
+
+        state = State.DEAD;
+
         navObstacle.enabled = false;
 
         // 체인지 또는 업그레이드 중 사망 시
@@ -844,30 +851,13 @@ public class AllyUnit : Unit
             isUpgrade = false;
         }
 
-        
-
-        if (state == State.STUN)
-        {
-            base.RemoveStun();
-        }
 
         base.Die();
 
-
-        state = State.DEAD;
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
 
         unitGrid.ClearTile();
 
-        if (allyDeadSFX == null)
-            return;
-
-        if (allyDeadSFX.Length > 0)
-        {
-            AudioClip clip = allyDeadSFX[Random.Range(0, allyDeadSFX.Length)];
-            SoundManager.Instance.PlaySFX(clip);
-        }
-
+        SoundManager.Instance.PlaySFX(allyDeadSFX);
     }
-
 }

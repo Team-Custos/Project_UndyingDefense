@@ -246,7 +246,7 @@ public class AttackSkill : SkillBase
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
         {
-            float calcBlockRate = 1f - (0.3f * target.BlockPercent);    // 단위수정_AYO
+            float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
         }
 

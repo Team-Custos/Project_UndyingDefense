@@ -64,23 +64,23 @@ public class EnemyUnit : Unit
 
     private float attackCool;
 
-    protected static AudioClip[] enemyDeadSFX;
+    [SerializeField] private AudioClip[] enemyDeadSFX;
 
     protected static GameObject coinDropVFX;
 
     protected static GameObject warCryVFX;
 
-    protected static AudioClip[] EnemyDeadSFX
-    {
-        get
-        {
-            if (enemyDeadSFX == null)
-            {
-                enemyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/EnemyDeath");
-            }
-            return enemyDeadSFX;
-        }
-    }
+    //protected static AudioClip[] EnemyDeadSFX
+    //{
+    //    get
+    //    {
+    //        if (enemyDeadSFX == null)
+    //        {
+    //            enemyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/EnemyDeath");
+    //        }
+    //        return enemyDeadSFX;
+    //    }
+    //}
 
     protected static GameObject CoinDropVFX
     {
@@ -162,6 +162,7 @@ public class EnemyUnit : Unit
             case State.BATTLECRY:
             case State.DEAD:
                 {
+
                     if (state != State.DEAD)
                     {
                         modelAnimator.SetBool("isRunning", false);
@@ -478,12 +479,12 @@ public class EnemyUnit : Unit
         base.GetStun();
         state = State.STUN;
     }
-
     public override void RemoveStun()
     {
         base.RemoveStun();
-        state = State.IDLE; //이전상태로 되돌아갈 수도 있는지 확인이 필요.
-        ForceMoveTo(fortressPos);
+
+        if (!isDead)
+            state = State.IDLE;
     }
 
 
@@ -491,55 +492,26 @@ public class EnemyUnit : Unit
     {
         if (isDead) return;
 
+        isDead = true;
+
         if (state == State.STUN)
         {
-            RemoveStun();
+            base.RemoveStun();
         }
+
+        state = State.DEAD;
 
         base.Die();
 
-        if (EnemyDeadSFX.Length > 0)
-        {
-            AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
-            SoundManager.Instance.PlaySFX(clip);
-        }
+
+        SoundManager.Instance.PlaySFX(enemyDeadSFX);
 
         // 상태를 변경하고 에니메이션을 변경
-        state = State.DEAD;
+
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
         AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
 
         enemySpawner.OnEnemyDead(data, this);
-
-        //if (!isDead)
-        //{
-        //    //navAgent.enabled = false;
-        //    //navObstacle.enabled = false;
-        //    //collider.enabled = false;
-
-        //    base.Die();
-
-        //    if (state == State.STUN)
-        //    {
-        //        base.RemoveStun();
-        //    }
-
-        //    if (EnemyDeadSFX.Length > 0)
-        //    {
-        //        AudioClip clip = EnemyDeadSFX[Random.Range(0, EnemyDeadSFX.Length)];
-        //        SoundManager.Instance.PlaySFX(clip);
-        //    }
-
-        //    // 상태를 변경하고 에니메이션을 변경
-        //    state = State.DEAD;
-        //    //modelAnimator.SetTrigger("Die");
-        //    AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
-        //    AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
-
-        //    enemySpawner.OnEnemyDead(data, this);
-
-        //    isDead = true;
-        //}
 
     }
 

@@ -28,7 +28,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     // 범위를 가진 스킬
     protected Collider[] targets;
-    protected const int maxTargetCount = 5;
+    protected const int maxTargetCount = 100;
 
     private AttackTriggerType triggerType;
 

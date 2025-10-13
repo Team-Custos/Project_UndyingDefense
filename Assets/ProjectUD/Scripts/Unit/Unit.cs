@@ -817,11 +817,10 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Die()
     {
-        if (isDead) return;
-
+        //if (isDead) return;
         hp = 0f;
 
-        isDead = true;
+        RemoveAllEffect();
 
         stateDurationCheck = 0f;
 
@@ -970,21 +969,15 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    public void RemoveAllEffect()
+    private void RemoveAllEffect()
     {
-
-        //if (effectList.Count > 0)
-        //{
-        //    Debug.Log(effectList.Count);
-
-        //    for(int i = 0; i <= effectList.Count; i++)
-        //    {
-        //        effectList.Remove(effectList[i]);
-        //    }
-
-        //    UpdateState();
-        //}
+        for (int i = effectList.Count - 1; i >= 0; i--)
+        {
+            effectList[i].RemoveEffect();
+            effectList.RemoveAt(i);
+        }
     }
+
 
     public void AddVFX(GameObject vfx, Transform rot) // hit & Crit VFX (오브젝트풀링 사용)
     {
@@ -1039,12 +1032,6 @@ public abstract class Unit : MonoBehaviour
         {
             selectedUnitUI.UpdateUnitStateUI();
         }
-    }
-
-
-    public void Setpriority(int priority)
-    {
-        navAgent.avoidancePriority = priority;
     }
 
     public void StopUnit()

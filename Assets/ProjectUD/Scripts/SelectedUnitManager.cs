@@ -310,6 +310,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 if (selectedUnit is EnemyUnit)
                 {
+                    EnemyUnit enemyUnit = selectedUnit as EnemyUnit; 
                     enemyUnitSpawner.OnEnemyDead();
                 }
 

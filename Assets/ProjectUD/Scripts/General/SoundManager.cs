@@ -34,6 +34,18 @@ public class SoundManager : Singleton<SoundManager>
         sfxAudio.PlayOneShot(clip);
     }
 
+    public void PlaySFX(params AudioClip[] clips)
+    {
+        if (clips == null)
+            return;
+
+        if (clips.Length > 0)
+        {
+            AudioClip clip = clips[Random.Range(0, clips.Length)];
+            PlaySFX(clip);
+        }
+    }
+
     public void PlaySFXLoop(AudioClip clip)
     {
         sfxLoopAudio.clip = clip;
