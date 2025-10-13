@@ -49,7 +49,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             }
         }
     }
-
     private void Awake()
     {
         if (GetComponentsInChildren<CommandSkill>() == null)
