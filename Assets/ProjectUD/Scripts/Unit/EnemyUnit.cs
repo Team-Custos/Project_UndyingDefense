@@ -57,6 +57,7 @@ public class EnemyUnit : Unit
     private const float angerTriggerPercent = 99f; // 분노 발동 기준 퍼센트
 
     private bool hasExecutedMark = false;
+    private ExecutionEffect executionEffect;
 
     public bool HasExecuteMark => hasExecutedMark;
 
@@ -106,9 +107,23 @@ public class EnemyUnit : Unit
         }
     }
 
-    public void SetExecuted(bool Executed)
+    public void SetExecuted(ExecutionEffect executionEffect, bool executed, GameObject effect)
     {
-        hasExecutedMark = Executed;
+        hasExecutedMark = executed;
+
+        if(!executed)   // 제거
+        {
+            effect.SetActive(false);
+            this.executionEffect = null;
+        }
+        else
+        {
+            this.executionEffect = executionEffect;
+            effect.transform.SetParent(effectParent);
+            effect.transform.localPosition = new Vector3(0f, 1.5f, 0f);
+            effect.SetActive(true);
+            executionEffect.ActivateExecution();
+        }
     }
 
     public void Initialize(EnemyUnitData data, ObjectPoolWithList<EnemyUnit> pool, Fortress fortress, EnemyUnitSpawner enemySpawner)
@@ -499,9 +514,17 @@ public class EnemyUnit : Unit
             base.RemoveStun();
         }
 
+        if(hasExecutedMark)
+        {
+            hasExecutedMark = false;
+            executionEffect.OnTargetDead();
+            executionEffect = null;
+        }
+
         state = State.DEAD;
 
         base.Die();
+
 
 
         SoundManager.Instance.PlaySFX(enemyDeadSFX);

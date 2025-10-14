@@ -19,6 +19,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private Ingame_CursorManager cursorManager;
     [SerializeField] private UnitDataLoader unitDataLoader;
     [SerializeField] private DurationEffectPool durationEffectPool;
+    [SerializeField] private InstantEffectPool instantEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
     [SerializeField] private DollyCamera dollyCamera;
 
@@ -105,6 +106,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         unit.SetUnitStats(unitStats);
 
         unit.SetDurationEffectPool(durationEffectPool);
+        unit.SetInstantEffectPool(instantEffectPool);
         unit.SetHitVFXPool(hitVFXPool);
         unitPools[index].List.Add(unit);
 
@@ -167,6 +169,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         upgradeUnit.SetUnitStats(unitStats);
 
         upgradeUnit.SetDurationEffectPool(durationEffectPool);
+        upgradeUnit.SetInstantEffectPool(instantEffectPool);
         upgradeUnit.SetHitVFXPool(hitVFXPool);
 
         upgradeUnit.transform.position = transform.position;

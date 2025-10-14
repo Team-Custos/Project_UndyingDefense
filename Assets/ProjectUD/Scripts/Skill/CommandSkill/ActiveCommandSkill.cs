@@ -17,6 +17,7 @@ public class ActiveCommandSkill : CommandSkill
     [SerializeField] protected Vector3 incomingDirection = Vector3.zero;
 
     public override CommandSkillData Data => data;
+    private GameObject executeEffect;
 
     public LayerMask AttackTargetLayer => attackTargetLayer;
 
@@ -94,16 +95,24 @@ public class ActiveCommandSkill : CommandSkill
 
     public void GetMark(Unit target)
     {
-        if (prevMarkedTargetUnit != null)
+        if(executeEffect == null)
         {
-            prevMarkedTargetUnit.SetExecuted(false);
+            executeEffect = Instantiate(data.CritEffectPrefab);
+            executeEffect.SetActive(false);
+        }
+            
+
+        ExecutionEffect executionEffect = executeEffect.GetComponent<ExecutionEffect>();
+
+        if (prevMarkedTargetUnit != null)       // 척살 삭제
+        {
+            prevMarkedTargetUnit.SetExecuted(executionEffect, false, executeEffect);
         }
 
-        if (target.GetComponent<EnemyUnit>() != null)
+        if (target.GetComponent<EnemyUnit>() != null)       // 척살 적용
         {
             EnemyUnit LastMarkEnemy = target.GetComponent<EnemyUnit>();
-
-            LastMarkEnemy.SetExecuted(true);
+            LastMarkEnemy.SetExecuted(executionEffect, true, executeEffect);
             prevMarkedTargetUnit = LastMarkEnemy;
         }
     }

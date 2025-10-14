@@ -61,6 +61,7 @@ public abstract class Unit : MonoBehaviour
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
     protected DurationEffectPool durationEffectPool;
+    protected InstantEffectPool instantEffectPool;
     protected VFXObjectPool hitVFXPool;
 
     //protected Unit skillTarget; // 공격 대상
@@ -247,6 +248,11 @@ public abstract class Unit : MonoBehaviour
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
     {
         this.durationEffectPool = durationEffectPool;
+    }
+
+    public void SetInstantEffectPool(InstantEffectPool instantEffectPool)
+    {
+        this.instantEffectPool = instantEffectPool;
     }
 
     public void SetUnitStats(UnitStats unitStats)
@@ -917,12 +923,12 @@ public abstract class Unit : MonoBehaviour
         modelAnimator.SetBool("isStun", false);
     }
 
-    public void AddImmediateEffect(GameObject effectPrefab)
+    public void AddInstantEffect(GameObject effectPrefab)
     {
-        DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
+        InstantEffect effect = instantEffectPool.GetInstantEffect(effectPrefab);
         effect.transform.SetParent(effectParent);
         effect.transform.localPosition = Vector3.zero;
-        effect.Initialize(this);
+        //effect.Initialize(this);
         //effect.Activate();
         effect.gameObject.SetActive(true);
     }
@@ -986,7 +992,7 @@ public abstract class Unit : MonoBehaviour
         VFXobj.transform.SetParent(VFXParent);
         VFXobj.SetActive(true);
         VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
-        VFXobj.transform.localRotation = rot.localRotation; //Quaternion.Euler(0f, 0f, 0f);
+        VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
     }
 
     public void AddVFX(ParticleSystem VFX)

@@ -259,7 +259,6 @@ public class AttackSkill : SkillBase
         //if (target is EnemyUnit)
         //    Debug.Log(calcDamage);
 
-        
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {

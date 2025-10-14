@@ -20,8 +20,8 @@ public class BleedEffect : TickStackEffect
     protected override void OnMaxStack()
     {
         // 과다 출혈 효과
-        target.AddImmediateEffect(overBleedVfx);
-        target.TakeDamage(20); 
+        target.AddInstantEffect(overBleedVfx);
+        target.TakeDamage(20);
     }
 
     protected override void OnTick()
