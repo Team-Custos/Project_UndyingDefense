@@ -4,11 +4,9 @@ using UnityEngine.UI;
 
 public class UnitSpawnUI : MonoBehaviour
 {
-    [SerializeField] InGameManager inGameManager;
     [SerializeField] private UnitSpawnButtonUI[] spawnBtns;
     [SerializeField] private Transform selectedUI;
     [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
-    [SerializeField] private int spawnCost;
 
     public void SetSpawnButton(int index, Sprite icon, int tier, int cost)
     {

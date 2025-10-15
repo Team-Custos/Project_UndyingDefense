@@ -32,8 +32,6 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [Header("■ Result")]
     [SerializeField] private ResultUI resultUI;
 
-    [SerializeField] private Animator animator;
-
     [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
     [SerializeField] private Image[] spawnBtnsImages;
     [SerializeField] private int spawnCost;
