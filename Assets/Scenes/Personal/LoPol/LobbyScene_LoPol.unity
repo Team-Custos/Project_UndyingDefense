@@ -2167,6 +2167,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237886239}
   m_CullTransparentMesh: 1
+--- !u!1 &244540972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 244540973}
+  - component: {fileID: 244540975}
+  - component: {fileID: 244540974}
+  m_Layer: 0
+  m_Name: DIA_main04_After&WinGeumsan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &244540973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244540972}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &244540974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244540972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main04
+--- !u!114 &244540975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244540972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 244540974}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!1 &245343404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3699,6 +3765,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379112998}
   m_CullTransparentMesh: 1
+--- !u!1 &398972752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 398972753}
+  - component: {fileID: 398972754}
+  m_Layer: 0
+  m_Name: DialTextTableLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &398972753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398972752}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &398972754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398972752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b519d5cfe224314f978ac3fec7d1e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueTable: {fileID: 4900000, guid: 13e0fd9ae3d269344a038e0370647a8d, type: 3}
+  choiceTable: {fileID: 4900000, guid: 19f10882146c7594c819284bb171e867, type: 3}
 --- !u!1 &400645920
 GameObject:
   m_ObjectHideFlags: 0
@@ -4776,7 +4888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &538873969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5944,52 +6056,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629796890}
   m_CullTransparentMesh: 1
---- !u!1 &633467244
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 633467246}
-  - component: {fileID: 633467245}
-  m_Layer: 0
-  m_Name: DialTextTableLoader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &633467245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633467244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b519d5cfe224314f978ac3fec7d1e52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogueTable: {fileID: 4900000, guid: 03a2feb17d5003640851cea3449b5798, type: 3}
-  choiceTable: {fileID: 4900000, guid: 9836eab64c83cac4e86f12e6a57561cb, type: 3}
---- !u!4 &633467246
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633467244}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1225665815}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &668797021 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2791552934914465480, guid: 44ce25a31eeb1334391f612399433d41,
@@ -6101,7 +6167,7 @@ GameObject:
   - component: {fileID: 686461379}
   - component: {fileID: 686461380}
   m_Layer: 0
-  m_Name: IsTutorialEnd
+  m_Name: DIA_main02_IsTutorialEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6123,18 +6189,9 @@ MonoBehaviour:
   - {fileID: 686461380}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1985498938}
-      _MemberName: ShowChoiceArray
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: ChoiceArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 486486626}
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!114 &686461380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6148,7 +6205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
-  id: DIA001
+  id: DIA_main02
 --- !u!4 &686461381
 Transform:
   m_ObjectHideFlags: 0
@@ -7604,6 +7661,11 @@ PrefabInstance:
       value: DialogueUI
       objectReference: {fileID: 0}
     - target: {fileID: 4201004459958516730, guid: f80f302396a81c44ea8f6751a1c045b5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961770899529909635, guid: f80f302396a81c44ea8f6751a1c045b5,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10768,6 +10830,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190819548}
   m_CullTransparentMesh: 1
+--- !u!1 &1200128834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1200128835}
+  - component: {fileID: 1200128837}
+  - component: {fileID: 1200128836}
+  m_Layer: 0
+  m_Name: DIA_main03_AfterGeumsan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1200128835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200128834}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1200128836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200128834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main03
+--- !u!114 &1200128837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200128834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 1200128836}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!1001 &1211685342
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11039,9 +11167,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 633467246}
-  - {fileID: 686461381}
+  - {fileID: 398972753}
   - {fileID: 1435160608}
+  - {fileID: 686461381}
+  - {fileID: 1200128835}
+  - {fileID: 244540973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1225665816
@@ -11056,8 +11186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ca7b1bdb4151d4b9f9d80d78a2ebcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 538873969}
-  tableLoader: {fileID: 633467245}
+  inputManager: {fileID: 346775373}
+  tableLoader: {fileID: 398972754}
   dialogueui: {fileID: 1562747904}
   dialogueLine: {fileID: 1269801720}
   nextBtn: {fileID: 1567676681}
@@ -13061,7 +13191,7 @@ GameObject:
   - component: {fileID: 1435160610}
   - component: {fileID: 1435160609}
   m_Layer: 0
-  m_Name: BeforeTutorial
+  m_Name: DIA_main01_BeforeTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13095,7 +13225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
-  id: DIA002
+  id: DIA_main01
 --- !u!114 &1435160610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13112,18 +13242,9 @@ MonoBehaviour:
   - {fileID: 1435160609}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1985498938}
-      _MemberName: ShowChoiceArray
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: ChoiceArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 486486626}
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!1 &1458386137
 GameObject:
   m_ObjectHideFlags: 0
@@ -13804,6 +13925,8 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 1435160610}
+  pInputManager: {fileID: 346775373}
+  dialogueManager: {fileID: 1225665816}
 --- !u!224 &1562747901 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4081072646889100793, guid: f80f302396a81c44ea8f6751a1c045b5,
@@ -18429,7 +18552,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1985498938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18442,7 +18565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6119a04ada1174145bd38f88de8ca0b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialTextLoader: {fileID: 633467245}
+  dialTextLoader: {fileID: 398972754}
   choiceUIObj: {fileID: 668797021}
   choiceui: {fileID: 668797023}
   selectIndicator: {fileID: 6238803664639506447}

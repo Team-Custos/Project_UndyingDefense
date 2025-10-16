@@ -19,6 +19,7 @@ public class ChoiceManager : MonoBehaviour
         if (choiceUIObj != null) // Null 체크 추가
         {
             choiceUIObj.SetActive(false);
+            choiceui.gameObject.SetActive(false);
         }
 
     }
@@ -63,11 +64,11 @@ public class ChoiceManager : MonoBehaviour
                 }
             }
         }
-
-        // 실제로 사용된 버튼이 하나라도 있을 때만 UI 활성화
+        //실제로 사용된 버튼이 하나라도 있을 때만 UI 활성화
         if (visibleButtonIndex > 0)
         {
-            if (choiceUIObj != null) choiceUIObj.SetActive(true);
+            if (choiceUIObj != null) 
+                choiceUIObj.SetActive(true);
         }
         else
         {
@@ -108,10 +109,10 @@ public class ChoiceManager : MonoBehaviour
         ChoiceButtonUI choice = choiceButton;
         if (choice.GetIndex() == indicatorIndex)
         {
+            HideAndResetChoiceUI();
             choice.GetEvent().Invoke();
             //selectedUI.transform.position = choice.transform.position;
             //selectedUI.gameObject.SetActive(true);
-            HideAndResetChoiceUI();
             //StartCoroutine(SelectedCoroutine());
         }
         else

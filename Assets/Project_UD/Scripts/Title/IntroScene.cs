@@ -50,7 +50,7 @@ public class IntroScene : MonoBehaviour
     //    }
     //}
 
-    public void SkipVideo()
+    public void SkipVideo() // 인트로 
     {
         if(!isVideoSkipped)
         {
@@ -76,6 +76,7 @@ public class IntroScene : MonoBehaviour
 
         // 2. statement 페이드 인
         //FadeInStatementImage();
+        skipBtn.SetActive(false);
         statementCanvasGroup.gameObject.SetActive(true);
 
         // 3. firstHalfBgm 길이만큼 후에 다음 단계 실행
@@ -154,6 +155,11 @@ public class IntroScene : MonoBehaviour
         {
             LoadingSceneManager.LoadScene("LobbyScene_LoPol");
         });
+    }
+
+    public void LoadLobbyScene()
+    {
+        LoadingSceneManager.LoadScene("LobbyScene_LoPol");
     }
 
 

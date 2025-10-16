@@ -1,9 +1,11 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UltEvents;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : MonoBehaviour, IInputOnSpace
 {
     [SerializeField] private AudioClip lobbyBgm;
     [SerializeField] private AudioClip battleStartSfx;
@@ -18,6 +20,8 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private UltEvent isTutorialEnd;
     [SerializeField]private UltEvent beforeTuorial;
+    [SerializeField] private PlayerInputEventManager pInputManager;
+    [SerializeField] private DialogueManager dialogueManager;
 
 
     private ScriptableObject[] so;
@@ -35,10 +39,12 @@ public class LobbyManager : MonoBehaviour
 
         if (UserDataModel.instance.IsTutorialEnd)
         {
+            pInputManager.OnSpaceTarget = dialogueManager;
             isTutorialEnd.Invoke();
         }
         else
         {
+            pInputManager.OnSpaceTarget = dialogueManager;
             beforeTuorial.Invoke();
         }
 
@@ -111,5 +117,10 @@ public class LobbyManager : MonoBehaviour
         SoundManager.Instance.PlaySFX(battleStartSfx);
         LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
         UserDataModel.instance.SetGameFinished(true);
+    }
+
+    public void OnSpace(InputAction.CallbackContext context)
+    {
+        throw new System.NotImplementedException();
     }
 }
