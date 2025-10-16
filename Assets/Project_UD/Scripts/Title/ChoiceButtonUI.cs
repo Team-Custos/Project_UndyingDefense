@@ -29,7 +29,7 @@ public class ChoiceButtonUI : MonoBehaviour
     public void ResetButton()
     {
         text.text = "";
-        button.onClick.RemoveAllListeners();
+        //button.onClick.RemoveAllListeners();
     }
 
     public int GetIndex()

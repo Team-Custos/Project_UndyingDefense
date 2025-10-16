@@ -40,8 +40,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
     protected virtual void Start()
     {
-        //StartDialogue(dialogueData);
-        //ShowDialogue(speakingArray);
+        //inputManager.OnSpaceTarget = this;
     }
 
     protected void StartDialogue(DialogueData dialogueData)
@@ -79,7 +78,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
-        dialogueui.gameObject.SetActive(true);
+         dialogueui.gameObject.SetActive(true);
         ShowDialogue();
     }
 
@@ -91,8 +90,11 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
 
         dialogueLine.text = lines[currentLineIndex];
-        if(lines.Count > 1)
+        if (lines.Count > 1)
             nextBtn.gameObject.SetActive(true);
+        else
+            ReadLine();
+
 
     }
     public void ReadLine()  // 다른곳에서 불러올 이벤트로

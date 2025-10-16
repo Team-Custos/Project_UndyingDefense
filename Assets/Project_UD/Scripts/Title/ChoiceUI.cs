@@ -32,4 +32,9 @@ public class ChoiceUI : MonoBehaviour
     {
         return buttonUIArray[i];
     }
+
+    private void OnDisable()
+    {
+        int a = 0;
+    }
 }
