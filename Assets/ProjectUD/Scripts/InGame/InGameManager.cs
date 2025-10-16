@@ -123,6 +123,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void LoseGame()
     {
         isGameEnd = true;
+        UserDataModel.instance.SetGameFinished(true);
 
         SoundManager.Instance.PlaySFX(loseSfx);
         Invoke(nameof(PlayLoseBGM), loseSfx.length);
@@ -135,6 +136,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void WinGame()
     {
         isGameEnd = true;
+        UserDataModel.instance.SetGameFinished(true);
+        UserDataModel.instance.SetGameWin(true);
 
         SoundManager.Instance.PlaySFX(winSfx);
         Invoke(nameof(PlayWinBGM), loseSfx.length);

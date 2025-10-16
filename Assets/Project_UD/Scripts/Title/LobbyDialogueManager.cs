@@ -8,7 +8,7 @@ public class LobbyDialogueManager : DialogueManager
     [SerializeField] private SpeakingArray speakingArray;
     protected override void Start()
     {
-        if(UserDataModel.instance.IsGameFinshed)
+        if(UserDataModel.instance.IsGameFinished)
             this.gameObject.SetActive(false);
 
         if (UserDataModel.instance.IsTutorialEnd)

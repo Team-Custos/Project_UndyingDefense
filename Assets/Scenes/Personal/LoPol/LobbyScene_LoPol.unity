@@ -13925,6 +13925,34 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 1435160610}
+  isGameEnd:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 1200128837}
+  isGameWin:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 244540975}
   pInputManager: {fileID: 346775373}
   dialogueManager: {fileID: 1225665816}
 --- !u!224 &1562747901 stripped
@@ -16339,6 +16367,7 @@ MonoBehaviour:
   sfxLoopAudio: {fileID: 0}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
+  unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
 --- !u!1 &1771331443
@@ -18209,6 +18238,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTutorialEnd: 0
   isGameFinshed: 0
+  isGameWin: 0
+  introDialogueEnd: 0
+  firstMainDialogue: 0
+  afterTutorialDialogue: 0
+  afterGameDialogue: 0
+  afterGameWinDialogue: 0
 --- !u!1 &1962278718
 GameObject:
   m_ObjectHideFlags: 0
