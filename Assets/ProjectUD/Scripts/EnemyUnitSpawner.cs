@@ -25,6 +25,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform spawnDirection;
     [SerializeField] private AudioClip enmeySpawnSfx;
+    [SerializeField] private AudioClip portalSfx;  // 스폰 진행되는 동안 루핑
     [SerializeField] private ParticleSystem enemySpawnVfx;
 
     private int spawnCount; // 총 스폰 횟수
@@ -68,6 +69,7 @@ public class EnemyUnitSpawner : MonoBehaviour
                         spawnDataIndex = 0;
                         isSpawnEnd = true;
                         enemySpawnVfx.gameObject.SetActive(false);
+                        //SoundManager.Instance.StopLoopSFX(portalSfx);
 
                     }
                 }
@@ -179,6 +181,7 @@ public class EnemyUnitSpawner : MonoBehaviour
         curWaveData = waveData;
         isSpawnEnd = false;
         isSpawnWait = true;
+        //SoundManager.Instance.PlayLoopSFX(portalSfx);
     }
 
     public void StopActivateEnemy()

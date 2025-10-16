@@ -297,6 +297,7 @@ public class AttackSkill : SkillBase
         fortress.TakeDamage(damage);
     }
 
+
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
         target.AddEffect(data.Info.CritEffectPrefab, target);

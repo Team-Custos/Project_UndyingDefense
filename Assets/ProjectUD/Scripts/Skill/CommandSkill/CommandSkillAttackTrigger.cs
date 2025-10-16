@@ -121,17 +121,13 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
-    public void SetSFX(AudioClip loopSFX)
-    {
-        this.loopSFX = loopSFX;
-    }
 
     private void Start()
     {
         PlayVFX();
         if (data.LoopSFX != null)
         {
-            SoundManager.Instance.PlaySFXLoop(data.LoopSFX);
+            SoundManager.Instance.PlayLoopSFX(data.LoopSFX);
         }
     }
 
@@ -247,7 +243,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         GameObject hitVFX = data.AttackData.HitVFX;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX, null);
+            target.AddVFX(hitVFX, target.transform);
         }
 
         //ParticleSystem hitVFX = null;
@@ -280,7 +276,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     private void OnDestroy()
     {
-        SoundManager.Instance.StopSFXLoop();
+        SoundManager.Instance.StopLoopSFX(data.LoopSFX);
     }
 
 

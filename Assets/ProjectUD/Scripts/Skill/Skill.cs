@@ -58,6 +58,12 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
             onAttackFortress.Invoke(unit, fortress);
     }
 
+    public void ActivateFortressSkill(Fortress fortress)
+    {
+        if (onAttackFortress != null)
+            onAttackFortress.Invoke(null, fortress);
+    }
+
     public virtual void Initialize()
     {
         coolTimeCheck = Data.CoolTime;

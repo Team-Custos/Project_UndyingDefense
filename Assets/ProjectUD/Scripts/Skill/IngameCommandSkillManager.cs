@@ -183,6 +183,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         if (!skill[idx].IsCoolDown)
         {
             Debug.Log(skill[idx].name + "이 쿨타임 중...)");
+            SoundManager.Instance.PlayUnableUIClickSFX();
             return;
         }
 

@@ -45,6 +45,7 @@ public class DollyCamera : MonoBehaviour
             if(eventIndex == 3)
             {
                 SoundManager.Instance.PlayBGM(inGmaeBgm);
+                ingameScreenUI.OnOffInGameUI(true);
                 isCamPanning = false;
                 waveManager.StartWave();
             }    
@@ -52,7 +53,7 @@ public class DollyCamera : MonoBehaviour
             if (dollyCart.m_Position >= dollyCart.m_Path.MaxPos && panningDuration < 3.0f)
             {
                 virtualCamera.SetActive(true);
-                ingameScreenUI.OnOffInGameUI(true);
+                
             }
 
         }

@@ -34,7 +34,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
     [SerializeField] private Image[] spawnBtnsImages;
-    [SerializeField] private int spawnCost;
+    [SerializeField] private int[] spawnCosts;
 
     [SerializeField] private GameObject fortressPanel;
     [SerializeField] private GameObject goldPanel;
@@ -107,8 +107,8 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         if (settingUI.activeSelf)
         {
-            //SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
+            SoundManager.Instance.PlayCancelUISFX();
             Time.timeScale = 1.0f;
         }
         else
@@ -134,6 +134,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         {
             //SoundManager.Instance.playCancleSFX();
             settingUI.SetActive(false);
+            SoundManager.Instance.PlayCancelUISFX();
             Time.timeScale = 1.0f;
         }
         else
@@ -146,11 +147,11 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         }
     }
 
-    public void CloseSettting()
+    public void CloseSettting() // 버튼 용
     {
         if (settingUI.activeSelf)
         {
-            //.Instance.playCancleSFX();
+            SoundManager.Instance.PlayCancelUISFX();
             settingUI.SetActive(false);
             Time.timeScale = 1.0f;
         }
@@ -167,7 +168,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
-            if (spawnCost > inGameManager.inGameGold)
+            if (spawnCosts[i] > inGameManager.inGameGold)
             {
                 spawnBtnPriceText[i].color = Color.red;
                 spawnBtnsImages[i].tag = "UnInteractiveUi";

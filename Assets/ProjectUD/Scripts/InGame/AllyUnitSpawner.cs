@@ -35,7 +35,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private UnitSpawnUI unitSpawnUI;
     [SerializeField] private GameObject indicator;
 
-    
+
 
     [Header("■ Ground Layer")]
     [SerializeField] private LayerMask groundLayer;
@@ -191,7 +191,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
     public void ToggleSpawnUnit(int index)
     {
-        if(inGameManager.inGameGold < units[index].Cost)
+        if (index == 3)
+        {
+            SoundManager.Instance.PlayUnableUIClickSFX();
+            return;
+        }
+
+        if (inGameManager.inGameGold < units[index].Cost)
         {
             ingameScreenUI.ShowError("군자금이 모자랍니다!");
         }
@@ -247,7 +253,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
-        if (dollyCamera.IsCamPanning)
+        if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
             return;
 
         if (selectedUnitManager.SelectedUnit != null)

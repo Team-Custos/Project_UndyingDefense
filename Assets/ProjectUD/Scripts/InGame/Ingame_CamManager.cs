@@ -12,6 +12,7 @@ using UnityEngine.InputSystem;
 public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel, IInputOnSpace
 {
     [Header("■ Components")]
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private SelectedUnitManager    selectedUnitManager;
@@ -89,7 +90,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
         if (context.started || context.performed)
         {
-            if (dollyCamera.IsCamPanning)
+            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
                 return;
 
             Vector2 input = context.ReadValue<Vector2>();
@@ -116,7 +117,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         if (context.performed)
         {
-            if (dollyCamera.IsCamPanning)
+            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
                 return;
 
             float scrollInput = context.ReadValue<Vector2>().y;
@@ -142,6 +143,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         if(context.performed)
         {
+            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
+                return;
+
             if (selectedUnitManager.SelectedUnit != null)
                 FocusSelectedUnit(selectedUnitManager.SelectedUnit.transform.position);
             else

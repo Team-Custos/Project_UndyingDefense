@@ -8,8 +8,6 @@ public class ProjectileCtrl : MonoBehaviour
 
     [SerializeField] protected float speed = 1f;
 
-    
-
 
     // Start is called before the first frame update
     void Awake()

@@ -11829,13 +11829,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameGold: 1000
+  inGameGold: 3000
   ingameScreenUI: {fileID: 1541778265}
   inputEventManager: {fileID: 1311904121}
   enemyUnitSpawner: {fileID: 2030995722}
   allyUnitSpawner: {fileID: 175711730}
   dollyCamera: {fileID: 1936867425}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
+  winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
+  loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
+  winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
+  loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
 --- !u!4 &318867823
 Transform:
   m_ObjectHideFlags: 0
@@ -12933,6 +12937,11 @@ PrefabInstance:
       propertyPath: selectedUnitUI
       value: 
       objectReference: {fileID: 697713692}
+    - target: {fileID: 6387479899022941365, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
+        type: 3}
+      propertyPath: unitDataLoader
+      value: 
+      objectReference: {fileID: 1943153814}
     - target: {fileID: 6387479899022941365, guid: 7974ba7227ba30b47a9c5c5f8971c5f6,
         type: 3}
       propertyPath: selectedUnitManager
@@ -14172,7 +14181,7 @@ MonoBehaviour:
   - {fileID: 1582406392}
   - {fileID: 1330823880}
   btnClickSFX:
-  - {fileID: 8300000, guid: 969fc0936c53ae34891a18ec2bf42236, type: 3}
+  - {fileID: 8300000, guid: 6e83a935acbf88247a2da662b45ea8b5, type: 3}
   - {fileID: 8300000, guid: 1684c49111cc55344ae1179ef9d38725, type: 3}
   - {fileID: 8300000, guid: 0a318e6c2e318514b8369edfa6f347b0, type: 3}
 --- !u!4 &387297607
@@ -23390,7 +23399,7 @@ PrefabInstance:
     - target: {fileID: 1028723033424920151, guid: 1060208c7c08cc547ae833b58faa4104,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.67
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1028723033424920151, guid: 1060208c7c08cc547ae833b58faa4104,
         type: 3}
@@ -30042,6 +30051,99 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870760640}
   m_Mesh: {fileID: -9159451983379600932, guid: 04fda94d8d46bfd409139576596bbc4b, type: 3}
+--- !u!1001 &872997673
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -22.61
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.62
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5204911677ee1b844ab682e8d360a1f3, type: 2}
+    - target: {fileID: 919132149155446097, guid: 99c3fddd46dda144496e7bc5f6f089c4,
+        type: 3}
+      propertyPath: m_Name
+      value: skull
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 99c3fddd46dda144496e7bc5f6f089c4, type: 3}
 --- !u!4 &873700301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -54165,7 +54267,7 @@ MonoBehaviour:
   spawnBtnsImages:
   - {fileID: 1095191211}
   - {fileID: 1976080943}
-  spawnCost: 100
+  spawnCosts: 6400000064000000
   fortressPanel: {fileID: 1972332875}
   goldPanel: {fileID: 876815774}
   wavePanel: {fileID: 1792305500}
@@ -59615,6 +59717,7 @@ MonoBehaviour:
   sfxLoopAudio: {fileID: 1688425409}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
+  unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
 --- !u!4 &1688425412
@@ -64629,6 +64732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c19a1207bd51a4fac6803442afd9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGameManager: {fileID: 318867822}
   inputEventManager: {fileID: 1311904121}
   virtualCamera: {fileID: 1094198684}
   selectedUnitManager: {fileID: 1910483158}
@@ -67333,6 +67437,7 @@ MonoBehaviour:
   camManager: {fileID: 1842150498}
   commandSkillManager: {fileID: 387297606}
   mouseIndicatorParticle: {fileID: 1479007463}
+  upgradeBtn: {fileID: 0}
   upgradeSfx: {fileID: 8300000, guid: 293f6e681f147024b907eb56848243e3, type: 3}
   siegeSfx: {fileID: 8300000, guid: 0239c21a051d7794a9566bb2864be356, type: 3}
   freeSfx: {fileID: 8300000, guid: 35feb7bbbaf1baf4aa26e07095d6af7e, type: 3}
@@ -71865,6 +71970,7 @@ MonoBehaviour:
   - {fileID: 1630333902}
   spawnDirection: {fileID: 1619042928}
   enmeySpawnSfx: {fileID: 8300000, guid: 4c0f63606ef12f343b1ff5c837f1350e, type: 3}
+  portalSfx: {fileID: 0}
   enemySpawnVfx: {fileID: 1430894732}
 --- !u!4 &2030995723
 Transform:
@@ -75609,6 +75715,7 @@ SceneRoots:
   - {fileID: 262864695}
   - {fileID: 1936867427}
   - {fileID: 1910871067}
+  - {fileID: 872997673}
   - {fileID: 686288385}
   - {fileID: 1719787184}
   - {fileID: 184636903}

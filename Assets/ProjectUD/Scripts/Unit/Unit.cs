@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
+using System.Resources;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -337,6 +338,20 @@ public abstract class Unit : MonoBehaviour
             
         //}   
     }
+
+    //protected virtual void ActivateFortressSkill(SkillBase skill, Fortress target)
+    //{
+    //    skill.Activate(this, target);
+
+    //    //if (stateDurationCheck < skill.AnimationStateTime)
+    //    //{
+    //    //    stateDurationCheck += Time.deltaTime;
+    //    //}
+    //    //else
+    //    //{
+
+    //    //}
+    //}
 
     protected bool IsReachable(Vector3 pos)
     {
@@ -921,6 +936,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveStun()
     {
         modelAnimator.SetBool("isStun", false);
+        Debug.Log(1111);
     }
 
     public void AddInstantEffect(GameObject effectPrefab)

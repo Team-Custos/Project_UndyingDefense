@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : Singleton<SoundManager>
@@ -10,9 +11,12 @@ public class SoundManager : Singleton<SoundManager>
 
     [SerializeField] private AudioClip uiClickClip;
     [SerializeField] private AudioClip cancleClip;
+    [SerializeField] private AudioClip unableClickClip;
 
     [SerializeField] AudioClip[] unitSfxClip;
     [SerializeField] AudioClip[] uiSfxClip;
+
+    private Dictionary<AudioClip, AudioSource> loopSfxDic = new Dictionary<AudioClip, AudioSource>();
 
     public void PlayBGM(AudioClip clip)
     {
@@ -28,6 +32,7 @@ public class SoundManager : Singleton<SoundManager>
         if(bgmAudio != null)
             bgmAudio.Stop();
     }
+
 
     public void PlaySFX(AudioClip clip)
     {
@@ -46,23 +51,62 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    public void PlaySFXLoop(AudioClip clip)
+    public void PlayLoopSFX(AudioClip clip)
     {
-        sfxLoopAudio.clip = clip;
-        sfxLoopAudio.Play();
+        if(!loopSfxDic.ContainsKey(clip))
+        {
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            loopSfxDic.Add(clip, audioSource);
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        else
+        {
+            loopSfxDic.TryGetValue(clip, out AudioSource audioSource);
+            audioSource.clip = clip;
+            audioSource.loop = true;
+            Debug.Log("재생");
+            audioSource.Play();
+        }
+
     }
 
-    public void StopSFXLoop()
+    public void StopLoopSFX(AudioClip clip)
     {
-        if (sfxLoopAudio != null)
-            sfxLoopAudio.Stop();
+        if (!loopSfxDic.ContainsKey(clip))
+            return;
+
+        loopSfxDic.TryGetValue(clip, out AudioSource audioSource);
+        audioSource.Stop();
     }
+
+    //public void PlaySFXLoop(AudioClip clip) 
+    //{
+    //    sfxLoopAudio.clip = clip;  
+    //    sfxLoopAudio.Play(); 
+    //}
+
+    //public void StopSFXLoop() 
+    //{
+    //    if (sfxLoopAudio != null) 
+    //        sfxLoopAudio.Stop(); 
+    //}
 
     public void PlayUIClickSFX()
     {
         sfxAudio.PlayOneShot(uiClickClip);
     }
 
+    public void PlayUnableUIClickSFX()
+    {
+        sfxAudio.PlayOneShot(unableClickClip);
+    }
+
+    public void PlayCancelUISFX()
+    {
+        sfxAudio.PlayOneShot(cancleClip);
+    }
 
     //public void playCancleSFX()
     //{

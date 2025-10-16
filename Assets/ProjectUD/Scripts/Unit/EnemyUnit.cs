@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -171,7 +172,7 @@ public class EnemyUnit : Unit
         switch (state)
         {
             case State.STUN:
-                return;
+                break;
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.BATTLECRY:
@@ -455,8 +456,10 @@ public class EnemyUnit : Unit
         if(attackCool <= 0f)
         {
             modelAnimator.SetTrigger("GeneralSkill");
-            fortress.TakeDamage(data.Tier);
+            //ActivateFortressSkill(skill, fortress);
+
             attackCool = base.GeneralSkill.Data.CoolTime;
+            fortress.TakeDamage(data.Tier);
         }
     }
 
@@ -491,7 +494,17 @@ public class EnemyUnit : Unit
 
     public override void GetStun()
     {
+        if (state == State.RUN)
+        {
+            modelAnimator.SetBool("isRunning", false);
+        }
+        if (navAgent.enabled)
+        {
+            navAgent.isStopped = true;
+        }
+
         base.GetStun();
+
         state = State.STUN;
     }
     public override void RemoveStun()
@@ -499,7 +512,21 @@ public class EnemyUnit : Unit
         base.RemoveStun();
 
         if (!isDead)
+        {
             state = State.IDLE;
+
+            //if (mode == Mode.MOVE)
+            //{
+            //    modelAnimator.SetBool("isRunning", true);
+            //    navAgent.isStopped = false;
+            //}
+            
+            
+        }
+        //    state = State.IDLE;
+
+        //if (navAgent.enabled)
+        //    navAgent.isStopped = false;
     }
 
 

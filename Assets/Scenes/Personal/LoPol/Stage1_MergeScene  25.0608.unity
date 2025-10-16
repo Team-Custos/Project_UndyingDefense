@@ -2318,6 +2318,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &49514729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 427741455618700559, guid: 520c8f887221187439ed9066421682e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 551510774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &50834732 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5722444835161336669, guid: 520c8f887221187439ed9066421682e1,
@@ -7225,7 +7237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &196660877
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13509,7 +13521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f71bc09708af6c04d8c397d2746beca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameManager: {fileID: 0}
   spawnBtns:
   - {fileID: 1259683390}
   - {fileID: 1644872370}
@@ -13519,7 +13530,6 @@ MonoBehaviour:
   spawnBtnPriceText:
   - {fileID: 711959724}
   - {fileID: 16318382}
-  spawnCost: 0
 --- !u!4 &419025833 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -14508,9 +14518,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBC29\uC5B4 \uC18D\uC131"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6dd9bd780954f5b4a89a9186e4564274, type: 2}
-  m_sharedMaterial: {fileID: -2489636855689893228, guid: 6dd9bd780954f5b4a89a9186e4564274,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -16312,7 +16321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &503238505
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17843,7 +17852,7 @@ PrefabInstance:
     - target: {fileID: 216082153165665197, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 427741455618700559, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
@@ -17951,7 +17960,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 75cb1c24a534e2845909f307bd82cc3d,
+      objectReference: {fileID: 21300000, guid: 15dc21c37da869f428b1ff5bd1fcd5bf,
         type: 3}
     - target: {fileID: 4075385767144433121, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
@@ -22046,6 +22055,7 @@ MonoBehaviour:
   - {fileID: 2016478167}
   spawnDirection: {fileID: 1047462387}
   enmeySpawnSfx: {fileID: 8300000, guid: 76da3def170f3f940ad90c722efdcbbd, type: 3}
+  portalSfx: {fileID: 8300000, guid: 1c76df0b15f88214699a54485e97674e, type: 3}
   enemySpawnVfx: {fileID: 2004833654}
 --- !u!4 &679628029
 Transform:
@@ -24076,7 +24086,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &746956797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27998,6 +28008,10 @@ MonoBehaviour:
   allyUnitSpawner: {fileID: 923510898}
   dollyCamera: {fileID: 311500981}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
+  winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
+  loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
+  winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
+  loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
 --- !u!1 &857208344
 GameObject:
   m_ObjectHideFlags: 0
@@ -29505,7 +29519,7 @@ PrefabInstance:
     - target: {fileID: 5376122197768936697, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5376122197768936697, guid: 520c8f887221187439ed9066421682e1,
         type: 3}
@@ -31251,14 +31265,15 @@ MonoBehaviour:
   errorText: {fileID: 183769858}
   regionNameUI: {fileID: 829503572}
   resultUI: {fileID: 738562325}
-  animator: {fileID: 0}
   spawnBtnPriceText:
   - {fileID: 711959724}
   - {fileID: 16318382}
+  - {fileID: 49514729}
   spawnBtnsImages:
   - {fileID: 245049737}
   - {fileID: 50834732}
-  spawnCost: 100
+  - {fileID: 2115866597}
+  spawnCosts: 6400000064000000c8000000
   fortressPanel: {fileID: 1462092158}
   goldPanel: {fileID: 443975132}
   wavePanel: {fileID: 5964692050811124618}
@@ -32595,8 +32610,10 @@ MonoBehaviour:
   linePositions: {fileID: 0}
   audioSource: {fileID: 987298099}
   damageSound:
-  - {fileID: 8300000, guid: 8f2fcd6de08435b44959234a02630a72, type: 3}
-  - {fileID: 8300000, guid: 382282a1e064944418192c41b1a5b7d9, type: 3}
+  - {fileID: 8300000, guid: d7b0450dd45941c488fda0b8fc9f3983, type: 3}
+  - {fileID: 8300000, guid: 6fc72021e0afc2a4585a570fe6477353, type: 3}
+  - {fileID: 8300000, guid: 831658e4d48bec54b8e8e6e2bad16804, type: 3}
+  - {fileID: 8300000, guid: 653ee85447fa44849b897deecae87be0, type: 3}
 --- !u!4 &987298098
 Transform:
   m_ObjectHideFlags: 0
@@ -34393,6 +34410,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d987fff88b997414d9f5df3631233c23, type: 2}
   - {fileID: 11400000, guid: 9d38eeed47d8b304eaeaea4596e147b7, type: 2}
   dollyCamera: {fileID: 311500981}
+  isInfiniteMode: 0
 --- !u!4 &1023733845
 Transform:
   m_ObjectHideFlags: 0
@@ -36808,8 +36826,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 81.4}
-  m_SizeDelta: {x: 265.2, y: 121.7}
+  m_AnchoredPosition: {x: 0, y: 129.3}
+  m_SizeDelta: {x: 344.5, y: 221}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092244226
 MonoBehaviour:
@@ -36824,15 +36842,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7fac60fc939155c4bbf368f9bdff835d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -38320,9 +38338,10 @@ MonoBehaviour:
   camManager: {fileID: 1346724712}
   commandSkillManager: {fileID: 1238902731}
   mouseIndicatorParticle: {fileID: 1132875222}
-  upgradeSfx: {fileID: 8300000, guid: 293f6e681f147024b907eb56848243e3, type: 3}
-  siegeSfx: {fileID: 8300000, guid: 0239c21a051d7794a9566bb2864be356, type: 3}
-  freeSfx: {fileID: 8300000, guid: 35feb7bbbaf1baf4aa26e07095d6af7e, type: 3}
+  upgradeBtn: {fileID: 618903649}
+  upgradeSfx: {fileID: 8300000, guid: c0aed11f59d565b43aed5d215bcd4437, type: 3}
+  siegeSfx: {fileID: 8300000, guid: 1919e2178742fdd4098787544e7a8897, type: 3}
+  freeSfx: {fileID: 8300000, guid: 8ba1e44056cc42a4f8cadaa647dbbd4d, type: 3}
 --- !u!4 &1137951089
 Transform:
   m_ObjectHideFlags: 0
@@ -41530,7 +41549,7 @@ MonoBehaviour:
     m_Bits: 8
   alarmImages: []
   btnClickSFX:
-  - {fileID: 8300000, guid: 969fc0936c53ae34891a18ec2bf42236, type: 3}
+  - {fileID: 8300000, guid: 6e83a935acbf88247a2da662b45ea8b5, type: 3}
   - {fileID: 8300000, guid: 1684c49111cc55344ae1179ef9d38725, type: 3}
   - {fileID: 8300000, guid: 0a318e6c2e318514b8369edfa6f347b0, type: 3}
 --- !u!4 &1238902732
@@ -44958,13 +44977,13 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2083036496}
-  - {fileID: 1027238940}
-  - {fileID: 1134662124}
-  - {fileID: 1826660688}
   - {fileID: 512681309}
+  - {fileID: 1828173343}
+  - {fileID: 1134662124}
+  - {fileID: 1027238940}
+  - {fileID: 1826660688}
   - {fileID: 610973657}
   - {fileID: 249820049}
-  - {fileID: 1828173343}
   - {fileID: 448241470}
   - {fileID: 1640831927}
   - {fileID: 937906157}
@@ -45680,6 +45699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c19a1207bd51a4fac6803442afd9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGameManager: {fileID: 856739625}
   inputEventManager: {fileID: 1590103094}
   virtualCamera: {fileID: 633104416}
   selectedUnitManager: {fileID: 1137951088}
@@ -49691,8 +49711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 81.4}
-  m_SizeDelta: {x: 265.2, y: 121.7}
+  m_AnchoredPosition: {x: 0, y: 129.3}
+  m_SizeDelta: {x: 344.5, y: 221}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1489185923
 MonoBehaviour:
@@ -49707,15 +49727,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7fac60fc939155c4bbf368f9bdff835d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -54686,7 +54706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1636092399
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54954,6 +54974,7 @@ MonoBehaviour:
   sfxLoopAudio: {fileID: 1636126444}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
+  unableClickClip: {fileID: 8300000, guid: c8eca85e45b29d647855b4f560e413ee, type: 3}
   unitSfxClip: []
   uiSfxClip: []
 --- !u!82 &1636126444
@@ -61584,7 +61605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1896916034
 RectTransform:
   m_ObjectHideFlags: 0
@@ -66921,6 +66942,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2115385916}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2115866597 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5722444835161336669, guid: 520c8f887221187439ed9066421682e1,
+    type: 3}
+  m_PrefabInstance: {fileID: 551510774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2117423231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67210,6 +67243,7 @@ MonoBehaviour:
   waveSfxClip: []
   waveDatas: []
   dollyCamera: {fileID: 0}
+  isInfiniteMode: 0
 --- !u!1 &2132998468
 GameObject:
   m_ObjectHideFlags: 0

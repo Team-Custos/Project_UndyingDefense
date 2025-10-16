@@ -15,8 +15,15 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private AudioClip inGameIntro;
+
+    [SerializeField] private AudioClip winSfx;
+    [SerializeField] private AudioClip loseSfx;
+    [SerializeField] private AudioClip winBgm;
+    [SerializeField] private AudioClip loseBgm;
     private bool isGameEnd = false;
     private bool isGamePause = false;
+
+    public bool IsGameEnd => isGameEnd;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -99,8 +106,9 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
-            if (dollyCamera.IsCamPanning)
+            if (dollyCamera.IsCamPanning || isGameEnd)
                 return;
+
 
             //if (enemyUnitSpawner.IsGameOver)
             //    return;
@@ -114,15 +122,35 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void LoseGame()
     {
+        isGameEnd = true;
+
+        SoundManager.Instance.PlaySFX(loseSfx);
+        Invoke(nameof(PlayLoseBGM), loseSfx.length);
+
         enemyUnitSpawner.StopActivateEnemy();
+        allyUnitSpawner.StopActivateAlly();
+        ingameScreenUI.OnOffInGameUI(false);
+    }
+
+    public void WinGame()
+    {
+        isGameEnd = true;
+
+        SoundManager.Instance.PlaySFX(winSfx);
+        Invoke(nameof(PlayWinBGM), loseSfx.length);
+
         allyUnitSpawner.StopActivateAlly();
         ingameScreenUI.OnOffInGameUI(false);
 
     }
 
-    public void WinGame()
+    private void PlayLoseBGM()
     {
-        allyUnitSpawner.StopActivateAlly();
-        ingameScreenUI.OnOffInGameUI(false);
+        SoundManager.Instance.PlayBGM(loseBgm);
+    }
+
+    private void PlayWinBGM()
+    {
+        SoundManager.Instance.PlayBGM(winBgm);
     }
 }

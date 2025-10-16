@@ -664,6 +664,14 @@ public class AllyUnit : Unit
 
     public override void GetStun()
     {
+        if (state == State.RUN)
+        {
+            modelAnimator.SetBool("isRunning", false);
+        }
+        if (navAgent.enabled)
+        {
+            navAgent.isStopped = true;
+        }
         base.GetStun();
         state = State.STUN;
     }
@@ -672,27 +680,43 @@ public class AllyUnit : Unit
     {
         base.RemoveStun();
 
-        if(!isDead)
+        if (!isDead)
+        {
+            //if (navAgent.enabled)
+            //    navAgent.isStopped = false;
             state = State.IDLE;
+        }
+
+        //if (navAgent.enabled)
+        //    navAgent.isStopped = false;
+
     }
 
     private Unit SearchTarget(float range)
     {
         Unit result = null;
-        switch (data.TargetingType)
-        {
-            case TargetingType.NEAR:
-                result = SearchNearestTarget(range);
-                break;
-            case TargetingType.LOWHP:
-                result = SearchLowHPTarget(range);
-                break;
-            case TargetingType.HIGHTIER:
-                result = SearchHighTierTarget(range);
-                break;
-        }
 
-        return result;
+        result = SearchMarkedTarget(range);
+
+        if(result != null)
+            return result;
+        else
+        {
+            switch (data.TargetingType)
+            {
+                case TargetingType.NEAR:
+                    result = SearchNearestTarget(range);
+                    break;
+                case TargetingType.LOWHP:
+                    result = SearchLowHPTarget(range);
+                    break;
+                case TargetingType.HIGHTIER:
+                    result = SearchHighTierTarget(range);
+                    break;
+            }
+
+            return result;
+        }
     }
 
     private Unit SearchReachableTarget(float range)

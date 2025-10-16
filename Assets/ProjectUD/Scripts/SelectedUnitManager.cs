@@ -17,6 +17,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private ParticleSystem mouseIndicatorParticle;
 
+    [SerializeField] private Button upgradeBtn;
+
 
     [SerializeField] private AudioClip upgradeSfx;
     [SerializeField] private AudioClip siegeSfx;
@@ -241,13 +243,23 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             return;
         }
 
+        if(selectedUnit.Data.Name == "수행자")
+        {
+            SoundManager.Instance.PlayUnableUIClickSFX();
+            //upgradeBtn.interactable = false;
+            return;
+        }
+
+        //upgradeBtn.interactable = true;
         SoundManager.Instance.PlayUIClickSFX();
+
         unitSelectUI.ShowUpgradeMenu(selectedUnit);
     }
 
     public void UpgradeSelectedUnit(int index)
     {
         AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
+
 
         AllyUnitData nextUnitData = allyUnitData.UpgradeUnits[index] as AllyUnitData;
 
