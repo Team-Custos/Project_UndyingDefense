@@ -20,6 +20,7 @@ public class EnemyUnit : Unit
         GENERALSKILL,
         SPECIALSKILL,
         STUN,
+        FORTRESSSKILL,
         DEAD
     }
 
@@ -64,7 +65,8 @@ public class EnemyUnit : Unit
 
     public override UnitData Data => data;
 
-    private float attackCool;
+    private float fortressAttackCool;
+    [SerializeField] float aniduration;
 
     [SerializeField] private AudioClip[] enemyDeadSFX;
 
@@ -151,6 +153,8 @@ public class EnemyUnit : Unit
         mode = Mode.MOVE;
         behaviorPriority = BehaviorPriority.Move;
         navAgent.avoidancePriority = 1;
+
+        fortressAttackCool = GeneralSkill.Data.CoolTime;
     }
 
     public void SetWaveManager(WaveManager waveManager)
@@ -176,6 +180,7 @@ public class EnemyUnit : Unit
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
             case State.BATTLECRY:
+            case State.FORTRESSSKILL:
             case State.DEAD:
                 {
 
@@ -210,7 +215,6 @@ public class EnemyUnit : Unit
 
                     if (state == State.GENERALSKILL)
                     {
-
                         if (targetUnit != null)
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetGeneralSkill();
@@ -223,6 +227,20 @@ public class EnemyUnit : Unit
                             }
                         }
                     }
+
+                    if(state == State.FORTRESSSKILL)
+                    {
+                        SkillBase skill = GetGeneralSkill();
+
+                        if (skill != null)
+                        {
+                            if (stateDurationCheck >= skill.AnimationStateTime)
+                            {
+                                ActivateFortressSkil();
+                            }
+                        }
+                    }
+
 
                     if (stateDuration <= 0f)
                         return;
@@ -405,6 +423,7 @@ public class EnemyUnit : Unit
                         targetUnit = SearchTarget(UnitStats.sightRange);
                         if (targetUnit != null)
                         {
+                            state = State.IDLE;
                             mode = Mode.COMBAT;
                             MoveTo(targetUnit);
                         }
@@ -444,23 +463,20 @@ public class EnemyUnit : Unit
 
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
     {
+        state = State.FORTRESSSKILL;
+        modelAnimator.SetTrigger("GeneralSkill");
+
         transform.LookAt(fortress.transform.position);
 
         if (navAgent.enabled)
         {
             navAgent.isStopped = true;
         }
+    }
 
-
-        attackCool -= Time.deltaTime;
-        if(attackCool <= 0f)
-        {
-            modelAnimator.SetTrigger("GeneralSkill");
-            //ActivateFortressSkill(skill, fortress);
-
-            attackCool = base.GeneralSkill.Data.CoolTime;
-            fortress.TakeDamage(data.Tier);
-        }
+    private void ActivateFortressSkil()
+    {
+        base.GeneralSkill.Activate(this, fortress);
     }
 
     public override void TakeDamage(float Damage)

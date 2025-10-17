@@ -325,7 +325,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected virtual void ActivateSkill(SkillBase skill, Unit target) // 실제 스킬 사용 부분
+    protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
         skill.Activate(this, target);
 
@@ -339,19 +339,21 @@ public abstract class Unit : MonoBehaviour
         //}   
     }
 
-    //protected virtual void ActivateFortressSkill(SkillBase skill, Fortress target)
-    //{
-    //    skill.Activate(this, target);
 
-    //    //if (stateDurationCheck < skill.AnimationStateTime)
-    //    //{
-    //    //    stateDurationCheck += Time.deltaTime;
-    //    //}
-    //    //else
-    //    //{
 
-    //    //}
-    //}
+    protected virtual void ActivateFortressSkill(SkillBase skill, Fortress target)
+    {
+        skill.Activate(this, target);
+
+        //if (stateDurationCheck < skill.AnimationStateTime)
+        //{
+        //    stateDurationCheck += Time.deltaTime;
+        //}
+        //else
+        //{
+
+        //}
+    }
 
     protected bool IsReachable(Vector3 pos)
     {
@@ -724,46 +726,54 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void MoveTo(Unit target)
     {
-        //bool navAgentEnabled = navAgent.enabled;
-        //if (!navAgentEnabled) // navAgent가 비활성화 상태일 경우
-        //{
-        //    navObstacle.enabled = false;
-        //    navAgent.enabled = true;
-        //}
+        float nearestDistance = float.MaxValue;
+        bool hasAvailablePath = false;
 
-
+        Vector3 result = Vector3.zero;
         Vector3 startDir = (transform.position - target.transform.position).normalized;
+
         for (float i = 0f; i < 6f; i++)
         {
             Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
             Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
 
             NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
-            if (path.status == NavMeshPathStatus.PathComplete)
-            { 
-                if (navAgent.isStopped)
-                    navAgent.isStopped = false;
 
-
-                //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
-                navAgent.SetPath(path);
-
-                //float distance = Vector3.Distance(transform.position, targetPos);
-                //Debug.Log($"1 :  {distance}");
-
-            }
-            else if(path.status == NavMeshPathStatus.PathPartial)
+            if (path.status != NavMeshPathStatus.PathInvalid)
             {
-                navAgent.SetPath(path);
+                float distance = Vector3.Distance(transform.position, targetPos);
+
+                if (distance < nearestDistance)
+                {
+                    if (!hasAvailablePath)
+                        hasAvailablePath = true;
+
+                    nearestDistance = distance;
+                    result = targetPos;
+                    //navAgent.SetPath(path);
+                }
             }
         }
 
-        // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        //if (!navAgentEnabled)
+        if (hasAvailablePath)
+        {
+            if (navAgent.isStopped)
+                navAgent.isStopped = false;
+
+            navAgent.SetDestination(result);
+        }
+        //Vector3 startDir = (transform.position - target.transform.position).normalized;
+        //for (float i = 0f; i < 6f; i++)
         //{
-        //    // 다시 비활성화 상태로 원상복구.
-        //    navAgent.enabled = false;
-        //    navObstacle.enabled = true;
+        //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
+        //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
+
+        //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
+
+        //    if (path.status != NavMeshPathStatus.PathInvalid)
+        //    {
+        //        navAgent.SetPath(path);
+        //    }
         //}
     }
 

@@ -52,7 +52,14 @@ public class ArrowCtrl : ProjectileCtrl
             {
                 reachedTarget = true;
                 onAttack.Invoke();
-            }     
+            }
+            
+            if(fortress != null && !reachedTarget)
+            {
+                reachedTarget = true;
+                onAttack.Invoke();
+            }
+
             Destroy(gameObject);
         }
     }
