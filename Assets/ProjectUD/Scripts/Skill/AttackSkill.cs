@@ -1,6 +1,7 @@
 using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
+using Unity.VisualScripting;
 
 public class AttackSkill : SkillBase
 {
@@ -21,7 +22,7 @@ public class AttackSkill : SkillBase
     //protected static ParticleSystem slashCritVFX;
     //protected static ParticleSystem pierceCritVFX;
     //protected static ParticleSystem crushCritVFX;
-
+     
     public override SkillData Data => data;
 
     //protected static Effect SlashCritEffect
@@ -190,20 +191,40 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)//투사체 발사
+    public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
     {
         // 투사체 발사
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
-        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
+
+        float distance;
+
+        if (isUnit)
+            distance = Vector3.Distance(unit.transform.position, target.transform.position);
+        else
+            distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+
 
         if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
         {
-            arrowCtrl.SetTarget(target);
-            arrowCtrl.SetEvent(() => {
-                Attack(unit, target);
-            });
-            arrowCtrl.CalculateTime(distance);
-            arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+            if(isUnit)
+            {
+                arrowCtrl.SetTarget(target);
+                arrowCtrl.SetEvent(() => {
+                    Attack(unit, target);
+                });
+                arrowCtrl.CalculateTime(distance);
+                arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+            }
+            else
+            {
+                arrowCtrl.SetTarget(fortress);
+                arrowCtrl.SetEvent(() => {
+                    AttackFortress(unit, fortress);
+                });
+                arrowCtrl.CalculateTime(distance);
+                arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+            }
+            
 
         }
         if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
@@ -274,27 +295,11 @@ public class AttackSkill : SkillBase
         }
 
         target.TakeDamage(calcDamage);
-
-        //else
-        //{
-        //    //target.PlayHitSFX(data.AttackType);
-        //    AddHitVFX(unit, target);
-        //}
-
-        //if (data.InduseEffect != null)
-        //{
-        //    if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
-        //    {
-        //        target.AddEffect(unit, data.InduseEffect);
-        //    }
-        //}
     }
 
-    public void AttackFortress(Unit unit, Fortress fortress, UnitData data)
+    public void AttackFortress(Unit unit, Fortress fortress)
     {
-        int damage = data.Tier;
-
-        fortress.TakeDamage(damage);
+        fortress.TakeDamage(unit.Data.Tier);
     }
 
 

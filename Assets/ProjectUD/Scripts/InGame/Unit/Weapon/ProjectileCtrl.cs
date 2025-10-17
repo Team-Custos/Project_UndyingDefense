@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class ProjectileCtrl : MonoBehaviour
 {
     protected Unit targetUnit = null;
+    protected Fortress fortress = null;
     protected Rigidbody rb;  // Rigidbody를 할당
 
     [SerializeField] protected float speed = 1f;
@@ -22,5 +23,9 @@ public class ProjectileCtrl : MonoBehaviour
     public void SetTarget(Unit target)
     {
         targetUnit = target;
+    }
+    public void SetTarget(Fortress target)
+    {
+        fortress = target;
     }
 }
