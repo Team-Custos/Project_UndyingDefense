@@ -44,6 +44,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         DialogueEventInvoke();
 
     }
+    public void BeforeTutorial() // 훈련장으로 안내하기 위한 
+    {
+        alarm.gameObject.SetActive(true);
+        stageStartBtn.SetActive(false);
+    }
     public void DialogueEventInvoke()
     {
         if (!UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
@@ -52,8 +57,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             pInputManager.OnSpaceTarget = dialogueManager;
             UserDataModel.instance.SetFirstMainDialogue(true);
             beforeTuorial.Invoke();
-            alarm.gameObject.SetActive(true);
-            stageStartBtn.SetActive(false);
+            //alarm.gameObject.SetActive(true);
+            //stageStartBtn.SetActive(false);
         }
 
         else if (UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
