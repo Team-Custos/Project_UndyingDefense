@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UltEvents;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class LobbyManager : MonoBehaviour, IInputOnSpace
@@ -17,6 +18,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject rosterPanel;
     [SerializeField] private float endDelay = 0.5f;
 
+    [SerializeField] private GameObject stageStartBtn;
+    [SerializeField] private Image alarm;
+
+    [SerializeField] private MessageUI messageUI;
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private UltEvent isTutorialEnd;
     [SerializeField]private UltEvent beforeTuorial;
@@ -39,7 +44,6 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         DialogueEventInvoke();
 
     }
-
     public void DialogueEventInvoke()
     {
         if (!UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
@@ -48,6 +52,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             pInputManager.OnSpaceTarget = dialogueManager;
             UserDataModel.instance.SetFirstMainDialogue(true);
             beforeTuorial.Invoke();
+            alarm.gameObject.SetActive(true);
+            stageStartBtn.SetActive(false);
         }
 
         else if (UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished

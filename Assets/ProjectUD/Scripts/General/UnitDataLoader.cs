@@ -10,7 +10,7 @@ public class UnitStats   // 엑셀로 불러온 유닛 데이터 클래스
     public string unitName;
     public float maxHp;
     public float moveSpeed;
-    public float attackSpeed;
+    public string attackSpeed;
     public float sightRange;
     public float attackRange;
     public float mental;
@@ -56,8 +56,9 @@ public class UnitDataLoader : MonoBehaviour
                 tier = int.Parse(values[2]),                                               
                 maxHp = float.Parse(values[3]),                                              
                 cost = int.Parse(values[4]),                                               
-                moveSpeed = float.Parse(values[5]),                                        
-                attackSpeed = float.Parse(values[6]),
+                moveSpeed = float.Parse(values[5]),
+                //attackSpeed = float.Parse(values[6]),
+                attackSpeed = values[6],
                 sightRange = float.Parse(values[7]),
                 attackRange = float.Parse(values[8]),
                 mental = float.Parse(values[9]),
