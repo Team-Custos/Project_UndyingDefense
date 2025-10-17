@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UltEvents;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class LobbyManager : MonoBehaviour, IInputOnSpace
@@ -17,9 +18,15 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject rosterPanel;
     [SerializeField] private float endDelay = 0.5f;
 
+    [SerializeField] private GameObject stageStartBtn;
+    [SerializeField] private Image alarm;
+
+    [SerializeField] private MessageUI messageUI;
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private UltEvent isTutorialEnd;
     [SerializeField]private UltEvent beforeTuorial;
+    [SerializeField] private UltEvent isGameEnd;
+    [SerializeField] private UltEvent isGameWin;
     [SerializeField] private PlayerInputEventManager pInputManager;
     [SerializeField] private DialogueManager dialogueManager;
 
@@ -34,20 +41,44 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
         so = Resources.LoadAll<ScriptableObject>("Data/UnitData");
 
-        if (UserDataModel.instance.IsGameFinshed)
-            dialogueUI.gameObject.SetActive(false);
+        DialogueEventInvoke();
 
-        if (UserDataModel.instance.IsTutorialEnd)
+    }
+    public void DialogueEventInvoke()
+    {
+        if (!UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
+            && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.FirstMainDialogue)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
+            UserDataModel.instance.SetFirstMainDialogue(true);
+            beforeTuorial.Invoke();
+            alarm.gameObject.SetActive(true);
+            stageStartBtn.SetActive(false);
+        }
+
+        else if (UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
+            && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterTutorialDialogue)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            UserDataModel.instance.SetAfterTutorialDialogue(true);
             isTutorialEnd.Invoke();
         }
-        else
+        else if (UserDataModel.instance.IsTutorialEnd && UserDataModel.instance.IsGameFinished
+            && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterGameDialogue)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
-            beforeTuorial.Invoke();
+            UserDataModel.instance.SetAfterGameDialogue(true);
+            isGameEnd.Invoke();
         }
-
+        else if (UserDataModel.instance.IsTutorialEnd && UserDataModel.instance.IsGameFinished
+            && UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterGameWinDialogue)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            UserDataModel.instance.SetAfterGameWinDialogue(true);
+            isGameWin.Invoke();
+        }
+        else
+            return;
     }
     public void EndGame()
     {
