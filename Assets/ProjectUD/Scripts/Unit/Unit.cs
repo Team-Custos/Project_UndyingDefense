@@ -946,7 +946,6 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveStun()
     {
         modelAnimator.SetBool("isStun", false);
-        Debug.Log(1111);
     }
 
     public void AddInstantEffect(GameObject effectPrefab)

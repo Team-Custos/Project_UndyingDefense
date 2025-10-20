@@ -8,9 +8,6 @@ public class ExecutionEffect : MonoBehaviour
     [SerializeField] private GameObject loopVfx;
     [SerializeField] private GameObject endVfx;
 
-    private EnemyUnit target;
-
-
     public void ActivateExecution()
     {
         startVfx.SetActive(true);
