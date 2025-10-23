@@ -8,12 +8,14 @@ public class StageClearData : MonoBehaviour
 {
     [SerializeField] private TextAsset stageClearData;
     private List<StageData> startStageList = new List<StageData>();
-    private List<StageData> stagePlayerPrefs = new List<StageData>();
-    private Dictionary<string, string> stageClear = new Dictionary<string, string>();
+    //private List<StageData> stagePlayerPrefs = new List<StageData>();
+
+    private Dictionary<string, StageData> stageData = new Dictionary<string, StageData>();
+    private Dictionary<string, StageData> stagePlayerPrefs = new Dictionary<string, StageData>();
 
     public struct StageData
     {
-        public string id;
+        //public string id;
         public string isClear;
     }
 
@@ -36,22 +38,37 @@ public class StageClearData : MonoBehaviour
             string isClear = data[1];
 
             StageData stagedata = new StageData();
-            stagedata.id = stageID;
+            //stagedata.id = stageID;
             stagedata.isClear = isClear;
 
-            startStageList.Add(stagedata);
+            startStageList.Add(stagedata);  // 리스트 => 딕셔너리 변경예정
+
+            stageData.Add(stageID, stagedata);    // 딕셔너리
 
             readLine = sr.ReadLine();   // 다음줄 읽기
         }
     }
 
-    private void SaveToPlayerPrefs(List<StageData> stageDatas)
+    private void SaveToPlayerPrefs(Dictionary<string, StageData> dic)     // 초기데이터 딕셔너리에 저장
+    {
+        string playerPrefData = "";
+        foreach (var kvp in dic)
+        {
+            string stageID = kvp.Key;
+            StageData stageData = kvp.Value;
+            playerPrefData += $"{stageID}, {stageData.isClear}\n";
+        }
+        PlayerPrefs.SetString("stageData", playerPrefData);
+    }
+
+    private void SaveToPlayerPrefs(List<StageData> stageDatas)  // 리스트에 저장했을 때 사용한 코드
     {
         string playerPrefData = "";
         for (int i = 0;  i < startStageList.Count; i++)
         {
             //playerPrefData += $"{startStageList[i].id}, {startStageList[i].isClear}";
-            playerPrefData += $"{stageDatas[i].id}, {stageDatas[i].isClear}";
+            //playerPrefData += $"{stageDatas[i].id}, {stageDatas[i].isClear}";   
+            
             playerPrefData += "\n";
         }
         PlayerPrefs.SetString("stageData" , playerPrefData);
@@ -65,23 +82,21 @@ public class StageClearData : MonoBehaviour
         {
             string[] data = readLine.Split(",");
             string id = data[0];
-            //int isClear = int.Parse(data[1]);
             string isClear = data[1];
 
             StageData stageData = new StageData();
-            stageData.id = id;
+            //stageData.id = id;
             stageData.isClear = isClear;
 
-            //stagePlayerPrefs.Add(stageData);
-            stageClear.Add(id, isClear);    // 딕셔너리
+            stagePlayerPrefs.Add(id, stageData);    // 딕셔너리로 저장
 
             sr.ReadLine();
         }
     }
 
-    public Dictionary<string, string> GetStageData()    // 변경예정
+    public Dictionary<string, StageData > GetStageData()    // 변경예정
     {
-        return stageClear;
+        return stageData;
     }
 
 }
