@@ -16,7 +16,9 @@ public class StageClearData : MonoBehaviour
     public struct StageData
     {
         //public string id;
+        //public string name;
         public string isClear;
+        //public string clearTime;
     }
 
     private void Start()
@@ -57,7 +59,7 @@ public class StageClearData : MonoBehaviour
         {
             string stageID = kvp.Key;
             StageData stageData = kvp.Value;
-            playerPrefData += $"{stageID},{stageData.isClear}\n";
+            playerPrefData += $"{stageID},{stageData.isClear}\n";       // 추가될 데이터 형식에 맞게 변경
         }
         PlayerPrefs.SetString("stageData", playerPrefData);
     }

@@ -53,8 +53,6 @@ public class MessageUI : MonoBehaviour
         message.gameObject.SetActive(true);
         animator.SetTrigger("FadeIn");
         SoundManager.Instance.PlaySFX(sfx);
-
-        //PlayerPrefs.GetInt("IsFirstStageClear");
     }
 
     private void RemoveMessage()
