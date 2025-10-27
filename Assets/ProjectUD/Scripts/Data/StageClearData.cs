@@ -3,119 +3,126 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
+using static StageClearData;
 
 public class StageClearData : MonoBehaviour
 {
     [SerializeField] private TextAsset stageClearData;
 
-    // 초기 데이터 저장용 -> 필요없음
-    private Dictionary<string, StageData> stageData = new Dictionary<string, StageData>();
     // 불러와서 저장용
     private Dictionary<string, StageData> stagePlayerPrefs = new Dictionary<string, StageData>();
+    // 마지막으로 진입한 전장 저장용 => 하나만 저장할건데 Dictionary생성? 그냥 플레이어 프랩스에 저장?
+    private Dictionary<string, StageData> latestPlayStage = new Dictionary<string, StageData>();
 
     public struct StageData
     {
-        //public string id;
-        //public string name;
-        public string isClear;
-        //public string clearTime;
+        public string id;
+        public string isOpen;
+        public string isStageEnd;
+        public string clearTime;
     }
+
+    private StageData lastPlayedStage;
 
     private void Start()
     {
-        LoadStageData();
+        LoadStageData(stageClearData.text);
         // 스테이지 PlayerPrefs를 저장한 적이 없으면 초기 StageData 불러오기
         // 불러온적이 있으면 스테이지 PlayerPrefs를 불러오기
     }
 
-    private void LoadStageData()    // 초기 stageClearData.text 불러오기
+    // 초기 데이터 저장
+    private void LoadStageData(string st)
     {
-        StringReader sr = new StringReader(stageClearData.text); // 여기서 PlayerPrefs 자체를 읽기
-
-        string readLine = sr.ReadLine();
-
-        while (readLine != null)
-        {
-            string[] data = readLine.Split(',');
-            string stageID = data[0];
-            string isClear = data[1];
-
-            StageData stagedata = new StageData();
-            //stagedata.id = stageID;
-            stagedata.isClear = isClear;
-
-            // startStageList.Add(stagedata);  // 리스트 => 딕셔너리 변경예정
-
-            //stageData.Add(stageID, stagedata);    // 딕셔너리
-
-            readLine = sr.ReadLine();   // 다음줄 읽기
-        }
+        PlayerPrefs.SetString("stage", st);     
     }
 
-    private void SaveToPlayerPrefs(Dictionary<string, StageData> dic)     // 초기데이터 딕셔너리에 저장
+    // 딕셔너리에 있는 정보 다시 프랩스로 저장
+    private void SaveStageData(Dictionary<string, StageData> dic)     
     {
-        string playerPrefData = "";
+        string playerPrefData = string.Empty;
         foreach (var kvp in dic)
         {
             string stageID = kvp.Key;
             StageData stageData = kvp.Value;
-            playerPrefData += $"{stageID},{stageData.isClear}\n";       // 추가될 데이터 형식에 맞게 변경
+            playerPrefData += $"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}\n";
         }
         PlayerPrefs.SetString("stageData", playerPrefData);
     }
-    private void ReadPlayerPrefs(string st, Dictionary<string, StageData> dic)      // 저장된 Stage 불러오기
+
+    // 마지막 진입 전장정보 Prefs에 저장
+    public void SaveStageData()
     {
-        PlayerPrefs.SetString("stage", st);     // 초기 데이터 저장
+        string lastPlayStage = string.Empty;
+        lastPlayStage += $"{lastPlayedStage.id},{lastPlayedStage.isOpen},{lastPlayedStage.isStageEnd},{lastPlayedStage.clearTime}\n";
+
+        PlayerPrefs.SetString("lastPlayedStageData", lastPlayStage);
+
+    }
+
+    // 전장 들어갔다 나오기만 할 때 사용 셋팅 메서드
+    public void SetLastPlayedStage(string id)
+    {
+
+    }
+
+    // 전장 종료시 사용할 셋팅 메서드
+    public void SetLastPlayedStage(string id, string isOpen, string isStageEnd, string clearTime)
+    {
+        lastPlayedStage.id = id;
+        lastPlayedStage.isOpen = isOpen;
+        lastPlayedStage.isStageEnd = isStageEnd;
+        lastPlayedStage.clearTime = clearTime;
+    }
+
+    // 저장된 Stage 프랩스 불러오기
+    private void ReadPlayerPrefs(Dictionary<string, StageData> dic)      
+    {
+        string st = PlayerPrefs.GetString("stage");
         
         // 저장데이터 딕셔너리에 저장하기 (인게임에서 정보 변경용)
-        string readLine = st;
-        string[] lines = readLine.Split("\n");
+        string[] lines = st.Split("\n");
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
-            string[] datas = readLine.Split(",");
-            string stageID = datas[0];  // 엑셀 첫칸 ID     // 후에 엑셀 두번째칸은 전장이름으로 예시만들어서 수정예정
-            string isClear = datas[1];  // 
+            string[] datas = line.Split(",");
 
-            StageData stageData = new StageData();
-            stageData.isClear = isClear;
+            string stageID = datas[0];
+            string isOpen = datas[1];
+            string isPlayed = datas[2];
+            string clearTime = datas[3];
 
-            stagePlayerPrefs.Add(stageID, stageData);
-        }
-    }
+            StageData stagedata = new StageData();
+            stagedata.id = stageID;
+            stagedata.isOpen = isOpen;
+            stagedata.isStageEnd = isPlayed;
+            stagedata.clearTime = clearTime;
 
-    private void ReadPlayerPrefs()      // 저장된 Stage 불러오기
-    {
-        StringReader sr = new StringReader(PlayerPrefs.GetString("stageData"));
-        string readLine = sr.ReadLine();
-        while (readLine != null)
-        {
-            string[] data = readLine.Split(",");
-            string id = data[0];
-            string isClear = data[1];
-
-            StageData stageData = new StageData();
-            //stageData.id = id;
-            stageData.isClear = isClear;
-
-            stagePlayerPrefs.Add(id, stageData);    // 딕셔너리로 저장
-
-            sr.ReadLine();
+            dic.Add(stageID, stagedata);
         }
     }
 
     // 저장데이터를 불러온 딕셔너리 저장 정보 확인
     public Dictionary<string, StageData > GetStageData()  
     {
-        return stageData;
+        return latestPlayStage;
+    }
+
+    // 마지막으로 진입한 전장정보를 가져오기 위한 메서드
+    public StageData GetStageData(string stageID)
+    {
+        return stagePlayerPrefs[stageID];
     }
 
     // 딕셔너리 정보 변경 메서드
-    public void SetStageDictionary(string key, string value)
+    public void SetStageDictionary(string id, string isOpen, string isPlayed, string clearTime)
     {
         StageData stagedata = new StageData();
-        stagedata.isClear = value;
-        stagePlayerPrefs[key] = stagedata;
+        stagedata.isOpen = isOpen;
+        stagedata.isStageEnd = isPlayed;
+        stagedata.clearTime = clearTime;
+
+        stagePlayerPrefs[id] = stagedata;
     }
 
 }
