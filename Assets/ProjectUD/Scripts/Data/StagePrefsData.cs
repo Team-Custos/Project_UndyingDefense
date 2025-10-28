@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
-using static StageClearData;
+using static StagePrefsData;
 
-public class StageClearData : MonoBehaviour
+public class StagePrefsData : MonoBehaviour
 {
     [SerializeField] private TextAsset stageClearData;
 
     // 불러와서 저장용
     private Dictionary<string, StageData> stagePlayerPrefs = new Dictionary<string, StageData>();
-    // 마지막으로 진입한 전장 저장용 => 하나만 저장할건데 Dictionary생성? 그냥 플레이어 프랩스에 저장?
+    // 마지막으로 진입한 전장 저장용 
     private Dictionary<string, StageData> latestPlayStage = new Dictionary<string, StageData>();
 
     public struct StageData
@@ -63,10 +63,17 @@ public class StageClearData : MonoBehaviour
     // 전장 들어갔다 나오기만 할 때 사용 셋팅 메서드
     public void SetLastPlayedStage(string id)
     {
+        //lastPlayedStage.id = id;
+
+        // 기존에 있었던 정보 불러오기
+        lastPlayedStage.id = stagePlayerPrefs[id].id;
+        lastPlayedStage.isOpen = stagePlayerPrefs[id].isOpen;
+        lastPlayedStage.isStageEnd = stagePlayerPrefs[id].isStageEnd;
+        lastPlayedStage.clearTime = stagePlayerPrefs[id].clearTime;
 
     }
 
-    // 전장 종료시 사용할 셋팅 메서드
+    // 전장 종료시 사용할 셋팅 메서드 
     public void SetLastPlayedStage(string id, string isOpen, string isStageEnd, string clearTime)
     {
         lastPlayedStage.id = id;
@@ -74,6 +81,13 @@ public class StageClearData : MonoBehaviour
         lastPlayedStage.isStageEnd = isStageEnd;
         lastPlayedStage.clearTime = clearTime;
     }
+
+    // 마지막으로 진입한 전장정보를 가져오기 위한 메서드
+    public StageData GetStageData(string stageID)
+    {
+        return stagePlayerPrefs[stageID];
+    }
+
 
     // 저장된 Stage 프랩스 불러오기
     private void ReadPlayerPrefs(Dictionary<string, StageData> dic)      
@@ -108,13 +122,7 @@ public class StageClearData : MonoBehaviour
         return latestPlayStage;
     }
 
-    // 마지막으로 진입한 전장정보를 가져오기 위한 메서드
-    public StageData GetStageData(string stageID)
-    {
-        return stagePlayerPrefs[stageID];
-    }
-
-    // 딕셔너리 정보 변경 메서드
+    // 전장 정보 변경 메서드
     public void SetStageDictionary(string id, string isOpen, string isPlayed, string clearTime)
     {
         StageData stagedata = new StageData();
