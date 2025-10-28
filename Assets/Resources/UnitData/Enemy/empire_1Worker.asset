@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: empire_1Worker
   m_EditorClassIdentifier: 
-  unitName: "\uB178\uC5ED\uC790"
   tier: 1
+  unitName: "\uB178\uC5ED\uC790"
   armorType: 0
-  maxHp: 120
-  critChance: 10
-  mental: 1
-  moveSpeed: 2
-  attackSpeed: 100
-  sightRange: 20
-  attackRange: 3
+  id: empire_1Worker
   icon: {fileID: 21300000, guid: 4b1182f0e889a6c41aa0f2ae6f550070, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 27600184f4b6e2648a8dc2042669c768, type: 3}
   atTypeIcon: {fileID: 0}
@@ -35,6 +29,9 @@ MonoBehaviour:
     \uD718\uB450\uB974\uB294 \uADF8 \uB3C4\uB07C\uB294 \uC790\uC2E0\uC758 \uC0B6\uC744
     \uBD80\uC815\uB2F9\uD55C \uC790\uC758 \uBB34\uC5B8\uC758 \uC800\uD56D\uCC98\uB7FC
     \uB290\uAEF4\uC9C4\uB2E4."
+  generalSkill: {fileID: 0}
+  specialSkill: {fileID: 0}
+  campName: empire
   gold: 10
   targetingType: 0
-  aiStance: 1
+  aiStance: 0

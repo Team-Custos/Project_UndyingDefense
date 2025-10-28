@@ -10,7 +10,14 @@ public class EnemySpawnData
 
     public EnemyUnitData Enemy => enemy; 
     public int Count => count;
+
+    public int waveNum;
+
+    public string id;
+    public string pos;
+    public float interval;
 } 
+
 
 [CreateAssetMenu(fileName = "WaveData", menuName = "ProjectUD/WaveData")]
 public class WaveData : ScriptableObject
@@ -20,4 +27,5 @@ public class WaveData : ScriptableObject
 
     public int Reward => reward;
     public IReadOnlyList<EnemySpawnData> MonsterSpawnInfos => monsterSpawnInfos;
+    
 }

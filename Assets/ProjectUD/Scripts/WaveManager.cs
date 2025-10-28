@@ -20,6 +20,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private AudioClip[] waveSfxClip;
     [SerializeField] private WaveData[] waveDatas; // 웨이브 데이터
     [SerializeField] private DollyCamera dollyCamera;
+    [SerializeField] private WaveDataLoader waveDataLoader;
 
     [Header("■ Wave Options")] // 웨이브에 사용되는 변수들
     [SerializeField] private bool isInfiniteMode = false;
@@ -84,7 +85,7 @@ public class WaveManager : MonoBehaviour
 
     public void SetWaveEnd()
     {
-        if (curWave >= waveDatas.Length)
+        if (curWave >= waveDataLoader.WaveDataList.Count)//waveDatas.Length)
         {
             if(!isInfiniteMode)
             {

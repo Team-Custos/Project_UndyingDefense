@@ -1932,6 +1932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 34717630}
   - component: {fileID: 34717629}
+  - component: {fileID: 34717631}
   m_Layer: 0
   m_Name: ExcelDataReader
   m_TagString: Untagged
@@ -1967,6 +1968,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &34717631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34717628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveDataTable: {fileID: 4900000, guid: a91cd42021df20f4f8d7a929b1e3ce96, type: 3}
+  enemyUnitDatas: []
+  path: UnitData/Enemy
 --- !u!4 &35039892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -22041,18 +22057,24 @@ MonoBehaviour:
   upgradeMenuUI: {fileID: 5963399257725955338}
   ingameScreenUI: {fileID: 959445840}
   waveManager: {fileID: 1023733844}
+  waveDataLoader: {fileID: 34717631}
   fortress: {fileID: 987298097}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
   instantEffectPool: {fileID: 707335199}
   hitVFXPool: {fileID: 1091578119}
   spawnInterval: 1.5
+  spawnPositions:
+  - {fileID: 227319632}
+  - {fileID: 1123047748}
   spawnPoints:
   - {fileID: 227319632}
   - {fileID: 838009752}
   - {fileID: 1966969010}
   - {fileID: 1123047748}
   - {fileID: 2016478167}
+  aSpawnPoints: []
+  bSpawnPoints: []
   spawnDirection: {fileID: 1047462387}
   enmeySpawnSfx: {fileID: 8300000, guid: 76da3def170f3f940ad90c722efdcbbd, type: 3}
   portalSfx: {fileID: 8300000, guid: 1c76df0b15f88214699a54485e97674e, type: 3}
@@ -28632,7 +28654,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.033333335
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: d9a792f4e8d8b7846a9a67f717cdd0b8, type: 2}
   m_BuildHeightMesh: 0
@@ -34410,6 +34432,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d987fff88b997414d9f5df3631233c23, type: 2}
   - {fileID: 11400000, guid: 9d38eeed47d8b304eaeaea4596e147b7, type: 2}
   dollyCamera: {fileID: 311500981}
+  waveDataLoader: {fileID: 34717631}
   isInfiniteMode: 0
 --- !u!4 &1023733845
 Transform:
@@ -55959,7 +55982,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.033333335
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 809b631cdf172664892694499fdc0095, type: 2}
   m_BuildHeightMesh: 0
@@ -67243,6 +67266,7 @@ MonoBehaviour:
   waveSfxClip: []
   waveDatas: []
   dollyCamera: {fileID: 0}
+  waveDataLoader: {fileID: 0}
   isInfiniteMode: 0
 --- !u!1 &2132998468
 GameObject:

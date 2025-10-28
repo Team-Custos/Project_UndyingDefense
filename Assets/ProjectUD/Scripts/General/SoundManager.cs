@@ -69,7 +69,6 @@ public class SoundManager : Singleton<SoundManager>
             Debug.Log("재생");
             audioSource.Play();
         }
-
     }
 
     public void StopLoopSFX(AudioClip clip)

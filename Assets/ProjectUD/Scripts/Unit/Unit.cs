@@ -412,6 +412,40 @@ public abstract class Unit : MonoBehaviour
         return result;
     }
 
+    protected Unit SearchNearestTarget(float range, Unit excludeTarget) // targeUnit을 제외한 가장 가까운 적 탐색
+    {
+        Unit result = null;
+        float minDst = float.MaxValue;
+
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                Unit unit = collidersInRange[i].GetComponent<Unit>();
+                if (unit == null)
+                    continue;
+
+                if (unit == excludeTarget)
+                    continue;
+
+                if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                    continue;
+
+                float dst = Vector3.Distance(transform.position, unit.transform.position);
+
+                if (dst < minDst)
+                {
+                    minDst = dst;
+                    result = unit;
+                }
+            }
+        }
+
+        return result;
+    }
+
     protected Unit SearchNearestTarget(IReadOnlyList<Unit> targets)
     {
         Unit result = null;
@@ -739,7 +773,7 @@ public abstract class Unit : MonoBehaviour
 
             NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
 
-            if (path.status != NavMeshPathStatus.PathInvalid)
+            if(path.status == NavMeshPathStatus.PathComplete)
             {
                 float distance = Vector3.Distance(transform.position, targetPos);
 
@@ -753,6 +787,22 @@ public abstract class Unit : MonoBehaviour
                     //navAgent.SetPath(path);
                 }
             }
+
+
+            //if (path.status != NavMeshPathStatus.PathInvalid)
+            //{
+            //    float distance = Vector3.Distance(transform.position, targetPos);
+
+            //    if (distance < nearestDistance)
+            //    {
+            //        if (!hasAvailablePath)
+            //            hasAvailablePath = true;
+
+            //        nearestDistance = distance;
+            //        result = targetPos;
+            //        navAgent.SetPath(path);
+            //    }
+            //}
         }
 
         if (hasAvailablePath)
@@ -761,6 +811,20 @@ public abstract class Unit : MonoBehaviour
                 navAgent.isStopped = false;
 
             navAgent.SetDestination(result);
+        }
+        else
+        {
+            Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
+
+            if (newTarget != null)
+            {
+                targetUnit = newTarget;
+                //MoveTo(targetUnit);
+            }
+            else
+            {
+                Debug.Log("1111111");
+            }
         }
         //Vector3 startDir = (transform.position - target.transform.position).normalized;
         //for (float i = 0f; i < 6f; i++)

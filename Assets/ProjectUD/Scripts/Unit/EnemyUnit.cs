@@ -66,7 +66,6 @@ public class EnemyUnit : Unit
     public override UnitData Data => data;
 
     private float fortressAttackCool;
-    [SerializeField] float aniduration;
 
     [SerializeField] private AudioClip[] enemyDeadSFX;
 
@@ -354,7 +353,9 @@ public class EnemyUnit : Unit
                     }
                     else
                     {
-                        Debug.Log("경로 없음");
+                        targetUnit = SearchTarget(UnitStats.sightRange);
+                        if (targetUnit != null)
+                            mode = Mode.COMBAT;
                     }
                 }
                 break;
