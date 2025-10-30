@@ -14,6 +14,9 @@ public class InfernoEffect : TickEffect
     [Header("■ VFX")]
     [SerializeField] private GameObject vfx;
 
+    [Header("■ Sound")]
+    [SerializeField] private AudioClip infernoSound;
+
     private Collider[] hits = new Collider[10];
 
     private void Start()
@@ -40,6 +43,7 @@ public class InfernoEffect : TickEffect
     public override void Activate()
     {
         vfx.SetActive(true);
+        SoundManager.Instance.PlaySFX(infernoSound, target.transform.position);
 
         int count = Physics.OverlapSphereNonAlloc(transform.position, 5f, hits, targetLayerMask);
 

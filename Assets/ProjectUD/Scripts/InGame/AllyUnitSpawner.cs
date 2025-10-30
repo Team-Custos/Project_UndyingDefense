@@ -332,7 +332,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 //Debug.Log(grid.WorldToCell(hit.point));
                 spawnPoint.gameObject.SetActive(true);
-                SoundManager.Instance.PlaySFX(allySummon);
+                SoundManager.Instance.PlaySFX(allySummon, unit.transform.position);
                 spawnPoint.Initialize(unit);
 
                 

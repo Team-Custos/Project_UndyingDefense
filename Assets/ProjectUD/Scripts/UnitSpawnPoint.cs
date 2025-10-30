@@ -40,7 +40,7 @@ public class UnitSpawnPoint : MonoBehaviour
                 unit.Initialize();
 
                 unit.gameObject.SetActive(true);
-                SoundManager.Instance.PlaySFX(allySpawn);
+                SoundManager.Instance.PlaySFX(allySpawn, this.transform.position);
             }
         }
 

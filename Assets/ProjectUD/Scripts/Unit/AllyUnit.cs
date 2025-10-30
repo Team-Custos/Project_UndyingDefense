@@ -882,6 +882,6 @@ public class AllyUnit : Unit
 
         unitGrid.ClearTile();
 
-        SoundManager.Instance.PlaySFX(allyDeadSFX);
+        SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }
 }

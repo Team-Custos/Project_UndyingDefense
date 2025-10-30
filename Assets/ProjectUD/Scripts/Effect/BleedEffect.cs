@@ -9,12 +9,18 @@ public class BleedEffect : TickStackEffect
     [SerializeField] private GameObject Vfx;
     [SerializeField] private GameObject overBleedVfx;
 
+    [Header("■ Sound")]
+    [SerializeField] private AudioClip bleedSound;
+    [SerializeField] private AudioClip overBleedSound;
+
+
     private const float baseDamage = 1f;
 
     public override void Activate() 
     {
         //OnTick();
         Vfx.SetActive(true);
+        SoundManager.Instance.PlaySFX(bleedSound, target.transform.position);
     }
 
     protected override void OnMaxStack()
@@ -22,6 +28,7 @@ public class BleedEffect : TickStackEffect
         // 과다 출혈 효과
         target.AddInstantEffect(overBleedVfx);
         target.TakeDamage(20);
+        SoundManager.Instance.PlaySFX(overBleedSound, target.transform.position);
     }
 
     protected override void OnTick()

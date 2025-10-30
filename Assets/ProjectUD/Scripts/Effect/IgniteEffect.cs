@@ -10,6 +10,9 @@ public class IgniteEffect : TickStackEffect
     [SerializeField] private GameObject Vfx;
     [SerializeField] private GameObject infernoVfx;
 
+    [Header("■ Sound")]
+    [SerializeField] private AudioClip igniteSound;
+
 
 
     protected override void OnMaxStack()
@@ -30,6 +33,7 @@ public class IgniteEffect : TickStackEffect
     public override void Activate() 
     {
         Vfx.SetActive(true);
+        SoundManager.Instance.PlaySFX(igniteSound, target.transform.position);
     }
     protected override void OnTick()
     {

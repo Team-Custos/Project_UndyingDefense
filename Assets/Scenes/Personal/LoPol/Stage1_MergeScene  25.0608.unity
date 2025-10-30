@@ -1981,7 +1981,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waveDataTable: {fileID: 4900000, guid: a91cd42021df20f4f8d7a929b1e3ce96, type: 3}
-  enemyUnitDatas: []
   path: UnitData/Enemy
 --- !u!4 &35039892 stripped
 Transform:
@@ -54436,27 +54435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1883f678a89c5da43bb9a7d59365817a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveCount: 99
-  waveCountText: {fileID: 0}
-  waveCountTextPanel: {fileID: 0}
-  waveStartText: {fileID: 0}
-  waveStartPanel: {fileID: 0}
-  waveResultWinPanel: {fileID: 0}
-  waveResultLosePanel: {fileID: 0}
-  isCurrentWaveSucceed: 0
-  nextWavBtn: {fileID: 0}
-  waveCountSkipBtn: {fileID: 0}
-  isCountDownIng: 1
-  winWaveRestartBtn: {fileID: 0}
-  Winlobbybtn: {fileID: 0}
-  loseWaveRestartBtn: {fileID: 0}
-  loselobbybtn: {fileID: 0}
-  waveStepSuccessPanel: {fileID: 0}
-  waveStepText: {fileID: 0}
-  curWaveStepText: {fileID: 0}
-  waveWarnningPanel: {fileID: 0}
-  fadeDuration: 0.3
-  onClickClip: {fileID: 0}
 --- !u!4 &1620690370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -54992,6 +54970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPrime: 0
+  cameraPos: {fileID: 0}
   bgmAudio: {fileID: 1636126442}
   sfxAudio: {fileID: 1636126442}
   sfxLoopAudio: {fileID: 1636126444}
@@ -55000,6 +54979,10 @@ MonoBehaviour:
   unableClickClip: {fileID: 8300000, guid: c8eca85e45b29d647855b4f560e413ee, type: 3}
   unitSfxClip: []
   uiSfxClip: []
+  audioSourcePrefab: {fileID: 6984110101576558204, guid: e75dcaa9cba8ca348b19c8a2055dbe67,
+    type: 3}
+  maxDistance: 50
+  minDistance: 15
 --- !u!82 &1636126444
 AudioSource:
   m_ObjectHideFlags: 0

@@ -84,8 +84,6 @@ public class EnemyUnitSpawner : MonoBehaviour
 
                 if (waveDataLoader.WaveDataList[waveManager.CurWave - 1].Count <= spawnDataEnemyCount)
                 {
-                    Debug.Log("스폰 종료");
-
                     spawnDataEnemyCount = 0;
                     enemySpawnVfx.gameObject.SetActive(false);
                     isSpawnEnd = true;
@@ -175,7 +173,7 @@ public class EnemyUnitSpawner : MonoBehaviour
         enemyUnit.transform.forward = spawnDirection.forward;
         enemyUnit.Initialize(fortress.GetPosition(spawnCount));
         enemyUnit.gameObject.SetActive(true);
-        SoundManager.Instance.PlaySFX(enmeySpawnSfx);
+        SoundManager.Instance.PlaySFX(enmeySpawnSfx, enemyUnit.transform.position);
 
         enemySpawnVfx.transform.position = pos;
         enemySpawnVfx.gameObject.SetActive(true);

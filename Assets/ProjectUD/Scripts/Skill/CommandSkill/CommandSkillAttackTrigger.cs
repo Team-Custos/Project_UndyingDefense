@@ -118,17 +118,17 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             VFXobj.transform.SetParent(transform);
             VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
             VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+            SoundManager.Instance.PlaySFX(data.LoopSFX, VFXobj.transform.position);
         }
+
     }
 
 
     private void Start()
     {
         PlayVFX();
-        if (data.LoopSFX != null)
-        {
-            SoundManager.Instance.PlayLoopSFX(data.LoopSFX);
-        }
+        
     }
 
     private void OnDrawGizmosSelected()
@@ -191,14 +191,6 @@ public class CommandSkillAttackTrigger : MonoBehaviour
                 {
                     target.AddEffect(data.CritEffectPrefab, target);
                 }
-                //if (target.HasEffect<InfernoEffect>())
-                //{
-                //    continue;
-                //}
-                //else
-                //{
-
-                //}
             }
         }
     }
@@ -219,7 +211,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         //target.PlayHitSFX(data.AttackType);       // Unit 에서 주석처리한 메서드
         if (data.AttackData != null)
         {
-            AddHitSFX();
+            AddHitSFX(target.transform);
             AddHitVFX(target);
         }
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
@@ -231,11 +223,11 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
-    public void AddHitSFX()
+    public void AddHitSFX(Transform transform)
     {
         AudioClip[] audios = data.AttackData.HitSFXClip;
         AudioClip audio = audios[Random.Range(0, audios.Length)];
-        SoundManager.Instance.PlaySFX(audio);
+        SoundManager.Instance.PlaySFX(audio, transform.position);
     }
 
     private void AddHitVFX(Unit target)     // 피격 연출

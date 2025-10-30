@@ -1,9 +1,12 @@
 
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : Singleton<SoundManager>
 {
+    [SerializeField] private Transform cameraPos;
 
     [SerializeField] private AudioSource bgmAudio;
     [SerializeField] private AudioSource sfxAudio;
@@ -16,6 +19,11 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] AudioClip[] unitSfxClip;
     [SerializeField] AudioClip[] uiSfxClip;
 
+    [SerializeField] private GameObject audioSourcePrefab;
+    [SerializeField] float maxDistance = 50f;
+    [SerializeField] float minDistance = 15f;
+
+    private ObjectPoolWithList<AudioSource> audioSourcePool;
     private Dictionary<AudioClip, AudioSource> loopSfxDic = new Dictionary<AudioClip, AudioSource>();
 
     public void PlayBGM(AudioClip clip)
@@ -34,12 +42,32 @@ public class SoundManager : Singleton<SoundManager>
     }
 
 
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(AudioClip clip, Vector3 pos)
+    {
+        AudioSource audioSource = GetAudioSource();
+
+        if(audioSource != null)
+        {
+            audioSource.transform.position = pos;
+
+            audioSource.minDistance = minDistance;
+            audioSource.maxDistance = maxDistance;
+
+            audioSource.PlayOneShot(clip);
+            audioSource.GetComponent<PoolAudioSource>().Activate();
+        }
+
+        Debug.Log(audioSourcePool.List.Count);
+
+        //sfxAudio.PlayOneShot(clip);
+    }
+
+    public void PlaySFX(AudioClip clip) // UI 용
     {
         sfxAudio.PlayOneShot(clip);
     }
 
-    public void PlaySFX(params AudioClip[] clips)
+    public void PlaySFX(Vector3 pos, params AudioClip[] clips)
     {
         if (clips == null)
             return;
@@ -47,7 +75,7 @@ public class SoundManager : Singleton<SoundManager>
         if (clips.Length > 0)
         {
             AudioClip clip = clips[Random.Range(0, clips.Length)];
-            PlaySFX(clip);
+            PlaySFX(clip, pos);
         }
     }
 
@@ -107,8 +135,34 @@ public class SoundManager : Singleton<SoundManager>
         sfxAudio.PlayOneShot(cancleClip);
     }
 
-    //public void playCancleSFX()
-    //{
-    //    sfxAudio.PlayOneShot(cancleClip);
-    //}
+
+    public AudioSource GetAudioSource()
+    {
+        if (audioSourcePool == null)
+            audioSourcePool = new ObjectPoolWithList<AudioSource>(() => CreateAudioSource());
+
+        AudioSource audioSource = audioSourcePool.Pool.Get();
+        audioSourcePool.List.Add(audioSource);
+        return audioSource;
+    }
+
+
+    public AudioSource CreateAudioSource()
+    {
+        GameObject obj = Instantiate(audioSourcePrefab);
+        obj.transform.SetParent(transform);
+
+        PoolAudioSource poolAudioSource = obj.GetComponent<PoolAudioSource>();
+        AudioSource audioSource = poolAudioSource.Audio;
+
+        poolAudioSource.Initialize(this);
+
+        return audioSource;
+    }
+
+    public void ReturnAudioSource(AudioSource source)
+    {
+        audioSourcePool.List.Remove(source);
+        audioSourcePool.Pool.Release(source);
+    }
 }

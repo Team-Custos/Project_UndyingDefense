@@ -285,13 +285,13 @@ public class AttackSkill : SkillBase
         {
             // target.PlayCritSFX(data.Info.Type);
             AddCritVFX(unit, target);
-            AddCritSFX();
+            AddCritSFX(target.transform.position);
             ActivateCriticalEffect(unit, target);
         }
         else
         {
             AddHitVFX(unit, target);
-            AddHitSFX();
+            AddHitSFX(target.transform.position);
         }
 
         target.TakeDamage(calcDamage);
@@ -381,16 +381,16 @@ public class AttackSkill : SkillBase
         //}
         //target.AddVFX(critVFX, unit.transform.position);
     }
-    public void AddHitSFX()
+    public void AddHitSFX(Vector3 pos)
     {
         AudioClip[] audios = data.Info.HitSFXClip;
         AudioClip audio = audios[Random.Range(0, audios.Length)];
-        SoundManager.Instance.PlaySFX(audio);
+        SoundManager.Instance.PlaySFX(audio, pos);
     }
 
-    public void AddCritSFX()
+    public void AddCritSFX(Vector3 pos)
     {
-        SoundManager.Instance.PlaySFX(data.Info.CritSFXClip);
+        SoundManager.Instance.PlaySFX(data.Info.CritSFXClip, pos);
     }
 
     private bool IsBlocked(ArmorType armorType)

@@ -68,6 +68,7 @@ public abstract class Unit : MonoBehaviour
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit;
+    protected Vector3 targetPos;
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -389,13 +390,13 @@ public abstract class Unit : MonoBehaviour
     {
         Unit result = null;
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-        if(targetCount > 0)
+        if (targetCount > 0)
         {
             float minDst = float.MaxValue;
             for (int i = 0; i < targetCount; i++)
             {
                 Unit unit = collidersInRange[i].GetComponent<Unit>();
-                
+
                 if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
                     continue;
 
@@ -406,11 +407,12 @@ public abstract class Unit : MonoBehaviour
                     minDst = dst;
                     result = unit;
                 }
-            }    
+            }
         }
 
         return result;
     }
+
 
     protected Unit SearchNearestTarget(float range, Unit excludeTarget) // targeUnit을 제외한 가장 가까운 적 탐색
     {
@@ -773,7 +775,7 @@ public abstract class Unit : MonoBehaviour
 
             NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
 
-            if(path.status == NavMeshPathStatus.PathComplete)
+            if (path.status == NavMeshPathStatus.PathComplete)
             {
                 float distance = Vector3.Distance(transform.position, targetPos);
 
@@ -888,7 +890,7 @@ public abstract class Unit : MonoBehaviour
         }
         if (critSFX != null)
         {
-            SoundManager.Instance.PlaySFX(critSFX);
+            SoundManager.Instance.PlaySFX(critSFX, this.transform.position);
         }
     }
 

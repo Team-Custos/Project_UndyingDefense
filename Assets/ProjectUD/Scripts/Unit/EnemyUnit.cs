@@ -571,7 +571,7 @@ public class EnemyUnit : Unit
 
 
 
-        SoundManager.Instance.PlaySFX(enemyDeadSFX);
+        SoundManager.Instance.PlaySFX(this.transform.position, enemyDeadSFX);
 
         // 상태를 변경하고 에니메이션을 변경
 

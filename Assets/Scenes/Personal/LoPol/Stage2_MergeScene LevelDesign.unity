@@ -31724,7 +31724,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   selectedUnitManager: {fileID: 1137951088}
-  allySummon: {fileID: 8300000, guid: 9f43e41e37c4b3947bf8a73f577c4234, type: 3}
+  allySummon: {fileID: 8300000, guid: dec70ab48168cd34ea1c2504eea91dbf, type: 3}
 --- !u!4 &923510899
 Transform:
   m_ObjectHideFlags: 0
@@ -57496,7 +57496,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.26
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -57593,6 +57593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPrime: 0
+  cameraPos: {fileID: 0}
   bgmAudio: {fileID: 1636126442}
   sfxAudio: {fileID: 1636126442}
   sfxLoopAudio: {fileID: 1636126444}
@@ -57601,6 +57602,10 @@ MonoBehaviour:
   unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
+  audioSourcePrefab: {fileID: 6984110101576558204, guid: e75dcaa9cba8ca348b19c8a2055dbe67,
+    type: 3}
+  maxDistance: 50
+  minDistance: 5
 --- !u!82 &1636126444
 AudioSource:
   m_ObjectHideFlags: 0

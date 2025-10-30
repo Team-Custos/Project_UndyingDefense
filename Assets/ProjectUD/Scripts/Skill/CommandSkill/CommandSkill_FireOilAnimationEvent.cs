@@ -10,6 +10,6 @@ public class CommandSkill_FireOilAnimationEvent : MonoBehaviour
     public void PlayVFX()
     {
         fireOilVFX.Play();
-        SoundManager.Instance.PlaySFX(OilBottleSFX);
+        SoundManager.Instance.PlaySFX(OilBottleSFX, fireOilVFX.gameObject.transform.position);
     }
 }

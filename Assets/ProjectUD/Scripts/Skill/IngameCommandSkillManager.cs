@@ -67,27 +67,28 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
         if (skill.Data.StartSFX != null)
         {
-            SoundManager.Instance.PlaySFX(skill.Data.StartSFX);
+            //SoundManager.Instance.PlaySFX(skill.Data.StartSFX);
         }
 
         switch (skill.Data.TargetType)
         {
             case CommandSkill.TargetType.NONE:
-                Debug.Log("Skill Activated");
                 skill.Activate();
                 break;
             case CommandSkill.TargetType.UNIT:
-                Debug.Log("UnitSkill Activated");
                 skill.Activate(selectedTargetUnit);
+                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, selectedTargetUnit.transform.position);
                 selectedTargetUnit = null;
                 break;
             case CommandSkill.TargetType.MOUSEPOSAREA:
                 inputEventManager.OnClickTarget = this;
                 skill.Activate(pos);
+                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, pos.position);
                 break;
             case CommandSkill.TargetType.AREA:
-                Debug.Log("AreaSkill Activated");
                 skill.Activate(BurningOilPos);
+                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, BurningOilPos.position);
+                Debug.Log(111111);
                 BurningOilCtrl.SpawnStart();
                 break;
         }
