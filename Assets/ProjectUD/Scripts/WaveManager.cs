@@ -102,8 +102,9 @@ public class WaveManager : MonoBehaviour
                 //---
                 PlayerPrefs.SetInt("IsTutorialEnd", 1);
                 StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
-                if(stagedata.isOpen == "0")
-                    stagePrefsData.SetStageDictionary("UNQ_gumsan", "1", "0", "0");
+                if(!stagedata.isOpen)
+                    stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);
+                stagePrefsData.SaveStageData();
                 //---
                 SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 

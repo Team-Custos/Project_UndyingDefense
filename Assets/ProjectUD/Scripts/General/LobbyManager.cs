@@ -57,9 +57,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsan");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
 
-        if(guemsan.isOpen == "1")
+        if(guemsan.isOpen)
             guemsanBtn.enabled = true;
-        if(namhan.isOpen == "1")
+        if(namhan.isOpen)
             namhanBtn.enabled = true;
     }
     public void BeforeTutorial() // 훈련장으로 안내하기 위한 

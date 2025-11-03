@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Video;
 using UltEvents;
 
@@ -36,10 +35,17 @@ public class IntroScene : MonoBehaviour
         Debug.Log($"인트로영상{PlayerPrefs.GetInt("IntroVideo")}");
 
         if(PlayerPrefs.GetInt("IntroVideo") == 0)
-            videoPlayer.loopPointReached += OnVideoFinished;
+        {
+            videoPlayer.Play();
+            videoPlayer.loopPointReached += vp => OnVideoFinished();
+        }
+        else
+        {
+            OnVideoFinished();
+        }
 
-        // 영상 소리 페이드 아웃 예약
-        ScheduleVideoAudioFadeOut();
+            // 영상 소리 페이드 아웃 예약
+            ScheduleVideoAudioFadeOut();
     }
 
     //void Update()
@@ -60,7 +66,7 @@ public class IntroScene : MonoBehaviour
             isVideoSkipped = true;
 
             videoPlayer.Stop();
-            OnVideoFinished(videoPlayer);
+            OnVideoFinished();
             skipBtn.SetActive(false);
         }
         else
@@ -72,7 +78,7 @@ public class IntroScene : MonoBehaviour
         }
     }
 
-    private void OnVideoFinished(VideoPlayer vp)
+    private void OnVideoFinished()
     {
         // 1. 첫 BGM 재생
         SoundManager.Instance.PlayBGM(firstHalfBgm);
@@ -96,6 +102,7 @@ public class IntroScene : MonoBehaviour
         //statementCanvasGroup.alpha = 0;
         //statementCanvasGroup.DOFade(1f, duration)
         //    .SetEase(Ease.OutQuad);
+        OnVideoFinished();
     }
 
     private void OnFirstBgmEnded()

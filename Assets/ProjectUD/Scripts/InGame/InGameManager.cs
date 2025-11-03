@@ -1,7 +1,5 @@
 using InputEventInterface;
-using System.Collections.Generic;
 using UltEvents;
-using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +25,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     [Header("■ PlayerPrefs Event")]
     [SerializeField] private UltEvent gameWin;
     [SerializeField] private UltEvent gameFinish;
+    [SerializeField] private string id;
 
     public bool IsGameEnd => isGameEnd;
 

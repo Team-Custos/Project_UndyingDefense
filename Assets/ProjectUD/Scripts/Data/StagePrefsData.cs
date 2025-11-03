@@ -1,7 +1,5 @@
-using System.Collections;
+using System.Text;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using UnityEngine;
 using static StagePrefsData;
 
@@ -17,16 +15,17 @@ public class StagePrefsData : MonoBehaviour
     public struct StageData
     {
         public string id;
-        public string isOpen;
-        public string isStageEnd;
-        public string clearTime;
+        public bool isOpen;
+        public bool isStageEnd;   // 승패 여부에 따라 저장. 중간에 나갔을 경우에는 포함 안 함
+        public float clearTime;
     }
 
     private StageData lastPlayedStage;
+    private StringBuilder sb = new StringBuilder();
 
     private void Start()
     {
-        if(PlayerPrefs.GetInt("SetBiginningStage") == 0)
+        if(PlayerPrefs.GetInt("SetBeginningStage") == 0)
         {
             LoadStageData(stageClearData.text);
         }
@@ -34,32 +33,42 @@ public class StagePrefsData : MonoBehaviour
         // 불러온적이 있으면 스테이지 PlayerPrefs를 불러오기
         ReadPlayerPrefs(stagePlayerPrefs);
     }
+    // 저장데이터 모두 초기화
+    public void ResetPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 
     // 초기 데이터 저장
     private void LoadStageData(string st)
     {
         PlayerPrefs.SetString("stage", st);
-        PlayerPrefs.SetInt("SetBiginningStage", 1);
+        PlayerPrefs.SetInt("SetBeginningStage", 1);
     }
 
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
     private void SaveStageData(Dictionary<string, StageData> dic)     
     {
-        string playerPrefData = string.Empty;
+        //string playerPrefData = string.Empty;
+        if (sb.Length > 0)
+            sb.Clear();
+
         foreach (var kvp in dic)
         {
             string stageID = kvp.Key;
             StageData stageData = kvp.Value;
-            playerPrefData += $"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}\n";
+            // bool값을 int-> string으로 치환과정 필요
+            sb.AppendLine($"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}");
+            //playerPrefData += $"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}\n";
         }
-        PlayerPrefs.SetString("stageData", playerPrefData);
+        // PlayerPrefs.SetString("stageData", playerPrefData);
+        PlayerPrefs.SetString("stage", sb.ToString());
     }
 
     // 마지막 진입 전장정보 Prefs에 저장
     public void SaveStageData()
     {
-        string lastPlayStage = string.Empty;
-        lastPlayStage += $"{lastPlayedStage.id},{lastPlayedStage.isOpen},{lastPlayedStage.isStageEnd},{lastPlayedStage.clearTime}\n";
+        string lastPlayStage = $"{lastPlayedStage.id},{lastPlayedStage.isOpen},{lastPlayedStage.isStageEnd},{lastPlayedStage.clearTime}\n";
 
         PlayerPrefs.SetString("lastPlayedStageData", lastPlayStage);
 
@@ -79,7 +88,7 @@ public class StagePrefsData : MonoBehaviour
     }
 
     // 전장 종료시 사용할 셋팅 메서드 
-    public void SetLastPlayedStage(string id, string isOpen, string isStageEnd, string clearTime)
+    public void SetLastPlayedStage(string id, bool isOpen, bool isStageEnd, float clearTime)
     {
         lastPlayedStage.id = id;
         lastPlayedStage.isOpen = isOpen;
@@ -115,9 +124,11 @@ public class StagePrefsData : MonoBehaviour
 
             StageData stagedata = new StageData();
             stagedata.id = stageID;
-            stagedata.isOpen = isOpen;
-            stagedata.isStageEnd = isPlayed;
-            stagedata.clearTime = clearTime;
+            //stagedata.isOpen = bool.Parse(isOpen);          // 문자열로 되어있는 저장정보 파싱
+            //stagedata.isStageEnd = bool.Parse(isPlayed);
+            stagedata.isOpen = int.Parse(isOpen) != 0;
+            stagedata.isStageEnd = int.Parse(isPlayed) != 0;
+            stagedata.clearTime = float.Parse(clearTime);
 
             dic.Add(stageID, stagedata);
         }
@@ -130,7 +141,7 @@ public class StagePrefsData : MonoBehaviour
     }
 
     // 전장 정보 변경 메서드
-    public void SetStageDictionary(string id, string isOpen, string isPlayed, string clearTime)
+    public void SetStageDictionary(string id, bool isOpen, bool isPlayed,float clearTime)
     {
         StageData stagedata = stagePlayerPrefs[id];
         stagedata.isOpen = isOpen;
@@ -145,7 +156,7 @@ public class StagePrefsData : MonoBehaviour
         Debug.Log("금산전투종료");
 
         StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
-        stagedata.isStageEnd = "1";
+        stagedata.isStageEnd = true;
 
         stagePlayerPrefs["UNQ_gumsan"] = stagedata;
     }
@@ -155,13 +166,13 @@ public class StagePrefsData : MonoBehaviour
         Debug.Log("금산전투 이김");
 
         StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
-        stagedata.isStageEnd = "1";
+        stagedata.isStageEnd = true;
         //stagedata.clearTime = "1111";     // 클리어 시간 적용
 
         stagePlayerPrefs["UNQ_gumsan"] = stagedata;
 
         StageData namhan = stagePlayerPrefs["UNQ_namhanFortress"];
-        namhan.isOpen = "1";
+        namhan.isOpen = true;
 
         stagePlayerPrefs["UNQ_namhanFortress"] = namhan;
     }
