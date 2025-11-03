@@ -33,7 +33,10 @@ public class IntroScene : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        videoPlayer.loopPointReached += OnVideoFinished;
+        Debug.Log($"인트로영상{PlayerPrefs.GetInt("IntroVideo")}");
+
+        if(PlayerPrefs.GetInt("IntroVideo") == 0)
+            videoPlayer.loopPointReached += OnVideoFinished;
 
         // 영상 소리 페이드 아웃 예약
         ScheduleVideoAudioFadeOut();
@@ -81,6 +84,8 @@ public class IntroScene : MonoBehaviour
 
         // 3. firstHalfBgm 길이만큼 후에 다음 단계 실행
         //Invoke(nameof(OnFirstBgmEnded), firstHalfBgm.length);
+
+        PlayerPrefs.SetInt("IntroVideo", 1);
     }
 
     private void FadeInStatementImage()

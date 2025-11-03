@@ -46,7 +46,7 @@ public class PlayerPrefsData : MonoBehaviour
     {
         PlayerPrefs.SetFloat("Point", point);
     }
-
+    
     public void SetCharacterArchive(string cArchiveID)
     {
         if (characterArchive.Contains(cArchiveID))

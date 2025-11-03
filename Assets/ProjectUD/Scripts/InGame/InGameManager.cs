@@ -1,5 +1,6 @@
 using InputEventInterface;
 using System.Collections.Generic;
+using UltEvents;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,6 +23,10 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private AudioClip loseBgm;
     private bool isGameEnd = false;
     private bool isGamePause = false;
+
+    [Header("■ PlayerPrefs Event")]
+    [SerializeField] private UltEvent gameWin;
+    [SerializeField] private UltEvent gameFinish;
 
     public bool IsGameEnd => isGameEnd;
 
@@ -123,7 +128,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void LoseGame()
     {
         isGameEnd = true;
-        UserDataModel.instance.SetGameFinished(true);
+        //UserDataModel.instance.SetGameFinished(true);
+        gameFinish.Invoke();
 
         SoundManager.Instance.PlaySFX(loseSfx);
         Invoke(nameof(PlayLoseBGM), loseSfx.length);
@@ -136,8 +142,12 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void WinGame()
     {
         isGameEnd = true;
-        UserDataModel.instance.SetGameFinished(true);
-        UserDataModel.instance.SetGameWin(true);
+        //UserDataModel.instance.SetGameFinished(true);
+        if(gameFinish != null)
+            gameFinish.Invoke();
+        //UserDataModel.instance.SetGameWin(true);
+        if(gameWin != null)
+            gameWin.Invoke();
 
         SoundManager.Instance.PlaySFX(winSfx);
         Invoke(nameof(PlayWinBGM), loseSfx.length);

@@ -28012,6 +28012,16 @@ MonoBehaviour:
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
   loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
+  gameWin:
+    _PersistentCalls:
+    - _Target: {fileID: 1573738021}
+      _MemberName: SetGeumsanWin
+      _PersistentArguments: []
+  gameFinish:
+    _PersistentCalls:
+    - _Target: {fileID: 1573738021}
+      _MemberName: SetGuemsanFinish
+      _PersistentArguments: []
 --- !u!1 &857208344
 GameObject:
   m_ObjectHideFlags: 0
@@ -34411,6 +34421,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d38eeed47d8b304eaeaea4596e147b7, type: 2}
   dollyCamera: {fileID: 311500981}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 1573738021}
 --- !u!4 &1023733845
 Transform:
   m_ObjectHideFlags: 0
@@ -53165,6 +53176,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2067832928}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1573738020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1573738022}
+  - component: {fileID: 1573738021}
+  m_Layer: 0
+  m_Name: StagePrefsData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1573738021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573738020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea2783859b2bf04f854a05af0f4dd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageClearData: {fileID: 4900000, guid: a77f0b3619b336049a84991bf9679475, type: 3}
+--- !u!4 &1573738022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573738020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 973.8396, y: 541.9196, z: -4.4801435}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1578199371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -67244,6 +67300,7 @@ MonoBehaviour:
   waveDatas: []
   dollyCamera: {fileID: 0}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 0}
 --- !u!1 &2132998468
 GameObject:
   m_ObjectHideFlags: 0
@@ -69702,3 +69759,4 @@ SceneRoots:
   - {fileID: 1835584666}
   - {fileID: 707335200}
   - {fileID: 1091578120}
+  - {fileID: 1573738022}

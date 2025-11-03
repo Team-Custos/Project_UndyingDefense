@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static StagePrefsData;
 
 public class WaveManager : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class WaveManager : MonoBehaviour
     public bool IsWaveEnd => isWaveEnd;
     public int CurWave => curWave;
 
+    [Header("StagePrefsData")]
+    [SerializeField] private StagePrefsData stagePrefsData;
 
     private void Update()
     {
@@ -96,6 +99,12 @@ public class WaveManager : MonoBehaviour
             else
             {
                 ingameScreenUI.ShowNotice("방어 성공");
+                //---
+                PlayerPrefs.SetInt("IsTutorialEnd", 1);
+                StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
+                if(stagedata.isOpen == "0")
+                    stagePrefsData.SetStageDictionary("UNQ_gumsan", "1", "0", "0");
+                //---
                 SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
                 inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);

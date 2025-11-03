@@ -6580,6 +6580,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1 &169469406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 169469408}
+  - component: {fileID: 169469407}
+  m_Layer: 0
+  m_Name: StagePrefsData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &169469407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169469406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea2783859b2bf04f854a05af0f4dd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageClearData: {fileID: 4900000, guid: a77f0b3619b336049a84991bf9679475, type: 3}
+--- !u!4 &169469408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169469406}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 973.8396, y: 541.9196, z: -4.4801435}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &170572323
 GameObject:
   m_ObjectHideFlags: 0
@@ -11841,6 +11886,13 @@ MonoBehaviour:
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
   loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
+  gameWin:
+    _PersistentCalls: []
+  gameFinish:
+    _PersistentCalls:
+    - _Target: {fileID: 169469407}
+      _MemberName: SetTutorialEnd
+      _PersistentArguments: []
 --- !u!4 &318867823
 Transform:
   m_ObjectHideFlags: 0
@@ -49818,6 +49870,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f79ebf53a0ddc58428ba7444d098ccd4, type: 2}
   dollyCamera: {fileID: 1936867425}
   isInfiniteMode: 1
+  stagePrefsData: {fileID: 169469407}
 --- !u!4 &1409587473
 Transform:
   m_ObjectHideFlags: 0
@@ -75203,6 +75256,7 @@ MonoBehaviour:
   waveDatas: []
   dollyCamera: {fileID: 0}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 0}
 --- !u!1 &2131560353
 GameObject:
   m_ObjectHideFlags: 0
@@ -75860,3 +75914,4 @@ SceneRoots:
   - {fileID: 1628941732}
   - {fileID: 1590103096}
   - {fileID: 1556925239}
+  - {fileID: 169469408}

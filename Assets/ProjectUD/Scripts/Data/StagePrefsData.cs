@@ -26,15 +26,20 @@ public class StagePrefsData : MonoBehaviour
 
     private void Start()
     {
-        LoadStageData(stageClearData.text);
+        if(PlayerPrefs.GetInt("SetBiginningStage") == 0)
+        {
+            LoadStageData(stageClearData.text);
+        }
         // 스테이지 PlayerPrefs를 저장한 적이 없으면 초기 StageData 불러오기
         // 불러온적이 있으면 스테이지 PlayerPrefs를 불러오기
+        ReadPlayerPrefs(stagePlayerPrefs);
     }
 
     // 초기 데이터 저장
     private void LoadStageData(string st)
     {
-        PlayerPrefs.SetString("stage", st);     
+        PlayerPrefs.SetString("stage", st);
+        PlayerPrefs.SetInt("SetBiginningStage", 1);
     }
 
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
@@ -99,6 +104,8 @@ public class StagePrefsData : MonoBehaviour
         for (int i = 0; i < lines.Length; i++)
         {
             string line = lines[i];
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
             string[] datas = line.Split(",");
 
             string stageID = datas[0];
@@ -125,12 +132,43 @@ public class StagePrefsData : MonoBehaviour
     // 전장 정보 변경 메서드
     public void SetStageDictionary(string id, string isOpen, string isPlayed, string clearTime)
     {
-        StageData stagedata = new StageData();
+        StageData stagedata = stagePlayerPrefs[id];
         stagedata.isOpen = isOpen;
         stagedata.isStageEnd = isPlayed;
         stagedata.clearTime = clearTime;
 
         stagePlayerPrefs[id] = stagedata;
     }
+    public void SetGuemsanFinish()
+    {
+        PlayerPrefs.SetInt("IsGeumsanFinished", 1);
+        Debug.Log("금산전투종료");
 
+        StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
+        stagedata.isStageEnd = "1";
+
+        stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+    }
+    public void SetGeumsanWin()
+    {
+        PlayerPrefs.SetInt("GeumsanWin", 1);
+        Debug.Log("금산전투 이김");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
+        stagedata.isStageEnd = "1";
+        //stagedata.clearTime = "1111";     // 클리어 시간 적용
+
+        stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+
+        StageData namhan = stagePlayerPrefs["UNQ_namhanFortress"];
+        namhan.isOpen = "1";
+
+        stagePlayerPrefs["UNQ_namhanFortress"] = namhan;
+    }
+
+    public void SetTutorialEnd()
+    {
+        PlayerPrefs.SetInt("IsTutorialEnd", 1);
+        Debug.Log("훈련장끝");
+    }
 }
