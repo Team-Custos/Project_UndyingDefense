@@ -36,6 +36,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
+    [SerializeField] private GameObject guemsanLock;
+    [SerializeField] private GameObject guemsanCloud;
+    [SerializeField] private GameObject namhanLock;
+    [SerializeField] private GameObject namhanCloud;
 
     private ScriptableObject[] so;
 
@@ -58,9 +62,17 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
 
         if(guemsan.isOpen)
+        {
             guemsanBtn.enabled = true;
+            guemsanLock.SetActive(false);
+            guemsanCloud.SetActive(false);
+        }
         if(namhan.isOpen)
+        {
             namhanBtn.enabled = true;
+            namhanLock.SetActive(false);
+            namhanCloud.SetActive(false);
+        }
     }
     public void BeforeTutorial() // 훈련장으로 안내하기 위한 
     {

@@ -122,6 +122,13 @@ public class WaveManager : MonoBehaviour
         else
         {
             ingameScreenUI.ShowNotice("방어 성공");
+            //---
+            PlayerPrefs.SetInt("IsTutorialEnd", 1);
+            StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
+            if (!stagedata.isOpen)
+                stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);
+            stagePrefsData.SaveStageData();
+            //---
             SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
             inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);

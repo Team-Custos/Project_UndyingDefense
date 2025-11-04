@@ -42,23 +42,35 @@ public class StagePrefsData : MonoBehaviour
     // 초기 데이터 저장
     private void LoadStageData(string st)
     {
-        PlayerPrefs.SetString("stage", st);
+        if (sb.Length > 0)
+            sb.Clear();
+
+        string[] lines = st.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            sb.AppendLine(lines[i]);
+        }
+
+        PlayerPrefs.SetString("stage", sb.ToString());
         PlayerPrefs.SetInt("SetBeginningStage", 1);
     }
 
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
-    private void SaveStageData(Dictionary<string, StageData> dic)     
+    public void SaveStageData()     
     {
         //string playerPrefData = string.Empty;
         if (sb.Length > 0)
             sb.Clear();
 
-        foreach (var kvp in dic)
+        foreach (var kvp in stagePlayerPrefs)
         {
             string stageID = kvp.Key;
             StageData stageData = kvp.Value;
+            int isOpen = stageData.isOpen ? 1 : 0;
+            int isStageEnd = stageData.isStageEnd ? 1 : 0;
             // bool값을 int-> string으로 치환과정 필요
-            sb.AppendLine($"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}");
+            sb.AppendLine($"{stageID},{isOpen},{isStageEnd},{stageData.clearTime}");
             //playerPrefData += $"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}\n";
         }
         // PlayerPrefs.SetString("stageData", playerPrefData);
@@ -66,7 +78,7 @@ public class StagePrefsData : MonoBehaviour
     }
 
     // 마지막 진입 전장정보 Prefs에 저장
-    public void SaveStageData()
+    public void SaveLastStageData()
     {
         string lastPlayStage = $"{lastPlayedStage.id},{lastPlayedStage.isOpen},{lastPlayedStage.isStageEnd},{lastPlayedStage.clearTime}\n";
 
@@ -110,17 +122,19 @@ public class StagePrefsData : MonoBehaviour
         
         // 저장데이터 딕셔너리에 저장하기 (인게임에서 정보 변경용)
         string[] lines = st.Split("\n");
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < lines.Length; i++)      // 첫 줄은 건너뛰고 읽어오기
         {
             string line = lines[i];
             if (string.IsNullOrWhiteSpace(line)) continue;
 
             string[] datas = line.Split(",");
 
-            string stageID = datas[0];
-            string isOpen = datas[1];
-            string isPlayed = datas[2];
-            string clearTime = datas[3];
+            string stageID = datas[0].Trim();
+            Debug.Log($"전장이름 : {stageID}");
+            string isOpen = datas[1].Trim();
+            Debug.Log($"해금여부 : { isOpen}");
+            string isPlayed = datas[2].Trim();
+            string clearTime = datas[3].Trim();
 
             StageData stagedata = new StageData();
             stagedata.id = stageID;

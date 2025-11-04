@@ -7738,6 +7738,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f80f302396a81c44ea8f6751a1c045b5, type: 3}
+--- !u!1 &853859700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 588169689874882214, guid: f80f302396a81c44ea8f6751a1c045b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 853859699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &853859701 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8511882540652875436, guid: f80f302396a81c44ea8f6751a1c045b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 853859699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &873001962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11503,6 +11515,8 @@ MonoBehaviour:
   dialogueui: {fileID: 1562747904}
   dialogueLine: {fileID: 1269801720}
   nextBtn: {fileID: 1567676681}
+  spaceText: {fileID: 853859700}
+  dialogueAnim: {fileID: 853859701}
 --- !u!1 &1235669516
 GameObject:
   m_ObjectHideFlags: 0
@@ -14328,6 +14342,10 @@ MonoBehaviour:
   stagePrefsData: {fileID: 1110049465}
   guemsanBtn: {fileID: 1855840415}
   namhanBtn: {fileID: 1143291066}
+  guemsanLock: {fileID: 1103224657}
+  guemsanCloud: {fileID: 35761419}
+  namhanLock: {fileID: 1214471287}
+  namhanCloud: {fileID: 1942314407}
 --- !u!224 &1562747901 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4081072646889100793, guid: f80f302396a81c44ea8f6751a1c045b5,
@@ -18365,6 +18383,8 @@ MonoBehaviour:
   dialogueui: {fileID: 0}
   dialogueLine: {fileID: 0}
   nextBtn: {fileID: 1297685061}
+  spaceText: {fileID: 0}
+  dialogueAnim: {fileID: 0}
   ingameDialogueData: {fileID: 11400000, guid: d8b3e6e3f8dbc264caa9427c55c1918e, type: 2}
   speakingArray: {fileID: 0}
 --- !u!1 &1918230731

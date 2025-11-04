@@ -1433,6 +1433,8 @@ MonoBehaviour:
   dialogueui: {fileID: 8695724935518865476}
   dialogueLine: {fileID: 3126197879924409021}
   nextBtn: {fileID: 3817263554819114027}
+  spaceText: {fileID: 615581372293490298}
+  dialogueAnim: {fileID: 615581372293490297}
 --- !u!1 &1220654780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1568,19 +1570,7 @@ MonoBehaviour:
   declarationTransform: {fileID: 773136880}
   dialogueCanvasGroup: {fileID: 8695724935518865477}
   nextDialogue:
-    _PersistentCalls:
-    - _Target: {fileID: 1153308180}
-      _MemberName: ShowDialogue
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
+    _PersistentCalls: []
   skipBtn: {fileID: 1755252462}
 --- !u!1 &1318615469
 GameObject:
@@ -3292,6 +3282,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f80f302396a81c44ea8f6751a1c045b5, type: 3}
+--- !u!95 &615581372293490297 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8511882540652875436, guid: f80f302396a81c44ea8f6751a1c045b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 615581372293490296}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &615581372293490298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 588169689874882214, guid: f80f302396a81c44ea8f6751a1c045b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 615581372293490296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3126197879924409021 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6859750835473860497, guid: f80f302396a81c44ea8f6751a1c045b5,

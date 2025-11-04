@@ -38,14 +38,15 @@ public class IntroScene : MonoBehaviour
         {
             videoPlayer.Play();
             videoPlayer.loopPointReached += vp => OnVideoFinished();
+            // 영상 소리 페이드 아웃 예약
+            ScheduleVideoAudioFadeOut();
         }
         else
         {
             OnVideoFinished();
         }
 
-            // 영상 소리 페이드 아웃 예약
-            ScheduleVideoAudioFadeOut();
+            
     }
 
     //void Update()
@@ -69,17 +70,19 @@ public class IntroScene : MonoBehaviour
             OnVideoFinished();
             skipBtn.SetActive(false);
         }
-        else
-        {
-            if(isStatementSkipped) return;
+        //else
+        //{
+        //    if(isStatementSkipped) return;
 
-            ShowDialogue();
-            isStatementSkipped = true;
-        }
+        //    ShowDialogue();
+        //    isStatementSkipped = true;
+        //}
     }
 
     private void OnVideoFinished()
     {
+        videoPlayer.gameObject.SetActive(false);
+
         // 1. 첫 BGM 재생
         SoundManager.Instance.PlayBGM(firstHalfBgm);
 
