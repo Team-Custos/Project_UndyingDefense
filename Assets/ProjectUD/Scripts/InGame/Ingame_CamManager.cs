@@ -90,7 +90,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
         if (context.started || context.performed)
         {
-            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
+            if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
                 return;
 
             Vector2 input = context.ReadValue<Vector2>();
@@ -117,7 +117,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         if (context.performed)
         {
-            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
+            if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
                 return;
 
             float scrollInput = context.ReadValue<Vector2>().y;
@@ -143,7 +143,7 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
     {
         if(context.performed)
         {
-            if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
+            if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
                 return;
 
             if (selectedUnitManager.SelectedUnit != null)

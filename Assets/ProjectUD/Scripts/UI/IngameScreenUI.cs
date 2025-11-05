@@ -17,6 +17,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI waveTextUI;
     [SerializeField] private TextMeshProUGUI goldTextUI;
     [SerializeField] private GameObject settingUI;
+    [SerializeField] private TextMeshProUGUI recordTextUI;
 
     [Header("■ HP Bar")]
     [SerializeField] private Image hpBarUI;
@@ -194,5 +195,11 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         settingBtn.SetActive(on);
         commandSkillPanel.SetActive(on);
         spawnPanel.SetActive(on);
+        recordTextUI.gameObject.SetActive(on);
+    }
+
+    public void SetRecordTextUI(string text)
+    {
+        recordTextUI.text = text;
     }
 }

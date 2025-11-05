@@ -235,8 +235,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             }
 
 
-            if (unitUpgradeMenuPrefab != null)
-            {
+          //  if (unitUpgradeMenuPrefab != null)
+           // {
 
                 //Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.right * upgradeXpos;
                 //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
@@ -259,7 +259,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
                 //// 5️⃣ 버튼 위치 설정
                 //unitUpgradeMenuPrefab.transform.position = new Vector3(clampedX, clampedY, screenPosition.z);
-            }
+            //}
         }
     }
 

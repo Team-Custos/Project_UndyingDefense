@@ -21,6 +21,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private DurationEffectPool durationEffectPool;
     [SerializeField] private InstantEffectPool instantEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
+    [SerializeField] private EffectImagePool effectImagePool;
     [SerializeField] private DollyCamera dollyCamera;
 
     [SerializeField] private Image[] alarmImages;
@@ -107,6 +108,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetInstantEffectPool(instantEffectPool);
+        unit.SetEffectImagePool(effectImagePool);
         unit.SetHitVFXPool(hitVFXPool);
         unitPools[index].List.Add(unit);
 
@@ -157,11 +159,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             //return upgradeUnit;
         }
 
-        UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile);
+        UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile, effectImagePool);
         return upgradeUnit;
     }
 
-    private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, Transform transform, Tile tile)
+    private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, Transform transform, Tile tile, EffectImagePool poolEffectImage)
     {
         upgradeUnit.Initialize();
         upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
@@ -171,6 +173,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         upgradeUnit.SetDurationEffectPool(durationEffectPool);
         upgradeUnit.SetInstantEffectPool(instantEffectPool);
         upgradeUnit.SetHitVFXPool(hitVFXPool);
+        upgradeUnit.SetEffectImagePool(poolEffectImage);
 
         upgradeUnit.transform.position = transform.position;
         upgradeUnit.transform.rotation = transform.rotation;
@@ -253,7 +256,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
-        if (dollyCamera.IsCamPanning || inGameManager.IsGameEnd)
+        if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
             return;
 
         if (selectedUnitManager.SelectedUnit != null)

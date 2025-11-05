@@ -16,6 +16,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private DurationEffectPool durationEffectPool;
     [SerializeField] private InstantEffectPool instantEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
+    [SerializeField] private EffectImagePool effectImagePool;
 
 
     [Header("■ Options")]
@@ -139,6 +140,7 @@ public class EnemyUnitSpawner : MonoBehaviour
             enemy.Initialize(data, poolDic[data], fortress, this);
             enemy.SetDurationEffectPool(durationEffectPool);
             enemy.SetInstantEffectPool(instantEffectPool);
+            enemy.SetEffectImagePool(effectImagePool);
             enemy.SetHitVFXPool(hitVFXPool);
             return enemy;
         }

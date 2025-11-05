@@ -5,6 +5,7 @@ using UnityEngine;
 public class GranadeCtrl : ProjectileCtrl
 {
     [SerializeField] private GameObject AttackTrigger;
+    [SerializeField] private AudioClip bombAudio;
     private LayerMask attackTargetLayer;
     private AttackSkillData attackSkillData;
     private float time = 1f;
@@ -74,6 +75,7 @@ public class GranadeCtrl : ProjectileCtrl
                 attackTrigger.SetData(attackSkillData);
                 attackTrigger.SetTargetLayer(attackTargetLayer);
                 attackTrigger.AreaAttack(transform, radius);
+                SoundManager.Instance.PlaySFX(bombAudio, transform.position);
                 Destroy(gameObject);
             }
         }

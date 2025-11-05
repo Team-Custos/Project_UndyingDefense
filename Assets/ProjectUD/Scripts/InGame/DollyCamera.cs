@@ -7,6 +7,7 @@ public class DollyCamera : MonoBehaviour
 {
     [SerializeField] private CinemachineDollyCart dollyCart;
     [SerializeField] private IngameScreenUI ingameScreenUI;
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
@@ -46,6 +47,7 @@ public class DollyCamera : MonoBehaviour
             {
                 SoundManager.Instance.PlayBGM(inGmaeBgm);
                 ingameScreenUI.OnOffInGameUI(true);
+                inGameManager.StartGame();
                 isCamPanning = false;
                 waveManager.StartWave();
             }    

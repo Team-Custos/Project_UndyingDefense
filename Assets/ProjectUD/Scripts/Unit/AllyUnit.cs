@@ -148,14 +148,14 @@ public class AllyUnit : Unit
             ChangeMode();
             return;
         }
-            
 
-        if(isUpgrade)
+
+        if (isUpgrade)
         {
             UpgradeUnit();
             return;
         }
-            
+
         switch (state)
         {
             case State.STUN:
@@ -204,7 +204,7 @@ public class AllyUnit : Unit
                         }
                     }
 
-                    
+
 
                     if (stateDuration <= 0f)
                         return;
@@ -245,7 +245,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null)
+                        if (targetUnit == null || !hasTargetPos)
                         {
                             Vector3 direction = Vector3.left; //spawnDirection.forward; // 나중에 수정할 것!
                             Quaternion rot = Quaternion.LookRotation(direction);
@@ -284,11 +284,11 @@ public class AllyUnit : Unit
                     //if (!navObstacle.enabled)
                     //    Debug.Log("obstacle 꺼져있음");
 
-                    if(isSiegeActivated)
+                    if (isSiegeActivated)
                     {
                         siegeEffectInterval -= Time.deltaTime;
 
-                        if(siegeEffectInterval > 0)
+                        if (siegeEffectInterval > 0)
                         {
                             activeSiegeEffect.SetActive(true);
                         }
@@ -324,13 +324,18 @@ public class AllyUnit : Unit
                                             if (targetUnit.IsDead)
                                             {
                                                 targetUnit = null;
+                                                hasTargetPos = false;
                                                 return;
                                             }
 
                                             if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                                 ActivateSkill(skill, targetUnit);
                                             else
+                                            {
                                                 targetUnit = null;
+                                                hasTargetPos = false;
+                                            }
+
 
                                         }
                                         else targetUnit = SearchTarget(UnitStats.sightRange);
@@ -349,7 +354,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null)
+                        if (targetUnit == null && !hasTargetPos)
                             targetUnit = SearchTarget(unitStats.sightRange);
                         else
                             LookAt(targetUnit.transform.position);
@@ -381,6 +386,7 @@ public class AllyUnit : Unit
                                 if (targetUnit.IsDead)
                                 {
                                     targetUnit = null;
+                                    hasTargetPos = false;
                                     return;
                                 }
 
@@ -424,9 +430,9 @@ public class AllyUnit : Unit
                                         }
                                     }
                                 }
-                                else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
+                                else if (IsTargetPosInRange(targetPos, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
                                 {
-                                    MoveTo(targetUnit);
+                                    MoveToTargetUnit(targetUnit);
                                 }
                                 else
                                 {
@@ -449,7 +455,7 @@ public class AllyUnit : Unit
                     break;
                 }
 
-            
+
         }
 
     }
@@ -475,7 +481,7 @@ public class AllyUnit : Unit
                             selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                         }
 
-                        if(defaultSiegeEffect.activeSelf)
+                        if (defaultSiegeEffect.activeSelf)
                             defaultSiegeEffect.SetActive(false);
                     }
                     else    // 변경 끝
@@ -585,7 +591,7 @@ public class AllyUnit : Unit
 
         if (upgradeDuraiton > 0)
         {
-            if(navAgent.enabled)
+            if (navAgent.enabled)
                 navAgent.isStopped = true;
 
             if (!changeEffet.activeSelf)
@@ -645,7 +651,7 @@ public class AllyUnit : Unit
         }
     }
 
-    
+
     public void UpgradeOrder(int index)
     {
         isUpgrade = true;
@@ -698,7 +704,7 @@ public class AllyUnit : Unit
 
         result = SearchMarkedTarget(range);
 
-        if(result != null)
+        if (result != null)
             return result;
         else
         {
@@ -788,7 +794,7 @@ public class AllyUnit : Unit
 
     protected override void ActivateSkill(SkillBase skill, Unit target)
     {
-        if(isDead) return;
+        if (isDead) return;
 
         if (alternativeSkill)
         {
@@ -843,7 +849,7 @@ public class AllyUnit : Unit
         //base.ActivateSkill(skill, target);
     }
 
-    
+
 
     public override void Die()
     {
@@ -851,7 +857,7 @@ public class AllyUnit : Unit
 
         isDead = true;
 
-        if(state == State.STUN)
+        if (state == State.STUN)
         {
             base.RemoveStun();
         }
@@ -861,14 +867,14 @@ public class AllyUnit : Unit
         navObstacle.enabled = false;
 
         // 체인지 또는 업그레이드 중 사망 시
-        if(isChange)
+        if (isChange)
         {
             changeDuration = 3.0f;
             changeEffet.SetActive(false);
             isChange = false;
         }
 
-        if(isUpgrade)
+        if (isUpgrade)
         {
             upgradeDuraiton = 3.0f;
             changeEffet.SetActive(false);
@@ -884,4 +890,5 @@ public class AllyUnit : Unit
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }
+
 }

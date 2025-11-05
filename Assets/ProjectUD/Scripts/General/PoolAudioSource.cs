@@ -20,7 +20,6 @@ public class PoolAudioSource : MonoBehaviour
         {
             soundManager.ReturnAudioSource(audioSource);
             audioSource.clip = null;
-            Debug.Log("반환");
             enabled = false;
             
         }

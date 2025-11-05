@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
 using System.Resources;
+using TMPro.EditorUtilities;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected new Collider collider;
     [SerializeField] protected Transform effectParent;
     [SerializeField] protected Transform VFXParent;
+    [SerializeField] protected Transform heightPos;
 
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
@@ -64,11 +66,13 @@ public abstract class Unit : MonoBehaviour
     protected DurationEffectPool durationEffectPool;
     protected InstantEffectPool instantEffectPool;
     protected VFXObjectPool hitVFXPool;
+    protected EffectImagePool effectImagePool;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit;
     protected Vector3 targetPos;
+    protected bool hasTargetPos = false;
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -107,6 +111,7 @@ public abstract class Unit : MonoBehaviour
     public float NearbyDistance => nearbyDistance;
     public float Interval => interval;
     public bool IsDead => isDead;
+    public Transform HeightPos => heightPos;
 
     public bool IsSelected
     {
@@ -257,6 +262,11 @@ public abstract class Unit : MonoBehaviour
         this.instantEffectPool = instantEffectPool;
     }
 
+    public void SetEffectImagePool(EffectImagePool effectImagePool)
+    {
+        this.effectImagePool = effectImagePool;
+    }
+
     public void SetUnitStats(UnitStats unitStats)
     {
         this.unitStats = unitStats;
@@ -386,31 +396,128 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    //protected Unit SearchNearestTarget(float range)
+    //{
+    //    Unit result = null;
+    //    int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+    //    if (targetCount > 0)
+    //    {
+    //        float minDst = float.MaxValue;
+    //        for (int i = 0; i < targetCount; i++)
+    //        {
+    //            Unit unit = collidersInRange[i].GetComponent<Unit>();
+
+    //            if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+    //                continue;
+
+    //            float dst = Vector3.Distance(transform.position, unit.transform.position);
+
+    //            if (dst < minDst)
+    //            {
+    //                minDst = dst;
+    //                result = unit;
+    //            }
+    //        }
+    //    }
+
+    //    return result;
+    //}
+
     protected Unit SearchNearestTarget(float range)
     {
         Unit result = null;
+        float nearestPathLength = float.MaxValue;
+        Vector3 finalTargetPos = Vector3.zero;  // 내부 계산용
+        Vector3 selfPos = transform.position;
+
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-        if (targetCount > 0)
+        if (targetCount <= 0)
+            return null;
+
+        if(this is AllyUnit)
         {
-            float minDst = float.MaxValue;
-            for (int i = 0; i < targetCount; i++)
+            NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, path);
+
+            if(path.status == NavMeshPathStatus.PathInvalid)
             {
-                Unit unit = collidersInRange[i].GetComponent<Unit>();
+                bool foundStartPos = false;
 
-                if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
-                    continue;
-
-                float dst = Vector3.Distance(transform.position, unit.transform.position);
-
-                if (dst < minDst)
+                for (int i = 0; i < 4 && !foundStartPos; i++)
                 {
-                    minDst = dst;
-                    result = unit;
+                    Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
+                    Vector3 checkPos = transform.position + dir * nearbyDistance;
+                    Debug.Log($"내위치 : {transform.position} / 시작 위치 보정 시도: {checkPos}");
+
+                    // 자신 기준으로 checkPos까지의 경로가 완전한지 확인
+                    if (NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path))
+                    {
+                        selfPos = checkPos;
+                        foundStartPos = true;
+                    }
                 }
             }
         }
+        
+
+        for (int i = 0; i < targetCount; i++)
+        {
+            Unit target = collidersInRange[i].GetComponent<Unit>();
+            if (target == null || target.isDead)
+                continue;
+
+            
+            Vector3 startDir = (target.transform.position - selfPos).normalized;
+            float shortestPath = float.MaxValue;
+            Vector3 bestPosForThisTarget = Vector3.zero;
+
+            for (int j = 0; j < 4; j++)
+            {
+                Vector3 dir = Quaternion.AngleAxis(90f * j, Vector3.up) * startDir;
+                Vector3 targetPosCandidate = target.transform.position + dir * target.nearbyDistance;
+
+                if (!NavMesh.CalculatePath(selfPos, targetPosCandidate, navAgent.areaMask, path))
+                    continue;
+
+                if (path.status != NavMeshPathStatus.PathComplete)
+                    continue;
+
+                float pathLength = CalculatePathLength(path);
+
+                if (pathLength < shortestPath)
+                {
+                    shortestPath = pathLength;
+                    bestPosForThisTarget = targetPosCandidate;
+                }
+            }
+
+            if (shortestPath < nearestPathLength)
+            {
+                nearestPathLength = shortestPath;
+                result = target;
+                finalTargetPos = bestPosForThisTarget; 
+            }
+        }
+
+        targetPos = finalTargetPos;
+        if (this is AllyUnit)
+            Debug.Log(targetPos);
+        hasTargetPos = true;
 
         return result;
+    }
+
+    private float CalculatePathLength(NavMeshPath path)
+    {
+        float length = 0f;
+        if (path.corners.Length < 2)
+            return 0f;
+
+        for (int i = 1; i < path.corners.Length; i++)
+        {
+            length += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+        }
+
+        return length;
     }
 
 
@@ -666,6 +773,13 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    protected bool IsTargetPosInRange(Vector3 pos, float range)
+    {
+
+        float distance = Vector3.Distance(pos, transform.position);
+        return distance <= range;
+    }
+
     protected bool IsTargetInAttackRange(Unit target, float range)
     {
         if (target == null)
@@ -760,74 +874,89 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
+    public virtual void MoveToTargetUnit(Unit target)
+    {
+        if (navAgent.isStopped)
+            navAgent.isStopped = false;
+
+
+        navAgent.SetDestination(target.transform.position);
+    }
+
     public virtual void MoveTo(Unit target)
     {
-        float nearestDistance = float.MaxValue;
-        bool hasAvailablePath = false;
-
-        Vector3 result = Vector3.zero;
-        Vector3 startDir = (transform.position - target.transform.position).normalized;
-
-        for (float i = 0f; i < 6f; i++)
-        {
-            Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
-            Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-
-            NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
-
-            if (path.status == NavMeshPathStatus.PathComplete)
-            {
-                float distance = Vector3.Distance(transform.position, targetPos);
-
-                if (distance < nearestDistance)
-                {
-                    if (!hasAvailablePath)
-                        hasAvailablePath = true;
-
-                    nearestDistance = distance;
-                    result = targetPos;
-                    //navAgent.SetPath(path);
-                }
-            }
+        if(navAgent.isStopped)
+            navAgent.isStopped = false;
 
 
-            //if (path.status != NavMeshPathStatus.PathInvalid)
-            //{
-            //    float distance = Vector3.Distance(transform.position, targetPos);
+        navAgent.SetDestination(targetPos);
 
-            //    if (distance < nearestDistance)
-            //    {
-            //        if (!hasAvailablePath)
-            //            hasAvailablePath = true;
+        //float nearestDistance = float.MaxValue;
+        //bool hasAvailablePath = false;
 
-            //        nearestDistance = distance;
-            //        result = targetPos;
-            //        navAgent.SetPath(path);
-            //    }
-            //}
-        }
+        //Vector3 result = Vector3.zero;
+        //Vector3 startDir = (transform.position - target.transform.position).normalized;
 
-        if (hasAvailablePath)
-        {
-            if (navAgent.isStopped)
-                navAgent.isStopped = false;
+        //for (float i = 0f; i < 6f; i++)
+        //{
+        //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
+        //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
 
-            navAgent.SetDestination(result);
-        }
-        else
-        {
-            Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
+        //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
 
-            if (newTarget != null)
-            {
-                targetUnit = newTarget;
-                //MoveTo(targetUnit);
-            }
-            else
-            {
-                Debug.Log("1111111");
-            }
-        }
+        //    if (path.status == NavMeshPathStatus.PathComplete)
+        //    {
+        //        float distance = Vector3.Distance(transform.position, targetPos);
+
+        //        if (distance < nearestDistance)
+        //        {
+        //            if (!hasAvailablePath)
+        //                hasAvailablePath = true;
+
+        //            nearestDistance = distance;
+        //            result = targetPos;
+        //            //navAgent.SetPath(path);
+        //        }
+        //    }
+
+
+        //    //if (path.status != NavMeshPathStatus.PathInvalid)
+        //    //{
+        //    //    float distance = Vector3.Distance(transform.position, targetPos);
+
+        //    //    if (distance < nearestDistance)
+        //    //    {
+        //    //        if (!hasAvailablePath)
+        //    //            hasAvailablePath = true;
+
+        //    //        nearestDistance = distance;
+        //    //        result = targetPos;
+        //    //        navAgent.SetPath(path);
+        //    //    }
+        //    //}
+        //}
+
+        //if (hasAvailablePath)
+        //{
+        //    if (navAgent.isStopped)
+        //        navAgent.isStopped = false;
+
+        //    navAgent.SetDestination(result);
+        //}
+        //else
+        //{
+        //    Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
+
+        //    if (newTarget != null)
+        //    {
+        //        targetUnit = newTarget;
+        //        //MoveTo(targetUnit);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("1111111");
+        //    }
+        //}
         //Vector3 startDir = (transform.position - target.transform.position).normalized;
         //for (float i = 0f; i < 6f; i++)
         //{
@@ -842,7 +971,6 @@ public abstract class Unit : MonoBehaviour
         //    }
         //}
     }
-
     public void LookAt(Vector3 pos)
     {
         Vector3 dir = (pos - transform.position).normalized;
@@ -1110,6 +1238,36 @@ public abstract class Unit : MonoBehaviour
 
         Destroy(VFXobj, VFX.main.duration);
     }
+
+    public void AddEffectImage(GameObject effectPrefab, float duration, Sprite icon, Unit unit)
+    {
+        if (unit.IsDead)
+            return;
+
+        DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
+
+        // 효과 목록 중에 추가된 효과가 존재할 경우.
+        if (prevEffect != null)
+        {
+            if (prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
+            {
+                
+            }
+            else
+            {
+                return;
+            }
+
+        }
+        else //맨 처음 효과 오브젝트가 추가될 때.
+        {
+            GameObject obj = effectImagePool.GetEffectImage();
+            EffectImage effectImage = obj.GetComponent<EffectImage>();
+            effectImage.Initialize(this, duration, icon);
+            obj.SetActive(true);
+        }
+    }
+
 
     public void InvokeEvent(EventState state)
     {

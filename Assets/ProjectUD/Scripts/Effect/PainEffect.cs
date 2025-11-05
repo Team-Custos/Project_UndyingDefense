@@ -12,10 +12,13 @@ public class PainEffect : DurationEffect
     {
         target.AddCriticalVulnerability(critPercent);
         SoundManager.Instance.PlaySFX(painSound, target.transform.position);
+        //target.AddEffectImage(duration, iconSprite);
+        
     }
 
     public override void OnRemove()
     {
         target.AddCriticalVulnerability(-critPercent);
     }
+
 }

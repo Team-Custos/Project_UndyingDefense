@@ -51,12 +51,12 @@ public class EnemyUnit : Unit
     private Mode mode;
     private State state;
     private AIStance aiStance;
-    private BehaviorPriority behaviorPriority;
+    [SerializeField] private BehaviorPriority behaviorPriority;
 
     private Fortress fortress;
     private Vector3 fortressPos;
 
-    private const float angerTriggerPercent = 99f; // 분노 발동 기준 퍼센트
+    private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
     private bool hasExecutedMark = false;
     private ExecutionEffect executionEffect;
@@ -122,7 +122,7 @@ public class EnemyUnit : Unit
         {
             this.executionEffect = executionEffect;
             effect.transform.SetParent(effectParent);
-            effect.transform.localPosition = new Vector3(0f, 1.5f, 0f);
+            effect.transform.position = heightPos.position;
             effect.SetActive(true);
             executionEffect.ActivateExecution();
         }
@@ -150,7 +150,7 @@ public class EnemyUnit : Unit
         isDead = false;
         aiStance = data.aiStance;
         mode = Mode.MOVE;
-        behaviorPriority = BehaviorPriority.Move;
+        //behaviorPriority = BehaviorPriority.Move;
         navAgent.avoidancePriority = 1;
 
         fortressAttackCool = GeneralSkill.Data.CoolTime;
@@ -405,6 +405,7 @@ public class EnemyUnit : Unit
                         else // 시야 사거리 밖
                         {
                             targetUnit = null;
+                            hasTargetPos = false;
                             mode = Mode.MOVE;
                             MoveTo(fortressPos);
                         }
@@ -484,15 +485,15 @@ public class EnemyUnit : Unit
     {
         base.TakeDamage(Damage);
 
-        if (HpPercent * 100f <= angerTriggerPercent && !isDead)
-        {
-            if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
-            {
-                behaviorPriority = BehaviorPriority.Combat;
-                //modelAnimator.SetTrigger("Rage");
-                AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
-            }
-        }
+        //if (HpPercent * 100f <= angerTriggerPercent && !isDead)
+        //{
+        //    if (aiStance == AIStance.AGGRESSIVE && behaviorPriority != BehaviorPriority.Combat)
+        //    {
+        //        behaviorPriority = BehaviorPriority.Combat;
+        //        //modelAnimator.SetTrigger("Rage");
+        //        AddVFX(WarCryVFX.GetComponent<ParticleSystem>());
+        //    }
+        //}
 
     }
 

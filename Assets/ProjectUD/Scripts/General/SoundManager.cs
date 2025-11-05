@@ -57,7 +57,6 @@ public class SoundManager : Singleton<SoundManager>
             audioSource.GetComponent<PoolAudioSource>().Activate();
         }
 
-        Debug.Log(audioSourcePool.List.Count);
 
         //sfxAudio.PlayOneShot(clip);
     }

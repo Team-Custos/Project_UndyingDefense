@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3861526668872474900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4655212939532015033}
+  m_Layer: 0
+  m_Name: HeightPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4655212939532015033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3861526668872474900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2974963476001595444}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1438313934755441633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -516,6 +547,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -581,6 +617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: heightPos
+      value: 
+      objectReference: {fileID: 4655212939532015033}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: skillData
       value: 
       objectReference: {fileID: 11400000, guid: 33ccedaa378500f47a6a1fdac13e2f2d,
@@ -605,6 +646,21 @@ PrefabInstance:
       propertyPath: angerTriggerPercent
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: db0cea76f027bc04fadae246bf33a24a, type: 3}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: enemyDeadSFX.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 397c3a544e4dec244934f06995938c45, type: 3}
     - target: {fileID: 7911353692556451451, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_Enabled
@@ -613,6 +669,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 4655212939532015033}
     - targetCorrespondingSourceObject: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       insertIndex: -1

@@ -19,7 +19,6 @@ public class WaveDataLoader : MonoBehaviour
     private void Start()
     {
         LoadSpawnData();
-        Debug.Log(waveDataList.Count);
 
         //for(int i = 0; i < spawnDataList.Count; i++)
         //{
@@ -96,16 +95,13 @@ public class WaveDataLoader : MonoBehaviour
             //spawnDataList[number].id;
 
         if (spawnDataDic.TryGetValue(id, out EnemyUnitData enemyData))
-        {
-            Debug.Log(enemyData.Name);
             return enemyData;
-        }
 
         string fullPath = $"{path}/{id}";
 
         EnemyUnitData loadedData = Resources.Load<EnemyUnitData>(fullPath);
 
-        Debug.Log(loadedData.name);
+        //Debug.Log(loadedData.name);
 
         spawnDataDic.Add(id, loadedData);
         return loadedData;

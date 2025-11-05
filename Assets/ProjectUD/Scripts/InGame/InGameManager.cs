@@ -20,10 +20,12 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private AudioClip loseSfx;
     [SerializeField] private AudioClip winBgm;
     [SerializeField] private AudioClip loseBgm;
-    private bool isGameEnd = false;
+    private bool isGameStart = false;
     private bool isGamePause = false;
+    private float timeRecord = 0f;   // 현재 게임 플레이 시간 기록용 변수
 
-    public bool IsGameEnd => isGameEnd;
+    public bool IsGameStart => isGameStart;
+    public float TimeRecord => timeRecord;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -46,6 +48,20 @@ public class InGameManager : MonoBehaviour, IInputESC
         SoundManager.Instance.PlaySFX(inGameIntro);
 
         inputEventManager.OnESCTarget = this;
+    }
+
+    private void Update()
+    {
+        if (isGameStart)
+        {
+            timeRecord += Time.deltaTime;
+
+            int minutes = Mathf.FloorToInt(timeRecord / 60f);
+            int seconds = Mathf.FloorToInt(timeRecord % 60f);
+            string text = $"{minutes:00}:{seconds:00}";
+
+            ingameScreenUI.SetRecordTextUI(text);
+        }
     }
 
     public void SetGold(float gold, bool plus)
@@ -77,6 +93,11 @@ public class InGameManager : MonoBehaviour, IInputESC
         LoadingSceneManager.LoadScene("LobbyScene_LoPol");
     }
 
+    public void StartGame()
+    {
+        isGameStart = true;
+    }
+
     public void ExitGame()
     {
         SoundManager.Instance.PlayUIClickSFX();
@@ -106,7 +127,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
-            if (dollyCamera.IsCamPanning || isGameEnd)
+            if (dollyCamera.IsCamPanning || !isGameStart)
                 return;
 
 
@@ -122,7 +143,7 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void LoseGame()
     {
-        isGameEnd = true;
+        isGameStart = false;
         UserDataModel.instance.SetGameFinished(true);
 
         SoundManager.Instance.PlaySFX(loseSfx);
@@ -135,7 +156,7 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public void WinGame()
     {
-        isGameEnd = true;
+        isGameStart = false;
         UserDataModel.instance.SetGameFinished(true);
         UserDataModel.instance.SetGameWin(true);
 
