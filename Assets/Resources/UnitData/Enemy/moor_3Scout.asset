@@ -12,20 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2a7b08b5be21948a5be379082e8468, type: 3}
   m_Name: moor_3Scout
   m_EditorClassIdentifier: 
-  unitName: "\uC2E0\uAE30\uB8E8 \uB808\uC778\uC800"
   tier: 3
+  unitName: "\uC2E0\uAE30\uB8E8 \uB808\uC778\uC800"
   armorType: 2
-  maxHp: 180
-  critChance: 30
-  mental: 2
-  moveSpeed: 4
-  attackSpeed: 80
-  sightRange: 20
-  attackRange: 4
+  id: 
   icon: {fileID: 21300000, guid: 4b1182f0e889a6c41aa0f2ae6f550070, type: 3}
   prefab: {fileID: 7352368399694971929, guid: 9716c8ec3ac918a418ac248471350595, type: 3}
   atTypeIcon: {fileID: 0}
-  dfTypeIcon: {fileID: 0}
+  dfTypeIcon: {fileID: 21300000, guid: 8f2b1cc4815ac77479b8420be5d34369, type: 3}
   description: "\"\uBB34\uC5C7\uC774 \uAC00\uB85C\uB9C9\uB4E0\u2026 \uB118\uB294\uB2E4.
     \uADF8\uAC8C \uC6B0\uB9AC \uBC29\uC2DD\uC774\uB2C8\uAE4C.\"\r\n\uCD5C\uC815\uC608
     \uC720\uACA9\uB300 \uCD9C\uC2E0\uC73C\uB85C, \uC804\uC7A5\uC744 \uB204\uBE44\uBA70
@@ -36,6 +30,9 @@ MonoBehaviour:
     \uC7A5\uC560\uBB3C\uC744 \uB118\uB294 \uB3C4\uC57D\uB300\uB2E4. \uC21C\uAC04\uC758
     \uD2C8\uC744 \uBCF4\uACE0 \uB2EC\uB824\uB4DC\uB294 \uADF8\uC758 \uC2E4\uB8E8\uC5E3\uC740,
     \uB9C8\uCE58 \uC2E0\uAE30\uB8E8\uCC98\uB7FC \uBD99\uC7A1\uD788\uC9C0 \uC54A\uB294\uB2E4."
+  generalSkill: {fileID: 0}
+  specialSkill: {fileID: 0}
+  campName: 
   gold: 30
   targetingType: 0
   aiStance: 0

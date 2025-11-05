@@ -446,9 +446,7 @@ public abstract class Unit : MonoBehaviour
                 {
                     Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
                     Vector3 checkPos = transform.position + dir * nearbyDistance;
-                    Debug.Log($"내위치 : {transform.position} / 시작 위치 보정 시도: {checkPos}");
 
-                    // 자신 기준으로 checkPos까지의 경로가 완전한지 확인
                     if (NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path))
                     {
                         selfPos = checkPos;
@@ -499,8 +497,6 @@ public abstract class Unit : MonoBehaviour
         }
 
         targetPos = finalTargetPos;
-        if (this is AllyUnit)
-            Debug.Log(targetPos);
         hasTargetPos = true;
 
         return result;

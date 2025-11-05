@@ -14,7 +14,8 @@ public class AttackData : ScriptableObject
     [Header("■ Data")]
     [SerializeField] private AttackType type;
     [SerializeField] private GameObject critEffectPrefab;
-    
+    [SerializeField] private Sprite typeIcon;
+
     [Header("■ VFX")]
     [SerializeField] private GameObject critVFX;
     [SerializeField] private GameObject hitVFX;
@@ -26,6 +27,7 @@ public class AttackData : ScriptableObject
     [SerializeField] private AudioClip critSFXClip;
 
     public AttackType Type => type;
+    public Sprite TypeIcon => typeIcon;
     public GameObject CritEffectPrefab => critEffectPrefab;
     public GameObject CritVFX => critVFX;
     public GameObject HitVFX => hitVFX;

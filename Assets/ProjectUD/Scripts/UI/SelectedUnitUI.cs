@@ -2,6 +2,7 @@ using Cinemachine;
 using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -281,7 +282,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         SetUnitTierIcon(unitData.Tier);
 
-        atTypeIcon.sprite = unitData.AtTypeIcon;
+        //AttackData attackData = unit.GeneralSkill.Data.GetComponent< AttackData >();
+        //atTypeIcon.sprite = attackData.TypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
         //attackTypeText.text = unitData.AttackType;
@@ -344,8 +346,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         SetUnitTierIcon(unit.Data.Tier);
 
-        atTypeIcon.sprite = unit.Data.AtTypeIcon;
-       dfTypeIcon.sprite = unit.Data.DfTypeIcon;
+        //AttackData attackData = unit.GeneralSkill.Data as AttackData;
+
+        dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
         //attackTypeText.text = unit.Data.AttackType;
         attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
