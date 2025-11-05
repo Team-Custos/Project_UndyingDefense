@@ -44,6 +44,9 @@ public class TitleUIManager : MonoBehaviour
 
                 LoadingSceneManager.LoadScene("IntroScene");
 
+                // --- 저장데이터 초기화
+                PlayerPrefs.DeleteAll();
+
                 //DOTween.Sequence()
                 //.AppendInterval(startSfx.length)
                 //.OnComplete(() =>

@@ -1,6 +1,5 @@
 using InputEventInterface;
-using System.Collections.Generic;
-using Unity.AI.Navigation;
+using UltEvents;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,6 +25,12 @@ public class InGameManager : MonoBehaviour, IInputESC
 
     public bool IsGameStart => isGameStart;
     public float TimeRecord => timeRecord;
+    [Header("■ PlayerPrefs Event")]
+    [SerializeField] private UltEvent gameWin;
+    [SerializeField] private UltEvent gameFinish;
+    [SerializeField] private string id;
+
+    public bool IsGameEnd => isGameEnd;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -146,6 +151,11 @@ public class InGameManager : MonoBehaviour, IInputESC
         isGameStart = false;
         UserDataModel.instance.SetGameFinished(true);
 
+        isGameEnd = true;
+        //UserDataModel.instance.SetGameFinished(true);
+        //---
+        gameFinish.Invoke();
+        //---
         SoundManager.Instance.PlaySFX(loseSfx);
         Invoke(nameof(PlayLoseBGM), loseSfx.length);
 
@@ -159,6 +169,13 @@ public class InGameManager : MonoBehaviour, IInputESC
         isGameStart = false;
         UserDataModel.instance.SetGameFinished(true);
         UserDataModel.instance.SetGameWin(true);
+        isGameEnd = true;
+        //UserDataModel.instance.SetGameFinished(true);
+        if(gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
+            gameFinish.Invoke();
+        //UserDataModel.instance.SetGameWin(true);
+        if(gameWin != null)
+            gameWin.Invoke();
 
         SoundManager.Instance.PlaySFX(winSfx);
         Invoke(nameof(PlayWinBGM), loseSfx.length);

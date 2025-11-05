@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static StagePrefsData;
 
 public class WaveManager : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class WaveManager : MonoBehaviour
     public bool IsWaveEnd => isWaveEnd;
     public int CurWave => curWave;
 
+    [Header("StagePrefsData")]
+    [SerializeField] private StagePrefsData stagePrefsData;
 
     private void Update()
     {
@@ -97,6 +100,9 @@ public class WaveManager : MonoBehaviour
             else
             {
                 ingameScreenUI.ShowNotice("방어 성공");
+                //---
+                SetTutorialEnd();
+                //---
                 SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
                 inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
@@ -113,6 +119,9 @@ public class WaveManager : MonoBehaviour
         else
         {
             ingameScreenUI.ShowNotice("방어 성공");
+            //---
+            SetTutorialEnd();
+            //---
             SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
             inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
@@ -125,6 +134,18 @@ public class WaveManager : MonoBehaviour
             if (isInfiniteMode)
                 infiniteWaveCount++;
         }
+    }
+
+    private void SetTutorialEnd()
+    {
+        PlayerPrefs.SetInt("IsTutorialEnd", 1);
+        StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
+        if (!stagedata.isOpen)
+        {
+            stagedata.isOpen = true;
+        }
+        //stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);  // struct 일때 사용했던 코드
+        stagePrefsData.SaveStageData();
     }
 
     public void StartWave()

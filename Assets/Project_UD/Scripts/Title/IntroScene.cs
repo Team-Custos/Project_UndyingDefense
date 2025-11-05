@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Video;
 using UltEvents;
 
@@ -33,10 +32,21 @@ public class IntroScene : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        videoPlayer.loopPointReached += OnVideoFinished;
+        Debug.Log($"인트로영상{PlayerPrefs.GetInt("IntroVideo")}");
 
-        // 영상 소리 페이드 아웃 예약
-        ScheduleVideoAudioFadeOut();
+        if(PlayerPrefs.GetInt("IntroVideo") == 0)
+        {
+            videoPlayer.Play();
+            videoPlayer.loopPointReached += vp => OnVideoFinished();
+            // 영상 소리 페이드 아웃 예약
+            ScheduleVideoAudioFadeOut();
+        }
+        else
+        {
+            OnVideoFinished();
+        }
+
+            
     }
 
     //void Update()
@@ -57,20 +67,22 @@ public class IntroScene : MonoBehaviour
             isVideoSkipped = true;
 
             videoPlayer.Stop();
-            OnVideoFinished(videoPlayer);
+            OnVideoFinished();
             skipBtn.SetActive(false);
         }
-        else
-        {
-            if(isStatementSkipped) return;
+        //else
+        //{
+        //    if(isStatementSkipped) return;
 
-            ShowDialogue();
-            isStatementSkipped = true;
-        }
+        //    ShowDialogue();
+        //    isStatementSkipped = true;
+        //}
     }
 
-    private void OnVideoFinished(VideoPlayer vp)
+    private void OnVideoFinished()
     {
+        videoPlayer.gameObject.SetActive(false);
+
         // 1. 첫 BGM 재생
         SoundManager.Instance.PlayBGM(firstHalfBgm);
 
@@ -81,6 +93,8 @@ public class IntroScene : MonoBehaviour
 
         // 3. firstHalfBgm 길이만큼 후에 다음 단계 실행
         //Invoke(nameof(OnFirstBgmEnded), firstHalfBgm.length);
+
+        PlayerPrefs.SetInt("IntroVideo", 1);
     }
 
     private void FadeInStatementImage()
@@ -91,6 +105,7 @@ public class IntroScene : MonoBehaviour
         //statementCanvasGroup.alpha = 0;
         //statementCanvasGroup.DOFade(1f, duration)
         //    .SetEase(Ease.OutQuad);
+        OnVideoFinished();
     }
 
     private void OnFirstBgmEnded()

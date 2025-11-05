@@ -28,6 +28,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     [SerializeField] protected DialogueUI dialogueui; // DialogueUI.cs 레퍼런스
     [SerializeField] protected TextMeshProUGUI dialogueLine;
     [SerializeField] protected Button nextBtn;
+    [SerializeField] private GameObject spaceText;
+    [SerializeField] private Animator dialSpaceText;
     //[SerializeField] private SpeakingArray speakingArray;
 
     private int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
@@ -91,7 +93,11 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
         dialogueLine.text = lines[currentLineIndex];
         if (lines.Count > 1)
-            nextBtn.gameObject.SetActive(true);
+        {
+            //nextBtn.gameObject.SetActive(true);
+            spaceText.SetActive(true);
+            dialSpaceText.SetTrigger("ShowSpaceText");
+        }
         else
             ReadLine();
 
@@ -104,8 +110,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
             currentLineIndex++;
             dialogueLine.text = lines[currentLineIndex];
             if (currentLineIndex == lines.Count - 1)
-                nextBtn.gameObject.SetActive(false);
-
+            {
+                //nextBtn.gameObject.SetActive(false);
+            }
             //return;
         }
 
@@ -128,7 +135,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //protected virtual void EndDialogue()
     public void EndSpeaking()
     {
-        nextBtn.gameObject.SetActive(false);
+        //nextBtn.gameObject.SetActive(false);
+        spaceText.SetActive(false);
         currentSpeakingArray.InvokeNextEvent();
     }
 
