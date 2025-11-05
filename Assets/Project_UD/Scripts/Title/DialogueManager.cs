@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     [SerializeField] protected TextMeshProUGUI dialogueLine;
     [SerializeField] protected Button nextBtn;
     [SerializeField] private GameObject spaceText;
-    [SerializeField] private Animator dialogueAnim;
+    [SerializeField] private Animator dialSpaceText;
     //[SerializeField] private SpeakingArray speakingArray;
 
     private int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
@@ -96,7 +96,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         {
             //nextBtn.gameObject.SetActive(true);
             spaceText.SetActive(true);
-            dialogueAnim.SetTrigger("ShowSpaceText");
+            dialSpaceText.SetTrigger("ShowSpaceText");
         }
         else
             ReadLine();

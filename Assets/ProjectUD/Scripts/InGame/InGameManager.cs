@@ -128,8 +128,9 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameEnd = true;
         //UserDataModel.instance.SetGameFinished(true);
+        //---
         gameFinish.Invoke();
-
+        //---
         SoundManager.Instance.PlaySFX(loseSfx);
         Invoke(nameof(PlayLoseBGM), loseSfx.length);
 
@@ -142,7 +143,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameEnd = true;
         //UserDataModel.instance.SetGameFinished(true);
-        if(gameFinish != null)
+        if(gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
             gameFinish.Invoke();
         //UserDataModel.instance.SetGameWin(true);
         if(gameWin != null)

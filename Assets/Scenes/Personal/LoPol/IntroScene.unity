@@ -1434,7 +1434,7 @@ MonoBehaviour:
   dialogueLine: {fileID: 3126197879924409021}
   nextBtn: {fileID: 3817263554819114027}
   spaceText: {fileID: 615581372293490298}
-  dialogueAnim: {fileID: 615581372293490297}
+  dialSpaceText: {fileID: 615581372293490297}
 --- !u!1 &1220654780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,6 +3277,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1153308180}
+    - target: {fileID: 8397738344927852064, guid: f80f302396a81c44ea8f6751a1c045b5,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3284,7 +3289,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: f80f302396a81c44ea8f6751a1c045b5, type: 3}
 --- !u!95 &615581372293490297 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 8511882540652875436, guid: f80f302396a81c44ea8f6751a1c045b5,
+  m_CorrespondingSourceObject: {fileID: 9134488060136602317, guid: f80f302396a81c44ea8f6751a1c045b5,
     type: 3}
   m_PrefabInstance: {fileID: 615581372293490296}
   m_PrefabAsset: {fileID: 0}

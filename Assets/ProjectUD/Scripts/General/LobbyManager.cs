@@ -101,15 +101,22 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
 
         else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
-            && PlayerPrefs.GetInt("GeumsanWin") == 0 && PlayerPrefs.GetInt("AfterGameDialogue") == 0)
+            &&  PlayerPrefs.GetInt("AfterGameDialogue") == 0)   //PlayerPrefs.GetInt("GeumsanWin") == 0 &&
         {
             pInputManager.OnSpaceTarget = dialogueManager;
             PlayerPrefs.SetInt("AfterGameDialogue",1);
             isGameEnd.Invoke();
+
+            if(PlayerPrefs.GetInt("GeumsanWin") == 1 && PlayerPrefs.GetInt("AfterGameDialogue") == 1)
+            {
+                pInputManager.OnSpaceTarget = dialogueManager;
+                PlayerPrefs.SetInt("AfterGameWinDialogue", 1);
+                isGameWin.Invoke();
+            }
         }
 
         else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
-            && PlayerPrefs.GetInt("GeumsanWin") == 1 && PlayerPrefs.GetInt("AfterGameWinDialogue") == 0)
+            && PlayerPrefs.GetInt("GeumsanWin") == 1 &&  PlayerPrefs.GetInt("AfterGameDialogue") == 1 && PlayerPrefs.GetInt("AfterGameWinDialogue") == 0)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
             PlayerPrefs.SetInt("AfterGameWinDialogue", 1);

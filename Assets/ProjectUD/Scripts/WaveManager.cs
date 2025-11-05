@@ -100,11 +100,7 @@ public class WaveManager : MonoBehaviour
             {
                 ingameScreenUI.ShowNotice("방어 성공");
                 //---
-                PlayerPrefs.SetInt("IsTutorialEnd", 1);
-                StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
-                if(!stagedata.isOpen)
-                    stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);
-                stagePrefsData.SaveStageData();
+                SetTutorialEnd();
                 //---
                 SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
@@ -123,11 +119,7 @@ public class WaveManager : MonoBehaviour
         {
             ingameScreenUI.ShowNotice("방어 성공");
             //---
-            PlayerPrefs.SetInt("IsTutorialEnd", 1);
-            StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
-            if (!stagedata.isOpen)
-                stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);
-            stagePrefsData.SaveStageData();
+            SetTutorialEnd();
             //---
             SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
@@ -141,6 +133,18 @@ public class WaveManager : MonoBehaviour
             if (isInfiniteMode)
                 infiniteWaveCount++;
         }
+    }
+
+    private void SetTutorialEnd()
+    {
+        PlayerPrefs.SetInt("IsTutorialEnd", 1);
+        StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
+        if (!stagedata.isOpen)
+        {
+            stagedata.isOpen = true;
+        }
+        //stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);  // struct 일때 사용했던 코드
+        stagePrefsData.SaveStageData();
     }
 
     public void StartWave()

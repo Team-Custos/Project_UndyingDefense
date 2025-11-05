@@ -12,7 +12,7 @@ public class StagePrefsData : MonoBehaviour
     // 마지막으로 진입한 전장 저장용 
     private Dictionary<string, StageData> latestPlayStage = new Dictionary<string, StageData>();
 
-    public struct StageData
+    public class StageData
     {
         public string id;
         public bool isOpen;
@@ -20,7 +20,7 @@ public class StagePrefsData : MonoBehaviour
         public float clearTime;
     }
 
-    private StageData lastPlayedStage;
+    private StageData lastPlayedStage = new StageData();
     private StringBuilder sb = new StringBuilder();
 
     private void Start()
@@ -140,8 +140,8 @@ public class StagePrefsData : MonoBehaviour
             stagedata.id = stageID;
             //stagedata.isOpen = bool.Parse(isOpen);          // 문자열로 되어있는 저장정보 파싱
             //stagedata.isStageEnd = bool.Parse(isPlayed);
-            stagedata.isOpen = int.Parse(isOpen) != 0;
-            stagedata.isStageEnd = int.Parse(isPlayed) != 0;
+            stagedata.isOpen = isOpen != "0";
+            stagedata.isStageEnd = isPlayed != "0";
             stagedata.clearTime = float.Parse(clearTime);
 
             dic.Add(stageID, stagedata);
@@ -172,7 +172,8 @@ public class StagePrefsData : MonoBehaviour
         StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
         stagedata.isStageEnd = true;
 
-        stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+        //stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+        SaveStageData();
     }
     public void SetGeumsanWin()
     {
