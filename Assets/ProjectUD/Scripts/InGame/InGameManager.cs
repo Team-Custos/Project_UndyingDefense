@@ -30,7 +30,6 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private UltEvent gameFinish;
     [SerializeField] private string id;
 
-    public bool IsGameEnd => isGameEnd;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -149,9 +148,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void LoseGame()
     {
         isGameStart = false;
-        UserDataModel.instance.SetGameFinished(true);
+        //UserDataModel.instance.SetGameFinished(true);
 
-        isGameEnd = true;
         //UserDataModel.instance.SetGameFinished(true);
         //---
         gameFinish.Invoke();
@@ -167,9 +165,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void WinGame()
     {
         isGameStart = false;
-        UserDataModel.instance.SetGameFinished(true);
-        UserDataModel.instance.SetGameWin(true);
-        isGameEnd = true;
+        //UserDataModel.instance.SetGameFinished(true);
+        //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);
         if(gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
             gameFinish.Invoke();

@@ -88,7 +88,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             case CommandSkill.TargetType.AREA:
                 skill.Activate(BurningOilPos);
                 SoundManager.Instance.PlaySFX(skill.Data.StartSFX, BurningOilPos.position);
-                Debug.Log(111111);
                 BurningOilCtrl.SpawnStart();
                 break;
         }

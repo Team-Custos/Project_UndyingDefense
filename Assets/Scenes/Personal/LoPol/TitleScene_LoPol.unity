@@ -828,13 +828,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPrime: 1
+  cameraPos: {fileID: 0}
   bgmAudio: {fileID: 23314600}
   sfxAudio: {fileID: 1469257925}
   sfxLoopAudio: {fileID: 0}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
+  unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
+  audioSourcePrefab: {fileID: 6984110101576558204, guid: e75dcaa9cba8ca348b19c8a2055dbe67,
+    type: 3}
+  maxDistance: 50
+  minDistance: 15
 --- !u!4 &530951520
 Transform:
   m_ObjectHideFlags: 0
@@ -962,11 +968,27 @@ MonoBehaviour:
   commandSkillDatas: []
   rosterPanel: {fileID: 0}
   endDelay: 0.5
+  stageStartBtn: {fileID: 0}
+  alarm: {fileID: 0}
+  messageUI: {fileID: 0}
   dialogueUI: {fileID: 0}
   isTutorialEnd:
     _PersistentCalls: []
   beforeTuorial:
     _PersistentCalls: []
+  isGameEnd:
+    _PersistentCalls: []
+  isGameWin:
+    _PersistentCalls: []
+  pInputManager: {fileID: 0}
+  dialogueManager: {fileID: 0}
+  stagePrefsData: {fileID: 0}
+  guemsanBtn: {fileID: 0}
+  namhanBtn: {fileID: 0}
+  guemsanLock: {fileID: 0}
+  guemsanCloud: {fileID: 0}
+  namhanLock: {fileID: 0}
+  namhanCloud: {fileID: 0}
 --- !u!4 &712085342
 Transform:
   m_ObjectHideFlags: 0

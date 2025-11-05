@@ -21368,6 +21368,14 @@ MonoBehaviour:
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
   loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
+  gameWin:
+    _PersistentCalls:
+    - _Target: {fileID: 856739625}
+      _MemberName: 
+      _PersistentArguments: []
+  gameFinish:
+    _PersistentCalls: []
+  id: 
 --- !u!114 &857208347 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 986146842021186944, guid: 8daaea2bb8c9aea4684d2b3766934e24,
@@ -26072,6 +26080,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 311500981}
   waveDataLoader: {fileID: 34717631}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 0}
 --- !u!4 &1023733845
 Transform:
   m_ObjectHideFlags: 0
@@ -53093,6 +53102,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 0}
   waveDataLoader: {fileID: 0}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 0}
 --- !u!114 &2132998470 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1161352468040486358, guid: 8daaea2bb8c9aea4684d2b3766934e24,

@@ -12008,6 +12008,11 @@ MonoBehaviour:
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
   loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
+  gameWin:
+    _PersistentCalls: []
+  gameFinish:
+    _PersistentCalls: []
+  id: 
 --- !u!4 &318867823
 Transform:
   m_ObjectHideFlags: 0
@@ -15791,6 +15796,17 @@ MonoBehaviour:
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
   loseBgm: {fileID: 8300000, guid: 2663aa3a4022a294180b4938d8d6ffe9, type: 3}
+  gameWin:
+    _PersistentCalls:
+    - _Target: {fileID: 1095295302}
+      _MemberName: 
+      _PersistentArguments: []
+  gameFinish:
+    _PersistentCalls:
+    - _Target: {fileID: 1095295302}
+      _MemberName: SetTutorialEnd
+      _PersistentArguments: []
+  id: 
 --- !u!4 &415572254
 Transform:
   m_ObjectHideFlags: 0
@@ -40033,6 +40049,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1095295301
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1095295303}
+  - component: {fileID: 1095295302}
+  m_Layer: 0
+  m_Name: StagePrefsData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1095295302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095295301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea2783859b2bf04f854a05af0f4dd3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageClearData: {fileID: 4900000, guid: a77f0b3619b336049a84991bf9679475, type: 3}
+--- !u!4 &1095295303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095295301}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1104036217 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -53459,6 +53520,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 1936867425}
   waveDataLoader: {fileID: 0}
   isInfiniteMode: 1
+  stagePrefsData: {fileID: 0}
 --- !u!4 &1409587473
 Transform:
   m_ObjectHideFlags: 0
@@ -64800,6 +64862,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 478265408}
   waveDataLoader: {fileID: 824689422}
   isInfiniteMode: 1
+  stagePrefsData: {fileID: 1095295302}
 --- !u!4 &1713546832
 Transform:
   m_ObjectHideFlags: 0
@@ -80516,6 +80579,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 0}
   waveDataLoader: {fileID: 0}
   isInfiniteMode: 0
+  stagePrefsData: {fileID: 0}
 --- !u!1 &2131560353
 GameObject:
   m_ObjectHideFlags: 0
@@ -81173,4 +81237,5 @@ SceneRoots:
   - {fileID: 478265410}
   - {fileID: 1993057058}
   - {fileID: 824689424}
+  - {fileID: 1095295303}
   - {fileID: 869192626}
