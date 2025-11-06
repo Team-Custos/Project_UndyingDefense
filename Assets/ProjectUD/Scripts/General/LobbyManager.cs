@@ -60,8 +60,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     {
         StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsan");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
+        Debug.Log($"금산전투 해금여부 : {guemsan.isOpen}, 남한산성 해금여부 : {namhan.isOpen}");
+        Debug.Log($"금산전투 Win여부 : {PlayerPrefs.GetInt("GeumsanWin")}");
+        Debug.Log($"금산전투 클리어여부 : {guemsan.isStageEnd}, 남한산성 클리어여부 : {namhan.isStageEnd}");
 
-        if(guemsan.isOpen)
+        if (guemsan.isOpen)
         {
             guemsanBtn.enabled = true;
             guemsanLock.SetActive(false);
