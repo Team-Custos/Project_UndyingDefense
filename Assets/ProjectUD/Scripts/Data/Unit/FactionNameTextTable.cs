@@ -46,8 +46,8 @@ public class FactionNameTextTable : MonoBehaviour
     {
         fNameTextTable.Add("ally", "조선 의병 목록");
         fNameTextTable.Add("moor", "무어 용병단 목록");
-        fNameTextTable.Add("pioneer", "태양의 제국 목록");
-        fNameTextTable.Add("summon", "신성의 증거단 목록");
+        fNameTextTable.Add("empire", "태양의 제국 목록");
+        fNameTextTable.Add("pioneer", "신성의 증거단 목록");
     }
 
     public string GetName(string id)

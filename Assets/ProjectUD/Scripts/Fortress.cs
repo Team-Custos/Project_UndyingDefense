@@ -54,7 +54,8 @@ public class Fortress : MonoBehaviour
             ingameUI.ShowResult(inGameManager.inGameGold, false, "");
             SoundManager.Instance.StopBGM();
 
-            inGameManager.LoseGame();
+            //inGameManager.LoseGame();
+            inGameManager.WinGame();
             //waveManager.PlayLoseSfx();
 
             
