@@ -31,6 +31,9 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private UltEvent gameFinish;
     [SerializeField] private string id;
 
+    [Header("StagePrefsData")]
+    [SerializeField] private StagePrefsData stagePrefsData;
+
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -172,12 +175,13 @@ public class InGameManager : MonoBehaviour, IInputESC
         //UserDataModel.instance.SetGameFinished(true);
         //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);
-        if (gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
+        //---
+        if(gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
             gameFinish.Invoke();
-        //UserDataModel.instance.SetGameWin(true);
         if(gameWin != null)
             gameWin.Invoke();
-
+        stagePrefsData.SetRecordTime(timeRecord, id);
+        //---
         SoundManager.Instance.PlaySFX(winSfx);
         Invoke(nameof(PlayWinBGM), loseSfx.length);
 

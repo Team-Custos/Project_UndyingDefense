@@ -41,6 +41,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject namhanLock;
     [SerializeField] private GameObject namhanCloud;
 
+    [Header("StagePrefsData")]
+    [SerializeField] private SpeakingArray afterWinGusan;
+
+
+
     private ScriptableObject[] so;
 
 
@@ -60,8 +65,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     {
         StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsan");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
+        Debug.Log($"금산전투 해금여부 : {guemsan.isOpen}, 남한산성 해금여부 : {namhan.isOpen}");
+        Debug.Log($"금산전투 Win여부 : {PlayerPrefs.GetInt("GeumsanWin")}");
+        Debug.Log($"금산전투 클리어여부 : {guemsan.isStageEnd}, 남한산성 클리어여부 : {namhan.isStageEnd}");
 
-        if(guemsan.isOpen)
+        if (guemsan.isOpen)
         {
             guemsanBtn.enabled = true;
             guemsanLock.SetActive(false);
@@ -74,6 +82,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             namhanCloud.SetActive(false);
         }
     }
+
     public void BeforeTutorial() // 훈련장으로 안내하기 위한 
     {
         alarm.gameObject.SetActive(true);
@@ -98,6 +107,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             pInputManager.OnSpaceTarget = dialogueManager;
             PlayerPrefs.SetInt("AfterTutorialDialogue", 1);
             isTutorialEnd.Invoke();
+            //dialogueManager.ShowDialogue(tutorialEndDialogue);
         }
 
         else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
@@ -158,6 +168,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
         */
 
+    }
+
+    public void ShowWinGumsamDialogue()
+    {
+        dialogueManager.ShowDialogue();
     }
 
     public void EndGame()

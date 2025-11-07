@@ -184,12 +184,22 @@ public class StagePrefsData : MonoBehaviour
         stagedata.isStageEnd = true;
         //stagedata.clearTime = "1111";     // 클리어 시간 적용
 
-        stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+        //stagePlayerPrefs["UNQ_gumsan"] = stagedata;
 
         StageData namhan = stagePlayerPrefs["UNQ_namhanFortress"];
         namhan.isOpen = true;
+        SaveStageData();
+        //stagePlayerPrefs["UNQ_namhanFortress"] = namhan;
+    }
 
-        stagePlayerPrefs["UNQ_namhanFortress"] = namhan;
+    public void SetRecordTime(float recordTime, string id)
+    {
+        float bestTime = stagePlayerPrefs[id].clearTime;
+        if (bestTime == 0f || recordTime < bestTime)
+        {
+            stagePlayerPrefs[id].clearTime = recordTime;
+            SaveStageData();
+        }
     }
 
     public void SetTutorialEnd()
