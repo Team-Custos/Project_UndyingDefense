@@ -19927,7 +19927,7 @@ PrefabInstance:
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: alternativeSkill
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
@@ -20282,6 +20282,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5559337073386126002, guid: 9ec43f2a5a75dac449ed1ab950a2aa2d,
+        type: 3}
+      propertyPath: skillVfx
+      value: 
+      objectReference: {fileID: 5207848579638356713, guid: 2036b28014051b641a18e8f20da60b2c,
+        type: 3}
     - target: {fileID: 5800827886960093435, guid: 9ec43f2a5a75dac449ed1ab950a2aa2d,
         type: 3}
       propertyPath: m_Name
@@ -20509,7 +20515,7 @@ Animator:
   m_GameObject: {fileID: 8949831253768916523}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eff3a83eb59c69d4b957eb3e7696d2c4, type: 3}
-  m_Controller: {fileID: 22100000, guid: 2e708633ac7e05f49b60212fd6d97b6c, type: 2}
+  m_Controller: {fileID: 22100000, guid: af944c92dd1754d4f9059f325fdcfcfa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -63,6 +63,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image[] unitStateImage;
     [SerializeField] private UnitStateUI[] unitStateUIs;
     [SerializeField] private GameObject unitStatePanel;
+    [SerializeField] private GameObject typeInfo;
 
 
 
@@ -119,6 +120,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         {
             unitHPPrefab.SetActive(false);
             unitInfoImage.gameObject.SetActive(false);
+            typeInfo.SetActive(false);
         }
 
     }
@@ -394,6 +396,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         unitInfoImage.gameObject.SetActive(false);
         unitStatePanel.SetActive(false);
+        typeInfo.SetActive(false);
 
     }
 

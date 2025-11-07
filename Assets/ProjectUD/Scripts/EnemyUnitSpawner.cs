@@ -16,6 +16,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private DurationEffectPool durationEffectPool;
     [SerializeField] private InstantEffectPool instantEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
+    [SerializeField] private VFXObjectPool skillVFXPool;
     [SerializeField] private EffectImagePool effectImagePool;
 
 
@@ -144,7 +145,7 @@ public class EnemyUnitSpawner : MonoBehaviour
             enemy.SetDurationEffectPool(durationEffectPool);
             enemy.SetInstantEffectPool(instantEffectPool);
             enemy.SetEffectImagePool(effectImagePool);
-            enemy.SetHitVFXPool(hitVFXPool);
+            enemy.SetHitVFXPool(hitVFXPool, skillVFXPool);
             return enemy;
         }
         else

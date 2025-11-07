@@ -10,33 +10,35 @@ public class EffectImage : MonoBehaviour
     private float duration = 3.0f;
     private Vector3 screenPos;
     [SerializeField] private Image effectIcon;
+    public Image EffectIcon => effectIcon;
 
     public void Initialize(EffectImagePool effectImagePool)
     {
         this.effectImagePool = effectImagePool;
     }
 
-    public void Initialize(Unit target, float duration, Sprite icon)
+    public void Initialize(Unit target)
     {
         this.target = target;
-        this.duration = duration;
-        effectIcon.sprite = icon;
     }
 
     private void Update()
     {
-        duration -= Time.deltaTime;
-        if (duration <= 0f)
-        {
-            effectImagePool.ReturnEffectImage(this.gameObject);
-        }
-        else
-        {
-            Vector3 worldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
-            screenPos = Camera.main.WorldToScreenPoint(worldPos);
-            transform.position = screenPos;
-        }
+        Vector3 worldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
+        screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        transform.position = screenPos;
 
-        
+
+    }
+
+    public void Return()
+    {
+        effectImagePool.ReturnEffectImage(this.gameObject);
+        target = null;
+    }
+    
+    public void SetIcon(Sprite sprite)
+    {
+        effectIcon.sprite = sprite;
     }
 }

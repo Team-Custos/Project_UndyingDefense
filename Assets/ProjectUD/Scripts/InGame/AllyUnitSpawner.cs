@@ -21,6 +21,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private DurationEffectPool durationEffectPool;
     [SerializeField] private InstantEffectPool instantEffectPool;
     [SerializeField] private VFXObjectPool hitVFXPool;
+    [SerializeField] private VFXObjectPool skillVFXPool;
     [SerializeField] private EffectImagePool effectImagePool;
     [SerializeField] private DollyCamera dollyCamera;
 
@@ -109,7 +110,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetInstantEffectPool(instantEffectPool);
         unit.SetEffectImagePool(effectImagePool);
-        unit.SetHitVFXPool(hitVFXPool);
+        unit.SetHitVFXPool(hitVFXPool, skillVFXPool);
         unitPools[index].List.Add(unit);
 
         return unit;
@@ -172,7 +173,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
         upgradeUnit.SetDurationEffectPool(durationEffectPool);
         upgradeUnit.SetInstantEffectPool(instantEffectPool);
-        upgradeUnit.SetHitVFXPool(hitVFXPool);
+        upgradeUnit.SetHitVFXPool(hitVFXPool, skillVFXPool);
         upgradeUnit.SetEffectImagePool(poolEffectImage);
 
         upgradeUnit.transform.position = transform.position;

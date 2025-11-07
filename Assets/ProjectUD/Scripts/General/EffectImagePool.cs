@@ -21,7 +21,7 @@ public class EffectImagePool : MonoBehaviour
         else
             obj = CreateEffectImage();
 
-        //obj.SetActive(true);
+        obj.SetActive(true);
         return obj;
 
     }
@@ -29,11 +29,18 @@ public class EffectImagePool : MonoBehaviour
 
     private GameObject CreateEffectImage()
     {
+        //GameObject obj = Instantiate(effectImagePrefab);
+        //obj.transform.SetParent(this.transform);
+        //EffectImage effectImage = obj.GetComponent<EffectImage>();
+        //effectImage.Initialize(this);
+
+        //return obj;
+
         GameObject obj = Instantiate(effectImagePrefab);
         obj.transform.SetParent(this.transform);
+
         EffectImage effectImage = obj.GetComponent<EffectImage>();
         effectImage.Initialize(this);
-
         return obj;
     }
 

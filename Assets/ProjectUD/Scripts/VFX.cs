@@ -9,11 +9,12 @@ public class VFX : MonoBehaviour
     private Queue<GameObject> queue;
     private Transform vfxParent;
     private float activeTimer = 0;
+    protected Vector3 direction;
 
     // ObjectPoolWithList 사용 변수
     private ObjectPoolWithList<GameObject> pool;
 
-    private void Update()
+    protected virtual void Update()
     {
         if (activeTimer > 0)
         {
@@ -55,4 +56,9 @@ public class VFX : MonoBehaviour
         vfxParent = parent;
     }
 
+
+    public void SetDirection(Vector3 dir)
+    {
+        this.direction = dir.normalized;
+    }
 }

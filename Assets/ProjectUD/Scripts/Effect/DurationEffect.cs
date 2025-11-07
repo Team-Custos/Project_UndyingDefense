@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
 
 public abstract class DurationEffect : MonoBehaviour
@@ -17,6 +18,9 @@ public abstract class DurationEffect : MonoBehaviour
     protected Unit caster;      // 상태를 발동 시킨 유닛
     protected Unit target;
     protected ObjectPoolWithList<DurationEffect> pool;
+    protected EffectImage effectImage;
+    protected GameObject effectImageObj;
+    //protected ObjectPoolWithList<EffectImage>
 
     public string Id => id;
     public string Name => effectName;
@@ -44,6 +48,7 @@ public abstract class DurationEffect : MonoBehaviour
     public virtual void Reapply(GameObject effectPrefab) // 효과를 재적용하는 함수.
     {
         durationCheck = 0f;
+        Debug.Log("재 적용");
     }
 
     protected virtual void Update()

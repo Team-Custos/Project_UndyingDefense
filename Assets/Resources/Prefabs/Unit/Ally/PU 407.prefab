@@ -19927,7 +19927,7 @@ PrefabInstance:
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: alternativeSkill
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
@@ -20338,7 +20338,7 @@ Animator:
   m_GameObject: {fileID: 5256043132509251526}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eff3a83eb59c69d4b957eb3e7696d2c4, type: 3}
-  m_Controller: {fileID: 22100000, guid: 2e708633ac7e05f49b60212fd6d97b6c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0196a9b8a15400d41a5010590e3c16ea, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -20407,6 +20407,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 5787d2e4b5ae7fe4384f8bc67f9a5781,
+        type: 3}
+      propertyPath: vfx
+      value: 
+      objectReference: {fileID: 3249724247899660331, guid: 2036b28014051b641a18e8f20da60b2c,
+        type: 3}
+    - target: {fileID: 6005588856818494454, guid: 5787d2e4b5ae7fe4384f8bc67f9a5781,
+        type: 3}
+      propertyPath: skillVfx
+      value: 
+      objectReference: {fileID: 5207848579638356713, guid: 2036b28014051b641a18e8f20da60b2c,
+        type: 3}
     - target: {fileID: 8675126071776639299, guid: 5787d2e4b5ae7fe4384f8bc67f9a5781,
         type: 3}
       propertyPath: m_Name
@@ -20578,6 +20590,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 5077443cb21f1f14f86daf1aaf3bc997,
+        type: 3}
+      propertyPath: skillVfx
+      value: 
+      objectReference: {fileID: 5207848579638356713, guid: 0c802f204bf8c9247b3a2e5c9a42651d,
+        type: 3}
     - target: {fileID: 8675126071776639299, guid: 5077443cb21f1f14f86daf1aaf3bc997,
         type: 3}
       propertyPath: m_Name

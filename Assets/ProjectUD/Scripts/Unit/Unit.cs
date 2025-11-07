@@ -64,6 +64,7 @@ public abstract class Unit : MonoBehaviour
     protected DurationEffectPool durationEffectPool;
     protected InstantEffectPool instantEffectPool;
     protected VFXObjectPool hitVFXPool;
+    protected VFXObjectPool skillVFXPool;
     protected EffectImagePool effectImagePool;
 
     //protected Unit skillTarget; // 공격 대상
@@ -110,6 +111,8 @@ public abstract class Unit : MonoBehaviour
     public float Interval => interval;
     public bool IsDead => isDead;
     public Transform HeightPos => heightPos;
+    public VFXObjectPool SkillVfxPool => skillVFXPool;
+    public EffectImagePool EffectImagePool => effectImagePool;
 
     public bool IsSelected
     {
@@ -245,9 +248,10 @@ public abstract class Unit : MonoBehaviour
 
     }
 
-    public void SetHitVFXPool(VFXObjectPool hitVFXPool)
+    public void SetHitVFXPool(VFXObjectPool hitVFXPool, VFXObjectPool skillVFXPool)
     {
         this.hitVFXPool = hitVFXPool;
+        this.skillVFXPool = skillVFXPool;
     }
 
     public void SetDurationEffectPool(DurationEffectPool durationEffectPool)
@@ -1231,35 +1235,6 @@ public abstract class Unit : MonoBehaviour
         }
 
         Destroy(VFXobj, VFX.main.duration);
-    }
-
-    public void AddEffectImage(GameObject effectPrefab, float duration, Sprite icon, Unit unit)
-    {
-        if (unit.IsDead)
-            return;
-
-        DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
-
-        // 효과 목록 중에 추가된 효과가 존재할 경우.
-        if (prevEffect != null)
-        {
-            if (prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
-            {
-                
-            }
-            else
-            {
-                return;
-            }
-
-        }
-        else //맨 처음 효과 오브젝트가 추가될 때.
-        {
-            GameObject obj = effectImagePool.GetEffectImage();
-            EffectImage effectImage = obj.GetComponent<EffectImage>();
-            effectImage.Initialize(this, duration, icon);
-            obj.SetActive(true);
-        }
     }
 
 

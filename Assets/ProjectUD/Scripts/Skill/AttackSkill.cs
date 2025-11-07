@@ -2,11 +2,14 @@ using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class AttackSkill : SkillBase
 {
     [Header("■ Data")]
     [SerializeField] private AttackSkillData data;
+    [SerializeField] private GameObject skillVfx;
+    private VFXObjectPool vfxPool;
 
     // 범위를 가진 스킬
     protected Collider[] targets;
@@ -122,16 +125,81 @@ public class AttackSkill : SkillBase
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle) //부채꼴 공격
     {
+        //if (targets == null)
+        //    targets = new Collider[maxTargetCount];
+
+        //int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        //for (int i = 0; i < targetCount; i++)
+        //{
+        //    if (targets[i].TryGetComponent(out Unit target))
+        //    {
+        //        // 각도 계산
+        //        Attack(unit, target);
+
+        //    }
+        //}
+
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
+        // AoE 중심이 pivotTarget이면 그대로 두고,
+        // unit을 중심으로 하고 싶다면 아래 한 줄을 unit.transform.position 으로 바꾸면 됨.
         int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+
+        float half = angle * 0.5f;
+        Vector3 forward = unit.transform.forward;
+
         for (int i = 0; i < targetCount; i++)
         {
-            if (targets[i].TryGetComponent(out Unit target))
+            if (!targets[i].TryGetComponent(out Unit target))
+                continue;
+
+            // unit 기준 방향 벡터 (y 무시해 평면 각도만 계산 권장)
+            Vector3 dir = target.transform.position - unit.transform.position;
+            dir.y = 0f;
+            if (dir.sqrMagnitude < 0.0001f)
+                continue;
+
+            // unit.forward와의 각도(0~180°)
+            float ang = Vector3.Angle(forward, dir);
+
+            // 좌/우 angle/2 범위 안이면 타격
+            if (ang <= half)
             {
-                // 각도 계산
                 Attack(unit, target);
+            }
+        }
+
+        if (skillVfx != null)
+        {
+            float halfAngle = angle * 0.5f;
+
+            List<Vector3> angles = new List<Vector3>();
+
+            // 중심 방향(정면)
+            Vector3 centerDir = unit.transform.forward;
+            angles.Add(centerDir);
+
+            // 좌측 끝 방향
+            Vector3 leftDir = Quaternion.Euler(0, -halfAngle, 0) * centerDir;
+            angles.Add(leftDir);
+
+            // 우측 끝 방향
+            Vector3 rightDir = Quaternion.Euler(0, halfAngle, 0) * centerDir;
+            angles.Add(rightDir);
+
+            for (int i = 0; i < 3; i++)
+            {
+                //VFX vfx = obj.GetComponent<VFX>();
+                vfxPool = unit.SkillVfxPool;
+
+                GameObject obj = vfxPool.GetVFX(skillVfx, unit);
+                obj.transform.position = unit.transform.position;
+                Debug.Log(obj.transform.position);
+                obj.SetActive(true);
+
+                VFX vfx = obj.GetComponent<VFX>();
+                vfx.SetDirection(angles[i]);
             }
         }
     }
@@ -146,6 +214,15 @@ public class AttackSkill : SkillBase
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(unit, target);
+
+                if(skillVfx != null)
+                {
+                    vfxPool = unit.SkillVfxPool;
+
+                    GameObject obj = vfxPool.GetVFX(skillVfx, unit);
+                    obj.transform.position = target.transform.position;
+                    obj.SetActive(true);
+                }
             }
         }
     }
@@ -164,6 +241,20 @@ public class AttackSkill : SkillBase
             {
                 Attack(unit, target);
             }
+        }
+
+        if(skillVfx != null)
+        {
+            vfxPool = unit.SkillVfxPool;
+
+            GameObject obj = vfxPool.GetVFX(skillVfx, unit);
+            obj.transform.position = unit.transform.position;
+            Debug.Log(obj.transform.position);
+            obj.SetActive(true);
+
+            Vector3 dircetion = unit.transform.forward;
+            VFX vfx = obj.GetComponent<VFX>();
+            vfx.SetDirection(dircetion);
         }
     }
 
