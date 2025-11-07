@@ -180,6 +180,12 @@ public class InGameManager : MonoBehaviour, IInputESC
             gameFinish.Invoke();
         if(gameWin != null)
             gameWin.Invoke();
+
+        if(stagePrefsData.IsNewRecord(timeRecord, id))
+            ingameScreenUI.ShowNewRecordUI(true);
+        else
+            ingameScreenUI.ShowNewRecordUI(false);
+
         stagePrefsData.SetRecordTime(timeRecord, id);
         //---
         SoundManager.Instance.PlaySFX(winSfx);

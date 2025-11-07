@@ -25,7 +25,7 @@ public class StagePrefsData : MonoBehaviour
 
     private void Start()
     {
-        if(PlayerPrefs.GetInt("SetBeginningStage") == 0)
+        if (PlayerPrefs.GetInt("SetBeginningStage") == 0)
         {
             LoadStageData(stageClearData.text);
         }
@@ -57,7 +57,7 @@ public class StagePrefsData : MonoBehaviour
     }
 
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
-    public void SaveStageData()     
+    public void SaveStageData()
     {
         //string playerPrefData = string.Empty;
         if (sb.Length > 0)
@@ -116,10 +116,10 @@ public class StagePrefsData : MonoBehaviour
 
 
     // 저장된 Stage 프랩스 불러오기
-    private void ReadPlayerPrefs(Dictionary<string, StageData> dic)      
+    private void ReadPlayerPrefs(Dictionary<string, StageData> dic)
     {
         string st = PlayerPrefs.GetString("stage");
-        
+
         // 저장데이터 딕셔너리에 저장하기 (인게임에서 정보 변경용)
         string[] lines = st.Split("\n");
         for (int i = 0; i < lines.Length; i++)      // 첫 줄은 건너뛰고 읽어오기
@@ -132,7 +132,7 @@ public class StagePrefsData : MonoBehaviour
             string stageID = datas[0].Trim();
             Debug.Log($"전장이름 : {stageID}");
             string isOpen = datas[1].Trim();
-            Debug.Log($"해금여부 : { isOpen}");
+            Debug.Log($"해금여부 : {isOpen}");
             string isPlayed = datas[2].Trim();
             string clearTime = datas[3].Trim();
 
@@ -149,13 +149,13 @@ public class StagePrefsData : MonoBehaviour
     }
 
     // 저장데이터를 불러온 딕셔너리 저장 정보 확인
-    public Dictionary<string, StageData > GetStageData()  
+    public Dictionary<string, StageData> GetStageData()
     {
         return latestPlayStage;
     }
 
     // 전장 정보 변경 메서드
-    public void SetStageDictionary(string id, bool isOpen, bool isPlayed,float clearTime)
+    public void SetStageDictionary(string id, bool isOpen, bool isPlayed, float clearTime)
     {
         StageData stagedata = stagePlayerPrefs[id];
         stagedata.isOpen = isOpen;
@@ -206,5 +206,15 @@ public class StagePrefsData : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsTutorialEnd", 1);
         Debug.Log("훈련장끝");
+    }
+
+    public bool IsNewRecord(float recordTime, string id)
+    {
+        float bestTime = stagePlayerPrefs[id].clearTime;
+        if (bestTime == 0f || recordTime < bestTime)
+        {
+            return true;
+        }
+        return false;
     }
 }

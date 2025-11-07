@@ -25,8 +25,6 @@ public class EnemyUnitSpawner : MonoBehaviour
     private float spawnTimer = 1.5f;
 
     private WaveData curWaveData;
-    [SerializeField] private Transform[] spawnPositions;
-    [SerializeField] private Transform[] spawnPoints;
 
     [SerializeField] private Transform[] aSpawnPoints;
     [SerializeField] private Transform[] bSpawnPoints;
@@ -69,14 +67,18 @@ public class EnemyUnitSpawner : MonoBehaviour
                 EnemyUnitData enemyData = waveDataLoader.GetEnemyUniData(waveManager.CurWave - 1, spawnDataEnemyCount);
                 
                 Vector3 pos = Vector3.zero;
+                int randIndex = 0;
 
                 if (waveDataLoader.WaveDataList[waveManager.CurWave - 1][spawnDataEnemyCount].pos == "A")
                 {
-                    pos = spawnPositions[0].position;
+                    randIndex = Random.Range(0, aSpawnPoints.Length);
+
+                    pos = aSpawnPoints[randIndex].position;
                 }
                 else
                 {
-                    pos = spawnPositions[1].position;
+                    randIndex = Random.Range(0, bSpawnPoints.Length);
+                    pos = bSpawnPoints[randIndex].position;
                 }
                     
 

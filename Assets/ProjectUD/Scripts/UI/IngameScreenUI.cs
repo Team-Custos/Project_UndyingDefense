@@ -18,6 +18,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI goldTextUI;
     [SerializeField] private GameObject settingUI;
     [SerializeField] private TextMeshProUGUI recordTextUI;
+    [SerializeField] private GameObject newReorcUI;
 
     [Header("■ HP Bar")]
     [SerializeField] private Image hpBarUI;
@@ -201,5 +202,17 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     public void SetRecordTextUI(string text)
     {
         recordTextUI.text = text;
+    }
+
+    public void ShowNewRecordUI(bool newRecord)
+    {
+        if(newRecord)
+        {
+            newReorcUI.SetActive(true);
+        }
+        else
+        {
+            newReorcUI.SetActive(false);
+        }
     }
 }
