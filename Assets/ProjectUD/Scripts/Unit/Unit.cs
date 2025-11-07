@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
-using System.Resources;
-using TMPro.EditorUtilities;
 
 public abstract class Unit : MonoBehaviour
 {

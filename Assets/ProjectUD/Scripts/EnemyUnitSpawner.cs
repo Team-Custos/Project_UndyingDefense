@@ -57,6 +57,9 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         if (!isSpawnEnd)
         {
+            if (!inGameManager.IsGameStart) // 게임 종료시 스폰 정지
+                return;
+
             spawnTimer -= Time.deltaTime;
             if (spawnTimer <= 0)
             {

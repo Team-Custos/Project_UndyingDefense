@@ -243,12 +243,12 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             return;
         }
 
-        if(selectedUnit.Data.Name == "수행자")
-        {
-            SoundManager.Instance.PlayUnableUIClickSFX();
-            //upgradeBtn.interactable = false;
-            return;
-        }
+        //if(selectedUnit.Data.Name == "수행자")
+        //{
+        //    SoundManager.Instance.PlayUnableUIClickSFX();
+        //    //upgradeBtn.interactable = false;
+        //    return;
+        //}
 
         //upgradeBtn.interactable = true;
         SoundManager.Instance.PlayUIClickSFX();

@@ -7,6 +7,7 @@ public class ResultUI : MonoBehaviour
     [Header("■ UI")]
     [SerializeField] private TextMeshProUGUI rewardTitleUI;
     [SerializeField] private TextMeshProUGUI rewardTextUI;
+    [SerializeField] private TextMeshProUGUI timeRecordTextUI;
     [SerializeField] private Image windowUI;
     [SerializeField] private Image lightEffect;
     [SerializeField] private Image underlayEffect;
@@ -20,7 +21,7 @@ public class ResultUI : MonoBehaviour
     [SerializeField] private Color winColor;
     [SerializeField] private Color loseColor;
 
-    public void Show(float reward, bool win)
+    public void Show(float reward, bool win, string record)
     {
         gameObject.SetActive(true);
         if(win)
@@ -29,6 +30,8 @@ public class ResultUI : MonoBehaviour
             lightEffect.gameObject.SetActive(true);
             underlayEffect.color = winColor;
             resultCommentTextUI.text = "지략이 빛을 발한 전투였습니다!";
+            timeRecordTextUI.gameObject.SetActive(true);
+            timeRecordTextUI.text = record;
         }
         else
         {
@@ -36,6 +39,7 @@ public class ResultUI : MonoBehaviour
             lightEffect.gameObject.SetActive(false);
             underlayEffect.color = loseColor;
             resultCommentTextUI.text = "한 걸음 물러나 지혜를 도모해봅시다.";
+            timeRecordTextUI.gameObject.SetActive(false);
         }
 
         rewardTextUI.text = ((int)reward).ToString("0,0");
@@ -45,4 +49,5 @@ public class ResultUI : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
 }

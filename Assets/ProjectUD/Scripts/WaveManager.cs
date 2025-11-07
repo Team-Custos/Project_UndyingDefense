@@ -92,7 +92,6 @@ public class WaveManager : MonoBehaviour
         {
             if(!isInfiniteMode)
             {
-                ingameScreenUI.ShowResult(inGameManager.inGameGold, true);
                 SoundManager.Instance.StopBGM();
                 inGameManager.WinGame();
                 //SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);

@@ -123,7 +123,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoText.text = unitStats.unitName;
                 infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
                 infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
                 infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
@@ -154,7 +154,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoText.text = unitStats.unitName;
                 infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
                 infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed.ToString();
+                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
                 infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
