@@ -65,7 +65,9 @@ public class InGameManager : MonoBehaviour, IInputESC
 
             int minutes = Mathf.FloorToInt(timeRecord / 60f);
             int seconds = Mathf.FloorToInt(timeRecord % 60f);
-            string text = $"{minutes:00}:{seconds:00}";
+            int milliseconds = Mathf.FloorToInt((timeRecord % 1f) * 100f);
+
+            string text = $"{minutes:00} : {seconds:00} : {milliseconds:00}";
 
             ingameScreenUI.SetRecordTextUI(text);
         }
@@ -151,6 +153,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void LoseGame()
     {
         isGameStart = false;
+        ingameScreenUI.ShowResult(inGameGold, false, "");
         //UserDataModel.instance.SetGameFinished(true);
 
         //UserDataModel.instance.SetGameFinished(true);

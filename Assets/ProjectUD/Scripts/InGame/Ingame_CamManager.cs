@@ -79,9 +79,32 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         if (!dollyCamera.IsCamPanning)
         {
             float currentRotationX = virtualCamPos.eulerAngles.x;
-            float dampedRotationX = Mathf.SmoothDampAngle(currentRotationX, targetRotationX, ref rotationVelocityX, 0.2f);
 
-            virtualCamPos.eulerAngles = new Vector3(dampedRotationX, virtualCamPos.eulerAngles.y, virtualCamPos.eulerAngles.z);
+            if (float.IsNaN(currentRotationX)) return;
+            if (float.IsNaN(targetRotationX)) return;
+
+            float dampedRotationX = Mathf.SmoothDampAngle(
+                currentRotationX,
+                targetRotationX,
+                ref rotationVelocityX,
+                0.2f
+            );
+
+            if (float.IsNaN(dampedRotationX))
+            {
+                rotationVelocityX = 0f;
+                return;
+            }
+
+            Vector3 newEuler = new Vector3(
+                dampedRotationX,
+                virtualCamPos.eulerAngles.y,
+                virtualCamPos.eulerAngles.z
+            );
+
+            if (float.IsNaN(newEuler.y) || float.IsNaN(newEuler.z)) return;
+
+            virtualCamPos.eulerAngles = newEuler;
         }
     }
 

@@ -51,11 +51,11 @@ public class Fortress : MonoBehaviour
             hp = 0f;
             // 게임 오버
 
-            ingameUI.ShowResult(inGameManager.inGameGold, false, "");
+            //ingameUI.ShowResult(inGameManager.inGameGold, false, "");
             SoundManager.Instance.StopBGM();
 
-            //inGameManager.LoseGame();
-            inGameManager.WinGame();
+            inGameManager.LoseGame();
+            //inGameManager.WinGame();
             //waveManager.PlayLoseSfx();
 
             

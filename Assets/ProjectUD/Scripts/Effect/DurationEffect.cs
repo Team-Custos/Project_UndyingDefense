@@ -48,7 +48,6 @@ public abstract class DurationEffect : MonoBehaviour
     public virtual void Reapply(GameObject effectPrefab) // 효과를 재적용하는 함수.
     {
         durationCheck = 0f;
-        Debug.Log("재 적용");
     }
 
     protected virtual void Update()
