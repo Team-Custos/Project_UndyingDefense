@@ -22,7 +22,6 @@ public class InGameManager : MonoBehaviour, IInputESC
     private bool isGameStart = false;
     private bool isGamePause = false;
     private float timeRecord = 0f;   // 현재 게임 플레이 시간 기록용 변수
-    private string record;
 
     public bool IsGameStart => isGameStart;
     public float TimeRecord => timeRecord;
@@ -66,11 +65,9 @@ public class InGameManager : MonoBehaviour, IInputESC
 
             int minutes = Mathf.FloorToInt(timeRecord / 60f);
             int seconds = Mathf.FloorToInt(timeRecord % 60f);
-            int milliseconds = Mathf.FloorToInt((timeRecord % 1f) * 100f);
+            string text = $"{minutes:00}:{seconds:00}";
 
-            record = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
-
-            ingameScreenUI.SetRecordTextUI(record);
+            ingameScreenUI.SetRecordTextUI(text);
         }
     }
 
@@ -171,7 +168,6 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void WinGame()
     {
         isGameStart = false;
-        ingameScreenUI.ShowResult(inGameGold, true, record);
         //UserDataModel.instance.SetGameFinished(true);
         //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);

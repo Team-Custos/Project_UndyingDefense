@@ -15,9 +15,9 @@ public class FactionCharacterRepository : MonoBehaviour
     {
         factionDic.Add("ally", Resources.LoadAll<UnitData>("UnitData/Ally/AllyArchive"));
         factionDic.Add("moor", Resources.LoadAll<UnitData>("UnitData/Enemy/moor"));
+        factionDic.Add("empire", Resources.LoadAll<UnitData>("UnitData/Enemy/empire"));
         factionDic.Add("pioneer", Resources.LoadAll<UnitData>("UnitData/Enemy/pioneer"));
-        factionDic.Add("summon", Resources.LoadAll<UnitData>("UnitData/Enemy/summon"));
-        //factionDic.Add("empire", Resources.LoadAll<UnitData>("UnitData/Enemy/empire"));
+        //factionDic.Add("summon", Resources.LoadAll<UnitData>("UnitData/Enemy/summon"));
 
     }
 

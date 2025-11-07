@@ -117,12 +117,6 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             PlayerPrefs.SetInt("AfterGameDialogue",1);
             isGameEnd.Invoke();
 
-            if(PlayerPrefs.GetInt("GeumsanWin") == 1 && PlayerPrefs.GetInt("AfterGameDialogue") == 1)
-            {
-                pInputManager.OnSpaceTarget = dialogueManager;
-                PlayerPrefs.SetInt("AfterGameWinDialogue", 1);
-                isGameWin.Invoke();
-            }
         }
 
         else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
@@ -172,7 +166,15 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
     public void ShowWinGumsamDialogue()
     {
-        dialogueManager.ShowDialogue();
+        if(PlayerPrefs.GetInt("GeumsanWin") == 1 && PlayerPrefs.GetInt("AfterGameDialogue") == 1)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("AfterGameWinDialogue", 1);
+            dialogueManager.ShowDialogue(afterWinGusan);
+            return;
+        }
+        dialogueManager.EndDialogue();
+
     }
 
     public void EndGame()
@@ -231,7 +233,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
     }
 
-    public void LoadTutorialScene()
+    public void LoadTutorialScene()     // 훈련장 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
         LoadingSceneManager.LoadScene("TutorialScene");
@@ -239,12 +241,18 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         //PlayerPrefs.SetInt("IsTutorialEnd", 1);
     }
 
-    public void LoadInGameScene()
+    public void LoadInGameScene()   // 금산성 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
         LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
         //UserDataModel.instance.SetGameFinished(true);
         //PlayerPrefs.SetInt("IsGeumsanFinished", 1);
+    }
+
+    public void LoadNamhanGameScene()   // 남한산성 버튼 메서드
+    {
+        SoundManager.Instance.PlaySFX(battleStartSfx);
+        LoadingSceneManager.LoadScene("Stage2_MergeScene LevelDesign");
     }
 
     public void OnSpace(InputAction.CallbackContext context)
