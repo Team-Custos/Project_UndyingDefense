@@ -218,6 +218,7 @@ public class EnemyUnit : Unit
                             LookAt(targetUnit.transform.position);
                         SkillBase skill = GetGeneralSkill();
 
+
                         if (skill != null)
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
@@ -431,19 +432,29 @@ public class EnemyUnit : Unit
                         }
                         else
                         {
-                            ActivateSkill(fortress, data);
+                            SkillBase skill = GetGeneralSkill();
+
+                            if (skill != null && skill.IsCoolDown)
+                            {
+                                ActivateSkill(fortress, data);
+                            }
                         }
                     }
                     else
                     {
-                        ActivateSkill(fortress, data);
+                        SkillBase skill = GetGeneralSkill();
+
+                        if (skill != null && skill.IsCoolDown)
+                        {
+                            ActivateSkill(fortress, data);
+                        }
                     }
                 }
                 break;
         }
     }
 
-    protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 스킬
+    protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 상태
     {
         if (skill == GeneralSkill)
         {
@@ -463,8 +474,9 @@ public class EnemyUnit : Unit
         interval = intervalCheck;
     }
 
-    protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 스킬
+    protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 상태
     {
+
         state = State.FORTRESSSKILL;
         modelAnimator.SetTrigger("GeneralSkill");
 

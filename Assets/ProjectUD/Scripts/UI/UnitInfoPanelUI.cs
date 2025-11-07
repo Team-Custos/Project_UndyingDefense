@@ -80,7 +80,7 @@ public class UnitInfoPanelUI : MonoBehaviour
 
         // stats
         hp.text = stats.maxHp.ToString();
-        attackSpeed.text = stats.attackSpeed.ToString();
+        attackSpeed.text = stats.attackSpeed;
 
         string armor = unitData.ArmorType.ToString();
         armorType.text = fNameTextTable.GetName(armor);

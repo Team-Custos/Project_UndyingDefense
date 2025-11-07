@@ -89,24 +89,30 @@ public class WaveDataLoader : MonoBehaviour
 
     public EnemyUnitData GetEnemyUniData(int curWave, int number)
     {
-
         string id = waveDataList[curWave][number].id;
-            
-            //spawnDataList[number].id;
 
-        if (spawnDataDic.TryGetValue(id, out EnemyUnitData enemyData))
-            return enemyData;
+        if (spawnDataDic.TryGetValue(id, out EnemyUnitData cachedData))
+            return cachedData;
 
-        string fullPath = $"{path}/{id}";
+        List<EnemyUnitData> enemyDataList = new List<EnemyUnitData>();
+        enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy"));
+        enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/empire"));
+        enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/moor"));
+        enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/pioneer"));
+        enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/summon"));
 
-        EnemyUnitData loadedData = Resources.Load<EnemyUnitData>(fullPath);
+        EnemyUnitData loadedData = enemyDataList.Find(data => data.Id == id);
 
-        //Debug.Log(loadedData.name);
+        if (loadedData == null)
+        {
+            Debug.LogError($"[GetEnemyUniData] EnemyUnitData not found: {id}");
+            return null;
+        }
 
+        // 캐싱
         spawnDataDic.Add(id, loadedData);
+
         return loadedData;
-
-
     }
 
 }

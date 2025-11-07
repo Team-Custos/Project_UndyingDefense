@@ -64,10 +64,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private UnitStateUI[] unitStateUIs;
     [SerializeField] private GameObject unitStatePanel;
 
-    [SerializeField] private TextMeshProUGUI attackTypeText;
-    [SerializeField] private TextMeshProUGUI attackTypeInfoText;
-    [SerializeField] private TextMeshProUGUI defenseTypeText;
-    [SerializeField] private TextMeshProUGUI defenseTypeInfoText;
 
 
     [SerializeField] private GameObject allyUnitUI;
@@ -209,7 +205,19 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             {
                 unitHP.fillAmount = selecteUnitManger.SelectedUnit.HpPercent;
 
-                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.up * yPos;
+                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.HeightPos.position;
+
+                //// 월드 좌표로 HP UI 위치 고정
+                //unitHPPrefab.transform.position = worldPosition;
+
+                //// UI가 항상 카메라를 바라보도록
+                //unitHPPrefab.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
+
+                //// 카메라 거리 기반 크기 보정 (줌인/줌아웃에도 안정적인 크기)
+                //float dist = Vector3.Distance(mainCamera.transform.position, worldPosition);
+                //unitHPPrefab.transform.localScale = Vector3.one * dist * 0.0015f;
+
+                Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.up * selecteUnitManger.SelectedUnit.HeightPos.position.y;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
                 unitHPPrefab.transform.position = screenPosition;
@@ -282,15 +290,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         SetUnitTierIcon(unitData.Tier);
 
-        //AttackData attackData = unit.GeneralSkill.Data.GetComponent< AttackData >();
-        //atTypeIcon.sprite = attackData.TypeIcon;
+        AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;
+
+        atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
         //attackTypeText.text = unitData.AttackType;
-        attackTypeInfoText.text = GetAttackTypeInfo(unitData);
-
-        defenseTypeText.text = ConvertDefenseName(unitData.ArmorType.ToString());
-        defenseTypeInfoText.text = GetDefenseTypeInfo(unitData);
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
@@ -316,7 +321,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitStats.interval.ToString();
+        atSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
         atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unitStats.mental.ToString();
 
@@ -346,15 +351,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         SetUnitTierIcon(unit.Data.Tier);
 
-        //AttackData attackData = unit.GeneralSkill.Data as AttackData;
+        AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;
 
+        atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
         //attackTypeText.text = unit.Data.AttackType;
-        attackTypeInfoText.text = GetAttackTypeInfo(unit.Data);
-
-        defenseTypeText.text = ConvertDefenseName(unit.Data.ArmorType.ToString());
-        defenseTypeInfoText.text = GetDefenseTypeInfo(unit.Data);
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
@@ -381,7 +383,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
         moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.UnitStats.interval.ToString();
+        atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed;
         atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
         mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 

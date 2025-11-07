@@ -97,9 +97,9 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         noticeTimerUI.SetText(text, false);
     }
 
-    public void ShowResult(float reward, bool win)
+    public void ShowResult(float reward, bool win, string record)
     {
-        resultUI.Show(reward, win);
+        resultUI.Show(reward, win, record);
     }
 
     public void HideResult() => resultUI.Hide();
