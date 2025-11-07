@@ -14346,6 +14346,7 @@ MonoBehaviour:
   guemsanCloud: {fileID: 35761419}
   namhanLock: {fileID: 1214471287}
   namhanCloud: {fileID: 1942314407}
+  afterWinGusan: {fileID: 0}
 --- !u!224 &1562747901 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4081072646889100793, guid: f80f302396a81c44ea8f6751a1c045b5,
@@ -15646,8 +15647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1906f1ca3b831304fba9a9dcdb1aca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CDFilePath: 240924 JSD_CDskillData
-  cdSkillManager: {fileID: 0}
 --- !u!114 &1643140317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16865,6 +16864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPrime: 0
+  cameraPos: {fileID: 0}
   bgmAudio: {fileID: 1768078214}
   sfxAudio: {fileID: 1768078214}
   sfxLoopAudio: {fileID: 0}
@@ -16873,6 +16873,9 @@ MonoBehaviour:
   unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
+  audioSourcePrefab: {fileID: 0}
+  maxDistance: 50
+  minDistance: 15
 --- !u!1 &1771331443
 GameObject:
   m_ObjectHideFlags: 0

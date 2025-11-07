@@ -41,6 +41,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject namhanLock;
     [SerializeField] private GameObject namhanCloud;
 
+    [Header("StagePrefsData")]
+    [SerializeField] private SpeakingArray afterWinGusan;
+
+
+
     private ScriptableObject[] so;
 
 
@@ -77,6 +82,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             namhanCloud.SetActive(false);
         }
     }
+
     public void BeforeTutorial() // 훈련장으로 안내하기 위한 
     {
         alarm.gameObject.SetActive(true);
@@ -101,6 +107,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             pInputManager.OnSpaceTarget = dialogueManager;
             PlayerPrefs.SetInt("AfterTutorialDialogue", 1);
             isTutorialEnd.Invoke();
+            //dialogueManager.ShowDialogue(tutorialEndDialogue);
         }
 
         else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
@@ -161,6 +168,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
         */
 
+    }
+
+    public void ShowWinGumsamDialogue()
+    {
+        dialogueManager.ShowDialogue();
     }
 
     public void EndGame()
