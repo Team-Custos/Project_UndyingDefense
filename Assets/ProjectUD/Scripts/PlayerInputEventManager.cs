@@ -20,6 +20,8 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputPerformUnitUpgrade OnPerformUnitUpgradeTarget { set; private get; }
     public IInputESC OnESCTarget { set; private get; } 
     public IInputOnSpace OnSpaceTarget { set; private get; }
+    public IInputUpArrow OnUpArrowTarget { set; private get; }
+    public IInputDownArrow OnDownArrowTarget { set; private get; }
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -118,6 +120,18 @@ public class PlayerInputEventManager : MonoBehaviour
         graphicRaycaster.Raycast(pointerEventData, pointerRaycastResults);
 
         return pointerRaycastResults.Count > 0;
+    }
+
+    public void OnUpArrow(InputAction.CallbackContext context)
+    {
+        if (OnUpArrowTarget != null)
+            OnUpArrowTarget.OnUpArrow(context);
+    }
+
+    public void OnDownArrow(InputAction.CallbackContext context)
+    {
+        if(OnDownArrowTarget != null)
+            OnDownArrowTarget.OnDownArrow(context);
     }
 
 }

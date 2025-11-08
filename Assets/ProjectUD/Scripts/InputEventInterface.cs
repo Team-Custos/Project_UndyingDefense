@@ -65,4 +65,14 @@ namespace InputEventInterface
     {
         void OnSpace(InputAction.CallbackContext context);
     }
+
+    public interface IInputUpArrow
+    {
+        void OnUpArrow(InputAction.CallbackContext context);
+    }
+
+    public interface IInputDownArrow
+    {
+        void OnDownArrow(InputAction.CallbackContext context);
+    }
 }
