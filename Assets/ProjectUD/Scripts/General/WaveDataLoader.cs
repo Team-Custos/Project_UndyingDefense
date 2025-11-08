@@ -109,7 +109,6 @@ public class WaveDataLoader : MonoBehaviour
             return null;
         }
 
-        // 캐싱
         spawnDataDic.Add(id, loadedData);
 
         return loadedData;
