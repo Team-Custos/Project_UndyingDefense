@@ -1,15 +1,20 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ChoiceManager : MonoBehaviour
+public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInputDownArrow
 {
     [SerializeField] private DialTextTableLoader dialTextLoader;
     [SerializeField] private GameObject choiceUIObj; // choiceUI GameObject 자체 (활성/비활성 제어용)
     [SerializeField] private ChoiceUI choiceui;   // ChoiceUI 컴포넌트 (실제 UI 요소 제어용)
     [SerializeField] private Image selectIndicator;
     [SerializeField] private Image selectedUI;
+
+    [Header("InputManager")]
+    [SerializeField] private PlayerInputEventManager inputManager;
     private int indicatorIndex = 0;
 
     private ChoiceArray choicearray; // currentChoiceArray 등으로 이름 변경 고려
@@ -26,6 +31,10 @@ public class ChoiceManager : MonoBehaviour
 
     public void ShowChoiceArray(ChoiceArray choiceArrayData) // 매개변수 이름 변경 (필드와 구분)
     {
+        inputManager.OnSpaceTarget = this;
+        inputManager.OnUpArrowTarget = this;
+        inputManager.OnDownArrowTarget = this;
+
         if (choiceui == null)
         {
             Debug.LogError("ChoiceManager: choiceui (ChoiceUI 컴포넌트)가 할당되지 않았습니다.");
@@ -88,6 +97,10 @@ public class ChoiceManager : MonoBehaviour
         {
             choiceui.ResetButton(); // 버튼 상태도 초기화
         }
+
+        inputManager.OnSpaceTarget = null;
+        inputManager.OnUpArrowTarget = null;
+        inputManager.OnDownArrowTarget = null;
     }
 
     public void EndChoiceUI() // 외부 호출용
@@ -121,12 +134,52 @@ public class ChoiceManager : MonoBehaviour
             //selectedUI.gameObject.SetActive(false);
             selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
         }
+    }
 
+    public void SelectChoice()
+    {
+        Choice choice = choicearray.GetChoice(indicatorIndex);
+        if (choice != null) 
+        {
+            choice.InvokeNextEvent(); 
+        }
     }
     IEnumerator SelectedCoroutine()
     {
         yield return new WaitForSeconds(1f);
 
         HideAndResetChoiceUI();
+    }
+
+    public void OnSpace(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SelectChoice();
+        }
+    }
+
+    public void OnUpArrow(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (indicatorIndex <= 0)
+                return;
+
+            indicatorIndex--;
+            selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
+        }
+    }
+
+    public void OnDownArrow(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (indicatorIndex >= choicearray.GetChoiceCount() - 1)
+                return;
+
+            indicatorIndex++;
+            selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
+        }
     }
 }

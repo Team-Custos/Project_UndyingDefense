@@ -23,7 +23,9 @@ public class UnitInfoPanelUI : MonoBehaviour
 
     [Header("UnitDatails")]
     [SerializeField] private TextMeshProUGUI cost;
+    [SerializeField] private GameObject costGameObj;
     [SerializeField] private TextMeshProUGUI tendency;   // Enemy 만
+    [SerializeField] private GameObject tendencyGameObj;
     [SerializeField] private TextMeshProUGUI role;
 
     [Header("Skill")]
@@ -101,13 +103,24 @@ public class UnitInfoPanelUI : MonoBehaviour
         SetBasicInfo();
         AllyUnitData ally = unitData as AllyUnitData;
         cost.text = ally.Cost.ToString();
+        costGameObj.SetActive(true);
+        
+
+        tendency.text = "";
+        tendencyGameObj.SetActive(false);
     }
 
     public void SetEnemyInfo()
     {
         SetBasicInfo();
         EnemyUnitData enemy = unitData as EnemyUnitData;
-        tendency.text = enemy.aiStance.ToString();
+        //tendency.text = enemy.aiStance.ToString();
+        string s = enemy.aiStance.ToString();
+        tendency.text = fNameTextTable.GetName(s);
+        tendencyGameObj.SetActive(true);
+
+        cost.text = "";
+        costGameObj.SetActive(false);
 
     }
 }

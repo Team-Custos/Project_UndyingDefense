@@ -29,6 +29,7 @@ public class ChoiceButtonUI : MonoBehaviour
     public void ResetButton()
     {
         text.text = "";
+        this.gameObject.SetActive(false);
         //button.onClick.RemoveAllListeners();
     }
 

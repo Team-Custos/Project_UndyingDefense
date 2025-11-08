@@ -744,6 +744,7 @@ MonoBehaviour:
   choiceui: {fileID: 181413701}
   selectIndicator: {fileID: 2090126614}
   selectedUI: {fileID: 2090126614}
+  inputManager: {fileID: 836510259}
 --- !u!4 &829484277
 Transform:
   m_ObjectHideFlags: 0
@@ -930,6 +931,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 92a1b1df-8502-40cf-a122-615768a5aecf
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 836510259}
+        m_TargetAssemblyTypeName: PlayerInputEventManager, Assembly-CSharp
+        m_MethodName: OnUpArrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 744ce468-10fd-4cb6-8053-461eefea86e0
+    m_ActionName: Player/OnUpArrow[/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 836510259}
+        m_TargetAssemblyTypeName: PlayerInputEventManager, Assembly-CSharp
+        m_MethodName: OnDownArrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: df033ef9-d128-4cfa-809e-f0b3e4e76148
+    m_ActionName: Player/OnDownArrow[/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -2691,6 +2724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPrime: 0
+  cameraPos: {fileID: 0}
   bgmAudio: {fileID: 1912655570}
   sfxAudio: {fileID: 0}
   sfxLoopAudio: {fileID: 0}
@@ -2699,6 +2733,9 @@ MonoBehaviour:
   unableClickClip: {fileID: 0}
   unitSfxClip: []
   uiSfxClip: []
+  audioSourcePrefab: {fileID: 0}
+  maxDistance: 50
+  minDistance: 15
 --- !u!4 &1912655572
 Transform:
   m_ObjectHideFlags: 0
