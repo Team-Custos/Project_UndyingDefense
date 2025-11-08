@@ -101,7 +101,7 @@ public class WaveDataLoader : MonoBehaviour
         enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/pioneer"));
         enemyDataList.AddRange(Resources.LoadAll<EnemyUnitData>("UnitData/Enemy/summon"));
 
-        EnemyUnitData loadedData = enemyDataList.Find(data => data.Id == id);
+        EnemyUnitData loadedData = enemyDataList.Find(data => data.name == id);
 
         if (loadedData == null)
         {

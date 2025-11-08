@@ -12135,6 +12135,7 @@ MonoBehaviour:
   allyUnitSpawner: {fileID: 175711730}
   dollyCamera: {fileID: 1936867425}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
+  selectedUnitUI: {fileID: 0}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
@@ -16009,13 +16010,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameGold: 1000
+  inGameGold: 10000
   ingameScreenUI: {fileID: 869192683}
   inputEventManager: {fileID: 1105637569}
   enemyUnitSpawner: {fileID: 1402139191}
   allyUnitSpawner: {fileID: 1418562301}
   dollyCamera: {fileID: 478265408}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
+  selectedUnitUI: {fileID: 1365833131}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
@@ -31863,6 +31865,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2657371150066085386, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 93b33f5bc4e43df4ca421de3b7bbd095,
+        type: 3}
     - target: {fileID: 2697634241618967446, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -31943,11 +31951,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4000823652393056040, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_Text
+      value: "\uD6C8\uB828\uC7A5"
+      objectReference: {fileID: 0}
     - target: {fileID: 4166064875123476565, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: timeRecordTextUI
       value: 
       objectReference: {fileID: 780956513}
+    - target: {fileID: 4458454093701168070, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4653950132577870193, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -32171,6 +32189,11 @@ PrefabInstance:
     - target: {fileID: 6094236957240126740, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111570625691437513, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6581912185085937167, guid: 8daaea2bb8c9aea4684d2b3766934e24,

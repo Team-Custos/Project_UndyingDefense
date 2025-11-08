@@ -122,7 +122,7 @@ public class EnemyUnit : Unit
         {
             this.executionEffect = executionEffect;
             effect.transform.SetParent(effectParent);
-            effect.transform.position = heightPos.position;
+            effect.transform.position = heightPos.position + Vector3.up * 1.5f;
             effect.SetActive(true);
             executionEffect.ActivateExecution();
         }

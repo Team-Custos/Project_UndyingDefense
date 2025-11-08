@@ -14,6 +14,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private AudioClip inGameIntro;
+    [SerializeField] private SelectedUnitUI selectedUnitUI;
 
     [SerializeField] private AudioClip winSfx;
     [SerializeField] private AudioClip loseSfx;
@@ -22,6 +23,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     private bool isGameStart = false;
     private bool isGamePause = false;
     private float timeRecord = 0f;   // 현재 게임 플레이 시간 기록용 변수
+    private string recordText = "";
 
     public bool IsGameStart => isGameStart;
     public float TimeRecord => timeRecord;
@@ -67,9 +69,9 @@ public class InGameManager : MonoBehaviour, IInputESC
             int seconds = Mathf.FloorToInt(timeRecord % 60f);
             int milliseconds = Mathf.FloorToInt((timeRecord % 1f) * 100f);
 
-            string text = $"{minutes:00} : {seconds:00} : {milliseconds:00}";
+            recordText = $"{minutes:00} : {seconds:00} : {milliseconds:00}";
 
-            ingameScreenUI.SetRecordTextUI(text);
+            ingameScreenUI.SetRecordTextUI(recordText);
         }
     }
 
@@ -153,6 +155,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void LoseGame()
     {
         isGameStart = false;
+        selectedUnitUI.HideUntInfo();
         ingameScreenUI.ShowResult(inGameGold, false, "");
         //UserDataModel.instance.SetGameFinished(true);
 
@@ -171,11 +174,13 @@ public class InGameManager : MonoBehaviour, IInputESC
     public void WinGame()
     {
         isGameStart = false;
+        selectedUnitUI.HideUntInfo();
+        ingameScreenUI.ShowResult(inGameGold, true, recordText);
         //UserDataModel.instance.SetGameFinished(true);
         //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);
         //---
-        if(gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
+        if (gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
             gameFinish.Invoke();
         if(gameWin != null)
             gameWin.Invoke();

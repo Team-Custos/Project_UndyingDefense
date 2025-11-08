@@ -11,6 +11,7 @@ public class EffectImage : MonoBehaviour
     private Vector3 screenPos;
     [SerializeField] private Image effectIcon;
     public Image EffectIcon => effectIcon;
+    [SerializeField] private float yOffset = 0.2f;
 
     public void Initialize(EffectImagePool effectImagePool)
     {
@@ -24,7 +25,7 @@ public class EffectImage : MonoBehaviour
 
     private void Update()
     {
-        Vector3 worldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
+        Vector3 worldPos = target.transform.position + Vector3.up * (target.HeightPos.position.y  + yOffset);
         screenPos = Camera.main.WorldToScreenPoint(worldPos);
         transform.position = screenPos;
 

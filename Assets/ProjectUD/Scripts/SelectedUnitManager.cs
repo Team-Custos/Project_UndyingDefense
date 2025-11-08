@@ -338,6 +338,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
+            if (!inGameManager.IsGameStart)
+                return;
+
             if (selectedUnit != null && selectedUnit is AllyUnit)
             {
                 if (selectedAllyUnit.IsChange ||
@@ -366,6 +369,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
+            if (!inGameManager.IsGameStart)
+                return;
+
             if (selectedAllyUnit != null)
             {
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
@@ -384,7 +390,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
-            if(selectedAllyUnit != null && isUpgradeOn)
+            if (!inGameManager.IsGameStart)
+                return;
+
+            if (selectedAllyUnit != null && isUpgradeOn)
             {
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 

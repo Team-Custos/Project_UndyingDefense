@@ -150,6 +150,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         if (unit.Data.Tier >= 4)
             return;
 
+        if (!inGameManager.IsGameStart)
+            return;
+
         SoundManager.Instance.PlayUIClickSFX();
         unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
