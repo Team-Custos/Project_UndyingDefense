@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterArchiveUI : MonoBehaviour
 {
@@ -27,6 +28,19 @@ public class CharacterArchiveUI : MonoBehaviour
     private string fName;
     private bool isDetailOn = false;
 
+    // LoPol 추가
+    [SerializeField] private Button[] tabButtons;  // 탭 버튼들
+    [SerializeField] private TextMeshProUGUI[] tabButtonTexts; // 버튼 텍스트
+    [SerializeField] private Image[] tabButtonImages; // 탭 버튼 이미지들
+    [SerializeField] private Sprite selectedSprite; // 선택 이미지
+    [SerializeField] private Sprite normalSprite;   // 기본 이미지
+    [SerializeField] private string[] buttonKeys;
+
+    [SerializeField] private Image[] pageBtnImages;
+    [SerializeField] private Sprite pageSelectedSprite;
+    [SerializeField] private Sprite pageNormalSprite;
+
+
     private void Start()
     {
         //ShowCharacterArchive();
@@ -35,6 +49,19 @@ public class CharacterArchiveUI : MonoBehaviour
 
     public void OnTabBtnClick(string name)  // 버튼 클릭 이벤트용 함수
     {
+        // LoPol 추가
+        for (int i = 0; i < tabButtons.Length; i++)
+        {
+            // 선택된 버튼인지 비교
+            bool isSelected = (buttonKeys[i] == name);
+
+            // 이미지 교체
+            tabButtonImages[i].sprite = isSelected ? selectedSprite : normalSprite;
+            // 글자 색 변경
+            tabButtonTexts[i].color = isSelected ? Color.yellow : Color.white;
+        }
+
+
         fName = name;
         pageNum = 1;
         unitFactionName.text = fNameTextTable.GetName(name);
@@ -82,7 +109,17 @@ public class CharacterArchiveUI : MonoBehaviour
     {
         pageNum = num;
         ShowUnit();
+
         OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
+
+        // LoPol 추가
+        for (int i = 0; i < pageBtnArray.Length; i++)
+        {
+            Image img = pageBtnArray[i].GetComponent<Image>();
+
+            if (img != null)
+                img.sprite = ((i + 1) == pageNum) ? pageSelectedSprite : pageNormalSprite;
+        }
     }
 
     public void ResetCharacterBtn()
@@ -113,10 +150,19 @@ public class CharacterArchiveUI : MonoBehaviour
         // 페이지 버튼 개수
         int pageCount = (unitCount % 9 == 0) ? unitCount / 9 : (unitCount / 9) + 1;
 
+
         for (int i = 0; i < pageCount; i++) 
         {
+
             // 미리 만들어 놓고 활성화
             pageBtnArray[i].gameObject.SetActive(true);
+
+
+             // lopol 추가
+            // 선택 버튼인지 판별해서 이미지 변경
+            Image img = pageBtnArray[i].GetComponent<Image>();
+            if (img != null)
+                img.sprite = ((i + 1) == pageNum) ? pageSelectedSprite : pageNormalSprite;
         }
 
     }
@@ -129,14 +175,13 @@ public class CharacterArchiveUI : MonoBehaviour
         //int temp = (toShow > 9) ? 9 : toShow;
         int temp = Mathf.Min(toShow, 9);
 
-        
-        for (int i = 0;i < temp;i++)
+
+        for (int i = 0; i < temp; i++)
         {
             UnitData unit = units[((pageNum - 1) * 9) + i];     // 보여줘야할 데이터 순번
             SetCharacterBtn(i, unit.Icon, unit.Name);
             characterBtnArray[i].gameObject.SetActive(true);
         }
-        
     }
 
     public void ShowCharacterArchive()  // 로비 버튼용
