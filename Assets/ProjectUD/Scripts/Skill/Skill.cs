@@ -87,7 +87,6 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         if (Data == null || Data.AttackSFX == null || Data.AttackSFX.Length == 0)
         {
-            Debug.Log(Data.Name + "사운드 재생 오류");
             return;
         }
 

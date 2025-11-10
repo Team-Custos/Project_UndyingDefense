@@ -281,8 +281,8 @@ public class AllyUnit : Unit
         {
             case Mode.SEIGE:
                 {
-                    //if (!navObstacle.enabled)
-                    //    Debug.Log("obstacle 꺼져있음");
+                    if (!navObstacle.enabled)
+                        Debug.Log("obstacle 꺼져있음");
 
                     if (isSiegeActivated)
                     {
