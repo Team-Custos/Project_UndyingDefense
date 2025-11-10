@@ -35,6 +35,10 @@ public class InGameManager : MonoBehaviour, IInputESC
     [Header("StagePrefsData")]
     [SerializeField] private StagePrefsData stagePrefsData;
 
+    [Header("공로포인트")]
+    [SerializeField] private float winPoint;
+    [SerializeField] private float losePoint;
+
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -156,7 +160,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(20, false, "");
+        ingameScreenUI.ShowResult(losePoint, false, "");
+        PlayerPrefsData.instance.SetPoint(losePoint);
         //UserDataModel.instance.SetGameFinished(true);
 
         //UserDataModel.instance.SetGameFinished(true);
@@ -175,7 +180,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(100, true, recordText);
+        ingameScreenUI.ShowResult(winPoint, true, recordText);
+        PlayerPrefsData.instance.SetPoint(winPoint);
         //UserDataModel.instance.SetGameFinished(true);
         //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);
