@@ -245,7 +245,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null || !hasTargetPos)
+                        if (targetUnit == null && !hasTargetPos)
                         {
                             Vector3 direction = Vector3.left; //spawnDirection.forward; // 나중에 수정할 것!
                             Quaternion rot = Quaternion.LookRotation(direction);
@@ -281,8 +281,8 @@ public class AllyUnit : Unit
         {
             case Mode.SEIGE:
                 {
-                    //if (!navObstacle.enabled)
-                    //    Debug.Log("obstacle 꺼져있음");
+                    if (!navObstacle.enabled)
+                        Debug.Log("obstacle 꺼져있음");
 
                     if (isSiegeActivated)
                     {
@@ -328,6 +328,7 @@ public class AllyUnit : Unit
                                                 return;
                                             }
 
+
                                             if (IsTargetInRange(targetUnit, UnitStats.attackRange))
                                                 ActivateSkill(skill, targetUnit);
                                             else
@@ -338,7 +339,12 @@ public class AllyUnit : Unit
 
 
                                         }
-                                        else targetUnit = SearchTarget(UnitStats.sightRange);
+                                        else
+                                        {
+                                            targetUnit = SearchNearestTargetInLine(UnitStats.sightRange);
+                                        }
+
+                                        
 
 
                                     }
@@ -354,8 +360,11 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null && !hasTargetPos)
-                            targetUnit = SearchTarget(unitStats.sightRange);
+                        if (targetUnit == null)
+                        {
+                            targetUnit = SearchNearestTargetInLine(unitStats.sightRange);
+                        }
+                        
                         else
                             LookAt(targetUnit.transform.position);
                     }

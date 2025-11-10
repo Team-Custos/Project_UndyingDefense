@@ -34,12 +34,6 @@ public class EffectImage : MonoBehaviour
         Vector3 worldPos = target.transform.position + Vector3.up * (target.HeightPos.position.y + yOffset); 
         screenPos = Camera.main.WorldToScreenPoint(worldPos); transform.position = screenPos;
     }
-
-    public void Return()
-    {
-        effectImagePool.ReturnEffectImage(this.gameObject);
-        target = null;
-    }
     
     public void SetIcon(Sprite sprite)
     {

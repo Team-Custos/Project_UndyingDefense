@@ -41,14 +41,22 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         coolTimeCheck -= Data.CoolTime;
         if (onActivate != null)
+        {
             onActivate.Invoke(unit, null);
+            PlayAttackSFX();
+        }
+            
     }
 
     public void Activate(Unit unit, Unit target)
     {
         coolTimeCheck -= Data.CoolTime;
         if (onActivate != null)
+        {
             onActivate.Invoke(unit, target);
+            PlayAttackSFX();
+        }
+            
     }
 
     public void Activate(Unit unit, Fortress fortress)
@@ -73,5 +81,19 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         if (!IsCoolDown && isCoolTimeOn)
             coolTimeCheck += Time.deltaTime;
+    }
+
+    protected void PlayAttackSFX()
+    {
+        if (Data == null || Data.AttackSFX == null || Data.AttackSFX.Length == 0)
+        {
+            return;
+        }
+
+        if (Data.AttackSFX.Length > 0)
+        {
+            int random = Random.Range(0, Data.AttackSFX.Length);
+            SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
+        }
     }
 }

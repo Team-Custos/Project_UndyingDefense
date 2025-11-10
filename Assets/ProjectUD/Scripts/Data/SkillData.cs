@@ -11,6 +11,7 @@ public class SkillData : ScriptableObject
     [SerializeField] private TargetType targetType;
     //[SerializeField] private AudioClip[] startSFX;
     //[SerializeField] private ParticleSystem startVFX;
+    [SerializeField] private AudioClip[] attackSFX;
 
 
     public string Name => name;
@@ -20,4 +21,5 @@ public class SkillData : ScriptableObject
     //public AudioClip[] StartSFX => startSFX;
     //public ParticleSystem StartVFX => startVFX;
     public Sprite Icon => icon;
+    public AudioClip[] AttackSFX => attackSFX;
 }
