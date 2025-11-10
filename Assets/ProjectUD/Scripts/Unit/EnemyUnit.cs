@@ -391,6 +391,7 @@ public class EnemyUnit : Unit
                         {
                             MoveTo(targetUnit);
 
+
                             //if (path.status != NavMeshPathStatus.PathComplete)
                             //{
                             //    Debug.Log(111);
