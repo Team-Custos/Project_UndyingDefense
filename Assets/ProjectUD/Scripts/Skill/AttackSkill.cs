@@ -195,7 +195,6 @@ public class AttackSkill : SkillBase
 
                 GameObject obj = vfxPool.GetVFX(skillVfx, unit);
                 obj.transform.position = unit.transform.position;
-                Debug.Log(obj.transform.position);
                 obj.SetActive(true);
 
                 VFX vfx = obj.GetComponent<VFX>();
@@ -354,7 +353,6 @@ public class AttackSkill : SkillBase
         //    }
         //}
 
-        PlayAttackSound();
 
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
@@ -398,6 +396,9 @@ public class AttackSkill : SkillBase
 
     private void ActivateCriticalEffect(Unit unit, Unit target)
     {
+        if (data.Info.CritEffectPrefab == null)
+            return;
+
         target.AddEffect(data.Info.CritEffectPrefab, target);
 
         //Effect critEffect = null;
@@ -453,6 +454,9 @@ public class AttackSkill : SkillBase
 
     private void AddCritVFX(Unit unit, Unit target)
     {
+        if(data.Info == null)
+            return;
+
         GameObject critVFX = data.Info.CritVFX;
         if (critVFX != null)
         {
@@ -477,8 +481,13 @@ public class AttackSkill : SkillBase
     public void AddHitSFX(Vector3 pos)
     {
         AudioClip[] audios = data.Info.HitSFXClip;
-        AudioClip audio = audios[Random.Range(0, audios.Length)];
-        SoundManager.Instance.PlaySFX(audio, pos);
+
+        if(audios.Length > 0)
+        {
+            AudioClip audio = audios[Random.Range(0, audios.Length)];
+            SoundManager.Instance.PlaySFX(audio, pos);
+        }
+        
     }
 
     public void AddCritSFX(Vector3 pos)
@@ -488,18 +497,13 @@ public class AttackSkill : SkillBase
 
     private bool IsBlocked(ArmorType armorType)
     {
+        if (data.Info == null)
+            return false;
+
         return
             (data.Info.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.Info.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
-    private void PlayAttackSound()
-    {
-        if(data.AttackSFX.Length > 0)
-        {
-            int random = Random.Range(0, data.AttackSFX.Length);
-            SoundManager.Instance.PlaySFX(data.AttackSFX[random], transform.position);
-        }
-    }
 }

@@ -156,7 +156,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(inGameGold, false, "");
+        ingameScreenUI.ShowResult(20, false, "");
         //UserDataModel.instance.SetGameFinished(true);
 
         //UserDataModel.instance.SetGameFinished(true);
@@ -175,7 +175,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(inGameGold, true, recordText);
+        ingameScreenUI.ShowResult(100, true, recordText);
         //UserDataModel.instance.SetGameFinished(true);
         //UserDataModel.instance.SetGameWin(true);
         //UserDataModel.instance.SetGameFinished(true);
