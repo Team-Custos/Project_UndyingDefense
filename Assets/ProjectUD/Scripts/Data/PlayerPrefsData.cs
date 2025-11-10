@@ -7,6 +7,7 @@ public class PlayerPrefsData : MonoBehaviour
 {// 싱글톤?=> ㅇㅇ
     //private string haveCommanderSkills = string.Empty;
     //private string selectCommanderSkills = string.Empty;    // 배열로 ..?
+    public static PlayerPrefsData instance;
 
     //** 지휘관 스킬
     private List<string> haveCommanderSkills = new List<string>();
@@ -22,11 +23,18 @@ public class PlayerPrefsData : MonoBehaviour
     // 여기서 하고싶은데
     // 계정 구조체 만들기
 
-    public struct AAA
+    private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
-    
+
     public void SetAccount(string pID, string pNickName, string imageID)    // 구조체
     {
         PlayerPrefs.SetString("PlayerAccount", $"{pID},{pNickName},{imageID}");
@@ -42,8 +50,10 @@ public class PlayerPrefsData : MonoBehaviour
     }
 
     //** 공로포인트
-    public void SetPoint(float point)
+    public void SetPoint(float getPoint)
     {
+        float point = PlayerPrefs.GetFloat("Point");
+        point += getPoint;
         PlayerPrefs.SetFloat("Point", point);
     }
     

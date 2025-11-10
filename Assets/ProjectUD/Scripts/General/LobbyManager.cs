@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using static StagePrefsData;
+using TMPro;
 
 public class LobbyManager : MonoBehaviour, IInputOnSpace
 {
@@ -30,6 +31,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private UltEvent isGameWin;
     [SerializeField] private PlayerInputEventManager pInputManager;
     [SerializeField] private DialogueManager dialogueManager;
+
+    [Header("공로포인트")]
+    [SerializeField] private TextMeshProUGUI pointTextUI;
 
     [Header("StagePrefsData")]
     [SerializeField] private StagePrefsData stagePrefsData;
@@ -59,6 +63,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         DialogueEventInvoke();
 
         CheckStage();
+        pointTextUI.text = PlayerPrefs.GetFloat("Point").ToString();
         //PlayerPrefs.SetInt("IsGeumsanFinished", 0);
     }
     public void CheckStage()

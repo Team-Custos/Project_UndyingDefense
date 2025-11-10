@@ -75,7 +75,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         // unit
         icon.sprite = unitData.Icon;
         unitName.text = unitData.Name;
-        tier.text = unitData.Tier.ToString();
+        tier.text = fNameTextTable.GetName(unitData.Tier.ToString());
 
         // skill
         generalIcon.sprite = unitData.GeneralSkill.Icon;
