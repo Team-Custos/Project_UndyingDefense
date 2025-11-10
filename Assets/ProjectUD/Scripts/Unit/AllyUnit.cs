@@ -245,7 +245,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null && !hasTargetPos)
+                        if (targetUnit == null)
                         {
                             Vector3 direction = Vector3.left; //spawnDirection.forward; // 나중에 수정할 것!
                             Quaternion rot = Quaternion.LookRotation(direction);

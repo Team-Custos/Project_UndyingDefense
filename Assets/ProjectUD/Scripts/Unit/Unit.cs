@@ -902,6 +902,8 @@ public abstract class Unit : MonoBehaviour
 
 
         navAgent.SetDestination(target.transform.position);
+
+        
     }
 
     public virtual void MoveTo(Unit target)
@@ -910,7 +912,12 @@ public abstract class Unit : MonoBehaviour
             navAgent.isStopped = false;
 
 
-        navAgent.SetDestination(targetPos);
+        navAgent.SetPath(path);
+
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+
+        if (distance > unitStats.attackRange)
+            SearchNearestTarget(unitStats.sightRange);
 
         //float nearestDistance = float.MaxValue;
         //bool hasAvailablePath = false;
