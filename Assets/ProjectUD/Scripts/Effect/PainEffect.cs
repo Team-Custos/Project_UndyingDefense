@@ -15,8 +15,8 @@ public class PainEffect : DurationEffect
         target.AddCriticalVulnerability(critPercent);
         SoundManager.Instance.PlaySFX(painSound, target.transform.position);
 
-        EffectImagePool pool = target.EffectImagePool;  // 유닛이 가진 Pool 사용
-        GameObject obj = pool.GetEffectImage();         // 풀에서 꺼냄
+        effectImagePool = target.EffectImagePool; 
+        GameObject obj = effectImagePool.GetEffectImage();        
 
         effectImageObj = obj;
         effectImage = obj.GetComponent<EffectImage>();
@@ -33,7 +33,7 @@ public class PainEffect : DurationEffect
 
         if (effectImageObj != null)
         {
-            target.EffectImagePool.ReturnEffectImage(effectImageObj);
+            effectImagePool.ReturnEffectImage(effectImageObj);
             effectImageObj = null;
             effectImage = null;
         }

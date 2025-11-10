@@ -354,6 +354,8 @@ public class AttackSkill : SkillBase
         //    }
         //}
 
+        PlayAttackSound();
+
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
@@ -490,5 +492,14 @@ public class AttackSkill : SkillBase
             (data.Info.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.Info.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
+    }
+
+    private void PlayAttackSound()
+    {
+        if(data.AttackSFX.Length > 0)
+        {
+            int random = Random.Range(0, data.AttackSFX.Length);
+            SoundManager.Instance.PlaySFX(data.AttackSFX[random], transform.position);
+        }
     }
 }

@@ -444,17 +444,38 @@ public abstract class Unit : MonoBehaviour
             {
                 bool foundStartPos = false;
 
-                for (int i = 0; i < 4 && !foundStartPos; i++)
+                for (int i = 0; i < 4 && !foundStartPos; i++) 
                 {
                     Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
-                    Vector3 checkPos = transform.position + dir * nearbyDistance;
+                    Vector3 checkPos = transform.GetNearPosition(dir, nearbyDistance);
 
-                    if (NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path))
+                    // NavMesh 위인지 여부만 판정 (보정값은 사용 안함)
+                    if (NavMesh.SamplePosition(checkPos, out _, 0.5f, navAgent.areaMask))
                     {
                         selfPos = checkPos;
                         foundStartPos = true;
                     }
                 }
+
+                //for (int i = 0; i < 4 && !foundStartPos; i++)
+                //{
+                //    Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
+                //    Vector3 checkPos = transform.position + dir * nearbyDistance;
+
+
+                //    NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path);
+                //    if (path.status == NavMeshPathStatus.PathComplete)
+                //    {
+                //        selfPos = checkPos;
+                //        foundStartPos = true;
+                //    }
+
+                //    //if (NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path))
+                //    //{
+                //    //    selfPos = checkPos;
+                //    //    foundStartPos = true;
+                //    //}
+                //}
             }
         }
         
@@ -494,12 +515,16 @@ public abstract class Unit : MonoBehaviour
             {
                 nearestPathLength = shortestPath;
                 result = target;
-                finalTargetPos = bestPosForThisTarget; 
+                finalTargetPos = bestPosForThisTarget;
+                if (this.Data.Id == "ally102")
+                    Debug.Log(nearestPathLength);
             }
         }
 
         targetPos = finalTargetPos;
         hasTargetPos = true;
+
+
 
         return result;
     }
@@ -519,7 +544,7 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    protected Unit SearchNearestTarget(float range, Unit excludeTarget) // targeUnit을 제외한 가장 가까운 적 탐색
+    protected Unit SearchNearestTargetInLine(float range)  // 직선거리 기준으로 가장 가까운 유닛 선정
     {
         Unit result = null;
         float minDst = float.MaxValue;
@@ -534,8 +559,6 @@ public abstract class Unit : MonoBehaviour
                 if (unit == null)
                     continue;
 
-                if (unit == excludeTarget)
-                    continue;
 
                 if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
                     continue;

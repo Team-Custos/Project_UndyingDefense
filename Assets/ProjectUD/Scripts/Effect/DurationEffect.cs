@@ -20,7 +20,7 @@ public abstract class DurationEffect : MonoBehaviour
     protected ObjectPoolWithList<DurationEffect> pool;
     protected EffectImage effectImage;
     protected GameObject effectImageObj;
-    //protected ObjectPoolWithList<EffectImage>
+    protected EffectImagePool effectImagePool;
 
     public string Id => id;
     public string Name => effectName;

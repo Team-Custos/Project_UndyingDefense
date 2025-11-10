@@ -338,7 +338,7 @@ public class AllyUnit : Unit
 
 
                                         }
-                                        else targetUnit = SearchTarget(UnitStats.sightRange);
+                                        else targetUnit = SearchNearestTargetInLine(UnitStats.sightRange);
 
 
                                     }
@@ -354,8 +354,8 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null && !hasTargetPos)
-                            targetUnit = SearchTarget(unitStats.sightRange);
+                        if (targetUnit == null)
+                            targetUnit = SearchNearestTargetInLine(unitStats.sightRange);
                         else
                             LookAt(targetUnit.transform.position);
                     }
