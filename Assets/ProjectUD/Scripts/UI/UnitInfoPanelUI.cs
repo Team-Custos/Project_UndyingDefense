@@ -27,6 +27,9 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tendency;   // Enemy 만
     [SerializeField] private GameObject tendencyGameObj;
     [SerializeField] private TextMeshProUGUI role;
+    [SerializeField] private GameObject roleGameObj;
+    [SerializeField] private TextMeshProUGUI dropGold;
+    [SerializeField] private GameObject goldGameObj;
 
     [Header("Skill")]
     [SerializeField] private Image generalIcon;
@@ -73,7 +76,6 @@ public class UnitInfoPanelUI : MonoBehaviour
         icon.sprite = unitData.Icon;
         unitName.text = unitData.Name;
         tier.text = unitData.Tier.ToString();
-        role.text = stats.role.ToString();
 
         // skill
         generalIcon.sprite = unitData.GeneralSkill.Icon;
@@ -104,10 +106,14 @@ public class UnitInfoPanelUI : MonoBehaviour
         AllyUnitData ally = unitData as AllyUnitData;
         cost.text = ally.Cost.ToString();
         costGameObj.SetActive(true);
-        
+        role.text = stats.role.ToString();
+        roleGameObj.SetActive(true);
+
 
         tendency.text = "";
         tendencyGameObj.SetActive(false);
+        dropGold.text = "";
+        goldGameObj.SetActive(false);
     }
 
     public void SetEnemyInfo()
@@ -118,9 +124,13 @@ public class UnitInfoPanelUI : MonoBehaviour
         string s = enemy.aiStance.ToString();
         tendency.text = fNameTextTable.GetName(s);
         tendencyGameObj.SetActive(true);
+        dropGold.text = enemy.Gold.ToString();
+        goldGameObj.SetActive(true);
 
         cost.text = "";
         costGameObj.SetActive(false);
+        role.text = "";
+        roleGameObj.SetActive(false);
 
     }
 }
