@@ -12146,6 +12146,8 @@ MonoBehaviour:
     _PersistentCalls: []
   id: 
   stagePrefsData: {fileID: 0}
+  winPoint: 0
+  losePoint: 0
 --- !u!4 &318867823
 Transform:
   m_ObjectHideFlags: 0
@@ -16028,6 +16030,8 @@ MonoBehaviour:
     _PersistentCalls: []
   id: 
   stagePrefsData: {fileID: 0}
+  winPoint: 0
+  losePoint: 0
 --- !u!4 &415572254
 Transform:
   m_ObjectHideFlags: 0
@@ -32549,6 +32553,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1418562301}
+    - target: {fileID: 8888425970009482801, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8889203928127647518, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive

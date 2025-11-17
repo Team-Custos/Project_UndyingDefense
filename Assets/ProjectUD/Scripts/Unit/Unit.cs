@@ -912,12 +912,19 @@ public abstract class Unit : MonoBehaviour
             navAgent.isStopped = false;
 
 
-        navAgent.SetPath(path);
+        navAgent.SetDestination(targetPos);
 
-        float distance = Vector3.Distance(transform.position, target.transform.position);
 
-        if (distance > unitStats.attackRange)
-            SearchNearestTarget(unitStats.sightRange);
+        if (Vector3.Distance(transform.position, targetPos) <= navAgent.stoppingDistance + 0.2f)
+        {
+            if (!IsTargetInAttackRange(target, UnitStats.attackRange))
+            {
+                targetUnit = SearchNearestTarget(UnitStats.sightRange);
+
+                
+            }
+        }
+
 
         //float nearestDistance = float.MaxValue;
         //bool hasAvailablePath = false;
