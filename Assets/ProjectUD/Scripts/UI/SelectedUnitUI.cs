@@ -3,8 +3,10 @@ using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
@@ -50,16 +52,16 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image dfTypeIcon;
     [SerializeField] private Image unitSSkillImage;
     [SerializeField] private Image unitGSkillImage;
-    [SerializeField] private Text critText;
-    [SerializeField] private Text moveSpeedText;
-    [SerializeField] private Text atSpeedText;
-    [SerializeField] private Text atRangeText;
-    [SerializeField] private Text mentalText;
+    [SerializeField] private TextMeshProUGUI critText;
+    [SerializeField] private TextMeshProUGUI moveSpeedText;
+    [SerializeField] private TextMeshProUGUI atSpeedText;
+    [SerializeField] private TextMeshProUGUI atRangeText;
+    [SerializeField] private TextMeshProUGUI mentalText;
     [SerializeField] private Image[] tierImage;
-    [SerializeField] private Text gSkillInfoText;
-    [SerializeField] private Text gSkillNameText;
-    [SerializeField] private Text sSkillInfoText;
-    [SerializeField] private Text sSkilNameText;
+    [SerializeField] private TextMeshProUGUI gSkillInfoText;
+    [SerializeField] private TextMeshProUGUI gSkillNameText;
+    [SerializeField] private TextMeshProUGUI sSkillInfoText;
+    [SerializeField] private TextMeshProUGUI sSkilNameText;
     [SerializeField] private Image[] unitStateImage;
     [SerializeField] private UnitStateUI[] unitStateUIs;
     [SerializeField] private GameObject unitStatePanel;
@@ -323,18 +325,42 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             sSkillInfoText.text = unit.PassiveSkill.Data.Description;
         }
 
+        FieldLocalization(unitStats);
 
-        critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-        atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unitStats.mental.ToString();
+        //critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
+        //moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+        //atSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+        //atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
+        //mentalText.text = "멘탈 : " + unitStats.mental.ToString();
 
         // 상태 이미지 끄기
         for(int i = 0; i < unitStateImage.Length; i++)
         {
             unitStateImage[i].gameObject.SetActive(false);
         }
+    }
+
+    private void FieldLocalization(UnitStats unitStats)
+    {
+        string critT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
+        critText.text = $"{critT} : " + unitStats.critChance.ToString() + "%";
+
+        string moveSpeedT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
+        moveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
+
+        string attackSText = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
+        atSpeedText.text = $"{attackSText} : " + unitStats.attackSpeed;
+
+        string attackRangeT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
+        atRangeText.text = $"{attackRangeT} : " + (unitStats.attackRange / 2).ToString() + "칸";
+
+        string mentalT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
+        mentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
     }
 
     public void UpdateUnitInfo(Unit unit)
@@ -385,12 +411,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             sSkillInfoText.text = unit.PassiveSkill.Data.Description;
         }
 
+        FieldLocalization(unit.UnitStats);
 
-        critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
-        moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
-        atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed;
-        atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
-        mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
+        //critText.text = "치명타율 : " + unit.UnitStats.critChance.ToString() + "%";
+        //moveSpeedText.text = "이동속도 : " + unit.UnitStats.moveSpeed.ToString();
+        //atSpeedText.text = "공격속도 : " + unit.UnitStats.attackSpeed;
+        //atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
+        //mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 
         UpdateUnitStateUI();
     }

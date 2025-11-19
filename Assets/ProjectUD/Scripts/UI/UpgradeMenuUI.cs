@@ -1,10 +1,12 @@
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
@@ -49,18 +51,18 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image beforeHp;
     [SerializeField] private Image afterHp;
     [SerializeField] private Text infoHpText;
-    [SerializeField] private Text infoCrtiText;
-    [SerializeField] private Text infoMoveSpeedText;
-    [SerializeField] private Text infoAttackSpeedText;
+    [SerializeField] private TextMeshProUGUI infoCrtiText;
+    [SerializeField] private TextMeshProUGUI infoMoveSpeedText;
+    [SerializeField] private TextMeshProUGUI infoAttackSpeedText;
     [SerializeField] private Image infoGSkillImage;
-    [SerializeField] private Text infoGSkillText;
+    [SerializeField] private TextMeshProUGUI infoGSkillText;
     [SerializeField] private Image infoSSkillImage;
-    [SerializeField] private Text infoSSkillText;
+    [SerializeField] private TextMeshProUGUI infoSSkillText;
     [SerializeField] private Text infoGSkillDescript;
     [SerializeField] private Text infoSSkillDescript;
-    [SerializeField] private Text infoMentalText;
-    [SerializeField] private Text infoAttackRangeText;
-    [SerializeField] private Text infoRecommendedRoleText;
+    [SerializeField] private TextMeshProUGUI infoMentalText;
+    [SerializeField] private TextMeshProUGUI infoAttackRangeText;
+    [SerializeField] private TextMeshProUGUI infoRecommendedRoleText;
 
     [SerializeField] private RectTransform leftPos;
     [SerializeField] private RectTransform middlePos;
@@ -86,6 +88,28 @@ public class UpgradeMenuUI : MonoBehaviour
     private int upgradeIndex = -1;
     private float cost;
 
+    private void FieldLocalization(UnitStats unitStats)
+    {
+        string critT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
+        infoCrtiText.text = $"{critT} : " + unitStats.critChance.ToString() + "%";
+
+        string moveSpeedT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
+        infoMoveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
+
+        string attackSText = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
+        infoAttackSpeedText.text = $"{attackSText} : " + unitStats.attackSpeed;
+
+        string attackRangeT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
+        infoAttackRangeText.text = $"{attackRangeT} : " + (unitStats.attackRange / 2).ToString() + "칸";
+
+        string mentalT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
+        infoMentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
+    }
 
     public void ToggleUpgradeUnit(int index)
     {
@@ -121,11 +145,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
                 infoText.text = unitStats.unitName;
-                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+                //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+
+                FieldLocalization(unitStats);
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500; //firstUnitData.MaxHp;
@@ -152,11 +178,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
                 infoText.text = unitStats.unitName;
-                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+                //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+
+                FieldLocalization(unitStats);
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500;// secondUnitData.MaxHp;
