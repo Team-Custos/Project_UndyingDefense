@@ -324,7 +324,7 @@ public class AllyUnit : Unit
                                             if (targetUnit.IsDead)
                                             {
                                                 targetUnit = null;
-                                                hasTargetPos = false;
+                                               // hasTargetPos = false;
                                                 return;
                                             }
 
@@ -334,7 +334,7 @@ public class AllyUnit : Unit
                                             else
                                             {
                                                 targetUnit = null;
-                                                hasTargetPos = false;
+                                               // hasTargetPos = false;
                                             }
 
 
@@ -395,7 +395,7 @@ public class AllyUnit : Unit
                                 if (targetUnit.IsDead)
                                 {
                                     targetUnit = null;
-                                    hasTargetPos = false;
+                                    //hasTargetPos = false;
                                     return;
                                 }
 
@@ -439,7 +439,7 @@ public class AllyUnit : Unit
                                         }
                                     }
                                 }
-                                else if (IsTargetPosInRange(targetPos, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
+                                else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 목표가 시야 범위 내 -> 이동
                                 {
                                     MoveToTargetUnit(targetUnit);
                                 }
@@ -732,6 +732,42 @@ public class AllyUnit : Unit
 
             return result;
         }
+    }
+
+    public override Unit SearchNearestTarget(float range) // 프리 모드 유닛이 경로상 가장 가까운 적탐색
+    {
+        Unit result = null;
+        float nearestPathLength = float.MaxValue;
+
+
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+        if (targetCount <= 0)
+            return null;
+
+
+        for(int i = 0; i < targetCount; i++)
+        {
+            Unit target = collidersInRange[i].GetComponent<Unit>();
+
+            if (target.IsDead)
+                continue;
+
+            NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, path);
+
+            if(path.status != NavMeshPathStatus.PathComplete)
+                continue;
+
+            float pathLength = float.MaxValue;
+            pathLength = CalculatePathLength(path);
+
+            if (pathLength < nearestPathLength)
+            {
+                nearestPathLength = pathLength;
+                result = target;
+            }
+        }
+
+        return result;
     }
 
     private Unit SearchReachableTarget(float range)
