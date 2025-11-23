@@ -11,7 +11,7 @@ public class ResultUI : MonoBehaviour
     [SerializeField] private Image windowUI;
     [SerializeField] private Image lightEffect;
     [SerializeField] private Image underlayEffect;
-    [SerializeField] private Text resultCommentTextUI;
+    [SerializeField] private TextMeshProUGUI resultCommentTextUI;
 
     [Header("■ Window Sprites")]
     [SerializeField] private Sprite winSprite;

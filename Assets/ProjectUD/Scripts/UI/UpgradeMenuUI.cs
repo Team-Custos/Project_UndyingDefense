@@ -21,7 +21,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
     [SerializeField] private Image selectedUnitImage;
-    [SerializeField] private Text selectedUnitNameText;
+    [SerializeField] private TextMeshProUGUI selectedUnitNameText;
     [SerializeField] private Image selectedUnitAtTypeImage;
     [SerializeField] private Image selectedUnitDfTypeImage;
     [SerializeField] private Image[] selectedUnitTierImage;
@@ -30,7 +30,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image firstUpgradeUnitBackImage;
     [SerializeField] private Image firstUpgradeUnitImage;
     [SerializeField] private Button firstUpgradeBtn;
-    [SerializeField] private Text firstUpgradeUnitNameText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitNameText;
     [SerializeField] private Image firstUpgradeUnitAtTypeImage;
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] firstUpgradeUnitTierImage;
@@ -40,17 +40,17 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image secondUpgradeUnitBackImage;
     [SerializeField] private Button secondUpgradeBtn;
     [SerializeField] private Image secondUpgradeUnitImage;
-    [SerializeField] private Text secondUpgradeUnitNameText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitNameText;
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] secondUpgradeUnitTierImage;
 
     [Header(" ■ 업그레이드할 유니의 정보")]
     [SerializeField]private GameObject infoPanel;
-    [SerializeField] private Text infoText;
+    [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private Image beforeHp;
     [SerializeField] private Image afterHp;
-    [SerializeField] private Text infoHpText;
+    [SerializeField] private TextMeshProUGUI infoHpText;
     [SerializeField] private TextMeshProUGUI infoCrtiText;
     [SerializeField] private TextMeshProUGUI infoMoveSpeedText;
     [SerializeField] private TextMeshProUGUI infoAttackSpeedText;
@@ -58,8 +58,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoGSkillText;
     [SerializeField] private Image infoSSkillImage;
     [SerializeField] private TextMeshProUGUI infoSSkillText;
-    [SerializeField] private Text infoGSkillDescript;
-    [SerializeField] private Text infoSSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoGSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoSSkillDescript;
     [SerializeField] private TextMeshProUGUI infoMentalText;
     [SerializeField] private TextMeshProUGUI infoAttackRangeText;
     [SerializeField] private TextMeshProUGUI infoRecommendedRoleText;
@@ -79,8 +79,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private  GameObject twoLine;
     [SerializeField] private    GameObject oneLine;
 
-    [SerializeField] private Text currentGoldText;
-    [SerializeField] private Text upgradeCostTxt;
+    [SerializeField] private TextMeshProUGUI currentGoldText;
+    [SerializeField] private TextMeshProUGUI upgradeCostTxt;
     [SerializeField] private Button upgradePerformBtn;
 
     [SerializeField] private Sprite[] unitBackImage;
