@@ -88,7 +88,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
-        lines = tableLoader.GetTextData(currentSpeaking.GetSpeakingID());
+        lines = tableLoader.GetTextData($"{currentSpeaking.GetSpeakingID()}_line{currentLineIndex + 1}");
         dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
 
         dialogueLine.text = lines[currentLineIndex];
