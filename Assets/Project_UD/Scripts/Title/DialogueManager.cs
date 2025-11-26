@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour, IInputOnSpace
@@ -24,7 +25,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //------------------------------------------------------
     [Header("PlayerInputManager")]
     [SerializeField] private PlayerInputEventManager inputManager;
-    [SerializeField] protected DialTextTableLoader tableLoader;
+    //[SerializeField] protected DialTextTableLoader tableLoader;
     [SerializeField] protected DialogueUI dialogueui; // DialogueUI.cs 레퍼런스
     [SerializeField] protected TextMeshProUGUI dialogueLine;
     [SerializeField] protected Button nextBtn;
@@ -36,9 +37,11 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     private int currentSpeakingIndex = 0;  // 현재 내가 출력해야할 speaking의 번호
     private Speaking currentSpeaking;
     private SpeakingArray currentSpeakingArray;
-    private List<string> lines;
+    private List<string> lines = new List<string>();
     //private CharacterData currentCharData; // 현재 진행중인 Speaking의 캐릭터 데이터 // -> 지역변수로 만들기
 
+    //-- 로컬라이즈 대화 저장용
+    private Dictionary<string, List<string>> dialogueDictionary = new Dictionary<string, List<string>>();
 
     protected virtual void Start()
     {
@@ -74,13 +77,36 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //    var line = dialogueData.Lines[currentLineIndex];
     //    dialogueText.text = line.Text;
     //}
+
+    // 로컬라이즈 테이블에서 대화 단락 가져오기
+    public List<string> GetLocalDialogue(string table, string id)
+    {
+        lines.Clear();
+        int index = 1;
+        string readline = LocalizationSettings.StringDatabase.GetLocalizedString($"{table}", $"{id}{index}",
+                    LocalizationSettings.SelectedLocale);
+        do
+        {
+                lines.Add(readline);
+                index++;
+                readline = LocalizationSettings.StringDatabase.GetLocalizedString($"{table}", $"{id}{index}",
+                    LocalizationSettings.SelectedLocale);
+
+        }while(readline != string.Empty);
+
+        return lines;
+    }
+
+
+
+
     //-------------------------------------------------------------------------------
     // 선택지 이벤트에 넣어줄 함수
     public void ShowDialogue(SpeakingArray speakingArray)
     {
         inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
-         dialogueui.gameObject.SetActive(true);
+        dialogueui.gameObject.SetActive(true);
         ShowDialogue();
     }
 
@@ -88,9 +114,14 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
-        lines = tableLoader.GetTextData($"{currentSpeaking.GetSpeakingID()}_line{currentLineIndex + 1}");
-        dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+        //lines = tableLoader.GetTextData(currentSpeaking.GetSpeakingID());
 
+        //-- 로컬라이즈 수정
+        lines = GetLocalDialogue( currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
+        //--
+
+        dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+        
         dialogueLine.text = lines[currentLineIndex];
         if (lines.Count > 1)
         {

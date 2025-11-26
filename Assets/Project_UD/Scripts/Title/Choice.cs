@@ -7,11 +7,18 @@ using UnityEngine;
 public class Choice
 {
     [SerializeField] private string choiceID;
+    //-- 로컬테이블이름 추가
+    [SerializeField] private string localTableName;
     [SerializeField] private UltEvent nextEvent;
 
     public string GetChoiceID()
     {
         return choiceID;
+    }
+
+    public string GetLocalTableName()
+    {
+        return localTableName;
     }
 
     public void InvokeNextEvent()

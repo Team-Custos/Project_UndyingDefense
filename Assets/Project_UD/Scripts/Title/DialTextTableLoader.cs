@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Tables;
 
 public class DialTextTableLoader : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class DialTextTableLoader : MonoBehaviour
         LoadDialTable(dialogueTable);
         LoadChoiceTable(choiceTable);
     }
+
+
 
     public void LoadDialTable(TextAsset textAsset)
     {

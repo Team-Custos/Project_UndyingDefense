@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInputDownArrow
 {
@@ -64,7 +66,15 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
             {
                 if (visibleButtonIndex < choiceui.GetButtonCount()) // GetButtonCount()는 ChoiceUI에 추가 필요
                 {
-                    choiceui.SetButtonData(visibleButtonIndex, dialTextLoader.GetChoiceData(currentChoice.GetChoiceID()), currentChoice.NextEvent());
+                    //choiceui.SetButtonData(visibleButtonIndex, dialTextLoader.GetChoiceData(currentChoice.GetChoiceID()), currentChoice.NextEvent());
+
+                    //-- 로컬라이즈 적용
+                    choiceui.SetButtonData(
+                        visibleButtonIndex,
+                        LocalizationSettings.StringDatabase.GetLocalizedString($"{currentChoice.GetLocalTableName()}",$"{currentChoice.GetChoiceID()}",
+                            LocalizationSettings.SelectedLocale), 
+                        currentChoice.NextEvent());
+                    //--
                     visibleButtonIndex++;
                 }
                 else
@@ -124,14 +134,10 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
         {
             HideAndResetChoiceUI();
             choice.GetEvent().Invoke();
-            //selectedUI.transform.position = choice.transform.position;
-            //selectedUI.gameObject.SetActive(true);
-            //StartCoroutine(SelectedCoroutine());
         }
         else
         {
             indicatorIndex = choice.GetIndex();
-            //selectedUI.gameObject.SetActive(false);
             selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
         }
     }

@@ -683,7 +683,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   choiceArray:
-  - choiceID: CH003
+  - choiceID: DIA_intro01_yes2
+    localTableName: Dialogue_SCN_Intro01
     nextEvent:
       _PersistentCalls:
       - _Target: {fileID: 1220654785}
@@ -1536,7 +1537,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 836510259}
-  tableLoader: {fileID: 1448772767}
   dialogueui: {fileID: 8695724935518865476}
   dialogueLine: {fileID: 3126197879924409021}
   nextBtn: {fileID: 3817263554819114027}
@@ -1755,7 +1755,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 41b06b7959e9b9e41b65ad074c9c33ac, type: 2}
-  id: DIA_intro01
+  id: DIA_intro01_line
+  tableName: Dialogue_SCN_Intro01
 --- !u!114 &1349782063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2072,13 +2073,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   choiceArray:
-  - choiceID: CH001
+  - choiceID: DIA_intro01_yes1
+    localTableName: Dialogue_SCN_Intro01
     nextEvent:
       _PersistentCalls:
       - _Target: {fileID: 1220654785}
         _MemberName: LoadLobbyScene
         _PersistentArguments: []
-  - choiceID: CH002
+  - choiceID: DIA_intro01_no1
+    localTableName: Dialogue_SCN_Intro01
     nextEvent:
       _PersistentCalls:
       - _Target: {fileID: 1153308180}
@@ -2604,7 +2607,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 41b06b7959e9b9e41b65ad074c9c33ac, type: 2}
-  id: DIA_intro02
+  id: DIA_intro01_no1Answer
+  tableName: Dialogue_SCN_Intro01
 --- !u!114 &1775856938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3373,7 +3377,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
