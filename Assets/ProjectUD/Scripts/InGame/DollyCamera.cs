@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class DollyCamera : MonoBehaviour
 {
@@ -35,7 +36,10 @@ public class DollyCamera : MonoBehaviour
             }
             else if(panningDuration <= 3.0f && eventIndex == 1)
             {
-                ingameScreenUI.ShowNotice("전투 시작");
+                //--Localize
+                //ingameScreenUI.ShowNotice("전투 시작");
+                ingameScreenUI.ShowNotice(LocalizationSettings.StringDatabase.
+                    GetLocalizedString("IngameUI", "NTF_battleStart", LocalizationSettings.SelectedLocale));
                 eventIndex++;
             }
             else if(panningDuration <= 0.0f && eventIndex == 2)

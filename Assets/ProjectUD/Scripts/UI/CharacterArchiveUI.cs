@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class CharacterArchiveUI : MonoBehaviour
@@ -64,7 +67,12 @@ public class CharacterArchiveUI : MonoBehaviour
 
         fName = name;
         pageNum = 1;
-        unitFactionName.text = fNameTextTable.GetName(name);
+
+        //unitFactionName.text = fNameTextTable.GetName(name);
+        string factionId = fNameTextTable.GetName(name);
+        unitFactionName.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", $"{factionId}", LocalizationSettings.SelectedLocale);
+        //unitFactionName.text = $"{faction} 목록";
         SetPage();
         ShowUnit();
         OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
@@ -179,7 +187,12 @@ public class CharacterArchiveUI : MonoBehaviour
         for (int i = 0; i < temp; i++)
         {
             UnitData unit = units[((pageNum - 1) * 9) + i];     // 보여줘야할 데이터 순번
-            SetCharacterBtn(i, unit.Icon, unit.Name);
+
+            string unitId = unit.Id + "_name";
+            
+            SetCharacterBtn(i, unit.Icon,
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("UnitStringData(Name, Description)", $"{unitId}", LocalizationSettings.SelectedLocale));  //unit.Name);
             characterBtnArray[i].gameObject.SetActive(true);
         }
     }

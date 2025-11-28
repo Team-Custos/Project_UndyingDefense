@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: bb9fadd325e0b74479f48960fd127383, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 847086386347245570
   m_TableData:
   - m_Id: 61207986176
     m_Localized: Thanks to your efforts, the village has been safely defended!
@@ -29,7 +30,8 @@ MonoBehaviour:
   - m_Id: 61216374785
     m_Localized: Wave {num}/{num}
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 847086386347245570
   - m_Id: 61216374786
     m_Localized: Are you sure you want to give up?
     m_Metadata:
@@ -61,11 +63,13 @@ MonoBehaviour:
   - m_Id: 61216374793
     m_Localized: '{sec} seconds until Wave {num}'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 847086386347245570
   - m_Id: 61216374794
     m_Localized: Wave {num} start!
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 847086386347245570
   - m_Id: 61216374795
     m_Localized: Defense successful!
     m_Metadata:
@@ -104,4 +108,8 @@ MonoBehaviour:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 847086386347245570
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 01c0c7400e00000009c0c7400e0000000ac0c7400e000000

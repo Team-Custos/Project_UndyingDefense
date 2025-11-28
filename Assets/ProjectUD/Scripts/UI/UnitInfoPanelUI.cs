@@ -19,6 +19,7 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI unitName;
     [SerializeField] private TextMeshProUGUI tier;
+    [SerializeField] private TextMeshProUGUI tierTxt;
 
     [Header("UnitDatails")]
     [SerializeField] private TextMeshProUGUI cost;
@@ -84,8 +85,19 @@ public class UnitInfoPanelUI : MonoBehaviour
     {
         // unit
         icon.sprite = unitData.Icon;
-        unitName.text = unitData.Name;
-        tier.text = fNameTextTable.GetName(unitData.Tier.ToString());
+
+        string unitId = unitData.Id + "_name";
+        unitName.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{unitId}", LocalizationSettings.SelectedLocale);
+
+        //--
+        string tierT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", "CON_tier", LocalizationSettings.SelectedLocale);
+        tierTxt.text = $"{tierT} :";
+
+        string tierId = fNameTextTable.GetName(unitData.Tier.ToString());
+        tier.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{tierId}", LocalizationSettings.SelectedLocale);
 
         // skill
         generalIcon.sprite = unitData.GeneralSkill.Icon;
@@ -96,15 +108,20 @@ public class UnitInfoPanelUI : MonoBehaviour
         hp.text = stats.maxHp.ToString();
         string hpText = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", "CON_hp", LocalizationSettings.SelectedLocale);
-        hpTxt.text = $"{hpText} :"; 
-        //---
-        attackSpeed.text = stats.attackSpeed;
+        hpTxt.text = $"{hpText} :";
+        //---attackSpeed
+        string atSpeedId = fNameTextTable.GetName("Interval_" + $"{stats.interval.ToString()}");
+        attackSpeed.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{atSpeedId}", LocalizationSettings.SelectedLocale);
+
         string attackSText = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
         attackSpeedTxt.text = $"{attackSText} :";
         //---
-        string armor = unitData.ArmorType.ToString();
-        armorType.text = fNameTextTable.GetName(armor);
+        string armorId = fNameTextTable.GetName(unitData.ArmorType.ToString());
+        armorType.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{armorId}", LocalizationSettings.SelectedLocale);
+
         string armorT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_defenseType", LocalizationSettings.SelectedLocale);
         armorTypeTxt.text = $"{armorT} :";
@@ -129,7 +146,9 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
         attackRangeTxt.text = $"{attackRangeT} :";
         // story
-        story.text = unitData.Description;
+        string storyId = unitData.Id + "_desc";
+        story.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{storyId}", LocalizationSettings.SelectedLocale);
 
     }
 
@@ -143,7 +162,10 @@ public class UnitInfoPanelUI : MonoBehaviour
         costTxt.text = $"{costT} :";
         costGameObj.SetActive(true);
         //---
-        role.text = stats.role.ToString();
+        string roleId = fNameTextTable.GetName(stats.role.ToString());
+        role.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{roleId}", LocalizationSettings.SelectedLocale);
+
         string roleT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_role", LocalizationSettings.SelectedLocale);
         roleTxt.text = $"{roleT} :";
@@ -161,17 +183,19 @@ public class UnitInfoPanelUI : MonoBehaviour
         SetBasicInfo();
         EnemyUnitData enemy = unitData as EnemyUnitData;
         //tendency.text = enemy.aiStance.ToString();
-        string s = enemy.aiStance.ToString();
-        tendency.text = fNameTextTable.GetName(s);
-        //string tendencyT = LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
-        //tendencyTxt.text = $"{tendencyT} :";
+        string tendencyId = fNameTextTable.GetName(enemy.aiStance.ToString());
+        tendency.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{tendencyId}", LocalizationSettings.SelectedLocale);
+
+        string tendencyT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", "CON_mission", LocalizationSettings.SelectedLocale);
+        tendencyTxt.text = $"{tendencyT} :";
         tendencyGameObj.SetActive(true);
         //---
         dropGold.text = enemy.Gold.ToString();
-        //string dropGoldT = LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
-        //dropGoldTxt.text = $"{dropGoldT} :";
+        string dropGoldT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", "CON_reward", LocalizationSettings.SelectedLocale);
+        dropGoldTxt.text = $"{dropGoldT} :";
         goldGameObj.SetActive(true);
 
         cost.text = "";
