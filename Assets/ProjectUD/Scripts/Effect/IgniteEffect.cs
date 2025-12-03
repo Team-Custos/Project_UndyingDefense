@@ -23,6 +23,7 @@ public class IgniteEffect : TickStackEffect
         //}
 
         target.AddEffect(infernoVfx, target);
+        //target.ApplyEffectImage(iconSprite);
 
         //infernoEffect.Activate();
         SetCaster(target);
@@ -34,6 +35,7 @@ public class IgniteEffect : TickStackEffect
     {
         Vfx.SetActive(true);
         SoundManager.Instance.PlaySFX(igniteSound, target.transform.position);
+        effectImage = target.ApplyEffectImage(iconSprite, false, stack);
     }
     protected override void OnTick()
     {
@@ -43,6 +45,12 @@ public class IgniteEffect : TickStackEffect
     public override void OnRemove() 
     {
         Vfx.SetActive(false);
+
+        if (effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
     }
 
     public override bool IsSameType(GameObject effectPrefab)

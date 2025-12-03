@@ -27,6 +27,11 @@ public class ShockEffect : StackEffect
 
     }
 
+    public override void Activate()
+    {
+        base.Activate();
+    }
+
     protected override void OnMaxStack()
     {
         // 기절 효과 추가.
@@ -37,6 +42,7 @@ public class ShockEffect : StackEffect
     {
         target.AddMoveSpeedMult(-moveSpeedPercent * stack);
         target.AddAttackSpeedMult(-attackSpeedPercent * stack);
+
     }
 
     public override bool IsSameType(GameObject effectPrefab)

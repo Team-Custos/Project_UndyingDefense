@@ -389,7 +389,7 @@ public class EnemyUnit : Unit
                         }
                         else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 시야 거리 내 -> 이동
                         {
-                            MoveTo(targetUnit);
+                            MoveTo(path);
 
 
                             //if (path.status != NavMeshPathStatus.PathComplete)
@@ -407,7 +407,7 @@ public class EnemyUnit : Unit
                         else // 시야 사거리 밖
                         {
                             targetUnit = null;
-                            hasTargetPos = false;
+                            //hasTargetPos = false;
                             mode = Mode.MOVE;
                             MoveTo(fortressPos);
                         }
@@ -429,7 +429,7 @@ public class EnemyUnit : Unit
                         {
                             state = State.IDLE;
                             mode = Mode.COMBAT;
-                            MoveTo(targetUnit);
+                            MoveTo(path);
                         }
                         else
                         {
@@ -615,40 +615,79 @@ public class EnemyUnit : Unit
         return result;
     }
 
-    //private void Update()
-    //{
-    //    //if (pathUpdateTimeCheck < pathUpdateTime)
-    //    //{
-    //    //    pathUpdateTimeCheck += Time.deltaTime;
-    //    //}
-    //    //else
-    //    //{
-    //    //    pathUpdateTimeCheck -= pathUpdateTime;
 
-    //    //    if (navAgent.CalculatePath(fortress.Position, path))
-    //    //    {
-    //    //        navAgent.SetPath(path);
-    //    //    }
-    //    //    else
-    //    //    {
-    //    //        Debug.Log(path.status);
-    //    //        Debug.Log("경로가 막힘");
-    //    //    }
-    //    //}
+    public override Unit SearchNearestTarget(float range)
+    {
 
-    //    ////text1.text = $"현재 속도 : {navAgent.velocity}";
-    //    ////text2.text = $"가려고 하는 속도 : {navAgent.desiredVelocity}";
-    //    //float speedDiff = navAgent.desiredVelocity.magnitude - navAgent.velocity.magnitude;
-    //    //text1.text = $"차이 : {navAgent.desiredVelocity.magnitude - navAgent.velocity.magnitude}";
+        Unit result = null;
+        float nearest = float.MaxValue;
 
-    //    //if (navAgent.velocity.magnitude < 0.01f && navAgent.velocity.magnitude > 0f && speedDiff >= 0.01f)
-    //    //{
-    //    //    Debug.Log("막힘");
-    //    //    text2.text = "막힘";
-    //    //}
-    //    //else
-    //    //{
-    //    //    text2.text = "뚫림";
-    //    //}
-    //}
+        NavMeshPath bestPath = null;
+
+        int count = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+
+        for (int i = 0; i < count; i++)
+        {
+            Unit target = collidersInRange[i].GetComponent<Unit>();
+            if (target.IsDead)
+                continue;
+
+            Vector3 pos = target.transform.position;
+
+            bool onNav = NavMesh.SamplePosition(pos, out NavMeshHit hit, 0.1f, navAgent.areaMask);
+
+            if (onNav)
+            {
+                NavMeshPath temp = new NavMeshPath();
+                NavMesh.CalculatePath(transform.position, hit.position, navAgent.areaMask, temp);
+
+                if (temp.status == NavMeshPathStatus.PathComplete)
+                {
+                    float len = CalculatePathLength(temp);
+                    if (len < nearest)
+                    {
+                        nearest = len;
+                        result = target;
+                        bestPath = temp;  
+                    }
+                }
+            }
+            else
+            {
+                Vector3 direction = (transform.position - pos).normalized;
+
+                for (int j = 0; j < 6; j++)
+                {
+                    Vector3 dir = Quaternion.AngleAxis(60f * j, Vector3.up) * direction;
+                    Vector3 cand = target.transform.GetNearPosition(dir, NearbyDistance);
+
+                    if (!NavMesh.SamplePosition(cand, out NavMeshHit hit2, 0.5f, navAgent.areaMask))
+                        continue;
+
+                    NavMeshPath temp = new NavMeshPath();
+                    NavMesh.CalculatePath(transform.position, hit2.position, navAgent.areaMask, temp);
+                    Debug.Log(hit2.position);
+
+                    if (temp.status != NavMeshPathStatus.PathComplete)
+                        continue;
+
+                    float len = CalculatePathLength(temp);
+                    if (len < nearest)
+                    {
+                        nearest = len;
+                        result = target;
+                        bestPath = temp;
+                        Debug.Log(11111111);
+                    }
+                }
+            }
+        }
+
+        if (bestPath != null && bestPath.status == NavMeshPathStatus.PathComplete)
+        {
+            path = bestPath;
+        }
+
+        return result;
+    }
 }

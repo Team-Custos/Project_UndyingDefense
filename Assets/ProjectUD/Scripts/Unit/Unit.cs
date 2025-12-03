@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
+using System.Collections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -70,8 +71,8 @@ public abstract class Unit : MonoBehaviour
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit;
-    protected Vector3 targetPos;
-    protected bool hasTargetPos = false;
+    //protected Vector3 targetPos;
+    //protected bool hasTargetPos = false;
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -80,6 +81,8 @@ public abstract class Unit : MonoBehaviour
     protected float stateDurationCheck;
 
     private List<DurationEffect> effectList = new List<DurationEffect>();
+    public List<EffectImage> effectImageList = new List<EffectImage>();
+    private EffectImage[] effectImages = new EffectImage[3];
 
     protected const int maxTargetCount = 100;
 
@@ -425,69 +428,25 @@ public abstract class Unit : MonoBehaviour
     //    return result;
     //}
 
-    protected Unit SearchNearestTarget(float range)
+    public virtual Unit SearchNearestTarget(float range)
     {
         Unit result = null;
         float nearestPathLength = float.MaxValue;
-        Vector3 finalTargetPos = Vector3.zero;  // 내부 계산용
-        Vector3 selfPos = transform.position;
 
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
         if (targetCount <= 0)
             return null;
 
-        if(this is AllyUnit)
-        {
-            NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, path);
-
-            if(path.status == NavMeshPathStatus.PathInvalid)
-            {
-                bool foundStartPos = false;
-
-                for (int i = 0; i < 4 && !foundStartPos; i++) 
-                {
-                    Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
-                    Vector3 checkPos = transform.GetNearPosition(dir, nearbyDistance);
-
-                    // NavMesh 위인지 여부만 판정 (보정값은 사용 안함)
-                    if (NavMesh.SamplePosition(checkPos, out _, 0.5f, navAgent.areaMask))
-                    {
-                        selfPos = checkPos;
-                        foundStartPos = true;
-                    }
-                }
-
-                //for (int i = 0; i < 4 && !foundStartPos; i++)
-                //{
-                //    Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * transform.forward;
-                //    Vector3 checkPos = transform.position + dir * nearbyDistance;
-
-
-                //    NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path);
-                //    if (path.status == NavMeshPathStatus.PathComplete)
-                //    {
-                //        selfPos = checkPos;
-                //        foundStartPos = true;
-                //    }
-
-                //    //if (NavMesh.CalculatePath(checkPos, checkPos, navAgent.areaMask, path))
-                //    //{
-                //    //    selfPos = checkPos;
-                //    //    foundStartPos = true;
-                //    //}
-                //}
-            }
-        }
         
 
         for (int i = 0; i < targetCount; i++)
         {
             Unit target = collidersInRange[i].GetComponent<Unit>();
-            if (target == null || target.isDead)
+            if (target.isDead)
                 continue;
 
             
-            Vector3 startDir = (target.transform.position - selfPos).normalized;
+            Vector3 startDir = (target.transform.position - transform.position).normalized;
             float shortestPath = float.MaxValue;
             Vector3 bestPosForThisTarget = Vector3.zero;
 
@@ -496,7 +455,7 @@ public abstract class Unit : MonoBehaviour
                 Vector3 dir = Quaternion.AngleAxis(90f * j, Vector3.up) * startDir;
                 Vector3 targetPosCandidate = target.transform.position + dir * target.nearbyDistance;
 
-                if (!NavMesh.CalculatePath(selfPos, targetPosCandidate, navAgent.areaMask, path))
+                if (!NavMesh.CalculatePath(transform.position, targetPosCandidate, navAgent.areaMask, path))
                     continue;
 
                 if (path.status != NavMeshPathStatus.PathComplete)
@@ -514,22 +473,18 @@ public abstract class Unit : MonoBehaviour
             if (shortestPath < nearestPathLength)
             {
                 nearestPathLength = shortestPath;
-                result = target;
-                finalTargetPos = bestPosForThisTarget;
-                if (this.Data.Id == "ally102")
-                    Debug.Log(nearestPathLength);
             }
         }
 
-        targetPos = finalTargetPos;
-        hasTargetPos = true;
+        //targetPos = finalTargetPos;
+        //hasTargetPos = true;
 
 
 
         return result;
     }
 
-    private float CalculatePathLength(NavMeshPath path)
+    protected float CalculatePathLength(NavMeshPath path)
     {
         float length = 0f;
         if (path.corners.Length < 2)
@@ -906,105 +861,119 @@ public abstract class Unit : MonoBehaviour
         
     }
 
-    public virtual void MoveTo(Unit target)
+    public virtual void MoveTo(NavMeshPath path)
     {
-        if(navAgent.isStopped)
+        //if (path == null || path.corners == null)
+        //{
+        //    return;
+        //}
+
+        if (navAgent.isStopped)
             navAgent.isStopped = false;
 
 
-        navAgent.SetDestination(targetPos);
+        navAgent.SetPath(path);
 
-
-        if (Vector3.Distance(transform.position, targetPos) <= navAgent.stoppingDistance + 0.2f)
-        {
-            if (!IsTargetInAttackRange(target, UnitStats.attackRange))
-            {
-                targetUnit = SearchNearestTarget(UnitStats.sightRange);
-
-                
-            }
-        }
-
-
-        //float nearestDistance = float.MaxValue;
-        //bool hasAvailablePath = false;
-
-        //Vector3 result = Vector3.zero;
-        //Vector3 startDir = (transform.position - target.transform.position).normalized;
-
-        //for (float i = 0f; i < 6f; i++)
+        // 타겟이 멀어지면 다시 이동
+        //if(!IsTargetInAttackRange(targetUnit, unitStats.attackRange))
         //{
-        //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
-        //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-
-        //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
-
-        //    if (path.status == NavMeshPathStatus.PathComplete)
-        //    {
-        //        float distance = Vector3.Distance(transform.position, targetPos);
-
-        //        if (distance < nearestDistance)
-        //        {
-        //            if (!hasAvailablePath)
-        //                hasAvailablePath = true;
-
-        //            nearestDistance = distance;
-        //            result = targetPos;
-        //            //navAgent.SetPath(path);
-        //        }
-        //    }
-
-
-        //    //if (path.status != NavMeshPathStatus.PathInvalid)
-        //    //{
-        //    //    float distance = Vector3.Distance(transform.position, targetPos);
-
-        //    //    if (distance < nearestDistance)
-        //    //    {
-        //    //        if (!hasAvailablePath)
-        //    //            hasAvailablePath = true;
-
-        //    //        nearestDistance = distance;
-        //    //        result = targetPos;
-        //    //        navAgent.SetPath(path);
-        //    //    }
-        //    //}
+        //    Debug.Log(111111111);
+        //    navAgent.SetDestination(targetUnit.transform.position);
         //}
 
-        //if (hasAvailablePath)
+
+
+
+        //if (Vector3.Distance(transform.position, targetPos) <= navAgent.stoppingDistance + 0.2f)
         //{
-        //    if (navAgent.isStopped)
-        //        navAgent.isStopped = false;
-
-        //    navAgent.SetDestination(result);
-        //}
-        //else
-        //{
-        //    Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
-
-        //    if (newTarget != null)
+        //    if (!IsTargetInAttackRange(target, UnitStats.attackRange))
         //    {
-        //        targetUnit = newTarget;
-        //        //MoveTo(targetUnit);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("1111111");
-        //    }
-        //}
-        //Vector3 startDir = (transform.position - target.transform.position).normalized;
-        //for (float i = 0f; i < 6f; i++)
-        //{
-        //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
-        //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
+        //        targetUnit = SearchNearestTarget(UnitStats.sightRange);
 
-        //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
 
-        //    if (path.status != NavMeshPathStatus.PathInvalid)
-        //    {
-        //        navAgent.SetPath(path);
-        //    }
-        //}
+            //    }
+            //}
+
+
+            //float nearestDistance = float.MaxValue;
+            //bool hasAvailablePath = false;
+
+            //Vector3 result = Vector3.zero;
+            //Vector3 startDir = (transform.position - target.transform.position).normalized;
+
+            //for (float i = 0f; i < 6f; i++)
+            //{
+            //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
+            //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
+
+            //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
+
+            //    if (path.status == NavMeshPathStatus.PathComplete)
+            //    {
+            //        float distance = Vector3.Distance(transform.position, targetPos);
+
+            //        if (distance < nearestDistance)
+            //        {
+            //            if (!hasAvailablePath)
+            //                hasAvailablePath = true;
+
+            //            nearestDistance = distance;
+            //            result = targetPos;
+            //            //navAgent.SetPath(path);
+            //        }
+            //    }
+
+
+            //    //if (path.status != NavMeshPathStatus.PathInvalid)
+            //    //{
+            //    //    float distance = Vector3.Distance(transform.position, targetPos);
+
+            //    //    if (distance < nearestDistance)
+            //    //    {
+            //    //        if (!hasAvailablePath)
+            //    //            hasAvailablePath = true;
+
+            //    //        nearestDistance = distance;
+            //    //        result = targetPos;
+            //    //        navAgent.SetPath(path);
+            //    //    }
+            //    //}
+            //}
+
+            //if (hasAvailablePath)
+            //{
+            //    if (navAgent.isStopped)
+            //        navAgent.isStopped = false;
+
+            //    navAgent.SetDestination(result);
+            //}
+            //else
+            //{
+            //    Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
+
+            //    if (newTarget != null)
+            //    {
+            //        targetUnit = newTarget;
+            //        //MoveTo(targetUnit);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("1111111");
+            //    }
+            //}
+            //Vector3 startDir = (transform.position - target.transform.position).normalized;
+            //for (float i = 0f; i < 6f; i++)
+            //{
+            //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
+            //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
+
+            //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
+
+            //    if (path.status != NavMeshPathStatus.PathInvalid)
+            //    {
+            //        navAgent.SetPath(path);
+            //    }
+            //}
     }
     public void LookAt(Vector3 pos)
     {
@@ -1300,5 +1269,75 @@ public abstract class Unit : MonoBehaviour
         if (navAgent.enabled)
             navAgent.isStopped = true;
         modelAnimator.SetBool("isRunning", false);
+    }
+
+    public float SlotIndexToPosOffset(int slot)
+    {
+        switch (slot)
+        {
+            case 0: return 0f;   // 중앙
+            case 1: return -1f;  // 왼쪽
+            case 2: return 1f;   // 오른쪽
+            default: return 0f;
+        }
+    }
+
+    public EffectImage ApplyEffectImage(Sprite icon, bool hasStack, int stack)
+    {
+        int slot = GetEmptyEffectImageSlot();
+        if (slot == -1)
+            return null; // 자리 없음
+
+        EffectImage effectImage = effectImagePool.GetEffectImage();
+        effectImage.Initialize(this);
+        effectImage.SetIcon(icon);
+        effectImage.SetStack(hasStack, stack);
+
+        float posOffset = SlotIndexToPosOffset(slot);
+        effectImage.SetXOffset(posOffset);
+
+        effectImage.gameObject.SetActive(true);
+
+        effectImages[slot] = effectImage;
+
+        return effectImage;
+
+    }
+
+    public void RemoveEffectImage(EffectImage effectImage)
+    {
+        if (effectImage == null)
+            return;
+
+        // 배열에서 제거
+        for (int i = 0; i < effectImages.Length; i++)
+        {
+            if (effectImages[i] == effectImage)
+            {
+                effectImages[i] = null;
+                break;
+            }
+        }
+
+        //effectImage.Disappear();
+        effectImagePool.ReturnEffectImage(effectImage);
+        //effectImage.gameObject.SetActive(false);
+
+    }
+
+    private int GetEmptyEffectImageSlot()
+    {
+        for (int i = 0; i < effectImages.Length; i++)
+        {
+            if (effectImages[i] == null)
+                return i;
+        }
+        return -1; // 자리 없음
+    }
+
+    public void ReapplyEffectImage(EffectImage effectImage, bool hasStack, int stack)
+    {
+        effectImage.Initialize(this);
+        effectImage.SetStack(hasStack, stack);
     }
 }

@@ -8,7 +8,6 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private WaveDataLoader waveDataLoader;
-    private int priority = 1;
 
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;

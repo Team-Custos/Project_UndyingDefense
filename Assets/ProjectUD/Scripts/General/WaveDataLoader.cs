@@ -13,8 +13,6 @@ public class WaveDataLoader : MonoBehaviour
     private Dictionary<string, EnemyUnitData> spawnDataDic = new Dictionary<string, EnemyUnitData>();
     public List<List<EnemySpawnData>> WaveDataList => waveDataList;
 
-    private int index = 1;
-
 
     private void Start()
     {

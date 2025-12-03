@@ -21,6 +21,9 @@ public class BleedEffect : TickStackEffect
         //OnTick();
         Vfx.SetActive(true);
         SoundManager.Instance.PlaySFX(bleedSound, target.transform.position);
+
+        effectImage = target.ApplyEffectImage(iconSprite, true, stack);
+
     }
 
     protected override void OnMaxStack()
@@ -40,5 +43,22 @@ public class BleedEffect : TickStackEffect
     public override void OnRemove()
     {
         Vfx.SetActive(false);
+
+        if (effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
+
+        //if (effectImageObj != null)
+        //{
+        //    target.effectImageList.Remove(effectImage);
+        //    effectImagePool.ReturnEffectImage(effectImageObj);
+        //    effectImage.ResetTarget();
+        //    effectImageObj = null;
+        //    effectImage = null;
+        //}
     }
+
+
 }

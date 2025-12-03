@@ -68,7 +68,12 @@ public class UpgradeMenuUI : MonoBehaviour
 
     [SerializeField] private RectTransform leftPos;
     [SerializeField] private RectTransform middlePos;
+
     [SerializeField] private Transform selectedUI;
+    [SerializeField] private Sprite selectIcon;
+    [SerializeField] private Sprite frameIcon;
+    [SerializeField] private Image[] frameImage;
+    private int selectedIndex = -1;
 
     private UnitData currentUnitData;
     private UnitData firstUnitData;
@@ -481,8 +486,14 @@ public class UpgradeMenuUI : MonoBehaviour
 
     public void Select(int index)
     {
-        selectedUI.gameObject.SetActive(true);
-        Vector3 targetPos = upgardeImage[index].transform.position;
-        selectedUI.position = new Vector3(targetPos.x, targetPos.y, selectedUI.position.z);
+        if (selectedIndex != -1 && selectedIndex != index)
+        {
+            Debug.Log(index);
+            frameImage[index].sprite = frameIcon;
+        }
+
+        //selectedUI.gameObject.SetActive(true);
+        //Vector3 targetPos = upgardeImage[index].transform.position;
+        //selectedUI.position = new Vector3(targetPos.x, targetPos.y, selectedUI.position.z);
     }
 }

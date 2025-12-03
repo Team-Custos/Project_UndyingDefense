@@ -142,8 +142,6 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        // AoE 중심이 pivotTarget이면 그대로 두고,
-        // unit을 중심으로 하고 싶다면 아래 한 줄을 unit.transform.position 으로 바꾸면 됨.
         int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
 
         float half = angle * 0.5f;
@@ -154,13 +152,11 @@ public class AttackSkill : SkillBase
             if (!targets[i].TryGetComponent(out Unit target))
                 continue;
 
-            // unit 기준 방향 벡터 (y 무시해 평면 각도만 계산 권장)
             Vector3 dir = target.transform.position - unit.transform.position;
             dir.y = 0f;
             if (dir.sqrMagnitude < 0.0001f)
                 continue;
 
-            // unit.forward와의 각도(0~180°)
             float ang = Vector3.Angle(forward, dir);
 
             // 좌/우 angle/2 범위 안이면 타격

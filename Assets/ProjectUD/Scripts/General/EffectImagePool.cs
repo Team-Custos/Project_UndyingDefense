@@ -4,49 +4,45 @@ using UnityEngine;
 
 public class EffectImagePool : MonoBehaviour
 {
-    private Queue<GameObject> effectImagePool = new Queue<GameObject>();
-    private Sprite icon;
-    private float duration;
+    private Queue<EffectImage> effectImagePool = new Queue<EffectImage>();
     [SerializeField] private GameObject effectImagePrefab;
 
 
-    public GameObject GetEffectImage()
+    public EffectImage GetEffectImage()
     {
-        GameObject obj = null;
+        EffectImage effectImage = null;
 
         if (effectImagePool.Count > 0)
         {
-            obj = effectImagePool.Dequeue();
+            effectImage = effectImagePool.Dequeue();
         }
         else
-            obj = CreateEffectImage();
+            effectImage = CreateEffectImage();
 
-        obj.SetActive(true);
-        return obj;
-
+        return effectImage;
     }
 
 
-    private GameObject CreateEffectImage()
+    private EffectImage CreateEffectImage()
     {
-        //GameObject obj = Instantiate(effectImagePrefab);
-        //obj.transform.SetParent(this.transform);
-        //EffectImage effectImage = obj.GetComponent<EffectImage>();
-        //effectImage.Initialize(this);
-
-        //return obj;
 
         GameObject obj = Instantiate(effectImagePrefab);
         obj.transform.SetParent(transform);
 
         EffectImage effectImage = obj.GetComponent<EffectImage>();
         effectImage.Initialize(this);
-        return obj;
+        return effectImage;
     }
 
-    public void ReturnEffectImage(GameObject obj)
+    public void ReturnEffectImage(EffectImage effectImage)
     {
-        effectImagePool.Enqueue(obj);
-        obj.SetActive(false);
+        effectImagePool.Enqueue(effectImage);
+        effectImage.Disappear();
+        //obj.SetActive(false);
+    }
+
+    public void SetIcon(EffectImage effectImage)
+    {
+        //EffectImage effectImage = EffectImagePool.Get
     }
 }
