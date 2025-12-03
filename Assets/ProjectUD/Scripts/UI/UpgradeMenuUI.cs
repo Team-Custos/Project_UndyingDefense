@@ -60,6 +60,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoSSkillText;
     [SerializeField] private TextMeshProUGUI infoGSkillDescript;
     [SerializeField] private TextMeshProUGUI infoSSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoGSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoSSkillEffect;
     [SerializeField] private TextMeshProUGUI infoMentalText;
     [SerializeField] private TextMeshProUGUI infoAttackRangeText;
     [SerializeField] private TextMeshProUGUI infoRecommendedRoleText;
@@ -88,7 +90,7 @@ public class UpgradeMenuUI : MonoBehaviour
     private int upgradeIndex = -1;
     private float cost;
 
-    private void FieldLocalization(UnitStats unitStats)
+    private void FieldStatLocalization(UnitStats unitStats)
     {
         string critT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
@@ -109,6 +111,12 @@ public class UpgradeMenuUI : MonoBehaviour
         string mentalT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
         infoMentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
+    }
+
+    private void FieldNameLocalization(UnitData data, TextMeshProUGUI text)
+    {
+        text.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
     public void ToggleUpgradeUnit(int index)
@@ -151,7 +159,8 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
-                FieldLocalization(unitStats);
+                FieldStatLocalization(unitStats);
+
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500; //firstUnitData.MaxHp;
@@ -161,11 +170,26 @@ public class UpgradeMenuUI : MonoBehaviour
                 
 
                 infoGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
-                infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
                 infoSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
-                infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
-                infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
-                infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
+                //infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
+                //infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
+                //infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
+                //infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
+                //--Local 스킬이름
+                infoGSkillText.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+                infoSSkillText.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+                //--Local 스킬 설명 (desc + effect)
+                infoGSkillDescript.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+                infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+
+                infoSSkillDescript.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+                infoSSkillEffect.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
             }
             else if (index == 1)
@@ -184,7 +208,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
-                FieldLocalization(unitStats);
+                FieldStatLocalization(unitStats);
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500;// secondUnitData.MaxHp;
