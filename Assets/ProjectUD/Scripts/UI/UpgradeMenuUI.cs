@@ -119,6 +119,25 @@ public class UpgradeMenuUI : MonoBehaviour
             GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
+    private void FieldSkillLocalization(Unit unit)
+    {
+        //--Local 스킬이름
+        infoGSkillText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+        infoSSkillText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+        //--Local 스킬 설명 (desc + effect)
+        infoGSkillDescript.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+        infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+
+        infoSSkillDescript.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+        infoSSkillEffect.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+    }
+
     public void ToggleUpgradeUnit(int index)
     {
 
@@ -152,13 +171,14 @@ public class UpgradeMenuUI : MonoBehaviour
 
                 firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
-                infoText.text = unitStats.unitName;
+                //infoText.text = unitStats.unitName;
                 //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
                 //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
                 //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
+                FieldNameLocalization(firstUpgradeUnit.Data, infoText);
                 FieldStatLocalization(unitStats);
 
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
@@ -175,21 +195,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
                 //infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
                 //infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
-                //--Local 스킬이름
-                infoGSkillText.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-                infoSSkillText.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-                //--Local 스킬 설명 (desc + effect)
-                infoGSkillDescript.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-                infoGSkillEffect.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-                infoSSkillDescript.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-                infoSSkillEffect.text = LocalizationSettings.StringDatabase.
-                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+                FieldSkillLocalization(firstUpgradeUnit);
 
             }
             else if (index == 1)
@@ -201,13 +207,14 @@ public class UpgradeMenuUI : MonoBehaviour
 
                 secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
-                infoText.text = unitStats.unitName;
+                //infoText.text = unitStats.unitName;
                 //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
                 //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
                 //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
+                FieldNameLocalization (secondUpgradeUnit.Data, infoText);
                 FieldStatLocalization(unitStats);
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
@@ -216,12 +223,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = currentUnit.Mental.ToString() + " + " + unitStats.mental.ToString();
 
                 infoGSkillImage.sprite = secondUpgradeUnit.GeneralSkill.Data.Icon;
-                infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
-                infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
-
                 infoSSkillImage.sprite = secondUpgradeUnit.SpecialSkill.Data.Icon;
-                infoSSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
-                infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
+
+                FieldSkillLocalization(secondUpgradeUnit);
+                //infoGSkillText.text = secondUpgradeUnit.GeneralSkill.Data.Name;
+                //infoGSkillDescript.text = secondUpgradeUnit.GeneralSkill.Data.Description;
+
+                //infoSSkillText.text = secondUpgradeUnit.SpecialSkill.Data.Name;
+                //infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
 
             Select(index);
@@ -265,7 +274,9 @@ public class UpgradeMenuUI : MonoBehaviour
 
         // 현재 선택된 유닛
         selectedUnitImage.sprite = selectedUnit.Data.Icon;
-        selectedUnitNameText.text = selectedUnit.Data.Name;
+        //selectedUnitNameText.text = selectedUnit.Data.Name;
+        FieldNameLocalization(selectedUnit.Data, selectedUnitNameText);
+
         selectedUnitAtTypeImage.sprite = selectedUnit.Data.AtTypeIcon;
         selectedUnitDfTypeImage.sprite = selectedUnit.Data.DfTypeIcon;
 
@@ -302,7 +313,8 @@ public class UpgradeMenuUI : MonoBehaviour
             {
                 // 첫번째 업그레이드 유닛
                 firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
-                firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
+                //firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
+                FieldNameLocalization(firstUpgradeUnitData, firstUpgradeUnitNameText);
                 firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
 
@@ -365,7 +377,8 @@ public class UpgradeMenuUI : MonoBehaviour
             {
                 // 첫번째 업그레이드 유닛
                 firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
-                firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
+                //firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
+                FieldNameLocalization(firstUpgradeUnitData, firstUpgradeUnitNameText);
                 firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
 
@@ -382,7 +395,8 @@ public class UpgradeMenuUI : MonoBehaviour
             {
                 // 두번째 업그레이드 유닛
                 secondUpgradeUnitImage.sprite = secondUpgradeUnitData.Icon;
-                secondUpgradeUnitNameText.text = secondUpgradeUnitData.Name;
+                //secondUpgradeUnitNameText.text = secondUpgradeUnitData.Name;
+                FieldNameLocalization(secondUpgradeUnitData, secondUpgradeUnitNameText);
                 secondUpgradeUnitAtTypeImage.sprite = secondUpgradeUnitData.AtTypeIcon;
                 secondUpgradeUnitDfTypeImage.sprite = secondUpgradeUnitData.DfTypeIcon;
 
