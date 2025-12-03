@@ -1,10 +1,11 @@
+using InputEventInterface;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using InputEventInterface;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
-using UnityEngine.AI;
 
 public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
 {
@@ -203,7 +204,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
         if (inGameManager.inGameGold < units[index].Cost)
         {
-            ingameScreenUI.ShowError("군자금이 모자랍니다!");
+            //-- Localization
+            ingameScreenUI.ShowError("IngameUI", "MSG_noGold");
+            //ingameScreenUI.ShowError("군자금이 모자랍니다!");
         }
 
         inputMng.OnESCTarget = this;
@@ -298,7 +301,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
                 if (inGameManager.inGameGold < allyUnitData.Cost)
                 {
-                    ingameScreenUI.ShowError("군자금이 모자랍니다!");
+                    //--Localization
+                    //ingameScreenUI.ShowError("군자금이 모자랍니다!");
+                    ingameScreenUI.ShowError("IngameUI", "MSG_noGold");
                     return;
                 }
 
@@ -312,7 +317,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 Tile tile = hit.transform.GetComponent<Tile>();
                 if (tile.SetAllyUnit(unit) == null)
                 {
-                    ingameScreenUI.ShowError("그곳엔 장애물이 있습니다.");
+                    //--Localization
+                    //ingameScreenUI.ShowError("그곳엔 장애물이 있습니다.");
+                    ingameScreenUI.ShowError("IngameUI", "MSG_noPlace");
                     return;
                 }
                     

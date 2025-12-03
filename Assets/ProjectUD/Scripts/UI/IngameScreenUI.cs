@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Localization.Settings;
 using System.Collections.Specialized;
 using InputEventInterface;
 
@@ -28,7 +29,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private NoticeUI noticeUI;
     [SerializeField] private NoticeUI noticeTimerUI;
     [SerializeField] private GameObject errorPanel;
-    [SerializeField] private Text errorText;
+    [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private Image regionNameUI;
 
     [Header("■ Result")]
@@ -90,7 +91,10 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     public void ShowPerWaveNotice()
     {
-        noticeUI.SetText("성이 현재 공격받고있습니다!", true);
+        //--Localize
+        noticeUI.SetText(LocalizationSettings.StringDatabase.
+            GetLocalizedString("IngameUI", "NTF_battleAttacked", LocalizationSettings.SelectedLocale), true);
+        //noticeUI.SetText("성이 현재 공격받고있습니다!", true);
     }
 
     public void SetNoticeText(string text)
@@ -160,10 +164,13 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     }
 
-    public void ShowError(string text)
+    // -- Localization 수정
+    public void ShowError(string table, string id)
     {
         errorPanel.SetActive(true);
-        errorText.text = text;
+        //errorText.text = id;
+        errorText.text = LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
+                 LocalizationSettings.SelectedLocale);
     }
 
     public void SetspawnBtnPriceTextColor()

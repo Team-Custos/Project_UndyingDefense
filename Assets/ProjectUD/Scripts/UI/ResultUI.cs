@@ -1,6 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ResultUI : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class ResultUI : MonoBehaviour
     [SerializeField] private Image windowUI;
     [SerializeField] private Image lightEffect;
     [SerializeField] private Image underlayEffect;
-    [SerializeField] private Text resultCommentTextUI;
+    [SerializeField] private TextMeshProUGUI resultCommentTextUI;
 
     [Header("■ Window Sprites")]
     [SerializeField] private Sprite winSprite;
@@ -29,7 +31,10 @@ public class ResultUI : MonoBehaviour
             windowUI.sprite = winSprite;
             lightEffect.gameObject.SetActive(true);
             underlayEffect.color = winColor;
-            resultCommentTextUI.text = "지략이 빛을 발한 전투였습니다!";
+            //--Localization
+            //resultCommentTextUI.text = "지략이 빛을 발한 전투였습니다!";
+            resultCommentTextUI.text = LocalizationSettings.StringDatabase.GetLocalizedString("IngameUI", "TXT_resultWin01",
+                 LocalizationSettings.SelectedLocale);
             timeRecordTextUI.gameObject.SetActive(true);
             timeRecordTextUI.text = record;
         }
@@ -38,7 +43,10 @@ public class ResultUI : MonoBehaviour
             windowUI.sprite = loseSprite;
             lightEffect.gameObject.SetActive(false);
             underlayEffect.color = loseColor;
-            resultCommentTextUI.text = "한 걸음 물러나 지혜를 도모해봅시다.";
+            //--Localization
+            //resultCommentTextUI.text = "한 걸음 물러나 지혜를 도모해봅시다.";
+            resultCommentTextUI.text = LocalizationSettings.StringDatabase.GetLocalizedString("IngameUI", "TXT_resultLose01",
+                 LocalizationSettings.SelectedLocale);
             timeRecordTextUI.gameObject.SetActive(false);
         }
 

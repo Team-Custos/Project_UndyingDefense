@@ -1,10 +1,12 @@
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
@@ -19,7 +21,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
     [SerializeField] private Image selectedUnitImage;
-    [SerializeField] private Text selectedUnitNameText;
+    [SerializeField] private TextMeshProUGUI selectedUnitNameText;
     [SerializeField] private Image selectedUnitAtTypeImage;
     [SerializeField] private Image selectedUnitDfTypeImage;
     [SerializeField] private Image[] selectedUnitTierImage;
@@ -28,7 +30,7 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image firstUpgradeUnitBackImage;
     [SerializeField] private Image firstUpgradeUnitImage;
     [SerializeField] private Button firstUpgradeBtn;
-    [SerializeField] private Text firstUpgradeUnitNameText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitNameText;
     [SerializeField] private Image firstUpgradeUnitAtTypeImage;
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] firstUpgradeUnitTierImage;
@@ -38,29 +40,31 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image secondUpgradeUnitBackImage;
     [SerializeField] private Button secondUpgradeBtn;
     [SerializeField] private Image secondUpgradeUnitImage;
-    [SerializeField] private Text secondUpgradeUnitNameText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitNameText;
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] secondUpgradeUnitTierImage;
 
     [Header(" ■ 업그레이드할 유니의 정보")]
     [SerializeField]private GameObject infoPanel;
-    [SerializeField] private Text infoText;
+    [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private Image beforeHp;
     [SerializeField] private Image afterHp;
-    [SerializeField] private Text infoHpText;
-    [SerializeField] private Text infoCrtiText;
-    [SerializeField] private Text infoMoveSpeedText;
-    [SerializeField] private Text infoAttackSpeedText;
+    [SerializeField] private TextMeshProUGUI infoHpText;
+    [SerializeField] private TextMeshProUGUI infoCrtiText;
+    [SerializeField] private TextMeshProUGUI infoMoveSpeedText;
+    [SerializeField] private TextMeshProUGUI infoAttackSpeedText;
     [SerializeField] private Image infoGSkillImage;
-    [SerializeField] private Text infoGSkillText;
+    [SerializeField] private TextMeshProUGUI infoGSkillText;
     [SerializeField] private Image infoSSkillImage;
-    [SerializeField] private Text infoSSkillText;
-    [SerializeField] private Text infoGSkillDescript;
-    [SerializeField] private Text infoSSkillDescript;
-    [SerializeField] private Text infoMentalText;
-    [SerializeField] private Text infoAttackRangeText;
-    [SerializeField] private Text infoRecommendedRoleText;
+    [SerializeField] private TextMeshProUGUI infoSSkillText;
+    [SerializeField] private TextMeshProUGUI infoGSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoSSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoGSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoSSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoMentalText;
+    [SerializeField] private TextMeshProUGUI infoAttackRangeText;
+    [SerializeField] private TextMeshProUGUI infoRecommendedRoleText;
 
     [SerializeField] private RectTransform leftPos;
     [SerializeField] private RectTransform middlePos;
@@ -82,8 +86,8 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private  GameObject twoLine;
     [SerializeField] private    GameObject oneLine;
 
-    [SerializeField] private Text currentGoldText;
-    [SerializeField] private Text upgradeCostTxt;
+    [SerializeField] private TextMeshProUGUI currentGoldText;
+    [SerializeField] private TextMeshProUGUI upgradeCostTxt;
     [SerializeField] private Button upgradePerformBtn;
 
     [SerializeField] private Sprite[] unitBackImage;
@@ -91,6 +95,34 @@ public class UpgradeMenuUI : MonoBehaviour
     private int upgradeIndex = -1;
     private float cost;
 
+    private void FieldStatLocalization(UnitStats unitStats)
+    {
+        string critT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
+        infoCrtiText.text = $"{critT} : " + unitStats.critChance.ToString() + "%";
+
+        string moveSpeedT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
+        infoMoveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
+
+        string attackSText = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
+        infoAttackSpeedText.text = $"{attackSText} : " + unitStats.attackSpeed;
+
+        string attackRangeT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
+        infoAttackRangeText.text = $"{attackRangeT} : " + (unitStats.attackRange / 2).ToString() + "칸";
+
+        string mentalT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
+        infoMentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
+    }
+
+    private void FieldNameLocalization(UnitData data, TextMeshProUGUI text)
+    {
+        text.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
+    }
 
     public void ToggleUpgradeUnit(int index)
     {
@@ -126,11 +158,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 firstUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
                 infoText.text = unitStats.unitName;
-                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+                //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+
+                FieldStatLocalization(unitStats);
+
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500; //firstUnitData.MaxHp;
@@ -140,11 +175,26 @@ public class UpgradeMenuUI : MonoBehaviour
                 
 
                 infoGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
-                infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
                 infoSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
-                infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
-                infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
-                infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
+                //infoGSkillText.text = firstUpgradeUnit.GeneralSkill.Data.Name;
+                //infoSSkillText.text = firstUpgradeUnit.SpecialSkill.Data.Name;
+                //infoGSkillDescript.text = firstUpgradeUnit.GeneralSkill.Data.Description;
+                //infoSSkillDescript.text = firstUpgradeUnit.SpecialSkill.Data.Description;
+                //--Local 스킬이름
+                infoGSkillText.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+                infoSSkillText.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+                //--Local 스킬 설명 (desc + effect)
+                infoGSkillDescript.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+                infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+
+                infoSSkillDescript.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+                infoSSkillEffect.text = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("UnitSkill", $"{firstUpgradeUnit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
             }
             else if (index == 1)
@@ -157,11 +207,13 @@ public class UpgradeMenuUI : MonoBehaviour
                 secondUpgradeUnit.SetUnitStatsByUpgradeUI(unitStats);
 
                 infoText.text = unitStats.unitName;
-                infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
-                infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-                infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-                infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
-                infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+                //infoCrtiText.text = "치명타율 : " + unitStats.critChance.ToString();
+                //infoMoveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
+                //infoAttackSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
+                //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
+                //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
+
+                FieldStatLocalization(unitStats);
                 infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500;// secondUnitData.MaxHp;

@@ -16,7 +16,7 @@ public class StagePrefsData : MonoBehaviour
     {
         public string id;
         public bool isOpen;
-        public bool isStageEnd;   // 승패 여부에 따라 저장. 중간에 나갔을 경우에는 포함 안 함
+        public bool isStageEnd;                         // 승패 여부에 따라 저장. 중간에 나갔을 경우에는 포함 안 함
         public float clearTime;
     }
 
@@ -59,7 +59,6 @@ public class StagePrefsData : MonoBehaviour
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
     public void SaveStageData()
     {
-        //string playerPrefData = string.Empty;
         if (sb.Length > 0)
             sb.Clear();
 
@@ -69,11 +68,8 @@ public class StagePrefsData : MonoBehaviour
             StageData stageData = kvp.Value;
             int isOpen = stageData.isOpen ? 1 : 0;
             int isStageEnd = stageData.isStageEnd ? 1 : 0;
-            // bool값을 int-> string으로 치환과정 필요
             sb.AppendLine($"{stageID},{isOpen},{isStageEnd},{stageData.clearTime}");
-            //playerPrefData += $"{stageID},{stageData.isOpen},{stageData.isStageEnd},{stageData.clearTime}\n";
         }
-        // PlayerPrefs.SetString("stageData", playerPrefData);
         PlayerPrefs.SetString("stage", sb.ToString());
     }
 

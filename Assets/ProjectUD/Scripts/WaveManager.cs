@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using static StagePrefsData;
 
 public class WaveManager : MonoBehaviour
@@ -63,12 +65,16 @@ public class WaveManager : MonoBehaviour
                     if(!isInfiniteMode)
                     {
                         ingameScreenUI.SetWaveNumber(curWave, waveDatas.Length, false);
-                        ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+                        //--Localize
+                        //ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+                        ShowWaveStart("NTF_battleWaveStart", curWave);
                     }
                     else
                     {
+                        //--Localize
                         ingameScreenUI.SetWaveNumber(infiniteWaveCount, 0, true);
-                        ingameScreenUI.ShowNotice(infiniteWaveCount + "차 침공 시작");
+                        //ingameScreenUI.ShowNotice(infiniteWaveCount + "차 침공 시작");
+                        ShowWaveStart("NTF_battleWaveStart", infiniteWaveCount);
                     }
                     
                     SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
@@ -78,6 +84,20 @@ public class WaveManager : MonoBehaviour
                 }
             }
         }
+    }
+    //--Localize Smart용 함수 추가
+    public void ShowWaveStart(string key, int waveNum)
+    {
+        // string table = "IngameUI"; // 씌는 Table 이름
+        // string key = "NTF_battleWaveStart";
+
+        //LocalizationSettings.StringDatabase
+        //    .GetLocalizedStringAsync("IngameUI", key, waveNum)
+        //    .Completed += handle =>
+        //    {
+        //        //yourTextMeshPro.text = handle.Result;
+        //        ingameScreenUI.ShowNotice(handle.Result);
+        //    };
     }
 
 
@@ -98,7 +118,10 @@ public class WaveManager : MonoBehaviour
             }
             else
             {
-                ingameScreenUI.ShowNotice("방어 성공");
+                //--Localize
+                ingameScreenUI.ShowNotice(LocalizationSettings.StringDatabase.
+                    GetLocalizedString("IngameUI", "NTF_battleWaveWin", LocalizationSettings.SelectedLocale));
+                //ingameScreenUI.ShowNotice("방어 성공");
                 //---
                 SetTutorialEnd();
                 //---
@@ -117,7 +140,10 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            ingameScreenUI.ShowNotice("방어 성공");
+            //--Localize
+            ingameScreenUI.ShowNotice(LocalizationSettings.StringDatabase.
+                    GetLocalizedString("IngameUI", "NTF_battleWaveWin", LocalizationSettings.SelectedLocale));
+            //ingameScreenUI.ShowNotice("방어 성공");
             //---
             SetTutorialEnd();
             //---
