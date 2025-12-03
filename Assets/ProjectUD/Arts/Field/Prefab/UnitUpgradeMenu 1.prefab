@@ -461,7 +461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2d2b4861362b04a41b697c83f5dbe668, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2531,7 +2531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 11.799999, y: -17}
+  m_AnchoredPosition: {x: 11.799999, y: -13.2}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6427323617098774214
@@ -3501,7 +3501,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: 3}
+  m_AnchoredPosition: {x: 14, y: 0}
   m_SizeDelta: {x: 120, y: 135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4421375493871864951
@@ -3759,7 +3759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2d2b4861362b04a41b697c83f5dbe668, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5354,6 +5354,8 @@ MonoBehaviour:
   inGameManager: {fileID: 0}
   selectedUnitManager: {fileID: 0}
   selectedUnitUI: {fileID: 0}
+  unitDataLoader: {fileID: 0}
+  upgardeImage: []
   selectedUnitBackImage: {fileID: 6737627543907061918}
   selectedUnitImage: {fileID: 894392997537723508}
   selectedUnitNameText: {fileID: 6825539901885453643}
@@ -5405,6 +5407,12 @@ MonoBehaviour:
   infoRecommendedRoleText: {fileID: 3326130158920532595}
   leftPos: {fileID: 6378442217932786821}
   middlePos: {fileID: 138853279740679519}
+  selectedUI: {fileID: 0}
+  selectIcon: {fileID: 21300000, guid: 2fae305e7b32f2e4283f80d21c4b29f1, type: 3}
+  frameIcon: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c, type: 3}
+  frameImage:
+  - {fileID: 7914093292462395612}
+  - {fileID: 7581827707964851621}
   twoLine: {fileID: 2437870733871560964}
   oneLine: {fileID: 5996614391106828752}
   currentGoldText: {fileID: 3437904229214638030}
@@ -5836,7 +5844,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 11.8, y: -17}
+  m_AnchoredPosition: {x: 11.799999, y: -13.2}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3644626338984845113

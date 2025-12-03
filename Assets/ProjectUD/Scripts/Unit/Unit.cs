@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
+using System.Collections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -66,7 +67,6 @@ public abstract class Unit : MonoBehaviour
     protected VFXObjectPool hitVFXPool;
     protected VFXObjectPool skillVFXPool;
     protected EffectImagePool effectImagePool;
-    protected EffectImage effectImage;
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
@@ -81,6 +81,8 @@ public abstract class Unit : MonoBehaviour
     protected float stateDurationCheck;
 
     private List<DurationEffect> effectList = new List<DurationEffect>();
+    public List<EffectImage> effectImageList = new List<EffectImage>();
+    private EffectImage[] effectImages = new EffectImage[3];
 
     protected const int maxTargetCount = 100;
 
@@ -1267,5 +1269,75 @@ public abstract class Unit : MonoBehaviour
         if (navAgent.enabled)
             navAgent.isStopped = true;
         modelAnimator.SetBool("isRunning", false);
+    }
+
+    public float SlotIndexToPosOffset(int slot)
+    {
+        switch (slot)
+        {
+            case 0: return 0f;   // 중앙
+            case 1: return -1f;  // 왼쪽
+            case 2: return 1f;   // 오른쪽
+            default: return 0f;
+        }
+    }
+
+    public EffectImage ApplyEffectImage(Sprite icon, bool hasStack, int stack)
+    {
+        int slot = GetEmptyEffectImageSlot();
+        if (slot == -1)
+            return null; // 자리 없음
+
+        EffectImage effectImage = effectImagePool.GetEffectImage();
+        effectImage.Initialize(this);
+        effectImage.SetIcon(icon);
+        effectImage.SetStack(hasStack, stack);
+
+        float posOffset = SlotIndexToPosOffset(slot);
+        effectImage.SetXOffset(posOffset);
+
+        effectImage.gameObject.SetActive(true);
+
+        effectImages[slot] = effectImage;
+
+        return effectImage;
+
+    }
+
+    public void RemoveEffectImage(EffectImage effectImage)
+    {
+        if (effectImage == null)
+            return;
+
+        // 배열에서 제거
+        for (int i = 0; i < effectImages.Length; i++)
+        {
+            if (effectImages[i] == effectImage)
+            {
+                effectImages[i] = null;
+                break;
+            }
+        }
+
+        //effectImage.Disappear();
+        effectImagePool.ReturnEffectImage(effectImage);
+        //effectImage.gameObject.SetActive(false);
+
+    }
+
+    private int GetEmptyEffectImageSlot()
+    {
+        for (int i = 0; i < effectImages.Length; i++)
+        {
+            if (effectImages[i] == null)
+                return i;
+        }
+        return -1; // 자리 없음
+    }
+
+    public void ReapplyEffectImage(EffectImage effectImage, bool hasStack, int stack)
+    {
+        effectImage.Initialize(this);
+        effectImage.SetStack(hasStack, stack);
     }
 }

@@ -534,6 +534,13 @@ public class AllyUnit : Unit
 
                             navAgent.enabled = false;
                             navObstacle.enabled = true;
+
+                            // carve 회전 조정
+                            Vector3 direction = Vector3.left;
+                            Quaternion rot = Quaternion.LookRotation(direction);
+
+                            navObstacle.transform.rotation = rot;
+
                         }
                         else // 주변 이동 가능 타일이 없으면 변경 취소
                         {

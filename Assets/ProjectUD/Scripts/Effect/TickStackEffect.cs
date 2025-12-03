@@ -13,6 +13,13 @@ public abstract class TickStackEffect : TickEffect
         if (stack < maxStack)
         {
             stack++;
+            if(effectImage != null)
+            {
+                target.ReapplyEffectImage(effectImage,true, stack);
+                //target.RemoveEffectImage(effectImage);
+                //target.ApplyEffectImage(iconSprite, true, stack);
+            }
+            
         }
         else
         {
