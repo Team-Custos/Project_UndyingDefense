@@ -3,6 +3,7 @@ using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,6 +40,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private float xPos;
     [SerializeField] private float upgradeXpos;
     [SerializeField] private float menuYpos;
+
+    [Header("NameTextTable")]
+    [SerializeField] private FactionNameTextTable fNameTextTable;
 
     [Header("■ UntiInfo")]
     [SerializeField] private Image unitInfoImage;
@@ -290,7 +294,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         unitImage.sprite = unitData.Icon;
 
-        unitNameText.text = unitStats.unitName;
+        //unitNameText.text = unitStats.unitName;
+        //-- Localization --
+        unitNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{unitStats.id}_name", LocalizationSettings.SelectedLocale);
         unitMentalText.text =  "멘탈 : " + unitStats.mental .ToString();
         unitHPImage.fillAmount = unitStats.maxHp / unitStats.maxHp;
         unitHPText.text = $"{unitStats.maxHp} / {unitStats.maxHp}";
@@ -308,21 +315,42 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
 
-        gSkillNameText.text = unit.GeneralSkill.Data.Name;
-        gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+        //gSkillNameText.text = unit.GeneralSkill.Data.Name;
+        //gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
+        gSkillNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+        gSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+        //infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+            //GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
         if (unit.SpecialSkill != null)
         {
             unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
-            sSkilNameText.text = unit.SpecialSkill.Data.Name;
-            sSkillInfoText.text = unit.SpecialSkill.Data.Description;
+            //sSkilNameText.text = unit.SpecialSkill.Data.Name;
+            //sSkillInfoText.text = unit.SpecialSkill.Data.Description;
+
+            sSkilNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+            sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
         }
         else if(unit.PassiveSkill != null)
         {
             unitSSkillImage.sprite = unit.PassiveSkill.Data.Icon;
-            sSkilNameText.text = unit.PassiveSkill.Data.Name;
-            sSkillInfoText.text = unit.PassiveSkill.Data.Description;
+            //sSkilNameText.text = unit.PassiveSkill.Data.Name;
+            //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
+
+            sSkilNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+            sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
         }
 
         FieldLocalization(unitStats);
@@ -350,9 +378,16 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
         moveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
 
+        //---
         string attackSText = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
-        atSpeedText.text = $"{attackSText} : " + unitStats.attackSpeed;
+
+        string atSpeedId = fNameTextTable.GetName("Interval_" + $"{unitStats.interval.ToString()}");
+
+        atSpeedText.text = $"{attackSText} : " + LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{atSpeedId}", LocalizationSettings.SelectedLocale);
+
+        //---
 
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
@@ -377,8 +412,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
        UpdateHPUI(unit);
        unitImage.sprite = unit.Data.Icon;
-       unitNameText.text = unit.UnitStats.unitName;
-       unitMentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
+        //unitNameText.text = unit.UnitStats.unitName;
+        //--Localization
+        unitNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{unit.UnitStats.id}_name", LocalizationSettings.SelectedLocale);
+        unitMentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 
         SetUnitTierIcon(unit.Data.Tier);
 
@@ -392,23 +430,44 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
-        gSkillNameText.text = unit.GeneralSkill.Data.Name;
-        gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+        //gSkillNameText.text = unit.GeneralSkill.Data.Name;
+        //gSkillInfoText.text = unit.GeneralSkill.Data.Description;
+
+        gSkillNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+        gSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+        //infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+        //GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
         if (unit.SpecialSkill != null)
         {
             unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
 
-            sSkilNameText.text = unit.SpecialSkill.Data.Name;
-            sSkillInfoText.text = unit.SpecialSkill.Data.Description;
+            //sSkilNameText.text = unit.SpecialSkill.Data.Name;
+            //sSkillInfoText.text = unit.SpecialSkill.Data.Description;
+
+            sSkilNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+            sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
         }
         else if(unit.PassiveSkill != null)
         {
             unitSSkillImage.sprite = unit.PassiveSkill.Data.Icon;
 
-            sSkilNameText.text = unit.PassiveSkill.Data.Name;
-            sSkillInfoText.text = unit.PassiveSkill.Data.Description;
+            //sSkilNameText.text = unit.PassiveSkill.Data.Name;
+            //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
+
+            sSkilNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+            sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
         }
 
         FieldLocalization(unit.UnitStats);

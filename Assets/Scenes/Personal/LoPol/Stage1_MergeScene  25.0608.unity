@@ -2653,6 +2653,11 @@ PrefabInstance:
       objectReference: {fileID: 693347759}
     - target: {fileID: 8360963658847904336, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: fNameTextTable
+      value: 
+      objectReference: {fileID: 942100008}
+    - target: {fileID: 8360963658847904336, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: selectedUnitUI
       value: 
       objectReference: {fileID: 505122982}
@@ -28662,6 +28667,7 @@ MonoBehaviour:
   xPos: 2
   upgradeXpos: 350
   menuYpos: 3
+  fNameTextTable: {fileID: 942100008}
   unitInfoImage: {fileID: 696313136}
   unitImage: {fileID: 90226544}
   unitNameText: {fileID: 109419628}
@@ -51494,6 +51500,7 @@ GameObject:
   - component: {fileID: 942100007}
   - component: {fileID: 942100006}
   - component: {fileID: 942100005}
+  - component: {fileID: 942100008}
   m_Layer: 0
   m_Name: ExcelDataReader
   m_TagString: Untagged
@@ -51543,6 +51550,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &942100008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd052194f5df9a3449a784a16dddb0d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTable: {fileID: 4900000, guid: 5d477a58d5ba64a4dbbd0892e04dff8a, type: 3}
 --- !u!4 &942458944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -69521,6 +69541,7 @@ MonoBehaviour:
   xPos: 2
   upgradeXpos: 350
   menuYpos: 3
+  fNameTextTable: {fileID: 0}
   unitInfoImage: {fileID: 1326674666}
   unitImage: {fileID: 1918600564}
   unitNameText: {fileID: 1134662125}

@@ -1,8 +1,10 @@
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,6 +19,9 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private UnitDataLoader unitDataLoader;
 
     [SerializeField] private Image[] upgardeImage;
+
+    [Header("NameTextTable")]
+    [SerializeField] private FactionNameTextTable fNameTextTable;
 
     [Header(" ■ 선택된 유닛")]
     [SerializeField] private Image selectedUnitBackImage;
@@ -104,11 +109,14 @@ public class UpgradeMenuUI : MonoBehaviour
         string moveSpeedT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
         infoMoveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
-
+        //--
         string attackSText = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
-        infoAttackSpeedText.text = $"{attackSText} : " + unitStats.attackSpeed;
+        string atSpeedId = fNameTextTable.GetName("Interval_" + $"{unitStats.interval.ToString()}");
 
+        infoAttackSpeedText.text = $"{attackSText} : " + LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{atSpeedId}", LocalizationSettings.SelectedLocale);
+        //--
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
         infoAttackRangeText.text = $"{attackRangeT} : " + (unitStats.attackRange / 2).ToString() + "칸";
@@ -116,6 +124,13 @@ public class UpgradeMenuUI : MonoBehaviour
         string mentalT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
         infoMentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
+
+        string roleT = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("CommonUI", "CON_role", LocalizationSettings.SelectedLocale);
+        string roleId = fNameTextTable.GetName(unitStats.role.ToString());
+
+        infoRecommendedRoleText.text = $"{roleT} :" + LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"{roleId}", LocalizationSettings.SelectedLocale);
     }
 
     private void FieldNameLocalization(UnitData data, TextMeshProUGUI text)
@@ -183,10 +198,14 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
-                FieldNameLocalization(firstUpgradeUnit.Data, infoText);
+                //FieldNameLocalization(firstUpgradeUnit.Data, infoText);
+                //infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
+
+                infoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{unitStats.id}_name", LocalizationSettings.SelectedLocale);
                 FieldStatLocalization(unitStats);
 
-                infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
+
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500; //firstUnitData.MaxHp;
                 afterHp.fillAmount = unitStats.maxHp / 500; // firstUnitData.MaxHp;
@@ -219,9 +238,12 @@ public class UpgradeMenuUI : MonoBehaviour
                 //infoMentalText.text = "멘탈 : " + unitStats.mental.ToString();
                 //infoAttackRangeText.text = "공격범위 : " + unitStats.attackRange.ToString() + "칸";
 
-                FieldNameLocalization (secondUpgradeUnit.Data, infoText);
+                //FieldNameLocalization (secondUpgradeUnit.Data, infoText);
+                //infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
+
+                infoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{unitStats.id}_name", LocalizationSettings.SelectedLocale);
                 FieldStatLocalization(unitStats);
-                infoRecommendedRoleText.text = "추천역할 : " + unitStats.role;
                 infoHpText.text = currentUnit.Maxhp.ToString() + " + " + (unitStats.maxHp - currentUnit.Maxhp).ToString();
                 beforeHp.fillAmount = currentUnit.Maxhp / 500;// secondUnitData.MaxHp;
                 afterHp.fillAmount = unitStats.maxHp / 500; // secondUnitData.MaxHp;
