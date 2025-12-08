@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class CharacterArchiveUI : MonoBehaviour
 {
-    [SerializeField] private FactionCharacterRepository fRepository;
+    [SerializeField] private ResourcesRepository fRepository;
     [SerializeField] private CharacterButtonUI[] characterBtnArray;
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private TextMeshProUGUI unitFactionName;

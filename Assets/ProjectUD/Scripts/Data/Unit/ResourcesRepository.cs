@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FactionCharacterRepository : MonoBehaviour
+public class ResourcesRepository : MonoBehaviour
 {
     private Dictionary<string, UnitData[]> factionDic = new Dictionary<string, UnitData[]>();
+
+    private CommandSkillData[] commandSkillDatas = new CommandSkillData[0];
 
     private void Start()
     {
         SetFactionDic();
+        SetCommanderSkill();
     }
 
     public void SetFactionDic()
@@ -19,6 +22,16 @@ public class FactionCharacterRepository : MonoBehaviour
         factionDic.Add("pioneer", Resources.LoadAll<UnitData>("UnitData/Enemy/pioneer"));
         //factionDic.Add("summon", Resources.LoadAll<UnitData>("UnitData/Enemy/summon"));
 
+    }
+
+    private void SetCommanderSkill()
+    {
+        commandSkillDatas = Resources.LoadAll<CommandSkillData>("Data/Skill/Command");
+    }
+
+    public CommandSkillData[] GetCommandSkills()
+    {
+        return commandSkillDatas;
     }
 
     public UnitData[] GetFactionArray(string fName)
