@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3299162786165618059}
   - component: {fileID: 7373206320210076490}
   - component: {fileID: 4157695758394165843}
+  - component: {fileID: 9124698959260951256}
   m_Layer: 5
   m_Name: CommanderSkillPanel
   m_TagString: Untagged
@@ -35,6 +36,7 @@ RectTransform:
   - {fileID: 1197721061782969902}
   - {fileID: 5640213785561323839}
   - {fileID: 4374854215108705091}
+  - {fileID: 7243221665786991590}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -93,6 +95,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseOverObject: {fileID: 0}
+--- !u!114 &9124698959260951256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045520054083951964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e238a36157b7254d94471a66b327255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 701358991694597019}
+  skillName: {fileID: 1065743723747181852}
+  hoverPosition: {fileID: 7243221665786991590}
 --- !u!1 &2857398495850829999
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +320,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3395811901583350561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7243221665786991590}
+  m_Layer: 5
+  m_Name: PanelPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7243221665786991590
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3395811901583350561}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8688400918418531760}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 100, y: 140}
+  m_SizeDelta: {x: 300, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6064990201063848922
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,8 @@ using TargetType = CommandSkill.TargetType;
 public class CommandSkillData : ScriptableObject
 {
     [SerializeField] private new string name;
+    [SerializeField] private string id;
+    [SerializeField] int rank;
     [SerializeField, TextArea] private string description;
     [SerializeField] private float coolTime;
     [SerializeField] private AudioClip startSFX;
@@ -17,6 +19,8 @@ public class CommandSkillData : ScriptableObject
 
 
     public string Name => name;
+    public string Id => id;
+    public int Rank => rank;
     public string Description => description;
     public float CoolTime => coolTime;
     public AudioClip StartSFX => startSFX;
