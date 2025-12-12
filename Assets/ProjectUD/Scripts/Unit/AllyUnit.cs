@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -73,9 +74,6 @@ public class AllyUnit : Unit
 
     private bool isSiegeActivated = true;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
-    [SerializeField] private bool alternativeSkill;
-    private bool skillFlague;
-
 
 
     //protected static AudioClip[] AllyDeadSFX
@@ -114,6 +112,8 @@ public class AllyUnit : Unit
         navAgent.avoidancePriority = 2;
 
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
+
+
         //mode = Mode.FREE;
     }
 
@@ -324,7 +324,7 @@ public class AllyUnit : Unit
                                             if (targetUnit.IsDead)
                                             {
                                                 targetUnit = null;
-                                               // hasTargetPos = false;
+                                                // hasTargetPos = false;
                                                 return;
                                             }
 
@@ -334,7 +334,7 @@ public class AllyUnit : Unit
                                             else
                                             {
                                                 targetUnit = null;
-                                               // hasTargetPos = false;
+                                                // hasTargetPos = false;
                                             }
 
 
@@ -344,7 +344,7 @@ public class AllyUnit : Unit
                                             targetUnit = SearchNearestTargetInLine(UnitStats.sightRange);
                                         }
 
-                                        
+
 
 
                                     }
@@ -364,7 +364,7 @@ public class AllyUnit : Unit
                         {
                             targetUnit = SearchNearestTargetInLine(unitStats.sightRange);
                         }
-                        
+
                         else
                             LookAt(targetUnit.transform.position);
                     }
@@ -752,7 +752,7 @@ public class AllyUnit : Unit
             return null;
 
 
-        for(int i = 0; i < targetCount; i++)
+        for (int i = 0; i < targetCount; i++)
         {
             Unit target = collidersInRange[i].GetComponent<Unit>();
 
@@ -761,7 +761,7 @@ public class AllyUnit : Unit
 
             NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, path);
 
-            if(path.status != NavMeshPathStatus.PathComplete)
+            if (path.status != NavMeshPathStatus.PathComplete)
                 continue;
 
             float pathLength = float.MaxValue;
@@ -848,43 +848,19 @@ public class AllyUnit : Unit
     {
         if (isDead) return;
 
-        if (alternativeSkill)
+        if (skill == GeneralSkill)
         {
-            if (skill != null)
-            {
-                if (skillFlague)
-                {
-                    modelAnimator.SetTrigger("GeneralSkill");
-                }
-                else
-                {
-                    modelAnimator.SetTrigger("SpecialSkill");
-                }
+            state = State.GENERALSKILL;
 
-                if (skill == GeneralSkill)
-                {
-                    state = State.GENERALSKILL;
-                }
-                else if (skill == SpecialSkill)
-                {
-                    state = State.SPECIALSKILL;
-                }
-            }
-
-            skillFlague = !skillFlague;
+            base.PlayAnimation("GeneralSkill");
+            //modelAnimator.SetTrigger("GeneralSkill");
         }
-        else
+        else if (skill == SpecialSkill)
         {
-            if (skill == GeneralSkill)
-            {
-                state = State.GENERALSKILL;
-                modelAnimator.SetTrigger("GeneralSkill");
-            }
-            else if (skill == SpecialSkill)
-            {
-                state = State.SPECIALSKILL;
-                modelAnimator.SetTrigger("SpecialSkill");
-            }
+            state = State.SPECIALSKILL;
+
+            base.PlayAnimation("SpecialSkill");
+            //modelAnimator.SetTrigger("SpecialSkill");
         }
 
         if (target != null && target != this)
@@ -898,7 +874,7 @@ public class AllyUnit : Unit
             stateDuration = 0f;
         }
 
-        //base.ActivateSkill(skill, target);
+
     }
 
 
@@ -915,6 +891,8 @@ public class AllyUnit : Unit
         }
 
         state = State.DEAD;
+
+
 
         navObstacle.enabled = false;
 
@@ -942,5 +920,8 @@ public class AllyUnit : Unit
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }
+
+
+
 
 }

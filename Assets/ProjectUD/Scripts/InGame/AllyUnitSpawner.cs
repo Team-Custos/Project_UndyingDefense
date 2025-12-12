@@ -104,9 +104,17 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this);
-
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
         unit.SetUnitStats(unitStats);
+
+
+        //Seeker seeker = obj.GetComponent<Seeker>();
+        //if(seeker)
+        //{
+        //    seeker.Initialize(data, unitPools[index], this);
+        //    UnitStats seekerStats = unitDataLoader.GetUnitDataById(seeker.UnitId);
+        //    seeker.SetUnitStats(seekerStats);
+        //}
 
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetInstantEffectPool(instantEffectPool);

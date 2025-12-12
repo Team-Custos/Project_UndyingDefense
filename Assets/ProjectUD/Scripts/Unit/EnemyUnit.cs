@@ -666,7 +666,7 @@ public class EnemyUnit : Unit
 
                     NavMeshPath temp = new NavMeshPath();
                     NavMesh.CalculatePath(transform.position, hit2.position, navAgent.areaMask, temp);
-                    Debug.Log(hit2.position);
+                    //Debug.Log(hit2.position);
 
                     if (temp.status != NavMeshPathStatus.PathComplete)
                         continue;
@@ -677,7 +677,7 @@ public class EnemyUnit : Unit
                         nearest = len;
                         result = target;
                         bestPath = temp;
-                        Debug.Log(11111111);
+                        //Debug.Log(11111111);
                     }
                 }
             }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UnitSpawnPoint : MonoBehaviour
@@ -37,7 +38,13 @@ public class UnitSpawnPoint : MonoBehaviour
             {
                 isUnitSpawned = true;
                 unit.transform.position = transform.position;
+
                 unit.Initialize();
+                //Seeker seeker = unit.GetComponent<Seeker>();
+                //if (seeker != null)
+                //{
+                //    seeker.Initialize();
+                //}
 
                 unit.gameObject.SetActive(true);
                 SoundManager.Instance.PlaySFX(allySpawn, this.transform.position);

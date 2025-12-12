@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
-using System.Collections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -81,7 +80,6 @@ public abstract class Unit : MonoBehaviour
     protected float stateDurationCheck;
 
     private List<DurationEffect> effectList = new List<DurationEffect>();
-    public List<EffectImage> effectImageList = new List<EffectImage>();
     private EffectImage[] effectImages = new EffectImage[3];
 
     protected const int maxTargetCount = 100;
@@ -91,6 +89,9 @@ public abstract class Unit : MonoBehaviour
     protected const float moveThresholdOnStop = float.MaxValue;
 
     protected bool isDead;
+
+    private Dictionary<string, AnimationClip[]> stateAnimDic = new Dictionary<string, AnimationClip[]>();
+
     public Transform EffectParent => effectParent;
 
     public abstract UnitData Data { get; }
@@ -1075,7 +1076,11 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    public void SetStateDuration(float duration) => stateDuration = duration;
+    public void SetStateDuration(float duration)
+    {
+        stateDuration = duration;
+        //Debug.Log(stateDuration);
+    }
 
     public void AddMoveSpeedMult(float percent)
     {
@@ -1339,5 +1344,21 @@ public abstract class Unit : MonoBehaviour
     {
         effectImage.Initialize(this);
         effectImage.SetStack(hasStack, stack);
+    }
+
+    public void PlayAnimation(string stateName)
+    {
+        if(stateAnimDic.ContainsKey(stateName))
+        {
+            AnimationClip[] arr = stateAnimDic[stateName];
+            AnimationClip clip = arr[Random.Range(0, arr.Length)];
+            if (clip != null)
+            {
+                AnimatorOverrideController aoc = modelAnimator.runtimeAnimatorController as AnimatorOverrideController;
+                aoc[stateName] = clip;
+            }
+        }
+
+        modelAnimator.SetTrigger(stateName);
     }
 }

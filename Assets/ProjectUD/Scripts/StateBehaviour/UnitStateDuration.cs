@@ -13,6 +13,7 @@ public class UnitStateDuration : StateMachineBehaviour
             unit = animator.transform.root.GetComponent<Unit>();
 
         unit.SetStateDuration(stateInfo.length);
+        Debug.Log($"{unit.Data.Name} : {stateInfo.length}");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

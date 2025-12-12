@@ -19876,6 +19876,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
+      propertyPath: aoc
+      value: 
+      objectReference: {fileID: 22100000, guid: 2e708633ac7e05f49b60212fd6d97b6c,
+        type: 2}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
       propertyPath: unitId
       value: ally205
       objectReference: {fileID: 0}
@@ -19889,6 +19895,11 @@ PrefabInstance:
       propertyPath: heightPos
       value: 
       objectReference: {fileID: 4058158007149436850}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: chagneEffet
@@ -19941,9 +19952,26 @@ PrefabInstance:
       objectReference: {fileID: 1136874608831976193}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
+      propertyPath: skillClip.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
       propertyPath: allyDeadSFX.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: skillClip.Array.data[0]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: 2b6b4339b73429948bf9d4f206ec0060,
+        type: 3}
+    - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: skillClip.Array.data[1]
+      value: 
+      objectReference: {fileID: 1827226128182048838, guid: 2c439ef6edabd2a48bd07310127dba57,
+        type: 3}
     - target: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: allyDeadSFX.Array.data[0]
@@ -20069,20 +20097,42 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2809601588329405283}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8033772474009387374, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3779338097356712496}
   m_SourcePrefab: {fileID: 100100000, guid: 90d6c0b244efaa84793a2f190b4dff8d, type: 3}
+--- !u!136 &940992810135434066 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 2157011060848587651, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1216022305162281169}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1149924248833462263 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2239828172175953702, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1216022305162281169}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1677482819011823021 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 551603424968508796, guid: 90d6c0b244efaa84793a2f190b4dff8d,
     type: 3}
   m_PrefabInstance: {fileID: 1216022305162281169}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 9195677916292334015}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 165ca14834816cb4a95883d0ee57cf9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &1910212735044029553 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 748263312291810464, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1216022305162281169}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2741966192479133984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3957897032017846769, guid: 90d6c0b244efaa84793a2f190b4dff8d,
@@ -20107,6 +20157,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1216022305162281169}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9195677916292334015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8033772474009387374, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1216022305162281169}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-3779338097356712496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9195677916292334015}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b888fd3199e5924ba866bd634e18d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelAnimator: {fileID: 2470564066807396231}
+  navAgent: {fileID: 1910212735044029553}
+  collider: {fileID: 940992810135434066}
+  effectParent: {fileID: 1149924248833462263}
+  VFXParent: {fileID: 2741966192479133984}
+  heightPos: {fileID: 4058158007149436850}
+  aoc: {fileID: 22100000, guid: 2e708633ac7e05f49b60212fd6d97b6c, type: 2}
+  generalSkill: {fileID: 4086047617840766639}
+  specialSkill: {fileID: 3803714806649286702}
+  passiveSkill: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  nearbyDistance: 1.2
+  stateEvents: []
+  unitId: ally205
+  navObstacle: {fileID: 1865826016916741938}
+  changeEffet: {fileID: 5042396431426142284}
+  defaultSiegeEffect: {fileID: 1136874608831976193}
+  activeSiegeEffect: {fileID: 4090390027420251035}
+  unitGrid: {fileID: 2384473320739722311}
+  allyDeadSFX: []
+  siegeEffectInterval: 0.3
+  skillClip: []
+  aOC: {fileID: 22100000, guid: 2e708633ac7e05f49b60212fd6d97b6c, type: 2}
+  jabClip: {fileID: 1827226128182048838, guid: 2c439ef6edabd2a48bd07310127dba57, type: 3}
+  hookClip: {fileID: 1827226128182048838, guid: 2b6b4339b73429948bf9d4f206ec0060,
+    type: 3}
 --- !u!1001 &3378988831453150034
 PrefabInstance:
   m_ObjectHideFlags: 0
