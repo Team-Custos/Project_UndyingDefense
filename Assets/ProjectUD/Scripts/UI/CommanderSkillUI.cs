@@ -37,9 +37,9 @@ public class CommanderSkillUI : MonoBehaviour
 
     }
 
-    public void SetCSkillBtn(int i, Sprite image, string text)
+    public void SetCSkillBtn(int i, Sprite image, string name, string desc, string effect)
     {
-        cSkillBtnArray[i].SetBtn(image, text);
+        cSkillBtnArray[i].SetBtn(image, name, desc, effect);
         cSkillBtnArray[i].gameObject.SetActive(true);
 
         // To do: 해금여부에 따른 잠금이미지 & 업적 비활성화
@@ -54,11 +54,18 @@ public class CommanderSkillUI : MonoBehaviour
         {
             CommandSkillData cData = datas[((pageNum - 1) * 10) + i];     // 보여줘야할 데이터 순번
 
-            string skillId = cData.Id + "_name";
+            string skillNameId = cData.Id + "_name";
+            string skillDescId = cData.Id + "_desc";
+            string skillEffectId = cData.Id + "_effect";
 
             SetCSkillBtn(i, cData.Icon,
                 LocalizationSettings.StringDatabase.
-                GetLocalizedString("CommanderSkill", $"{skillId}", LocalizationSettings.SelectedLocale));  //unit.Name);
+                GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));  //unit.Name);
+
             cSkillBtnArray[i].gameObject.SetActive(true);
         }
     }
