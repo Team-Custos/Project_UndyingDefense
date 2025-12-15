@@ -134,4 +134,18 @@ public class PlayerPrefsData : MonoBehaviour
     }
 
     // 선택한 스킬도 불러올지=> 기획
+    public List<string> GetSelectedCommanderSkill()
+    {
+        string commanderSkill = PlayerPrefs.GetString("selectCommanderSkill");
+        if (!string.IsNullOrEmpty(commanderSkill))
+        {
+            string[] skills = commanderSkill.Split("\n");
+            for (int i = 0; i < skills.Length; i++)
+            {
+                selectCommanderSkills.Add(skills[i]);
+            }
+        }
+
+        return selectCommanderSkills;
+    }
 }

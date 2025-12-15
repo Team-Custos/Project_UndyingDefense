@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -8,14 +9,32 @@ public class CommanderSkillUI : MonoBehaviour
     [SerializeField] private ResourcesRepository cSkillRepository;
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private CommandSkillBtnUI[] cSkillBtnArray;
+    [SerializeField] private SelectedCommanderSkillUI selectedSkillUI;
 
     private CommandSkillData[] datas = new CommandSkillData[] { };
+    private CommandSkillData[] currentSelected = new CommandSkillData[3];
     private int skillCount = 0;
     private int pageNum = 1;
 
     private void Start()
     {
         ShowCommandSkillUI();
+    }
+
+    private void LoadSelectedSkill()
+    {
+        List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
+        for (int i = 0; i < selectedSkillList.Count; i++)
+        {
+            for (int j = 0; j < datas.Length; j++)
+            {
+                if (datas[j].Id == selectedSkillList[i])
+                {
+                    currentSelected[i] = datas[j];
+                }
+            }
+        }
+
     }
 
     private void SetPage()
