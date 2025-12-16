@@ -19,6 +19,7 @@ public class CommanderSkillUI : MonoBehaviour
     private void Start()
     {
         ShowCommandSkillUI();
+        LoadSelectedSkill();
     }
 
     private void LoadSelectedSkill()
@@ -34,6 +35,7 @@ public class CommanderSkillUI : MonoBehaviour
                 }
             }
         }
+        selectedSkillUI.SetCommandSkill(currentSelected);
 
     }
 

@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectedCSkillBtnUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Image skillIconImage;
 
-    // Update is called once per frame
-    void Update()
+    public void SetSelectedCSkillUI(CommandSkillData data)
     {
-        
+        if(data != null)
+        {
+            skillIconImage.sprite = data.Icon;
+            skillIconImage.color = Color.white;
+        }
+        else
+        {
+            skillIconImage.sprite = null;
+            skillIconImage.color = new Color(1, 1, 1, 0);
+        }
+    }
+    public void SetSelectedCSkillUI()
+    {
+
     }
 }

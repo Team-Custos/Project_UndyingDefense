@@ -5,6 +5,7 @@ using UnityEngine;
 public class SelectedCommanderSkillUI : MonoBehaviour
 {
     private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
+    [SerializeField] private SelectedCSkillBtnUI[] selectedCSkillBtns;
     private int index;
     private bool canAdd = false;
 
@@ -13,6 +14,10 @@ public class SelectedCommanderSkillUI : MonoBehaviour
     public void SetCommandSkill(CommandSkillData[] datas)
     {
         selectedCSkills = datas;
+        for (int i = 0; i < selectedCSkillBtns.Length; i++)
+        {
+            selectedCSkillBtns[i].SetSelectedCSkillUI(selectedCSkills[i]);
+        }
     }
 
     public void AddSkill(CommandSkillData data)
