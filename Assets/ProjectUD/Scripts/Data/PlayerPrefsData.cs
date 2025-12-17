@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class PlayerPrefsData : MonoBehaviour
     //private string selectCommanderSkills = string.Empty;    // 배열로 ..?
     public static PlayerPrefsData instance;
 
+    [SerializeField] private TextAsset CSkillDefaultData;
+
     //** 지휘관 스킬
     private List<string> haveCommanderSkills = new List<string>();
     private List<string> selectCommanderSkills = new List<string>();
@@ -17,6 +20,8 @@ public class PlayerPrefsData : MonoBehaviour
 
     //** 인물도감
     private List<string> characterArchive = new List<string>();
+
+    private StringBuilder sb = new StringBuilder();
 
     //** 계정 설정 => 닉네임만 바꿀때, 이미지만 바꿀때는?
 
@@ -33,6 +38,37 @@ public class PlayerPrefsData : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    private void Start()
+    {
+        //-- 임시
+        PlayerPrefs.SetInt("SetDefaultCSkill", 0);
+        if (PlayerPrefs.GetInt("SetDefaultCSkill") == 0)
+        {
+            LoadCSkillData(CSkillDefaultData.text);
+        }
+    }
+
+    // 초기 지휘관 스킬 저장
+    public void LoadCSkillData(string st)
+    {
+        if (sb.Length > 0)
+            sb.Clear();
+
+        string[] lines = st.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)  // 맨 윗줄 빼고라서 1부터.
+        {
+            if (lines[i] == string.Empty)
+                continue;
+            //sb.AppendLine(lines[i]);
+
+            sb.Append($"{lines[i]}\n");
+            // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
+        }
+
+        PlayerPrefs.SetString("selectCommanderSkill", sb.ToString());
+        PlayerPrefs.SetInt("SetDefaultCSkill", 1);
     }
 
     public void SetAccount(string pID, string pNickName, string imageID)    // 구조체
@@ -137,13 +173,20 @@ public class PlayerPrefsData : MonoBehaviour
     public List<string> GetSelectedCommanderSkill()
     {
         string commanderSkill = PlayerPrefs.GetString("selectCommanderSkill");
+        Debug.Log($"{commanderSkill}");
+        Debug.Log($"{commanderSkill.Length}");
+
         if (!string.IsNullOrEmpty(commanderSkill))
         {
             string[] skills = commanderSkill.Split("\n");
             for (int i = 0; i < skills.Length; i++)
             {
-                selectCommanderSkills.Add(skills[i]);
+                if (skills[i] == string.Empty)
+                    continue;
+                Debug.Log($"{skills[i]}, Length: { skills[i].Length}");
+                selectCommanderSkills.Add(skills[i].Trim());
             }
+            Debug.Log($"프랩스에서 GetSelected 한 지휘관 스킬 갯수 : {selectCommanderSkills.Count}");
         }
 
         return selectCommanderSkills;

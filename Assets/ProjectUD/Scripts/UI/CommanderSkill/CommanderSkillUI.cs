@@ -13,29 +13,47 @@ public class CommanderSkillUI : MonoBehaviour
 
     private CommandSkillData[] datas = new CommandSkillData[] { };
     private CommandSkillData[] currentSelected = new CommandSkillData[3];
+    //private List<CommandSkillData> currentSelected = new List<CommandSkillData>();
     private int skillCount = 0;
     private int pageNum = 1;
 
     private void Start()
     {
-        ShowCommandSkillUI();
-        LoadSelectedSkill();
+        //ShowCommandSkillUI();
+        //LoadSelectedSkill();
     }
 
     private void LoadSelectedSkill()
     {
+        Debug.Log($"리소스에서 로드한 지휘관 스킬Id : {datas[0].Id}, {datas[1].Id}, {datas[2].Id}");
         List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
         for (int i = 0; i < selectedSkillList.Count; i++)
         {
+            Debug.Log($"{selectedSkillList.Count}");
+
             for (int j = 0; j < datas.Length; j++)
             {
-                if (datas[j].Id == selectedSkillList[i])
+                Debug.Log($"{datas.Length}");
+                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
+                Debug.Log($"프랩스 로드 {selectedSkillList[i]}, Length: {selectedSkillList[i].Length}");
+                Debug.Log($"결과 : {datas[j].Id == selectedSkillList[i]}");
+
+                if (string.Compare(datas[j].Id, selectedSkillList[i]) == 0)
                 {
+                    Debug.Log("일치");
                     currentSelected[i] = datas[j];
+                    //currentSelected.Add(datas[j]);
+                    if (currentSelected[i] != null)
+                    {
+                        Debug.Log("지휘관스킬로드 성공");
+                    }
                 }
             }
         }
         selectedSkillUI.SetCommandSkill(currentSelected);
+        Debug.Log($"프랩스에서 가져온 스킬Id : {selectedSkillList[0]}, {selectedSkillList[1]}, {selectedSkillList[2]}");
+        Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {currentSelected[0].Id}, {currentSelected[1].Id}, {currentSelected[2].Id}");
+
 
     }
 
@@ -110,10 +128,12 @@ public class CommanderSkillUI : MonoBehaviour
     {
         SetPage();
         ShowCommandSkill();
+        LoadSelectedSkill();
+        gameObject.SetActive(true );
     }
 
     public void HideUI()    // 뒤로가기
     {
-
+        gameObject.SetActive(false);
     }
 }

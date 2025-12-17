@@ -12,12 +12,12 @@ public class SelectedCSkillBtnUI : MonoBehaviour
         if(data != null)
         {
             skillIconImage.sprite = data.Icon;
-            skillIconImage.color = Color.white;
+            //skillIconImage.color = Color.white;
         }
         else
         {
             skillIconImage.sprite = null;
-            skillIconImage.color = new Color(1, 1, 1, 0);
+            //skillIconImage.color = new Color(1, 1, 1, 0);
         }
     }
     public void SetSelectedCSkillUI()
