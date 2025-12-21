@@ -4906,6 +4906,7 @@ RectTransform:
   - {fileID: 1434934613}
   - {fileID: 2112779579}
   - {fileID: 687564887574511592}
+  - {fileID: 3717120977214388030}
   - {fileID: 888104206}
   - {fileID: 1248433224}
   m_Father: {fileID: 998813237}
@@ -7272,6 +7273,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 698475157}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &700700218 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6956677253405394592, guid: ee9701e354e297b45bee6b2a502f7cae,
+    type: 3}
+  m_PrefabInstance: {fileID: 1604227370}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &700828006
 GameObject:
   m_ObjectHideFlags: 0
@@ -7835,6 +7842,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: CSkillIcon (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8923913695440447763}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RemoveSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SelectedCommanderSkillUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3607268354444973111, guid: ee9701e354e297b45bee6b2a502f7cae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7935,6 +7982,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: hoverPosition
+      value: 
+      objectReference: {fileID: 1711801303}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: descriptionPanel
+      value: 
+      objectReference: {fileID: 3717120977214388031}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15941,6 +15998,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583557802}
   m_CullTransparentMesh: 1
+--- !u!224 &1585423163 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6956677253405394592, guid: ee9701e354e297b45bee6b2a502f7cae,
+    type: 3}
+  m_PrefabInstance: {fileID: 1001722251424186261}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604010816
 GameObject:
   m_ObjectHideFlags: 0
@@ -16074,6 +16137,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: CSkillIcon (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8923913695440447763}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RemoveSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SelectedCommanderSkillUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3607268354444973111, guid: ee9701e354e297b45bee6b2a502f7cae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -16174,6 +16277,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: hoverPosition
+      value: 
+      objectReference: {fileID: 700700218}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: descriptionPanel
+      value: 
+      objectReference: {fileID: 3717120977214388031}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17379,6 +17492,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706993289}
   m_CullTransparentMesh: 1
+--- !u!224 &1711801303 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6956677253405394592, guid: ee9701e354e297b45bee6b2a502f7cae,
+    type: 3}
+  m_PrefabInstance: {fileID: 793132064}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1715746212
 GameObject:
   m_ObjectHideFlags: 0
@@ -22566,7 +22685,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 111956659}
-  - {fileID: 3717120977214388030}
   - {fileID: 1103709403}
   m_Father: {fileID: 472524654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22997,6 +23115,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: CSkillIcon
       objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8923913695440447763}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RemoveSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SelectedCommanderSkillUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410554753872753955, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3607268354444973111, guid: ee9701e354e297b45bee6b2a502f7cae,
         type: 3}
       propertyPath: m_Pivot.x
@@ -23097,6 +23250,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: hoverPosition
+      value: 
+      objectReference: {fileID: 1585423163}
+    - target: {fileID: 3826428454587841404, guid: ee9701e354e297b45bee6b2a502f7cae,
+        type: 3}
+      propertyPath: descriptionPanel
+      value: 
+      objectReference: {fileID: 3717120977214388031}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23351,11 +23514,11 @@ RectTransform:
   - {fileID: 1372074278}
   - {fileID: 6929735899496421856}
   - {fileID: 6326541880524670915}
-  m_Father: {fileID: 2112779579}
+  m_Father: {fileID: 472524654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 390, y: -115}
+  m_AnchoredPosition: {x: 420, y: -260}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3717120977214388031
@@ -23384,7 +23547,12 @@ PrefabInstance:
     - target: {fileID: 848845667227453609, guid: 7b353c0c51f091d4681ca4ce90f55182,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 981794505417312082, guid: 7b353c0c51f091d4681ca4ce90f55182,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1080141210394718368, guid: 7b353c0c51f091d4681ca4ce90f55182,
         type: 3}

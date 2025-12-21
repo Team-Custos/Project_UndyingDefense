@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class SelectedCommanderSkillUI : MonoBehaviour
 {
@@ -16,7 +17,17 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         selectedCSkills = datas;
         for (int i = 0; i < selectedCSkillBtns.Length; i++)
         {
-            selectedCSkillBtns[i].SetSelectedCSkillUI(selectedCSkills[i]);
+            string skillNameId = selectedCSkills[i].Id + "_name";
+            string skillDescId = selectedCSkills[i].Id + "_desc";
+            string skillEffectId = selectedCSkills[i].Id + "_effect";
+
+            selectedCSkillBtns[i].SetSelectedCSkillUI(selectedCSkills[i],
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
+                LocalizationSettings.StringDatabase.
+                GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
         }
     }
 

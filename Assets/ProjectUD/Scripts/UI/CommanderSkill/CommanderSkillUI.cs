@@ -17,11 +17,6 @@ public class CommanderSkillUI : MonoBehaviour
     private int skillCount = 0;
     private int pageNum = 1;
 
-    private void Start()
-    {
-        //ShowCommandSkillUI();
-        //LoadSelectedSkill();
-    }
 
     private void LoadSelectedSkill()
     {
