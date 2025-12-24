@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private SelectedCommanderSkillUI selectedCommanderSkillUI;
 
     [SerializeField] private Image skillIconImage;
     [SerializeField] private DescriptionPanel descriptionPanel;
     [SerializeField] private RectTransform hoverPosition;
+    [SerializeField] private GameObject removeBtn;
 
     private CommandSkillData skillData;
     private int index;
@@ -18,6 +19,8 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
     private string sDescription;
     private string sEffect;
 
+    // -- 더블 클릭용 메서드
+    /*
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
     bool isDoubleClicked = false;
@@ -38,7 +41,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
             isDoubleClicked = false;
             doubleClickedTime = Time.time;
         }
-    }
+    }*/
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -64,10 +67,12 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
             sName = name;
             sDescription = desc;
             sEffect = effect;
+            removeBtn.SetActive(true);
         }
         else
         {
             skillIconImage.sprite = null;
+            removeBtn.SetActive(false);
             //skillIconImage.color = new Color(1, 1, 1, 0);
         }
     }

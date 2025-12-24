@@ -6,9 +6,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private CommanderSkillUI commanderSkillUI;
+    [SerializeField] private GameObject selectedIndicator;
 
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI skillName;
@@ -21,9 +22,42 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private string sDescription;
     private string sEffect;
 
+    private bool isSelected = false;
+
+    // -- 더블 클릭 메서드--
+    /*
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
     bool isDoubleClicked = false;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if ((Time.time - doubleClickedTime) < interval)
+        {
+            isDoubleClicked = true;
+            doubleClickedTime = -1.0f;
+
+            Debug.Log("double click!");
+
+            commanderSkillUI.SelectCommandSkill(index);
+        }
+        else
+        {
+            isDoubleClicked = false;
+            doubleClickedTime = Time.time;
+        }
+    }*/
+
+    public void ToggleSelected(bool b)
+    {
+        selectedIndicator.SetActive(b);
+        isSelected = b;
+    }
+
+    public bool IsSelected()
+    {
+        return isSelected;
+    }
 
     public void SetBtn(int i, Sprite sprite, string name, string desc, string effect)
     {
@@ -51,23 +85,5 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerExit(PointerEventData eventData)
     {
         descriptionPanel.HidePanel();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if ((Time.time - doubleClickedTime) < interval)
-        {
-            isDoubleClicked = true;
-            doubleClickedTime = -1.0f;
-
-            Debug.Log("double click!");
-
-            commanderSkillUI.SelectCommandSkill(index);
-        }
-        else
-        {
-            isDoubleClicked = false;
-            doubleClickedTime = Time.time;
-        }
     }
 }

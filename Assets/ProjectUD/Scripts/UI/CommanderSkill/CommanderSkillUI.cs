@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -52,9 +53,19 @@ public class CommanderSkillUI : MonoBehaviour
 
     }
 
+    // 버튼 클릭용
     public void SelectCommandSkill(int index)
     {
-        selectedSkillUI.AddSkill(datas[((pageNum - 1) * 10) + index]);
+        if (!cSkillBtnArray[index].IsSelected())
+        {
+            selectedSkillUI.AddSkill(datas[((pageNum - 1) * 10) + index]);
+            cSkillBtnArray[index].ToggleSelected(true);
+        }
+        else
+        {
+            selectedSkillUI.RemoveSkill(datas[((pageNum - 1) * 10) + index]);
+            cSkillBtnArray[index].ToggleSelected(false);
+        }
     }
 
     private void SetPage()
@@ -68,6 +79,7 @@ public class CommanderSkillUI : MonoBehaviour
         // 페이지 버튼 갯수
         int pageCount = (skillCount % 9 == 0) ? skillCount / 9 : (skillCount / 9) + 1;
 
+        
         // 만들어 놓은 버튼 활성화
         for (int i = 0; i < pageCount; i++)
         {
@@ -92,6 +104,9 @@ public class CommanderSkillUI : MonoBehaviour
         for (int i = 0; i < temp; i++)
         {
             CommandSkillData cData = datas[((pageNum - 1) * 10) + i];     // 보여줘야할 데이터 순번
+
+            if (currentSelected.Contains(cData))
+                cSkillBtnArray[i].ToggleSelected(true);
 
             string skillNameId = cData.Id + "_name";
             string skillDescId = cData.Id + "_desc";
@@ -127,8 +142,8 @@ public class CommanderSkillUI : MonoBehaviour
     public void ShowCommandSkillUI()   // 로비 버튼용
     {
         SetPage();
-        ShowCommandSkill();
         LoadSelectedSkill();
+        ShowCommandSkill();
         gameObject.SetActive(true );
     }
 

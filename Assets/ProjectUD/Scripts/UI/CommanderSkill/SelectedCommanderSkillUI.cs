@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -50,9 +52,25 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         }
     }
 
+    // 선택스킬 버튼용
     public void RemoveSkill(int index)
     {
         selectedCSkills[index] = null;
         selectedCSkillBtns[index].ClearSelectedCSkillUI();
+    }
+
+    public void RemoveSkill(CommandSkillData data)
+    {
+        //if(data != null && selectedCSkills.Contains(data))
+        
+        if(data == null)
+            return;
+        for (int i = 0; i < selectedCSkills.Length; i++)
+        {
+            if (selectedCSkills[i] == data)
+            {
+                RemoveSkill(i);
+            }
+        }
     }
 }
