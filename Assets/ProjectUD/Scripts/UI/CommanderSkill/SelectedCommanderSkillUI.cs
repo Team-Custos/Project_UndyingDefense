@@ -12,23 +12,28 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 
     // [SerializeField]
 
-    public void SetCommandSkill(CommandSkillData[] datas)
+    public void SetCSkillList(CommandSkillData[] datas)
     {
         selectedCSkills = datas;
         for (int i = 0; i < selectedCSkillBtns.Length; i++)
         {
-            string skillNameId = selectedCSkills[i].Id + "_name";
-            string skillDescId = selectedCSkills[i].Id + "_desc";
-            string skillEffectId = selectedCSkills[i].Id + "_effect";
-
-            selectedCSkillBtns[i].SetSelectedCSkillUI(selectedCSkills[i],
-                LocalizationSettings.StringDatabase.
-                GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
-                LocalizationSettings.StringDatabase.
-                GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
-                LocalizationSettings.StringDatabase.
-                GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
+            SetCSkill(i);
         }
+    }
+
+    public void SetCSkill(int index)
+    {
+        string skillNameId = selectedCSkills[index].Id + "_name";
+        string skillDescId = selectedCSkills[index].Id + "_desc";
+        string skillEffectId = selectedCSkills[index].Id + "_effect";
+
+        selectedCSkillBtns[index].SetSelectedCSkillUI(index, selectedCSkills[index],
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
     }
 
     public void AddSkill(CommandSkillData data)
@@ -39,6 +44,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
             {
                 //canAdd = true;
                 selectedCSkills[i] = data;
+                SetCSkill(i);
                 return;
             }
         }
@@ -46,6 +52,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 
     public void RemoveSkill(int index)
     {
-        selectedCSkills[index] = null; 
+        selectedCSkills[index] = null;
+        selectedCSkillBtns[index].ClearSelectedCSkillUI();
     }
 }

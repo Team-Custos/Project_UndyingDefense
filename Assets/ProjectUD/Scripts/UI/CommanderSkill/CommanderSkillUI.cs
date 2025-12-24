@@ -45,11 +45,16 @@ public class CommanderSkillUI : MonoBehaviour
                 }
             }
         }
-        selectedSkillUI.SetCommandSkill(currentSelected);
+        selectedSkillUI.SetCSkillList(currentSelected);
         Debug.Log($"프랩스에서 가져온 스킬Id : {selectedSkillList[0]}, {selectedSkillList[1]}, {selectedSkillList[2]}");
         Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {currentSelected[0].Id}, {currentSelected[1].Id}, {currentSelected[2].Id}");
 
 
+    }
+
+    public void SelectCommandSkill(int index)
+    {
+        selectedSkillUI.AddSkill(datas[((pageNum - 1) * 10) + index]);
     }
 
     private void SetPage()
@@ -73,7 +78,7 @@ public class CommanderSkillUI : MonoBehaviour
 
     public void SetCSkillBtn(int i, Sprite image, string name, string desc, string effect)
     {
-        cSkillBtnArray[i].SetBtn(image, name, desc, effect);
+        cSkillBtnArray[i].SetBtn(i, image, name, desc, effect);
         cSkillBtnArray[i].gameObject.SetActive(true);
 
         // To do: 해금여부에 따른 잠금이미지 & 업적 비활성화

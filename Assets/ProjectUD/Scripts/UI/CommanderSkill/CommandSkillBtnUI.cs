@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,19 +8,26 @@ using UnityEngine.UI;
 
 public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    [SerializeField] private CommanderSkillUI commanderSkillUI;
+
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private RectTransform hoverPosition;
 
     [SerializeField] private DescriptionPanel descriptionPanel;
 
+    private int index;
     private string sName;
     private string sDescription;
     private string sEffect;
 
+    float interval = 0.25f;
+    float doubleClickedTime = -1.0f;
+    bool isDoubleClicked = false;
 
-    public void SetBtn(Sprite sprite, string name, string desc, string effect)
+    public void SetBtn(int i, Sprite sprite, string name, string desc, string effect)
     {
+        index = i;
         icon.sprite = sprite;
         skillName.text = name;  
         sName = name;
@@ -47,10 +55,19 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        eventData.clickCount++;
-        if(eventData.clickCount == 2)
+        if ((Time.time - doubleClickedTime) < interval)
         {
-            eventData.clickCount = 0;
+            isDoubleClicked = true;
+            doubleClickedTime = -1.0f;
+
+            Debug.Log("double click!");
+
+            commanderSkillUI.SelectCommandSkill(index);
+        }
+        else
+        {
+            isDoubleClicked = false;
+            doubleClickedTime = Time.time;
         }
     }
 }
