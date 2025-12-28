@@ -58,13 +58,29 @@ public class CommanderSkillUI : MonoBehaviour
     {
         if (!cSkillBtnArray[index].IsSelected())
         {
-            selectedSkillUI.AddSkill(datas[((pageNum - 1) * 10) + index]);
-            cSkillBtnArray[index].ToggleSelected(true);
+            if(selectedSkillUI.AddSkill(datas[((pageNum - 1) * 10) + index]))
+            {
+                cSkillBtnArray[index].ToggleSelected(true);
+            }
         }
         else
         {
             selectedSkillUI.RemoveSkill(datas[((pageNum - 1) * 10) + index]);
             cSkillBtnArray[index].ToggleSelected(false);
+        }
+    }
+
+    public void DeSelectCommanderSkill(CommandSkillData data)
+    {
+        for (int i = 0; i < cSkillBtnArray.Length; i++)
+        {
+            if(!cSkillBtnArray[i].gameObject.activeSelf)
+                continue;
+
+            if (datas[((pageNum - 1) * 10) + i] == data)
+            {
+                cSkillBtnArray[i].ToggleSelected(false);
+            }
         }
     }
 
@@ -105,6 +121,7 @@ public class CommanderSkillUI : MonoBehaviour
         {
             CommandSkillData cData = datas[((pageNum - 1) * 10) + i];     // 보여줘야할 데이터 순번
 
+            // 선택된 스킬인지 확인
             if (currentSelected.Contains(cData))
                 cSkillBtnArray[i].ToggleSelected(true);
 

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -9,6 +8,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 {
     private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
     [SerializeField] private SelectedCSkillBtnUI[] selectedCSkillBtns;
+    [SerializeField] private CommanderSkillUI commanderSkillUI;
     private int index;
     private bool canAdd = false;
 
@@ -38,7 +38,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
             GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
     }
 
-    public void AddSkill(CommandSkillData data)
+    public bool AddSkill(CommandSkillData data)
     {
         for (int i = 0; i < selectedCSkills.Length; i++)
         {
@@ -47,14 +47,16 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 //canAdd = true;
                 selectedCSkills[i] = data;
                 SetCSkill(i);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     // 선택스킬 버튼용
     public void RemoveSkill(int index)
     {
+        commanderSkillUI.DeSelectCommanderSkill(selectedCSkills[index]);
         selectedCSkills[index] = null;
         selectedCSkillBtns[index].ClearSelectedCSkillUI();
     }

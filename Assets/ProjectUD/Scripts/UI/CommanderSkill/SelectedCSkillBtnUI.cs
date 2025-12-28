@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] private SelectedCommanderSkillUI selectedCommanderSkillUI;
 
     [SerializeField] private Image skillIconImage;
+    [SerializeField] private TextMeshProUGUI skillNameText;
     [SerializeField] private DescriptionPanel descriptionPanel;
     [SerializeField] private RectTransform hoverPosition;
     [SerializeField] private GameObject removeBtn;
@@ -64,6 +66,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
             index = i;
             skillData = data;
             skillIconImage.sprite = skillData.Icon;
+            skillNameText.text = name;
             sName = name;
             sDescription = desc;
             sEffect = effect;
@@ -80,6 +83,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
     public void ClearSelectedCSkillUI()
     {
         skillIconImage.sprite = null;
+        skillNameText.text = "";
         sName = "";
         sDescription = "";
         sEffect = "";
