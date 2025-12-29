@@ -39293,6 +39293,42 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &715436444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 673844277527622017, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 21649794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a903669823a1e46b4dd179c2c2bf7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &715436445 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7638975001484682321, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 21649794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a903669823a1e46b4dd179c2c2bf7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &715436446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5036255151241224534, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 21649794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a903669823a1e46b4dd179c2c2bf7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &716241191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66782,6 +66818,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb5e9c5ba878d74eaa23917c7ac1cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cSkillRepository: {fileID: 0}
+  commandSkillList: []
+  cSkillBtns: []
   SelectedUnitManager: {fileID: 1137951088}
   allyUnitSpawner: {fileID: 923510898}
   ingameManager: {fileID: 856739625}
@@ -79135,6 +79174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1481264217}
   - component: {fileID: 1481264216}
+  - component: {fileID: 1481264218}
   m_Layer: 0
   m_Name: CommandSkillParent
   m_TagString: Untagged
@@ -79154,6 +79194,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb5e9c5ba878d74eaa23917c7ac1cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cSkillRepository: {fileID: 1481264218}
+  commandSkillList:
+  - {fileID: 989598951}
+  - {fileID: 1942168963}
+  - {fileID: 279506455}
+  cSkillBtns:
+  - {fileID: 715436446}
+  - {fileID: 715436445}
+  - {fileID: 715436444}
   SelectedUnitManager: {fileID: 485910518}
   allyUnitSpawner: {fileID: 1866204814}
   ingameManager: {fileID: 693347759}
@@ -79191,6 +79240,18 @@ Transform:
   - {fileID: 279506456}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1481264218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481264215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de577b3e5cc6be40b13c7a201e47902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1481336551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -113249,6 +113310,7 @@ SceneRoots:
   - {fileID: 1388963441}
   - {fileID: 1246101094}
   - {fileID: 1109297503}
+  - {fileID: 1481264217}
   - {fileID: 21649794}
   - {fileID: 465271096}
   - {fileID: 695378650}
@@ -113263,7 +113325,6 @@ SceneRoots:
   - {fileID: 1741201212}
   - {fileID: 505122983}
   - {fileID: 1745055783}
-  - {fileID: 1481264217}
   - {fileID: 485910519}
   - {fileID: 1357982416}
   - {fileID: 1997073974}

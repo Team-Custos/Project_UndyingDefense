@@ -4,10 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick
 {
+    //------지휘관 스킬 로드 & 셋팅
+    [SerializeField] private CommandSkillRepository cSkillRepository;
+    [SerializeField] private CommandSkill[] commandSkillList;
+    [SerializeField] private SkillButtonCooldownUI[] cSkillBtns;
+
+    private CommandSkillData[] datas = new CommandSkillData[] { };
+    private CommandSkillData[] currentSelected = new CommandSkillData[3];
+    //-------지휘관 스킬 로드 & 셋팅
+
     [SerializeField] private SelectedUnitManager SelectedUnitManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     [SerializeField] private InGameManager ingameManager;
@@ -58,6 +68,61 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         }
         skill = GetComponentsInChildren<ActiveCommandSkill>();
     }
+
+    // 지휘관스킬 로드
+    private void LoadCSkill()
+    {
+        datas = cSkillRepository.GetCommandSkills();
+
+        List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
+        for (int i = 0; i < selectedSkillList.Count; i++)
+        {
+            Debug.Log($"{selectedSkillList.Count}");
+
+            for (int j = 0; j < datas.Length; j++)
+            {
+                Debug.Log($"{datas.Length}");
+                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
+                Debug.Log($"프랩스 로드 {selectedSkillList[i]}, Length: {selectedSkillList[i].Length}");
+                Debug.Log($"결과 : {datas[j].Id == selectedSkillList[i]}");
+
+                if (string.Compare(datas[j].Id, selectedSkillList[i]) == 0)
+                {
+                    Debug.Log("일치");
+                    currentSelected[i] = datas[j];
+                    //currentSelected.Add(datas[j]);
+                    if (currentSelected[i] != null)
+                    {
+                        Debug.Log("지휘관스킬로드 성공");
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetCSkillList()
+    {
+        for (int i = 0; i < currentSelected.Length; i++)
+        {
+            SetCSkill(i);
+        }
+    }
+
+    public void SetCSkill(int index)
+    {
+        string skillNameId = currentSelected[index].Id + "_name";
+        string skillDescId = currentSelected[index].Id + "_desc";
+        string skillEffectId = currentSelected[index].Id + "_effect";
+
+        //cSkillBtns[index].SetSelectedCSkillUI(index, currentSelected[index],
+        //    LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
+        //    LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
+        //    LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
+    }
+
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
         if (btnClickSFX[activatedSkillButtonIdx] != null)

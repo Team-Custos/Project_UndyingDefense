@@ -7,7 +7,7 @@ using UnityEngine.Localization.Settings;
 
 public class CommanderSkillUI : MonoBehaviour
 {
-    [SerializeField] private ResourcesRepository cSkillRepository;
+    [SerializeField] private CommandSkillRepository cSkillRepository;
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private CommandSkillBtnUI[] cSkillBtnArray;
     [SerializeField] private SelectedCommanderSkillUI selectedSkillUI;
@@ -22,6 +22,7 @@ public class CommanderSkillUI : MonoBehaviour
     private void LoadSelectedSkill()
     {
         Debug.Log($"리소스에서 로드한 지휘관 스킬Id : {datas[0].Id}, {datas[1].Id}, {datas[2].Id}");
+
         List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
         for (int i = 0; i < selectedSkillList.Count; i++)
         {

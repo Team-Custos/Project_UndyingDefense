@@ -123,17 +123,22 @@ public class PlayerPrefsData : MonoBehaviour
         PlayerPrefs.SetString("haveCommaderSkill", haveCSkill);
     }
 
-    public void SetSelectCSkill(string id)  // ?? -> 언제저장 물어볼것
+    public void SetSelectCSkill(List<string> selectCSkillList)  // ?? -> 언제저장 물어볼것
     {
         //selectCommanderSkills += $"{id}\n";
         //selectCommanderSkills.Add(id);
         // 지휘관 스킬 선택하는 부분 보고 수정 
 
+        selectCommanderSkills.Clear();
+        selectCommanderSkills = selectCSkillList;
+
         string selectCSkill = string.Empty;
-        for(int i = 0; i < selectCommanderSkills.Count; i++)
+
+        for (int i = 0; i < selectCommanderSkills.Count; i++)
         {
             selectCSkill += $"{selectCommanderSkills[i]}\n";
         }
+
         PlayerPrefs.SetString("selectCommanderSkill", selectCSkill);
     }
 
@@ -156,6 +161,7 @@ public class PlayerPrefsData : MonoBehaviour
 
     public List<string> GetCommanderSkill()
     {
+        haveCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("haveCommaderSkill");
         if (!string.IsNullOrEmpty(commanderSkill))
         {
@@ -172,6 +178,7 @@ public class PlayerPrefsData : MonoBehaviour
     // 선택한 스킬도 불러올지=> 기획
     public List<string> GetSelectedCommanderSkill()
     {
+        selectCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("selectCommanderSkill");
         Debug.Log($"{commanderSkill}");
         Debug.Log($"{commanderSkill.Length}");

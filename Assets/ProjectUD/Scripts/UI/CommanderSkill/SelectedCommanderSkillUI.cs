@@ -6,13 +6,15 @@ using UnityEngine.Localization.Settings;
 
 public class SelectedCommanderSkillUI : MonoBehaviour
 {
-    private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
     [SerializeField] private SelectedCSkillBtnUI[] selectedCSkillBtns;
     [SerializeField] private CommanderSkillUI commanderSkillUI;
+
+    private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
+    private List<string> selectCSkillID = new List<string>();
+
     private int index;
     private bool canAdd = false;
 
-    // [SerializeField]
 
     public void SetCSkillList(CommandSkillData[] datas)
     {
@@ -74,5 +76,20 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 RemoveSkill(i);
             }
         }
+    }
+
+    // 저장 버튼용
+    public void SaveChoiceCommanderSkill()
+    {
+        selectCSkillID.Clear();
+
+        for (int i = 0; i < selectedCSkills.Length; i++)
+        {
+            if (selectedCSkills[i] == null)
+                selectCSkillID.Add(string.Empty);
+            selectCSkillID.Add(selectedCSkills[i].Id);
+        }
+
+        PlayerPrefsData.instance.SetSelectCSkill(selectCSkillID);
     }
 }
