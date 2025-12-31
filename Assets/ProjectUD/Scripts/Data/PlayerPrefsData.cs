@@ -190,7 +190,7 @@ public class PlayerPrefsData : MonoBehaviour
             {
                 if (skills[i] == string.Empty)
                     continue;
-                Debug.Log($"{skills[i]}, Length: { skills[i].Length}");
+                Debug.Log($"{skills[i]}, Length: { skills[i].Length}, { skills[i].Trim().Length} ");
                 selectCommanderSkills.Add(skills[i].Trim());
             }
             Debug.Log($"프랩스에서 GetSelected 한 지휘관 스킬 갯수 : {selectCommanderSkills.Count}");

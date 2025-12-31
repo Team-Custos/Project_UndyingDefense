@@ -7,26 +7,29 @@ using UnityEngine.UI;
 
 public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private CommandSkill commandSkill;
-    public CommandSkillData commandSkillData;
+    private CommandSkill commandSkill;
+    private CommandSkillData commandSkillData;
+    [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Image cooldownImage;
 
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private TextMeshProUGUI commandSkillNameText;
     [SerializeField] private TextMeshProUGUI commandSkillCoolText;
     [SerializeField] private TextMeshProUGUI commandSkillDescriptionText;
+    [SerializeField] private Image skillIcon;
 
     private float coolTime;
     private float cooldownCheck;
+    private int index;
 
     private void Start()
     {
-        coolTime = commandSkillData.CoolTime;
-        cooldownCheck = coolTime;
+        //coolTime = commandSkillData.CoolTime;
+        //cooldownCheck = coolTime;
 
-        commandSkillNameText.text = commandSkillData.Name;
-        commandSkillCoolText.text = "쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
-        commandSkillDescriptionText.text = commandSkillData.Description;
+        //commandSkillNameText.text = commandSkillData.Name;
+        //commandSkillCoolText.text = "쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
+        //commandSkillDescriptionText.text = commandSkillData.Description;
     }
 
     private void Update()
@@ -45,6 +48,30 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             cooldownImage.fillAmount = 1f - (cooldownCheck / coolTime);
             this.tag = "UnInteractiveUi";
         }
+    }
+    
+    public void SetSelectedCSkillDataUI(int i, CommandSkillData data, string name, string desc, string effect)
+    {
+        index = i;
+        commandSkillData = data;
+        skillIcon.sprite = commandSkillData.Icon;
+        commandSkillNameText.text = name;
+        commandSkillDescriptionText.text = desc;
+
+        coolTime = commandSkillData.CoolTime;
+        cooldownCheck = coolTime;
+
+        commandSkillCoolText.text = "쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
+    }
+
+    public void SetCommandSkill(CommandSkill skill)
+    {
+        commandSkill = skill;
+    }
+
+    public void GetClick()
+    {
+        commandSkillManager.GetClickControl(index, commandSkill);
     }
 
     public void OnPointerExit(PointerEventData eventData)

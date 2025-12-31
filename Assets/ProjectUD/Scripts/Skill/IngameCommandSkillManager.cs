@@ -38,12 +38,19 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     private LayerMask targetUnitLayer;
     private bool isSkillActivated = false;
 
-    private ActiveCommandSkill[] skill;
+    //private ActiveCommandSkill[] skill;
+    private ActiveCommandSkill activeSkill;
     private int activatedSkillButtonIdx = 0;
 
     [SerializeField] private Image[] alarmImages;
 
     [SerializeField] private AudioClip[] btnClickSFX;
+
+    private void Start()
+    {
+        LoadCSkillData();
+        
+    }
 
     void Update()
     {
@@ -66,29 +73,25 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             Debug.LogError("CommandSkillNullError");
             return;
         }
-        skill = GetComponentsInChildren<ActiveCommandSkill>();
+        //skill = GetComponentsInChildren<ActiveCommandSkill>();
     }
 
     // 지휘관스킬 로드
-    private void LoadCSkill()
+    private void LoadCSkillData()
     {
         datas = cSkillRepository.GetCommandSkills();
+        Debug.Log($"리소스에서 로드 성공한 스킬 갯수 : {datas.Length}");
 
         List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
         for (int i = 0; i < selectedSkillList.Count; i++)
         {
-            Debug.Log($"{selectedSkillList.Count}");
+            Debug.Log($"프랩스에서 로드 성공한 스킬 갯수 : {selectedSkillList.Count}");
 
             for (int j = 0; j < datas.Length; j++)
             {
-                Debug.Log($"{datas.Length}");
-                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
-                Debug.Log($"프랩스 로드 {selectedSkillList[i]}, Length: {selectedSkillList[i].Length}");
-                Debug.Log($"결과 : {datas[j].Id == selectedSkillList[i]}");
-
                 if (string.Compare(datas[j].Id, selectedSkillList[i]) == 0)
                 {
-                    Debug.Log("일치");
+                    //Debug.Log("일치");
                     currentSelected[i] = datas[j];
                     //currentSelected.Add(datas[j]);
                     if (currentSelected[i] != null)
@@ -98,29 +101,47 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                 }
             }
         }
+
+        SetCSkillDataList();
+        FindCommandSkill();
     }
 
-    public void SetCSkillList()
+    private void SetCSkillDataList()
     {
         for (int i = 0; i < currentSelected.Length; i++)
         {
-            SetCSkill(i);
+            SetCSkillData(i);
         }
     }
 
-    public void SetCSkill(int index)
+    private void SetCSkillData(int index)
     {
         string skillNameId = currentSelected[index].Id + "_name";
         string skillDescId = currentSelected[index].Id + "_desc";
         string skillEffectId = currentSelected[index].Id + "_effect";
 
-        //cSkillBtns[index].SetSelectedCSkillUI(index, currentSelected[index],
-        //    LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
-        //    LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
-        //    LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
+        cSkillBtns[index].SetSelectedCSkillDataUI(index, currentSelected[index],
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
+            LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
+    }
+
+    private void FindCommandSkill()
+    {
+        for (int i = 0; i < currentSelected.Length; i++)
+        {
+            for (int j = 0; j < commandSkillList.Length; j++)
+            {
+                if (currentSelected[i] == commandSkillList[j].Data)
+                {
+                    cSkillBtns[i].SetCommandSkill(commandSkillList[j]);
+
+                }
+            }
+        }
     }
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
@@ -165,18 +186,18 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (skill[activatedSkillButtonIdx].Data.TargetType
+            if (activeSkill.Data.TargetType            //skill[activatedSkillButtonIdx].Data.TargetType
                     == CommandSkill.TargetType.UNIT)
             {
                 if (inputEventManager.IsPointerOnUIElements())
                     return;
-                targetUnitLayer = skill[activatedSkillButtonIdx].AttackTargetLayer;
+                targetUnitLayer = activeSkill.AttackTargetLayer;                  //skill[activatedSkillButtonIdx].AttackTargetLayer;
                 if (Physics.Raycast(ray, out hit, float.MaxValue, targetUnitLayer))
                 {
                     if (hit.collider.GetComponent<Unit>() != null)
                     {
                         selectedTargetUnit = hit.collider.GetComponent<Unit>();
-                        ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+                        ActivateCommandSkill(activeSkill, hit.transform);          //skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
                         inputEventManager.OnESCTarget = ingameManager;
@@ -186,7 +207,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                     }
                 }
             }
-            else if (skill[activatedSkillButtonIdx].Data.TargetType
+            else if (activeSkill.Data.TargetType                           //skill[activatedSkillButtonIdx].Data.TargetType
                 == CommandSkill.TargetType.MOUSEPOSAREA)
             {
                 if (Physics.Raycast(ray, out hit,float.MaxValue,groundLayer))
@@ -195,7 +216,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                         return;
                     if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
                     {
-                        ActivateCommandSkill(skill[activatedSkillButtonIdx], hit.transform);
+                        ActivateCommandSkill(activeSkill, hit.transform);               //skill[activatedSkillButtonIdx], hit.transform);
 
                         inputEventManager.OnClickTarget = SelectedUnitManager;
                         inputEventManager.OnESCTarget = ingameManager;
@@ -243,16 +264,19 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         }
     }
 
-    public void GetClickControl(int idx)
+    public void GetClickControl(int idx, CommandSkill commandSkill)
     {
-        if (!skill[idx].IsCoolDown)
+        activeSkill = commandSkill as ActiveCommandSkill;
+        Debug.Log($"액티브 스킬 셋팅 완료 {activeSkill.name}");
+
+        if (activeSkill.IsCoolDown)                                 //!skill[idx].IsCoolDown)
         {
-            Debug.Log(skill[idx].name + "이 쿨타임 중...)");
+            Debug.Log(activeSkill.name + "이 쿨타임 중...");         //skill[idx].name + "이 쿨타임 중...)");
             SoundManager.Instance.PlayUnableUIClickSFX();
             return;
         }
 
-        CommandSkillData skillData = skill[idx].Data;
+        CommandSkillData skillData = activeSkill.Data;              //skill[idx]
 
         activatedSkillButtonIdx = idx;
 
@@ -328,7 +352,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             selectedUI1.gameObject.SetActive(false);
             isSkillActivated = false;
             circle.SetActive(false);
-            ActivateCommandSkill(skill[idx], BurningOilPos);
+            ActivateCommandSkill(activeSkill, BurningOilPos);                  //skill[idx], BurningOilPos);
             SoundManager.Instance.PlayUIClickSFX();
         }
     }
