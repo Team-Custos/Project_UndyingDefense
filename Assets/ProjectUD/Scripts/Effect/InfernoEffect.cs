@@ -19,31 +19,13 @@ public class InfernoEffect : TickEffect
 
     private Collider[] hits = new Collider[10];
 
-    private void Start()
-    {
-        //int count = Physics.OverlapSphereNonAlloc(transform.position, 5f, hits, targetLayerMask);
-
-        //for (int i = 0; i < count; i++)
-        //{
-        //    if (hits[i].TryGetComponent(out Unit unit))
-        //    {
-        //        // 발동 유닛 예외처리 필요
-        //        if(caster != null && unit == caster)
-        //            continue;
-
-        //        //if(Random.value <= 0.5f) // 50% 확률로 작열 효과 적용
-        //        //{
-        //        //    unit.AddEffect(igniteEffect);
-        //        //}
-        //        unit.AddEffect(igniteEffect);
-        //    }
-        //}
-    }
 
     public override void Activate()
     {
         vfx.SetActive(true);
         SoundManager.Instance.PlaySFX(infernoSound, target.transform.position);
+        effectImage = target.ApplyEffectImage(iconSprite, false, 0);
+
 
         int count = Physics.OverlapSphereNonAlloc(transform.position, 5f, hits, targetLayerMask);
 
@@ -52,7 +34,7 @@ public class InfernoEffect : TickEffect
             if (hits[i].TryGetComponent(out Unit unit))
             {
                 // 발동 유닛 예외처리 필요
-                if (caster != null && unit == caster)
+                if (unit == target)
                     continue;
 
                 if (Random.value <= 0.5f) // 50% 확률로 작열 효과 적용
@@ -93,6 +75,12 @@ public class InfernoEffect : TickEffect
     public override void OnRemove()
     {
         vfx.SetActive(false);
+
+        if(effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
     }
 
     protected override void OnTick()

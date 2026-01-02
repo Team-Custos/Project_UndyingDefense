@@ -7,6 +7,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
@@ -129,16 +130,19 @@ public class UpgradeMenuUI : MonoBehaviour
 
         if (upgradeIndex == index)
         {
+            Select(index);
             upgradeIndex = -1;
             infoPanel.SetActive(false);
-            selectedUI.gameObject.SetActive(false);
+            //selectedUI.gameObject.SetActive(false);
             upgradePerformBtn.interactable = false;
+
 
             SoundManager.Instance.PlayUIClickSFX();
 
         }
         else
         {
+            Select(index);
             upgradeIndex = index;
 
             if (cost <= inGameManager.inGameGold)
@@ -229,7 +233,7 @@ public class UpgradeMenuUI : MonoBehaviour
                 infoSSkillDescript.text = secondUpgradeUnit.SpecialSkill.Data.Description;
             }
 
-            Select(index);
+            
 
             SoundManager.Instance.PlayUIClickSFX();
 
@@ -243,7 +247,7 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (upgradeIndex == -1)
             return;
-        selectedUI.gameObject.SetActive(false);
+        //selectedUI.gameObject.SetActive(false);
         selectedUnitManager.UpgradeSelectedUnit(upgradeIndex);
         SoundManager.Instance.PlayUIClickSFX();
     }
@@ -460,22 +464,45 @@ public class UpgradeMenuUI : MonoBehaviour
 
     public void HideUpgradeUI()
     {
-        selectedUI.gameObject.SetActive(false);
-
-        gameObject.SetActive(false);
+        //selectedUI.gameObject.SetActive(false);
+        
         if(selectedUnitManager.SelectedUnit is AllyUnit)
             selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
 
+        for(int i = 0; i < frameImage.Length; i++)
+        {
+            frameImage[i].sprite = frameIcon;
+        }
 
+        upgradePerformBtn.interactable = false;
+
+        gameObject.SetActive(false);
     }
 
 
     public void Select(int index)
     {
-        if (selectedIndex != -1 && selectedIndex != index)
+        if (upgradeIndex != index)
         {
             Debug.Log(index);
-            frameImage[index].sprite = frameIcon;
+            
+            for(int i = 0; i < frameImage.Length; i++)
+            {
+                if (i == index)
+                    frameImage[i].sprite = selectIcon;
+                else
+                    frameImage[i].sprite = frameIcon;
+            }
+
+        }
+        else
+        {
+            for (int i = 0; i < frameImage.Length; i++)
+            {
+                frameImage[i].sprite = frameIcon;
+            }
+            //selectedIndex = -1;
+            //selectedUI.gameObject.SetActive(false);
         }
 
         //selectedUI.gameObject.SetActive(true);

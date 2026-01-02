@@ -7,11 +7,19 @@ public class StunEffect : DurationEffect
     public override void Activate()
     {
         target.GetStun();
+
+        effectImage = target.ApplyEffectImage(iconSprite, false, 0);
     }
 
     public override void OnRemove()
     {
         target.RemoveStun();
+
+        if(effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
     }
 
     public override bool IsSameType(GameObject effectPrefab)

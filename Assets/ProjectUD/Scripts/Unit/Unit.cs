@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
+using AYellowpaper.SerializedCollections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -90,7 +91,8 @@ public abstract class Unit : MonoBehaviour
 
     protected bool isDead;
 
-    private Dictionary<string, AnimationClip[]> stateAnimDic = new Dictionary<string, AnimationClip[]>();
+    [SerializedDictionary("State", "Animation Clips")]
+    public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
 
     public Transform EffectParent => effectParent;
 
@@ -766,11 +768,11 @@ public abstract class Unit : MonoBehaviour
         return dst <= range;
     }
 
-    protected SkillBase GetAvailableSkill()
+    protected SkillBase GetAvailableSkill()     // 쿨타임과 필요 멘탈치를 충족해야 스킬 반환
     {
-        if (specialSkill != null && specialSkill.IsCoolDown )//&& !generalSkill.IsCoolDown)
+        if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.NeedMental <= mental)
             return specialSkill;
-        else if (generalSkill != null && generalSkill.IsCoolDown)
+        else if (generalSkill != null && generalSkill.IsCoolDown && generalSkill.Data.NeedMental <= mental)
             return generalSkill;
         else
             return null;
@@ -1055,7 +1057,8 @@ public abstract class Unit : MonoBehaviour
         navAgent.enabled = false;
         collider.enabled = false;
 
-        modelAnimator.SetTrigger("Die");
+        PlayAnimation("Die");
+        //modelAnimator.SetTrigger("Die");
 
 
         if (selectedUnitUI != null)
@@ -1201,7 +1204,7 @@ public abstract class Unit : MonoBehaviour
         UpdateState();
     }
 
-    private void RemoveAllEffect()
+    protected void RemoveAllEffect()
     {
         for (int i = effectList.Count - 1; i >= 0; i--)
         {
@@ -1221,6 +1224,22 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
         VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
+    }
+
+    public void AddVFX(GameObject vfx, Vector3 dir) // hit & Crit VFX (오브젝트풀링 사용)
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return;
+
+        VFXobj.transform.SetParent(VFXParent);
+        VFXobj.transform.forward = dir;
+        VFXobj.transform.localPosition = Vector3.zero;
+        VFXobj.SetActive(true);
+
+
+        //VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
+        //VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
     }
 
     public void AddVFX(ParticleSystem VFX)

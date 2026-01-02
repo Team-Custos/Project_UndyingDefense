@@ -4,6 +4,12 @@ using UnityEngine.UIElements.Experimental;
 
 public abstract class DurationEffect : MonoBehaviour
 {
+    private enum Type   // 상태를 버프, 디버프로 구분  
+    {
+        BUFF,
+        DEBUFF
+    }
+
     [Header("■ Data")]
     [SerializeField] protected string id;
     [SerializeField] protected string effectName;
@@ -19,6 +25,9 @@ public abstract class DurationEffect : MonoBehaviour
     protected Unit target;
     protected ObjectPoolWithList<DurationEffect> pool;
     protected EffectImage effectImage;
+    [SerializeField] private Type type;
+    
+
 
     public string Id => id;
     public string Name => effectName;

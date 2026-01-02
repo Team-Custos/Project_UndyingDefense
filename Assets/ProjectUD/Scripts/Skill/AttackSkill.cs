@@ -3,13 +3,13 @@ using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine.UIElements;
 
 public class AttackSkill : SkillBase
 {
     [Header("■ Data")]
     [SerializeField] private AttackSkillData data;
-    [SerializeField] private GameObject skillVfx;
-    private VFXObjectPool vfxPool;
 
     // 범위를 가진 스킬
     protected Collider[] targets;
@@ -154,8 +154,6 @@ public class AttackSkill : SkillBase
 
             Vector3 dir = target.transform.position - unit.transform.position;
             dir.y = 0f;
-            if (dir.sqrMagnitude < 0.0001f)
-                continue;
 
             float ang = Vector3.Angle(forward, dir);
 
@@ -166,37 +164,36 @@ public class AttackSkill : SkillBase
             }
         }
 
-        if (skillVfx != null)
-        {
-            float halfAngle = angle * 0.5f;
+        //if (skillVfx != null)
+        //{
 
-            List<Vector3> angles = new List<Vector3>();
+        //    List<Vector3> angles = new List<Vector3>();
 
-            // 중심 방향(정면)
-            Vector3 centerDir = unit.transform.forward;
-            angles.Add(centerDir);
+        //    // 중심 방향(정면)
+        //    Vector3 centerDir = unit.transform.forward;
+        //    angles.Add(centerDir);
 
-            // 좌측 끝 방향
-            Vector3 leftDir = Quaternion.Euler(0, -halfAngle, 0) * centerDir;
-            angles.Add(leftDir);
+        //    // 좌측 끝 방향
+        //    Vector3 leftDir = Quaternion.Euler(0, -half, 0) * centerDir;
+        //    angles.Add(leftDir);
 
-            // 우측 끝 방향
-            Vector3 rightDir = Quaternion.Euler(0, halfAngle, 0) * centerDir;
-            angles.Add(rightDir);
+        //    // 우측 끝 방향
+        //    Vector3 rightDir = Quaternion.Euler(0, half, 0) * centerDir;
+        //    angles.Add(rightDir);
 
-            for (int i = 0; i < 3; i++)
-            {
-                //VFX vfx = obj.GetComponent<VFX>();
-                vfxPool = unit.SkillVfxPool;
+        //    for (int i = 0; i < angles.Count; i++)
+        //    {
+        //        //VFX vfx = obj.GetComponent<VFX>();
+        //        vfxPool = unit.SkillVfxPool;
 
-                GameObject obj = vfxPool.GetVFX(skillVfx, unit);
-                obj.transform.position = unit.transform.position;
-                obj.SetActive(true);
+        //        GameObject obj = vfxPool.GetVFX(skillVfx, unit);
+        //        obj.transform.position = unit.transform.position;
+        //        obj.SetActive(true);
 
-                VFX vfx = obj.GetComponent<VFX>();
-                vfx.SetDirection(angles[i]);
-            }
-        }
+        //        VFX vfx = obj.GetComponent<VFX>();
+        //        vfx.SetDirection(angles[i]);
+        //    }
+        //}
     }
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius) //원형 공격
@@ -210,14 +207,14 @@ public class AttackSkill : SkillBase
             {
                 Attack(unit, target);
 
-                if(skillVfx != null)
-                {
-                    vfxPool = unit.SkillVfxPool;
+                //if(skillVfx != null)
+                //{
+                //    vfxPool = unit.SkillVfxPool;
 
-                    GameObject obj = vfxPool.GetVFX(skillVfx, unit);
-                    obj.transform.position = target.transform.position;
-                    obj.SetActive(true);
-                }
+                //    GameObject obj = vfxPool.GetVFX(skillVfx, unit);
+                //    obj.transform.position = target.transform.position;
+                //    obj.SetActive(true);
+                //}
             }
         }
     }
@@ -238,19 +235,39 @@ public class AttackSkill : SkillBase
             }
         }
 
-        if(skillVfx != null)
+    }
+
+    // 유닛이라보는 방향으로 사각형 공격
+    public void AreaAttack(Unit unit, float AreaX, float AreaZ)
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+
+        // 사각형 중심 계산, 유닛이 바라보는 방향으로
+        Vector3 center = unit.transform.position + unit.transform.forward * (AreaZ * 0.5f); 
+
+        Vector3 half = new Vector3(AreaX * 0.5f, 0.5f, AreaZ * 0.5f);
+
+        int targetCount = Physics.OverlapBoxNonAlloc(center, half, targets, unit.transform.rotation, unit.EnemyLayer);
+        Debug.Log($"타겟 수 : {targetCount}");
+
+        for (int i = 0; i < targetCount; i++)
         {
-            vfxPool = unit.SkillVfxPool;
-
-            GameObject obj = vfxPool.GetVFX(skillVfx, unit);
-            obj.transform.position = unit.transform.position;
-            Debug.Log(obj.transform.position);
-            obj.SetActive(true);
-
-            Vector3 dircetion = unit.transform.forward;
-            VFX vfx = obj.GetComponent<VFX>();
-            vfx.SetDirection(dircetion);
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+            }
         }
+
+        gizmoUnit = unit;
+        gizmoX = AreaX;
+        gizmoZ = AreaZ;
+    }
+
+    public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
+    {
+        Vector3 dir = (target.transform.position - transform.position).normalized;
+        unit.AddVFX(vfxPrefab, dir);
     }
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
@@ -502,4 +519,26 @@ public class AttackSkill : SkillBase
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
+
+
+
+    // 테스트용 Gizmo 변수
+    private Unit gizmoUnit;
+    private float gizmoX;
+    private float gizmoZ;
+
+    void OnDrawGizmosSelected()
+    {
+        if (gizmoUnit == null)
+            return;
+
+        Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
+
+        Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
+
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
+
+        Gizmos.DrawWireCube(Vector3.zero, size);
+    }
 }

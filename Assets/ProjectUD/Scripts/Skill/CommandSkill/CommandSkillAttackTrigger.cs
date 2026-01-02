@@ -266,10 +266,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             (data.AttackData.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
-    private void OnDestroy()
-    {
-        SoundManager.Instance.StopLoopSFX(data.LoopSFX);
-    }
+    
 
 
 }

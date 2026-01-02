@@ -30,6 +30,7 @@ public class ShockEffect : StackEffect
     public override void Activate()
     {
         base.Activate();
+        effectImage = target.ApplyEffectImage(iconSprite, true, stack);
     }
 
     protected override void OnMaxStack()
@@ -43,6 +44,21 @@ public class ShockEffect : StackEffect
         target.AddMoveSpeedMult(-moveSpeedPercent * stack);
         target.AddAttackSpeedMult(-attackSpeedPercent * stack);
 
+        if (effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
+    }
+
+    public override void Reapply(GameObject effectPrefab)
+    {
+        base.Reapply(effectPrefab);
+
+        if (effectImage != null)
+        {
+            target.ReapplyEffectImage(effectImage, true, stack);
+        }
     }
 
     public override bool IsSameType(GameObject effectPrefab)

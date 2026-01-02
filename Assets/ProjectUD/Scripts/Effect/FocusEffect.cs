@@ -8,10 +8,18 @@ public class FocusEffect : DurationEffect
     public override void Activate()
     {
         target.AddMental(mental);
+
+        effectImage = target.ApplyEffectImage(iconSprite, false, 0);
     }
 
     public override void OnRemove()
     {
         target.AddMental(-mental);
+
+        if (effectImage != null)
+        {
+            target.RemoveEffectImage(effectImage);
+            effectImage = null;
+        }
     }
 }

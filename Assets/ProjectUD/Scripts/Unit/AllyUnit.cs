@@ -30,12 +30,18 @@ public class AllyUnit : Unit
         GENERALSKILL,
         SPECIALSKILL,
         STUN,
-        DEAD
+        DEAD,
     }
 
-    private Tile tile;
+    private enum IdleState
+    {
+        DEFAULT,    // 기본 대기 모드
+        COMBAT      // 전투 대기 모드
+    }
+
     private AllyUnitData data;
     private ObjectPoolWithList<AllyUnit> pool;
+    private WaveManager waveManager;
 
     private Mode mode;
 
@@ -45,7 +51,7 @@ public class AllyUnit : Unit
     public Mode ModeType => mode;
 
     private State state;
-
+    private IdleState idleState;
     private FreeModeState freeModeState;
 
     public bool IsChange => isChange;
@@ -102,6 +108,9 @@ public class AllyUnit : Unit
         collider.enabled = true;
         state = State.IDLE;
 
+        SetIdleState(waveManager.IsWaveEnd);
+
+
         navObstacle.enabled = true;
         navAgent.enabled = false;
 
@@ -124,11 +133,12 @@ public class AllyUnit : Unit
     //    isDead = false;
     //}
 
-    public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner)
+    public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner, WaveManager waveManager)
     {
         this.data = data;
         this.pool = pool;
         this.spawner = spawner;
+        this.waveManager = waveManager;
     }
 
 
@@ -183,6 +193,7 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
+                                Debug.Log($"상태 시간 : {stateDurationCheck}, 스킬 애니메이션 시간 : {skill.AnimationStateTime}");
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -300,8 +311,10 @@ public class AllyUnit : Unit
                             isSiegeActivated = false;
                         }
                     }
-                    //OnOffSiefeEffect(true);
-                    //chagneEffet.SetActive(false);
+
+                    if (idleState == IdleState.DEFAULT)
+                        break;
+                    
 
                     if (interval <= 0)
                     {
@@ -349,10 +362,18 @@ public class AllyUnit : Unit
 
                                     }
                                     break;
+
                                 case SkillBase.TargetType.SELF:
                                     {
                                         ActivateSkill(skill, this);
                                         //interval = intervalCheck;
+                                    }
+                                    break;
+
+                                case SkillBase.TargetType.ALLY:
+                                    {
+                                        Debug.Log(1111);
+                                        ActivateSkill(skill, null);
                                     }
                                     break;
                             }
@@ -389,6 +410,9 @@ public class AllyUnit : Unit
                             break;
 
                         case FreeModeState.COMBAT:
+
+                            if (idleState == IdleState.DEFAULT)
+                                break;
 
                             if (targetUnit != null)
                             {
@@ -467,6 +491,14 @@ public class AllyUnit : Unit
 
         }
 
+    }
+
+   public void SetIdleState(bool isWaveEnd)
+    {
+        if(isWaveEnd)
+            idleState = IdleState.DEFAULT;
+        else
+            idleState = IdleState.COMBAT;
     }
 
     public void ChangeMode()
@@ -642,6 +674,8 @@ public class AllyUnit : Unit
             }
 
             Debug.Log(upgradedUnit.mode);
+
+            RemoveAllEffect();
 
             if (isSelected)
             {
@@ -852,14 +886,14 @@ public class AllyUnit : Unit
         {
             state = State.GENERALSKILL;
 
-            base.PlayAnimation("GeneralSkill");
+            PlayAnimation("GeneralSkill");
             //modelAnimator.SetTrigger("GeneralSkill");
         }
         else if (skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
 
-            base.PlayAnimation("SpecialSkill");
+            PlayAnimation("SpecialSkill");
             //modelAnimator.SetTrigger("SpecialSkill");
         }
 

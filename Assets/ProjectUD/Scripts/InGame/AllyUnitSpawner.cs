@@ -25,6 +25,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private VFXObjectPool skillVFXPool;
     [SerializeField] private EffectImagePool effectImagePool;
     [SerializeField] private DollyCamera dollyCamera;
+    [SerializeField] private WaveManager waveManager;
 
     [SerializeField] private Image[] alarmImages;
 
@@ -103,7 +104,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         GameObject obj = Instantiate(data.Prefab);
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
-        unit.Initialize(data, unitPools[index], this);
+        unit.Initialize(data, unitPools[index], this, waveManager);
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
         unit.SetUnitStats(unitStats);
 
@@ -169,14 +170,15 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             //return upgradeUnit;
         }
 
-        UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile, effectImagePool);
+        UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile, effectImagePool, waveManager);
         return upgradeUnit;
     }
 
-    private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, Transform transform, Tile tile, EffectImagePool poolEffectImage)
+    private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, 
+        Transform transform, Tile tile, EffectImagePool poolEffectImage, WaveManager waveManager)
     {
+        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this, waveManager);
         upgradeUnit.Initialize();
-        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this);
         UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
         upgradeUnit.SetUnitStats(unitStats);
 
@@ -419,6 +421,27 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             {
                 if (unit != null)
                     unit.StopUnit();
+            }
+        }
+    }
+
+    public void SetIdleState(bool isWaveEnd)
+    {
+        foreach (var pool in unitPools)
+        {
+            foreach (var unit in pool.List)
+            {
+                if (unit != null)
+                    unit.SetIdleState(isWaveEnd);
+            }
+        }
+
+        foreach (var kvp in upgradeUnitPoolsDic)
+        {
+            foreach (var unit in kvp.Value.List)
+            {
+                if (unit != null)
+                    unit.SetIdleState(isWaveEnd);
             }
         }
     }

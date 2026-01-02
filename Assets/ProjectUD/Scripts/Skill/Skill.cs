@@ -96,4 +96,5 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
             SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
         }
     }
+
 }

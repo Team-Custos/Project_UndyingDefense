@@ -24,6 +24,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private WaveData[] waveDatas; // 웨이브 데이터
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private WaveDataLoader waveDataLoader;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Wave Options")] // 웨이브에 사용되는 변수들
     [SerializeField] private bool isInfiniteMode = false;
@@ -68,6 +69,7 @@ public class WaveManager : MonoBehaviour
                         //--Localize
                         //ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
                         ShowWaveStart("NTF_battleWaveStart", curWave);
+                        allyUnitSpawner.SetIdleState(false);
                     }
                     else
                     {
@@ -75,6 +77,7 @@ public class WaveManager : MonoBehaviour
                         ingameScreenUI.SetWaveNumber(infiniteWaveCount, 0, true);
                         //ingameScreenUI.ShowNotice(infiniteWaveCount + "차 침공 시작");
                         ShowWaveStart("NTF_battleWaveStart", infiniteWaveCount);
+                        allyUnitSpawner.SetIdleState(false);
                     }
                     
                     SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
@@ -131,10 +134,13 @@ public class WaveManager : MonoBehaviour
                 ingameScreenUI.SetspawnBtnPriceTextColor();
                 upgradeMenuUI.UpdateUpgradeCostTxt();
 
+
                 curWave = 0;
                 isWaveEnd = true;
                 isFortressAttacked = false;
                 infiniteWaveCount++;
+
+                allyUnitSpawner.SetIdleState(isWaveEnd);
             }
             
         }
@@ -153,11 +159,14 @@ public class WaveManager : MonoBehaviour
             ingameScreenUI.SetspawnBtnPriceTextColor();
             upgradeMenuUI.UpdateUpgradeCostTxt();
 
+
             isWaveEnd = true;
             isFortressAttacked = false;
 
             if (isInfiniteMode)
                 infiniteWaveCount++;
+
+            allyUnitSpawner.SetIdleState(isWaveEnd);
         }
     }
 

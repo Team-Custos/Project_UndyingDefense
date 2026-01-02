@@ -84,7 +84,10 @@ public class EffectImage : MonoBehaviour
                 effectIconImage.color = color;
             }
             else
+            {
+                target = null;
                 gameObject.SetActive(false);
+            }
         }
         
 
@@ -105,10 +108,6 @@ public class EffectImage : MonoBehaviour
         this.posIndex = posIndex;
     }
 
-    public void ResetTarget()
-    {
-        target = null;
-    }
 
     public void Disappear()
     {

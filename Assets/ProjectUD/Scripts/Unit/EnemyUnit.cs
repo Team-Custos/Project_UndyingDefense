@@ -46,7 +46,6 @@ public class EnemyUnit : Unit
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
     private EnemyUnitSpawner enemySpawner;
-    private WaveManager waveManager;
 
     private Mode mode;
     private State state;
@@ -156,10 +155,6 @@ public class EnemyUnit : Unit
         fortressAttackCool = GeneralSkill.Data.CoolTime;
     }
 
-    public void SetWaveManager(WaveManager waveManager)
-    {
-        this.waveManager = waveManager;
-    }
 
 
     protected override void Update()
@@ -364,6 +359,7 @@ public class EnemyUnit : Unit
                 {
                     if (targetUnit.HpPercent > 0f || targetUnit.gameObject.activeInHierarchy)
                     {
+
                         if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
                         {
                             if (navAgent.enabled && !navAgent.isStopped)
@@ -460,12 +456,14 @@ public class EnemyUnit : Unit
         if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
-            modelAnimator.SetTrigger("GeneralSkill");
+            PlayAnimation("GeneralSkill");
+            //modelAnimator.SetTrigger("GeneralSkill");
         }
         else if(skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
-            modelAnimator.SetTrigger("SpecialSkill");
+            PlayAnimation("SpecialSkill");
+            //modelAnimator.SetTrigger("SpecialSkill");
         }
 
         if (target != this)
@@ -479,7 +477,8 @@ public class EnemyUnit : Unit
     {
 
         state = State.FORTRESSSKILL;
-        modelAnimator.SetTrigger("GeneralSkill");
+        PlayAnimation("GeneralSkill");
+        //modelAnimator.SetTrigger("GeneralSkill");
 
         transform.LookAt(fortress.transform.position);
 
@@ -629,7 +628,7 @@ public class EnemyUnit : Unit
         for (int i = 0; i < count; i++)
         {
             Unit target = collidersInRange[i].GetComponent<Unit>();
-            if (target.IsDead)
+            if (target.IsDead || !target.gameObject.activeInHierarchy)
                 continue;
 
             Vector3 pos = target.transform.position;

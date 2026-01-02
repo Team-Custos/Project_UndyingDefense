@@ -9,24 +9,6 @@ public class TenacityEffect : DurationEffect
     {
         target.ChangeInterval(intervalPercent);
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
-
-        //float pos = target.GetEffectImagePosIndex();
-        //if (pos == -2)
-        //    return;
-
-        //effectImagePool = target.EffectImagePool;
-        //GameObject obj = effectImagePool.GetEffectImage();
-
-        //effectImageObj = obj;
-        //effectImage = obj.GetComponent<EffectImage>();
-        //effectImage.SetIcon(iconSprite);
-        //effectImage.Initialize(target);
-
-
-        //effectImage.SetXOffset(pos);
-        //effectImage.gameObject.SetActive(true);
-
-        //target.effectImageList.Add(effectImage);
     }
 
     public override void OnRemove()
