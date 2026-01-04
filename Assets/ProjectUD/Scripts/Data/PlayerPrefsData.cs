@@ -49,7 +49,7 @@ public class PlayerPrefsData : MonoBehaviour
         }
     }
 
-    // 초기 지휘관 스킬 저장
+    // 초기 지휘관 스킬 저장 ( 기본 해금 & 선택 )
     public void LoadCSkillData(string st)
     {
         if (sb.Length > 0)
@@ -67,6 +67,7 @@ public class PlayerPrefsData : MonoBehaviour
             // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
         }
 
+        PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
         PlayerPrefs.SetString("selectCommanderSkill", sb.ToString());
         PlayerPrefs.SetInt("SetDefaultCSkill", 1);
     }
@@ -123,7 +124,7 @@ public class PlayerPrefsData : MonoBehaviour
         PlayerPrefs.SetString("haveCommaderSkill", haveCSkill);
     }
 
-    public void SetSelectCSkill(List<string> selectCSkillList)  // ?? -> 언제저장 물어볼것
+    public void SetSelectCSkill(List<string> selectCSkillList)  
     {
         //selectCommanderSkills += $"{id}\n";
         //selectCommanderSkills.Add(id);
@@ -159,7 +160,7 @@ public class PlayerPrefsData : MonoBehaviour
         return characterArchive;
     }
 
-    public List<string> GetCommanderSkill()
+    public List<string> GetHaveCommanderSkill()
     {
         haveCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("haveCommaderSkill");
@@ -168,7 +169,7 @@ public class PlayerPrefsData : MonoBehaviour
             string[] skills = commanderSkill.Split("\n");
             for(int i = 0; i < skills.Length; i++)
             {
-                haveCommanderSkills.Add(skills[i]);
+                haveCommanderSkills.Add(skills[i].Trim());
             }
         }
 

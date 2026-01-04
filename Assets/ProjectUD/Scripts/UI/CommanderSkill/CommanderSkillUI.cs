@@ -14,7 +14,7 @@ public class CommanderSkillUI : MonoBehaviour
 
     private CommandSkillData[] datas = new CommandSkillData[] { };
     private CommandSkillData[] currentSelected = new CommandSkillData[3];
-    //private List<CommandSkillData> currentSelected = new List<CommandSkillData>();
+    private List<CommandSkillData> canUse = new List<CommandSkillData>();
     private int skillCount = 0;
     private int pageNum = 1;
 
@@ -50,6 +50,36 @@ public class CommanderSkillUI : MonoBehaviour
         selectedSkillUI.SetCSkillList(currentSelected);
         Debug.Log($"프랩스에서 가져온 스킬Id : {selectedSkillList[0]}, {selectedSkillList[1]}, {selectedSkillList[2]}");
         Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {currentSelected[0].Id}, {currentSelected[1].Id}, {currentSelected[2].Id}");
+
+
+    }
+
+    private void LoadCanUseSkill()
+    {
+        Debug.Log($"리소스에서 로드한 지휘관 스킬Id : {datas[0].Id}, {datas[1].Id}, {datas[2].Id}");
+
+        List<string> casUseCSkillList = PlayerPrefsData.instance.GetHaveCommanderSkill();
+        for (int i = 0; i < casUseCSkillList.Count; i++)
+        {
+            Debug.Log($"{casUseCSkillList.Count}");
+
+            for (int j = 0; j < datas.Length; j++)
+            {
+                Debug.Log($"{datas.Length}");
+                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
+                Debug.Log($"프랩스 로드 {casUseCSkillList[i]}, Length: {casUseCSkillList[i].Length}");
+                Debug.Log($"결과 : {datas[j].Id == casUseCSkillList[i]}");
+
+                if (string.Compare(datas[j].Id, casUseCSkillList[i]) == 0)
+                {
+                    Debug.Log("일치");
+                    canUse.Add(datas[j]);
+                }
+            }
+        }
+        //selectedSkillUI.SetCSkillList(currentSelected);
+        Debug.Log($"프랩스에서 가져온 스킬Id : {casUseCSkillList[0]}, {casUseCSkillList[1]}, {casUseCSkillList[2]}");
+        Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {canUse[0].Id}, {canUse[1].Id}, {canUse[2].Id}");
 
 
     }
@@ -105,9 +135,9 @@ public class CommanderSkillUI : MonoBehaviour
 
     }
 
-    public void SetCSkillBtn(int i, Sprite image, string name, string desc, string effect)
+    public void SetCSkillBtn(int i, bool canUse, Sprite image, string name, string desc, string effect)
     {
-        cSkillBtnArray[i].SetBtn(i, image, name, desc, effect);
+        cSkillBtnArray[i].SetBtn(i, canUse, image, name, desc, effect);
         cSkillBtnArray[i].gameObject.SetActive(true);
 
         // To do: 해금여부에 따른 잠금이미지 & 업적 비활성화
@@ -117,10 +147,14 @@ public class CommanderSkillUI : MonoBehaviour
     {
         int toShow = skillCount - ((pageNum - 1) * 10);
         int temp = Mathf.Min(toShow, 10);
+        bool canUseSkill = false;
 
         for (int i = 0; i < temp; i++)
         {
             CommandSkillData cData = datas[((pageNum - 1) * 10) + i];     // 보여줘야할 데이터 순번
+            
+            // 해금된 스킬인지 확인
+            canUseSkill = canUse.Contains(cData) ? true : false;
 
             // 선택된 스킬인지 확인
             if (currentSelected.Contains(cData))
@@ -130,7 +164,7 @@ public class CommanderSkillUI : MonoBehaviour
             string skillDescId = cData.Id + "_desc";
             string skillEffectId = cData.Id + "_effect";
 
-            SetCSkillBtn(i, cData.Icon,
+            SetCSkillBtn(i, canUseSkill, cData.Icon,
                 LocalizationSettings.StringDatabase.
                 GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
                 LocalizationSettings.StringDatabase.
@@ -160,6 +194,7 @@ public class CommanderSkillUI : MonoBehaviour
     public void ShowCommandSkillUI()   // 로비 버튼용
     {
         SetPage();
+        LoadCanUseSkill();
         LoadSelectedSkill();
         ShowCommandSkill();
         gameObject.SetActive(true );

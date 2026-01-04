@@ -17,12 +17,19 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     [SerializeField] private DescriptionPanel descriptionPanel;
 
+    [SerializeField] private Image lockIcon;
+    [SerializeField] private Image lockPanel;
+    [SerializeField] private TextMeshProUGUI helpDesc;
+    [SerializeField] private Image panelImage;
+    [SerializeField] private Button skillButton;
+
     private int index;
     private string sName;
     private string sDescription;
     private string sEffect;
 
     private bool isSelected = false;
+    private bool isActive = false;
 
     // -- 더블 클릭 메서드--
     /*
@@ -59,9 +66,19 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         return isSelected;
     }
 
-    public void SetBtn(int i, Sprite sprite, string name, string desc, string effect)
+    private void SetActiveSkillBtn(bool b)
+    {
+        panelImage.color = b ? Color.white : new Color(1, 1, 1, 0);
+        skillButton.interactable = b;
+        lockIcon.gameObject.SetActive(!b);
+        lockPanel.gameObject.SetActive(!b);
+        helpDesc.gameObject.SetActive(!b);
+    }
+
+    public void SetBtn(int i, bool canUse, Sprite sprite, string name, string desc, string effect)
     {
         index = i;
+        SetActiveSkillBtn(canUse);
         icon.sprite = sprite;
         skillName.text = name;  
         sName = name;
