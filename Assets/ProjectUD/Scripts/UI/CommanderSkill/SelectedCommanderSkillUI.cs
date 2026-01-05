@@ -82,6 +82,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
     public void SaveChoiceCommanderSkill()
     {
         selectCSkillID.Clear();
+        //Debug.Log(selectedCSkills);
 
         for (int i = 0; i < selectedCSkills.Length; i++)
         {
