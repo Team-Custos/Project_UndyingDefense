@@ -9,7 +9,7 @@ public class SkillData : ScriptableObject
     [SerializeField, TextArea] private string description;
     [SerializeField] private float coolTime;
     [SerializeField] private TargetType targetType;
-    [SerializeField] private int needMental = 0;    // 스킬 사용에 필요한 정신력
+    [SerializeField] private int activeMental = 0;    // 스킬 사용에 필요한 정신력
     //[SerializeField] private AudioClip[] startSFX;
     //[SerializeField] private ParticleSystem startVFX;
     [SerializeField] private AudioClip[] attackSFX;
@@ -23,5 +23,5 @@ public class SkillData : ScriptableObject
     //public ParticleSystem StartVFX => startVFX;
     public Sprite Icon => icon;
     public AudioClip[] AttackSFX => attackSFX;
-    public int NeedMental => needMental;
+    public int ActiveMental => activeMental;
 }

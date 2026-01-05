@@ -193,7 +193,6 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
-                                Debug.Log($"상태 시간 : {stateDurationCheck}, 스킬 애니메이션 시간 : {skill.AnimationStateTime}");
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }
@@ -348,7 +347,7 @@ public class AllyUnit : Unit
                                             {
                                                 targetUnit = null;
                                                 // hasTargetPos = false;
-                                            }
+                                            }   
 
 
                                         }

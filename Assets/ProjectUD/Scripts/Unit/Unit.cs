@@ -770,9 +770,9 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()     // 쿨타임과 필요 멘탈치를 충족해야 스킬 반환
     {
-        if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.NeedMental <= mental)
+        if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.ActiveMental <= mental)
             return specialSkill;
-        else if (generalSkill != null && generalSkill.IsCoolDown && generalSkill.Data.NeedMental <= mental)
+        else if (generalSkill != null && generalSkill.IsCoolDown && generalSkill.Data.ActiveMental <= mental)
             return generalSkill;
         else
             return null;
