@@ -92,5 +92,6 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         }
 
         PlayerPrefsData.instance.SetSelectCSkill(selectCSkillID);
+
     }
 }

@@ -131,7 +131,11 @@ public class PlayerPrefsData : MonoBehaviour
         // 지휘관 스킬 선택하는 부분 보고 수정 
 
         selectCommanderSkills.Clear();
-        selectCommanderSkills = selectCSkillList;
+        // selectCommanderSkills = selectCSkillList;
+        for(int i = 0; i < selectCSkillList.Count; i++)
+        {
+            selectCommanderSkills.Add(selectCSkillList[i]);
+        }
 
         string selectCSkill = string.Empty;
 
