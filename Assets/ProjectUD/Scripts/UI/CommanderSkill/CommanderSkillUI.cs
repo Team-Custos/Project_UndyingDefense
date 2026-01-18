@@ -77,9 +77,8 @@ public class CommanderSkillUI : MonoBehaviour
                 }
             }
         }
-        //selectedSkillUI.SetCSkillList(currentSelected);
-        Debug.Log($"프랩스에서 가져온 스킬Id : {casUseCSkillList[0]}, {casUseCSkillList[1]}, {casUseCSkillList[2]}");
-        Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {canUse[0].Id}, {canUse[1].Id}, {canUse[2].Id}");
+        Debug.Log($"프랩스에서 가져온 사용가능스킬Id : {casUseCSkillList[0]}, {casUseCSkillList[1]}, {casUseCSkillList[2]}");
+        Debug.Log($"사용가능 지휘관 스킬로 셋팅된 ID : {canUse[0].Id}, {canUse[1].Id}, {canUse[2].Id}");
 
 
     }

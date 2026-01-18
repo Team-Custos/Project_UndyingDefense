@@ -36,7 +36,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     [SerializeField] private GameObject circle;
     [SerializeField] private LayerMask groundLayer;
     private LayerMask targetUnitLayer;
-    private bool isSkillActivated = false;
+    //private bool isSkillActivated = false;
 
     //private ActiveCommandSkill[] skill;
     private ActiveCommandSkill activeSkill;
@@ -46,6 +46,9 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     [SerializeField] private AudioClip[] btnClickSFX;
 
+    //ayo_0117
+    private CommandSkill beingUsedCommandskill;
+
     private void Start()
     {
         LoadCSkillData();
@@ -54,17 +57,17 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     void Update()
     {
-        if (isSkillActivated)
-        {
-            if (inputEventManager.IsPointerOnUIElements())
-                return;
+        //if (isSkillActivated)
+        //{
+        //    if (inputEventManager.IsPointerOnUIElements())
+        //        return;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
-            {
-                circle.transform.position = hit.point;
-            }
-        }
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
+        //    {
+        //        circle.transform.position = hit.point;
+        //    }
+        //}
     }
     private void Awake()
     {
@@ -79,13 +82,14 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     // 지휘관스킬 로드
     private void LoadCSkillData()
     {
+        cSkillRepository.SetCommanderSkill();
         datas = cSkillRepository.GetCommandSkills();
-        Debug.Log($"리소스에서 로드 성공한 스킬 갯수 : {datas.Length}");
+        Debug.Log($"지휘관스킬_리소스에서 로드 성공한 스킬 갯수 : {datas.Length}");
 
         List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
         for (int i = 0; i < selectedSkillList.Count; i++)
         {
-            Debug.Log($"프랩스에서 로드 성공한 스킬 갯수 : {selectedSkillList.Count}");
+            Debug.Log($"지휘관스킬_프랩스에서 로드 성공한 스킬 갯수 : {selectedSkillList.Count}");
 
             for (int j = 0; j < datas.Length; j++)
             {
@@ -138,6 +142,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                 if (currentSelected[i] == commandSkillList[j].Data)
                 {
                     cSkillBtns[i].SetCommandSkill(commandSkillList[j]);
+                    Debug.Log($"지휘관스킬 매칭 성공 : {commandSkillList[j].Data.Name}");
 
                 }
             }
@@ -146,6 +151,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
     {
+        /*
         if (btnClickSFX[activatedSkillButtonIdx] != null)
         {
             SoundManager.Instance.PlaySFX(btnClickSFX[activatedSkillButtonIdx]);
@@ -163,70 +169,71 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
                 break;
             case CommandSkill.TargetType.UNIT:
                 skill.Activate(selectedTargetUnit);
-                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, selectedTargetUnit.transform.position);
+                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, selectedTargetUnit.transform.position);
                 selectedTargetUnit = null;
                 break;
             case CommandSkill.TargetType.MOUSEPOSAREA:
                 inputEventManager.OnClickTarget = this;
-                skill.Activate(pos);
-                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, pos.position);
+                //skill.Activate(pos);
+                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, pos.position);
                 break;
             case CommandSkill.TargetType.AREA:
-                skill.Activate(BurningOilPos);
-                SoundManager.Instance.PlaySFX(skill.Data.StartSFX, BurningOilPos.position);
-                BurningOilCtrl.SpawnStart();
+                //skill.Activate(BurningOilPos);
+                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, BurningOilPos.position);
+                //BurningOilCtrl.SpawnStart();
                 break;
         }
+        */
     }
 
     public void OnClick(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
+        //if (context.performed)
+        //{
+        //    Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        //    RaycastHit hit;
 
-            if (activeSkill.Data.TargetType            //skill[activatedSkillButtonIdx].Data.TargetType
-                    == CommandSkill.TargetType.UNIT)
-            {
-                if (inputEventManager.IsPointerOnUIElements())
-                    return;
-                targetUnitLayer = activeSkill.AttackTargetLayer;                  //skill[activatedSkillButtonIdx].AttackTargetLayer;
-                if (Physics.Raycast(ray, out hit, float.MaxValue, targetUnitLayer))
-                {
-                    if (hit.collider.GetComponent<Unit>() != null)
-                    {
-                        selectedTargetUnit = hit.collider.GetComponent<Unit>();
-                        ActivateCommandSkill(activeSkill, hit.transform);          //skill[activatedSkillButtonIdx], hit.transform);
+        //    if (activeSkill.Data.TargetType            //skill[activatedSkillButtonIdx].Data.TargetType
+        //            == CommandSkill.TargetType.UNIT)
+        //    {
+        //        if (inputEventManager.IsPointerOnUIElements())
+        //            return;
+        //        targetUnitLayer = activeSkill.AttackTargetLayer;                  //skill[activatedSkillButtonIdx].AttackTargetLayer;
+        //        if (Physics.Raycast(ray, out hit, float.MaxValue, targetUnitLayer))
+        //        {
+        //            if (hit.collider.GetComponent<Unit>() != null)
+        //            {
+        //                selectedTargetUnit = hit.collider.GetComponent<Unit>();
+        //                ActivateCommandSkill(activeSkill, hit.transform);          //skill[activatedSkillButtonIdx], hit.transform);
 
-                        inputEventManager.OnClickTarget = SelectedUnitManager;
-                        inputEventManager.OnESCTarget = ingameManager;
-                        selectedUI0.gameObject.SetActive(false);
-                        selectedUI1.gameObject.SetActive(false);
-                        return;
-                    }
-                }
-            }
-            else if (activeSkill.Data.TargetType                           //skill[activatedSkillButtonIdx].Data.TargetType
-                == CommandSkill.TargetType.MOUSEPOSAREA)
-            {
-                if (Physics.Raycast(ray, out hit,float.MaxValue,groundLayer))
-                {
-                    if (inputEventManager.IsPointerOnUIElements())
-                        return;
-                    if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
-                    {
-                        ActivateCommandSkill(activeSkill, hit.transform);               //skill[activatedSkillButtonIdx], hit.transform);
+        //                inputEventManager.OnClickTarget = SelectedUnitManager;
+        //                inputEventManager.OnESCTarget = ingameManager;
+        //                selectedUI0.gameObject.SetActive(false);    // 인디케이터
+        //                selectedUI1.gameObject.SetActive(false);
+        //                return;
+        //            }
+        //        }
+        //    }
+        //    else if (activeSkill.Data.TargetType                           //skill[activatedSkillButtonIdx].Data.TargetType
+        //        == CommandSkill.TargetType.MOUSEPOSAREA)
+        //    {
+        //        if (Physics.Raycast(ray, out hit,float.MaxValue,groundLayer))
+        //        {
+        //            if (inputEventManager.IsPointerOnUIElements())
+        //                return;
+        //            if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
+        //            {
+        //                ActivateCommandSkill(activeSkill, hit.transform);               //skill[activatedSkillButtonIdx], hit.transform);
 
-                        inputEventManager.OnClickTarget = SelectedUnitManager;
-                        inputEventManager.OnESCTarget = ingameManager;
-                        selectedUI0.gameObject.SetActive(false);
-                        selectedUI1.gameObject.SetActive(false);
-                        circle.SetActive(false);
-                        isSkillActivated = false;
-                    }
-                }
-            }
+        //                inputEventManager.OnClickTarget = SelectedUnitManager;
+        //                inputEventManager.OnESCTarget = ingameManager;
+        //                selectedUI0.gameObject.SetActive(false);
+        //                selectedUI1.gameObject.SetActive(false);
+        //                circle.SetActive(false);
+        //                isSkillActivated = false;
+        //            }
+        //        }
+        //    }
 
             /*if (Physics.Raycast(ray, out hit))
             //{
@@ -261,20 +268,21 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             //}
             */
 
-        }
+        //}
     }
 
     public void GetClickControl(int idx, CommandSkill commandSkill)
     {
+        /*
         activeSkill = commandSkill as ActiveCommandSkill;
         Debug.Log($"액티브 스킬 셋팅 완료 {activeSkill.name}");
 
-        if (activeSkill.IsCoolDown)                                 //!skill[idx].IsCoolDown)
-        {
-            Debug.Log(activeSkill.name + "이 쿨타임 중...");         //skill[idx].name + "이 쿨타임 중...)");
-            SoundManager.Instance.PlayUnableUIClickSFX();
-            return;
-        }
+        //if (!activeSkill.IsCoolDown)                                 //!skill[idx].IsCoolDown)
+        //{
+        //    Debug.Log(activeSkill.name + "이 쿨타임 중...");         //skill[idx].name + "이 쿨타임 중...)");
+        //    SoundManager.Instance.PlayUnableUIClickSFX();
+        //    return;
+        //}
 
         CommandSkillData skillData = activeSkill.Data;              //skill[idx]
 
@@ -353,17 +361,39 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             isSkillActivated = false;
             circle.SetActive(false);
             ActivateCommandSkill(activeSkill, BurningOilPos);                  //skill[idx], BurningOilPos);
-            SoundManager.Instance.PlayUIClickSFX();
+            //SoundManager.Instance.PlayUIClickSFX();
         }
+        */
     }
 
+    public void SetBeingUsedCommandSkill(int i, CommandSkill commandSkill)
+    {
+        beingUsedCommandskill = commandSkill;
+        //inputEventManager.OnESCTarget = this;
+        //inputEventManager.OnRightClickTarget = this;
+        //selectedUI0 = cSkillBtns[i].transform;
+        //selectedUI0.gameObject.SetActive(true);
+    }
+    public void ResetButton()
+    {
+        beingUsedCommandskill = null;
+        //inputEventManager.OnESCTarget = ingameManager;
+        //inputEventManager.OnRightClickTarget = SelectedUnitManager;
+        //inputEventManager.OnClickTarget = SelectedUnitManager;
+        //selectedUI0.gameObject.SetActive(false);
+    }
     public void CancelSkill()
     {
-        selectedUI0.gameObject.SetActive(false);
-        selectedUI1.gameObject.SetActive(false);
-        circle.SetActive(false);
-        isSkillActivated = false;
-        
+        //selectedUI0.gameObject.SetActive(false);
+        //selectedUI1.gameObject.SetActive(false);
+        //circle.SetActive(false);
+        //isSkillActivated = false;
+        //ayo_0117
+        if (beingUsedCommandskill == null)
+            return;
+        beingUsedCommandskill.SetSkillState(false);
+        beingUsedCommandskill = null;
+
     }
 
     public void OnESC(InputAction.CallbackContext context)

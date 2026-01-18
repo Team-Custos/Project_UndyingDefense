@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CommandSkillRepository : MonoBehaviour
 {
-    private CommandSkillData[] commandSkillDatas = new CommandSkillData[0];
+    private CommandSkillData[] commandSkillDatas;
 
     // Start is called before the first frame update
     void Start()
@@ -12,9 +12,12 @@ public class CommandSkillRepository : MonoBehaviour
         SetCommanderSkill();
     }
 
-    private void SetCommanderSkill()
+    public void SetCommanderSkill()
     {
+        if (commandSkillDatas != null)
+            return;
         commandSkillDatas = Resources.LoadAll<CommandSkillData>("Data/Skill/Command");
+        Debug.Log($"[commandSkillDatas]가 null이어서 로드함. Loaded {commandSkillDatas.Length} command skills.");
     }
 
     public CommandSkillData[] GetCommandSkills()

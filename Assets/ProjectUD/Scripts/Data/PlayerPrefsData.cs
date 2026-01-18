@@ -11,6 +11,7 @@ public class PlayerPrefsData : MonoBehaviour
     public static PlayerPrefsData instance;
 
     [SerializeField] private TextAsset CSkillDefaultData;
+    [SerializeField] private TextAsset HaveCSkillDefaultData;
 
     //** 지휘관 스킬
     private List<string> haveCommanderSkills = new List<string>();
@@ -42,14 +43,18 @@ public class PlayerPrefsData : MonoBehaviour
     private void Start()
     {
         //-- 임시
-        PlayerPrefs.SetInt("SetDefaultCSkill", 0);
+        //PlayerPrefs.SetInt("SetDefaultCSkill", 0);
         if (PlayerPrefs.GetInt("SetDefaultCSkill") == 0)
         {
             LoadCSkillData(CSkillDefaultData.text);
         }
+        if (PlayerPrefs.GetInt("SetHaveCSkill") == 0)
+        {
+            LoadHaveCSkillData(HaveCSkillDefaultData.text);
+        }
     }
 
-    // 초기 지휘관 스킬 저장 ( 기본 해금 & 선택 )
+    // 초기 지휘관 스킬 저장 ( 선택 )
     public void LoadCSkillData(string st)
     {
         if (sb.Length > 0)
@@ -67,9 +72,31 @@ public class PlayerPrefsData : MonoBehaviour
             // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
         }
 
-        PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
+        //PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
         PlayerPrefs.SetString("selectCommanderSkill", sb.ToString());
         PlayerPrefs.SetInt("SetDefaultCSkill", 1);
+    }
+
+    // 초기 지휘관 스킬 저장 ( 보유 )
+    public void LoadHaveCSkillData(string st)
+    {
+        if (sb.Length > 0)
+            sb.Clear();
+
+        string[] lines = st.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)  // 맨 윗줄 빼고라서 1부터.
+        {
+            if (lines[i] == string.Empty)
+                continue;
+            //sb.AppendLine(lines[i]);
+
+            sb.Append($"{lines[i]}\n");
+            // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
+        }
+
+        PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
+        PlayerPrefs.SetInt("SetHaveCSkill", 1);
     }
 
     public void SetAccount(string pID, string pNickName, string imageID)    // 구조체

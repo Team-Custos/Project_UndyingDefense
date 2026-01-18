@@ -18,14 +18,17 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private TextMeshProUGUI commandSkillDescriptionText;
     [SerializeField] private Image skillIcon;
 
+    //ayo_0117
+    [SerializeField] private Button skillButton;
+
     private float coolTime;
     private float cooldownCheck;
     private int index;
 
     private void Start()
     {
-        //coolTime = commandSkillData.CoolTime;
-        //cooldownCheck = coolTime;
+        coolTime = commandSkillData.CoolTime;
+        cooldownCheck = coolTime;
 
         //commandSkillNameText.text = commandSkillData.Name;
         //commandSkillCoolText.text = "쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
@@ -43,6 +46,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         }
         else // 쿨타임 중 -> 스킬 사용 불가
         {
+            commandSkillManager.ResetButton();
             cooldownImage.gameObject.SetActive(true);
             cooldownCheck += Time.deltaTime;
             cooldownImage.fillAmount = 1f - (cooldownCheck / coolTime);
@@ -69,9 +73,20 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         commandSkill = skill;
     }
 
-    public void GetClick()
+    public void OnButtonClick()
     {
-        commandSkillManager.GetClickControl(index, commandSkill);
+        //commandSkillManager.GetClickControl(index, commandSkill);
+        // ayo_0117
+        commandSkillManager.SetBeingUsedCommandSkill(index, commandSkill);
+        if (!commandSkill.IsCoolDown)                               
+        {
+            commandSkillManager.ResetButton();
+            Debug.Log(commandSkill.name + "이 쿨타임 중...");         
+            SoundManager.Instance.PlayUnableUIClickSFX();
+            return;
+        }
+        commandSkill.Activate();
+        SoundManager.Instance.PlayUIClickSFX();
     }
 
     public void OnPointerExit(PointerEventData eventData)
