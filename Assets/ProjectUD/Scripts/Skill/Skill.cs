@@ -3,17 +3,24 @@ using UltEvents;
 
 public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클래스
 {
-    // 스킬 대상 타입.
-    public enum TargetType
+    public enum TargetType  // 스킬 발동 대상
     {
         ENEMY,
         ALLY,
-        SELF
+        NONE
+    }
+
+    public enum TargetRule  // 타겟 선정 방식
+    {
+        NEAR,
+        LOWHP,
+        RANDOM
     }
 
     [Header("■ Events")]
     [SerializeField] private UltEvent<Unit, Unit> onActivate; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit, Fortress> onAttackFortress; // 발동했을 때 실행할 이벤트
+    [SerializeField] private TargetRule targetRule; // 타겟 선정 방식
 
     protected float coolTimeCheck;
 
@@ -31,6 +38,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     //public bool isAnimationOK => animationStateTimeCheck >= animationStateTime; // 애니메이션이 끝났는지 체크하는 변수
 
     public TargetType GetTargetType() => Data.TargetType;
+    public TargetRule GetTargetRule() => targetRule;
 
     public void ActivateCoolTime(bool OnOff)
     { 

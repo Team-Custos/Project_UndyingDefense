@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
+using Unity.VisualScripting;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public abstract class Unit : MonoBehaviour
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
+    [SerializeField] protected LayerMask allyLayer;
 
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
@@ -70,7 +72,8 @@ public abstract class Unit : MonoBehaviour
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
-    protected Unit targetUnit;
+    protected Unit targetUnit; // 특수 스킬 대상
+    //protected Unit generalSkillTarget; // 일반 스킬 대상
     //protected Vector3 targetPos;
     //protected bool hasTargetPos = false;
 
@@ -285,9 +288,7 @@ public abstract class Unit : MonoBehaviour
             hp = unitStats.maxHp;
             critPercent = unitStats.critChance;
             mental = unitStats.mental;
-            interval = unitStats.interval;
-
-            intervalCheck = interval;
+            intervalCheck = unitStats.interval;
             interval = 0;
             navAgent.speed = unitStats.moveSpeed;
             navAgent.stoppingDistance = 1.0f;
@@ -374,6 +375,90 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
+    protected Unit SearchTarget(float range, LayerMask targetLayer, SkillBase skill)
+    {
+        switch(skill.GetTargetRule())
+        {
+            case SkillBase.TargetRule.NEAR:
+                return SearchNearestTarget(range, targetLayer);
+            case SkillBase.TargetRule.LOWHP:
+                return SearchLowHPTarget(range, targetLayer);
+            case SkillBase.TargetRule.RANDOM:
+                return SearchRandomTarget(range, targetLayer);
+            default:
+                return null;
+        }
+    }
+
+    protected Unit SearchTarget(SkillBase skill)
+    {
+        switch(skill.GetTargetRule())
+        {
+            case SkillBase.TargetRule.NEAR:
+                return SearchNearestTarget();
+            case SkillBase.TargetRule.LOWHP:
+                return SearchLowHPTarget();
+            case SkillBase.TargetRule.RANDOM:
+                return SearchRandomTarget();
+            default:
+                return null;
+        }
+    }
+
+    protected Unit SearchNearestTarget()
+    {
+        if (targets.Count == 0)
+            return null;
+
+        Unit result = null;
+        float minDst = float.MaxValue;
+
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            float dist = (transform.position - targets[i].transform.position).sqrMagnitude;
+
+            if (dist < minDst)
+            {
+                minDst = dist;
+                result = targets[i];
+            }
+        }
+
+        return result;
+    }
+
+    protected Unit SearchLowHPTarget()
+    {
+        if (targets.Count == 0)
+            return null;
+
+        Unit result = null;
+        float minHp = float.MaxValue;
+
+        for(int i = 0; i < targets.Count; i++)
+        {
+            float hp = targets[i].HpPercent;
+
+            if(hp < minHp)
+            {
+                minHp = hp;
+                result = targets[i];
+            }
+        }
+
+        return result;
+    }
+
+    protected Unit SearchRandomTarget()
+    {
+        if (targets.Count == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, targets.Count);
+        return targets[randomIndex];
+    }
+
     protected bool IsReachable(Vector3 pos)
     {
         navAgent.CalculatePath(pos, pathForSearch);
@@ -404,87 +489,91 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
-    //protected Unit SearchNearestTarget(float range)
-    //{
-    //    Unit result = null;
-    //    int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-    //    if (targetCount > 0)
-    //    {
-    //        float minDst = float.MaxValue;
-    //        for (int i = 0; i < targetCount; i++)
-    //        {
-    //            Unit unit = collidersInRange[i].GetComponent<Unit>();
-
-    //            if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
-    //                continue;
-
-    //            float dst = Vector3.Distance(transform.position, unit.transform.position);
-
-    //            if (dst < minDst)
-    //            {
-    //                minDst = dst;
-    //                result = unit;
-    //            }
-    //        }
-    //    }
-
-    //    return result;
-    //}
-
-    public virtual Unit SearchNearestTarget(float range)
+    protected bool IsTargetValid(Unit target, float range, LayerMask targetLayer)
     {
-        Unit result = null;
-        float nearestPathLength = float.MaxValue;
+        if (target != null && !target.isDead && IsTargetInRange(target, range, targetLayer))
+            return true;
+        else
+            return false;
+    }
+    
+    protected void SearchReachableTarget(float range, LayerMask targetLayer)   // 시야 범위내 이동 가능 유닛 확인
+    {
+        targets.Clear();
 
-        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-        if (targetCount <= 0)
-            return null;
+        int enemyCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, targetLayer);
 
-        
-
-        for (int i = 0; i < targetCount; i++)
+        if (enemyCount > 0)
         {
-            Unit target = collidersInRange[i].GetComponent<Unit>();
-            if (target.isDead)
-                continue;
-
-            
-            Vector3 startDir = (target.transform.position - transform.position).normalized;
-            float shortestPath = float.MaxValue;
-            Vector3 bestPosForThisTarget = Vector3.zero;
-
-            for (int j = 0; j < 4; j++)
+            for (int i = 0; i < enemyCount; i++)
             {
-                Vector3 dir = Quaternion.AngleAxis(90f * j, Vector3.up) * startDir;
-                Vector3 targetPosCandidate = target.transform.position + dir * target.nearbyDistance;
-
-                if (!NavMesh.CalculatePath(transform.position, targetPosCandidate, navAgent.areaMask, path))
+                Unit unit = collidersInRange[i].GetComponent<Unit>();
+                if (unit == null)
                     continue;
 
-                if (path.status != NavMeshPathStatus.PathComplete)
+                if (unit.isDead || !unit.gameObject.activeInHierarchy || unit == this)
                     continue;
 
-                float pathLength = CalculatePathLength(path);
+                NavMesh.CalculatePath(transform.position, unit.transform.position, navAgent.areaMask, pathForSearch);
 
-                if (pathLength < shortestPath)
+                if (pathForSearch.status == NavMeshPathStatus.PathComplete)
                 {
-                    shortestPath = pathLength;
-                    bestPosForThisTarget = targetPosCandidate;
+                    targets.Add(unit);
+                }
+                else
+                {
+                    for (float j = 0f; j < 4f; j++)
+                    {
+                        Vector3 startDir = (transform.position - unit.transform.position).normalized;
+                        Vector3 dir = Quaternion.AngleAxis(9f * j, Vector3.up) * startDir;
+                        Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
+
+                        NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch);
+
+                        if (pathForSearch.status == NavMeshPathStatus.PathComplete)
+                        {
+                            targets.Add(unit);
+                            continue;
+                        }
+                    }
                 }
             }
 
-            if (shortestPath < nearestPathLength)
+            //Debug.Log(targets.Count);
+        }
+    }
+
+
+    protected bool IsPathBlocked(Unit target)
+    {
+
+        if (NavMesh.CalculatePath(transform.position, target.transform.position, navAgent.areaMask, pathForSearch) &&
+            pathForSearch.status == NavMeshPathStatus.PathComplete)
+            return false;
+
+        if (HasReachableNearPosition(target))
+            return false;
+
+        return true;
+    }
+
+    protected bool HasReachableNearPosition(Unit unit)
+    {
+        Vector3 startDir = (transform.position - unit.transform.position).normalized;
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 dir = Quaternion.AngleAxis(9f * i, Vector3.up) * startDir;
+            Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
+
+            if (NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch) &&
+                pathForSearch.status == NavMeshPathStatus.PathComplete)
             {
-                nearestPathLength = shortestPath;
+                return true;
             }
         }
 
-        //targetPos = finalTargetPos;
-        //hasTargetPos = true;
-
-
-
-        return result;
+        return false;
     }
 
     protected float CalculatePathLength(NavMeshPath path)
@@ -501,13 +590,12 @@ public abstract class Unit : MonoBehaviour
         return length;
     }
 
-
-    protected Unit SearchNearestTargetInLine(float range)  // 직선거리 기준으로 가장 가까운 유닛 선정
+    protected Unit SearchNearestTarget(float range, LayerMask targetLayer)
     {
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, targetLayer);
+
         Unit result = null;
         float minDst = float.MaxValue;
-
-        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
 
         if (targetCount > 0)
         {
@@ -517,8 +605,7 @@ public abstract class Unit : MonoBehaviour
                 if (unit == null)
                     continue;
 
-
-                if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                if (unit.isDead || !unit.gameObject.activeInHierarchy)
                     continue;
 
                 float dst = Vector3.Distance(transform.position, unit.transform.position);
@@ -533,6 +620,30 @@ public abstract class Unit : MonoBehaviour
 
         return result;
     }
+
+    //protected Unit SearchNearestTarget()
+    //{
+    //    Unit result = null;
+    //    float minDst = float.MaxValue;
+
+    //    int targetCount = targets.Count;
+
+    //    if (targetCount > 0)
+    //    {
+    //        for (int i = 0; i < targetCount; i++)
+    //        {
+    //            Unit unit = targets[i];
+    //            float dst = Vector3.Distance(transform.position, unit.transform.position);
+    //            if (dst < minDst)
+    //            {
+    //                minDst = dst;
+    //                result = unit;
+    //            }
+    //        }
+    //    }
+
+    //    return result;
+    //}
 
     protected Unit SearchNearestTarget(IReadOnlyList<Unit> targets)
     {
@@ -580,42 +691,72 @@ public abstract class Unit : MonoBehaviour
         return result;
     }
 
-    protected Unit SearchLowHPTarget(float range)
+    protected Unit SearchLowHPTarget(float range, LayerMask targetLayer)
     {
         Unit result = null;
-        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-        if (targetCount > 0)
+
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, targetLayer);
+
+        if(targetCount > 0)
         {
             float minHpPercent = 1f;
-            for (int i = 0; i < targetCount; i++)
+
+            for(int i = 0; i < targetCount; i++)
             {
                 Unit unit = collidersInRange[i].GetComponent<Unit>();
 
-                if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                if (unit == null)
                     continue;
 
-                if (unit.HpPercent < minHpPercent)
+                if (unit.isDead || !unit.gameObject.activeInHierarchy)
+                    continue;
+
+                if (unit.HpPercent <= minHpPercent)
                 {
                     minHpPercent = unit.HpPercent;
-                    targets.Clear();
-                    targets.Add(unit);
-                }
-                else if (unit.HpPercent == minHpPercent)
-                {
-                    targets.Add(unit);
+                    result = unit;
                 }
             }
         }
 
-        if (targets.Count > 1)
-            result = SearchNearestTarget(targets);
-        else if (targets.Count == 1)
-            result = targets[0];
+        return result;
+    }
 
+    protected Unit SearchRandomTarget(float range, LayerMask targetLayer)
+    {
+        Unit result = null;
+
+        targets.Clear();
+
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, targetLayer);
+
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                Unit unit = collidersInRange[i].GetComponent<Unit>();
+
+                if (unit == null)
+                    continue;
+
+                if (unit.isDead || !unit.gameObject.activeInHierarchy)
+                    continue;
+
+                targets.Add(unit);
+            }
+        }
+
+        if(targetCount <= 0 || targets.Count <= 0)
+            return null;
+
+        int randomIndex = Random.Range(0, targets.Count);
+
+        result = targets[randomIndex];
         targets.Clear();
 
         return result;
     }
+
 
     protected Unit SearchLowHPReachableTarget(float range)
     {
@@ -752,6 +893,20 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
+    protected bool IsTargetInRange(Unit target, float range, LayerMask targetLayer)
+    {
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, targetLayer);
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                if (target.collider == collidersInRange[i])
+                    return true;
+            }
+        }
+        return false;
+    }
+
     protected bool IsTargetPosInRange(Vector3 pos, float range)
     {
 
@@ -858,11 +1013,13 @@ public abstract class Unit : MonoBehaviour
         if (navAgent.isStopped)
             navAgent.isStopped = false;
 
+        
 
         navAgent.SetDestination(target.transform.position);
 
-        
+
     }
+
 
     public virtual void MoveTo(NavMeshPath path)
     {
@@ -978,6 +1135,8 @@ public abstract class Unit : MonoBehaviour
             //    }
             //}
     }
+
+    
     public void LookAt(Vector3 pos)
     {
         Vector3 dir = (pos - transform.position).normalized;

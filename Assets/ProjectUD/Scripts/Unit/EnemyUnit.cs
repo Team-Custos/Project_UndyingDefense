@@ -37,10 +37,10 @@ public class EnemyUnit : Unit
         AGGRESSIVE
     }
 
-    private enum BehaviorPriority
+    private enum Mission
     {
-        Move,
-        Combat,
+        SIEGE,
+        FIGHTER,
     }
 
     private EnemyUnitData data;
@@ -49,11 +49,15 @@ public class EnemyUnit : Unit
 
     private Mode mode;
     private State state;
-    private AIStance aiStance;
-    [SerializeField] private BehaviorPriority behaviorPriority;
+    //private AIStance aiStance;
+    [SerializeField] private Mission mission;
 
     private Fortress fortress;
     private Vector3 fortressPos;
+
+    // 시즈 모드 유닛을 향해 갈때 사용하는 변수
+    private Vector3 targetPos;
+    private bool hasTargetPos = false;
 
     private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
@@ -147,7 +151,7 @@ public class EnemyUnit : Unit
         navAgent.enabled = true;
         state = State.BATTLECRY;
         isDead = false;
-        aiStance = data.aiStance;
+        //aiStance = data.aiStance;
         mode = Mode.MOVE;
         //behaviorPriority = BehaviorPriority.Move;
         navAgent.avoidancePriority = 1;
@@ -297,161 +301,403 @@ public class EnemyUnit : Unit
 
     private void UpdateMode()
     {
-        //if (state == State.STUN)
-        //    return;
-
-        switch (mode)
+        switch(mission)
         {
-            case Mode.MOVE:
+            case Mission.SIEGE:
                 {
-                    // 성까지 거리 계산
-                    float distance = Vector3.Distance(transform.position, fortressPos);
+                    NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path); // 길 찾기
 
-                    // 공격 우선 유닛
-                    if (behaviorPriority == BehaviorPriority.Combat)
+                    if(path.status == NavMeshPathStatus.PathPartial)    // 일부 막혀 있음
                     {
-                        targetUnit = SearchTarget(UnitStats.sightRange);
-                        if (targetUnit != null)
+                        SearchReachableTarget(unitStats.sightRange, enemyLayer);
+                        if(targets.Count > 0)
                         {
-                            mode = Mode.COMBAT;
-                            return;
-                        }
-                    }
-
-                    // 공격범위 내면 성 공격
-                    if (distance <= UnitStats.attackRange)
-                    {
-                        mode = Mode.ATTACKFORTRESS;
-                        return;
-                    }
-
-                    //Vector3 start = transform.position;
-                    //if (NavMesh.SamplePosition(start, out NavMeshHit hit, 5.0f, navAgent.areaMask))
-                    //{
-                    //    start = hit.position;
-                    //}
-                    //bool pathState = NavMesh.CalculatePath(start, fortressPos, navAgent.areaMask, path);
-
-                    bool pathState = NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
-
-                    if (pathState)
-                    {
-                        navAgent.isStopped = false;
-                        navAgent.SetPath(path);
-                        if (path.status == NavMeshPathStatus.PathPartial) // 막혀 있음
-                        {
-                            targetUnit = SearchTarget(UnitStats.sightRange);
-                            if (targetUnit != null)
-                                mode = Mode.COMBAT;
-                            else
-                                ForceMoveTo(fortressPos);
-                        }
-                    }
-                    else
-                    {
-                        targetUnit = SearchTarget(UnitStats.sightRange);
-                        if (targetUnit != null)
-                            mode = Mode.COMBAT;
-                    }
-                }
-                break;
-            case Mode.COMBAT:
-                {
-                    if (targetUnit.HpPercent > 0f || targetUnit.gameObject.activeInHierarchy)
-                    {
-
-                        if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
-                        {
-                            if (navAgent.enabled && !navAgent.isStopped)
-                            {
-                                navAgent.isStopped = true;
-                                modelAnimator.SetBool("isRunning", false);
-                            }
-
-
                             if (interval <= 0)
                             {
-                                // 스킬 관련 처리
                                 SkillBase skill = GetAvailableSkill();
 
-                                if (skill != null)
+                                if (skill != null) // 사용 가능한 스킬이 존재할 경우
                                 {
-                                    ActivateSkill(skill, targetUnit);
+                                    SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+
+                                    switch (skillTargetType)
+                                    {
+                                        case SkillBase.TargetType.NONE:
+                                            {
+                                                ActivateSkill(skill, null);
+                                                break;
+                                            }
+                                        case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
+                                            {
+                                                targetUnit = SearchTarget(skill.Data.Range, allyLayer, skill);  // 스킬 사거리내로 먼저 검사
+
+                                                if (targetUnit != null)
+                                                {
+                                                    ActivateSkill(skill, targetUnit);
+                                                    targetUnit = null;
+                                                }
+                                                else
+                                                {
+                                                    SearchReachableTarget(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
+                                                    targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+
+                                                    if (targetUnit != null)
+                                                    {
+                                                        MoveToTargetUnit(targetUnit);
+                                                        //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                                        //{
+                                                        //    ActivateSkill(skill, targetUnit);
+                                                        //    targetUnit = null;
+                                                        //}
+                                                    }
+                                                }
+
+                                                break;
+                                            }
+                                        case SkillBase.TargetType.ENEMY:
+                                            {
+                                                if (IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
+                                                {
+                                                    if (IsTargetInAttackRange(targetUnit, skill.Data.Range)) // 스킬 사거리내 존재
+                                                    {
+                                                        hasTargetPos = false;
+                                                        ActivateSkill(skill, targetUnit);
+                                                    }
+                                                    else // 스킬 사거리 < 대상과 거리 < 시야 사거리
+                                                    {
+                                                        if (IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
+                                                        {
+                                                            hasTargetPos = false;
+                                                            targetUnit = null;  // 막힘
+                                                        }
+                                                        else
+                                                        {
+                                                            MoveToTargetUnit(targetUnit);
+                                                            //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                                            //{
+                                                            //    ActivateSkill(skill, targetUnit);
+                                                            //    targetUnit = null;
+                                                            //}
+                                                        }
+                                                    }
+                                                }
+                                                else      // 새 대상 탐색
+                                                {
+                                                    targetUnit = null;
+                                                    hasTargetPos = false;
+
+                                                    targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);
+                                                    if (targetUnit != null)
+                                                    {
+                                                        hasTargetPos = false;
+                                                        ActivateSkill(skill, targetUnit);
+                                                    }
+                                                    else
+                                                    {
+                                                        SearchReachableTarget(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                        targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+
+                                                        if (targetUnit != null)
+                                                        {
+                                                            MoveToTargetUnit(targetUnit);
+                                                        }
+                                                        else
+                                                        {
+                                                            navAgent.isStopped = false;
+                                                            ForceMoveTo(fortressPos);
+                                                        }
+                                                    }
+                                                }
+
+                                                break;
+                                            }
+                                    }
                                 }
-
-                                
                             }
-                            
-                        }
-                        else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 시야 거리 내 -> 이동
-                        {
-                            MoveTo(path);
-
-
-                            //if (path.status != NavMeshPathStatus.PathComplete)
-                            //{
-                            //    Debug.Log(111);
-
-                            //    targetUnit = SearchTarget(UnitStats.sightRange);
-                            //    if (targetUnit == null)
-                            //    {
-                            //        mode = Mode.MOVE;
-                            //        MoveTo(fortressPos);
-                            //    }
-                            //}
-                        }
-                        else // 시야 사거리 밖
-                        {
-                            targetUnit = null;
-                            //hasTargetPos = false;
-                            mode = Mode.MOVE;
-                            MoveTo(fortressPos);
-                        }
-                    }
-                    else
-                    {
-                        targetUnit = null;
-                        mode = Mode.MOVE;
-                        MoveTo(fortressPos);
-                    }
-                }
-                break;
-            case Mode.ATTACKFORTRESS:
-                {
-                    if (behaviorPriority == BehaviorPriority.Combat)
-                    {
-                        targetUnit = SearchTarget(UnitStats.sightRange);
-                        if (targetUnit != null)
-                        {
-                            state = State.IDLE;
-                            mode = Mode.COMBAT;
-                            MoveTo(path);
                         }
                         else
                         {
-                            SkillBase skill = GetGeneralSkill();
+                            navAgent.isStopped = false;
+                            ForceMoveTo(fortressPos);
+                        }
+                    }
+                    else
+                    {
+                        float distance = Vector3.Distance(transform.position, fortressPos);  // 성까지 거리 계산
+                        float range = GeneralSkill.Data.Range;
 
-                            if (skill != null && skill.IsCoolDown)
-                            {
+                        if(distance <= range)   // 사거리 내 도달
+                        {
+                            SkillBase generalSkill = GetGeneralSkill();
+                            if(generalSkill != null)
                                 ActivateSkill(fortress, data);
+                        }
+                        else
+                        {
+                            navAgent.isStopped = false;
+                            navAgent.SetPath(path);
+                        }
+                    }
+                    break;
+                }
+            case Mission.FIGHTER:
+                {
+                    SearchReachableTarget(unitStats.sightRange, enemyLayer); // 시야 범위 내 적 확인
+
+                    if (targets.Count > 0)
+                    {
+                        if (interval <= 0)
+                        {
+                            SkillBase skill = GetAvailableSkill();
+
+                            if (skill != null) // 사용 가능한 스킬이 존재할 경우
+                            {
+                                SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+
+                                switch (skillTargetType)
+                                {
+                                    case SkillBase.TargetType.NONE:
+                                        {
+                                            ActivateSkill(skill, null);
+                                            break;
+                                        }
+                                    case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
+                                        {
+                                            targetUnit = SearchTarget(skill.Data.Range, allyLayer, skill);  // 스킬 사거리내로 먼저 검사
+
+                                            if (targetUnit != null)
+                                            {
+                                                ActivateSkill(skill, targetUnit);
+                                                targetUnit = null;
+                                            }
+                                            else
+                                            {
+                                                SearchReachableTarget(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
+                                                targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+
+                                                if (targetUnit != null)
+                                                {
+                                                    MoveToTargetUnit(targetUnit);
+                                                    //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                                    //{
+                                                    //    ActivateSkill(skill, targetUnit);
+                                                    //    targetUnit = null;
+                                                    //}
+                                                }
+                                            }
+
+                                            break;
+                                        }
+                                    case SkillBase.TargetType.ENEMY:
+                                        {
+                                            if (IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
+                                            {
+                                                if (IsTargetInAttackRange(targetUnit, skill.Data.Range)) // 스킬 사거리내 존재
+                                                {
+                                                    hasTargetPos = false;
+                                                    ActivateSkill(skill, targetUnit);
+                                                }
+                                                else // 스킬 사거리 < 대상과 거리 < 시야 사거리
+                                                {
+                                                    if (IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
+                                                    {
+                                                        hasTargetPos = false;
+                                                        targetUnit = null;  // 막힘
+                                                    }
+                                                    else
+                                                    {
+                                                        MoveToTargetUnit(targetUnit);
+                                                    }
+                                                }
+                                            }
+                                            else      // 새 대상 탐색
+                                            {
+                                                targetUnit = null;
+                                                hasTargetPos = false;
+
+                                                targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);
+                                                if (targetUnit != null)
+                                                {
+                                                    hasTargetPos = false;
+                                                    ActivateSkill(skill, targetUnit);
+                                                }
+                                                else
+                                                {
+                                                    SearchReachableTarget(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                    targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+
+                                                    if (targetUnit != null)
+                                                    {
+                                                        MoveToTargetUnit(targetUnit);
+                                                    }
+                                                    else
+                                                    {
+                                                        navAgent.isStopped = false;
+                                                        ForceMoveTo(fortressPos);
+                                                    }
+                                                }
+                                            }
+
+                                            break;
+                                        }
+                                }
                             }
                         }
                     }
                     else
                     {
-                        SkillBase skill = GetGeneralSkill();
-
-                        if (skill != null && skill.IsCoolDown)
-                        {
-                            ActivateSkill(fortress, data);
-                        }
+                        ForceMoveTo(fortressPos);
                     }
+
+                        break;
                 }
-                break;
         }
+
+        //switch (mode)
+        //{
+        //    case Mode.MOVE:
+        //        {
+        //            // 성까지 거리 계산
+        //            float distance = Vector3.Distance(transform.position, fortressPos);
+
+        //            // 공격 우선 유닛
+        //            if (mode == Mode.COMBAT)
+        //            {
+        //                targetUnit = SearchTarget(UnitStats.sightRange);
+        //                if (targetUnit != null)
+        //                {
+        //                    mode = Mode.COMBAT;
+        //                    return;
+        //                }
+        //            }
+
+        //            // 공격범위 내면 성 공격
+        //            if (distance <= UnitStats.attackRange)
+        //            {
+        //                mode = Mode.ATTACKFORTRESS;
+        //                return;
+        //            }
+
+        //            bool pathState = NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
+
+        //            if (pathState)
+        //            {
+        //                navAgent.isStopped = false;
+        //                navAgent.SetPath(path);
+        //                if (path.status == NavMeshPathStatus.PathPartial) // 막혀 있음
+        //                {
+        //                    targetUnit = SearchTarget(UnitStats.sightRange);
+        //                    if (targetUnit != null)
+        //                        mode = Mode.COMBAT;
+        //                    else
+        //                        ForceMoveTo(fortressPos);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                targetUnit = SearchTarget(UnitStats.sightRange);
+        //                if (targetUnit != null)
+        //                    mode = Mode.COMBAT;
+        //            }
+        //        }
+        //        break;
+        //    case Mode.COMBAT:
+        //        {
+        //            if (targetUnit.HpPercent > 0f || targetUnit.gameObject.activeInHierarchy)
+        //            {
+
+        //                if (IsTargetInAttackRange(targetUnit, UnitStats.attackRange)) // 공격 사거리 내 -> 공격
+        //                {
+        //                    if (navAgent.enabled && !navAgent.isStopped)
+        //                    {
+        //                        navAgent.isStopped = true;
+        //                        modelAnimator.SetBool("isRunning", false);
+        //                    }
+
+
+        //                    if (interval <= 0)
+        //                    {
+        //                        // 스킬 관련 처리
+        //                        SkillBase skill = GetAvailableSkill();
+
+        //                        if (skill != null)
+        //                        {
+        //                            ActivateSkill(skill, targetUnit);
+        //                        }
+
+
+        //                    }
+
+        //                }
+        //                else if (IsTargetInRange(targetUnit, UnitStats.sightRange)) // 시야 거리 내 -> 이동
+        //                {
+        //                    MoveTo(path);
+
+
+        //                    //if (path.status != NavMeshPathStatus.PathComplete)
+        //                    //{
+        //                    //    Debug.Log(111);
+
+        //                    //    targetUnit = SearchTarget(UnitStats.sightRange);
+        //                    //    if (targetUnit == null)
+        //                    //    {
+        //                    //        mode = Mode.MOVE;
+        //                    //        MoveTo(fortressPos);
+        //                    //    }
+        //                    //}
+        //                }
+        //                else // 시야 사거리 밖
+        //                {
+        //                    targetUnit = null;
+        //                    //hasTargetPos = false;
+        //                    mode = Mode.MOVE;
+        //                    MoveTo(fortressPos);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                targetUnit = null;
+        //                mode = Mode.MOVE;
+        //                MoveTo(fortressPos);
+        //            }
+        //        }
+        //        break;
+        //    case Mode.ATTACKFORTRESS:
+        //        {
+        //            if (mode == Mode.COMBAT)
+        //            {
+        //                targetUnit = SearchTarget(UnitStats.sightRange);
+        //                if (targetUnit != null)
+        //                {
+        //                    state = State.IDLE;
+        //                    mode = Mode.COMBAT;
+        //                    MoveTo(path);
+        //                }
+        //                else
+        //                {
+        //                    SkillBase skill = GetGeneralSkill();
+
+        //                    if (skill != null && skill.IsCoolDown)
+        //                    {
+        //                        ActivateSkill(fortress, data);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                SkillBase skill = GetGeneralSkill();
+
+        //                if (skill != null && skill.IsCoolDown)
+        //                {
+        //                    ActivateSkill(fortress, data);
+        //                }
+        //            }
+        //        }
+        //        break;
+        //}
     }
 
-    protected override void ActivateSkill(SkillBase skill, Unit target) // 적 공격 상태
+    protected override void ActivateSkill(SkillBase skill, Unit target)
     {
         if (skill == GeneralSkill)
         {
@@ -468,6 +714,8 @@ public class EnemyUnit : Unit
 
         if (target != this)
             transform.LookAt(target.transform);
+
+        navAgent.isStopped = true;
 
         //base.ActivateSkill(skill, target);
         interval = intervalCheck;
@@ -578,6 +826,7 @@ public class EnemyUnit : Unit
             executionEffect = null;
         }
 
+        hasTargetPos = false;
         state = State.DEAD;
 
         base.Die();
@@ -595,27 +844,37 @@ public class EnemyUnit : Unit
 
     }
 
-    private Unit SearchTarget(float range)
+    public override void MoveToTargetUnit(Unit target)
     {
-        Unit result = null;
-        switch (data.targetingType)
-        {
-            case TargetingType.NEAR:
-                result = SearchNearestTarget(range);
-                break;
-            case TargetingType.LOWHP:
-                result = SearchLowHPTarget(range);
-                break;
-            case TargetingType.HIGHTIER:
-                result = SearchHighTierTarget(range);
-                break;
-        }
+        AllyUnit allyUnit = target as AllyUnit;
 
-        return result;
+        if (allyUnit.ModeType == AllyUnit.Mode.SEIGE)
+        {
+            if (hasTargetPos)
+            {
+                return;
+            }
+            else
+            {
+                Vector3 direction = (transform.position - target.transform.position).normalized;
+                targetPos = target.transform.GetNearPosition(direction, NearbyDistance);
+                hasTargetPos = true;
+
+                if (navAgent.isStopped)
+                    navAgent.isStopped = false;
+
+
+                navAgent.SetDestination(target.transform.position);
+            }
+        }
+        else if(allyUnit.ModeType == AllyUnit.Mode.FREE)
+        {
+            base.MoveToTargetUnit(target);
+        }
     }
 
 
-    public override Unit SearchNearestTarget(float range)
+    public  Unit SearchNearestTarget(float range)
     {
 
         Unit result = null;
