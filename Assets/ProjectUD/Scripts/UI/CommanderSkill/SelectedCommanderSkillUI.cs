@@ -8,6 +8,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 {
     [SerializeField] private SelectedCSkillBtnUI[] selectedCSkillBtns;
     [SerializeField] private CommanderSkillUI commanderSkillUI;
+    [SerializeField] private MessageUI warningMessage;
 
     private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
     private List<string> selectCSkillID = new List<string>();
@@ -52,6 +53,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 return true;
             }
         }
+        warningMessage.AddMessage("모든 슬롯이 채워져 있습니다!");
         return false;
     }
 

@@ -34,6 +34,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
     [Header("공로포인트")]
     [SerializeField] private TextMeshProUGUI pointTextUI;
+    [SerializeField] private RankSystem rankSystem;
 
     [Header("StagePrefsData")]
     [SerializeField] private StagePrefsData stagePrefsData;
@@ -65,6 +66,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         CheckStage();
         pointTextUI.text = PlayerPrefs.GetFloat("Point").ToString();
         //PlayerPrefs.SetInt("IsGeumsanFinished", 0);
+        rankSystem.UpdateRank();
     }
     public void CheckStage()
     {

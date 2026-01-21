@@ -18,6 +18,10 @@ public class CommandSkillRepository : MonoBehaviour
             return;
         commandSkillDatas = Resources.LoadAll<CommandSkillData>("Data/Skill/Command");
         Debug.Log($"[commandSkillDatas]가 null이어서 로드함. Loaded {commandSkillDatas.Length} command skills.");
+        for (int i = 0; i < commandSkillDatas.Length; i++)
+        {
+            //Debug.Log($"[commandSkillDatas] {i}번째 스킬 ID: {commandSkillDatas[i].Id}");
+        }
     }
 
     public CommandSkillData[] GetCommandSkills()
