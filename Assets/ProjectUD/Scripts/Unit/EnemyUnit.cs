@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Resources;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 
 public class EnemyUnit : Unit
 {
@@ -301,18 +303,19 @@ public class EnemyUnit : Unit
 
     private void UpdateMode()
     {
-        switch(mission)
+
+        switch (mission)
         {
             case Mission.SIEGE:
                 {
                     NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path); // 길 찾기
 
-                    if(path.status == NavMeshPathStatus.PathPartial)    // 일부 막혀 있음
+                    if (path.status == NavMeshPathStatus.PathPartial)    // 일부 막혀 있음
                     {
-                        SearchReachableTarget(unitStats.sightRange, enemyLayer);
-                        if(targets.Count > 0)
+                        SearchReachableTargets(unitStats.sightRange, enemyLayer);
+                        if (targets.Count > 0)
                         {
-                            if (interval <= 0)
+                            if (interval <= 0f)
                             {
                                 SkillBase skill = GetAvailableSkill();
 
@@ -338,8 +341,8 @@ public class EnemyUnit : Unit
                                                 }
                                                 else
                                                 {
-                                                    SearchReachableTarget(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
-                                                    targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                    SearchReachableTargets(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
+                                                    targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
                                                     if (targetUnit != null)
                                                     {
@@ -394,8 +397,8 @@ public class EnemyUnit : Unit
                                                     }
                                                     else
                                                     {
-                                                        SearchReachableTarget(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
-                                                        targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                        SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                        targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
                                                         if (targetUnit != null)
                                                         {
@@ -426,10 +429,10 @@ public class EnemyUnit : Unit
                         float distance = Vector3.Distance(transform.position, fortressPos);  // 성까지 거리 계산
                         float range = GeneralSkill.Data.Range;
 
-                        if(distance <= range)   // 사거리 내 도달
+                        if (distance <= range)   // 사거리 내 도달
                         {
                             SkillBase generalSkill = GetGeneralSkill();
-                            if(generalSkill != null)
+                            if (generalSkill != null)
                                 ActivateSkill(fortress, data);
                         }
                         else
@@ -442,11 +445,11 @@ public class EnemyUnit : Unit
                 }
             case Mission.FIGHTER:
                 {
-                    SearchReachableTarget(unitStats.sightRange, enemyLayer); // 시야 범위 내 적 확인
+                    SearchReachableTargets(unitStats.sightRange, enemyLayer); // 시야 범위 내 적 확인
 
-                    if (targets.Count > 0)
+                    if (targets.Count > 0) // 적 존재
                     {
-                        if (interval <= 0)
+                        if (interval <= 0f)
                         {
                             SkillBase skill = GetAvailableSkill();
 
@@ -472,12 +475,21 @@ public class EnemyUnit : Unit
                                             }
                                             else
                                             {
-                                                SearchReachableTarget(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
-                                                targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                SearchReachableTargets(unitStats.sightRange, allyLayer); // 이동 가능한 대상 탐색
+                                                targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
                                                 if (targetUnit != null)
                                                 {
-                                                    MoveToTargetUnit(targetUnit);
+                                                    if(targetUnit == this)
+                                                    {
+                                                        ActivateSkill(skill, targetUnit);
+                                                    }
+                                                    else
+                                                    {
+                                                        MoveToTargetUnit(targetUnit);
+                                                    }
+
+                                                    
                                                     //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
                                                     //{
                                                     //    ActivateSkill(skill, targetUnit);
@@ -523,8 +535,8 @@ public class EnemyUnit : Unit
                                                 }
                                                 else
                                                 {
-                                                    SearchReachableTarget(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
-                                                    targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                    SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                    targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
                                                     if (targetUnit != null)
                                                     {
@@ -546,22 +558,48 @@ public class EnemyUnit : Unit
                     }
                     else
                     {
-                        ForceMoveTo(fortressPos);
+                        float distance = Vector3.Distance(transform.position, fortressPos);  // 성까지 거리 계산
+                        float range = GeneralSkill.Data.Range;
+
+                        if (distance <= range)   // 사거리 내 도달
+                        {
+                            SkillBase generalSkill = GetGeneralSkill();
+                            if (generalSkill != null)
+                                ActivateSkill(fortress, data);
+                        }
+                        else
+                        {
+                            navAgent.isStopped = false;
+                            navAgent.SetPath(path);
+                        }
                     }
 
-                        break;
+                    break;
                 }
         }
+
+        //if (interval > 0)
+        //    return;
+
+        //SkillBase skill = GetAvailableSkill();
+        //if (skill == null)
+        //    return;
 
         //switch (mode)
         //{
         //    case Mode.MOVE:
         //        {
-        //            // 성까지 거리 계산
+        //            if (targetUnit != null)
+        //            {
+        //                i
+        //            }
+
+
+        //            성까지 거리 계산
         //            float distance = Vector3.Distance(transform.position, fortressPos);
 
-        //            // 공격 우선 유닛
-        //            if (mode == Mode.COMBAT)
+        //            공격 우선 유닛
+        //            if (mission == Mission.FIGHTER)
         //            {
         //                targetUnit = SearchTarget(UnitStats.sightRange);
         //                if (targetUnit != null)
@@ -571,12 +609,19 @@ public class EnemyUnit : Unit
         //                }
         //            }
 
-        //            // 공격범위 내면 성 공격
+        //            공격범위 내면 성 공격
         //            if (distance <= UnitStats.attackRange)
         //            {
         //                mode = Mode.ATTACKFORTRESS;
         //                return;
         //            }
+
+        //            Vector3 start = transform.position;
+        //            if (NavMesh.SamplePosition(start, out NavMeshHit hit, 5.0f, navAgent.areaMask))
+        //            {
+        //                start = hit.position;
+        //            }
+        //            bool pathState = NavMesh.CalculatePath(start, fortressPos, navAgent.areaMask, path);
 
         //            bool pathState = NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
 
@@ -617,8 +662,6 @@ public class EnemyUnit : Unit
 
         //                    if (interval <= 0)
         //                    {
-        //                        // 스킬 관련 처리
-        //                        SkillBase skill = GetAvailableSkill();
 
         //                        if (skill != null)
         //                        {
@@ -634,22 +677,22 @@ public class EnemyUnit : Unit
         //                    MoveTo(path);
 
 
-        //                    //if (path.status != NavMeshPathStatus.PathComplete)
-        //                    //{
-        //                    //    Debug.Log(111);
+        //                    if (path.status != NavMeshPathStatus.PathComplete)
+        //                    {
+        //                        Debug.Log(111);
 
-        //                    //    targetUnit = SearchTarget(UnitStats.sightRange);
-        //                    //    if (targetUnit == null)
-        //                    //    {
-        //                    //        mode = Mode.MOVE;
-        //                    //        MoveTo(fortressPos);
-        //                    //    }
-        //                    //}
+        //                        targetUnit = SearchTarget(UnitStats.sightRange);
+        //                        if (targetUnit == null)
+        //                        {
+        //                            mode = Mode.MOVE;
+        //                            MoveTo(fortressPos);
+        //                        }
+        //                    }
         //                }
         //                else // 시야 사거리 밖
         //                {
         //                    targetUnit = null;
-        //                    //hasTargetPos = false;
+        //                    hasTargetPos = false;
         //                    mode = Mode.MOVE;
         //                    MoveTo(fortressPos);
         //                }
@@ -664,33 +707,49 @@ public class EnemyUnit : Unit
         //        break;
         //    case Mode.ATTACKFORTRESS:
         //        {
-        //            if (mode == Mode.COMBAT)
+        //            switch (mission)
         //            {
-        //                targetUnit = SearchTarget(UnitStats.sightRange);
-        //                if (targetUnit != null)
-        //                {
-        //                    state = State.IDLE;
-        //                    mode = Mode.COMBAT;
-        //                    MoveTo(path);
-        //                }
-        //                else
-        //                {
-        //                    SkillBase skill = GetGeneralSkill();
-
-        //                    if (skill != null && skill.IsCoolDown)
+        //                case Mission.FIGHTER:
         //                    {
-        //                        ActivateSkill(fortress, data);
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                SkillBase skill = GetGeneralSkill();
+        //                        SearchReachableTarget(unitStats.sightRange, enemyLayer);
+        //                        if (targets.Count > 0)
+        //                        {
+        //                            if (interval <= 0f)
+        //                            {
+        //                                targetUnit = targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);    // 스킬 범위내 대상 먼저 검색
+        //                                if (targetUnit != null)
+        //                                {
+        //                                    mode = Mode.COMBAT;
+        //                                }
+        //                                else
+        //                                {
+        //                                    targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
+        //                                    if (targetUnit != null)
+        //                                    {
+        //                                        mode = Mode.MOVE;
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            SkillBase GeneralSkill = GetGeneralSkill();
 
-        //                if (skill != null && skill.IsCoolDown)
-        //                {
-        //                    ActivateSkill(fortress, data);
-        //                }
+        //                            if (GeneralSkill != null)
+        //                                ActivateSkill(fortress, data);
+        //                        }
+
+        //                        break;
+        //                    }
+        //                case Mission.SIEGE:
+        //                    {
+        //                        SkillBase GeneralSkill = GetGeneralSkill();
+
+        //                        if (GeneralSkill != null)
+        //                            ActivateSkill(fortress, data);
+
+        //                        break;
+        //                    }
         //            }
         //        }
         //        break;

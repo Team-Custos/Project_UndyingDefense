@@ -390,7 +390,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    protected Unit SearchTarget(SkillBase skill)
+    protected Unit SearchTargetInTargets(SkillBase skill)
     {
         switch(skill.GetTargetRule())
         {
@@ -496,8 +496,8 @@ public abstract class Unit : MonoBehaviour
         else
             return false;
     }
-    
-    protected void SearchReachableTarget(float range, LayerMask targetLayer)   // 시야 범위내 이동 가능 유닛 확인
+
+    protected void SearchReachableTargets(float range, LayerMask targetLayer)   // 시야 범위내 이동 가능 유닛 확인
     {
         targets.Clear();
 
@@ -525,7 +525,7 @@ public abstract class Unit : MonoBehaviour
                     for (float j = 0f; j < 4f; j++)
                     {
                         Vector3 startDir = (transform.position - unit.transform.position).normalized;
-                        Vector3 dir = Quaternion.AngleAxis(9f * j, Vector3.up) * startDir;
+                        Vector3 dir = Quaternion.AngleAxis(90f * j, Vector3.up) * startDir;
                         Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
                         NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch);
@@ -535,7 +535,20 @@ public abstract class Unit : MonoBehaviour
                             targets.Add(unit);
                             continue;
                         }
+                        else if(pathForSearch.status == NavMeshPathStatus.PathInvalid)
+                        {
+                            if(navAgent.isOnNavMesh)
+                            {
+                                Debug.Log(11111111);
+                            }
+                            else
+                            {
+                                Debug.Log(222222222);
+                            }
+                        }
                     }
+
+                    
                 }
             }
 

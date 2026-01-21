@@ -315,13 +315,12 @@ public class AllyUnit : Unit
                     if (idleState == IdleState.DEFAULT)
                         break;
 
-                    if (interval <= 0)
+                    if (interval <= 0f)
                     {
                         SkillBase skill = GetAvailableSkill();
 
                         if (skill != null) // 사용 가능한 스킬이 존재할 경우
                         {
-
                             SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
 
                             switch(skillTargetType)
@@ -395,7 +394,7 @@ public class AllyUnit : Unit
                                 }
                                     
 
-                                if (interval <= 0)
+                                if (interval <= 0f)
                                 {
                                     SkillBase skill = GetAvailableSkill();
 
@@ -421,8 +420,8 @@ public class AllyUnit : Unit
                                                     }
                                                     else
                                                     {
-                                                        SearchReachableTarget(unitStats.sightRange, allyLayer); //  이동 가능한 대상 탐색
-                                                        targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                        SearchReachableTargets(unitStats.sightRange, allyLayer); //  시야 범위 내 이동 가능 유닛
+                                                        targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
                                                         
                                                         if(targetUnit != null)
                                                         {
@@ -473,8 +472,8 @@ public class AllyUnit : Unit
                                                         }
                                                         else
                                                         {
-                                                            SearchReachableTarget(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
-                                                            targetUnit = SearchTarget(skill); // 시야 내로 다시 검사
+                                                            SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                            targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
                                                             if (targetUnit != null)
                                                             {
@@ -488,11 +487,11 @@ public class AllyUnit : Unit
                                         }
                                     }
                                 }
-                                else
-                                {
-                                    if(targetUnit != null) 
-                                        MoveToTargetUnit(targetUnit);
-                                }
+                                //else
+                                //{   // 인터벌이 아닐 때 대상이 있으면 추적?
+                                //    if (targetUnit != null)
+                                //        MoveToTargetUnit(targetUnit);
+                                //}
 
                                 break;
                             }
