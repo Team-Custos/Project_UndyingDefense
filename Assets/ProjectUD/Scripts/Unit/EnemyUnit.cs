@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Resources;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
@@ -60,6 +61,7 @@ public class EnemyUnit : Unit
     // 시즈 모드 유닛을 향해 갈때 사용하는 변수
     private Vector3 targetPos;
     private bool hasTargetPos = false;
+    private bool isFortressPathBlocked = false;     // 성으로의 이동 경로가 막혔는지 여부 확인
 
     private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
@@ -308,12 +310,22 @@ public class EnemyUnit : Unit
         {
             case Mission.SIEGE:
                 {
-                    NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path); // 길 찾기
+                    float distance = Vector3.Distance(transform.position, fortressPos);
+                    float range = GeneralSkill.Data.Range;
 
-                    if (path.status == NavMeshPathStatus.PathPartial)    // 일부 막혀 있음
+                    if (distance <= range)
+                    {
+                        SkillBase generalSkill = GetGeneralSkill();
+                        if (generalSkill != null)
+                            ActivateSkill(fortress, data);
+                        return;
+                    }
+
+                    if (isFortressPathBlocked)
                     {
                         SearchReachableTargets(unitStats.sightRange, enemyLayer);
-                        if (targets.Count > 0)
+
+                        if (targets.Count > 0) // 적 존재
                         {
                             if (interval <= 0f)
                             {
@@ -346,7 +358,16 @@ public class EnemyUnit : Unit
 
                                                     if (targetUnit != null)
                                                     {
-                                                        MoveToTargetUnit(targetUnit);
+                                                        if (targetUnit == this)
+                                                        {
+                                                            ActivateSkill(skill, targetUnit);
+                                                        }
+                                                        else
+                                                        {
+                                                            MoveToTargetUnit(targetUnit);
+                                                        }
+
+
                                                         //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
                                                         //{
                                                         //    ActivateSkill(skill, targetUnit);
@@ -376,11 +397,6 @@ public class EnemyUnit : Unit
                                                         else
                                                         {
                                                             MoveToTargetUnit(targetUnit);
-                                                            //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
-                                                            //{
-                                                            //    ActivateSkill(skill, targetUnit);
-                                                            //    targetUnit = null;
-                                                            //}
                                                         }
                                                     }
                                                 }
@@ -400,14 +416,10 @@ public class EnemyUnit : Unit
                                                         SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
                                                         targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
 
+
                                                         if (targetUnit != null)
                                                         {
                                                             MoveToTargetUnit(targetUnit);
-                                                        }
-                                                        else
-                                                        {
-                                                            navAgent.isStopped = false;
-                                                            ForceMoveTo(fortressPos);
                                                         }
                                                     }
                                                 }
@@ -418,27 +430,27 @@ public class EnemyUnit : Unit
                                 }
                             }
                         }
-                        else
+                        else    // 시야 내 적 없음  -> 성 길 확인
                         {
-                            navAgent.isStopped = false;
+                            NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
+
+                            if (path.status == NavMeshPathStatus.PathComplete)
+                            {
+                                isFortressPathBlocked = false;
+                            }
+
                             ForceMoveTo(fortressPos);
+
                         }
+
+
                     }
                     else
                     {
-                        float distance = Vector3.Distance(transform.position, fortressPos);  // 성까지 거리 계산
-                        float range = GeneralSkill.Data.Range;
-
-                        if (distance <= range)   // 사거리 내 도달
+                        NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
+                        if (path.status != NavMeshPathStatus.PathComplete)
                         {
-                            SkillBase generalSkill = GetGeneralSkill();
-                            if (generalSkill != null)
-                                ActivateSkill(fortress, data);
-                        }
-                        else
-                        {
-                            navAgent.isStopped = false;
-                            navAgent.SetPath(path);
+                            isFortressPathBlocked = true;
                         }
                     }
                     break;
@@ -569,8 +581,7 @@ public class EnemyUnit : Unit
                         }
                         else
                         {
-                            navAgent.isStopped = false;
-                            navAgent.SetPath(path);
+                            ForceMoveTo(fortressPos);
                         }
                     }
 
@@ -885,6 +896,7 @@ public class EnemyUnit : Unit
             executionEffect = null;
         }
 
+        isFortressPathBlocked = false;
         hasTargetPos = false;
         state = State.DEAD;
 

@@ -522,10 +522,10 @@ public abstract class Unit : MonoBehaviour
                 }
                 else
                 {
-                    for (float j = 0f; j < 4f; j++)
+                    for (float j = 0f; j < 6f; j++)
                     {
                         Vector3 startDir = (transform.position - unit.transform.position).normalized;
-                        Vector3 dir = Quaternion.AngleAxis(90f * j, Vector3.up) * startDir;
+                        Vector3 dir = Quaternion.AngleAxis(60f * j, Vector3.up) * startDir;
                         Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
                         NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch);
@@ -552,7 +552,10 @@ public abstract class Unit : MonoBehaviour
                 }
             }
 
-            //Debug.Log(targets.Count);
+            if(targets.Count == 0)
+            {
+                Debug.Log(11111);
+            }
         }
     }
 
@@ -618,7 +621,7 @@ public abstract class Unit : MonoBehaviour
                 if (unit == null)
                     continue;
 
-                if (unit.isDead || !unit.gameObject.activeInHierarchy)
+                if (unit.isDead || !unit.gameObject.activeInHierarchy || unit == this)
                     continue;
 
                 float dst = Vector3.Distance(transform.position, unit.transform.position);
