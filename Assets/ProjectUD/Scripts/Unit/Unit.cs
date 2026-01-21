@@ -535,17 +535,17 @@ public abstract class Unit : MonoBehaviour
                             targets.Add(unit);
                             continue;
                         }
-                        else if(pathForSearch.status == NavMeshPathStatus.PathInvalid)
-                        {
-                            if(navAgent.isOnNavMesh)
-                            {
-                                Debug.Log(11111111);
-                            }
-                            else
-                            {
-                                Debug.Log(222222222);
-                            }
-                        }
+                        //else if(pathForSearch.status == NavMeshPathStatus.PathInvalid)
+                        //{
+                        //    if(navAgent.isOnNavMesh)
+                        //    {
+                        //        Debug.Log(11111111);
+                        //    }
+                        //    else
+                        //    {
+                        //        Debug.Log(222222222);
+                        //    }
+                        //}
                     }
 
                     
