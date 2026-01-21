@@ -45,24 +45,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onActivate:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 2625658090149482085}
+      _MemberName: ReadyToSelectUnit
+      _PersistentArguments: []
   onActivateAtPos:
     _PersistentCalls: []
   onActivateAtUnit:
-    _PersistentCalls:
-    - _Target: {fileID: 2625658090149482085}
-      _MemberName: GetMark
-      _PersistentArguments:
-      - _Type: 14
-        _Int: 0
-        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
+    _PersistentCalls: []
+  soundManager: {fileID: 0}
   data: {fileID: 11400000, guid: 27e9ae8fd97398e498dc17b08cc8dca3, type: 2}
   attackTargetLayer:
     serializedVersion: 2
     m_Bits: 128
+  selectTargetLayer:
+    serializedVersion: 2
+    m_Bits: 0
   areaTriggerObject: {fileID: 0}
+  incomingDirection: {x: 0, y: 0, z: 0}
+  targetingController: {fileID: 0}
+  BurningOilCtrl: {fileID: 0}

@@ -501,8 +501,9 @@ public class UpgradeMenuUI : MonoBehaviour
     public void HideUpgradeUI()
     {
         //selectedUI.gameObject.SetActive(false);
-        
-        if(selectedUnitManager.SelectedUnit is AllyUnit)
+
+
+        if (selectedUnitManager.SelectedUnit is AllyUnit)
             selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
 
         for(int i = 0; i < frameImage.Length; i++)
@@ -512,6 +513,8 @@ public class UpgradeMenuUI : MonoBehaviour
 
         upgradePerformBtn.interactable = false;
 
+        
+
         gameObject.SetActive(false);
     }
 
@@ -520,7 +523,6 @@ public class UpgradeMenuUI : MonoBehaviour
     {
         if (upgradeIndex != index)
         {
-            Debug.Log(index);
             
             for(int i = 0; i < frameImage.Length; i++)
             {

@@ -133,7 +133,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
     public void HideUpgrdeUI()
     {
-        unitUpgradeMenuPrefab.SetActive(false);
+        upgradeMenuUI.HideUpgradeUI();
         //SoundManager.Instance.playCancleSFX();
         selecteUnitManger.OnUpgrade(false);
 

@@ -45,21 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onActivate:
-    _PersistentCalls: []
-  onActivateAtPos:
     _PersistentCalls:
     - _Target: {fileID: -336196044479407675}
-      _MemberName: AreaAttack
+      _MemberName: ReadyToSelectLocation
       _PersistentArguments:
-      - _Type: 14
-        _Int: 0
-        _String: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
       - _Type: 5
         _Int: 0
         _String: 
@@ -84,6 +73,8 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+  onActivateAtPos:
+    _PersistentCalls: []
   onActivateAtUnit:
     _PersistentCalls: []
   soundManager: {fileID: 0}
@@ -91,6 +82,11 @@ MonoBehaviour:
   attackTargetLayer:
     serializedVersion: 2
     m_Bits: 128
+  selectTargetLayer:
+    serializedVersion: 2
+    m_Bits: 0
   areaTriggerObject: {fileID: 5767769577764027390, guid: 8a31800d7e058a84e9cad3e2733aeb04,
     type: 3}
   incomingDirection: {x: 0, y: 5, z: 0}
+  targetingController: {fileID: 0}
+  BurningOilCtrl: {fileID: 0}

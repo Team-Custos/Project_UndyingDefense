@@ -196,7 +196,7 @@ public class AttackSkill : SkillBase
         //}
     }
 
-    public void AreaAttack(Unit unit, Unit pivotTarget, float radius) //원형 공격
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius) //원거리 원형 공격
     {
         if (targets == null)
             targets = new Collider[maxTargetCount];
@@ -207,14 +207,21 @@ public class AttackSkill : SkillBase
             {
                 Attack(unit, target);
 
-                //if(skillVfx != null)
-                //{
-                //    vfxPool = unit.SkillVfxPool;
+            }
+        }
+    }
 
-                //    GameObject obj = vfxPool.GetVFX(skillVfx, unit);
-                //    obj.transform.position = target.transform.position;
-                //    obj.SetActive(true);
-                //}
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab) //원거리 원형 공격, 이펙트 생성용
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+                target.AddVFX(vfxPrefab, unit.transform);
             }
         }
     }
@@ -269,6 +276,10 @@ public class AttackSkill : SkillBase
         Vector3 dir = (target.transform.position - transform.position).normalized;
         unit.AddVFX(vfxPrefab, dir);
     }
+
+
+
+
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
