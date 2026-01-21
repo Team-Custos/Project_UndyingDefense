@@ -13,6 +13,8 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private IngameCommandSkillManager ingameCommandSkillManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    //ayo_0117
+    [SerializeField] private CommandSkillTargetingController cSkillTargetingCtrl;
 
     [Header("■ UI")]
     [SerializeField] private TextMeshProUGUI waveTextUI;
@@ -124,6 +126,8 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
             allyUnitSpawner.CancelSpawn();
             ingameCommandSkillManager.CancelSkill();
+            //ayo_0117
+            //cSkillTargetingCtrl.CancelTargeting();
             upgradeMenuUI.HideUpgradeUI();
             selectedUnitManager.DeSelecteUnit();
 

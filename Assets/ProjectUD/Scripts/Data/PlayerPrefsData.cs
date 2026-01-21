@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class PlayerPrefsData : MonoBehaviour
     //private string selectCommanderSkills = string.Empty;    // 배열로 ..?
     public static PlayerPrefsData instance;
 
+    [SerializeField] private TextAsset CSkillDefaultData;
+    [SerializeField] private TextAsset HaveCSkillDefaultData;
+
     //** 지휘관 스킬
     private List<string> haveCommanderSkills = new List<string>();
     private List<string> selectCommanderSkills = new List<string>();
@@ -17,6 +21,8 @@ public class PlayerPrefsData : MonoBehaviour
 
     //** 인물도감
     private List<string> characterArchive = new List<string>();
+
+    private StringBuilder sb = new StringBuilder();
 
     //** 계정 설정 => 닉네임만 바꿀때, 이미지만 바꿀때는?
 
@@ -33,6 +39,64 @@ public class PlayerPrefsData : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    private void Start()
+    {
+        //-- 임시
+        //PlayerPrefs.SetInt("SetDefaultCSkill", 0);
+        if (PlayerPrefs.GetInt("SetDefaultCSkill") == 0)
+        {
+            LoadCSkillData(CSkillDefaultData.text);
+        }
+        if (PlayerPrefs.GetInt("SetHaveCSkill") == 0)
+        {
+            LoadHaveCSkillData(HaveCSkillDefaultData.text);
+        }
+    }
+
+    // 초기 지휘관 스킬 저장 ( 선택 )
+    public void LoadCSkillData(string st)
+    {
+        if (sb.Length > 0)
+            sb.Clear();
+
+        string[] lines = st.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)  // 맨 윗줄 빼고라서 1부터.
+        {
+            if (lines[i] == string.Empty)
+                continue;
+            //sb.AppendLine(lines[i]);
+
+            sb.Append($"{lines[i]}\n");
+            // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
+        }
+
+        //PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
+        PlayerPrefs.SetString("selectCommanderSkill", sb.ToString());
+        PlayerPrefs.SetInt("SetDefaultCSkill", 1);
+    }
+
+    // 초기 지휘관 스킬 저장 ( 보유 )
+    public void LoadHaveCSkillData(string st)
+    {
+        if (sb.Length > 0)
+            sb.Clear();
+
+        string[] lines = st.Split('\n');
+
+        for (int i = 1; i < lines.Length; i++)  // 맨 윗줄 빼고라서 1부터.
+        {
+            if (lines[i] == string.Empty)
+                continue;
+            //sb.AppendLine(lines[i]);
+
+            sb.Append($"{lines[i]}\n");
+            // (3개들어가는거 확인) Debug.Log($"sb에 {lines[i]} 추가");
+        }
+
+        PlayerPrefs.SetString("haveCommaderSkill", sb.ToString());
+        PlayerPrefs.SetInt("SetHaveCSkill", 1);
     }
 
     public void SetAccount(string pID, string pNickName, string imageID)    // 구조체
@@ -87,17 +151,26 @@ public class PlayerPrefsData : MonoBehaviour
         PlayerPrefs.SetString("haveCommaderSkill", haveCSkill);
     }
 
-    public void SetSelectCSkill(string id)  // ?? -> 언제저장 물어볼것
+    public void SetSelectCSkill(List<string> selectCSkillList)  
     {
         //selectCommanderSkills += $"{id}\n";
         //selectCommanderSkills.Add(id);
         // 지휘관 스킬 선택하는 부분 보고 수정 
 
+        selectCommanderSkills.Clear();
+        // selectCommanderSkills = selectCSkillList;
+        for(int i = 0; i < selectCSkillList.Count; i++)
+        {
+            selectCommanderSkills.Add(selectCSkillList[i]);
+        }
+
         string selectCSkill = string.Empty;
-        for(int i = 0; i < selectCommanderSkills.Count; i++)
+
+        for (int i = 0; i < selectCommanderSkills.Count; i++)
         {
             selectCSkill += $"{selectCommanderSkills[i]}\n";
         }
+
         PlayerPrefs.SetString("selectCommanderSkill", selectCSkill);
     }
 
@@ -118,15 +191,16 @@ public class PlayerPrefsData : MonoBehaviour
         return characterArchive;
     }
 
-    public List<string> GetCommanderSkill()
+    public List<string> GetHaveCommanderSkill()
     {
+        haveCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("haveCommaderSkill");
         if (!string.IsNullOrEmpty(commanderSkill))
         {
             string[] skills = commanderSkill.Split("\n");
             for(int i = 0; i < skills.Length; i++)
             {
-                haveCommanderSkills.Add(skills[i]);
+                haveCommanderSkills.Add(skills[i].Trim());
             }
         }
 
@@ -134,4 +208,26 @@ public class PlayerPrefsData : MonoBehaviour
     }
 
     // 선택한 스킬도 불러올지=> 기획
+    public List<string> GetSelectedCommanderSkill()
+    {
+        selectCommanderSkills.Clear();
+        string commanderSkill = PlayerPrefs.GetString("selectCommanderSkill");
+        Debug.Log($"{commanderSkill}");
+        Debug.Log($"{commanderSkill.Length}");
+
+        if (!string.IsNullOrEmpty(commanderSkill))
+        {
+            string[] skills = commanderSkill.Split("\n");
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (skills[i] == string.Empty)
+                    continue;
+                Debug.Log($"{skills[i]}, Length: { skills[i].Length}, { skills[i].Trim().Length} ");
+                selectCommanderSkills.Add(skills[i].Trim());
+            }
+            Debug.Log($"프랩스에서 GetSelected 한 지휘관 스킬 갯수 : {selectCommanderSkills.Count}");
+        }
+
+        return selectCommanderSkills;
+    }
 }

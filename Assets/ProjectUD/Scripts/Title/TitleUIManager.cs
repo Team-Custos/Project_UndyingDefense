@@ -13,6 +13,9 @@ public class TitleUIManager : MonoBehaviour
     public GameObject loadingPanel;
     public Image progressImage;
     public Text progressText;
+    [SerializeField] private Button creditBtn;
+    [SerializeField] private Button creditCloseBtn;
+    [SerializeField] private GameObject creditPanel;
 
     public RectTransform backgroundPanel;
     public RectTransform titleText;
@@ -64,6 +67,34 @@ public class TitleUIManager : MonoBehaviour
             gameEndBtn.onClick.AddListener(() =>
             {
                 EndGame();
+            });
+        }
+
+        if (creditBtn != null)
+        {
+            creditBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                SoundManager.Instance.PlayUIClickSFX();
+                creditPanel.SetActive(true);
+            });
+        }
+
+        if (creditCloseBtn != null)
+        {
+            creditCloseBtn.onClick.AddListener(() =>
+            {
+                if (GlobalSoundManager.instance != null)
+                {
+                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+                }
+
+                //SoundManager.Instance.playCancleSFX();
+                creditPanel.SetActive(false);
             });
         }
 

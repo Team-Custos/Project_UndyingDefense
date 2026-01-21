@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class Ingame_ImageHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject mouseOverObject;
 
-    public void OnPointerExit(PointerEventData eventData)
+
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         mouseOverObject.SetActive(false);
 
-        // 여기서 설정
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         mouseOverObject.SetActive(true);
     }

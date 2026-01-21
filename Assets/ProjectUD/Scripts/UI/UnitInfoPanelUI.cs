@@ -9,7 +9,7 @@ public class UnitInfoPanelUI : MonoBehaviour
     [Header("UnitDataLoader")]
     [SerializeField] private UnitDataLoader loader;
 
-    [Header("UnitDataLoader")]
+    [Header("NameTextTable")]
     [SerializeField] private FactionNameTextTable fNameTextTable;
 
     private UnitData unitData;
@@ -39,6 +39,13 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private Image generalIcon;
     [SerializeField] private Image specialIcon;
     [SerializeField] private Image passiveIcon;
+
+    //[SerializeField] private TextMeshProUGUI infoGSkillText;
+    //[SerializeField] private TextMeshProUGUI infoSSkillText;
+    [SerializeField] private TextMeshProUGUI infoGSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoSSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoGSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoSSkillEffect;
 
     [Header("Stats")]
     [SerializeField] private TextMeshProUGUI hp;
@@ -102,6 +109,24 @@ public class UnitInfoPanelUI : MonoBehaviour
         // skill
         generalIcon.sprite = unitData.GeneralSkill.Icon;
         specialIcon.sprite = unitData.SpecialSkill.Icon;
+
+        //--Local 스킬이름
+        //infoGSkillText.text = LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_name", LocalizationSettings.SelectedLocale);
+        //infoSSkillText.text = LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_name", LocalizationSettings.SelectedLocale);
+        //--Local 스킬 설명 (desc + effect)
+        infoGSkillDescript.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_desc", LocalizationSettings.SelectedLocale);
+        infoGSkillEffect.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_effect", LocalizationSettings.SelectedLocale);
+
+        infoSSkillDescript.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_desc", LocalizationSettings.SelectedLocale);
+        infoSSkillEffect.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_effect", LocalizationSettings.SelectedLocale);
+
+
         // passiveSkill
 
         // stats

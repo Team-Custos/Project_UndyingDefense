@@ -47,7 +47,7 @@ public class StagePrefsData : MonoBehaviour
 
         string[] lines = st.Split('\n');
 
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length; i++)  // 맨 윗줄 빼고라서 1부터.
         {
             sb.AppendLine(lines[i]);
         }
