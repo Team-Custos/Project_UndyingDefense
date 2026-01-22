@@ -22,6 +22,9 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] private TextMeshProUGUI helpDesc;
     [SerializeField] private Image panelImage;
     [SerializeField] private Button skillButton;
+    [SerializeField] private Button unlockButton;
+
+    [SerializeField] private MessageUI warningMessage;
 
     private int index;
     private string sName;
@@ -73,6 +76,14 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         lockIcon.gameObject.SetActive(!b);
         lockPanel.gameObject.SetActive(!b);
         helpDesc.gameObject.SetActive(!b);
+
+        if(!b)
+        {
+            unlockButton.onClick.AddListener(() =>
+            {
+                warningMessage.AddMessage("해당 계급이 되어야 스킬을 해금할 수 있습니다.");
+            });
+        }
     }
 
     public void SetBtn(int i, bool canUse, Sprite sprite, string name, string desc, string effect)
@@ -90,6 +101,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         skillName.text = "";
         icon.sprite = null;
+        selectedIndicator.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

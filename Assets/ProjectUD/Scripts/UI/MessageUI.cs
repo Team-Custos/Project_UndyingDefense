@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MessageUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI message;
+    [SerializeField] private GameObject messagePanel;
     [SerializeField] private AudioClip sfx;
     [SerializeField] private float duration;
     private float showTimer;
-    private Animator animator;
+    [SerializeField] private Animator animator;
     public List<string> messages = new List<string>();
 
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -50,6 +52,7 @@ public class MessageUI : MonoBehaviour
         showTimer = duration;
         string str = messages[0];
         message.text = str;
+        messagePanel.SetActive(true);
         message.gameObject.SetActive(true);
         animator.SetTrigger("FadeIn");
         SoundManager.Instance.PlaySFX(sfx);
@@ -58,7 +61,8 @@ public class MessageUI : MonoBehaviour
     private void RemoveMessage()
     {
         messages.RemoveAt(0);
-        if(messages.Count > 0)
+        messagePanel.SetActive(false);
+        if (messages.Count > 0)
         {
             ShowNextMessage();
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 public class CommanderSkillUI : MonoBehaviour
 {
@@ -11,6 +12,14 @@ public class CommanderSkillUI : MonoBehaviour
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private CommandSkillBtnUI[] cSkillBtnArray;
     [SerializeField] private SelectedCommanderSkillUI selectedSkillUI;
+    [SerializeField] private RankSystem rankSystem;
+
+    [Header("보상 알림")]
+    [SerializeField] private MessageUI rewardAlarm;
+
+    [Header("버튼이미지")]
+    [SerializeField] private Sprite pageSelectedSprite;
+    [SerializeField] private Sprite pageNormalSprite;
 
     private CommandSkillData[] datas = new CommandSkillData[] { };
     private CommandSkillData[] currentSelected = new CommandSkillData[3];
@@ -18,6 +27,19 @@ public class CommanderSkillUI : MonoBehaviour
     private int skillCount = 0;
     private int pageNum = 1;
 
+    private void ShowAlarm()
+    {
+        IReadOnlyList<string> alarms = rankSystem.GetRewardAlarms();
+
+        if (alarms == null || alarms.Count == 0)
+            return;
+
+        for (int i = 0; i < alarms.Count; i++)
+        {
+            rewardAlarm.AddMessage($"[ {alarms[i]} ] 스킬을 배웠습니다!");
+        }
+        rankSystem.ResetAlarmList();
+    }
 
     private void LoadSelectedSkill()
     {
@@ -61,14 +83,15 @@ public class CommanderSkillUI : MonoBehaviour
         List<string> casUseCSkillList = PlayerPrefsData.instance.GetHaveCommanderSkill();
         for (int i = 0; i < casUseCSkillList.Count; i++)
         {
-            Debug.Log($"{casUseCSkillList.Count}");
+            //Debug.Log($"{casUseCSkillList.Count}");
+            Debug.Log($"{casUseCSkillList[i]}");
 
             for (int j = 0; j < datas.Length; j++)
             {
-                Debug.Log($"{datas.Length}");
-                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
-                Debug.Log($"프랩스 로드 {casUseCSkillList[i]}, Length: {casUseCSkillList[i].Length}");
-                Debug.Log($"결과 : {datas[j].Id == casUseCSkillList[i]}");
+                //Debug.Log($"{datas.Length}");
+                //Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
+                //Debug.Log($"프랩스 로드 {casUseCSkillList[i]}, Length: {casUseCSkillList[i].Length}");
+                //Debug.Log($"결과 : {datas[j].Id == casUseCSkillList[i]}");
 
                 if (string.Compare(datas[j].Id, casUseCSkillList[i]) == 0)
                 {
@@ -134,6 +157,22 @@ public class CommanderSkillUI : MonoBehaviour
 
     }
 
+    public void OnPageBtnClick(int num)     // 버튼 클릭 이벤트용 함수
+    {
+        pageNum = num;
+        ShowCommandSkill();
+
+
+        // LoPol 추가
+        for (int i = 0; i < pageBtnArray.Length; i++)
+        {
+            Image img = pageBtnArray[i].GetComponent<Image>();
+
+            if (img != null)
+                img.sprite = ((i + 1) == pageNum) ? pageSelectedSprite : pageNormalSprite;
+        }
+    }
+
     public void SetCSkillBtn(int i, bool canUse, Sprite image, string name, string desc, string effect)
     {
         cSkillBtnArray[i].SetBtn(i, canUse, image, name, desc, effect);
@@ -144,6 +183,9 @@ public class CommanderSkillUI : MonoBehaviour
 
     private void ShowCommandSkill()
     {
+        //ResetPageBtn();
+        ResetCSkillBtn();
+
         int toShow = skillCount - ((pageNum - 1) * 10);
         int temp = Mathf.Min(toShow, 10);
         bool canUseSkill = false;
@@ -197,6 +239,7 @@ public class CommanderSkillUI : MonoBehaviour
         LoadSelectedSkill();
         ShowCommandSkill();
         gameObject.SetActive(true );
+        ShowAlarm();
     }
 
     public void HideUI()    // 뒤로가기

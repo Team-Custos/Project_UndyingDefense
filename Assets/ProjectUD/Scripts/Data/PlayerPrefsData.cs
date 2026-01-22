@@ -12,6 +12,7 @@ public class PlayerPrefsData : MonoBehaviour
 
     [SerializeField] private TextAsset CSkillDefaultData;
     [SerializeField] private TextAsset HaveCSkillDefaultData;
+    [SerializeField] private RankSystem rankSystem;
 
     //** 지휘관 스킬
     private List<string> haveCommanderSkills = new List<string>();
@@ -44,6 +45,8 @@ public class PlayerPrefsData : MonoBehaviour
     {
         //-- 임시
         //PlayerPrefs.SetInt("SetDefaultCSkill", 0);
+        //PlayerPrefs.SetInt("SetHaveCSkill", 0);
+        //PlayerPrefs.SetInt("SetStartRank", 0);
         if (PlayerPrefs.GetInt("SetDefaultCSkill") == 0)
         {
             LoadCSkillData(CSkillDefaultData.text);
@@ -52,6 +55,14 @@ public class PlayerPrefsData : MonoBehaviour
         {
             LoadHaveCSkillData(HaveCSkillDefaultData.text);
         }
+        if(PlayerPrefs.GetInt("SetStartRank") == 0)
+        {
+            PlayerPrefs.SetInt("CommanderRank", 1); // 기본 지휘관 랭크
+            PlayerPrefs.SetInt("SetStartRank", 1);
+            PlayerPrefs.SetString("CommanderID", "CON_commanderRank01"); // 기본 지휘관
+        }
+
+        rankSystem.UpdateRank();
     }
 
     // 초기 지휘관 스킬 저장 ( 선택 )
@@ -108,9 +119,14 @@ public class PlayerPrefsData : MonoBehaviour
 
 
     //** 지휘관 계급
-    public void SetCommanderRank(string commanderID)
+    public void SetCommanderID(string commanderID)
     {
-        PlayerPrefs.SetString("CommanderRank", commanderID);
+        PlayerPrefs.SetString("CommanderID", commanderID);
+    }
+
+    public void SetCommanderRank(int rank)
+    {
+        PlayerPrefs.SetInt("CommanderRank", rank);
     }
 
     //** 공로포인트
@@ -120,6 +136,7 @@ public class PlayerPrefsData : MonoBehaviour
         point += getPoint;
         PlayerPrefs.SetFloat("Point", point);
     }
+
     
     public void SetCharacterArchive(string cArchiveID)
     {
@@ -138,10 +155,14 @@ public class PlayerPrefsData : MonoBehaviour
     public void SetHaveCommanderSkills(string skillID)
     {
         //haveCommanderSkills += $"{id}\n";
+        if (haveCommanderSkills.Count == 0)
+        {
+            GetHaveCommanderSkill(); // 안전 장치
+        }
 
-        if(haveCommanderSkills.Contains(skillID)) 
+        if (haveCommanderSkills.Contains(skillID))   // 중복 방지
             return;
-
+        Debug.Log($"추가하기전 지휘관 스킬 갯수 : {haveCommanderSkills.Count}");
         haveCommanderSkills.Add(skillID);
         string haveCSkill = string.Empty;
         for (int i = 0; i < haveCommanderSkills.Count; i++)
@@ -193,15 +214,23 @@ public class PlayerPrefsData : MonoBehaviour
 
     public List<string> GetHaveCommanderSkill()
     {
-        haveCommanderSkills.Clear();
+        //haveCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("haveCommaderSkill");
         if (!string.IsNullOrEmpty(commanderSkill))
         {
             string[] skills = commanderSkill.Split("\n");
             for(int i = 0; i < skills.Length; i++)
             {
+                if (skills[i] == string.Empty)
+                    continue;
+                if (haveCommanderSkills.Contains(skills[i]))   // 중복 방지
+                    continue;
                 haveCommanderSkills.Add(skills[i].Trim());
             }
+        }
+        for(int i = 0; i < haveCommanderSkills.Count; i++)
+        {
+            Debug.Log($"프랩스에서 GetHave 한 지휘관 스킬 : {haveCommanderSkills[i]}");
         }
 
         return haveCommanderSkills;
