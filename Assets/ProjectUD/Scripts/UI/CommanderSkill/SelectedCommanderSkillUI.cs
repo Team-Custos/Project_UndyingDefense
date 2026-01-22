@@ -28,6 +28,12 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 
     public void SetCSkill(int index)
     {
+        if (selectedCSkills[index] == null)
+        {
+            //selectedCSkillBtns[index].ClearSelectedCSkillUI();
+            selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
+            return;
+        }
         string skillNameId = selectedCSkills[index].Id + "_name";
         string skillDescId = selectedCSkills[index].Id + "_desc";
         string skillEffectId = selectedCSkills[index].Id + "_effect";
@@ -62,7 +68,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
     {
         commanderSkillUI.DeSelectCommanderSkill(selectedCSkills[index]);
         selectedCSkills[index] = null;
-        selectedCSkillBtns[index].ClearSelectedCSkillUI();
+        //selectedCSkillBtns[index].ClearSelectedCSkillUI();
+        selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
     }
 
     public void RemoveSkill(CommandSkillData data)
@@ -89,11 +96,29 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         for (int i = 0; i < selectedCSkills.Length; i++)
         {
             if (selectedCSkills[i] == null)
+            {
+                Debug.Log($"★★★선택된 지휘관 스킬 {i}번째 : 비어있음");
+            }
+            else
+                Debug.Log($"★★★선택된 지휘관 스킬 {i}번째 : {selectedCSkills[i].Name}");
+            // 비어있으면 빈문자열 저장
+            if (selectedCSkills[i] == null)
+            {
                 selectCSkillID.Add(string.Empty);
+                continue;
+            }
             selectCSkillID.Add(selectedCSkills[i].Id);
         }
-
+        for (int i = 0; i < selectCSkillID.Count; i++)
+        {
+            Debug.Log($"★★★저장할 지휘관 스킬 ID {i}번째 ID : {selectCSkillID[i]}");
+        }
         PlayerPrefsData.instance.SetSelectCSkill(selectCSkillID);
+        for (int i = 0; i < selectCSkillID.Count; i++)
+        {
+
+            Debug.Log($"★★★저장된 지휘관 스킬 : {selectCSkillID[i]}");
+        }
 
     }
 }

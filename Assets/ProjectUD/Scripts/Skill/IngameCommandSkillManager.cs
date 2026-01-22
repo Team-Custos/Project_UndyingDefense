@@ -14,6 +14,9 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     [SerializeField] private CommandSkill[] commandSkillList;
     [SerializeField] private SkillButtonCooldownUI[] cSkillBtns;
 
+    [Header("인디케이터")]
+    //[SerializeField] private GameObject indicator;
+
     private CommandSkillData[] datas = new CommandSkillData[] { };
     private CommandSkillData[] currentSelected = new CommandSkillData[3];
     //-------지휘관 스킬 로드 & 셋팅
@@ -120,6 +123,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     private void SetCSkillData(int index)
     {
+        if (currentSelected[index] == null)
+        {
+            cSkillBtns[index].SetSelectedCSkillDataUI(index, null,string.Empty,string.Empty,string.Empty);
+            return;
+        }
         string skillNameId = currentSelected[index].Id + "_name";
         string skillDescId = currentSelected[index].Id + "_desc";
         string skillEffectId = currentSelected[index].Id + "_effect";
@@ -369,6 +377,17 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     public void SetBeingUsedCommandSkill(int i, CommandSkill commandSkill)
     {
         beingUsedCommandskill = commandSkill;
+        // 인디케이터
+        /*
+        //if (indicator == null)
+        //{
+        //    Debug.LogError("Indicator is NOT assigned!");
+        //    return;
+        //}
+        //indicator.transform.position = cSkillBtns[i].transform.position;
+        //indicator.SetActive(true);*/
+
+
         //inputEventManager.OnESCTarget = this;
         //inputEventManager.OnRightClickTarget = this;
         //selectedUI0 = cSkillBtns[i].transform;
@@ -377,6 +396,16 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     public void ResetButton()
     {
         beingUsedCommandskill = null;
+        // 인디케이터
+        /*
+        if (indicator == null)
+        {
+            Debug.LogError("Indicator is NOT assigned!");
+            return;
+        }
+        indicator.SetActive(false);*/
+
+
         //inputEventManager.OnESCTarget = ingameManager;
         //inputEventManager.OnRightClickTarget = SelectedUnitManager;
         //inputEventManager.OnClickTarget = SelectedUnitManager;
@@ -393,6 +422,8 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             return;
         beingUsedCommandskill.SetSkillState(false);
         beingUsedCommandskill = null;
+        // 인디케이터
+        //indicator.SetActive(false);
 
     }
 

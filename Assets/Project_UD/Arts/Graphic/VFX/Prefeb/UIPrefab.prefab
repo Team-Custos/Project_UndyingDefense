@@ -3502,9 +3502,9 @@ RectTransform:
   - {fileID: 4864354534101313074}
   m_Father: {fileID: 1604618618494541413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 275.22, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &340922257969527193
@@ -3620,6 +3620,7 @@ MonoBehaviour:
   commandSkillCoolText: {fileID: 4457853355443846493}
   commandSkillDescriptionText: {fileID: 3465841413639376573}
   skillIcon: {fileID: 0}
+  alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}
 --- !u!1 &1992544023702247247
 GameObject:
@@ -5493,9 +5494,9 @@ RectTransform:
   - {fileID: 3551056157448424716}
   m_Father: {fileID: 1604618618494541413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 387.83, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &709693773662919218
@@ -5611,6 +5612,7 @@ MonoBehaviour:
   commandSkillCoolText: {fileID: 4602983690473378547}
   commandSkillDescriptionText: {fileID: 1354579170049075061}
   skillIcon: {fileID: 0}
+  alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}
 --- !u!1 &2998224220654358857
 GameObject:
@@ -6747,7 +6749,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4860421374845399454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10882,9 +10884,9 @@ RectTransform:
   - {fileID: 6517215014270678980}
   m_Father: {fileID: 1604618618494541413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.61, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8410070628123599800
@@ -11000,6 +11002,7 @@ MonoBehaviour:
   commandSkillCoolText: {fileID: 7697914141173389850}
   commandSkillDescriptionText: {fileID: 6376574121451457300}
   skillIcon: {fileID: 0}
+  alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}
 --- !u!1 &5045619527024898574
 GameObject:
@@ -18220,9 +18223,9 @@ RectTransform:
   - {fileID: 8805193230571862939}
   m_Father: {fileID: 1604618618494541413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6687251090571258219
@@ -21188,6 +21191,7 @@ MonoBehaviour:
   ingameCommandSkillManager: {fileID: 0}
   selectedUnitManager: {fileID: 0}
   upgradeMenuUI: {fileID: 8360963658847904336}
+  cSkillTargetingCtrl: {fileID: 0}
   waveTextUI: {fileID: 1516172177440090003}
   goldTextUI: {fileID: 6644313590923955140}
   settingUI: {fileID: 7090137316518269225}

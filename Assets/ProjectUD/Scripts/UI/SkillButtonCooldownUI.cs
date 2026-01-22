@@ -28,6 +28,8 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private void Start()
     {
+        if(commandSkillData == null)
+            return;
         coolTime = commandSkillData.CoolTime;
         cooldownCheck = coolTime;
 
@@ -38,7 +40,13 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private void Update()
     {
-        if(commandSkill.IsCoolDown) // 쿨타임 종료 -> 스킬 사용 가능
+        if(commandSkill != null)
+            UpdateCooldownUI();
+    }
+
+    private void UpdateCooldownUI()
+    {
+        if (commandSkill.IsCoolDown) // 쿨타임 종료 -> 스킬 사용 가능
         {
             cooldownCheck = 0f;
             cooldownImage.fillAmount = 1f;
@@ -54,9 +62,24 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             this.tag = "UnInteractiveUi";
         }
     }
-    
+
+
     public void SetSelectedCSkillDataUI(int i, CommandSkillData data, string name, string desc, string effect)
     {
+        if(data == null)
+        {
+            // 빈칸이 넘어오면 초기화하고 슬롯 이미지 검은색으로 변경
+            commandSkillData = null;
+            skillIcon.sprite = null;
+            skillIcon.color = new Color(1, 1, 1, 0);
+            commandSkillNameText.text = string.Empty;
+            commandSkillDescriptionText.text = string.Empty;
+            coolTime = 0f;
+            cooldownCheck = 0f;
+            commandSkillCoolText.text = string.Empty;
+            return;
+        }
+           
         index = i;
         commandSkillData = data;
         skillIcon.sprite = commandSkillData.Icon;
@@ -101,6 +124,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        infoPanel.SetActive(true);
+        if (commandSkillData != null)
+            infoPanel.SetActive(true);
     }
 }
