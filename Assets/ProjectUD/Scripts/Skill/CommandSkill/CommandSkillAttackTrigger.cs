@@ -173,6 +173,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         }
     }
 
+
     public void AreaAttack(Transform pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
     {
         if (targets == null)

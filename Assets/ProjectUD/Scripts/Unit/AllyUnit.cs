@@ -486,11 +486,10 @@ public class AllyUnit : Unit
                                         }
                                     }
                                 }
-                                //else
-                                //{   // 인터벌이 아닐 때 대상이 있으면 추적?
-                                //    if (targetUnit != null)
-                                //        MoveToTargetUnit(targetUnit);
-                                //}
+                                else
+                                {
+                                    navAgent.isStopped = true;
+                                }
 
                                 break;
                             }
