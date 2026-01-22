@@ -112,6 +112,9 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             SoundManager.Instance.PlayUnableUIClickSFX();
             return;
         }
+
+
+
         commandSkill.Activate();
         SoundManager.Instance.PlayUIClickSFX();
     }
