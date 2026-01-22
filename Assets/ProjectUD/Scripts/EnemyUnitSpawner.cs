@@ -39,6 +39,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     private int spawnDataEnemyCount; // 현재 EnemySpawnData의 스폰 횟수.
     private bool isSpawnEnd = true;
     private bool isSpawnWait = false;
+    private float bonusGoldPercent = 0f; // 적 처치시 추가 골드 획득 퍼센트
 
 
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
@@ -195,21 +196,13 @@ public class EnemyUnitSpawner : MonoBehaviour
         activateEnemyCount--;
 
 
-        inGameManager.SetGold(enmeyUnitData.Gold, true);
+        float bonusGold = enmeyUnitData.Gold * (1f + bonusGoldPercent);
+
+        inGameManager.SetGold(bonusGold, true);
         ingameScreenUI.SetspawnBtnPriceTextColor();
         upgradeMenuUI.UpdateUpgradeCostTxt();
         
         
-
-        //if (totalMonCount <= 0 && isSpawnEnd) // 스폰 상태가 아닐때 몬스터 수가 0 이면 웨이브 종료
-        //{
-        //    isSpawnEnd = false;
-        //    isWaveEnd = true;
-
-        //    inGameManager.SetGold(waveData[curWave - 1].Reward, true);
-
-        //    curWave++;
-        //}
     }
 
     public void OnEnemyDead()
@@ -248,5 +241,9 @@ public class EnemyUnitSpawner : MonoBehaviour
         }
     }
 
-
+    // 적 처치시 얻는 골드 변화량 적용 함수
+    public void AddGoldBonusPercent(float percent)
+    {
+        bonusGoldPercent += percent * 0.01f;
+    }
 }

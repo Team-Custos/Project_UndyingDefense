@@ -29,6 +29,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
     [Header("■ 리팩토링중")]
     [SerializeField] private CommandSkillTargetingController targetingController;
     [SerializeField] private CommandSkill_FireOilCtrl BurningOilCtrl;
+    [SerializeField] private CommandSkill_PoisonArea poisonArea;
     //[SerializeField] private Camera mainCamera;
     //[SerializeField] private PlayerInputEventManager inputEventManager; 
     //[SerializeField] private SelectedUnitManager SelectedUnitManager;   // 유닛 선택 스킬_집중포화스킬
@@ -86,6 +87,15 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         //circle.SetActive(true);    // 집중 포화 원 표시
     }
 
+    public void ReadyToSelectLocation(float radius, float lifeTime) // lopo_0122
+    {
+        isSkillActivated = true;
+        targetingController.BeginTargeting(this);
+
+        AreaX = radius;
+        this.lifeTime = lifeTime;
+    }
+
     //public void AreaAttack(Transform pivotTarget, float radius, float tickTime = 0.1f, float lifeTime = 0f) //원형 공격
     public void AreaAttack(Transform pivotTarget, float radius, float tickTime = 0.1f, float lifeTime = 0f) //원형 공격
     {
@@ -112,7 +122,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         SoundManager.Instance.PlaySFX(Data.StartSFX, pivotTarget.position);
         coolTimeCheck -= Data.CoolTime;
     }
-    public void AreaAttack(Transform pivotTarget) //원형 공격
+    public void AreaAttack(Transform pivotTarget, float tickTime) //원형 공격
     {
         CommandSkillAttackTrigger trigger =
             Instantiate(areaTriggerObject).GetComponent<CommandSkillAttackTrigger>();
@@ -137,6 +147,38 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         SoundManager.Instance.PlaySFX(Data.StartSFX, pivotTarget.position);
         coolTimeCheck -= Data.CoolTime;
     }
+
+    public void AreaAttack(Transform pivotTarget) // lopo_0122 
+    {
+        GameObject PosionArea = Instantiate(poisonArea.gameObject, pivotTarget.position, Quaternion.identity);
+        //poisonArea.Activate();
+        Destroy(PosionArea, lifeTime);
+
+        coolTimeCheck -= Data.CoolTime;
+
+        CommandSkillAttackTrigger trigger =
+            Instantiate(areaTriggerObject).GetComponent<CommandSkillAttackTrigger>();
+
+        //trigger.transform.position = pivotTarget.position;
+        //trigger.transform.rotation = pivotTarget.rotation;
+        if (lifeTime > 0)
+        {
+            Destroy(trigger.gameObject, lifeTime);
+        }
+
+        trigger.SetData(data);
+        //trigger.SetTargetLayer(attackTargetLayer);
+        //trigger.SetTriggerType(AttackTriggerType.Shpere); //원형 공격
+        //trigger.SetArea(AreaX);
+        //trigger.SetIncomingDirection(incomingDirection);
+
+
+    }
+
+
+
+
+
 
     public void AreaAttack(Transform pivotTarget, float AreaX, float AreaY, float AreaZ, float tickTime = 0.1f, float lifeTime = 0f)//사각형 공격
     {
@@ -165,6 +207,8 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         coolTimeCheck -= Data.CoolTime;
 
     }
+
+
 
     public void Attack(Unit target)
     {
@@ -236,7 +280,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         return selectTargetLayer;
     }
 
-    public void OnTargetSelected(RaycastHit hit)
+    public void OnTargetSelected(RaycastHit hit)    // lopol 0122 수정
     {
         switch (Data.TargetType)
         {
@@ -247,7 +291,23 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
 
             case TargetType.MOUSEPOSAREA:
                 if (hit.collider.CompareTag(CONSTANT.TAG_TILE))
-                    AreaAttack(hit.transform);
+                {
+                    switch(data.Id)
+                    {
+                        case "CSkillA001":  // 집중 포화 명령
+                            {
+                                AreaAttack(hit.transform, tickTime);
+                                break;
+                            }
+                        case "CSkillA006":  // 맹독 살포
+                            {
+                                AreaAttack(hit.transform);
+                                break;
+                            }
+                    }
+
+                }
+                    
                 break;
         }
     }
