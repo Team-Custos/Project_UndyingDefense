@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -76,9 +77,11 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
         else
         {
             //index = i;
+            skillData = null;
             skillIconImage.sprite = null;
             removeBtn.SetActive(false);
             skillIconImage.color = new Color(1, 1, 1, 0);
+            //skillIconImage.color = new Color(0.658f, 0.572f, 0.494f, 1f);
             skillNameText.text = string.Empty;
             sName = string.Empty;
             sDescription = string.Empty;

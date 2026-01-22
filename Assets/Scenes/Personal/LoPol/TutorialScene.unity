@@ -33756,6 +33756,7 @@ MonoBehaviour:
   - {fileID: 2121328300}
   - {fileID: 2004964767}
   - {fileID: 1082936479}
+  - {fileID: 1658846816}
   cSkillBtns:
   - {fileID: 1843531382}
   - {fileID: 1843531381}
@@ -33798,6 +33799,7 @@ Transform:
   - {fileID: 2121328299}
   - {fileID: 2004964766}
   - {fileID: 1082936480}
+  - {fileID: 1658846817}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &870760640
@@ -64868,6 +64870,97 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 320398362}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1658846815
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 870483655}
+    m_Modifications:
+    - target: {fileID: -336196044479407675, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: targetingController
+      value: 
+      objectReference: {fileID: 1611628872}
+    - target: {fileID: 4995738849285770237, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_Name
+      value: "\uB9F9\uB3C5 \uC0B4\uD3EC"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2c28b88889fa35149a5b2e34ff3d96a5, type: 3}
+--- !u!114 &1658846816 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -336196044479407675, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1658846815}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba3db4518102484d94054b8f6c5e937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1658846817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8937539548969486936, guid: 2c28b88889fa35149a5b2e34ff3d96a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1658846815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1663118889 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -69166,6 +69259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CSkillDefaultData: {fileID: 4900000, guid: 3f0731ed0bb13ed40807440369d6f915, type: 3}
   HaveCSkillDefaultData: {fileID: 0}
+  rankSystem: {fileID: 0}
 --- !u!4 &1764465343
 Transform:
   m_ObjectHideFlags: 0
