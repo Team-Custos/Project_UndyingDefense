@@ -11,6 +11,10 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] private CommanderSkillUI commanderSkillUI;
     [SerializeField] private GameObject selectedIndicator;
 
+    [Header("스킬배경이미지")]
+    [SerializeField] private Sprite SelectedSprite;
+    [SerializeField] private Sprite NormalSprite;
+
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private RectTransform hoverPosition;
@@ -61,6 +65,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void ToggleSelected(bool b)
     {
         selectedIndicator.SetActive(b);
+        panelImage.sprite = b ? SelectedSprite : NormalSprite;
         isSelected = b;
     }
 
@@ -102,6 +107,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         skillName.text = "";
         icon.sprite = null;
         selectedIndicator.SetActive(false);
+        panelImage.sprite = NormalSprite;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

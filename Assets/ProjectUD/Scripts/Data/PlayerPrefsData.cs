@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -62,7 +63,8 @@ public class PlayerPrefsData : MonoBehaviour
             PlayerPrefs.SetString("CommanderID", "CON_commanderRank01"); // 기본 지휘관
         }
 
-        rankSystem.UpdateRank();
+        if (rankSystem != null)
+            rankSystem.UpdateRank();
     }
 
     // 초기 지휘관 스킬 저장 ( 선택 )
@@ -182,6 +184,12 @@ public class PlayerPrefsData : MonoBehaviour
         // selectCommanderSkills = selectCSkillList;
         for(int i = 0; i < selectCSkillList.Count; i++)
         {
+            if (selectCSkillList[i] == string.Empty)
+            {
+                selectCommanderSkills.Add(string.Empty);
+                continue;
+            }
+
             selectCommanderSkills.Add(selectCSkillList[i]);
         }
 
@@ -241,18 +249,28 @@ public class PlayerPrefsData : MonoBehaviour
     {
         selectCommanderSkills.Clear();
         string commanderSkill = PlayerPrefs.GetString("selectCommanderSkill");
-        Debug.Log($"{commanderSkill}");
-        Debug.Log($"{commanderSkill.Length}");
+        Debug.Log($"★★★PlayerPrefs.GetString(selectCommanderSkill)은 : {commanderSkill}");
+        //Debug.Log($"{commanderSkill.Length}");
 
         if (!string.IsNullOrEmpty(commanderSkill))
         {
             string[] skills = commanderSkill.Split("\n");
-            for (int i = 0; i < skills.Length; i++)
+            //for (int i = 0; i < skills.Length; i++)
+            for (int i = 0; i < 3; i++)
             {
+                /*
                 if (skills[i] == string.Empty)
+                {
+                    selectCommanderSkills.Add(string.Empty);
                     continue;
+                }
                 Debug.Log($"{skills[i]}, Length: { skills[i].Length}, { skills[i].Trim().Length} ");
-                selectCommanderSkills.Add(skills[i].Trim());
+                selectCommanderSkills.Add(skills[i].Trim());*/
+
+                if (i < skills.Length && !string.IsNullOrEmpty(skills[i]))
+                    selectCommanderSkills.Add(skills[i].Trim());
+                else
+                    selectCommanderSkills.Add(string.Empty);
             }
             Debug.Log($"프랩스에서 GetSelected 한 지휘관 스킬 갯수 : {selectCommanderSkills.Count}");
         }

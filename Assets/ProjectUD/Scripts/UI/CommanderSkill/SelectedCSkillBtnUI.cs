@@ -65,6 +65,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
         {
             index = i;
             skillData = data;
+            skillIconImage.color = new Color(1, 1, 1, 1);
             skillIconImage.sprite = skillData.Icon;
             skillNameText.text = name;
             sName = name;
@@ -74,9 +75,14 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         else
         {
+            //index = i;
             skillIconImage.sprite = null;
             removeBtn.SetActive(false);
-            //skillIconImage.color = new Color(1, 1, 1, 0);
+            skillIconImage.color = new Color(1, 1, 1, 0);
+            skillNameText.text = string.Empty;
+            sName = string.Empty;
+            sDescription = string.Empty;
+            sEffect = string.Empty;
         }
     }
 

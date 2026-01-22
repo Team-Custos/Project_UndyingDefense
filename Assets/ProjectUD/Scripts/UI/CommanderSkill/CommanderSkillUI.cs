@@ -44,18 +44,33 @@ public class CommanderSkillUI : MonoBehaviour
     private void LoadSelectedSkill()
     {
         Debug.Log($"리소스에서 로드한 지휘관 스킬Id : {datas[0].Id}, {datas[1].Id}, {datas[2].Id}");
+        for (int i = 0; i < currentSelected.Length; i++)
+            currentSelected[i] = null;
 
         List<string> selectedSkillList = PlayerPrefsData.instance.GetSelectedCommanderSkill();
+        Debug.Log($"★★불러온 선택 지휘관 스킬갯수 {selectedSkillList.Count}");
         for (int i = 0; i < selectedSkillList.Count; i++)
         {
-            Debug.Log($"{selectedSkillList.Count}");
+            Debug.Log($"★★불러온 선택 지휘관스킬 : {selectedSkillList[i]}");
+        }
+
+        //--
+        for (int i = 0; i < selectedSkillList.Count; i++)
+        {
+            
+            // To do: 빈칸이 넘어오면 빈칸으로 처리
+            if (string.IsNullOrEmpty(selectedSkillList[i]))
+            {
+                currentSelected[i] = null;
+                continue;
+            }
 
             for (int j = 0; j < datas.Length; j++)
             {
-                Debug.Log($"{datas.Length}");
-                Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
-                Debug.Log($"프랩스 로드 {selectedSkillList[i]}, Length: {selectedSkillList[i].Length}");
-                Debug.Log($"결과 : {datas[j].Id == selectedSkillList[i]}");
+                //Debug.Log($"{datas.Length}");
+                //Debug.Log($"리소스 로드 {datas[j].Id}, Length: {datas[j].Id.Length}");
+                //Debug.Log($"프랩스 로드 {selectedSkillList[i]}, Length: {selectedSkillList[i].Length}");
+                //Debug.Log($"결과 : {datas[j].Id == selectedSkillList[i]}");
 
                 if (string.Compare(datas[j].Id, selectedSkillList[i]) == 0)
                 {
@@ -70,8 +85,8 @@ public class CommanderSkillUI : MonoBehaviour
             }
         }
         selectedSkillUI.SetCSkillList(currentSelected);
-        Debug.Log($"프랩스에서 가져온 스킬Id : {selectedSkillList[0]}, {selectedSkillList[1]}, {selectedSkillList[2]}");
-        Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {currentSelected[0].Id}, {currentSelected[1].Id}, {currentSelected[2].Id}");
+        //Debug.Log($"프랩스에서 가져온 스킬Id : {selectedSkillList[0]}, {selectedSkillList[1]}, {selectedSkillList[2]}");
+        //Debug.Log($"선택 지휘관 스킬로 셋팅된 ID : {currentSelected[0].Id}, {currentSelected[1].Id}, {currentSelected[2].Id}");
 
 
     }
@@ -237,7 +252,8 @@ public class CommanderSkillUI : MonoBehaviour
         SetPage();
         LoadCanUseSkill();
         LoadSelectedSkill();
-        ShowCommandSkill();
+        OnPageBtnClick(1);
+        //ShowCommandSkill();
         gameObject.SetActive(true );
         ShowAlarm();
     }
