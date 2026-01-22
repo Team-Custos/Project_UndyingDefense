@@ -189,7 +189,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
                 if (data.CritEffectPrefab != null)
                 {
-                    target.AddEffect(data.CritEffectPrefab, target);
+                    target.AddEffect(data.CritEffectPrefab, target, Vector3.zero);
                 }
             }
         }

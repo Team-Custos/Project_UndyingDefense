@@ -17,6 +17,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private TextMeshProUGUI commandSkillCoolText;
     [SerializeField] private TextMeshProUGUI commandSkillDescriptionText;
     [SerializeField] private Image skillIcon;
+    [SerializeField] private GameObject alarmIcon;
 
     //ayo_0117
     [SerializeField] private Button skillButton;
@@ -75,6 +76,9 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnButtonClick()
     {
+        if(alarmIcon != null && alarmIcon.activeSelf)
+            alarmIcon.SetActive(false);
+
         //commandSkillManager.GetClickControl(index, commandSkill);
         // ayo_0117
         commandSkillManager.SetBeingUsedCommandSkill(index, commandSkill);

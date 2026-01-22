@@ -22,7 +22,7 @@ public class WeakenEffect : StackEffect
 
     protected override void OnMaxStack()
     {
-        target.AddEffect(maxStackEffectPrefab, target);
+        target.AddEffect(maxStackEffectPrefab, target, Vector3.zero);
     }
 
     public override void OnRemove()

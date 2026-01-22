@@ -90,7 +90,7 @@ public class SkillAttackTrigger : MonoBehaviour
         {
             if (data.InduseEffectPrefab != null)
             {
-                target.AddEffect(data.InduseEffectPrefab, target);
+                target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
             }
         }
         

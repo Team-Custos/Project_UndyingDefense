@@ -191,7 +191,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
 
     public void ApplyEffect(Unit target, GameObject effectPrefab)
     {
-        target.AddEffect(effectPrefab, target);
+        target.AddEffect(effectPrefab, target, Vector3.zero);
     }
 
     public void GetMark(Unit target)

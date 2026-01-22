@@ -1339,7 +1339,7 @@ public abstract class Unit : MonoBehaviour
         effect.gameObject.SetActive(true);
     }
 
-    public void AddEffect(GameObject effectPrefab ,Unit unit)
+    public void AddEffect(GameObject effectPrefab ,Unit unit, Vector3 pos)
     {
         if (unit.IsDead)
             return;
@@ -1365,7 +1365,7 @@ public abstract class Unit : MonoBehaviour
             effectList.Add(effect);
 
             effect.transform.SetParent(effectParent);
-            effect.transform.localPosition = Vector3.zero;
+            effect.transform.position = pos;
             effect.Initialize(this);
             effect.Activate();
             effect.gameObject.SetActive(true);

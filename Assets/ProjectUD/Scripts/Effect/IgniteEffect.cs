@@ -22,7 +22,7 @@ public class IgniteEffect : TickStackEffect
         //    target.AddEffect(infernoVfx);
         //}
 
-        target.AddEffect(infernoVfx, target);
+        target.AddEffect(infernoVfx, target, Vector3.zero);
         //target.ApplyEffectImage(iconSprite);
 
         //infernoEffect.Activate();

@@ -16,7 +16,7 @@ public class EffectSkill : SkillBase
     // 상태 이펙트 적용
     public void ActivateEffect(Unit unit)
     {
-        unit.AddEffect(data.EffectPrefab, unit);
+        unit.AddEffect(data.EffectPrefab, unit, Vector3.zero);
     }
 
     public void AreaEffectSkill(Unit pivotTarget, float radius) //원형

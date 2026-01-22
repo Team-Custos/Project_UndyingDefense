@@ -23,6 +23,7 @@ public class ShockEffect : StackEffect
             currentVfx.SetActive(false);
 
         currentVfx = Vfx[stack - 1];
+        currentVfx.transform.position = target.HeightPos.position;
         currentVfx.SetActive(true);
 
     }
@@ -36,7 +37,7 @@ public class ShockEffect : StackEffect
     protected override void OnMaxStack()
     {
         // 기절 효과 추가.
-        target.AddEffect(maxStackEffectPrefab, target);
+        target.AddEffect(maxStackEffectPrefab, target, target.HeightPos.position);
     }
 
     public override void OnRemove()

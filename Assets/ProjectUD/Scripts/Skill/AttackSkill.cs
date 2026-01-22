@@ -383,6 +383,8 @@ public class AttackSkill : SkillBase
         {
             float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
+            Debug.Log($"방어됨! 피해량 감소율 : {calcBlockRate * 100f}%");
+            Debug.Log($"최종 피해량 : {calcDamage} ");
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
@@ -422,7 +424,7 @@ public class AttackSkill : SkillBase
         if (data.Info.CritEffectPrefab == null)
             return;
 
-        target.AddEffect(data.Info.CritEffectPrefab, target);
+        target.AddEffect(data.Info.CritEffectPrefab, target, Vector3.zero);
 
         //Effect critEffect = null;
         //switch(data.AttackType)
