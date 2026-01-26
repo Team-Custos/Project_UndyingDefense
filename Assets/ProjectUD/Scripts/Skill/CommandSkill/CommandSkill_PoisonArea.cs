@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public class CommandSkill_PoisonArea : MonoBehaviour
@@ -11,27 +10,13 @@ public class CommandSkill_PoisonArea : MonoBehaviour
 
     private float duration = 5f;
 
+    private float timer = 0f;
 
-    //public void Activate()
+    //private void Update()
     //{
-    //    int targetCount = Physics.OverlapSphereNonAlloc(transform.position, 3f, buffer, targetLayer);
+    //    timer += Time.deltaTime;
 
-    //    if (targetCount <= 0)
-    //        return;
-
-    //    for (int i = 0; i < targetCount; i++)
-    //    {
-    //        if (!buffer[i].TryGetComponent(out Unit unit))
-    //            continue;
-
-    //        if (unit == null || unit.IsDead)
-    //            continue;
-
-    //        if (Random.value < 0.5f)
-    //        {
-    //            unit.AddEffect(poisonEffectPrefab, unit, Vector3.zero);
-    //        }
-    //    }
+    //    Debug.Log(timer);
     //}
 
     private void OnTriggerEnter(Collider other)

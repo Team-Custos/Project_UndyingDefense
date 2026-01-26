@@ -4,7 +4,6 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
-using Unity.VisualScripting;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -32,6 +31,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
     [SerializeField] private SkillBase passiveSkill;
+    protected SkillBase currentSkill;     // 현재 보유한 스킬
 
     [Header("■ Enemy Layer")]
     [SerializeField] protected LayerMask enemyLayer;
@@ -554,7 +554,7 @@ public abstract class Unit : MonoBehaviour
 
             if(targets.Count == 0)
             {
-                Debug.Log(11111);
+                Debug.Log("검색된 대상 없음");
             }
         }
     }
