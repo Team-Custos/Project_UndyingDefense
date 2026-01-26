@@ -15,7 +15,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     [SerializeField] private SkillButtonCooldownUI[] cSkillBtns;
 
     [Header("인디케이터")]
-    //[SerializeField] private GameObject indicator;
+    [SerializeField] private GameObject indicator;
 
     private CommandSkillData[] datas = new CommandSkillData[] { };
     private CommandSkillData[] currentSelected = new CommandSkillData[3];
@@ -378,14 +378,14 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     {
         beingUsedCommandskill = commandSkill;
         // 인디케이터
-        /*
-        //if (indicator == null)
-        //{
-        //    Debug.LogError("Indicator is NOT assigned!");
-        //    return;
-        //}
-        //indicator.transform.position = cSkillBtns[i].transform.position;
-        //indicator.SetActive(true);*/
+
+        if (indicator == null)
+        {
+            Debug.LogError("Indicator is NOT assigned!");
+            return;
+        }
+        indicator.transform.position = cSkillBtns[i].transform.position;
+        indicator.SetActive(true);
 
 
         //inputEventManager.OnESCTarget = this;
@@ -397,13 +397,13 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     {
         beingUsedCommandskill = null;
         // 인디케이터
-        /*
+        
         if (indicator == null)
         {
             Debug.LogError("Indicator is NOT assigned!");
             return;
         }
-        indicator.SetActive(false);*/
+        indicator.SetActive(false);
 
 
         //inputEventManager.OnESCTarget = ingameManager;
@@ -423,7 +423,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         beingUsedCommandskill.SetSkillState(false);
         beingUsedCommandskill = null;
         // 인디케이터
-        //indicator.SetActive(false);
+        indicator.SetActive(false);
 
     }
 

@@ -13,7 +13,9 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager SelectedUnitManager;   // 유닛 선택 스킬_집중포화스킬
     [SerializeField] private InGameManager ingameManager;
-    //[SerializeField] private GameObject indicator;
+
+    [Header("스킬인디케이터")]
+    [SerializeField] private GameObject indicator;
 
     private Ray ray;
     private RaycastHit hit;
@@ -59,7 +61,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         circle.SetActive(false);
         currentSkill.SetSkillState(false);
         currentSkill = null;
-        //indicator.SetActive(false);
+        indicator.SetActive(false);
 
         RestoreInputTarget();
     }
@@ -87,6 +89,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
                 currentSkill.OnTargetSelected(hit);
                 RestoreInputTarget();
                 circle.SetActive(false);
+                indicator.SetActive(false);
             }
         }
     }
