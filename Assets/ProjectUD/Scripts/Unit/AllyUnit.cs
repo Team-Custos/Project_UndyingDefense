@@ -314,55 +314,60 @@ public class AllyUnit : Unit
                     if (idleState == IdleState.DEFAULT)
                         break;
 
-                    if (interval <= 0f)
+                    if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                     {
-                        SkillBase skill = GetAvailableSkill();
+                        currentSkill = GetAvailableSkill();
+                    }
 
-                        if (skill != null) // 사용 가능한 스킬이 존재할 경우
+                    if (currentSkill != null) // 사용 가능한 스킬이 존재할 경우
+                    {
+                        SkillBase.TargetType skillTargetType = currentSkill.GetTargetType(); // 스킬 대상 종류 확인
+
+                        switch (skillTargetType)
                         {
-                            SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                            case SkillBase.TargetType.NONE: // 바로 발동
+                                {
+                                    ActivateSkill(currentSkill, null);
+                                    break;
+                                }
+                            case SkillBase.TargetType.ALLY:
+                                {
+                                    if (targetUnit is EnemyUnit)
+                                        targetUnit = null;  // 공격 스킬 대상 초기화
 
-                            switch(skillTargetType)
-                            {
-                                case SkillBase.TargetType.NONE: // 바로 발동
+                                    targetUnit = SearchTarget(currentSkill.Data.Range, allyLayer, currentSkill);
+                                    if (targetUnit != null)
                                     {
-                                        ActivateSkill(skill, null);
-
-                                        break;
+                                        ActivateSkill(currentSkill, targetUnit);
+                                        targetUnit = null;
                                     }
-                                case SkillBase.TargetType.ALLY:
+
+                                    break;
+                                }
+                            case SkillBase.TargetType.ENEMY:
+                                {
+                                    if (IsTargetValid(targetUnit, currentSkill.Data.Range, enemyLayer))
                                     {
-                                        targetUnit = SearchTarget(skill.Data.Range, allyLayer, skill);
+                                        ActivateSkill(currentSkill, targetUnit);
+                                    }
+                                    else
+                                    {
+                                        targetUnit = SearchTarget(currentSkill.Data.Range, enemyLayer, currentSkill);
                                         if (targetUnit != null)
                                         {
-                                            ActivateSkill(skill, targetUnit);
-                                            targetUnit = null;
+                                            ActivateSkill(currentSkill, targetUnit);
                                         }
-
-                                        break;
-                                    }
-                                case SkillBase.TargetType.ENEMY:
-                                    {
-                                        if(IsTargetValid(targetUnit, skill.Data.Range, enemyLayer))
-                                        {
-                                            ActivateSkill(skill, targetUnit);
-                                        }
-                                        else
-                                        {
-                                            targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);
-                                            if(targetUnit != null)
-                                            {
-                                                ActivateSkill(skill, targetUnit);
-                                            }
-                                        }
-
-                                        break;
                                     }
 
-                            }
-                        }
+                                    break;
+                                }
+
+                    }
+
+
                     }
                     break;
+
 
                 }
             case Mode.FREE:
@@ -391,88 +396,64 @@ public class AllyUnit : Unit
                                     navAgent.isStopped = true;
                                     break;
                                 }
-                                    
 
-                                if (interval <= 0f)
+                                if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                                 {
-                                    SkillBase skill = GetAvailableSkill();
+                                    currentSkill = GetAvailableSkill();
+                                }
 
-                                    if (skill != null) // 사용 가능한 스킬이 존재할 경우
+                                if (currentSkill != null) // 사용 가능한 스킬이 존재할 경우
+                                {
+                                    SkillBase.TargetType skillTargetType = currentSkill.GetTargetType(); // 스킬 대상 종류 확인
+
+                                    switch (skillTargetType)
                                     {
-                                        SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+                                        case SkillBase.TargetType.NONE:
+                                            {
+                                                ActivateSkill(currentSkill, null);
+                                                break;
+                                            }
+                                        case SkillBase.TargetType.ALLY:
+                                            {
+                                                if(targetUnit is EnemyUnit)
+                                                    targetUnit = null;  // 공격 스킬 대상 초기화
 
-                                        switch (skillTargetType)
-                                        {
-                                            case SkillBase.TargetType.NONE:
+                                                if (targetUnit != null) // 탐색된 대상이 있음
                                                 {
-                                                    ActivateSkill(skill, null);
-                                                    break;
-                                                }
-                                            case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
-                                                {
-                                                    targetUnit = SearchTarget(skill.Data.Range, allyLayer, skill);  // 스킬 사거리내로 먼저 검사
-
-                                                    if(targetUnit != null)
+                                                    if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                     {
-                                                        ActivateSkill(skill, targetUnit);
+                                                        ActivateSkill(currentSkill, targetUnit);
                                                         targetUnit = null;
                                                     }
                                                     else
                                                     {
-                                                        SearchReachableTargets(unitStats.sightRange, allyLayer); //  시야 범위 내 이동 가능 유닛
-                                                        targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
-                                                        
-                                                        if(targetUnit != null)
+                                                        if (IsPathBlocked(targetUnit))   // 추적 중 길 막혔는지 확인
                                                         {
-                                                            MoveToTargetUnit(targetUnit);
-                                                            if(IsTargetInAttackRange(targetUnit, skill.Data.Range))
-                                                            {
-                                                                ActivateSkill(skill, targetUnit);
-                                                                targetUnit = null;
-                                                            }
-                                                        }
-                                                    }
-                                                   
-                                                    break;
-                                                }
-                                            case SkillBase.TargetType.ENEMY:
-                                                {
-                                                    if(IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
-                                                    {
-                                                        if(IsTargetInAttackRange(targetUnit, skill.Data.Range)) // 스킬 사거리내 존재
-                                                        {
-                                                            ActivateSkill(skill, targetUnit);
-                                                        }
-                                                        else // 스킬 사거리 < 대상과 거리 < 시야 사거리
-                                                        {
-                                                            if(IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
-                                                            {
-                                                                targetUnit = null;  // 막힘
-                                                            }
-                                                            else
-                                                            {
-                                                                MoveToTargetUnit(targetUnit);
-                                                                //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
-                                                                //{
-                                                                //    ActivateSkill(skill, targetUnit);
-                                                                //    targetUnit = null;
-                                                                //}
-                                                            }
-                                                        }
-                                                    }
-                                                    else      // 새 대상 탐색
-                                                    {
-                                                        targetUnit = null;
-
-                                                        targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);
-                                                        if(targetUnit != null)
-                                                        {
-                                                            ActivateSkill(skill, targetUnit);
+                                                            targetUnit = null;  // null 처리 후 다시 탐색
                                                         }
                                                         else
                                                         {
-                                                            SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
-                                                            targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
+                                                            MoveToTargetUnit(targetUnit);
+                                                        }
+                                                    }
+
+                                                }
+                                                else    // 처음 탐색
+                                                {
+                                                    targetUnit = SearchTarget(currentSkill.Data.Range, allyLayer, currentSkill);  // 스킬 사거리내로 먼저 검사
+                                                   
+                                                    if(targetUnit != null)
+                                                    {
+                                                        ActivateSkill(currentSkill, targetUnit);
+                                                        targetUnit = null;
+                                                    }
+                                                    else    
+                                                    {
+                                                        SearchReachableTargets(unitStats.sightRange, allyLayer); //  시야 범위 내 이동 가능 유닛
+                                                    
+                                                        if(targets.Count > 0)
+                                                        {
+                                                            targetUnit = SearchTargetInTargets(currentSkill);  //대상 선택
 
                                                             if (targetUnit != null)
                                                             {
@@ -480,10 +461,58 @@ public class AllyUnit : Unit
                                                             }
                                                         }
                                                     }
-
-                                                    break;
                                                 }
-                                        }
+
+                                                break;
+                                            }
+                                        case SkillBase.TargetType.ENEMY:
+                                            {
+                                                if (IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
+                                                {
+                                                    if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
+                                                    {
+                                                        ActivateSkill(currentSkill, targetUnit);
+                                                    }
+                                                    else // 스킬 사거리 < 대상과 거리 < 시야 사거리
+                                                    {
+                                                        if (IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
+                                                        {
+                                                            targetUnit = null;  // 막힘
+                                                        }
+                                                        else
+                                                        {
+                                                            MoveToTargetUnit(targetUnit);
+                                                            //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                                            //{
+                                                            //    ActivateSkill(skill, targetUnit);
+                                                            //    targetUnit = null;
+                                                            //}
+                                                        }
+                                                    }
+                                                }
+                                                else      // 새 대상 탐색
+                                                {
+                                                    targetUnit = null;
+
+                                                    targetUnit = SearchTarget(currentSkill.Data.Range, enemyLayer, currentSkill);
+                                                    if (targetUnit != null)
+                                                    {
+                                                        ActivateSkill(currentSkill, targetUnit);
+                                                    }
+                                                    else
+                                                    {
+                                                        SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                                        targetUnit = SearchTargetInTargets(currentSkill); // 시야 내로 다시 검사
+
+                                                        if (targetUnit != null)
+                                                        {
+                                                            MoveToTargetUnit(targetUnit);
+                                                        }
+                                                    }
+                                                }
+
+                                                break;
+                                            }
                                     }
                                 }
                                 else
@@ -492,6 +521,107 @@ public class AllyUnit : Unit
                                 }
 
                                 break;
+
+
+                                //if (interval <= 0f)
+                                //{
+                                //    SkillBase skill = GetAvailableSkill();
+
+                                //    if (skill != null) // 사용 가능한 스킬이 존재할 경우
+                                //    {
+                                //        SkillBase.TargetType skillTargetType = skill.GetTargetType(); // 스킬 대상 종류 확인
+
+                                //        switch (skillTargetType)
+                                //        {
+                                //            case SkillBase.TargetType.NONE:
+                                //                {
+                                //                    ActivateSkill(skill, null);
+                                //                    break;
+                                //                }
+                                //            case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
+                                //                {
+                                //                    targetUnit = SearchTarget(skill.Data.Range, allyLayer, skill);  // 스킬 사거리내로 먼저 검사
+
+                                //                    if(targetUnit != null)
+                                //                    {
+                                //                        ActivateSkill(skill, targetUnit);
+                                //                        targetUnit = null;
+                                //                    }
+                                //                    else
+                                //                    {
+                                //                        SearchReachableTargets(unitStats.sightRange, allyLayer); //  시야 범위 내 이동 가능 유닛
+                                //                        targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
+
+                                //                        if(targetUnit != null)
+                                //                        {
+                                //                            MoveToTargetUnit(targetUnit);
+                                //                            if(IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                //                            {
+                                //                                ActivateSkill(skill, targetUnit);
+                                //                                targetUnit = null;
+                                //                            }
+                                //                        }
+                                //                    }
+
+                                //                    break;
+                                //                }
+                                //            case SkillBase.TargetType.ENEMY:
+                                //                {
+                                //                    if(IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
+                                //                    {
+                                //                        if(IsTargetInAttackRange(targetUnit, skill.Data.Range)) // 스킬 사거리내 존재
+                                //                        {
+                                //                            ActivateSkill(skill, targetUnit);
+                                //                        }
+                                //                        else // 스킬 사거리 < 대상과 거리 < 시야 사거리
+                                //                        {
+                                //                            if(IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
+                                //                            {
+                                //                                targetUnit = null;  // 막힘
+                                //                            }
+                                //                            else
+                                //                            {
+                                //                                MoveToTargetUnit(targetUnit);
+                                //                                //if (IsTargetInAttackRange(targetUnit, skill.Data.Range))
+                                //                                //{
+                                //                                //    ActivateSkill(skill, targetUnit);
+                                //                                //    targetUnit = null;
+                                //                                //}
+                                //                            }
+                                //                        }
+                                //                    }
+                                //                    else      // 새 대상 탐색
+                                //                    {
+                                //                        targetUnit = null;
+
+                                //                        targetUnit = SearchTarget(skill.Data.Range, enemyLayer, skill);
+                                //                        if(targetUnit != null)
+                                //                        {
+                                //                            ActivateSkill(skill, targetUnit);
+                                //                        }
+                                //                        else
+                                //                        {
+                                //                            SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                //                            targetUnit = SearchTargetInTargets(skill); // 시야 내로 다시 검사
+
+                                //                            if (targetUnit != null)
+                                //                            {
+                                //                                MoveToTargetUnit(targetUnit);
+                                //                            }
+                                //                        }
+                                //                    }
+
+                                //                    break;
+                                //                }
+                                //        }
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    navAgent.isStopped = true;
+                                //}
+
+                                //break;
                             }
                     }
 
@@ -913,6 +1043,7 @@ public class AllyUnit : Unit
         modelAnimator.SetBool("isRunning", false);
 
         interval = intervalCheck;
+        currentSkill = null;
 
         if (stateDurationCheck >= stateDuration)
         {

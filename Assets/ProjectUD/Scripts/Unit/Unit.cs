@@ -511,8 +511,19 @@ public abstract class Unit : MonoBehaviour
                 if (unit == null)
                     continue;
 
-                if (unit.isDead || !unit.gameObject.activeInHierarchy || unit == this)
+                if (unit.isDead || !unit.gameObject.activeInHierarchy)
                     continue;
+
+                if(unit == this)
+                {
+                    if (targetLayer == allyLayer)
+                    {
+                        targets.Add(unit);
+                        continue;
+                    }
+                    else
+                        continue;
+                }
 
                 NavMesh.CalculatePath(transform.position, unit.transform.position, navAgent.areaMask, pathForSearch);
 
@@ -567,13 +578,13 @@ public abstract class Unit : MonoBehaviour
             pathForSearch.status == NavMeshPathStatus.PathComplete)
             return false;
 
-        if (HasReachableNearPosition(target))
+        if (HasReachablePosition(target))
             return false;
 
         return true;
     }
 
-    protected bool HasReachableNearPosition(Unit unit)
+    protected bool HasReachablePosition(Unit unit)
     {
         Vector3 startDir = (transform.position - unit.transform.position).normalized;
 

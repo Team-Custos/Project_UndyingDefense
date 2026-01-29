@@ -6,7 +6,6 @@ public class EffectSkill : SkillBase
     [SerializeField] private EffectSkillData data; // 스킬 데이터
     public override SkillData Data => data; // 스킬 데이터
     [SerializeField] private LayerMask targetLayerMask; // 스킬이 적용될 대상 레이어 마스크
-    [SerializeField] private TargetType targetType;
     private Unit unit;
 
     // 범위를 가진 스킬
@@ -30,8 +29,8 @@ public class EffectSkill : SkillBase
         {
             if (targets[i].TryGetComponent(out Unit target))
             {
-                if (target == pivotTarget)
-                    continue;
+                //if (target == pivotTarget)
+                //    continue;
 
                 ActivateEffect(target);
             }
