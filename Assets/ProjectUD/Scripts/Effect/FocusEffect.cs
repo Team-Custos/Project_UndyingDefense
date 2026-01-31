@@ -22,4 +22,14 @@ public class FocusEffect : DurationEffect
             effectImage = null;
         }
     }
+
+    public override void Reapply(GameObject effectPrefab)
+    {
+        base.Reapply(effectPrefab);
+
+        if (effectImage != null)
+        {
+            target.ReapplyEffectImage(effectImage, false, 0);
+        }
+    }
 }

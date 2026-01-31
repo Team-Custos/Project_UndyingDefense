@@ -194,6 +194,14 @@ public class AllyUnit : Unit
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
                                 base.ActivateSkill(skill, targetUnit);
+
+                                SkillBase.TargetType skillTargetType = skill.GetTargetType();
+                                if(skillTargetType ==  SkillBase.TargetType.ALLY)
+                                {
+                                    Debug.Log(targetUnit.Data.Name);
+                                    targetUnit = null;
+                                }
+                                    
                             }
                         }
                     }
@@ -339,7 +347,7 @@ public class AllyUnit : Unit
                                     if (targetUnit != null)
                                     {
                                         ActivateSkill(currentSkill, targetUnit);
-                                        targetUnit = null;
+                                        //targetUnit = null;
                                     }
 
                                     break;
@@ -357,6 +365,8 @@ public class AllyUnit : Unit
                                         {
                                             ActivateSkill(currentSkill, targetUnit);
                                         }
+                                        else
+                                            currentSkill = null;
                                     }
 
                                     break;
@@ -445,7 +455,7 @@ public class AllyUnit : Unit
                                                     if(targetUnit != null)
                                                     {
                                                         ActivateSkill(currentSkill, targetUnit);
-                                                        targetUnit = null;
+                                                        //targetUnit = null;
                                                     }
                                                     else    
                                                     {
@@ -508,6 +518,11 @@ public class AllyUnit : Unit
                                                         {
                                                             MoveToTargetUnit(targetUnit);
                                                         }
+                                                        else
+                                                        {
+                                                            currentSkill = null;  // 대상 없으면 스킬 선택 단계로
+                                                        }
+                                                            
                                                     }
                                                 }
 

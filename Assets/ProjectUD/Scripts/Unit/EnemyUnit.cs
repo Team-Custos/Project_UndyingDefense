@@ -211,6 +211,11 @@ public class EnemyUnit : Unit
                             if (stateDurationCheck >= skill.AnimationStateTime)
                             {
                                 base.ActivateSkill(skill, targetUnit);
+                                SkillBase.TargetType skillTargetType = skill.GetTargetType();
+                                if (skillTargetType == SkillBase.TargetType.ALLY)
+                                {
+                                    targetUnit = null;
+                                }
                             }
                         }
                     }
@@ -355,7 +360,7 @@ public class EnemyUnit : Unit
                                                     if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                     {
                                                         ActivateSkill(currentSkill, targetUnit);
-                                                        targetUnit = null;
+                                                        //targetUnit = null;
                                                     }
                                                     else
                                                     {
@@ -377,7 +382,7 @@ public class EnemyUnit : Unit
                                                     if (targetUnit != null)
                                                     {
                                                         ActivateSkill(currentSkill, targetUnit);
-                                                        targetUnit = null;
+                                                        //targetUnit = null;
                                                     }
                                                     else
                                                     {
@@ -440,6 +445,8 @@ public class EnemyUnit : Unit
                                                         {
                                                             MoveToTargetUnit(targetUnit);
                                                         }
+                                                        else
+                                                            currentSkill = null;
                                                     }
                                                 }
 
@@ -507,7 +514,7 @@ public class EnemyUnit : Unit
                                             if (IsTargetInAttackRange(targetUnit, base.currentSkill.Data.Range))
                                             {
                                                 ActivateSkill(base.currentSkill, targetUnit);
-                                                targetUnit = null;
+                                                //targetUnit = null;
                                             }
                                             else
                                             {
@@ -529,7 +536,7 @@ public class EnemyUnit : Unit
                                             if (targetUnit != null)
                                             {
                                                 ActivateSkill(base.currentSkill, targetUnit);
-                                                targetUnit = null;
+                                                //targetUnit = null;
                                             }
                                             else
                                             {
@@ -543,6 +550,7 @@ public class EnemyUnit : Unit
                                                     {
                                                         MoveToTargetUnit(targetUnit);
                                                     }
+
                                                 }
                                             }
                                         }
@@ -595,6 +603,7 @@ public class EnemyUnit : Unit
                                                 {
                                                     navAgent.isStopped = false;
                                                     ForceMoveTo(fortressPos);
+                                                    currentSkill = null;
                                                 }
                                             }
                                         }
