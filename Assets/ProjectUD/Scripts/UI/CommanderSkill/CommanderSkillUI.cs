@@ -14,6 +14,9 @@ public class CommanderSkillUI : MonoBehaviour
     [SerializeField] private SelectedCommanderSkillUI selectedSkillUI;
     [SerializeField] private RankSystem rankSystem;
 
+    [Header("지휘관 스킬 저장 확인창")]
+    [SerializeField] private GameObject confirmSavePanel;
+
     [Header("보상 알림")]
     [SerializeField] private MessageUI rewardAlarm;
 
@@ -260,6 +263,24 @@ public class CommanderSkillUI : MonoBehaviour
 
     public void HideUI()    // 뒤로가기
     {
+        bool isSaved = selectedSkillUI.IsSaved();
+        if (!isSaved)
+        {
+            confirmSavePanel.SetActive(true);
+            return;
+        }
+        gameObject.SetActive(false);
+
+    }
+
+    public void ConfirmPanelCancleBtn()
+    {
+        confirmSavePanel.SetActive(false);
+    }
+
+    public void ConfirmPanelOKBtn()
+    {
+        confirmSavePanel.SetActive(false);
         gameObject.SetActive(false);
     }
 }

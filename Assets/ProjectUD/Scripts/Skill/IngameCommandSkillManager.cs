@@ -374,9 +374,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         */
     }
 
-    public void SetBeingUsedCommandSkill(int i, CommandSkill commandSkill)
+    public void SetBeingUsedCommandSkill(int i) //, CommandSkill commandSkill)
     {
-        beingUsedCommandskill = commandSkill;
+        //if (commandSkill == null)
+        //    return;
+        //beingUsedCommandskill = commandSkill;
         // 인디케이터
 
         if (indicator == null)
@@ -395,7 +397,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     }
     public void ResetButton()
     {
-        beingUsedCommandskill = null;
+        //beingUsedCommandskill = null;
         // 인디케이터
         
         if (indicator == null)
@@ -403,7 +405,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
             Debug.LogError("Indicator is NOT assigned!");
             return;
         }
-        indicator.SetActive(false);
+        //indicator.SetActive(false);
 
 
         //inputEventManager.OnESCTarget = ingameManager;
@@ -418,10 +420,10 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         //circle.SetActive(false);
         //isSkillActivated = false;
         //ayo_0117
-        if (beingUsedCommandskill == null)
-            return;
-        beingUsedCommandskill.SetSkillState(false);
-        beingUsedCommandskill = null;
+        //if (beingUsedCommandskill == null)
+        //    return;
+        //beingUsedCommandskill.SetSkillState(false);
+        //beingUsedCommandskill = null;
         // 인디케이터
         indicator.SetActive(false);
 
