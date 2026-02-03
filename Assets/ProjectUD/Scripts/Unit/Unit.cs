@@ -89,6 +89,7 @@ public abstract class Unit : MonoBehaviour
     protected const int maxTargetCount = 100;
 
     protected bool isSelected;
+    protected bool isSkillActive = false; // 스킬 사용중인지를 확인하는 변수
 
     protected const float moveThresholdOnStop = float.MaxValue;
 
@@ -238,8 +239,11 @@ public abstract class Unit : MonoBehaviour
         atkMult = 1f;
         damageTakenMult = 1f;
 
-
         collider.enabled = true;
+
+        // 스킬 쿨타임 초기화
+        generalSkill.Initialize();
+        specialSkill.Initialize();
 
 
         effectParent.gameObject.SetActive(true);
@@ -348,6 +352,7 @@ public abstract class Unit : MonoBehaviour
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
         skill.Activate(this, target);
+        isSkillActive = false;
 
         //if (stateDurationCheck < skill.AnimationStateTime)
         //{
@@ -1240,6 +1245,8 @@ public abstract class Unit : MonoBehaviour
 
         stateDurationCheck = 0f;
 
+        interval = intervalCheck; //interval 초기화
+
         navAgent.enabled = false;
         collider.enabled = false;
 
@@ -1268,7 +1275,6 @@ public abstract class Unit : MonoBehaviour
     public void SetStateDuration(float duration)
     {
         stateDuration = duration;
-        //Debug.Log(stateDuration);
     }
 
     public void AddMoveSpeedMult(float percent)
@@ -1338,6 +1344,8 @@ public abstract class Unit : MonoBehaviour
     public virtual void RemoveStun()
     {
         modelAnimator.SetBool("isStun", false);
+        if (navAgent.enabled)
+            navAgent.isStopped = false;
     }
 
     public void AddInstantEffect(GameObject effectPrefab)
