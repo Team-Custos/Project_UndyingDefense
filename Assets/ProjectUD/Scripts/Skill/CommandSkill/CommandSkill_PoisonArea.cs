@@ -12,12 +12,12 @@ public class CommandSkill_PoisonArea : MonoBehaviour
 
     private float timer = 0f;
 
-    //private void Update()
-    //{
-    //    timer += Time.deltaTime;
+    private void Update()
+    {
+        timer += Time.deltaTime;
 
-    //    Debug.Log(timer);
-    //}
+        Debug.Log(timer);
+    }
 
     private void OnTriggerEnter(Collider other)
     {

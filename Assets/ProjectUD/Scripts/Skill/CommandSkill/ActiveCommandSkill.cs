@@ -238,7 +238,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         target.AddEffect(effectPrefab, target, Vector3.zero);
     }
 
-    public void GetMark(Unit target)
+    public void GetExecutionMark(Unit target)   // 척살명령 지정
     {
         if(executeEffect == null)
         {
@@ -286,7 +286,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         {
             case TargetType.UNIT:
                 if (hit.collider.TryGetComponent<Unit>(out var unit))
-                    GetMark(unit);
+                    GetExecutionMark(unit);
                 break;
 
             case TargetType.MOUSEPOSAREA:

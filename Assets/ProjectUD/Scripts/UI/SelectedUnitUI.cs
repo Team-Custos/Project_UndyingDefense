@@ -463,9 +463,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
 
             sSkilNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("UnitSkill", $"{unit.PassiveSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
             sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("UnitSkill", $"{unit.PassiveSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
             //sSkillInfoText.text = LocalizationSettings.StringDatabase.
             //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
         }

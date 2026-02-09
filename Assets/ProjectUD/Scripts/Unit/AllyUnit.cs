@@ -353,12 +353,18 @@ public class AllyUnit : Unit
                                 }
                             case SkillBase.TargetType.ENEMY:
                                 {
+                                    //priorityTarget = SearchPriorityTarget(currentSkill.Data.Range);
+                                    //if (priorityTarget != null)
+                                    //    targetUnit = priorityTarget;
+
+
                                     if (IsTargetValid(targetUnit, currentSkill.Data.Range, enemyLayer))
                                     {
                                         UpdateSkillState(currentSkill, targetUnit);
                                     }
                                     else
                                     {
+
                                         targetUnit = SearchTarget(currentSkill.Data.Range, enemyLayer, currentSkill);
                                         if (targetUnit != null)
                                         {
@@ -476,6 +482,11 @@ public class AllyUnit : Unit
                                             }
                                         case SkillBase.TargetType.ENEMY:
                                             {
+                                                //priorityTarget = SearchPriorityTarget(unitStats.sightRange);
+                                                //if (priorityTarget != null && !IsPathBlocked(priorityTarget))
+                                                //    targetUnit = priorityTarget;
+
+
                                                 if (IsTargetValid(targetUnit, unitStats.sightRange, enemyLayer)) // 시야 사거리 내 유효
                                                 {
                                                     if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
@@ -765,11 +776,11 @@ public class AllyUnit : Unit
     }
 
 
-    public override void GetProvoked(Unit ProvokedTarget)
-    {
-        //Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
-        targetUnit = ProvokedTarget;
-    }
+    //public override void GetProvoked(Unit ProvokedTarget)
+    //{
+    //    //Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+    //    targetUnit = ProvokedTarget;
+    //}
 
     public override void GetStun()
     {
@@ -805,7 +816,7 @@ public class AllyUnit : Unit
     {
         Unit result = null;
 
-        result = SearchMarkedTarget(range);
+        result = SearchExecutionTarget(range);
 
         if (result != null)
             return result;
@@ -883,7 +894,7 @@ public class AllyUnit : Unit
         return result;
     }
 
-    private EnemyUnit SearchMarkedTarget(float range)
+    private EnemyUnit SearchExecutionTarget(float range)    // 척살 명령 지정된 적 탐색
     {
         EnemyUnit result = null;
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
@@ -895,7 +906,7 @@ public class AllyUnit : Unit
 
                 if (unit.HasExecuteMark)
                 {
-                    if (unit.HpPercent <= 0f || !unit.gameObject.activeInHierarchy)
+                    if (unit.IsDead || !unit.gameObject.activeInHierarchy)
                         continue;
                     else
                         result = unit;

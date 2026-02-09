@@ -282,6 +282,9 @@ public class AttackSkill : SkillBase
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
+        if (unit.IsDead)
+            return;
+
         if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp >= 0f)
         {
             if(BoomEffectPrefab != null)

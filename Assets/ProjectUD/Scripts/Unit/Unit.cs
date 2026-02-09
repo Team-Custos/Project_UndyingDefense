@@ -72,10 +72,14 @@ public abstract class Unit : MonoBehaviour
 
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
-    protected Unit targetUnit; // 특수 스킬 대상
-    //protected Unit generalSkillTarget; // 일반 스킬 대상
-    //protected Vector3 targetPos;
-    //protected bool hasTargetPos = false;
+    protected Unit targetUnit; // 스킬 사용 대상
+    protected Unit priorityTarget;    // 우선 순위 대상 -> 도발을 시전한 유닛, 척살 명령 지정당한 유닛
+    protected Unit provokeUnit;  // 도발을 시전한 유닛
+    protected bool isPriorityTarget = false; // 우선순위 타겟인가?
+
+    protected bool hasExecutedMark = false;
+    public bool HasExecuteMark => hasExecutedMark;
+
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -123,6 +127,7 @@ public abstract class Unit : MonoBehaviour
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
+    public bool IsPriorityTarget => isPriorityTarget;
 
     public bool IsSelected
     {
@@ -243,7 +248,9 @@ public abstract class Unit : MonoBehaviour
 
         // 스킬 쿨타임 초기화
         generalSkill.Initialize();
-        specialSkill.Initialize();
+
+        if(specialSkill != null)
+            specialSkill.Initialize();
 
 
         effectParent.gameObject.SetActive(true);
@@ -911,6 +918,35 @@ public abstract class Unit : MonoBehaviour
         return result;
     }
 
+    protected Unit SearchPriorityTarget(float range)
+    {
+        Unit result = null;
+
+        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
+
+        if (targetCount > 0)
+        {
+            for (int i = 0; i < targetCount; i++)
+            {
+                Unit unit = collidersInRange[i].GetComponent<Unit>();
+
+                if (unit == null)
+                    continue;
+
+                if (unit.isDead || !unit.gameObject.activeInHierarchy)
+                    continue;
+
+                if(unit.IsPriorityTarget)
+                {
+                    result = unit;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     protected bool IsTargetInRange(Unit target, float range)
     {
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
@@ -1223,6 +1259,8 @@ public abstract class Unit : MonoBehaviour
     public virtual void TakeDamage(float Damage)
     {
         hp -= Damage;
+        hp = Mathf.Clamp(hp, 0f, Maxhp);
+
         if (hp <= 0)
         {
             Die();
@@ -1240,6 +1278,7 @@ public abstract class Unit : MonoBehaviour
     {
         //if (isDead) return;
         hp = 0f;
+        isPriorityTarget = false;
 
         RemoveAllEffect();
 
@@ -1331,7 +1370,11 @@ public abstract class Unit : MonoBehaviour
         interval = intervalCheck * intervalMultiplier;
     }
 
-    public abstract void GetProvoked(Unit ProvokedTarget);
+    public void GetProvoked(Unit provokeUnit)
+    {
+        targetUnit = provokeUnit;
+    }
+
 
     public virtual void RemoveProvoked()
     { }

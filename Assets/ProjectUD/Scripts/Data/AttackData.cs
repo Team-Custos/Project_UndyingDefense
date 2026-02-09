@@ -8,6 +8,9 @@ public class AttackData : ScriptableObject
         SLASH,
         PIERCE,
         CRUSH,
+        ELECTRIC,
+        FIRE,
+        POISON,
         NONE
     }
 

@@ -65,10 +65,8 @@ public class EnemyUnit : Unit
 
     private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
-    private bool hasExecutedMark = false;
     private ExecutionEffect executionEffect;
 
-    public bool HasExecuteMark => hasExecutedMark;
 
     public override UnitData Data => data;
 
@@ -124,6 +122,7 @@ public class EnemyUnit : Unit
         {
             effect.SetActive(false);
             this.executionEffect = null;
+            isPriorityTarget = false;
         }
         else
         {
@@ -132,6 +131,7 @@ public class EnemyUnit : Unit
             effect.transform.position = heightPos.position + Vector3.up * 1.5f;
             effect.SetActive(true);
             executionEffect.ActivateExecution();
+            isPriorityTarget = true;
         }
     }
 
@@ -875,12 +875,12 @@ public class EnemyUnit : Unit
 
     }
 
-    public override void GetProvoked(Unit ProvokedTarget)
-    {
-        Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
-        mode = Mode.COMBAT;
-        targetUnit = ProvokedTarget;
-    }
+    //public override void GetProvoked(Unit ProvokedTarget)
+    //{
+    //    Debug.Log(gameObject.name + " Has Provoked to " + ProvokedTarget.name);
+    //    mode = Mode.COMBAT;
+    //    targetUnit = ProvokedTarget;
+    //}
 
     public override void RemoveProvoked()
     {

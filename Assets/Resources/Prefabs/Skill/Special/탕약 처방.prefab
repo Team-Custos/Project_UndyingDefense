@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4887701372474759928}
   - component: {fileID: -8998121551933104840}
   m_Layer: 0
-  m_Name: "\uB300\uC2B9\uC758 \uAC00\uB974\uCE68"
+  m_Name: "\uD0D5\uC57D \uCC98\uBC29"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,29 +47,21 @@ MonoBehaviour:
   onActivate:
     _PersistentCalls:
     - _Target: {fileID: -8998121551933104840}
-      _MemberName: AreaEffectSkill
+      _MemberName: ActivateEffect
       _PersistentArguments:
       - _Type: 14
-        _Int: 0
+        _Int: 1
         _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         _X: 0
         _Y: 0
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-      - _Type: 5
-        _Int: 0
-        _String: 
-        _X: 6
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
   onAttackFortress:
     _PersistentCalls: []
+  targetRule: 1
   animationStateTime: 0
-  data: {fileID: 11400000, guid: 7b6daf63a2081064a93ce4aca55356c9, type: 2}
+  data: {fileID: 11400000, guid: 17e50d625cc09a946a9940707a1f80ec, type: 2}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  targetType: 1
