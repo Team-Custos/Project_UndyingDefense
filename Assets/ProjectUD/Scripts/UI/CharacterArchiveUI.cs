@@ -68,11 +68,10 @@ public class CharacterArchiveUI : MonoBehaviour
         fName = name;
         pageNum = 1;
 
-        //unitFactionName.text = fNameTextTable.GetName(name);
         string factionId = fNameTextTable.GetName(name);
         unitFactionName.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", $"{factionId}", LocalizationSettings.SelectedLocale);
-        //unitFactionName.text = $"{faction} 목록";
+
         SetPage();
         ShowUnit();
         OnCharacterBtnClick(0);   // 첫번째 캐릭터 정보 보여주기
@@ -158,10 +157,8 @@ public class CharacterArchiveUI : MonoBehaviour
         // 페이지 버튼 개수
         int pageCount = (unitCount % 9 == 0) ? unitCount / 9 : (unitCount / 9) + 1;
 
-
         for (int i = 0; i < pageCount; i++) 
         {
-
             // 미리 만들어 놓고 활성화
             pageBtnArray[i].gameObject.SetActive(true);
 
@@ -172,7 +169,6 @@ public class CharacterArchiveUI : MonoBehaviour
             if (img != null)
                 img.sprite = ((i + 1) == pageNum) ? pageSelectedSprite : pageNormalSprite;
         }
-
     }
 
     public void ShowUnit()
@@ -180,9 +176,7 @@ public class CharacterArchiveUI : MonoBehaviour
         ResetCharacterBtn();
 
         int toShow = unitCount - ((pageNum - 1) * 9);
-        //int temp = (toShow > 9) ? 9 : toShow;
         int temp = Mathf.Min(toShow, 9);
-
 
         for (int i = 0; i < temp; i++)
         {
