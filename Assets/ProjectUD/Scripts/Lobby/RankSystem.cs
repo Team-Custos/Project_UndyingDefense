@@ -7,6 +7,8 @@ using UnityEngine.Localization.Settings;
 
 public class RankSystem : MonoBehaviour
 {
+    [SerializeField] private LobbyManager lobbyManager;
+
     [SerializeField] private RankData[] rankDatas;
     [SerializeField] private TextMeshProUGUI commanderName;
     //[SerializeField] private MessageUI rewardAlarm;
@@ -32,9 +34,22 @@ public class RankSystem : MonoBehaviour
 
         foreach (var rankData in rankDatas)
         {
+            // 초기 랭크인 경우 (랭크 1)
+            //if(currentRank == 1 && rankData.rank == currentRank)
+            //{
+            //    lobbyManager.SetLobbyPortrait(rankData.rewardCommanderProfile);
+            //    Debug.Log($"[RankSystem] 초기 랭크 설정: {rankData.rank}로 설정, 초상화 변경");
+            //}
+
             if (currentPoints >= rankData.requirePoint && rankData.rank > currentRank)
             {
                 RankUp(rankData);
+            }
+
+            else if (currentPoints >= rankData.requirePoint && rankData.rank == currentRank)
+            {
+                lobbyManager.SetLobbyPortrait(rankData.rewardCommanderProfile);
+                Debug.Log($"[RankSystem] : {rankData.rank}로 설정, 초상화 변경");
             }
         }
     }
@@ -46,6 +61,9 @@ public class RankSystem : MonoBehaviour
         PlayerPrefs.SetString("CommanderID", rankData.commanderID);
         commanderName.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", $"{rankData.commanderID}", LocalizationSettings.SelectedLocale);
+
+        // 로비 초상화테두리 변경
+        lobbyManager.SetLobbyPortrait(rankData.rewardCommanderProfile);
 
         // 일단 지휘관 스킬만 해금
         for (int i = 0; i < rankData.rewardCommandSkillID.Count; i++)

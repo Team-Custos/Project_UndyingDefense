@@ -6,22 +6,22 @@ public class LobbyDialogueManager : DialogueManager
 {
     [SerializeField] private DialogueData ingameDialogueData;
     [SerializeField] private SpeakingArray speakingArray;
-    protected override void Start()
-    {
-        if(UserDataModel.instance.IsGameFinished)
-            this.gameObject.SetActive(false);
+    //protected override void Start()
+    //{
+    //    if(UserDataModel.instance.IsGameFinished)
+    //        this.gameObject.SetActive(false);
 
-        if (UserDataModel.instance.IsTutorialEnd)
-        {
-            //StartDialogue(ingameDialogueData);
-            ShowDialogue(speakingArray);
-        }
-        else
-        {
-            //StartDialogue(dialogueData);
-            ShowDialogue(speakingArray);
-        }
-    }
+    //    if (UserDataModel.instance.IsTutorialEnd)
+    //    {
+    //        //StartDialogue(ingameDialogueData);
+    //        ShowDialogue(speakingArray);
+    //    }
+    //    else
+    //    {
+    //        //StartDialogue(dialogueData);
+    //        ShowDialogue(speakingArray);
+    //    }
+    //}
 
     //protected override void EndDialogue()
     //{

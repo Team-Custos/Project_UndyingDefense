@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using static StagePrefsData;
 using TMPro;
+using System;
 
 public class LobbyManager : MonoBehaviour, IInputOnSpace
 {
@@ -23,6 +24,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject stageStartBtn;
     [SerializeField] private Image alarm;
 
+    [Header("Class")]
     [SerializeField] private MessageUI messageUI;
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private UltEvent isTutorialEnd;
@@ -31,6 +33,14 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private UltEvent isGameWin;
     [SerializeField] private PlayerInputEventManager pInputManager;
     [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private AccountInfo accountInfoPanel;
+
+    [Header("초상화")]
+    [SerializeField] private Image portraitLine;
+    [SerializeField] private Image portrait;
+
+    [Header("닉네임")]
+    [SerializeField] private TextMeshProUGUI nicknameTextUI;
 
     [Header("공로포인트")]
     [SerializeField] private TextMeshProUGUI pointTextUI;
@@ -64,6 +74,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         DialogueEventInvoke();
 
         CheckStage();
+        nicknameTextUI.text = PlayerPrefs.GetString("PlayerName");
         pointTextUI.text = PlayerPrefs.GetFloat("Point").ToString();
         //PlayerPrefs.SetInt("IsGeumsanFinished", 0);
         rankSystem.UpdateRank();
@@ -136,39 +147,6 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
         else
             return;
-
-        /*
-        if (!UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
-            && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.FirstMainDialogue)
-        {
-            pInputManager.OnSpaceTarget = dialogueManager;
-            UserDataModel.instance.SetFirstMainDialogue(true);
-            beforeTuorial.Invoke();
-        }
-
-            else if (UserDataModel.instance.IsTutorialEnd && !UserDataModel.instance.IsGameFinished
-                && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterTutorialDialogue)
-            {
-                pInputManager.OnSpaceTarget = dialogueManager;
-                UserDataModel.instance.SetAfterTutorialDialogue(true);
-                isTutorialEnd.Invoke();
-            }
-            else if (UserDataModel.instance.IsTutorialEnd && UserDataModel.instance.IsGameFinished
-                && !UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterGameDialogue)
-            {
-                pInputManager.OnSpaceTarget = dialogueManager;
-                UserDataModel.instance.SetAfterGameDialogue(true);
-                isGameEnd.Invoke();
-            }
-        else if (UserDataModel.instance.IsTutorialEnd && UserDataModel.instance.IsGameFinished
-            && UserDataModel.instance.IsGameWin && !UserDataModel.instance.AfterGameWinDialogue)
-        {
-            pInputManager.OnSpaceTarget = dialogueManager;
-            UserDataModel.instance.SetAfterGameWinDialogue(true);
-            isGameWin.Invoke();
-        }
-        */
-
     }
 
     public void ShowWinGumsamDialogue()
@@ -265,5 +243,21 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void OnSpace(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void SetLobbyNickName(string text)
+    {
+        nicknameTextUI.text = text;
+    }
+
+    public void SetLobbyPortrait(Sprite portrait)
+    {
+        portraitLine.sprite = portrait;
+    }
+
+    public void OnClickAccountBtn()
+    {
+        // 계정 정보 패널 열기
+        accountInfoPanel.ShowAccountPanel(portraitLine.sprite);
     }
 }
