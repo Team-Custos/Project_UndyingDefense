@@ -12,6 +12,7 @@ public class RankData : ScriptableObject
     public Sprite rewardCommanderProfile;
     //public List<Sprite> rewardCommanderProfile;
 
+    [System.Serializable]
     public struct Portrait
     {
         public Sprite portrait;
