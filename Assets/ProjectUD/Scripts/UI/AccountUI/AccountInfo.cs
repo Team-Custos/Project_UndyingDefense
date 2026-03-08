@@ -15,6 +15,7 @@ public class AccountInfo : MonoBehaviour
     [SerializeField] private GameObject resetCheckPanel;
     [SerializeField] private TextMeshProUGUI nickNameText;
     [SerializeField] private TextMeshProUGUI commanderRankTxt;
+    //[SerializeField] private PortraitSelectManager portraitSelectManager;
 
     public void Start()
     {
