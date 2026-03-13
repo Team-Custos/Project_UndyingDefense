@@ -131,6 +131,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
         if (lifeTime > 0)
         {
             Destroy(trigger.gameObject, lifeTime);
+
         }
         if (tickTime > 0)
         {
@@ -212,7 +213,6 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
 
     public void Attack(Unit target)
     {
-
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (IsBlocked(target.Data.ArmorType))
@@ -251,13 +251,13 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
 
         if (prevMarkedTargetUnit != null)       // 척살 삭제
         {
-            prevMarkedTargetUnit.SetExecuted(executionEffect, false, executeEffect);
+            prevMarkedTargetUnit.SetExecution(executionEffect, false, executeEffect);
         }
 
         if (target.GetComponent<EnemyUnit>() != null)       // 척살 적용
         {
             EnemyUnit LastMarkEnemy = target.GetComponent<EnemyUnit>();
-            LastMarkEnemy.SetExecuted(executionEffect, true, executeEffect);
+            LastMarkEnemy.SetExecution(executionEffect, true, executeEffect);
             prevMarkedTargetUnit = LastMarkEnemy;
         }
 

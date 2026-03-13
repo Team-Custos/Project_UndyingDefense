@@ -366,24 +366,10 @@ public class AttackSkill : SkillBase
 
     public void Attack(Unit unit, Unit target)
     {
-        //if (data.StartVFX != null)
-        //{
-        //    unit.AddVFX(data.StartVFX);
-        //}
-        //if (data.StartSFX.Length > 0)
-        //{
-        //    int randomSoundIdx = Random.Range(0, data.StartSFX.Length);
-        //    if (data.StartSFX[randomSoundIdx] != null)
-        //    {
-        //        SoundManager.Instance.PlaySFX(data.StartSFX[randomSoundIdx]);
-        //    }
-        //}
-
 
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
-        
 
         // 50 
         if (IsBlocked(target.Data.ArmorType))
@@ -395,7 +381,7 @@ public class AttackSkill : SkillBase
             if (calcCrit < 0f)
                 calcCrit = 0f;
 
-            Debug.Log($"치명타 율 : {calcCrit}");
+            //Debug.Log($"치명타 율 : {calcCrit}");
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산

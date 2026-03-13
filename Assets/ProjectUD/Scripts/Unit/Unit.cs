@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
+using UnityEngine.UIElements;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -73,13 +74,7 @@ public abstract class Unit : MonoBehaviour
     //protected Unit skillTarget; // 공격 대상
     //protected Unit chaseTarget; // 추격 대상
     protected Unit targetUnit; // 스킬 사용 대상
-    protected Unit priorityTarget;    // 우선 순위 대상 -> 도발을 시전한 유닛, 척살 명령 지정당한 유닛
-    protected Unit provokeUnit;  // 도발을 시전한 유닛
-    protected bool isPriorityTarget = false; // 우선순위 타겟인가?
-
-    protected bool hasExecutedMark = false;
-    public bool HasExecuteMark => hasExecutedMark;
-
+    protected Unit executionUnit;   // 척살 명령 대상
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
@@ -98,6 +93,11 @@ public abstract class Unit : MonoBehaviour
     protected const float moveThresholdOnStop = float.MaxValue;
 
     protected bool isDead;
+
+    // 판단 유예 상태 관련 변수
+    protected bool isDeferredState = false;
+    protected const float deferredStateDuration = 1f;
+    protected float deferredStateDurationCheck;
 
     [SerializedDictionary("State", "Animation Clips")]
     public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
@@ -127,7 +127,6 @@ public abstract class Unit : MonoBehaviour
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
-    public bool IsPriorityTarget => isPriorityTarget;
 
     public bool IsSelected
     {
@@ -245,6 +244,7 @@ public abstract class Unit : MonoBehaviour
         damageTakenMult = 1f;
 
         collider.enabled = true;
+        deferredStateDurationCheck = deferredStateDuration;
 
         // 스킬 쿨타임 초기화
         generalSkill.Initialize();
@@ -387,7 +387,7 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
-    protected Unit SearchTarget(float range, LayerMask targetLayer, SkillBase skill)
+    public virtual Unit SearchTarget(float range, LayerMask targetLayer, SkillBase skill)
     {
         switch(skill.GetTargetRule())
         {
@@ -501,12 +501,30 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
-    protected bool IsTargetValid(Unit target, float range, LayerMask targetLayer)
+    protected bool IsTargetValid(Unit target, LayerMask targetLayer)
     {
-        if (target != null && !target.isDead && IsTargetInRange(target, range, targetLayer))
+        if (target != null && !target.isDead) //&& IsTargetInRange(target, range, targetLayer))
+        {
             return true;
+        }
         else
+        {
+            targetUnit = null;
             return false;
+        }
+    }
+
+    protected bool IsTargetValid(Unit target,float range, LayerMask targetLayer)
+    {
+        if (target != null && !target.isDead) //&& IsTargetInRange(target, range, targetLayer))
+        {
+            return true;
+        }
+        else
+        {
+            targetUnit = null;
+            return false;
+        }
     }
 
     protected void SearchReachableTargets(float range, LayerMask targetLayer)   // 시야 범위내 이동 가능 유닛 확인
@@ -556,7 +574,7 @@ public abstract class Unit : MonoBehaviour
                         if (pathForSearch.status == NavMeshPathStatus.PathComplete)
                         {
                             targets.Add(unit);
-                            continue;
+                            break;
                         }
                         //else if(pathForSearch.status == NavMeshPathStatus.PathInvalid)
                         //{
@@ -602,10 +620,25 @@ public abstract class Unit : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            Vector3 dir = Quaternion.AngleAxis(9f * i, Vector3.up) * startDir;
+            Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * startDir;
             Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
             if (NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch) &&
+                pathForSearch.status == NavMeshPathStatus.PathComplete)
+            {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * startDir;
+            Vector3 rawTargetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
+
+            if (!NavMesh.SamplePosition(rawTargetPos, out NavMeshHit hit, 0.5f, navAgent.areaMask))
+                continue;
+
+            if (NavMesh.CalculatePath(transform.position, hit.position, navAgent.areaMask, pathForSearch) &&
                 pathForSearch.status == NavMeshPathStatus.PathComplete)
             {
                 return true;
@@ -918,34 +951,7 @@ public abstract class Unit : MonoBehaviour
         return result;
     }
 
-    protected Unit SearchPriorityTarget(float range)
-    {
-        Unit result = null;
-
-        int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-
-        if (targetCount > 0)
-        {
-            for (int i = 0; i < targetCount; i++)
-            {
-                Unit unit = collidersInRange[i].GetComponent<Unit>();
-
-                if (unit == null)
-                    continue;
-
-                if (unit.isDead || !unit.gameObject.activeInHierarchy)
-                    continue;
-
-                if(unit.IsPriorityTarget)
-                {
-                    result = unit;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
+    
 
     protected bool IsTargetInRange(Unit target, float range)
     {
@@ -1278,13 +1284,15 @@ public abstract class Unit : MonoBehaviour
     {
         //if (isDead) return;
         hp = 0f;
-        isPriorityTarget = false;
 
         RemoveAllEffect();
 
         stateDurationCheck = 0f;
 
         interval = intervalCheck; //interval 초기화
+
+        isDeferredState = false;
+        deferredStateDurationCheck = deferredStateDuration;
 
         navAgent.enabled = false;
         collider.enabled = false;
@@ -1368,11 +1376,6 @@ public abstract class Unit : MonoBehaviour
         intervalCheck = unitStats.interval;
         intervalMultiplier += percent * 0.01f;
         interval = intervalCheck * intervalMultiplier;
-    }
-
-    public void GetProvoked(Unit provokeUnit)
-    {
-        targetUnit = provokeUnit;
     }
 
 
@@ -1478,6 +1481,7 @@ public abstract class Unit : MonoBehaviour
         //VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
         //VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
     }
+
 
     public void AddVFX(ParticleSystem VFX)
     {
@@ -1616,5 +1620,19 @@ public abstract class Unit : MonoBehaviour
         }
 
         modelAnimator.SetTrigger(stateName);
+    }
+
+    public virtual void SetDeferredState()
+    {
+        isDeferredState = true;
+        targetUnit = null;
+        currentSkill = null;
+        if(navAgent.enabled)
+        {
+            navAgent.isStopped = true;
+            navAgent.velocity = Vector3.zero;
+        }
+         
+        modelAnimator.SetBool("isRunning", false);
     }
 }

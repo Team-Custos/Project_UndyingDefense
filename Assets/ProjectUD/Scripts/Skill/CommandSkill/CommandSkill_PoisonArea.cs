@@ -15,8 +15,6 @@ public class CommandSkill_PoisonArea : MonoBehaviour
     private void Update()
     {
         timer += Time.deltaTime;
-
-        Debug.Log(timer);
     }
 
     private void OnTriggerEnter(Collider other)

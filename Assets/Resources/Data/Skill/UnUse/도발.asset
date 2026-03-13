@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: "\uB3C4\uBC1C"
   m_EditorClassIdentifier: 
   name: "\uB3C4\uBC1C"
+  icon: {fileID: 21300000, guid: 95a21587ae337d34b9ed0366eb8e201e, type: 3}
   description: "\uC790\uC2E0 \uC8FC\uBCC0\uC5D0 \uC788\uB294 \uC801\uB4E4\uC744 50%\uC758
     \uD655\uB960\uB85C \uB3C4\uBC1C\uD55C\uB2E4."
-  coolTime: 20
+  coolTime: 5
   targetType: 0
-  startSFX:
-  - {fileID: 0}
-  startVFX: {fileID: 5741513272197838412, guid: 79d96cfeeb4f24c4683cf6fffd19e731,
-    type: 3}
-  icon: {fileID: 21300000, guid: 95a21587ae337d34b9ed0366eb8e201e, type: 3}
-  effect: {fileID: 4334698192522332170, guid: b9c197232f2eb4544bf1f9a82c5ed004, type: 3}
-  successRate: 50
+  range: 3
+  activeMental: 0
+  attackSFX: []
+  effectPrefab: {fileID: 0}
+  successRate: 100

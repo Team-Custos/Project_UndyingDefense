@@ -168,6 +168,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         {
             if (targets[i].TryGetComponent(out Unit target))
             {
+                float distance = Vector3.Distance(target.transform.position, pivotTarget.position);
                 Attack(target);
             }
         }
@@ -202,8 +203,16 @@ public class CommandSkillAttackTrigger : MonoBehaviour
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
         if (data.AttackData != null && IsBlocked(target.Data.ArmorType))
         {
-            float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
+            //float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
+            //calcDamage *= calcBlockRate;
+            float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
+
+            calcCrit -= 0.5f; // 치명타율 감소
+            if (calcCrit < 0f)
+                calcCrit = 0f;
+
+            //Debug.Log($"치명타 율 : {calcCrit}");
         }
 
         calcDamage *= target.DamageTakenMult;
