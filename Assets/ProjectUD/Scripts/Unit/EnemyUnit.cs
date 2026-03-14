@@ -825,8 +825,7 @@ public class EnemyUnit : Unit
 
                 if (hasTargetPos)
                 {
-
-                    return;
+                    navAgent.SetDestination(targetPos);
                 }
                 else
                 {

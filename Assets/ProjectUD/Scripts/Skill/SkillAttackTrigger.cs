@@ -52,7 +52,6 @@ public class SkillAttackTrigger : MonoBehaviour
             if (targets[i].TryGetComponent(out Unit target))
             {
                 float distance = Vector3.Distance(pivotTarget.transform.position, targets[i].transform.position);
-                Debug.Log(distance);
                 Attack(target);
             }
         }
