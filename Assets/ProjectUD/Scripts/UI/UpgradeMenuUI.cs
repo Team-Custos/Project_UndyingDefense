@@ -325,11 +325,11 @@ public class UpgradeMenuUI : MonoBehaviour
         // 업그레이드 가능이 한가지인 경우
         if(allyUnitData.UpgradeUnits.Length <= 1 || currentUnitData.Tier >= 3)
         {
-            if(currentUnitData.Name == "언월도병")
-            {
-                firstUpgradeBtn.interactable = false;
-                lockImage.gameObject.SetActive(true);
-            }
+            //if(currentUnitData.Name == "언월도병")
+            //{
+            //    firstUpgradeBtn.interactable = false;
+            //    lockImage.gameObject.SetActive(true);
+            //}
 
             secondUpgradeUnitBackImage.gameObject.SetActive(false);
             twoLine.SetActive(false);

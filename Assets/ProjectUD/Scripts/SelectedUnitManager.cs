@@ -123,8 +123,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         selectedUnit.IsSelected = true;
                     }
 
-                    UnitData unitData = selectedUnit.Data;
-
 
                     unitSelectUI.UpdateUnitInfo(selectedUnit);
 
@@ -397,7 +395,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             {
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 
-                if (allyUnitData.UpgradeUnits.Length <= 0 || selectedAllyUnit.Data.Name == "언월도병")
+                if (allyUnitData.UpgradeUnits.Length <= 0)
                     return;
 
                 string keyName = context.control.name;

@@ -8,6 +8,7 @@ public class AttackSkillData : SkillData
     [SerializeField] protected AttackData info;
     [SerializeField] protected float damage;
     [SerializeField] protected float bonusCritPercent;
+    [SerializeField] private bool ignoreDefenseType = false; // 방어 속성 무시 여부
 
     [Header("■ AttackSkill - InduseEffect")]
     [SerializeField] protected GameObject induseEffectPrefab;
@@ -18,6 +19,7 @@ public class AttackSkillData : SkillData
     public AttackData Info => info;
     public GameObject InduseEffectPrefab => induseEffectPrefab;
     public float InduseEffectSuccessRate => induseEffectSuccessRate;
+    public bool IgnoreDefenseType => ignoreDefenseType;
 
     //[Header("■ AttackSkill")]
     //[SerializeField] protected AttackType attackType;

@@ -197,6 +197,7 @@ public class EnemyUnit : Unit
             {
                 isDeferredState = false;
                 deferredStateDurationCheck = deferredStateDuration;
+                deferredStateObj.SetActive(false);
             }
         }
 

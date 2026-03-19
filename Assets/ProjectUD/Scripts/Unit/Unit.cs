@@ -96,8 +96,10 @@ public abstract class Unit : MonoBehaviour
 
     // 판단 유예 상태 관련 변수
     protected bool isDeferredState = false;
-    protected const float deferredStateDuration = 1f;
+    protected const float deferredStateDuration = 0.5f;
     protected float deferredStateDurationCheck;
+    protected GameObject deferredStateVFX;
+    protected GameObject deferredStateObj;
 
     [SerializedDictionary("State", "Animation Clips")]
     public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
@@ -118,6 +120,7 @@ public abstract class Unit : MonoBehaviour
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
     public SkillBase PassiveSkill => passiveSkill;
+    public SkillBase CurrentSKill => currentSkill;
     public IReadOnlyList<DurationEffect> EffectList => effectList;
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
@@ -251,6 +254,15 @@ public abstract class Unit : MonoBehaviour
 
         if(specialSkill != null)
             specialSkill.Initialize();
+
+
+        deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
+
+        if(deferredStateObj == null)
+        {
+            deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
+        }
+        deferredStateObj.SetActive(false);
 
 
         effectParent.gameObject.SetActive(true);
@@ -595,7 +607,7 @@ public abstract class Unit : MonoBehaviour
 
             if(targets.Count == 0)
             {
-                Debug.Log("검색된 대상 없음");
+               // Debug.Log("검색된 대상 없음");
             }
         }
     }
@@ -1634,5 +1646,8 @@ public abstract class Unit : MonoBehaviour
         }
          
         modelAnimator.SetBool("isRunning", false);
+
+        
+        deferredStateObj.SetActive(true);
     }
 }

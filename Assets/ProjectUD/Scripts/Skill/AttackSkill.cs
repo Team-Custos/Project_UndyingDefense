@@ -370,19 +370,21 @@ public class AttackSkill : SkillBase
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
-
-        // 50 
-        if (IsBlocked(target.Data.ArmorType))
+        if(!data.IgnoreDefenseType)
         {
-            float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
-            calcDamage *= calcBlockRate;
+            if (IsBlocked(target.Data.ArmorType))
+            {
+                float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
+                calcDamage *= calcBlockRate;
 
-            calcCrit -= 0.5f; // 치명타율 감소
-            if (calcCrit < 0f)
-                calcCrit = 0f;
+                calcCrit -= 0.5f; // 치명타율 감소
+                if (calcCrit < 0f)
+                    calcCrit = 0f;
 
-            //Debug.Log($"치명타 율 : {calcCrit}");
+                //Debug.Log($"치명타 율 : {calcCrit}");
+            }
         }
+        
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
         calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산

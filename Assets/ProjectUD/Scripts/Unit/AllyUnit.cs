@@ -162,6 +162,7 @@ public class AllyUnit : Unit
             {
                 isDeferredState = false;
                 deferredStateDurationCheck = deferredStateDuration;
+                deferredStateObj.SetActive(false);
             }
         }
 
