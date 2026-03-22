@@ -34,6 +34,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private PlayerInputEventManager pInputManager;
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private AccountInfo accountInfoPanel;
+    [SerializeField] private PortraitSelectManager portraitSelectManager;
 
     [Header("초상화")]
     [SerializeField] private Image portraitLine;
@@ -67,7 +68,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     private void Start()
     {
         SoundManager.Instance.PlayBGM(lobbyBgm);
-       LoadCommandSkillData();
+       LoadSavedPortrait();
 
         so = Resources.LoadAll<ScriptableObject>("Data/UnitData");
 
@@ -198,15 +199,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
     }
 
-    public void LoadCommandSkillData()
+    public void LoadSavedPortrait()
     {
-        //string rawData = PlayerPrefs.GetString("지휘관 스킬");
-        //string[] skills = rawData.Split(',');
-
-        //for(int i = 0; i < skills.Length; i++)
-        //{
-        //    commanderSkils[i] = Resources.Load("SkillData/Command/" + skills[i]) as CommandSkillData;
-        //}
+        portraitSelectManager.LoadPortraitData();
+        portraitSelectManager.LoadSavedPortrait();
 
     }
 

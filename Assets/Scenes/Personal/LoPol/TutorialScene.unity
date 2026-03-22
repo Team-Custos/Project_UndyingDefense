@@ -3172,6 +3172,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 828013772}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &84413577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4649852795870514483, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 869192626}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &86140534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32415,6 +32427,11 @@ PrefabInstance:
       objectReference: {fileID: 1694810499}
     - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: portraitImg
+      value: 
+      objectReference: {fileID: 84413577}
+    - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: inGameManager
       value: 
       objectReference: {fileID: 415572253}
@@ -60142,6 +60159,7 @@ MonoBehaviour:
   settingUI: {fileID: 1632664683}
   recordTextUI: {fileID: 0}
   newReorcUI: {fileID: 0}
+  portraitImg: {fileID: 0}
   hpBarUI: {fileID: 1737745272}
   hpTextUI: {fileID: 801379123}
   noticeUI: {fileID: 833488742}

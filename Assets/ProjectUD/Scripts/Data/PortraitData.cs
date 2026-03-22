@@ -7,4 +7,5 @@ public class PortraitData : ScriptableObject
 {
     public Sprite portrait;
     public int openRank;
+    public int portraitID;
 }

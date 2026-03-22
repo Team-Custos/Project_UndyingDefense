@@ -15,6 +15,8 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     [SerializeField] private GameObject portraitSelectPanel;
     // 계정 정보 UI의 초상화 이미지
     [SerializeField] private Image portraitImg;
+    // 로비 초상화 이미지
+    [SerializeField] private Image lobbyPortraitImg;
     // 초상화 UI 리스트
     [SerializeField] private List<PortraitUI> portraits;
     [SerializeField] private GameObject[] pageBtnArray;
@@ -30,7 +32,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     private PortraitData currentPortraitData;
     private PortraitData onSelectPortraitData;
 
-    private void LoadPortraitData()
+    public void LoadPortraitData()  // 로비매니저에서 호출
     {
         portraitDataList = new List<PortraitData>(Resources.LoadAll<PortraitData>("Data/PortraitData"));
         dataCount = portraitDataList.Count;
@@ -39,7 +41,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     public void SetPage()
     {
         portraitSelectPanel.SetActive(true);
-        LoadPortraitData();
+        //LoadPortraitData();
         SetPageBtn();
         SetPortrait();
 
@@ -117,6 +119,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     {
         currentPortraitData = portraitData;
         portraitImg.sprite = currentPortraitData.portrait;
+        lobbyPortraitImg.sprite = currentPortraitData.portrait;
     }
 
     public void OnClickPortrait(int index)
@@ -134,6 +137,17 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         }
     }
 
+    public void LoadSavedPortrait()
+    {
+        if (PlayerPrefs.HasKey("SelectedPortraitID"))
+        {
+            int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
+            PortraitData saved = portraitDataList.Find(p => p.portraitID == savedID);
+            if (saved != null)
+                SetPortraitData(saved);
+        }
+    }
+
     public void OnClickConfirm()
     {
         if (onSelectPortraitData != null)
@@ -142,6 +156,10 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             confirmBtn.interactable = false;
             indicator.gameObject.SetActive(false);
             //isChange = false;
+
+            // 선택한 초상화 저장
+            PlayerPrefs.SetInt("SelectedPortraitID", onSelectPortraitData.portraitID);
+            PlayerPrefs.Save();
         }
     }
 

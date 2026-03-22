@@ -17587,6 +17587,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1346724710}
   SelectedUnitManager: {fileID: 1137951088}
   ingameManager: {fileID: 856739625}
+  indicator: {fileID: 0}
 --- !u!4 &632568194
 Transform:
   m_ObjectHideFlags: 0
@@ -34104,6 +34105,7 @@ MonoBehaviour:
   - {fileID: 997005515}
   - {fileID: 576754213}
   - {fileID: 2141358112}
+  indicator: {fileID: 0}
   SelectedUnitManager: {fileID: 1137951088}
   allyUnitSpawner: {fileID: 923510898}
   ingameManager: {fileID: 856739625}
@@ -56845,6 +56847,11 @@ PrefabInstance:
       objectReference: {fileID: 927755697}
     - target: {fileID: 3663309925961957585, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
+      propertyPath: portraitImg
+      value: 
+      objectReference: {fileID: 1188906884059424138}
+    - target: {fileID: 3663309925961957585, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
       propertyPath: inGameManager
       value: 
       objectReference: {fileID: 856739625}
@@ -57672,6 +57679,18 @@ MonoBehaviour:
 --- !u!114 &1188906884059424137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6470049278983893346, guid: b13c8d6afd252c3499aabb49eed86d72,
+    type: 3}
+  m_PrefabInstance: {fileID: 1188906884059424133}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1188906884059424138 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8079685961085055488, guid: b13c8d6afd252c3499aabb49eed86d72,
     type: 3}
   m_PrefabInstance: {fileID: 1188906884059424133}
   m_PrefabAsset: {fileID: 0}

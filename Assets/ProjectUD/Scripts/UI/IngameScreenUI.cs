@@ -22,6 +22,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private GameObject settingUI;
     [SerializeField] private TextMeshProUGUI recordTextUI;
     [SerializeField] private GameObject newReorcUI;
+    [SerializeField] private Image portraitImg;
 
     [Header("■ HP Bar")]
     [SerializeField] private Image hpBarUI;
@@ -48,7 +49,22 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private GameObject commandSkillPanel;
     [SerializeField] private GameObject spawnPanel;
 
+    private void Start()
+    {
+        LoadPortraitInGame();
+    }
 
+    private void LoadPortraitInGame()
+    {
+        int savedID = PlayerPrefs.GetInt("SelectedPortraitID", 0);
+
+        // Resources에서 전체 로드 후 ID로 찾기
+        PortraitData[] allData = Resources.LoadAll<PortraitData>("Data/PortraitData");
+        PortraitData portrait = System.Array.Find(allData, p => p.portraitID == savedID);
+
+        if (portrait != null)
+            portraitImg.sprite = portrait.portrait;
+    }
 
     public void SetWaveNumber(int waveNum, int maxWave, bool infinite)
     {

@@ -2023,6 +2023,11 @@ PrefabInstance:
       objectReference: {fileID: 1084009168}
     - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: portraitImg
+      value: 
+      objectReference: {fileID: 1145478576}
+    - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: inGameManager
       value: 
       objectReference: {fileID: 693347759}
@@ -52690,6 +52695,7 @@ MonoBehaviour:
   settingUI: {fileID: 96721829}
   recordTextUI: {fileID: 0}
   newReorcUI: {fileID: 0}
+  portraitImg: {fileID: 0}
   hpBarUI: {fileID: 567817879}
   hpTextUI: {fileID: 139754859}
   noticeUI: {fileID: 751923282}
@@ -63408,6 +63414,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53de35c36c8bcc844a698fb861d1737b, type: 3}
+--- !u!114 &1145478576 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4649852795870514483, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 21649794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1146053720 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
