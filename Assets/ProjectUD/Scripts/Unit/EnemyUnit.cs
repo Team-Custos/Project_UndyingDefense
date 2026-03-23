@@ -195,6 +195,7 @@ public class EnemyUnit : Unit
             deferredStateDurationCheck -= Time.deltaTime;
             if (deferredStateDurationCheck <= 0f)
             {
+                targetUnit = null;
                 isDeferredState = false;
                 deferredStateDurationCheck = deferredStateDuration;
                 deferredStateObj.SetActive(false);

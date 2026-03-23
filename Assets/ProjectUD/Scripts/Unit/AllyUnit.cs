@@ -1,5 +1,6 @@
 using DG.Tweening.Core.Easing;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -84,6 +85,7 @@ public class AllyUnit : Unit
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
 
 
+
     //protected static AudioClip[] AllyDeadSFX
     //{
     //    get
@@ -158,8 +160,12 @@ public class AllyUnit : Unit
         if (isDeferredState)
         {
             deferredStateDurationCheck -= Time.deltaTime;
+            if(targetUnit != null)
+                Rotation(targetUnit.transform);
+
             if (deferredStateDurationCheck <= 0f)
             {
+                targetUnit = null;
                 isDeferredState = false;
                 deferredStateDurationCheck = deferredStateDuration;
                 deferredStateObj.SetActive(false);
@@ -274,7 +280,7 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (targetUnit == null)
+                        if (idleState == IdleState.DEFAULT)
                         {
                             Vector3 direction = Vector3.left;
                             Quaternion rot = Quaternion.LookRotation(direction);
@@ -341,7 +347,10 @@ public class AllyUnit : Unit
                     }
 
                     if (idleState == IdleState.DEFAULT || isDeferredState)
+                    {
                         break;
+                    }
+                        
 
                     if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                     {
@@ -377,6 +386,7 @@ public class AllyUnit : Unit
                                         {
                                             if (!IsTargetInRange(targetUnit, currentSkill.Data.Range))
                                             {
+                                                //Rotation(targetUnit.transform);
                                                 SetDeferredState();
                                             }
                                             else
@@ -398,6 +408,7 @@ public class AllyUnit : Unit
                                     {
                                         if (!IsTargetInRange(targetUnit, currentSkill.Data.Range))  // 범위내에 없음
                                         {
+                                            //Rotation(targetUnit.transform);
                                             SetDeferredState();
                                         }
                                         else
@@ -419,6 +430,7 @@ public class AllyUnit : Unit
                                             {
                                                 if (!IsTargetInRange(targetUnit, currentSkill.Data.Range))  // 범위내에 없음
                                                 {
+                                                    //Rotation(targetUnit.transform);
                                                     SetDeferredState();
                                                 }
                                                 else
@@ -621,7 +633,10 @@ public class AllyUnit : Unit
    public void SetIdleState(bool isWaveEnd)
     {
         if(isWaveEnd)
+        {
+            targetUnit = null;
             idleState = IdleState.DEFAULT;
+        }
         else
             idleState = IdleState.COMBAT;
     }

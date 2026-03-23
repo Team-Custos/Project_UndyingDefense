@@ -256,13 +256,13 @@ public abstract class Unit : MonoBehaviour
             specialSkill.Initialize();
 
 
-        deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
+        //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
 
-        if(deferredStateObj == null)
-        {
-            deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
-        }
-        deferredStateObj.SetActive(false);
+        //if(deferredStateObj == null)
+        //{
+        //    deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
+        //}
+        //deferredStateObj.SetActive(false);
 
 
         effectParent.gameObject.SetActive(true);
@@ -370,6 +370,8 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
+        if (target == null)
+            return;
         skill.Activate(this, target);
         isSkillActive = false;
 
@@ -1637,7 +1639,7 @@ public abstract class Unit : MonoBehaviour
     public virtual void SetDeferredState()
     {
         isDeferredState = true;
-        targetUnit = null;
+        //targetUnit = null;
         currentSkill = null;
         if(navAgent.enabled)
         {
@@ -1647,7 +1649,19 @@ public abstract class Unit : MonoBehaviour
          
         modelAnimator.SetBool("isRunning", false);
 
-        
+        if(deferredStateVFX == null)
+        {
+            deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
+            deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
+        }
+
         deferredStateObj.SetActive(true);
+    }
+
+    protected void Rotation(Transform targetTr)
+    {
+        Vector3 direction = targetTr.position - transform.position;
+        Quaternion rot = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10f);
     }
 }
