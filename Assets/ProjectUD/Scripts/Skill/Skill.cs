@@ -7,7 +7,8 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         ENEMY,
         ALLY,
-        NONE
+        NONE,
+        SELF
     }
 
     public enum TargetRule  // 타겟 선정 방식

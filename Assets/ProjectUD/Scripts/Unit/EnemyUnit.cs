@@ -239,7 +239,8 @@ public class EnemyUnit : Unit
                             {
                                 base.ActivateSkill(skill, targetUnit);
                                 SkillBase.TargetType skillTargetType = skill.GetTargetType();
-                                if (skillTargetType == SkillBase.TargetType.ALLY)
+                                if (skillTargetType == SkillBase.TargetType.ALLY ||
+                                    skillTargetType == SkillBase.TargetType.SELF)
                                 {
                                     targetUnit = null;
                                 }
@@ -378,7 +379,13 @@ public class EnemyUnit : Unit
                                              UpdateSkillState(currentSkill, null);
                                              break;
                                          }
-                                     case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
+                                    case SkillBase.TargetType.SELF:
+                                        {
+                                            targetUnit = this;
+                                            UpdateSkillState(currentSkill, this);
+                                            break;
+                                        }
+                                    case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
                                          {
                                              if (targetUnit is AllyUnit)
                                                  targetUnit = null;  // 공격 스킬 대상 초기화
@@ -524,7 +531,13 @@ public class EnemyUnit : Unit
                                          UpdateSkillState(currentSkill, null);
                                          break;
                                      }
-                                 case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
+                                case SkillBase.TargetType.SELF:
+                                    {
+                                        targetUnit = this;
+                                        UpdateSkillState(currentSkill, this);
+                                        break;
+                                    }
+                                case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
                                      {
                                          if (targetUnit is AllyUnit)
                                              targetUnit = null;  // 공격 스킬 대상 초기화

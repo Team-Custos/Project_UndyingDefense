@@ -160,7 +160,7 @@ public class AllyUnit : Unit
         if (isDeferredState)
         {
             deferredStateDurationCheck -= Time.deltaTime;
-            if(targetUnit != null)
+            if(targetUnit != null && targetUnit != this)
                 Rotation(targetUnit.transform);
 
             if (deferredStateDurationCheck <= 0f)
@@ -215,7 +215,8 @@ public class AllyUnit : Unit
                                 base.ActivateSkill(skill, targetUnit);
 
                                 SkillBase.TargetType skillTargetType = skill.GetTargetType();
-                                if(skillTargetType ==  SkillBase.TargetType.ALLY)
+                                if(skillTargetType ==  SkillBase.TargetType.ALLY ||
+                                    skillTargetType == SkillBase.TargetType.SELF)
                                 {
                                     targetUnit = null;
                                 }
@@ -368,6 +369,12 @@ public class AllyUnit : Unit
                                     UpdateSkillState(currentSkill, null);
                                     break;
                                 }
+                            case SkillBase.TargetType.SELF:
+                                {
+                                    targetUnit = this;
+                                    UpdateSkillState(currentSkill, this);
+                                    break;
+                                }
                             case SkillBase.TargetType.ALLY:
                                 {
                                     if (targetUnit is EnemyUnit)
@@ -509,6 +516,12 @@ public class AllyUnit : Unit
                                                 UpdateSkillState(currentSkill, null);
                                                 break;
                                             }
+                                        case SkillBase.TargetType.SELF:
+                                            {
+                                                targetUnit = this;
+                                                UpdateSkillState(currentSkill, this);
+                                                break;
+                                            }
                                         case SkillBase.TargetType.ALLY:
                                             {
                                                 if(targetUnit is EnemyUnit)
@@ -540,7 +553,7 @@ public class AllyUnit : Unit
 
                                                     if (targetUnit != null)
                                                     {
-                                                        if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
+                                                        if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range) || targetUnit == this)
                                                         {
                                                             UpdateSkillState(currentSkill, targetUnit);
                                                             //targetUnit = null;
