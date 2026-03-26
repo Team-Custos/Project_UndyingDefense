@@ -11947,8 +11947,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: c0bfca110aa1f6949a3b703718e7ea12,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3894895485449034200, guid: 4301fb80e1cd2034fb3b8471fcee1dc9,
         type: 3}
       propertyPath: m_IsActive
@@ -14546,7 +14545,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.1
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: c0bfca110aa1f6949a3b703718e7ea12, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &477961242 stripped
 Transform:
@@ -18790,7 +18789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &684488404
 Transform:
   m_ObjectHideFlags: 0
