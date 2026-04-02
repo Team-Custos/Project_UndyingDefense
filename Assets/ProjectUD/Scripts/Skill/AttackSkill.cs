@@ -1,9 +1,6 @@
 using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
-using Unity.VisualScripting;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class AttackSkill : SkillBase
 {
@@ -265,9 +262,9 @@ public class AttackSkill : SkillBase
             }
         }
 
-        gizmoUnit = unit;
-        gizmoX = AreaX;
-        gizmoZ = AreaZ;
+        //gizmoUnit = unit;
+        //gizmoX = AreaX;
+        //gizmoZ = AreaZ;
     }
 
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
@@ -521,6 +518,9 @@ public class AttackSkill : SkillBase
 
     private bool IsBlocked(ArmorType armorType)
     {
+        if(armorType == ArmorType.NONE)
+            Debug.Log("방어 타입 없음");
+
         if (data.Info == null)
             return false;
 
@@ -534,22 +534,22 @@ public class AttackSkill : SkillBase
 
 
     // 테스트용 Gizmo 변수
-    private Unit gizmoUnit;
-    private float gizmoX;
-    private float gizmoZ;
+    //private Unit gizmoUnit;
+    //private float gizmoX;
+    //private float gizmoZ;
 
-    void OnDrawGizmosSelected()
-    {
-        if (gizmoUnit == null)
-            return;
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (gizmoUnit == null)
+    //        return;
 
-        Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
+    //    Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
 
-        Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
+    //    Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
 
-        Gizmos.color = Color.red;
-        Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
+    //    Gizmos.color = Color.red;
+    //    Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
 
-        Gizmos.DrawWireCube(Vector3.zero, size);
-    }
+    //    Gizmos.DrawWireCube(Vector3.zero, size);
+    //}
 }

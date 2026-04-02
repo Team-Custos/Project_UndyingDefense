@@ -2,9 +2,6 @@ using Cinemachine;
 using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
@@ -527,45 +524,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         return attackTypeInfo;
     }
-
-    private string GetDefenseTypeInfo(UnitData unitData)
-    {
-        string defensTypeInfo = "";
-
-        if (unitData.ArmorType == Unit.ArmorType.STEELPLATED)
-        {
-            defensTypeInfo = "베기에 강하다. 베기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.ArmorType == Unit.ArmorType.PADDED)
-        {
-            defensTypeInfo = "때리기에 강하다. 때리기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-        else if (unitData.ArmorType == Unit.ArmorType.ANTIPIERCING)
-        {
-            defensTypeInfo = "찌르기에 강하다. 찌르기 공격에 받는 총 데미지 30% 감소, 치명타율 총 30% 감소";
-        }
-
-        return defensTypeInfo;
-    }
-
-    private string ConvertDefenseName(string armorType)
-    {
-        if (armorType == Unit.ArmorType.PADDED.ToString())
-        {
-            return "완충갑";
-        }
-        else if (armorType == Unit.ArmorType.ANTIPIERCING.ToString())
-        {
-            return "방탄갑";
-        }
-        else if (armorType == Unit.ArmorType.STEELPLATED.ToString())
-        {
-            return "철갑";
-        }
-        else
-            return "정보없음";
-    }
-
 
 
     public void UpdateUnitStateUI()

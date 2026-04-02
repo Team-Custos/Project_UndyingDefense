@@ -12,7 +12,8 @@ public abstract class Unit : MonoBehaviour
     {
         PADDED,         // 완충갑
         ANTIPIERCING,   // 방탄갑
-        STEELPLATED     // 철갑
+        STEELPLATED,    // 철갑
+        NONE            // 무속성
     }
 
     public enum EventState
@@ -62,6 +63,7 @@ public abstract class Unit : MonoBehaviour
 
     protected UnitStats unitStats;
     [SerializeField] private string unitId;
+    private ArmorType armorType;
 
     protected Collider[] collidersInRange = new Collider[maxTargetCount];
     protected List<Unit> targets = new List<Unit>(); // 탐색 조건을 만족하는 대상들. (조건에 만족하는 대상이 여러 개일 경우 사용)
@@ -130,6 +132,7 @@ public abstract class Unit : MonoBehaviour
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
+    public ArmorType unitArmorType => armorType;
 
     public bool IsSelected
     {
@@ -1636,6 +1639,12 @@ public abstract class Unit : MonoBehaviour
         modelAnimator.SetTrigger(stateName);
     }
 
+    protected void Rotation(Transform targetTr)
+    {
+        Vector3 direction = targetTr.position - transform.position;
+        Quaternion rot = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10f);
+    }
     public virtual void SetDeferredState()
     {
         isDeferredState = true;
@@ -1658,10 +1667,9 @@ public abstract class Unit : MonoBehaviour
         deferredStateObj.SetActive(true);
     }
 
-    protected void Rotation(Transform targetTr)
+
+    public void ChangeArmorType(ArmorType armorType)
     {
-        Vector3 direction = targetTr.position - transform.position;
-        Quaternion rot = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10f);
+        this.armorType = armorType;
     }
 }

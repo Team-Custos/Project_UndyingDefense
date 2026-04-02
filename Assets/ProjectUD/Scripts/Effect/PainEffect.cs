@@ -40,6 +40,7 @@ public class PainEffect : DurationEffect
     public override void OnRemove()
     {
         target.AddCriticalVulnerability(-critPercent);
+        
 
         if (effectImage != null)
         {
