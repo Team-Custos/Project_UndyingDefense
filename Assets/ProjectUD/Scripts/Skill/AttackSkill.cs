@@ -369,7 +369,7 @@ public class AttackSkill : SkillBase
 
         if(!data.IgnoreDefenseType)
         {
-            if (IsBlocked(target.Data.ArmorType))
+            if (IsBlocked(target.Armortype))
             {
                 float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
                 calcDamage *= calcBlockRate;

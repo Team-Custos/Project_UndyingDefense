@@ -4,7 +4,6 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
-using UnityEngine.UIElements;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -132,7 +131,7 @@ public abstract class Unit : MonoBehaviour
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
-    public ArmorType unitArmorType => armorType;
+    public ArmorType Armortype => armorType;
 
     public bool IsSelected
     {
@@ -251,6 +250,7 @@ public abstract class Unit : MonoBehaviour
 
         collider.enabled = true;
         deferredStateDurationCheck = deferredStateDuration;
+        armorType = Data.ArmorType;
 
         // 스킬 쿨타임 초기화
         generalSkill.Initialize();

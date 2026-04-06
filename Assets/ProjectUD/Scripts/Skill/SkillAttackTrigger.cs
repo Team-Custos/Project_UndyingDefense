@@ -78,7 +78,7 @@ public class SkillAttackTrigger : MonoBehaviour
     {
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCritPercent) * 0.01f;
-        if (IsBlocked(target.Data.ArmorType))
+        if (IsBlocked(target.Armortype))
         {
             float calcBlockRate = 1f - (0.3f * target.BlockPercent);
             calcDamage *= calcBlockRate;

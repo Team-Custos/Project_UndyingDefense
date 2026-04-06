@@ -201,7 +201,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     {
         float calcDamage = data.Damage;
         float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
-        if (data.AttackData != null && IsBlocked(target.Data.ArmorType))
+        if (data.AttackData != null && IsBlocked(target.Armortype))
         {
             //float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
             //calcDamage *= calcBlockRate;

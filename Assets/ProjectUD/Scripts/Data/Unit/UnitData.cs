@@ -54,9 +54,4 @@ public class UnitData : ScriptableObject
     //public float SightRange => sightRange;
     //public float AttackRange => attackRange;
 
-
-    //public void ChangeArmorType(ArmorType armorType)
-    //{
-    //    this.armorType = armorType;
-    //}
 }

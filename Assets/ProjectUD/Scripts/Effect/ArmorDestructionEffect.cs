@@ -9,7 +9,7 @@ public class ArmorDestructionEffect : DurationEffect
 
     public override void Activate()
     {
-        targetArmorType = target.unitArmorType;
+        targetArmorType = target.Armortype;
         target.ChangeArmorType(ArmorType.NONE);
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
 

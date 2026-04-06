@@ -82,11 +82,11 @@ public class UnitInfoPanelUI : MonoBehaviour
         }
     }
 
-    public void ConvertInfo()
-    {
-        armorType.text = unitData.ArmorType.ToString();
-        Debug.Log(armorType.text);
-    }
+    //public void ConvertInfo()
+    //{
+    //    armorType.text = unitData.ArmorType.ToString();
+    //    Debug.Log(armorType.text);
+    //}
 
     public void SetBasicInfo()
     {
