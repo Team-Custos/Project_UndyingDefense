@@ -55,7 +55,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         }
         else // 쿨타임 중 -> 스킬 사용 불가
         {
-            commandSkillManager.ResetButton();
+            //commandSkillManager.ResetButton();
             cooldownImage.gameObject.SetActive(true);
             cooldownCheck += Time.deltaTime;
             cooldownImage.fillAmount = 1f - (cooldownCheck / coolTime);
@@ -69,6 +69,8 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         if(data == null)
         {
             // 빈칸이 넘어오면 초기화하고 슬롯 이미지 검은색으로 변경
+            this.tag = "UnInteractiveUi";
+
             commandSkillData = null;
             skillIcon.sprite = null;
             skillIcon.color = new Color(1, 1, 1, 0);
@@ -79,7 +81,9 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             commandSkillCoolText.text = string.Empty;
             return;
         }
-           
+
+        this.tag = "InteractiveUi";
+
         index = i;
         commandSkillData = data;
         skillIcon.sprite = commandSkillData.Icon;
@@ -104,14 +108,20 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
         //commandSkillManager.GetClickControl(index, commandSkill);
         // ayo_0117
-        commandSkillManager.SetBeingUsedCommandSkill(index, commandSkill);
+        if (commandSkill == null)
+        {
+            Debug.Log("스킬이 설정되지 않았습니다.");
+            //SoundManager.Instance.PlayUnableUIClickSFX();
+            return;
+        }
         if (!commandSkill.IsCoolDown)                               
         {
-            commandSkillManager.ResetButton();
+            //commandSkillManager.ResetButton();
             Debug.Log(commandSkill.name + "이 쿨타임 중...");         
             SoundManager.Instance.PlayUnableUIClickSFX();
             return;
         }
+        commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
 
 
 

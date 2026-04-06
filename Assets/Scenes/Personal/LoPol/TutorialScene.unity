@@ -3172,6 +3172,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 828013772}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &84413577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4649852795870514483, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 869192626}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &86140534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14725,6 +14737,7 @@ MonoBehaviour:
   cSkillRepository: {fileID: 0}
   commandSkillList: []
   cSkillBtns: []
+  indicator: {fileID: 0}
   SelectedUnitManager: {fileID: 1910483158}
   allyUnitSpawner: {fileID: 175711730}
   ingameManager: {fileID: 318867822}
@@ -32414,6 +32427,11 @@ PrefabInstance:
       objectReference: {fileID: 1694810499}
     - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: portraitImg
+      value: 
+      objectReference: {fileID: 84413577}
+    - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: inGameManager
       value: 
       objectReference: {fileID: 415572253}
@@ -33083,6 +33101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: "\uD6C8\uB828\uC7A5"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9220480448336520273, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -33761,6 +33784,7 @@ MonoBehaviour:
   - {fileID: 1843531382}
   - {fileID: 1843531381}
   - {fileID: 1843531380}
+  indicator: {fileID: 939143735}
   SelectedUnitManager: {fileID: 296548010}
   allyUnitSpawner: {fileID: 1418562301}
   ingameManager: {fileID: 415572253}
@@ -36138,6 +36162,12 @@ Transform:
   - {fileID: 37728538}
   m_Father: {fileID: 1207350192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &939143735 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9220480448336520273, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 869192626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &939647943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60129,6 +60159,7 @@ MonoBehaviour:
   settingUI: {fileID: 1632664683}
   recordTextUI: {fileID: 0}
   newReorcUI: {fileID: 0}
+  portraitImg: {fileID: 0}
   hpBarUI: {fileID: 1737745272}
   hpTextUI: {fileID: 801379123}
   noticeUI: {fileID: 833488742}
@@ -63077,6 +63108,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1251858459}
   SelectedUnitManager: {fileID: 296548010}
   ingameManager: {fileID: 415572253}
+  indicator: {fileID: 939143735}
 --- !u!4 &1611628873
 Transform:
   m_ObjectHideFlags: 0

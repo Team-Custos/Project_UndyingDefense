@@ -9,5 +9,15 @@ public class RankData : ScriptableObject
     public float requirePoint;
     public string commanderID;
     public List<string> rewardCommandSkillID;
-    public List<Sprite> rewardCommanderProfile;
+    public Sprite rewardCommanderProfile;
+    //public List<Sprite> rewardCommanderProfile;
+
+    [System.Serializable]
+    public struct Portrait
+    {
+        public Sprite portrait;
+        public string portraitID;
+    }
+
+    public Portrait[] rewardPortraits;
 }

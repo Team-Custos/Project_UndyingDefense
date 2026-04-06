@@ -121,6 +121,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OnClick",
+                    "type": "Button",
+                    "id": "1ccb5126-ae60-475c-8a71-5c883c94eff9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -495,6 +504,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OnDownArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0815320e-d6bd-4861-a66b-1994bb025364",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Keyboard&Mouse",
+                    "action": "OnClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

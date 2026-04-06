@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ChoiceArray : MonoBehaviour
 {
-    //[SerializeField] private CharacterData characterData;
     [SerializeField] private Choice[] choiceArray;
 
     public Choice GetChoice(int i)
@@ -16,9 +15,4 @@ public class ChoiceArray : MonoBehaviour
     {
         return choiceArray.Length;
     }
-
-    //public CharacterData GetCharacterData()
-    //{
-    //    return characterData;
-    //}
 }

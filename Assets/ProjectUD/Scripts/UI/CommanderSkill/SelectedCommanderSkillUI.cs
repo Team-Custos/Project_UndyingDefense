@@ -15,7 +15,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
 
     private int index;
     private bool canAdd = false;
-
+    private bool isSaved = true;
 
     public void SetCSkillList(CommandSkillData[] datas)
     {
@@ -56,6 +56,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 //canAdd = true;
                 selectedCSkills[i] = data;
                 SetCSkill(i);
+                //--선택 스킬 변경
+                isSaved = false;
                 return true;
             }
         }
@@ -70,6 +72,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         selectedCSkills[index] = null;
         //selectedCSkillBtns[index].ClearSelectedCSkillUI();
         selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
+        //--선택 스킬 변경
+        isSaved = false;
     }
 
     public void RemoveSkill(CommandSkillData data)
@@ -120,5 +124,10 @@ public class SelectedCommanderSkillUI : MonoBehaviour
             Debug.Log($"★★★저장된 지휘관 스킬 : {selectCSkillID[i]}");
         }
 
+        isSaved = true;
+    }
+    public bool IsSaved()
+    {
+        return isSaved;
     }
 }

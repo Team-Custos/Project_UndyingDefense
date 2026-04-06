@@ -10,18 +10,6 @@ using static DialogueData;
 
 public class DialogueManager : MonoBehaviour, IInputOnSpace
 {
-    //[SerializeField] protected DialogueData dialogueData;
-    //[SerializeField] protected DialogueData ingamedialogueData;
-    //[SerializeField] private IntroScene introScene;
-
-    //[SerializeField] protected TextMeshProUGUI dialogueText;
-    //[SerializeField] protected Button nextBtn;
-
-    //[SerializeField] private Button acceptBtn;
-    //[SerializeField] private Button refuseBtn;
-
-    //protected int currentLineIndex = 0;
-
     //------------------------------------------------------
     [Header("PlayerInputManager")]
     [SerializeField] private PlayerInputEventManager inputManager;
@@ -31,7 +19,6 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     [SerializeField] protected Button nextBtn;
     [SerializeField] private GameObject spaceText;
     [SerializeField] private Animator dialSpaceText;
-    //[SerializeField] private SpeakingArray speakingArray;
 
     private int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
     private int currentSpeakingIndex = 0;  // 현재 내가 출력해야할 speaking의 번호
@@ -43,41 +30,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //-- 로컬라이즈 대화 저장용
     private Dictionary<string, List<string>> dialogueDictionary = new Dictionary<string, List<string>>();
 
-    protected virtual void Start()
-    {
-        //inputManager.OnSpaceTarget = this;
-    }
-
-    protected void StartDialogue(DialogueData dialogueData)
-    {
-        //this.dialogueData = dialogueData;
-        //currentLineIndex = 0;
-        //ShowDialogueLine();
-    }
-
-    public void OnNextButtonClicked()
-    {
-        //currentLineIndex++;
-
-        //if (currentLineIndex < dialogueData.Lines.Length - 1)
-        //{
-        //    ShowDialogueLine();
-        //}
-        //else if (currentLineIndex == dialogueData.Lines.Length - 1)
-        //{
-        //    ShowDialogueLine();
-        //    EndDialogue();
-        //}
-        //----------------
-        //ReadLine();
-    }
-
-    //protected void ShowDialogueLine()
-    //{
-    //    var line = dialogueData.Lines[currentLineIndex];
-    //    dialogueText.text = line.Text;
-    //}
-
+    
     // 로컬라이즈 테이블에서 대화 단락 가져오기
     public List<string> GetLocalDialogue(string table, string id)
     {
@@ -97,9 +50,6 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         return lines;
     }
 
-
-
-
     //-------------------------------------------------------------------------------
     // 선택지 이벤트에 넣어줄 함수
     public void ShowDialogue(SpeakingArray speakingArray)
@@ -114,6 +64,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
+
         //lines = tableLoader.GetTextData(currentSpeaking.GetSpeakingID());
 
         //-- 로컬라이즈 수정
@@ -131,9 +82,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         }
         else
             ReadLine();
-
-
     }
+
     public void ReadLine()  // 다른곳에서 불러올 이벤트로
     {
         if (currentLineIndex < lines.Count - 1)
@@ -163,7 +113,6 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         }
     }
 
-    //protected virtual void EndDialogue()
     public void EndSpeaking()
     {
         //nextBtn.gameObject.SetActive(false);
@@ -175,11 +124,6 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         dialogueui.gameObject.SetActive(false);
     }
-
-    //public void PlayDeclaration()   // 수락
-    //{
-    //    introScene.PlayDeclarationDropAnimation();
-    //}
 
     public void RetrunTitle()   // 거절
     {

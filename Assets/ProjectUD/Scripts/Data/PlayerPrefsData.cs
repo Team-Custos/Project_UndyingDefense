@@ -48,6 +48,16 @@ public class PlayerPrefsData : MonoBehaviour
         //PlayerPrefs.SetInt("SetDefaultCSkill", 0);
         //PlayerPrefs.SetInt("SetHaveCSkill", 0);
         //PlayerPrefs.SetInt("SetStartRank", 0);
+        //PlayerPrefs.SetString("PlayerAccount", "0,닉네임,0"); // 기본 계정 정보 (ID, 닉네임, 이미지ID)
+        SetDefaultPlayerPrefs();
+    }
+
+    public void SetDefaultPlayerPrefs()
+    {
+        if (!PlayerPrefs.HasKey("PlayerName"))
+            PlayerPrefs.SetString("PlayerName", "야만전사");
+
+
         if (PlayerPrefs.GetInt("SetDefaultCSkill") == 0)
         {
             LoadCSkillData(CSkillDefaultData.text);
@@ -56,7 +66,7 @@ public class PlayerPrefsData : MonoBehaviour
         {
             LoadHaveCSkillData(HaveCSkillDefaultData.text);
         }
-        if(PlayerPrefs.GetInt("SetStartRank") == 0)
+        if (PlayerPrefs.GetInt("SetStartRank") == 0)
         {
             PlayerPrefs.SetInt("CommanderRank", 1); // 기본 지휘관 랭크
             PlayerPrefs.SetInt("SetStartRank", 1);
@@ -65,6 +75,8 @@ public class PlayerPrefsData : MonoBehaviour
 
         if (rankSystem != null)
             rankSystem.UpdateRank();
+
+        Debug.Log("기본 PlayerPrefs 설정 완료");
     }
 
     // 초기 지휘관 스킬 저장 ( 선택 )
