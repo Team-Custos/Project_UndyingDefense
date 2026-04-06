@@ -26,6 +26,68 @@ public class SoundManager : Singleton<SoundManager>
     private ObjectPoolWithList<AudioSource> audioSourcePool;
     private Dictionary<AudioClip, AudioSource> loopSfxDic = new Dictionary<AudioClip, AudioSource>();
 
+    // ── 볼륨 상태 (0~1 정규화) 
+    // SettingManager > Awake > LoadSettings > Start
+    private float masterVolume = 1f;
+    private float bgmVolume = 1f;
+    private float combatVolume = 1f;
+    private float uiVolume = 1f;
+
+    public void SetMasterVolume(float value)
+    {
+        masterVolume = value;
+        ApplyBGMVolume();
+        ApplyUIVolume();
+        ApplyCombatVolume();
+    }
+
+    public void SetBGMVolume(float value)
+    {
+        bgmVolume = value;
+        ApplyBGMVolume();
+    }
+
+    public void SetCombatVolume(float value)
+    {
+        combatVolume = value;
+        ApplyCombatVolume();
+    }
+
+    public void SetUIVolume(float value)
+    {
+        uiVolume = value;
+        ApplyUIVolume();
+    }
+
+    public void SetMute(bool isMute)
+    {
+        bgmAudio.mute = isMute;
+        sfxAudio.mute = isMute;
+
+        if (audioSourcePool != null)
+            foreach (var src in audioSourcePool.List)
+                src.mute = isMute;
+    }
+
+    // ── 볼륨 내부 _ 마스터 × 개별 = 실제 볼륨
+    private void ApplyBGMVolume()
+    {
+        bgmAudio.volume = masterVolume * bgmVolume;
+    }
+
+    private void ApplyUIVolume()
+    {
+        sfxAudio.volume = masterVolume * uiVolume;
+    }
+
+    private void ApplyCombatVolume()
+    {
+        if (audioSourcePool == null) return;
+        foreach (var src in audioSourcePool.List)
+            src.volume = masterVolume * combatVolume;
+    }
+
+    //---------------------------------------------------
     public void PlayBGM(AudioClip clip)
     {
         //if (bgmAudio.clip == clip)
