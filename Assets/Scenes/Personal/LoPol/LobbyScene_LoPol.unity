@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1540953620}
-        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: EndGame
+      - m_Target: {fileID: 624746272}
+        m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
+        m_MethodName: OnCloseButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10602,7 +10602,7 @@ MonoBehaviour:
       - m_Target: {fileID: 624746272}
         m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
         m_MethodName: OnMasterVolumeChanged
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -14824,7 +14824,7 @@ MonoBehaviour:
       - m_Target: {fileID: 624746272}
         m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
         m_MethodName: OnUIVolumeChanged
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -18552,7 +18552,7 @@ MonoBehaviour:
       - m_Target: {fileID: 624746272}
         m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
         m_MethodName: OnCombatVolumeChanged
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -29654,9 +29654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:013b8f13aa28bb74ea7aceac36d155b2
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 233296085001
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -30385,7 +30385,7 @@ MonoBehaviour:
       - m_Target: {fileID: 624746272}
         m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
         m_MethodName: OnBGMVolumeChanged
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
