@@ -365,34 +365,32 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-    private void FieldLocalization(UnitStats unitStats)
+    string pointColor = "#000000";
+
+    private void FieldLocalization(UnitStats unitStats)     //260408 로폴 수정
     {
+        string mentalT = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
+        mentalText.text = $"{mentalT} <color={pointColor}>{unitStats.mental}</color>";
+
         string critT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
-        critText.text = $"{critT} : " + unitStats.critChance.ToString() + "%";
+        critText.text = $"{critT} <color={pointColor}>{unitStats.critChance}%</color>";
 
         string moveSpeedT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_moveSpeed", LocalizationSettings.SelectedLocale);
-        moveSpeedText.text = $"{moveSpeedT} : " + unitStats.moveSpeed.ToString();
+        moveSpeedText.text = $"{moveSpeedT} <color={pointColor}>{unitStats.moveSpeed}</color>";
 
-        //---
         string attackSText = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackSpeed", LocalizationSettings.SelectedLocale);
-
-        string atSpeedId = fNameTextTable.GetName("Interval_" + $"{unitStats.interval.ToString()}");
-
-        atSpeedText.text = $"{attackSText} : " + LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", $"{atSpeedId}", LocalizationSettings.SelectedLocale);
-
-        //---
+        string atSpeedId = fNameTextTable.GetName("Interval_" + unitStats.interval.ToString());
+        string atSpeedValue = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", atSpeedId, LocalizationSettings.SelectedLocale);
+        atSpeedText.text = $"{attackSText} <color={pointColor}>{atSpeedValue}</color>";
 
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
-        atRangeText.text = $"{attackRangeT} : " + (unitStats.attackRange / 2).ToString() + "칸";
-
-        string mentalT = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
-        mentalText.text = $"{mentalT} : " + unitStats.mental.ToString();
+        atRangeText.text = $"{attackRangeT} <color={pointColor}>{unitStats.attackRange / 2}보</color>";
     }
 
     public void UpdateUnitInfo(Unit unit)
