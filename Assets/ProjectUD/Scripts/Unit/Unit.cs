@@ -17,7 +17,8 @@ public abstract class Unit : MonoBehaviour
 
     public enum EventState
     {
-        TAKEDAMAGE
+        TAKEDAMAGE,     // 피해 받았을 때 발동
+        BASIC         // 기본적으로 발동
     }
 
     [Header("■ Components")]
@@ -31,7 +32,7 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
-    [SerializeField] private SkillBase passiveSkill;
+    [SerializeField] private SkillBase passiveSkill;       //specialAbility 특수 능력
     protected SkillBase currentSkill;     // 현재 보유한 스킬
 
     [Header("■ Enemy Layer")]
@@ -242,11 +243,11 @@ public abstract class Unit : MonoBehaviour
         //SetUnitStats();
         
 
-        // 이동 속도
         moveSpeedMult = 1f;
         attackSpeedMult = 1f;
         atkMult = 1f;
         damageTakenMult = 1f;
+        
 
         collider.enabled = true;
         deferredStateDurationCheck = deferredStateDuration;
@@ -258,6 +259,7 @@ public abstract class Unit : MonoBehaviour
         if(specialSkill != null)
             specialSkill.Initialize();
 
+        InvokeEvent(EventState.BASIC);
 
         //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
 
@@ -635,9 +637,9 @@ public abstract class Unit : MonoBehaviour
     {
         Vector3 startDir = (transform.position - unit.transform.position).normalized;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
-            Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * startDir;
+            Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
             Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
             if (NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch) &&
@@ -647,20 +649,20 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 4; i++)
-        {
-            Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * startDir;
-            Vector3 rawTargetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    Vector3 dir = Quaternion.AngleAxis(90f * i, Vector3.up) * startDir;
+        //    Vector3 rawTargetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
-            if (!NavMesh.SamplePosition(rawTargetPos, out NavMeshHit hit, 0.5f, navAgent.areaMask))
-                continue;
+        //    if (!NavMesh.SamplePosition(rawTargetPos, out NavMeshHit hit, 0.5f, navAgent.areaMask))
+        //        continue;
 
-            if (NavMesh.CalculatePath(transform.position, hit.position, navAgent.areaMask, pathForSearch) &&
-                pathForSearch.status == NavMeshPathStatus.PathComplete)
-            {
-                return true;
-            }
-        }
+        //    if (NavMesh.CalculatePath(transform.position, hit.position, navAgent.areaMask, pathForSearch) &&
+        //        pathForSearch.status == NavMeshPathStatus.PathComplete)
+        //    {
+        //        return true;
+        //    }
+        //}
 
         return false;
     }

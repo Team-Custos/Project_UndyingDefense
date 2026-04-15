@@ -443,11 +443,6 @@ public class AttackSkill : SkillBase
         //}
     }
 
-    public void ProvokeUnits(Unit unit, Unit target)
-    {
-
-    }
-
     private void AddHitVFX(Unit unit, Unit target)
     {
         GameObject hitVFX = data.Info.HitVFX;

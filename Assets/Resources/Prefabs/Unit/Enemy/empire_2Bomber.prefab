@@ -396,6 +396,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677014612867740491, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: m_AngularSpeed
+      value: 240
+      objectReference: {fileID: 0}
     - target: {fileID: 5112656614500110564, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -514,9 +524,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 4641855553422795482}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 3731919854221394590}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._MemberName
@@ -524,8 +544,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._MemberName
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
@@ -549,6 +579,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
       value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
@@ -562,6 +602,16 @@ PrefabInstance:
       propertyPath: stateEvents.Array.data[0]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[3]._String
       value: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: stateEvents.Array.data[1]._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._String
+      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

@@ -455,7 +455,7 @@ public class EnemyUnit : Unit
                                                      if (IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
                                                      {
                                                         Debug.Log("이동 불가");
-                                                         SetDeferredState();
+                                                        SetDeferredState();
                                                         hasTargetPos = false;
                                                      }
                                                      else
