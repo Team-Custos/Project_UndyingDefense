@@ -9,7 +9,8 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] private Transform cameraPos;
 
     [SerializeField] private AudioSource bgmAudio;
-    [SerializeField] private AudioSource sfxAudio;
+    [SerializeField] private AudioSource bgmOneShotAudio;  // sfx->bgm
+    [SerializeField] private AudioSource uiAudio;
     [SerializeField] private AudioSource sfxLoopAudio;
 
     [SerializeField] private AudioClip uiClickClip;
@@ -62,7 +63,7 @@ public class SoundManager : Singleton<SoundManager>
     public void SetMute(bool isMute)
     {
         bgmAudio.mute = isMute;
-        sfxAudio.mute = isMute;
+        bgmOneShotAudio.mute = isMute;
 
         if (audioSourcePool != null)
             foreach (var src in audioSourcePool.List)
@@ -73,11 +74,13 @@ public class SoundManager : Singleton<SoundManager>
     private void ApplyBGMVolume()
     {
         bgmAudio.volume = masterVolume * bgmVolume;
+        bgmOneShotAudio.volume = masterVolume * bgmVolume;
     }
 
     private void ApplyUIVolume()
     {
-        sfxAudio.volume = masterVolume * uiVolume;
+        //bgmOneShotAudio.volume = masterVolume * uiVolume; //기존 sfxAudio
+        uiAudio.volume = masterVolume * uiVolume;
     }
 
     private void ApplyCombatVolume()
@@ -125,7 +128,7 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(AudioClip clip) // UI 용
     {
-        sfxAudio.PlayOneShot(clip);
+        bgmOneShotAudio.PlayOneShot(clip);
     }
 
     public void PlaySFX(Vector3 pos, params AudioClip[] clips)
@@ -183,17 +186,20 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayUIClickSFX()
     {
-        sfxAudio.PlayOneShot(uiClickClip);
+        //bgmOneShotAudio.PlayOneShot(uiClickClip);
+        uiAudio.PlayOneShot(uiClickClip);
     }
 
     public void PlayUnableUIClickSFX()
     {
-        sfxAudio.PlayOneShot(unableClickClip);
+        //bgmOneShotAudio.PlayOneShot(unableClickClip);
+        uiAudio.PlayOneShot(unableClickClip);
     }
 
     public void PlayCancelUISFX()
     {
-        sfxAudio.PlayOneShot(cancleClip);
+        //bgmOneShotAudio.PlayOneShot(cancleClip);
+        uiAudio.PlayOneShot(cancleClip);
     }
 
 

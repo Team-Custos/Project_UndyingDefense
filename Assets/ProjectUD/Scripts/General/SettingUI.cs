@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
+    [Header("그래픽")]
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Toggle fullScreenToggle;
+
     [Header("사운드 슬라이더")]
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider bgmSlider;
@@ -35,15 +39,40 @@ public class SettingUI : MonoBehaviour
 
         SettingManager sm = SettingManager.Instance;
 
+        // 사운드 옵션 초기화
         masterSlider.value = sm.MasterVolume;
         bgmSlider.value = sm.BGMVolume;
         sfxSlider.value = sm.SFXVolume;
         uiSlider.value = sm.UIVolume;
         muteToggle.isOn = sm.IsMuted;
 
+        // 그래픽 옵션 초기화
+        //resolutionDropdown.value = sm.ResolutionIndex; => 추후 해상도 옵션 추가 시 구현
+        resolutionDropdown.value = 0;   //현재 1920x1080 옵션 하나뿐이므로 항상 0으로 초기화
+        fullScreenToggle.isOn = sm.IsFullScreen;
+
         RefreshAllTexts();
 
         isInitializing = false;
+    }
+
+    // Dropdown OnValueChanged에 연결
+    public void OnResolutionChanged(int index)
+    {
+        if (isInitializing) return;
+
+        // 현재는 index 0 = 1920x1080 하나만 존재
+        switch (index)
+        {
+            case 0: SettingManager.Instance.SetResolution(1920, 1080); break;
+        }
+    }
+
+    // Toggle OnValueChanged에 연결
+    public void OnFullScreenToggleChanged(bool isFullScreen)
+    {
+        if (isInitializing) return;
+        SettingManager.Instance.SetFullScreen(isFullScreen);
     }
 
     // ── Inspector에서 각 Slider의 OnValueChanged에 아래 메서드 연결
@@ -98,6 +127,11 @@ public class SettingUI : MonoBehaviour
     {
         SettingManager.Instance.SaveSettings();
         gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        SettingManager.Instance.SaveSettings(); 
     }
 
     private void RefreshAllTexts()
