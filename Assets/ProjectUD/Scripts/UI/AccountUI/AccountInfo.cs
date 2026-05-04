@@ -9,12 +9,12 @@ public class AccountInfo : MonoBehaviour
 {
     [SerializeField] private Image portraitLineImg;
     [SerializeField] private Button nickNameBtn;
-    [SerializeField] private Button resetBtn;
     [SerializeField] private GameObject portraitPanel;
     [SerializeField] private NickNamePanel nickNamePanelScript;
     [SerializeField] private GameObject resetCheckPanel;
     [SerializeField] private TextMeshProUGUI nickNameText;
     [SerializeField] private TextMeshProUGUI commanderRankTxt;
+    //[SerializeField] private Button resetBtn;
     //[SerializeField] private PortraitSelectManager portraitSelectManager;
 
     public void Start()
@@ -51,7 +51,9 @@ public class AccountInfo : MonoBehaviour
         resetCheckPanel.SetActive(true);
     }
 
-    public void OnClickResetCheckBtn()
+    // 기획상 게임초기화 버튼 삭제 (안쓰는 메서드)
+    /*
+    public void OnClickResetCheckBtn()  
     {
         PlayerPrefs.DeleteAll();
         Debug.Log("게임 데이터 초기화 완료");
@@ -63,6 +65,7 @@ public class AccountInfo : MonoBehaviour
         //nickNameText.text = "";
         //commanderRankTxt.text = "";
     }
+    */
 
     public void OnClickResetCancelBtn()
     {
