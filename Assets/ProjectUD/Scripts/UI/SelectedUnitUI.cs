@@ -53,6 +53,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image dfTypeIcon;
     [SerializeField] private Image unitSSkillImage;
     [SerializeField] private Image unitGSkillImage;
+    [SerializeField] private Image specialAbilityImage;
     [SerializeField] private TextMeshProUGUI critText;
     [SerializeField] private TextMeshProUGUI moveSpeedText;
     [SerializeField] private TextMeshProUGUI atSpeedText;

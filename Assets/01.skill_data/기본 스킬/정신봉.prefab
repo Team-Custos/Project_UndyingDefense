@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4887701372474759928}
-  - component: {fileID: -8998121551933104840}
+  - component: {fileID: 6005588856818494454}
   m_Layer: 0
-  m_Name: "\uC989\uBB38 \uC989\uC124"
+  m_Name: "\uC815\uC2E0\uBD09"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8998121551933104840
+--- !u!114 &6005588856818494454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,14 +41,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 8675126071776639299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e59e22e33114264e95361804ecaa06a, type: 3}
+  m_Script: {fileID: 11500000, guid: 022dc3484a117af40b2cdc1cca3a9a2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onActivate:
     _PersistentCalls:
-    - _Target: {fileID: -8998121551933104840}
-      _MemberName: AreaEffectSkill
+    - _Target: {fileID: 6005588856818494454}
+      _MemberName: AreaEffectAttack
       _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
       - _Type: 14
         _Int: 1
         _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -60,16 +68,31 @@ MonoBehaviour:
       - _Type: 5
         _Int: 0
         _String: 
-        _X: 3
+        _X: 5
         _Y: 0
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 60
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 13
+        _Int: 0
+        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 9176701577400336566, guid: 4dc9513f292bb7a419e8fa79e0a33d3e,
+          type: 3}
   onAttackFortress:
     _PersistentCalls: []
-  targetRule: 2
+  targetRule: 0
   animationStateTime: 0
-  data: {fileID: 11400000, guid: 140e7c771c0fe7442b1834645b84ed9b, type: 2}
-  targetLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  data: {fileID: 11400000, guid: 4ecdea18158871c4584ea4a5ecf31c19, type: 2}

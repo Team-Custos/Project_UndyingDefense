@@ -106,8 +106,5 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         }
     }
 
-    public void DamageControl(Unit unit, float value)
-    {
-        unit.AddDamageTakenMult(value);
-    }
+    
 }

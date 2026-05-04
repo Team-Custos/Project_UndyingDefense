@@ -235,6 +235,7 @@ public class AllyUnit : Unit
                         {
                             if (stateDurationCheck >= skill.AnimationStateTime && isSkillActive)
                             {
+                                
                                 base.ActivateSkill(skill, targetUnit);
                             }
                         }

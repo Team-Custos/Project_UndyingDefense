@@ -18,6 +18,7 @@ public class EffectSkill : SkillBase
         unit.AddEffect(data.EffectPrefab, unit, Vector3.zero);
     }
 
+
     public void AreaEffectSkill(Unit pivotTarget, float radius) //원형
     {
         if (targets == null)

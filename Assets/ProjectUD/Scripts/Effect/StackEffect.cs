@@ -37,4 +37,13 @@ public abstract class StackEffect : DurationEffect
     protected abstract void OnStack();
 
     protected abstract void OnMaxStack();
+
+    public void ActivateMaxStack()
+    {
+        stack = maxStack;
+
+        OnMaxStack();
+
+        Remove();
+    }
 }

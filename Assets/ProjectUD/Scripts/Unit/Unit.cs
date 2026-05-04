@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
+using ActiveType = SpecialAbility.ActiveType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
 
@@ -15,11 +16,14 @@ public abstract class Unit : MonoBehaviour
         NONE            // 무속성
     }
 
-    public enum EventState
-    {
-        TAKEDAMAGE,     // 피해 받았을 때 발동
-        BASIC         // 기본적으로 발동
-    }
+    // 특수 능력 발동 조건
+    //public enum SpecialAbility //EventState
+    //{
+    //    NONE,           // 능력 없음
+    //    TAKEDAMAGE,     // 피해 받았을 때 발동
+    //    BASIC,         // 기본적으로 발동
+    //    KILL           // 적 처치시 발동
+    //}
 
     [Header("■ Components")]
     [SerializeField] protected Animator modelAnimator;
@@ -33,6 +37,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
     [SerializeField] private SkillBase passiveSkill;       //specialAbility 특수 능력
+    [SerializeField] private SpecialAbility specialAbility;
+    // 특수 능
     protected SkillBase currentSkill;     // 현재 보유한 스킬
 
     [Header("■ Enemy Layer")]
@@ -43,7 +49,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
 
     [Header("■ State Events")]
-    [SerializeField] private UltEvent<Unit>[] stateEvents;
+    //[SerializeField] private UltEvent<Unit>[] stateEvents;
+    //[SerializeField] private SpecialAbility specialAbility;
 
     protected float maxhp;
     protected float hp;
@@ -259,7 +266,8 @@ public abstract class Unit : MonoBehaviour
         if(specialSkill != null)
             specialSkill.Initialize();
 
-        InvokeEvent(EventState.BASIC);
+        //InvokeEvent(SpecialAbility.BASIC);
+        ActivateSpecialAbility(ActiveType.ALWAYS);
 
         //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
 
@@ -365,13 +373,6 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
-    protected virtual void PassiveSkillCheck()
-    {
-        if (passiveSkill != null)
-        {
-            passiveSkill.Activate(this);
-        }
-    }
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
@@ -1291,7 +1292,7 @@ public abstract class Unit : MonoBehaviour
             Die();
         }
 
-        InvokeEvent(EventState.TAKEDAMAGE);
+        ActivateSpecialAbility(ActiveType.HP);
 
         if (selectedUnitUI != null)
         {
@@ -1457,6 +1458,25 @@ public abstract class Unit : MonoBehaviour
 
         UpdateState();
     }
+
+    public void AddMaxStackEffect(GameObject effectPrefab, Unit unit, Vector3 pos)
+    {
+        DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
+
+        if (prevEffect != null)// && prevEffect.Prefab == effectPrefab)
+        {
+            if (prevEffect is StackEffect stackEffect)
+            {
+                stackEffect.ActivateMaxStack();
+            }
+        }
+        else
+        {
+            AddEffect(effectPrefab, unit, pos);
+        }
+    }
+
+
     public void RemoveEffect(DurationEffect effect)
     {
         effectList.Remove(effect);
@@ -1528,14 +1548,12 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    public void InvokeEvent(EventState state)
+    public void ActivateSpecialAbility(ActiveType activeType)
     {
-        if(stateEvents == null || stateEvents.Length <= (int)state)
-            return;
-
-        UltEvent<Unit> stateEvent = stateEvents[(int)state];
-        if (stateEvent != null)
-            stateEvent.Invoke(this);
+        if(specialAbility != null && activeType == specialAbility.ActiveCondition)
+        {
+            specialAbility.Activate(this);
+        }
     }
 
     public void UpdateState()

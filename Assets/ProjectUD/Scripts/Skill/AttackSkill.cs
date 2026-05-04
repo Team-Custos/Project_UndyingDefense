@@ -121,20 +121,6 @@ public class AttackSkill : SkillBase
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle) //부채꼴 공격
     {
-        //if (targets == null)
-        //    targets = new Collider[maxTargetCount];
-
-        //int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
-        //for (int i = 0; i < targetCount; i++)
-        //{
-        //    if (targets[i].TryGetComponent(out Unit target))
-        //    {
-        //        // 각도 계산
-        //        Attack(unit, target);
-
-        //    }
-        //}
-
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
@@ -159,37 +145,35 @@ public class AttackSkill : SkillBase
                 Attack(unit, target);
             }
         }
+    }
 
-        //if (skillVfx != null)
-        //{
+    public void AreaEffectAttack(Unit unit, Unit pivotTarget, float radius, float angle, GameObject effect) //부채꼴 공격
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
 
-        //    List<Vector3> angles = new List<Vector3>();
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
 
-        //    // 중심 방향(정면)
-        //    Vector3 centerDir = unit.transform.forward;
-        //    angles.Add(centerDir);
+        float half = angle * 0.5f;
+        Vector3 forward = unit.transform.forward;
 
-        //    // 좌측 끝 방향
-        //    Vector3 leftDir = Quaternion.Euler(0, -half, 0) * centerDir;
-        //    angles.Add(leftDir);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (!targets[i].TryGetComponent(out Unit target))
+                continue;
 
-        //    // 우측 끝 방향
-        //    Vector3 rightDir = Quaternion.Euler(0, half, 0) * centerDir;
-        //    angles.Add(rightDir);
+            Vector3 dir = target.transform.position - unit.transform.position;
+            dir.y = 0f;
 
-        //    for (int i = 0; i < angles.Count; i++)
-        //    {
-        //        //VFX vfx = obj.GetComponent<VFX>();
-        //        vfxPool = unit.SkillVfxPool;
+            float ang = Vector3.Angle(forward, dir);
 
-        //        GameObject obj = vfxPool.GetVFX(skillVfx, unit);
-        //        obj.transform.position = unit.transform.position;
-        //        obj.SetActive(true);
-
-        //        VFX vfx = obj.GetComponent<VFX>();
-        //        vfx.SetDirection(angles[i]);
-        //    }
-        //}
+            // 좌/우 angle/2 범위 안이면 타격
+            if (ang <= half)
+            {
+                Attack(unit, target);
+                target.AddEffect(effect, target, Vector3.zero);
+            }
+        }
     }
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float radius) //원거리 원형 공격
@@ -363,7 +347,6 @@ public class AttackSkill : SkillBase
 
     public void Attack(Unit unit, Unit target)
     {
-
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
@@ -381,21 +364,12 @@ public class AttackSkill : SkillBase
                 //Debug.Log($"치명타 율 : {calcCrit}");
             }
         }
-        
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
         calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
 
-        //calcDamage += calcDamage * unit.AttackDamageMultiplier * 0.01f;
-        //calcDamage -= calcDamage * target.DamageReductionMultiplier * 0.01f;
-
-        //if (target is EnemyUnit)
-        //    Debug.Log(calcDamage);
-
-
         if (Random.Range(0f, 1f) <= calcCrit)
         {
-            // target.PlayCritSFX(data.Info.Type);
             AddCritVFX(unit, target);
             AddCritSFX(target.transform.position);
             ActivateCriticalEffect(unit, target);
@@ -526,6 +500,10 @@ public class AttackSkill : SkillBase
     }
 
 
+    //public void ActivateEffect(Unit unit, GameObject effect)
+    //{
+    //    unit.AddMaxStackEffect(effect, unit, unit.transform.position);
+    //}
 
 
     // 테스트용 Gizmo 변수
