@@ -589,6 +589,9 @@ public abstract class Unit : MonoBehaviour
                         Vector3 dir = Quaternion.AngleAxis(60f * j, Vector3.up) * startDir;
                         Vector3 targetPos = unit.transform.GetNearPosition(dir, unit.nearbyDistance);
 
+                        //GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere); 
+                        //debugObj.transform.position = targetPos;
+
                         NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch);
 
                         if (pathForSearch.status == NavMeshPathStatus.PathComplete)
@@ -615,7 +618,7 @@ public abstract class Unit : MonoBehaviour
 
             if(targets.Count == 0)
             {
-               // Debug.Log("검색된 대상 없음");
+               Debug.Log("검색된 대상 없음");
             }
         }
     }
