@@ -1110,11 +1110,7 @@ public abstract class Unit : MonoBehaviour
         if (navAgent.isStopped)
             navAgent.isStopped = false;
 
-        
-
         navAgent.SetDestination(target.transform.position);
-
-
     }
 
 

@@ -60,7 +60,7 @@ public class EnemyUnit : Unit
 
     // 시즈 모드 유닛을 향해 갈때 사용하는 변수
     private Vector3 targetPos;
-    private bool hasTargetPos = false;
+    [SerializeField] private  bool hasTargetPos = false;
 
     private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
@@ -395,7 +395,6 @@ public class EnemyUnit : Unit
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
                                                      UpdateSkillState(currentSkill, targetUnit);
-                                                     hasTargetPos = false;
                                                  }
                                                  else
                                                  {
@@ -406,7 +405,6 @@ public class EnemyUnit : Unit
                                                      else
                                                      {
                                                          SetDeferredState();
-                                                         hasTargetPos = false;
                                                      }
                                                  }
                                              }
@@ -421,7 +419,6 @@ public class EnemyUnit : Unit
                                                      if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                      {
                                                          UpdateSkillState(currentSkill, targetUnit);
-                                                         hasTargetPos = false;
                                                      }
                                                      else
                                                      {
@@ -441,14 +438,12 @@ public class EnemyUnit : Unit
                                                      // 범위 밖에 있음 -> 판단 유예 상태로
                                                      SetDeferredState();
                                                     Debug.Log("시야 범위 밖");
-                                                     hasTargetPos = false;
                                                      return;
                                                  }
 
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
                                                  {
                                                      UpdateSkillState(currentSkill, targetUnit);
-                                                     hasTargetPos = false;
                                                  }
                                                  else // 스킬 사거리 < 대상과 거리 < 시야 사거리
                                                  {
@@ -456,7 +451,6 @@ public class EnemyUnit : Unit
                                                      {
                                                         Debug.Log("이동 불가");
                                                         SetDeferredState();
-                                                        hasTargetPos = false;
                                                      }
                                                      else
                                                      {
@@ -474,7 +468,6 @@ public class EnemyUnit : Unit
                                                     if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                     {
                                                         UpdateSkillState(currentSkill, targetUnit);
-                                                        hasTargetPos = false;
                                                     }
                                                     else
                                                     {
@@ -547,7 +540,6 @@ public class EnemyUnit : Unit
                                              if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                              {
                                                  UpdateSkillState(currentSkill, targetUnit);
-                                                 hasTargetPos = false;
                                              }
                                              else
                                              {
@@ -558,7 +550,6 @@ public class EnemyUnit : Unit
                                                  else
                                                  {
                                                      SetDeferredState();
-                                                     hasTargetPos = false;
                                                  }
                                              }
                                          }
@@ -566,14 +557,13 @@ public class EnemyUnit : Unit
                                          {
                                              SearchReachableTargets(unitStats.sightRange, allyLayer);
                                              targetUnit = SearchTargetInTargets(currentSkill);
-                                            hasTargetPos = false;
+                                             hasTargetPos = false;
 
                                             if (targetUnit != null)
                                              {
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
                                                      UpdateSkillState(currentSkill, targetUnit);
-                                                     hasTargetPos = false;
                                                  }
                                                  else
                                                  {
@@ -592,21 +582,18 @@ public class EnemyUnit : Unit
                                              {
                                                  // 범위 밖에 있음 -> 판단 유예 상태로
                                                  SetDeferredState();
-                                                 hasTargetPos = false;
                                                  return;
                                              }
 
                                              if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
                                              {
                                                  UpdateSkillState(currentSkill, targetUnit);
-                                                 hasTargetPos = false;
                                              }
                                              else // 스킬 사거리 < 대상과 거리 < 시야 사거리
                                              {
                                                  if (IsPathBlocked(targetUnit))   // 이동 가능 여부 확인
                                                  {
                                                      SetDeferredState();
-                                                     hasTargetPos = false;
                                                  }
                                                  else
                                                  {
@@ -617,14 +604,13 @@ public class EnemyUnit : Unit
                                          else      // 새 대상 탐색
                                          {
                                             hasTargetPos = false;
-                                            //SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
+                                            SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
                                             targetUnit = SearchTargetInTargets(currentSkill);
                                              if (targetUnit != null)
                                              {
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
                                                      UpdateSkillState(currentSkill, targetUnit);
-                                                     hasTargetPos = false;
                                                  }
                                                  else
                                                  {
@@ -646,6 +632,7 @@ public class EnemyUnit : Unit
                     }
                     else
                     {
+
                         float distance = Vector3.Distance(transform.position, fortressPos);  // 성까지 거리 계산
                         float range = GeneralSkill.Data.Range;
 
@@ -693,6 +680,7 @@ public class EnemyUnit : Unit
         //base.ActivateSkill(skill, target);
         interval = intervalCheck;
         currentSkill = null;
+        hasTargetPos = false;
     }
 
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 상태
@@ -828,16 +816,6 @@ public class EnemyUnit : Unit
 
             if (allyUnit.ModeType == AllyUnit.Mode.SEIGE)
             {
-                //Vector3 direction = (transform.position - target.transform.position).normalized;
-                //targetPos = target.transform.GetNearPosition(direction, NearbyDistance);
-                //hasTargetPos = true;
-
-                //if (navAgent.isStopped)
-                //    navAgent.isStopped = false;
-
-
-                //navAgent.SetDestination(target.transform.position);
-
                 if (hasTargetPos)
                 {
                     navAgent.SetDestination(targetPos);
@@ -852,13 +830,15 @@ public class EnemyUnit : Unit
                         navAgent.isStopped = false;
 
 
-                    navAgent.SetDestination(target.transform.position);
+                    navAgent.SetDestination(targetPos);
                 }
             }
             else if (allyUnit.ModeType == AllyUnit.Mode.FREE)
             {
                 base.MoveToTargetUnit(target);
             }
+
+            //base.MoveToTargetUnit(target);
         }
         else if(target is EnemyUnit)
         {
@@ -948,6 +928,6 @@ public class EnemyUnit : Unit
     {
         base.SetDeferredState();
         state = State.IDLE;
-        //hasTargetPos = false;
+        hasTargetPos = false;
     }
 }
