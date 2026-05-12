@@ -9544,7 +9544,8 @@ MonoBehaviour:
   IsPrime: 0
   cameraPos: {fileID: 0}
   bgmAudio: {fileID: 147697478}
-  sfxAudio: {fileID: 147697478}
+  bgmOneShotAudio: {fileID: 0}
+  uiAudio: {fileID: 0}
   sfxLoopAudio: {fileID: 147697477}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
@@ -14904,6 +14905,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1741201207}
   SelectedUnitManager: {fileID: 485910518}
   ingameManager: {fileID: 693347759}
+  indicator: {fileID: 0}
 --- !u!4 &252438795
 Transform:
   m_ObjectHideFlags: 0
@@ -17345,6 +17347,7 @@ MonoBehaviour:
   - {fileID: 5036255151220635860}
   - {fileID: 7638975001472744915}
   - {fileID: 673844277507057667}
+  indicator: {fileID: 0}
   SelectedUnitManager: {fileID: 485910518}
   allyUnitSpawner: {fileID: 1866204814}
   ingameManager: {fileID: 693347759}
@@ -52607,6 +52610,7 @@ MonoBehaviour:
   settingUI: {fileID: 96721829}
   recordTextUI: {fileID: 0}
   newReorcUI: {fileID: 0}
+  portraitImg: {fileID: 0}
   hpBarUI: {fileID: 567817879}
   hpTextUI: {fileID: 139754859}
   noticeUI: {fileID: 751923282}
@@ -67116,6 +67120,7 @@ MonoBehaviour:
   cSkillRepository: {fileID: 0}
   commandSkillList: []
   cSkillBtns: []
+  indicator: {fileID: 0}
   SelectedUnitManager: {fileID: 1137951088}
   allyUnitSpawner: {fileID: 923510898}
   ingameManager: {fileID: 856739625}
@@ -80221,6 +80226,7 @@ MonoBehaviour:
   - {fileID: 5036255151220635860}
   - {fileID: 7638975001472744915}
   - {fileID: 673844277507057667}
+  indicator: {fileID: 0}
   SelectedUnitManager: {fileID: 485910518}
   allyUnitSpawner: {fileID: 1866204814}
   ingameManager: {fileID: 693347759}
@@ -85427,7 +85433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea2783859b2bf04f854a05af0f4dd3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageClearData: {fileID: 4900000, guid: a77f0b3619b336049a84991bf9679475, type: 3}
+  stageClearData: {fileID: 4900000, guid: 3e390d589031d9a40834b185edc1b320, type: 3}
 --- !u!4 &1562171547
 Transform:
   m_ObjectHideFlags: 0
@@ -88669,7 +88675,8 @@ MonoBehaviour:
   IsPrime: 0
   cameraPos: {fileID: 0}
   bgmAudio: {fileID: 1636126442}
-  sfxAudio: {fileID: 1636126442}
+  bgmOneShotAudio: {fileID: 0}
+  uiAudio: {fileID: 0}
   sfxLoopAudio: {fileID: 1636126444}
   uiClickClip: {fileID: 8300000, guid: 2e653b219a944d540bdc60ffa74767d8, type: 3}
   cancleClip: {fileID: 8300000, guid: bdfc36f0d46da434daf050f89953961f, type: 3}
@@ -120763,6 +120770,7 @@ MonoBehaviour:
   settingUI: {fileID: 7090137316497967275}
   recordTextUI: {fileID: 4982967654636239157}
   newReorcUI: {fileID: 1084009168}
+  portraitImg: {fileID: 0}
   hpBarUI: {fileID: 7564025048168808014}
   hpTextUI: {fileID: 8333936936176508184}
   noticeUI: {fileID: 2596611874688463175}

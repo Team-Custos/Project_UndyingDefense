@@ -173,7 +173,7 @@ public class WaveManager : MonoBehaviour
     private void SetTutorialEnd()
     {
         PlayerPrefs.SetInt("IsTutorialEnd", 1);
-        StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsan");
+        StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsanCastle");
         if (!stagedata.isOpen)
         {
             stagedata.isOpen = true;
