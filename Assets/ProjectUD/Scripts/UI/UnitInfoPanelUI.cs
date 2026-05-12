@@ -104,7 +104,7 @@ public class UnitInfoPanelUI : MonoBehaviour
 
         string tierId = fNameTextTable.GetName(unitData.Tier.ToString());
         tier.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", $"{tierId}", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("LobbyUI", $"{tierId}", LocalizationSettings.SelectedLocale);
 
         // skill
         generalIcon.sprite = unitData.GeneralSkill.Icon;
@@ -148,7 +148,7 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("CommonUI", $"{armorId}", LocalizationSettings.SelectedLocale);
 
         string armorT = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", "CON_defenseType", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("LobbyUI", "CON_defenseType1", LocalizationSettings.SelectedLocale);
         armorTypeTxt.text = $"{armorT} :";
         //---
         critChance.text = stats.critChance.ToString();
@@ -189,10 +189,10 @@ public class UnitInfoPanelUI : MonoBehaviour
         //---
         string roleId = fNameTextTable.GetName(stats.role.ToString());
         role.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", $"{roleId}", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("LobbyUI", $"{roleId}", LocalizationSettings.SelectedLocale);
 
         string roleT = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", "CON_role", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("LobbyUI", "CON_role", LocalizationSettings.SelectedLocale);
         roleTxt.text = $"{roleT} :";
         roleGameObj.SetActive(true);
 
@@ -210,7 +210,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         //tendency.text = enemy.aiStance.ToString();
         string tendencyId = fNameTextTable.GetName(enemy.aiStance.ToString());
         tendency.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommonUI", $"{tendencyId}", LocalizationSettings.SelectedLocale);
+            GetLocalizedString("LobbyUI", $"{tendencyId}", LocalizationSettings.SelectedLocale);
 
         string tendencyT = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", "CON_mission", LocalizationSettings.SelectedLocale);

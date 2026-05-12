@@ -82,8 +82,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     }
     public void CheckStage()
     {
-        StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsan");
+        StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsanCastle");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
+        StageData namwon = stagePrefsData.GetStageData(("UNQ_namwonCastle"));
         Debug.Log($"금산전투 해금여부 : {guemsan.isOpen}, 남한산성 해금여부 : {namhan.isOpen}");
         Debug.Log($"금산전투 Win여부 : {PlayerPrefs.GetInt("GeumsanWin")}");
         Debug.Log($"금산전투 클리어여부 : {guemsan.isStageEnd}, 남한산성 클리어여부 : {namhan.isStageEnd}");
@@ -95,6 +96,12 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             guemsanCloud.SetActive(false);
         }
         if(namhan.isOpen)
+        {
+            namhanBtn.enabled = true;
+            namhanLock.SetActive(false);
+            namhanCloud.SetActive(false);
+        }
+        if (namwon.isOpen)
         {
             namhanBtn.enabled = true;
             namhanLock.SetActive(false);
@@ -234,6 +241,12 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
         LoadingSceneManager.LoadScene("Stage2_MergeScene LevelDesign");
+    }
+
+    public void LoadNamwonGameScene()   // 남원성 버튼 메서드
+    {
+        SoundManager.Instance.PlaySFX(battleStartSfx);
+        LoadingSceneManager.LoadScene("Stage3_MergeScene LevelDesign");
     }
 
     public void OnSpace(InputAction.CallbackContext context)

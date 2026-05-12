@@ -18,6 +18,9 @@ public class SettingManager : Singleton<SettingManager>
     public float UIVolume { get; private set; } = 0.5f;
     public bool IsMuted { get; private set; } = false;
 
+    // 그래픽 설정 (추후 확장)
+    public bool IsFullScreen { get; private set; } = true;
+
     protected override void Awake()
     {
         base.Awake();
@@ -29,6 +32,18 @@ public class SettingManager : Singleton<SettingManager>
     {
         // SoundManager가 초기화된 이후 시점에 저장된 볼륨 일괄 적용
         ApplyAllToSoundManager();
+    }
+
+    // ── 그래픽 설정 변경 (추후 확장)
+    public void SetFullScreen(bool isFullScreen)
+    {
+        IsFullScreen = isFullScreen;
+        Screen.fullScreen = isFullScreen;
+    }
+
+    public void SetResolution(int width, int height)
+    {
+        Screen.SetResolution(width, height, IsFullScreen);
     }
 
     // ── 볼륨 변경

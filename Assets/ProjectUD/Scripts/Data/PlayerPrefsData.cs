@@ -70,7 +70,7 @@ public class PlayerPrefsData : MonoBehaviour
         {
             PlayerPrefs.SetInt("CommanderRank", 1); // 기본 지휘관 랭크
             PlayerPrefs.SetInt("SetStartRank", 1);
-            PlayerPrefs.SetString("CommanderID", "CON_commanderRank01"); // 기본 지휘관
+            PlayerPrefs.SetString("CommanderID", "UNQ_commanderRank01"); // 기본 지휘관
         }
 
         if (rankSystem != null)

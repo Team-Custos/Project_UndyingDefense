@@ -160,28 +160,27 @@ public class StagePrefsData : MonoBehaviour
 
         stagePlayerPrefs[id] = stagedata;
     }
-    public void SetGuemsanFinish()
+    public void SetGuemsanFinish()  // 인게임매니저 이벤트용 메서드
     {
         PlayerPrefs.SetInt("IsGeumsanFinished", 1);
         Debug.Log("금산전투종료");
 
-        StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
+        StageData stagedata = stagePlayerPrefs["UNQ_gumsanCastle"];
         stagedata.isStageEnd = true;
 
-        //stagePlayerPrefs["UNQ_gumsan"] = stagedata;
+        //stagePlayerPrefs["UNQ_gumsanCastle"] = stagedata;
         SaveStageData();
     }
-    public void SetGeumsanWin()
+    public void SetGeumsanWin()     // 인게임매니저 이벤트용 메서드
     {
         PlayerPrefs.SetInt("GeumsanWin", 1);
         Debug.Log("금산전투 이김");
 
-        StageData stagedata = stagePlayerPrefs["UNQ_gumsan"];
+        StageData stagedata = stagePlayerPrefs["UNQ_gumsanCastle"];
         stagedata.isStageEnd = true;
         //stagedata.clearTime = "1111";     // 클리어 시간 적용
 
-        //stagePlayerPrefs["UNQ_gumsan"] = stagedata;
-
+        //stagePlayerPrefs["UNQ_gumsanCastle"] = stagedata;
         StageData namhan = stagePlayerPrefs["UNQ_namhanFortress"];
         namhan.isOpen = true;
         SaveStageData();
