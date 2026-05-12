@@ -4,7 +4,6 @@ using System.Resources;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
 
 public class EnemyUnit : Unit
 {
@@ -59,8 +58,8 @@ public class EnemyUnit : Unit
     private Vector3 fortressPos;
 
     // 시즈 모드 유닛을 향해 갈때 사용하는 변수
-    private Vector3 targetPos;
-    [SerializeField] private  bool hasTargetPos = false;
+    //private Vector3 targetPos;
+    //[SerializeField] private  bool hasTargetPos = false;
 
     private const float angerTriggerPercent = 100f; // 분노 발동 기준 퍼센트
 
@@ -174,7 +173,7 @@ public class EnemyUnit : Unit
         mode = Mode.MOVE;
         //behaviorPriority = BehaviorPriority.Move;
         navAgent.avoidancePriority = 1;
-        hasTargetPos = false;
+        //hasTargetPos = false;
 
     }
 
@@ -410,9 +409,9 @@ public class EnemyUnit : Unit
                                              }
                                              else    // 처음 탐색
                                              {
-                                                 SearchReachableTargets(unitStats.sightRange, allyLayer);
-                                                 targetUnit = SearchTargetInTargets(currentSkill);
-                                                hasTargetPos = false;
+                                                SearchReachableTargets(unitStats.sightRange, allyLayer);
+                                                targetUnit = SearchTargetInTargets(currentSkill);
+                                                //hasTargetPos = false;
 
                                                 if (targetUnit != null)
                                                  {
@@ -460,7 +459,7 @@ public class EnemyUnit : Unit
                                              }
                                              else      // 새 대상 탐색
                                              {
-                                                hasTargetPos = false;
+                                                //hasTargetPos = false;
                                                 //SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
                                                 targetUnit = SearchTargetInTargets(currentSkill);
                                                 if (targetUnit != null)
@@ -557,7 +556,7 @@ public class EnemyUnit : Unit
                                          {
                                              SearchReachableTargets(unitStats.sightRange, allyLayer);
                                              targetUnit = SearchTargetInTargets(currentSkill);
-                                             hasTargetPos = false;
+                                             //hasTargetPos = false;
 
                                             if (targetUnit != null)
                                              {
@@ -603,7 +602,7 @@ public class EnemyUnit : Unit
                                          }
                                          else      // 새 대상 탐색
                                          {
-                                            hasTargetPos = false;
+                                            //hasTargetPos = false;
                                             SearchReachableTargets(unitStats.sightRange, enemyLayer); // 이동 가능한 대상 탐색
                                             targetUnit = SearchTargetInTargets(currentSkill);
                                              if (targetUnit != null)
@@ -680,7 +679,7 @@ public class EnemyUnit : Unit
         //base.ActivateSkill(skill, target);
         interval = intervalCheck;
         currentSkill = null;
-        hasTargetPos = false;
+        //hasTargetPos = false;
     }
 
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 상태
@@ -808,45 +807,6 @@ public class EnemyUnit : Unit
 
     }
 
-    public override void MoveToTargetUnit(Unit target)
-    {
-        if(target is AllyUnit)
-        {
-            AllyUnit allyUnit = target as AllyUnit;
-
-            if (allyUnit.ModeType == AllyUnit.Mode.SEIGE)
-            {
-                if (hasTargetPos)
-                {
-                    navAgent.SetDestination(targetPos);
-                }
-                else
-                {
-                    Vector3 direction = (transform.position - target.transform.position).normalized;
-                    targetPos = target.transform.GetNearPosition(direction, NearbyDistance);
-                    hasTargetPos = true;
-
-                    if (navAgent.isStopped)
-                        navAgent.isStopped = false;
-
-
-                    navAgent.SetDestination(targetPos);
-                }
-            }
-            else if (allyUnit.ModeType == AllyUnit.Mode.FREE)
-            {
-                base.MoveToTargetUnit(target);
-            }
-
-            //base.MoveToTargetUnit(target);
-        }
-        else if(target is EnemyUnit)
-        {
-            base.MoveToTargetUnit(target);
-        }
-
-
-    }
 
 
     public  Unit SearchNearestTarget(float range)
@@ -928,6 +888,6 @@ public class EnemyUnit : Unit
     {
         base.SetDeferredState();
         state = State.IDLE;
-        hasTargetPos = false;
+        //hasTargetPos = false;
     }
 }

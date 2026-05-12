@@ -87,6 +87,7 @@ public abstract class Unit : MonoBehaviour
 
     protected NavMeshPath path; // 경로 설정용
     protected NavMeshPath pathForSearch; // 경로 탐색용
+    protected Vector3 targetPos;
 
     protected float stateDuration;
     protected float stateDurationCheck;
@@ -1105,14 +1106,38 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
-    public virtual void MoveToTargetUnit(Unit target)
+    protected  void MoveToTargetUnit(Unit target)
     {
-        if (navAgent.isStopped)
-            navAgent.isStopped = false;
+        if (!navAgent.pathPending)  // 경로 계산 아닐 때
+        {
+            // 타겟과의 방향 및 NearbyDistance 거리만큼 떨어진 위치 계싼
+            Vector3 direction = (transform.position - target.transform.position).normalized;
+            Vector3 nearbyPos = target.transform.GetNearPosition(direction, NearbyDistance);
 
-        navAgent.SetDestination(target.transform.position);
+            // 해당 위치가 NavMesh 위에 있는지 확인
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(nearbyPos, out hit, 0.1f, navAgent.areaMask))
+            {
+                //NavMesh위에 있음 
+                targetPos = nearbyPos;
+            }
+            else
+            {
+                // NavMesh 위에 있지 않으면 보정
+                if (NavMesh.SamplePosition(nearbyPos, out hit, 2.0f, navAgent.areaMask))
+                {
+                    targetPos = hit.position;
+                }
+                else
+                {
+                    // 보정 실패 경우, Debug용
+                    Debug.Log("보정 실패");
+                }
+            }
+
+            navAgent.SetDestination(targetPos);
+        }
     }
-
 
     public virtual void MoveTo(NavMeshPath path)
     {
