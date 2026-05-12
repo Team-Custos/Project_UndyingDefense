@@ -52,11 +52,13 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
+    [SerializeField] private Button namwonBtn;
     [SerializeField] private GameObject guemsanLock;
     [SerializeField] private GameObject guemsanCloud;
     [SerializeField] private GameObject namhanLock;
     [SerializeField] private GameObject namhanCloud;
-
+    [SerializeField] private GameObject namwonLock;
+    [SerializeField] private GameObject namwonCloud;
     [Header("StagePrefsData")]
     [SerializeField] private SpeakingArray afterWinGusan;
 
@@ -103,9 +105,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
         if (namwon.isOpen)
         {
-            namhanBtn.enabled = true;
-            namhanLock.SetActive(false);
-            namhanCloud.SetActive(false);
+            namwonBtn.enabled = true;
+            namwonLock.SetActive(false);
+            namwonCloud.SetActive(false);
         }
     }
 

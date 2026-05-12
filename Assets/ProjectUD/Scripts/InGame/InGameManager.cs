@@ -167,6 +167,8 @@ public class InGameManager : MonoBehaviour, IInputESC
         //UserDataModel.instance.SetGameFinished(true);
         //---
         gameFinish.Invoke();
+        // 남원성 해금 test_260512
+        //gameWin.Invoke();
         //---
         SoundManager.Instance.PlaySFX(loseSfx);
         Invoke(nameof(PlayLoseBGM), loseSfx.length);

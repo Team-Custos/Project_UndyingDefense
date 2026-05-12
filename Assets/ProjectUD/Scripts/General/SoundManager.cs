@@ -210,6 +210,8 @@ public class SoundManager : Singleton<SoundManager>
 
         AudioSource audioSource = audioSourcePool.Pool.Get();
         audioSourcePool.List.Add(audioSource);
+
+        audioSource.volume = masterVolume * combatVolume; // 새로 생성된 AudioSource의 볼륨을 현재 설정에 맞게 조정
         return audioSource;
     }
 
