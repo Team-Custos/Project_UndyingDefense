@@ -187,7 +187,7 @@ public class SoundManager : Singleton<SoundManager>
     public void PlayUIClickSFX()
     {
         //bgmOneShotAudio.PlayOneShot(uiClickClip);
-        uiAudio.PlayOneShot(uiClickClip);
+        //uiAudio.PlayOneShot(uiClickClip);
     }
 
     public void PlayUnableUIClickSFX()

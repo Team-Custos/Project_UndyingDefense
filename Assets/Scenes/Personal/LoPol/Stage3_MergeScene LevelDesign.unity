@@ -17347,7 +17347,7 @@ MonoBehaviour:
   - {fileID: 5036255151220635860}
   - {fileID: 7638975001472744915}
   - {fileID: 673844277507057667}
-  indicator: {fileID: 0}
+  indicator: {fileID: 1831130600}
   SelectedUnitManager: {fileID: 485910518}
   allyUnitSpawner: {fileID: 1866204814}
   ingameManager: {fileID: 693347759}
@@ -28846,6 +28846,7 @@ MonoBehaviour:
   dfTypeIcon: {fileID: 8983696436396963101}
   unitSSkillImage: {fileID: 137490911}
   unitGSkillImage: {fileID: 1111569120}
+  specialAbilityImage: {fileID: 0}
   critText: {fileID: 1074178546}
   moveSpeedText: {fileID: 1455298327}
   atSpeedText: {fileID: 1522621072}
@@ -38764,7 +38765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e72a9622cd209439958c3e56230405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameGold: 10000
+  inGameGold: 1500
   ingameScreenUI: {fileID: 3159912685642456809}
   inputEventManager: {fileID: 122149541}
   enemyUnitSpawner: {fileID: 963799560}
@@ -51974,7 +51975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDataTable: {fileID: 4900000, guid: a91cd42021df20f4f8d7a929b1e3ce96, type: 3}
+  waveDataTable: {fileID: 4900000, guid: c2d455fe0b106fe459f5ac662a75596e, type: 3}
   path: UnitData/Enemy
 --- !u!114 &942100006
 MonoBehaviour:
@@ -70111,6 +70112,7 @@ MonoBehaviour:
   dfTypeIcon: {fileID: 842830738}
   unitSSkillImage: {fileID: 249820050}
   unitGSkillImage: {fileID: 610973658}
+  specialAbilityImage: {fileID: 0}
   critText: {fileID: 0}
   moveSpeedText: {fileID: 0}
   atSpeedText: {fileID: 0}
@@ -98230,7 +98232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1831130601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98281,11 +98283,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 7967176758734550213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 298.5099, y: 61.724976}
+  m_AnchoredPosition: {x: -661.4901, y: -478.27502}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1832086054
@@ -99805,7 +99807,7 @@ MonoBehaviour:
   ingameScreenUI: {fileID: 3159912685642456809}
   inGameManager: {fileID: 693347759}
   selectedUnitUI: {fileID: 505122982}
-  commandSkillManager: {fileID: 1481264216}
+  commandSkillManager: {fileID: 284765897}
   cursorManager: {fileID: 1357982415}
   unitDataLoader: {fileID: 942100006}
   durationEffectPool: {fileID: 1866007800}
@@ -117963,6 +117965,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 9159721029066632160, guid: ca985f77601a2ad47bbada62843bb8ce,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -131897,6 +131904,7 @@ RectTransform:
   - {fileID: 462402199679983340}
   - {fileID: 465241773317834451}
   - {fileID: 4860421374858651676}
+  - {fileID: 1831130603}
   - {fileID: 1658614474934681995}
   - {fileID: 4400945089917030289}
   - {fileID: 3733723942464145685}
@@ -134163,7 +134171,6 @@ SceneRoots:
   - {fileID: 1481264217}
   - {fileID: 252438795}
   - {fileID: 284765898}
-  - {fileID: 1831130603}
   - {fileID: 5207009864234579291}
   - {fileID: 465271096}
   - {fileID: 695378650}

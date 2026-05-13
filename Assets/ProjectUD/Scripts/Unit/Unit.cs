@@ -1135,7 +1135,14 @@ public abstract class Unit : MonoBehaviour
                 }
             }
 
+            if(navAgent.isStopped)
+                navAgent.isStopped = false;
+
             navAgent.SetDestination(targetPos);
+        }
+        else
+        {
+            Debug.Log(111);
         }
     }
 
