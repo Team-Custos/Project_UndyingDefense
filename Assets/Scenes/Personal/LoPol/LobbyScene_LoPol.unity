@@ -3783,10 +3783,10 @@ RectTransform:
   - {fileID: 1991099895}
   m_Father: {fileID: 1031645576}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -774, y: -17.600098}
-  m_SizeDelta: {x: 60, y: 60}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -9, y: -10}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &245343406
 MonoBehaviour:
@@ -11957,7 +11957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 2055098441}
-  fullScreenToggle: {fileID: 1202398511}
+  windowedModeToggle: {fileID: 1202398511}
   masterSlider: {fileID: 608096284}
   bgmSlider: {fileID: 1724498502}
   sfxSlider: {fileID: 1106500911}
@@ -18120,18 +18120,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5429635220567549033}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1044999599 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 801867050334610773, guid: 6f0e5dbbad80f094b9dcd6b1ec72f60f,
-    type: 3}
-  m_PrefabInstance: {fileID: 5429635220567549033}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1048964324
 GameObject:
   m_ObjectHideFlags: 0
@@ -18451,7 +18439,6 @@ MonoBehaviour:
   lobbySettingBtn: {fileID: 727856521}
   settingCloseBtn: {fileID: 245343406}
   endGameBtn: {fileID: 2777387}
-  creditBtn: {fileID: 1044999599}
   lobbySettingPanel: {fileID: 624746268}
   creditPanel: {fileID: 1801301676}
   creditCloseBtn: {fileID: 1271939181}
@@ -21198,7 +21185,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 624746272}
         m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
-        m_MethodName: OnFullScreenToggleChanged
+        m_MethodName: OnWindowedModeToggleChanged
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21683,8 +21670,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -7, y: -10}
-  m_SizeDelta: {x: 60, y: 60}
+  m_AnchoredPosition: {x: -9, y: -10}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1231577122
 MonoBehaviour:
@@ -27624,10 +27611,13 @@ MonoBehaviour:
   stagePrefsData: {fileID: 1110049465}
   guemsanBtn: {fileID: 1855840415}
   namhanBtn: {fileID: 1143291066}
+  namwonBtn: {fileID: 466460108}
   guemsanLock: {fileID: 1103224657}
   guemsanCloud: {fileID: 35761419}
   namhanLock: {fileID: 1214471287}
   namhanCloud: {fileID: 1942314407}
+  namwonLock: {fileID: 1078285717}
+  namwonCloud: {fileID: 546898800}
   afterWinGusan: {fileID: 244540975}
 --- !u!1001 &1542036748
 PrefabInstance:

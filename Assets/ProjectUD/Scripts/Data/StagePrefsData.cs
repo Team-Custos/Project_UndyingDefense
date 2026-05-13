@@ -187,6 +187,28 @@ public class StagePrefsData : MonoBehaviour
         //stagePlayerPrefs["UNQ_namhanFortress"] = namhan;
     }
 
+    //--- 전장 클리어 여부 저장 메서드
+    //--- 나중에 재활용 가능하도록 만들기---260512 ayo
+    public void SetNamhanFinish()  // 인게임매니저 이벤트용 메서드
+    {
+        //PlayerPrefs.SetInt("IsNamhanFinished", 1);
+        Debug.Log("남한산성전투종료");
+        StageData stagedata = stagePlayerPrefs["UNQ_namhanFortress"];
+        stagedata.isStageEnd = true;
+        SaveStageData();
+    }
+
+    public void SetNamhanWin()     // 인게임매니저 이벤트용 메서드
+    {
+        //PlayerPrefs.SetInt("NamhanWin", 1);
+        Debug.Log("남한산성전투 이김");
+        StageData stagedata = stagePlayerPrefs["UNQ_namhanFortress"];
+        stagedata.isStageEnd = true;
+        StageData nextStage = stagePlayerPrefs["UNQ_namwonCastle"];
+        nextStage.isOpen = true;
+        SaveStageData();
+    }
+
     public void SetRecordTime(float recordTime, string id)
     {
         float bestTime = stagePlayerPrefs[id].clearTime;

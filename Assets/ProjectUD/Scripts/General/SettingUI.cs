@@ -8,7 +8,7 @@ public class SettingUI : MonoBehaviour
 {
     [Header("그래픽")]
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private Toggle fullScreenToggle;
+    [SerializeField] private Toggle windowedModeToggle;
 
     [Header("사운드 슬라이더")]
     [SerializeField] private Slider masterSlider;
@@ -49,7 +49,7 @@ public class SettingUI : MonoBehaviour
         // 그래픽 옵션 초기화
         //resolutionDropdown.value = sm.ResolutionIndex; => 추후 해상도 옵션 추가 시 구현
         resolutionDropdown.value = 0;   //현재 1920x1080 옵션 하나뿐이므로 항상 0으로 초기화
-        fullScreenToggle.isOn = sm.IsFullScreen;
+        windowedModeToggle.isOn = !sm.IsFullScreen;
 
         RefreshAllTexts();
 
@@ -69,10 +69,10 @@ public class SettingUI : MonoBehaviour
     }
 
     // Toggle OnValueChanged에 연결
-    public void OnFullScreenToggleChanged(bool isFullScreen)
+    public void OnWindowedModeToggleChanged(bool isWindowedMode)
     {
         if (isInitializing) return;
-        SettingManager.Instance.SetFullScreen(isFullScreen);
+        SettingManager.Instance.SetFullScreen(!isWindowedMode);   // 토글이 창모드이므로 반대로 전달
     }
 
     // ── Inspector에서 각 Slider의 OnValueChanged에 아래 메서드 연결
