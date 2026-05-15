@@ -36,7 +36,6 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
-    [SerializeField] private SkillBase passiveSkill;       //specialAbility 특수 능력
     [SerializeField] private SpecialAbility specialAbility;
     // 특수 능
     protected SkillBase currentSkill;     // 현재 보유한 스킬
@@ -129,8 +128,8 @@ public abstract class Unit : MonoBehaviour
     public LayerMask EnemyLayer => enemyLayer;
     public SkillBase GeneralSkill => generalSkill;
     public SkillBase SpecialSkill => specialSkill;
-    public SkillBase PassiveSkill => passiveSkill;
     public SkillBase CurrentSKill => currentSkill;
+    public SpecialAbility SpecialAbility => specialAbility;
     public IReadOnlyList<DurationEffect> EffectList => effectList;
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
@@ -381,6 +380,12 @@ public abstract class Unit : MonoBehaviour
             return;
         skill.Activate(this, target);
         isSkillActive = false;
+
+
+        if(target.IsDead)
+        {
+            ActivateSpecialAbility(ActiveType.KILL);
+        }
 
         //if (stateDurationCheck < skill.AnimationStateTime)
         //{
@@ -1110,7 +1115,7 @@ public abstract class Unit : MonoBehaviour
     {
         if (!navAgent.pathPending)  // 경로 계산 아닐 때
         {
-            // 타겟과의 방향 및 NearbyDistance 거리만큼 떨어진 위치 계싼
+            // 타겟과의 방향 및 NearbyDistance 거리만큼 떨어진 위치 계산
             Vector3 direction = (transform.position - target.transform.position).normalized;
             Vector3 nearbyPos = target.transform.GetNearPosition(direction, NearbyDistance);
 
@@ -1139,10 +1144,6 @@ public abstract class Unit : MonoBehaviour
                 navAgent.isStopped = false;
 
             navAgent.SetDestination(targetPos);
-        }
-        else
-        {
-            Debug.Log(111);
         }
     }
 

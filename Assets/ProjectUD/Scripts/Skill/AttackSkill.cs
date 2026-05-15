@@ -201,7 +201,7 @@ public class AttackSkill : SkillBase
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(unit, target);
-                target.AddVFX(vfxPrefab, unit.transform);
+                target.AddEffect(vfxPrefab, target, target.transform.position);
             }
         }
     }
@@ -499,6 +499,15 @@ public class AttackSkill : SkillBase
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
+    
+    public void AddEffect(Unit target, float percent, GameObject effect)
+    {
+        if (Random.value <= percent) // 50% 확률로 작열 효과 적용
+        {
+            target.AddEffect(effect, target, Vector3.zero);
+
+        }
+    }
 
     //public void ActivateEffect(Unit unit, GameObject effect)
     //{

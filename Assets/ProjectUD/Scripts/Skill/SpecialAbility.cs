@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UltEvents;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 using ArmorType = Unit.ArmorType;
 using AttackType = AttackData.AttackType;
 
@@ -79,7 +78,13 @@ public class SpecialAbility : MonoBehaviour
         Debug.Log("금강불괴");
     }
 
-   // 공격 특수 능력 용 데미지 계산
+    // 영생
+    public void Immortality(Unit unit, float value)
+    {
+        unit.TakeDamage(-unit.Maxhp * value);
+    }
+
+    // 공격 특수 능력 용 데미지 계산
     private void Attack(Unit unit, Unit target, float damage, AttackData attackData)
     {
 

@@ -128,7 +128,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(AudioClip clip) // UI 용
     {
-        bgmOneShotAudio.PlayOneShot(clip);
+        if(clip != null && bgmOneShotAudio != null)
+            bgmOneShotAudio.PlayOneShot(clip);
     }
 
     public void PlaySFX(Vector3 pos, params AudioClip[] clips)

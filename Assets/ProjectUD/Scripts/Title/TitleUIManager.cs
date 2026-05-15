@@ -34,6 +34,7 @@ public class TitleUIManager : MonoBehaviour
     {
         SoundManager.Instance.PlayBGM(titleBgm);
 
+
         if (loadingPanel != null)
         {
             loadingPanel.SetActive(false);
@@ -48,7 +49,7 @@ public class TitleUIManager : MonoBehaviour
                 LoadingSceneManager.LoadScene("IntroScene");
 
                 // --- 저장데이터 초기화
-                //PlayerPrefs.DeleteAll();
+                
 
                 //DOTween.Sequence()
                 //.AppendInterval(startSfx.length)
@@ -61,6 +62,8 @@ public class TitleUIManager : MonoBehaviour
             });
 
         }
+
+        
 
         if (gameEndBtn != null)
         {
@@ -187,5 +190,11 @@ public class TitleUIManager : MonoBehaviour
             Application.Quit();
 #endif
 
+    }
+
+
+    public void DeleteAll()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }
