@@ -110,20 +110,20 @@ public class LobbyUIManager : MonoBehaviour
             });
         }
 
-        if(settingCloseBtn != null)
-        {
+        //if(settingCloseBtn != null)
+        //{
 
-            settingCloseBtn.onClick.AddListener(() =>
-            {
-                if (GlobalSoundManager.instance != null)
-                {
-                    GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
-                }
+        //    settingCloseBtn.onClick.AddListener(() =>
+        //    {
+        //        if (GlobalSoundManager.instance != null)
+        //        {
+        //            GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+        //        }
 
-                //SoundManager.Instance.playCancleSFX();
-                lobbySettingPanel.SetActive(false);
-            });
-        }
+        //        //SoundManager.Instance.playCancleSFX();
+        //        lobbySettingPanel.SetActive(false);
+        //    });
+        //}
 
         
 

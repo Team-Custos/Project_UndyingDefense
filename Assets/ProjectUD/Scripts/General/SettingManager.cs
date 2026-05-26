@@ -10,6 +10,8 @@ public class SettingManager : Singleton<SettingManager>
     private const string KEY_SFX = "Vol_SFX";
     private const string KEY_UI = "Vol_UI";
     private const string KEY_MUTE = "Vol_Mute";
+    private const string KEY_QUALITY = "QualityLevel";
+    private const string KEY_RESOLUTION = "ResolutionIndex";
 
     // 현재 볼륨 상태 (0~1 정규화 값, UI와 동기화됨)
     public float MasterVolume { get; private set; } = 0.5f;
@@ -17,6 +19,8 @@ public class SettingManager : Singleton<SettingManager>
     public float SFXVolume { get; private set; } = 0.5f;
     public float UIVolume { get; private set; } = 0.5f;
     public bool IsMuted { get; private set; } = false;
+    //public int ResolutionIndex { get; private set; } = 0;   // 현재 해상도 인덱스 (추후 확장)
+    //public int QualityLevel => QualitySettings.GetQualityLevel();
 
     // 그래픽 설정 (추후 확장)
     public bool IsFullScreen { get; private set; } = true;
@@ -44,6 +48,12 @@ public class SettingManager : Singleton<SettingManager>
     public void SetResolution(int width, int height)
     {
         Screen.SetResolution(width, height, IsFullScreen);
+    }
+
+    // ── 그래픽 품질 변경
+    public void SetQualityLevel(int qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(qualityIndex, true);
     }
 
     // ── 볼륨 변경
@@ -88,16 +98,19 @@ public class SettingManager : Singleton<SettingManager>
         PlayerPrefs.SetFloat(KEY_SFX, SFXVolume);
         PlayerPrefs.SetFloat(KEY_UI, UIVolume);
         PlayerPrefs.SetInt(KEY_MUTE, IsMuted ? 1 : 0);
+        PlayerPrefs.SetInt(KEY_QUALITY, QualitySettings.GetQualityLevel());
+        PlayerPrefs.SetInt(KEY_RESOLUTION, 0); // 현재 해상도 옵션 하나뿐이므로 항상 0 저장
         PlayerPrefs.Save();
     }
 
     public void LoadSettings()
     {
-        MasterVolume = PlayerPrefs.GetFloat(KEY_MASTER, 0.5f);
-        BGMVolume = PlayerPrefs.GetFloat(KEY_BGM, 0.5f);
-        SFXVolume = PlayerPrefs.GetFloat(KEY_SFX, 0.5f);
-        UIVolume = PlayerPrefs.GetFloat(KEY_UI, 0.5f);
-        IsMuted = PlayerPrefs.GetInt(KEY_MUTE, 0) == 1;
+        MasterVolume = PlayerPrefs.GetFloat(KEY_MASTER);
+        BGMVolume = PlayerPrefs.GetFloat(KEY_BGM);
+        SFXVolume = PlayerPrefs.GetFloat(KEY_SFX);
+        UIVolume = PlayerPrefs.GetFloat(KEY_UI);
+        IsMuted = PlayerPrefs.GetInt(KEY_MUTE) == 1;
+        ApplyQualityDropdownIndex(); // 저장된 품질 인덱스 적용
     }
 
     /// 초기값 버튼 — 모든 볼륨을 50%로 초기화하고 즉시 저장.
@@ -119,5 +132,21 @@ public class SettingManager : Singleton<SettingManager>
         SoundManager.Instance.SetCombatVolume(SFXVolume);
         SoundManager.Instance.SetUIVolume(UIVolume);
         SoundManager.Instance.SetMute(IsMuted);
+    }
+
+    public void ApplyQualityDropdownIndex()
+    {
+        // 그래픽 품질 Dropdown과 동기화
+        int qualityIndex = PlayerPrefs.GetInt(KEY_QUALITY);
+        QualitySettings.SetQualityLevel(qualityIndex, true);    // 저장된 품질 인덱스 적용
+        //qualityDropdown.value = qualityIndex; => 추후 그래픽 품질 옵션 추가 시 구현
+        //return qualityIndex;
+    }
+
+    public int ApplyResolutionDropdownIndex()
+    {
+        // 해상도 Dropdown과 동기화
+        int resolutionIndex = PlayerPrefs.GetInt(KEY_RESOLUTION);
+        return resolutionIndex;
     }
 }
