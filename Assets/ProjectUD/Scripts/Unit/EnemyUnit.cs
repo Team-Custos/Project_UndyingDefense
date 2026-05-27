@@ -349,9 +349,14 @@ public class EnemyUnit : Unit
 
                     if (distance <= range)
                     {
-                        SkillBase generalSkill = GetGeneralSkill();
-                        if (generalSkill != null)
-                            ActivateSkill(fortress, data);
+                        if(interval <= 0f)
+                        {
+                            SkillBase generalSkill = GetGeneralSkill();
+                            if (generalSkill != null)
+                                ActivateSkill(fortress, data);
+                        }
+
+                        
                         return;
                     }
 
@@ -637,9 +642,13 @@ public class EnemyUnit : Unit
 
                         if (distance <= range)   // 사거리 내 도달
                         {
-                            SkillBase generalSkill = GetGeneralSkill();
-                            if (generalSkill != null)
-                                ActivateSkill(fortress, data);
+                            if (interval <= 0f)
+                            {
+                                SkillBase generalSkill = GetGeneralSkill();
+                                if (generalSkill != null)
+                                    ActivateSkill(fortress, data);
+                            }
+
                         }
                         else
                         {
@@ -691,6 +700,7 @@ public class EnemyUnit : Unit
 
         transform.LookAt(fortress.transform.position);
         isSkillActive = true;
+        interval = intervalCheck;
 
         if (navAgent.enabled)
         {

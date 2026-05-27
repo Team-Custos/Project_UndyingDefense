@@ -20095,6 +20095,11 @@ PrefabInstance:
       propertyPath: m_AngularSpeed
       value: 240
       objectReference: {fileID: 0}
+    - target: {fileID: 748263312291810464, guid: 90d6c0b244efaa84793a2f190b4dff8d,
+        type: 3}
+      propertyPath: m_StoppingDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2635317832878904254, guid: 90d6c0b244efaa84793a2f190b4dff8d,
         type: 3}
       propertyPath: m_CarveOnlyStationary
@@ -20296,7 +20301,7 @@ MonoBehaviour:
   heightPos: {fileID: 4058158007149436850}
   generalSkill: {fileID: 0}
   specialSkill: {fileID: 0}
-  passiveSkill: {fileID: 0}
+  specialAbility: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -20304,7 +20309,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   nearbyDistance: 1.2
-  stateEvents: []
   unitId: ally205
   stateAnimDic:
     _serializedList: []

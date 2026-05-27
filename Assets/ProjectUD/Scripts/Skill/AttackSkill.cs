@@ -201,10 +201,31 @@ public class AttackSkill : SkillBase
             if (targets[i].TryGetComponent(out Unit target))
             {
                 Attack(unit, target);
+                target.AddVFX(vfxPrefab, target.transform);
+            }
+        }
+    }
+
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab, SpecialAbility specialAbility) 
+            //원거리 원형 공격, 이펙트 생성, 특수 스킬 발동
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+                if(target.IsDead)
+                {
+                    specialAbility.Immortality(target, 0.5f);
+                }
                 target.AddEffect(vfxPrefab, target, target.transform.position);
             }
         }
     }
+
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
     {
@@ -381,6 +402,13 @@ public class AttackSkill : SkillBase
         }
 
         target.TakeDamage(calcDamage);
+        Debug.Log("데미지 : " + calcDamage);
+
+        // 적 처치 특수 능력 발동
+        if (target.IsDead)
+        {
+            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL);
+        }
     }
 
     public void AttackFortress(Unit unit, Fortress fortress)

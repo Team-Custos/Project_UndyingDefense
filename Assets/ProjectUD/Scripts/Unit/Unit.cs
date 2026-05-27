@@ -327,7 +327,7 @@ public abstract class Unit : MonoBehaviour
             intervalCheck = unitStats.interval;
             interval = 0;
             navAgent.speed = unitStats.moveSpeed;
-            navAgent.stoppingDistance = 1.0f;
+            //navAgent.stoppingDistance = 1.0f;
 
 
         }
@@ -1125,6 +1125,10 @@ public abstract class Unit : MonoBehaviour
             {
                 //NavMesh위에 있음 
                 targetPos = nearbyPos;
+                float distance = Vector3.Distance(transform.position, target.transform.position);
+
+                //Debug.Log(navAgent.stoppingDistance);
+                //Debug.Log(distance);
             }
             else
             {
