@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
-    [Header("그래픽")]
+    [Header("그래픽해상도")]
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Toggle windowedModeToggle;
+
+    [Header("그래픽품질")]
+    [SerializeField] private TMP_Dropdown qualityDropdown;
 
     [Header("사운드 슬라이더")]
     [SerializeField] private Slider masterSlider;
@@ -39,24 +42,38 @@ public class SettingUI : MonoBehaviour
 
         SettingManager sm = SettingManager.Instance;
 
-        // 사운드 옵션 초기화
+        // 사운드 옵션 동기화
         masterSlider.value = sm.MasterVolume;
         bgmSlider.value = sm.BGMVolume;
         sfxSlider.value = sm.SFXVolume;
         uiSlider.value = sm.UIVolume;
         muteToggle.isOn = sm.IsMuted;
 
-        // 그래픽 옵션 초기화
+        // 그래픽 옵션 동기화
         //resolutionDropdown.value = sm.ResolutionIndex; => 추후 해상도 옵션 추가 시 구현
-        resolutionDropdown.value = 0;   //현재 1920x1080 옵션 하나뿐이므로 항상 0으로 초기화
+        //resolutionDropdown.value = 0;   //현재 1920x1080 옵션 하나뿐이므로 항상 0으로 초기화
+        resolutionDropdown.value = sm.ApplyResolutionDropdownIndex(); // 저장된 해상도 인덱스 적용
         windowedModeToggle.isOn = !sm.IsFullScreen;
+
+        // 품질 옵션 동기화
+        qualityDropdown.value = QualitySettings.GetQualityLevel();        //sm.ApplyQualityDropdownIndex();
 
         RefreshAllTexts();
 
         isInitializing = false;
     }
 
-    // Dropdown OnValueChanged에 연결
+    // 해상도 Dropdown 셋팅(아직미사용)
+    private void SetSettingUI()
+    {
+        string[] options = SettingManager.Instance.GetResolutionString();
+        for (int i = 0; i < options.Length; i++) 
+        {
+            resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(options[i]));         //TMP_Dropdown.OptionData)
+        } 
+    }
+
+    // Dropdown OnValueChanged에 연결_해상도
     public void OnResolutionChanged(int index)
     {
         if (isInitializing) return;
@@ -65,6 +82,22 @@ public class SettingUI : MonoBehaviour
         switch (index)
         {
             case 0: SettingManager.Instance.SetResolution(1920, 1080); break;
+            case 1: SettingManager.Instance.SetResolution(1600, 900); break;
+            case 2: SettingManager.Instance.SetResolution(1280, 720); break;
+        }
+    }
+
+    // Dropdown OnValueChanged에 연결_그래픽 품질
+    public void OnQualityChanged(int index)
+    {
+        if (isInitializing) return;
+
+        // Unity의 QualitySettings에 맞춰 인덱스 전달
+        switch (index)
+        {
+            case 0: SettingManager.Instance.SetQualityLevel(0); break; // Low
+            case 1: SettingManager.Instance.SetQualityLevel(1); break; // Medium
+            case 2: SettingManager.Instance.SetQualityLevel(2); break; // High
         }
     }
 
@@ -125,6 +158,11 @@ public class SettingUI : MonoBehaviour
     /// 저장 & 닫기 버튼
     public void OnCloseButtonClicked()
     {
+        if (GlobalSoundManager.instance != null)
+        {
+            GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+        }
+
         SettingManager.Instance.SaveSettings();
         gameObject.SetActive(false);
     }

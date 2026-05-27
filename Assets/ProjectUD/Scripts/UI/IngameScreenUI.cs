@@ -173,7 +173,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         }
     }
 
-    public void CloseSettting() // 버튼 용
+    public void CloseSettting() // 인게임 설정창 버튼 용
     {
         if (settingUI.activeSelf)
         {
