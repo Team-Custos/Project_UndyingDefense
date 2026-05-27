@@ -167,6 +167,7 @@ public class SettingUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     private void OnDisable()
     {
         SettingManager.Instance.SaveSettings(); 
