@@ -24,12 +24,19 @@ public class SettingManager : Singleton<SettingManager>
 
     // 그래픽 설정 (추후 확장)
     public bool IsFullScreen { get; private set; } = true;
+    private Resolution[] resolutions;
 
     protected override void Awake()
     {
         base.Awake();
         // SoundManager.Start()보다 먼저 값을 로드
         LoadSettings();
+
+        resolutions = Screen.resolutions;
+        for(int i = 0; i < resolutions.Length; i++) {
+            Debug.Log($"지원 해상도 {i+1} : {resolutions[i].width} X {resolutions[i].height}");
+        }
+        
     }
 
     private void Start()
@@ -43,6 +50,24 @@ public class SettingManager : Singleton<SettingManager>
     {
         IsFullScreen = isFullScreen;
         Screen.fullScreen = isFullScreen;
+    }
+
+    // ── 해상도 종류 반환
+    public Resolution[] GetResolutions()
+    {
+        return resolutions;
+    }
+
+    public string[] GetResolutionString()
+    {
+        string[] options = new string[resolutions.Length];
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].ToString();
+            options[i] = option;
+        }
+
+        return options;
     }
 
     public void SetResolution(int width, int height)

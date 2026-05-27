@@ -63,6 +63,16 @@ public class SettingUI : MonoBehaviour
         isInitializing = false;
     }
 
+    // 해상도 Dropdown 셋팅(아직미사용)
+    private void SetSettingUI()
+    {
+        string[] options = SettingManager.Instance.GetResolutionString();
+        for (int i = 0; i < options.Length; i++) 
+        {
+            resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(options[i]));         //TMP_Dropdown.OptionData)
+        } 
+    }
+
     // Dropdown OnValueChanged에 연결_해상도
     public void OnResolutionChanged(int index)
     {
