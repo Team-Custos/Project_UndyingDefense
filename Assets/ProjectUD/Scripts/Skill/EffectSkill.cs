@@ -25,7 +25,7 @@ public class EffectSkill : SkillBase
             targets = new Collider[maxTargetCount];
 
         int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, targetLayerMask);
-        Debug.Log(targetCount);
+        //Debug.Log(targetCount);
         for (int i = 0; i < targetCount; i++)
         {
             if (targets[i].TryGetComponent(out Unit target))

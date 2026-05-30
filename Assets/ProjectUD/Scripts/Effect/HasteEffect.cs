@@ -10,6 +10,7 @@ public class HasteEffect : DurationEffect
         target.AddMoveSpeedMult(moveSpeedPercent);
 
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
+
     }
 
     public override void OnRemove()

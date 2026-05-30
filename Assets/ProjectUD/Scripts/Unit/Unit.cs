@@ -382,10 +382,10 @@ public abstract class Unit : MonoBehaviour
         isSkillActive = false;
 
 
-        if(target.IsDead)
-        {
-            ActivateSpecialAbility(ActiveType.KILL);
-        }
+        //if(target.IsDead)
+        //{
+        //    ActivateSpecialAbility(ActiveType.KILL);
+        //}
 
         //if (stateDurationCheck < skill.AnimationStateTime)
         //{

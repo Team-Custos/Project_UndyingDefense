@@ -82,6 +82,7 @@ public class SpecialAbility : MonoBehaviour
     public void Immortality(Unit unit, float value)
     {
         unit.TakeDamage(-unit.Maxhp * value);
+        Debug.Log("회복량 : " + -unit.Maxhp * value);
     }
 
     // 공격 특수 능력 용 데미지 계산
