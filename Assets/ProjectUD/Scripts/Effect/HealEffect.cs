@@ -25,8 +25,8 @@ public class HealEffect : TickEffect
     protected override void OnTick()
     {
         target.TakeDamage(target.Maxhp * -hpPercentHeal * 0.01f);
-        Debug.Log("회복 : " + -target.Maxhp * -hpPercentHeal * 0.01f);
-        Debug.Log("현재 체력 : " + target.Hp);
+        //Debug.Log("회복 : " + -target.Maxhp * -hpPercentHeal * 0.01f);
+        //Debug.Log("현재 체력 : " + target.Hp);
     }
 
 

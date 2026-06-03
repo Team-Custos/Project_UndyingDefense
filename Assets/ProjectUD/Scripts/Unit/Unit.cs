@@ -381,7 +381,6 @@ public abstract class Unit : MonoBehaviour
         skill.Activate(this, target);
         isSkillActive = false;
 
-
         //if(target.IsDead)
         //{
         //    ActivateSpecialAbility(ActiveType.KILL);
@@ -393,7 +392,7 @@ public abstract class Unit : MonoBehaviour
         //}
         //else
         //{
-            
+
         //}   
     }
 
@@ -445,25 +444,109 @@ public abstract class Unit : MonoBehaviour
 
     protected Unit SearchNearestTarget()
     {
+        //if (targets.Count == 0)
+        //    return null;
+
+        //Unit result = null;
+        //float minDst = float.MaxValue;
+
+
+        //for (int i = 0; i < targets.Count; i++)
+        //{
+        //    float dist = (transform.position - targets[i].transform.position).sqrMagnitude;
+
+        //    if (dist < minDst)
+        //    {
+        //        minDst = dist;
+        //        result = targets[i];
+        //    }
+        //}
+
+        //return result;
+
         if (targets.Count == 0)
             return null;
 
         Unit result = null;
-        float minDst = float.MaxValue;
+        float nearest = float.MaxValue;
 
+        NavMeshPath bestPath = new NavMeshPath();
 
         for (int i = 0; i < targets.Count; i++)
         {
-            float dist = (transform.position - targets[i].transform.position).sqrMagnitude;
+            Unit target = targets[i];
 
-            if (dist < minDst)
+            Vector3 pos = target.transform.position;
+
+            bool onNav = NavMesh.SamplePosition(pos, out NavMeshHit hit, 0.1f, navAgent.areaMask);
+
+            if (onNav)
             {
-                minDst = dist;
-                result = targets[i];
+                NavMeshPath temp = new NavMeshPath();
+                NavMesh.CalculatePath(transform.position, hit.position, navAgent.areaMask, temp);
+
+                if (temp.status == NavMeshPathStatus.PathComplete)
+                {
+                    float len = CalculatePathLength(temp);
+                    if (len < nearest)
+                    {
+                        nearest = len;
+                        result = target;
+                        bestPath = temp;
+                    }
+                }
+            }
+            else
+            {
+                Vector3 direction = (transform.position - pos).normalized;
+
+                for (int j = 0; j < 6; j++)
+                {
+                    Vector3 dir = Quaternion.AngleAxis(60f * j, Vector3.up) * direction;
+                    Vector3 cand = target.transform.GetNearPosition(dir, NearbyDistance);
+
+                    if (!NavMesh.SamplePosition(cand, out NavMeshHit hit2, 0.5f, navAgent.areaMask))
+                        continue;
+
+                    NavMeshPath temp = new NavMeshPath();
+                    NavMesh.CalculatePath(transform.position, hit2.position, navAgent.areaMask, temp);
+                    //Debug.Log(hit2.position);
+
+                    if (temp.status != NavMeshPathStatus.PathComplete)
+                        continue;
+
+                    float len = CalculatePathLength(temp);
+                    if (len < nearest)
+                    {
+                        nearest = len;
+                        result = target;
+                        bestPath = temp;
+                        //Debug.Log(11111111);
+                    }
+                }
             }
         }
 
+        if (bestPath != null && bestPath.status == NavMeshPathStatus.PathComplete)
+        {
+            path = bestPath;
+        }
+
         return result;
+    }
+
+    protected float CalculatePathLength(NavMeshPath path)
+    {
+        float length = 0f;
+        if (path.corners.Length < 2)
+            return 0f;
+
+        for (int i = 1; i < path.corners.Length; i++)
+        {
+            length += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+        }
+
+        return length;
     }
 
     protected Unit SearchLowHPTarget()
@@ -677,19 +760,7 @@ public abstract class Unit : MonoBehaviour
         return false;
     }
 
-    protected float CalculatePathLength(NavMeshPath path)
-    {
-        float length = 0f;
-        if (path.corners.Length < 2)
-            return 0f;
-
-        for (int i = 1; i < path.corners.Length; i++)
-        {
-            length += Vector3.Distance(path.corners[i - 1], path.corners[i]);
-        }
-
-        return length;
-    }
+    
 
     protected Unit SearchNearestTarget(float range, LayerMask targetLayer)
     {
@@ -985,15 +1056,19 @@ public abstract class Unit : MonoBehaviour
     protected bool IsTargetInRange(Unit target, float range)
     {
         int targetCount = Physics.OverlapSphereNonAlloc(transform.position, range, collidersInRange, enemyLayer);
-        if(targetCount > 0)
+        if (targetCount > 0)
         {
-            for(int i = 0; i < targetCount; i++)
+            for (int i = 0; i < targetCount; i++)
             {
                 if (target.collider == collidersInRange[i])
                     return true;
             }
         }
         return false;
+
+        //float dist = Vector3.Distance(transform.position, target.transform.position);
+
+        //return dist <= range;
     }
 
     protected bool IsTargetInRange(Unit target, float range, LayerMask targetLayer)
@@ -1418,6 +1493,7 @@ public abstract class Unit : MonoBehaviour
     {
         // 받는 피해량
         damageTakenMult += percent * 0.01f;
+        Debug.Log("피해량 : " + damageTakenMult);
     }
 
     public void ChangeInterval(float percent) // interval을 변화시키는 함수

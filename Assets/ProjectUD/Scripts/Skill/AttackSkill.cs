@@ -191,7 +191,7 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab, GameObject effectPrefab) //원거리 원형 공격
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab, GameObject effectPrefab)
     {
         if (targets == null)
             targets = new Collider[maxTargetCount];
@@ -207,6 +207,28 @@ public class AttackSkill : SkillBase
 
                 if(effectPrefab != null)
                     target.AddEffect(effectPrefab, target, Vector3.zero);
+            }
+        }
+    }
+
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float percent, GameObject effect)
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                if (pivotTarget == targets[i])
+                    return;
+
+                Attack(unit, target);
+
+                if (Random.Range(0f, 100f) <= percent)
+                {
+                    target.AddEffect(effect, target, Vector3.zero);
+                }
             }
         }
     }
@@ -397,6 +419,8 @@ public class AttackSkill : SkillBase
         target.TakeDamage(calcDamage);
         //Debug.Log("데미지 : " + calcDamage);
 
+        float dist = Vector3.Distance(unit.transform.position, target.transform.position);
+
         // 적 처치 특수 능력 발동
         if (target.IsDead)
         {
@@ -525,10 +549,9 @@ public class AttackSkill : SkillBase
     
     public void AddEffect(Unit target, float percent, GameObject effect)
     {
-        if (Random.value <= percent) // 50% 확률로 작열 효과 적용
+        if (Random.Range(0f, 100f) <= percent)
         {
             target.AddEffect(effect, target, Vector3.zero);
-
         }
     }
 

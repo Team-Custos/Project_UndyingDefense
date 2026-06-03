@@ -992,6 +992,10 @@ public class AllyUnit : Unit
 
         //Debug.Log($"{currentSkill.Data.Name} : {atData.Damage}");
 
+        //float dist = Vector3.Distance(transform.position, target.transform.position);
+        //Debug.Log("실제 거리 : " + dist);
+        //Debug.Log("스킬 사용 거리 : " + CurrentSKill.Data.Range);
+
         isSkillActive = true;
         interval = intervalCheck;
         currentSkill = null;

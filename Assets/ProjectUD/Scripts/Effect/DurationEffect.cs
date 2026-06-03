@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements.Experimental;
+
+public enum EffectType
+{
+    BUFF,       // 버프
+    CURSE,      // 저주
+    CRIT,       // 치명
+    NATU,       // 자연
+    ETC         // 기타
+}
 
 public abstract class DurationEffect : MonoBehaviour
 {
-    private enum Type   // 상태를 버프, 디버프로 구분  
-    {
-        BUFF,
-        DEBUFF
-    }
-
     [Header("■ Data")]
     [SerializeField] protected string id;
     [SerializeField] protected string effectName;
@@ -25,7 +27,7 @@ public abstract class DurationEffect : MonoBehaviour
     protected Unit target;
     protected ObjectPoolWithList<DurationEffect> pool;
     protected EffectImage effectImage;
-    [SerializeField] private Type type;
+    [SerializeField] private EffectType type;
     
 
 
@@ -34,12 +36,14 @@ public abstract class DurationEffect : MonoBehaviour
     public string Description => description;
     public GameObject Prefab => prefab;
     public Sprite IconSprite => iconSprite;
+    public EffectType Type => type;
 
     public void Initialize(GameObject prefab, ObjectPoolWithList<DurationEffect> pool)
     {
         this.prefab = prefab;
         this.pool = pool;
     }
+
 
     public virtual void Initialize(Unit target) // 처음 효과가 유닛에 추가되었을 때
     {

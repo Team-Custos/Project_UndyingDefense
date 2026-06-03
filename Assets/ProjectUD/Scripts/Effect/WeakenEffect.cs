@@ -11,7 +11,6 @@ public class WeakenEffect : StackEffect
     protected override void OnStack()
     {
         target.AddDamageTakenMult(-damageTakenPercent);
-
     }
 
     public override void Activate()
@@ -27,7 +26,9 @@ public class WeakenEffect : StackEffect
 
     public override void OnRemove()
     {
-        target.AddMoveSpeedMult(damageTakenPercent * stack);
+        target.AddDamageTakenMult(damageTakenPercent * stack);
+        //Debug.Log(target.DamageTakenMult);
+
 
         if (effectImage != null)
         {

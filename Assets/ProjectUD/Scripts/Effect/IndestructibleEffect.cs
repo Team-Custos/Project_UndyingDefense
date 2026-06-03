@@ -15,7 +15,7 @@ public class IndestructibleEffect : DurationEffect
 
     public override void OnRemove()
     {
-        target.AddCriticalVulnerability(-percent);
+        target.AddDamageTakenMult(-percent);
 
 
         if (effectImage != null)
