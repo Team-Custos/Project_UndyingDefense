@@ -6,25 +6,28 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
+using DG.Tweening;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour, IInputOnSpace
 {
     //------------------------------------------------------
     [Header("PlayerInputManager")]
-    [SerializeField] private PlayerInputEventManager inputManager;
+    [SerializeField] protected PlayerInputEventManager inputManager;
     //[SerializeField] protected DialTextTableLoader tableLoader;
     [SerializeField] protected DialogueUI dialogueui; // DialogueUI.cs 레퍼런스
     [SerializeField] protected TextMeshProUGUI dialogueLine;
     [SerializeField] protected Button nextBtn;
-    [SerializeField] private GameObject spaceText;
-    [SerializeField] private Animator dialSpaceText;
+    //[SerializeField] private GameObject spaceText;    // 이미지로 변경
+    //[SerializeField] private Animator dialSpaceText;
+    [SerializeField] private Image spaceBarImage;
+    [SerializeField] protected float duration = 1f;
 
-    private int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
-    private int currentSpeakingIndex = 0;  // 현재 내가 출력해야할 speaking의 번호
-    private Speaking currentSpeaking;
-    private SpeakingArray currentSpeakingArray;
-    private List<string> lines = new List<string>();
+    protected int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
+    protected int currentSpeakingIndex = 0;  // 현재 내가 출력해야할 speaking의 번호
+    protected Speaking currentSpeaking;
+    protected SpeakingArray currentSpeakingArray;
+    protected List<string> lines = new List<string>();
     //private CharacterData currentCharData; // 현재 진행중인 Speaking의 캐릭터 데이터 // -> 지역변수로 만들기
 
     //-- 로컬라이즈 대화 저장용
@@ -52,7 +55,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
     //-------------------------------------------------------------------------------
     // 선택지 이벤트에 넣어줄 함수
-    public void ShowDialogue(SpeakingArray speakingArray)
+    public virtual void ShowDialogue(SpeakingArray speakingArray)
     {
         inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
@@ -60,7 +63,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         ShowDialogue();
     }
 
-    public void ShowDialogue()
+    public virtual void ShowDialogue()
     {
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
@@ -77,8 +80,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         if (lines.Count > 1)
         {
             //nextBtn.gameObject.SetActive(true);
-            spaceText.SetActive(true);
-            dialSpaceText.SetTrigger("ShowSpaceText");
+            //spaceText.SetActive(true);
+            //dialSpaceText.SetTrigger("ShowSpaceText");
+            ShowSpaceImage(3f);
         }
         else
             ReadLine();
@@ -90,9 +94,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         {
             currentLineIndex++;
             dialogueLine.text = lines[currentLineIndex];
-            if (currentLineIndex == lines.Count - 1)
+            if (currentLineIndex == 1)
             {
-                //nextBtn.gameObject.SetActive(false);
+                HideSpaceImage();
             }
             //return;
         }
@@ -116,7 +120,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     public void EndSpeaking()
     {
         //nextBtn.gameObject.SetActive(false);
-        spaceText.SetActive(false);
+        //spaceText.SetActive(false);
+        //HideSpaceImage();
         currentSpeakingArray.InvokeNextEvent();
     }
 
@@ -136,5 +141,17 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         {
             ReadLine();
         }
+    }
+
+    public void ShowSpaceImage(float delay = 0f)
+    {
+        spaceBarImage.DOKill(); // 이전에 실행중이던 트윈이 있다면 제거
+        spaceBarImage.DOFade(1f, duration).SetDelay(delay);
+    }
+
+    public void HideSpaceImage()
+    {
+        spaceBarImage.DOKill();
+        spaceBarImage.DOFade(0f, duration);
     }
 }
