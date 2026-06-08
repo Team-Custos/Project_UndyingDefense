@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class ButtonTextColorSync : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Text targetText;
+    [SerializeField] private TextMeshProUGUI targetText;
 
     [Header("텍스트 색상")]
     [SerializeField] private Color normalColor;
