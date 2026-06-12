@@ -388,18 +388,9 @@ MonoBehaviour:
   - {fileID: 199364279}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1153308180}
-      _MemberName: ShowDialogue
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 1349782063}
+    - _Target: {fileID: 1040006375}
+      _MemberName: TriggerDelayed
+      _PersistentArguments: []
 --- !u!114 &199364279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,8 +404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 0}
-  id: DIA_intro01_line
-  tableName: Dialogue_SCN_Intro01
+  id: TXT_proclamationContents_line
+  tableName: IntroUI
 --- !u!4 &199364280
 Transform:
   m_ObjectHideFlags: 0
@@ -712,7 +703,8 @@ MonoBehaviour:
   dialogueLine: {fileID: 1801627641}
   nextBtn: {fileID: 0}
   spaceBarImage: {fileID: 1882927838}
-  duration: 1
+  fadeDuration: 1
+  nextEventDelay: 1.5
 --- !u!4 &392991070
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,6 +1820,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979260026}
   m_CullTransparentMesh: 1
+--- !u!1 &1040006374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1040006376}
+  - component: {fileID: 1040006375}
+  m_Layer: 0
+  m_Name: DelayedEventInvoker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1040006375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040006374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89cf0ecbc40f9f74eb243d1d981b8b7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 3
+  onDelayedEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1153308180}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 1349782063}
+--- !u!4 &1040006376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040006374}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 956.55316, y: 643.7062, z: -16.00657}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1153308178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,7 +1932,8 @@ MonoBehaviour:
   dialogueLine: {fileID: 3126197879924409021}
   nextBtn: {fileID: 3817263554819114027}
   spaceBarImage: {fileID: 615581372293490299}
-  duration: 1
+  fadeDuration: 1
+  nextEventDelay: 1.5
 --- !u!1 &1220654780
 GameObject:
   m_ObjectHideFlags: 0
@@ -4444,3 +4496,4 @@ SceneRoots:
   - {fileID: 829484277}
   - {fileID: 836510260}
   - {fileID: 392991070}
+  - {fileID: 1040006376}

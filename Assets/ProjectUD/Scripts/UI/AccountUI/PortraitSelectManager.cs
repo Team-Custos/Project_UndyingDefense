@@ -132,8 +132,9 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         {
             //isChange = true;
 
-            // 적용 버튼 활성화
-            confirmBtn.interactable = true;
+            // 선택한 초상화가 현재 적용된 초상화와 다를 때만 확인 버튼 활성화
+            confirmBtn.interactable = (onSelectPortraitData != null && currentPortraitData != null 
+                && onSelectPortraitData.portraitID != currentPortraitData.portraitID);
         }
     }
 

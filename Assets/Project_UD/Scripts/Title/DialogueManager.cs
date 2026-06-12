@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 using DG.Tweening;
+using UltEvents;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour, IInputOnSpace
@@ -21,7 +22,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //[SerializeField] private GameObject spaceText;    // 이미지로 변경
     //[SerializeField] private Animator dialSpaceText;
     [SerializeField] private Image spaceBarImage;
-    [SerializeField] protected float duration = 1f;
+    [SerializeField] protected float fadeDuration = 1f;
+    [SerializeField] protected float nextEventDelay = 1.5f; // 다음 이벤트로 넘어가기 전에 대기할 시간
 
     protected int currentLineIndex = 0;  // 현재 내가 출력해야할 대사의 줄 번호
     protected int currentSpeakingIndex = 0;  // 현재 내가 출력해야할 speaking의 번호
@@ -146,12 +148,12 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     public void ShowSpaceImage(float delay = 0f)
     {
         spaceBarImage.DOKill(); // 이전에 실행중이던 트윈이 있다면 제거
-        spaceBarImage.DOFade(1f, duration).SetDelay(delay);
+        spaceBarImage.DOFade(1f, fadeDuration).SetDelay(delay);
     }
 
     public void HideSpaceImage()
     {
         spaceBarImage.DOKill();
-        spaceBarImage.DOFade(0f, duration);
+        spaceBarImage.DOFade(0f, fadeDuration);
     }
 }

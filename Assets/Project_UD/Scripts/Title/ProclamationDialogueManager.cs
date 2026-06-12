@@ -21,7 +21,7 @@ public class ProclamationDialogueManager : DialogueManager
         dialogueLine.text = lines[currentLineIndex];
         if (lines.Count > 1)
         {
-            dialogueLine.DOFade(1F, duration);
+            dialogueLine.DOFade(1F, fadeDuration);
             ShowSpaceImage(3f);
         }
         else
