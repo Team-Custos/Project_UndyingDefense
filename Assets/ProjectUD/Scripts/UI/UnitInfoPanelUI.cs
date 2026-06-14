@@ -65,7 +65,7 @@ public class UnitInfoPanelUI : MonoBehaviour
 
     [Header("Story")]
     [SerializeField] private TextMeshProUGUI story;
-
+    [SerializeField] private TextMeshProUGUI storyText;
 
     public void SetUnitData(UnitData unitData)
     {
@@ -174,6 +174,9 @@ public class UnitInfoPanelUI : MonoBehaviour
         string storyId = unitData.Id + "_desc";
         story.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitStringData(Name, Description)", $"{storyId}", LocalizationSettings.SelectedLocale);
+        string storyTId = unitData.Id + "_script";
+        storyText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitStringData(Name, Description)", $"{storyTId}", LocalizationSettings.SelectedLocale);
 
     }
 

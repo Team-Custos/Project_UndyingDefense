@@ -196,5 +196,6 @@ public class TitleUIManager : MonoBehaviour
     public void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
+        SettingManager.Instance.ResetToDefault();
     }
 }

@@ -147,6 +147,13 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             if (saved != null)
                 SetPortraitData(saved);
         }
+
+        // 저장 데이터가 없거나, 저장된 ID에 해당하는 데이터를 못 찾은 경우
+        // 기본값으로 0번 인덱스 적용
+        if (portraitDataList != null && portraitDataList.Count > 0)
+        {
+            SetPortraitData(portraitDataList[0]);
+        }
     }
 
     public void OnClickConfirm()
