@@ -1,12 +1,16 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class AccountInfo : MonoBehaviour
+public class AccountInfo : MonoBehaviour, IInputESC
 {
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+
     [SerializeField] private Image portraitLineImg;
     [SerializeField] private Button nickNameBtn;
     [SerializeField] private GameObject portraitPanel;
@@ -32,6 +36,8 @@ public class AccountInfo : MonoBehaviour
     {
         portraitLineImg.sprite = portraitLine;
         gameObject.SetActive(true);
+
+        inputEventManager.OnESCTarget = this;
     }
 
     public void OnClickNickNameBtn()
@@ -80,8 +86,19 @@ public class AccountInfo : MonoBehaviour
 
     }
 
+    // 뒤로가기 버튼
     public void OnClickBackBtn()
     {
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = null;
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnClickBackBtn();
+        }
     }
 }

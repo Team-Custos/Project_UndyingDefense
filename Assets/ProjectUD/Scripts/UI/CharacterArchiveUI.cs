@@ -1,14 +1,17 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class CharacterArchiveUI : MonoBehaviour
+public class CharacterArchiveUI : MonoBehaviour, IInputESC
 {
+    [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private ResourcesRepository fRepository;
     [SerializeField] private CharacterButtonUI[] characterBtnArray;
     [SerializeField] private GameObject[] pageBtnArray;
@@ -196,10 +199,22 @@ public class CharacterArchiveUI : MonoBehaviour
         gameObject.SetActive(true);
         string name = "ally";
         OnTabBtnClick(name);    // 도감창 열면 보여질 첫 페이지
+
+        inputEventManager.OnESCTarget = this;
     }
 
     public void HideCharacterArchive()  // 도감창 뒤로가기 버튼용
     {
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = null;
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            HideCharacterArchive();
+        }
     }
 }

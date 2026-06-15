@@ -47,13 +47,16 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoGSkillEffect;
     [SerializeField] private TextMeshProUGUI infoSSkillEffect;
 
+    [Header("Defense")]
+    [SerializeField] private TextMeshProUGUI armorType;
+    [SerializeField] private TextMeshProUGUI armorTypeTxt;
+    [SerializeField] private Image armorIcon;
+
     [Header("Stats")]
     [SerializeField] private TextMeshProUGUI hp;
     [SerializeField] private TextMeshProUGUI hpTxt;
     [SerializeField] private TextMeshProUGUI attackSpeed;
     [SerializeField] private TextMeshProUGUI attackSpeedTxt;
-    [SerializeField] private TextMeshProUGUI armorType;
-    [SerializeField] private TextMeshProUGUI armorTypeTxt;
     [SerializeField] private TextMeshProUGUI critChance;
     [SerializeField] private TextMeshProUGUI critChanceTxt;
     [SerializeField] private TextMeshProUGUI moveSpeed;
@@ -146,6 +149,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         string armorId = fNameTextTable.GetName(unitData.ArmorType.ToString());
         armorType.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", $"{armorId}", LocalizationSettings.SelectedLocale);
+        armorIcon.sprite = unitData.DfTypeIcon;
 
         string armorT = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", "CON_defenseType1", LocalizationSettings.SelectedLocale);

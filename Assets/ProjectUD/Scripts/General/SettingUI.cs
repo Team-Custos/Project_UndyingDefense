@@ -1,11 +1,19 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class SettingUI : MonoBehaviour
+public class SettingUI : MonoBehaviour, IInputESC
 {
+    [Header("인풋 이벤트 매니저")]
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+
+    [Header("인게임 매니저")]
+    [SerializeField] private InGameManager inGameManager;
+
     [Header("그래픽해상도")]
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Toggle windowedModeToggle;
@@ -34,6 +42,7 @@ public class SettingUI : MonoBehaviour
     private void OnEnable()
     {
         InitializeUI();
+        inputEventManager.OnESCTarget = this;
     }
 
     private void InitializeUI()
@@ -165,6 +174,14 @@ public class SettingUI : MonoBehaviour
 
         SettingManager.Instance.SaveSettings();
         gameObject.SetActive(false);
+
+        if (inGameManager != null)
+        {
+            inputEventManager.OnESCTarget = inGameManager;
+            Time.timeScale = 1.0f;
+            //SoundManager.Instance.PlayCancelUISFX();
+        }
+            
     }
 
     private void OnDisable()
@@ -182,4 +199,12 @@ public class SettingUI : MonoBehaviour
 
     // 0.5f → "50%"
     private string ToPercent(float value) => $"{Mathf.RoundToInt(value * 100)}%";
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnCloseButtonClicked();
+        }
+    }
 }

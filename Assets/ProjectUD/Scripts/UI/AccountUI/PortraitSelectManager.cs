@@ -9,8 +9,19 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
 {
     [Header("PlayerInputEventManager")]
     [SerializeField] private PlayerInputEventManager inputEventManager;
+
+    [Header("AccountUI")]
+    [SerializeField] private AccountInfo accountUI;
+
     [Header("RectTransform")]
     [SerializeField] private RectTransform portraitSelectUI;
+    [SerializeField] private RectTransform portraitOpenBtn; // 버튼 RectTransform 추가
+
+    [Header("Button Sprites")]
+    [SerializeField] private Image portraitOpenBtnImage; // 버튼 이미지 추가
+    [SerializeField] private Sprite btnNormalSprite;
+    [SerializeField] private Sprite btnPressedSprite;
+
     [Header("PortraitSelectPanel")]
     [SerializeField] private GameObject portraitSelectPanel;
     // 계정 정보 UI의 초상화 이미지
@@ -29,6 +40,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     private int dataCount = 0;
     private int pageNum = 1;
     private bool isChange = false;
+    private bool isSelectedPanelActive = false;
     private PortraitData currentPortraitData;
     private PortraitData onSelectPortraitData;
 
@@ -37,16 +49,32 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         portraitDataList = new List<PortraitData>(Resources.LoadAll<PortraitData>("Data/PortraitData"));
         dataCount = portraitDataList.Count;
     }
-    
+
+    // 초상화 선택 UI 활성화 및 초기 설정
     public void SetPage()
     {
+        Debug.Log($"SetPage 호출 - isSelectedPanelActive: {isSelectedPanelActive}");
+        if (isSelectedPanelActive)
+        {
+            DisableSelectedPanel();
+            return;
+        }
         portraitSelectPanel.SetActive(true);
+        isSelectedPanelActive = true;
+        portraitOpenBtnImage.sprite = btnPressedSprite;
         //LoadPortraitData();
         SetPageBtn();
         SetPortrait();
 
-        inputEventManager.OnClickTarget = this;
         inputEventManager.OnESCTarget = this;
+        inputEventManager.OnClickTarget = this;
+
+    }
+
+    private IEnumerator RegisterClickNextFrame()
+    {
+        yield return null; // 한 프레임 대기
+        inputEventManager.OnClickTarget = this;
     }
 
     private void SetPageBtn()
@@ -174,6 +202,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
 
     public void OnClick(InputAction.CallbackContext context)
     {
+        Debug.Log($"OnClick 호출 - performed: {context.performed}, panel: {portraitSelectPanel.activeSelf}");
         if (!portraitSelectPanel.activeSelf)
             return;
 
@@ -182,25 +211,38 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             Debug.Log("클릭 감지됨");
             // 클릭한 위치의 UI 요소 감지
             Vector2 clickPosition = Mouse.current.position.ReadValue();
-            
+
             // 클릭한 위치가 초상화 선택 UI 내에 있는지 확인
             // 초상화 선택 UI가 아니라면 UI 닫기
-            if (!RectTransformUtility.RectangleContainsScreenPoint(portraitSelectUI, clickPosition))
+            bool inPanel = RectTransformUtility.RectangleContainsScreenPoint(portraitSelectUI, clickPosition);
+            bool inBtn = RectTransformUtility.RectangleContainsScreenPoint(portraitOpenBtn, clickPosition);
+
+            if(!inPanel && !inBtn)
             {
-                portraitSelectPanel.SetActive(false);
-                indicator.gameObject.SetActive(false);
-                confirmBtn.interactable = false;
+                DisableSelectedPanel();
             }
         }
+    }
+
+    public void DisableSelectedPanel()
+    {
+        Debug.Log("DisableSelectedPanel 호출");
+        portraitSelectPanel.SetActive(false);
+        indicator.gameObject.SetActive(false);
+        confirmBtn.interactable = false;
+        isSelectedPanelActive = false;
+
+        portraitOpenBtnImage.sprite = btnNormalSprite; // 패널 닫힐 때 원래 상태
+
+        inputEventManager.OnESCTarget = accountUI;  // ESC 입력 이벤트 타겟을 계정 정보 UI로 변경
+        inputEventManager.OnClickTarget = null;
     }
 
     public void OnESC(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            portraitSelectPanel.SetActive(false);
-            indicator.gameObject.SetActive(false);
-            confirmBtn.interactable = false;
+            DisableSelectedPanel();
         }
     }
 }
