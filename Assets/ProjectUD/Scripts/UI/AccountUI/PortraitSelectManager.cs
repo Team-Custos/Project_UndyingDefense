@@ -146,6 +146,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             PortraitData saved = portraitDataList.Find(p => p.portraitID == savedID);
             if (saved != null)
                 SetPortraitData(saved);
+            return;
         }
 
         // 저장 데이터가 없거나, 저장된 ID에 해당하는 데이터를 못 찾은 경우

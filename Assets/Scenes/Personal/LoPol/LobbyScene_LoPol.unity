@@ -4434,7 +4434,7 @@ GameObject:
   - component: {fileID: 346366227}
   - component: {fileID: 346366228}
   m_Layer: 0
-  m_Name: DataRepository
+  m_Name: Resource_Name_DataRepository
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4479,7 +4479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd052194f5df9a3449a784a16dddb0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameTable: {fileID: 4900000, guid: 5d477a58d5ba64a4dbbd0892e04dff8a, type: 3}
+  nameTable: {fileID: 4900000, guid: 02b071e909f7dc64f9d5ada41c8366fd, type: 3}
 --- !u!114 &346366228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7774,7 +7774,7 @@ GameObject:
   - component: {fileID: 534968611}
   - component: {fileID: 534968613}
   m_Layer: 0
-  m_Name: ExcelDataReader
+  m_Name: UnitExcelDataReader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7820,7 +7820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd052194f5df9a3449a784a16dddb0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameTable: {fileID: 4900000, guid: 5d477a58d5ba64a4dbbd0892e04dff8a, type: 3}
+  nameTable: {fileID: 4900000, guid: 02b071e909f7dc64f9d5ada41c8366fd, type: 3}
 --- !u!1 &538873968
 GameObject:
   m_ObjectHideFlags: 0
@@ -35820,6 +35820,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3430741480069727041, guid: 1478609d16d869e4fab0afa9ae19e150,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 55243049135554560
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430741480069727041, guid: 1478609d16d869e4fab0afa9ae19e150,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 4161189755315390751, guid: 1478609d16d869e4fab0afa9ae19e150,
         type: 3}
       propertyPath: loader
@@ -35909,6 +35919,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084015451185908316, guid: 1478609d16d869e4fab0afa9ae19e150,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 1182274142245
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084015451185908316, guid: 1478609d16d869e4fab0afa9ae19e150,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
       objectReference: {fileID: 0}
     - target: {fileID: 6332359763564250353, guid: 1478609d16d869e4fab0afa9ae19e150,
         type: 3}

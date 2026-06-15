@@ -184,6 +184,7 @@ public class UnitInfoPanelUI : MonoBehaviour
     {
         SetBasicInfo();
         AllyUnitData ally = unitData as AllyUnitData;
+        /*
         cost.text = ally.Cost.ToString();
         string costT = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", "CON_recruitmentCost", LocalizationSettings.SelectedLocale);
@@ -204,6 +205,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         tendencyGameObj.SetActive(false);
         dropGold.text = "";
         goldGameObj.SetActive(false);
+        */
     }
 
     public void SetEnemyInfo()
@@ -211,6 +213,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         SetBasicInfo();
         EnemyUnitData enemy = unitData as EnemyUnitData;
         //tendency.text = enemy.aiStance.ToString();
+        /*
         string tendencyId = fNameTextTable.GetName(enemy.aiStance.ToString());
         tendency.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", $"{tendencyId}", LocalizationSettings.SelectedLocale);
@@ -230,6 +233,7 @@ public class UnitInfoPanelUI : MonoBehaviour
         costGameObj.SetActive(false);
         role.text = "";
         roleGameObj.SetActive(false);
+        */
 
     }
 }
