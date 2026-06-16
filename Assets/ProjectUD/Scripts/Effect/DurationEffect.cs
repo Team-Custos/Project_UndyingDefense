@@ -6,7 +6,7 @@ public enum EffectType
     BUFF,       // 버프
     CURSE,      // 저주
     CRIT,       // 치명
-    NATU,       // 자연
+    NATURE,       // 자연
     ETC         // 기타
 }
 

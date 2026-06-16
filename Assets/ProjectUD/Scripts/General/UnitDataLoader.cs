@@ -13,7 +13,7 @@ public class UnitStats   // 엑셀로 불러온 유닛 데이터 클래스
     public string attackSpeed;
     public float sightRange;
     public float attackRange;
-    public float mental;
+    public int mental;
     public float critChance;
     public string role;
     public float interval;
@@ -61,7 +61,7 @@ public class UnitDataLoader : MonoBehaviour
                 attackSpeed = values[6],
                 sightRange = float.Parse(values[7]),
                 attackRange = float.Parse(values[8]),
-                mental = float.Parse(values[9]),
+                mental = int.Parse(values[9]),
                 critChance = float.Parse(values[10]),
                 role = values[11],
                 interval = float.Parse(values[12])

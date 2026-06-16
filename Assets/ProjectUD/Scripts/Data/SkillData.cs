@@ -6,7 +6,6 @@ public class SkillData : ScriptableObject
     [Header("■ Data")]
     [SerializeField] private new string name;
     [SerializeField] private Sprite icon;
-    [SerializeField, TextArea] private string description;
     [SerializeField] private float coolTime;
     [SerializeField] private TargetType targetType;
     [SerializeField] private float range;      // 스킬 사용 가능 사거리
@@ -17,7 +16,6 @@ public class SkillData : ScriptableObject
 
 
     public string Name => name;
-    public string Description => description;
     public float CoolTime => coolTime;
     public TargetType TargetType => targetType;
     //public AudioClip[] StartSFX => startSFX;

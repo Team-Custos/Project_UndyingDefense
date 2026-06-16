@@ -1,6 +1,7 @@
 using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
+using Unity.VisualScripting;
 
 public class AttackSkill : SkillBase
 {
@@ -24,38 +25,6 @@ public class AttackSkill : SkillBase
      
     public override SkillData Data => data;
 
-    //protected static Effect SlashCritEffect
-    //{
-    //    get
-    //    {
-    //        if (slashCritEffect == null)
-    //            slashCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Bleed").GetComponent<Effect>();
-
-    //        return slashCritEffect;
-    //    }
-    //}
-    //protected static Effect PierceCritEffect
-    //{
-    //    get
-    //    {
-    //        if (pierceCritEffect == null)
-    //            pierceCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Pain").GetComponent<Effect>();
-
-    //        return pierceCritEffect;
-    //    }
-    //}
-    //protected static Effect CrushCritEffect
-    //{
-    //    get
-    //    {
-    //        if (crushCritEffect == null)
-    //            crushCritEffect = Resources.Load<GameObject>("Prefabs/Effects/CriticalEffects/Shock").GetComponent<Effect>();
-
-    //        return crushCritEffect;
-    //    }
-    //}
-
-    //------------------------------------------------------------------------------------------------------------------------
     protected static ParticleSystem SlashHitVFX
     {
         get
@@ -88,43 +57,13 @@ public class AttackSkill : SkillBase
             return crushHitVFX;
         }
     }
-    //------------------------------------------------------------------------------------------------------------------------
-    //protected static ParticleSystem SlashCritVFX
-    //{
-    //    get
-    //    {
-    //        if (slashCritVFX == null)
-    //            slashCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_slashCrit_New").GetComponent<ParticleSystem>();
-    //        return slashCritVFX;
-    //    }
-    //}
-
-    //protected static ParticleSystem PierceCritVFX
-    //{
-    //    get
-    //    {
-    //        if (pierceCritVFX == null)
-    //            pierceCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_pierceCrit").GetComponent<ParticleSystem>();
-    //        return pierceCritVFX;
-    //    }
-    //}
-
-    //protected static ParticleSystem CrushCritVFX
-    //{
-    //    get
-    //    {
-    //        if (crushCritVFX == null)
-    //            crushCritVFX = Resources.Load<GameObject>("Prefabs/VFX/AttackVFX/Prefeb/Attack/vfx_crushCrit").GetComponent<ParticleSystem>();
-    //        return crushCritVFX;
-    //    }
-    //}
-
-    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle) //부채꼴 공격
+    public void SectorAttack(Unit unit, float radius, float angle) //부채꼴 공격
     {
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        // 1. [수정] 원형 탐색의 기준점을 완벽하게 시전자(unit)의 위치로 설정
+        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
 
         float half = angle * 0.5f;
         Vector3 forward = unit.transform.forward;
@@ -134,20 +73,27 @@ public class AttackSkill : SkillBase
             if (!targets[i].TryGetComponent(out Unit target))
                 continue;
 
+            // unit을 기준으로 적이 있는 방향 계산
             Vector3 dir = target.transform.position - unit.transform.position;
             dir.y = 0f;
 
+            // unit의 정면(forward)과 적을 향한 방향(dir) 사이의 각도를 측정
             float ang = Vector3.Angle(forward, dir);
 
-            // 좌/우 angle/2 범위 안이면 타격
+            // 좌/우 angle/2 (half) 범위 안이면 타격
             if (ang <= half)
             {
                 Attack(unit, target);
             }
         }
+
+        
     }
 
-    public void AreaEffectAttack(Unit unit, Unit pivotTarget, float radius, float angle, GameObject effect) //부채꼴 공격
+    
+
+
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float angle, GameObject vfx) //부채꼴 공격
     {
         if (targets == null)
             targets = new Collider[maxTargetCount];
@@ -171,7 +117,22 @@ public class AttackSkill : SkillBase
             if (ang <= half)
             {
                 Attack(unit, target);
-                target.AddEffect(effect, target, Vector3.zero);
+                target.AddVFX(vfx, target.transform);
+            }
+        }
+    }
+
+    public void AreaAttack(Unit unit, float radius) // 자기 중심 원형 공격
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+
             }
         }
     }
@@ -191,47 +152,9 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab, GameObject effectPrefab)
-    {
-        if (targets == null)
-            targets = new Collider[maxTargetCount];
-        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
-        for (int i = 0; i < targetCount; i++)
-        {
-            if (targets[i].TryGetComponent(out Unit target))
-            {
-                Attack(unit, target);
+    
 
-                if(vfxPrefab != null)
-                    target.AddVFX(vfxPrefab, target.transform);
-
-                if(effectPrefab != null)
-                    target.AddEffect(effectPrefab, target, Vector3.zero);
-            }
-        }
-    }
-
-    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, float percent, GameObject effect)
-    {
-        if (targets == null)
-            targets = new Collider[maxTargetCount];
-        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
-        for (int i = 0; i < targetCount; i++)
-        {
-            if (targets[i].TryGetComponent(out Unit target))
-            {
-                if (pivotTarget == targets[i])
-                    return;
-
-                Attack(unit, target);
-
-                if (Random.Range(0f, 100f) <= percent)
-                {
-                    target.AddEffect(effect, target, Vector3.zero);
-                }
-            }
-        }
-    }
+    
 
     //public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab)
     //{
@@ -266,10 +189,11 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        // 사각형 중심 계산, 유닛이 바라보는 방향으로
-        Vector3 center = unit.transform.position + unit.transform.forward * (AreaZ * 0.5f); 
+        // 1. 사각형 중심 계산 (사거리 AreaX의 절반만큼 전방으로)
+        Vector3 center = unit.transform.position + unit.transform.forward * (AreaX * 0.5f);
 
-        Vector3 half = new Vector3(AreaX * 0.5f, 0.5f, AreaZ * 0.5f);
+        // 2. 사각형의 절반 크기 설정 (X에 좌우폭 AreaZ, Z에 사거리 AreaX)
+        Vector3 half = new Vector3(AreaZ * 0.5f, 0.5f, AreaX * 0.5f);
 
         int targetCount = Physics.OverlapBoxNonAlloc(center, half, targets, unit.transform.rotation, unit.EnemyLayer);
         Debug.Log($"타겟 수 : {targetCount}");
@@ -282,10 +206,39 @@ public class AttackSkill : SkillBase
             }
         }
 
+        // 3. 실시간으로 변하는 값을 기즈모 변수에 저장
         //gizmoUnit = unit;
-        //gizmoX = AreaX;
-        //gizmoZ = AreaZ;
+        //gizmoX = AreaZ; // 기즈모의 가로폭 (X축)
+        //gizmoZ = AreaX; // 기즈모의 세로폭 (Z축)
     }
+
+    // 기즈모 디버깅을 위한 변수들
+    //private Unit gizmoUnit;
+    //private float gizmoX;
+    //private float gizmoZ;
+
+    //private void OnDrawGizmosSelected()
+    //{
+    //    // 시전자 유닛이 없으면 그리지 않음
+    //    if (gizmoUnit == null)
+    //        return;
+
+    //    // 바뀐 규칙에 맞게 중심점 재계산 (Y축 높이는 살짝 띄워줌)
+    //    Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
+    //    center.y += 0.1f;
+
+    //    // DrawWireCube는 '절반(half)'이 아니라 '전체 크기(size)'를 요구하므로 2를 곱하지 않고 그대로 씁니다.
+    //    Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
+
+    //    // 기즈모 색상을 붉은색으로 설정
+    //    Gizmos.color = Color.red;
+
+    //    // [중요] 유닛이 회전할 때 기즈모 상자도 같이 회전하도록 매트릭스 정렬
+    //    Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
+
+    //    // 매트릭스가 중심(center)을 기준으로 잡혀있으므로, 로컬 좌표인 Vector3.zero 위치에 상자를 그립니다.
+    //    Gizmos.DrawWireCube(Vector3.zero, size);
+    //}
 
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
@@ -419,14 +372,19 @@ public class AttackSkill : SkillBase
         target.TakeDamage(calcDamage);
         //Debug.Log("데미지 : " + calcDamage);
 
-        float dist = Vector3.Distance(unit.transform.position, target.transform.position);
+
+        // 스킬 별 효과 발동 확률 계산 후 효과 발동
+        if (data.InduseEffectPrefab != null && Random.Range(0f, 1f) <= CalculateEffectPercent(unit, target))
+        {
+            target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
+        }
 
         // 적 처치 특수 능력 발동
         if (target.IsDead)
         {
-            Debug.Log("회복 전 체력 : " + unit.Hp);
+            //Debug.Log("회복 전 체력 : " + unit.Hp);
             unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL);
-            Debug.Log("회복 후 체력 :" + unit.Hp);
+            //Debug.Log("회복 후 체력 :" + unit.Hp);
         }
     }
 
@@ -547,37 +505,44 @@ public class AttackSkill : SkillBase
     }
 
     
-    public void AddEffect(Unit target, float percent, GameObject effect)
+    private float CalculateEffectPercent(Unit unit, Unit target)
     {
-        if (Random.Range(0f, 100f) <= percent)
+        float finalPercent = 0f;
+
+        if (data.InduseEffectPrefab == null)
+            return finalPercent;
+        else
         {
-            target.AddEffect(effect, target, Vector3.zero);
+           DurationEffect effect = data.InduseEffectPrefab.GetComponent<DurationEffect>();
+
+            if (effect.Type == EffectType.CURSE)
+            {
+                // 저주 효과는 추가 계산
+                finalPercent = CalculateCurseEffectPercent(unit.Mental, target.Mental);
+            }
+
+            finalPercent += data.InduseEffectSuccessRate;
+
+            Debug.Log($"유닛 멘탈 : {unit.Mental},  타겟 멘탈 : {target.Mental}");
+            Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}%");
+
+            return Mathf.Clamp01(finalPercent);
         }
     }
 
-    //public void ActivateEffect(Unit unit, GameObject effect)
-    //{
-    //    unit.AddMaxStackEffect(effect, unit, unit.transform.position);
-    //}
 
-
-    // 테스트용 Gizmo 변수
-    //private Unit gizmoUnit;
-    //private float gizmoX;
-    //private float gizmoZ;
-
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (gizmoUnit == null)
-    //        return;
-
-    //    Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
-
-    //    Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
-
-    //    Gizmos.color = Color.red;
-    //    Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
-
-    //    Gizmos.DrawWireCube(Vector3.zero, size);
-    //}
+    // 소환(설치) 형 스킬 -> 생성 위치, 생성 할 객체
+    public void GenerateSkill(Vector3 pos, GameObject obj)
+    {
+        GameObject skillObj = Instantiate(obj, pos, Quaternion.identity);
+    }
+    public void GenerateSkill(Unit unit, Unit pivotUnit, GameObject obj)
+    {
+        GameObject skillObj = Instantiate(obj, pivotUnit.transform.position, Quaternion.identity);
+        ThunderCloud thunderCloud = skillObj.GetComponent<ThunderCloud>();
+        if(thunderCloud != null)
+        {
+            thunderCloud.Initialize(unit);
+        }
+    }
 }

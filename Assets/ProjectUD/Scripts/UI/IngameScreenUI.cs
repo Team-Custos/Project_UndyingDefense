@@ -24,9 +24,11 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private GameObject newReorcUI;
     [SerializeField] private Image portraitImg;
 
-    [Header("■ HP Bar")]
+    [Header("■ HP Bar")]    // 성 HP UI
     [SerializeField] private Image hpBarUI;
     [SerializeField] private TextMeshProUGUI hpTextUI;
+    [SerializeField] private Image hitUI;       // 성 피격시 나타나는 이미지
+    [SerializeField] private Animator animator;
 
     [Header("■ Notice")]
     [SerializeField] private NoticeUI noticeUI;
@@ -83,6 +85,11 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         hpBarUI.fillAmount = hp / maxHp;
         hpTextUI.text = $"{(int)hp} / {(int)maxHp}";
+    }
+
+    public void ShowFortressHitUI()
+    {
+        animator.SetTrigger("Hit");
     }
 
     public void ShowNotice(string text) //

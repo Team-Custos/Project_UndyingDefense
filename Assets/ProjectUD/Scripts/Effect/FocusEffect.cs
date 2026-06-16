@@ -3,7 +3,7 @@ using UnityEngine;
 public class FocusEffect : DurationEffect
 {
     [Header("■ Focus Options")]
-    [SerializeField] private float mental;
+    [SerializeField] private int mental;
 
     public override void Activate()
     {

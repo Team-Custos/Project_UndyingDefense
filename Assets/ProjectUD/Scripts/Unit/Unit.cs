@@ -37,7 +37,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private SkillBase generalSkill;
     [SerializeField] private SkillBase specialSkill;
     [SerializeField] private SpecialAbility specialAbility;
-    // 특수 능
+
     protected SkillBase currentSkill;     // 현재 보유한 스킬
 
     [Header("■ Enemy Layer")]
@@ -55,7 +55,7 @@ public abstract class Unit : MonoBehaviour
     protected float hp;
     protected float critPercent;
     protected float critVulnerability; // 치명타를 받을 확률.
-    protected float mental; // 정신력
+    protected int mental; // 정신력
     // protected float moveSpeed;
     protected float attackSpeedMult;
     protected float moveSpeedMult;
@@ -119,7 +119,7 @@ public abstract class Unit : MonoBehaviour
     public float Maxhp => maxhp;
     public float Hp => hp;
     public float HpPercent => hp / Maxhp;
-    public float Mental => mental;
+    public int Mental => mental;
     public float CritPercent => critPercent;
     public float CritVulnerability => critVulnerability;
     public float BlockPercent => blockPercent;
@@ -1461,7 +1461,7 @@ public abstract class Unit : MonoBehaviour
         navAgent.speed = unitStats.moveSpeed * Mathf.Max(0f, moveSpeedMult);
     }
 
-    public void AddMental(float amount)
+    public void AddMental(int amount)
     {
         mental += amount;
     }
@@ -1541,11 +1541,22 @@ public abstract class Unit : MonoBehaviour
         if (unit.IsDead)
             return;
 
+
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
+
 
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
+            //if(prevEffect.Type == EffectType.CURSE)
+            //{
+            //    float finalProbability = 0.5f + CalculateCurseEffectProbability(this.Mental, unit.Mental);
+            //    Debug.Log("확률 : " + finalProbability);
+
+            //    if (Random.Range(0f, 1f) > finalProbability)
+            //        return;
+            //}
+
             if (prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
             {
                 prevEffect.Reapply(effectPrefab);
@@ -1559,6 +1570,15 @@ public abstract class Unit : MonoBehaviour
         else //맨 처음 효과 오브젝트가 추가될 때.
         {
             DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
+
+            //if(effect.Type == EffectType.CURSE)
+            //{
+            //    float finalProbability = 0.5f + CalculateCurseEffectProbability(Mental, unit.Mental);
+            //    Debug.Log("확률 : " + finalProbability);
+            //    if (Random.Range(0f, 1f) > finalProbability)
+            //        return;
+            //}
+
             effectList.Add(effect);
 
             effect.transform.SetParent(effectParent);
@@ -1804,4 +1824,27 @@ public abstract class Unit : MonoBehaviour
     {
         this.armorType = armorType;
     }
+
+    //public float CalculateCurseEffectProbability(int unitMental, int targetMental)
+    //{
+    //    int mentalDifference = unitMental - targetMental;
+
+    //    switch (mentalDifference)
+    //    {
+    //        case 4: return 0.8f;
+    //        case 3: return  0.6f; 
+    //        case 2: return  0.4f; 
+    //        case 1: return  0.2f; 
+    //        case 0: return  0f;
+    //        case -1: return -0.2f;
+    //        case -2: return -0.4f; 
+    //        case -3: return -0.6f; 
+    //        case -4: return -0.8f;
+    //        default:
+    //            // 4보다 크면 80f, 그 외(-4보다 작으면) -80f 반환
+    //            if (mentalDifference > 4) return 0.8f;
+    //            else return -0.8f;
+    //    }
+
+    //}
 }

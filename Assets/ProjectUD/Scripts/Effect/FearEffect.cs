@@ -6,7 +6,7 @@ public class FearEffect : DurationEffect
 
     [Header("■ Fear Options")]
     [SerializeField] private float atkPercent;
-    [SerializeField] private float mental;
+    [SerializeField] private int mental;
 
     public override void Activate()
     {
