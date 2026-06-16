@@ -301,7 +301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5e938e3c40e383a49b28802a4956add0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f7597cf56e399641ba73bc38e1605b4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -715,7 +715,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1936980833311428835}
   - component: {fileID: 5541362135481404802}
-  - component: {fileID: 3391787282546508313}
   m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
@@ -753,36 +752,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7778181263329938237}
   m_CullTransparentMesh: 1
---- !u!114 &3391787282546508313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7778181263329938237}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5e938e3c40e383a49b28802a4956add0, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7842447119933350731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1003,7 @@ PrefabInstance:
     - target: {fileID: 5304442642271957607, guid: db887f7c1cc93384aa619c3ead3c0879,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -60
+      value: -58
       objectReference: {fileID: 0}
     - target: {fileID: 5304442642271957607, guid: db887f7c1cc93384aa619c3ead3c0879,
         type: 3}

@@ -73,6 +73,16 @@ public class StagePrefsData : MonoBehaviour
         PlayerPrefs.SetString("stage", sb.ToString());
     }
 
+    // 딕셔너리에 있는 모든 전장 open 하고 프랩스로 저장 (테스트용)
+    public void OpenAllStages()
+    {
+        foreach (var kvp in stagePlayerPrefs)
+        {
+            kvp.Value.isOpen = true;
+        }
+        SaveStageData();
+    }
+
     // 마지막 진입 전장정보 Prefs에 저장
     public void SaveLastStageData()
     {

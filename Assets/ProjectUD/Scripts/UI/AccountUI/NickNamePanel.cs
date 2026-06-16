@@ -1,13 +1,18 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class NickNamePanel : MonoBehaviour
+public class NickNamePanel : MonoBehaviour, IInputESC
 {
+    [Header("Input Event Manager")]
+    [SerializeField] private PlayerInputEventManager inputEventManager;
+
     [Header("ReferenceClass")]
     [SerializeField] private AccountInfo accountInfo;
     [SerializeField] private LobbyManager lobbyManager;
@@ -53,17 +58,23 @@ public class NickNamePanel : MonoBehaviour
         accountInfo.SetNickName(nickname);
         lobbyManager.SetLobbyNickName(nickname);
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = accountInfo;
     }
 
     public void OnClickCancleBtn()  // 취소버튼
     {
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = accountInfo;
     }
 
     public void ShowNicknamePanel()
     {
         nickNameInput.text = PlayerPrefs.GetString("PlayerName");
         gameObject.SetActive(true);
+
+        inputEventManager.OnESCTarget = this;
     }
 
     private bool ValidateNickname(string nickname)
@@ -76,5 +87,13 @@ public class NickNamePanel : MonoBehaviour
         }
 
         return validPattern.IsMatch(nickname);
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            OnClickCancleBtn();
+        }
     }
 }
