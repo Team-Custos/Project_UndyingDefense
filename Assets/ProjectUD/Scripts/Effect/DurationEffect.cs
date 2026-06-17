@@ -16,7 +16,6 @@ public abstract class DurationEffect : MonoBehaviour
     [SerializeField] protected string id;
     [SerializeField] protected string effectName;
     [SerializeField] protected Sprite iconSprite;
-    [SerializeField, TextArea] protected string description;
 
     [Header("■ Options")]
     [SerializeField] protected float duration;
@@ -33,7 +32,6 @@ public abstract class DurationEffect : MonoBehaviour
 
     public string Id => id;
     public string Name => effectName;
-    public string Description => description;
     public GameObject Prefab => prefab;
     public Sprite IconSprite => iconSprite;
     public EffectType Type => type;

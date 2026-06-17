@@ -64,13 +64,13 @@ public class ThunderCloud : MonoBehaviour
 
         Unit target = targets[index].GetComponent<Unit>();
 
-        if (target != null)
+        float dist = Vector3.Distance(transform.position, target.transform.position);
+
+        if (target != null && dist <= radius)
         {
             skill.Attack(unit, target);
 
             target.AddVFX(vfx, transform.position);
-            
-
         }
     }
 }

@@ -65,6 +65,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private TextMeshProUGUI gSkillNameText;
     [SerializeField] private TextMeshProUGUI sSkillInfoText;
     [SerializeField] private TextMeshProUGUI sSkilNameText;
+    [SerializeField] private TextMeshProUGUI sAbilityNameText;
+    [SerializeField] private TextMeshProUGUI sAbilityInfoText;
+
 
     [SerializeField] private Image[] unitStateImage;
     [SerializeField] private UnitStateUI[] unitStateUIs;
@@ -351,10 +354,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             //sSkilNameText.text = unit.PassiveSkill.Data.Name;
             //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
 
-            sSkilNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-            sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
+            sAbilityNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
+            sAbilityInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
             //sSkillInfoText.text = LocalizationSettings.StringDatabase.
             //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
 
@@ -470,6 +473,12 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         if (unit.SpecialAbility != null)
         {
             specialAbilityImage.sprite = unit.SpecialAbility.Icon;
+
+            sAbilityNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
+            sAbilityInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
+
             specialAbilityImage.gameObject.SetActive(true);
 
             //sSkilNameText.text = unit.PassiveSkill.Data.Name;

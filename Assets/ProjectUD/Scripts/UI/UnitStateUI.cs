@@ -4,6 +4,7 @@ using System.Security;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Settings;
 
 public class UnitStateUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -44,8 +45,11 @@ public class UnitStateUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void ShowUnitState(DurationEffect effect)
     {
-        stateNameText.text = effect.Name;
-        stateDescriptionText.text = effect.Description;
+        stateNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("Status", $"{effect.Id}_name", LocalizationSettings.SelectedLocale);
+
+        stateDescriptionText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("Status", $"{effect.Id}_desc", LocalizationSettings.SelectedLocale);
     }
 
     public void SetEffect(DurationEffect effect)
