@@ -54,6 +54,9 @@ public class StagePrefsData : MonoBehaviour
 
         PlayerPrefs.SetString("stage", sb.ToString());
         PlayerPrefs.SetInt("SetBeginningStage", 1);
+        string s = PlayerPrefs.GetString("stage");
+
+        Debug.Log($"stage데이터 초기 저장 {s}");
     }
 
     // 딕셔너리에 있는 정보 다시 프랩스로 저장
@@ -71,16 +74,29 @@ public class StagePrefsData : MonoBehaviour
             sb.AppendLine($"{stageID},{isOpen},{isStageEnd},{stageData.clearTime}");
         }
         PlayerPrefs.SetString("stage", sb.ToString());
+
+        //Debug.Log($"{PlayerPrefs.GetString("stage")}");
     }
 
     // 딕셔너리에 있는 모든 전장 open 하고 프랩스로 저장 (테스트용)
     public void OpenAllStages()
     {
+        Debug.Log("모든 전장 열기 버튼 클릭");
+        // 스테이지 PlayerPrefs가 초기화 되었거나 저장한 적이 없을 경우
+        if (PlayerPrefs.GetInt("SetBeginningStage") == 0)
+        {
+            Debug.Log("전장 초기화 된 적 있어서 다시 세팅");
+            LoadStageData(stageClearData.text);
+        }
+        ReadPlayerPrefs(stagePlayerPrefs);
+
         foreach (var kvp in stagePlayerPrefs)
         {
             kvp.Value.isOpen = true;
         }
         SaveStageData();
+        Debug.Log("전장열기 완료");
+
     }
 
     // 마지막 진입 전장정보 Prefs에 저장
@@ -124,7 +140,12 @@ public class StagePrefsData : MonoBehaviour
     // 저장된 Stage 프랩스 불러오기
     private void ReadPlayerPrefs(Dictionary<string, StageData> dic)
     {
+        // dic 초기화 
+        dic.Clear();
+        //Debug.Log("stage dictionary 초기화 완료");
+
         string st = PlayerPrefs.GetString("stage");
+        //Debug.Log($"ReadPlayerPrefs 실행 {st}");
 
         // 저장데이터 딕셔너리에 저장하기 (인게임에서 정보 변경용)
         string[] lines = st.Split("\n");
