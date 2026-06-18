@@ -11,7 +11,7 @@ public class ElectricShockEffect : DurationEffect
 
     public override void Activate()
     {
-        target.AddMental(-mentalAmount);
+        target.AddMental(mentalAmount);
         target.AddMoveSpeedMult(-moveSpeedPercent);
 
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
@@ -19,7 +19,7 @@ public class ElectricShockEffect : DurationEffect
 
     public override void OnRemove()
     {
-        target.AddMental(mentalAmount);
+        target.AddMental(+mentalAmount);
         target.AddMoveSpeedMult(moveSpeedPercent);
 
         if (effectImage != null)

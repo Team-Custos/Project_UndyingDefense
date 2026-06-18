@@ -5,6 +5,7 @@ using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
+using DG.Tweening;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -1103,6 +1104,9 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()     // 쿨타임과 필요 멘탈치를 충족해야 스킬 반환
     {
+        if (specialSkill.Data.ActiveMental > mental)
+            Debug.Log("멘탈 수치 부족");
+
         if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.ActiveMental <= mental)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown && generalSkill.Data.ActiveMental <= mental)
@@ -1464,6 +1468,8 @@ public abstract class Unit : MonoBehaviour
     public void AddMental(int amount)
     {
         mental += amount;
+        if (mental <= 0)
+            mental = 0;
     }
 
     public void AddAttackSpeedMult(float percent)
@@ -1648,9 +1654,56 @@ public abstract class Unit : MonoBehaviour
         VFXobj.transform.localPosition = Vector3.zero;
         VFXobj.SetActive(true);
 
+    }
 
-        //VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
-        //VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
+    public void AddVFX(GameObject vfx, Unit target) // hit & Crit VFX (오브젝트풀링 사용)
+    {
+        //GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        //if (VFXobj == null)
+        //    return;
+
+        //Camera mainCamera = Camera.main;
+        //Vector3 direction = (mainCamera.transform.position - target.transform.position).normalized;
+
+        //float distance = 1f; // VFX를 타겟에서 얼마나 떨어뜨릴지 결정하는 거리
+
+        //Vector3 spawnPosition = target.transform.position + direction * distance;
+        //VFXobj.transform.position = spawnPosition;
+        //VFXobj.transform.SetParent(VFXParent);
+        ////VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
+
+        ////VFXobj.transform.forward = dir;
+        ////VFXobj.transform.localPosition = Vector3.zero;
+        //VFXobj.SetActive(true);
+
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return;
+
+        Camera mainCamera = Camera.main;
+
+        // 1. 카메라와 타겟의 3차원 방향을 구합니다.
+        Vector3 direction = (mainCamera.transform.position - target.transform.position).normalized;
+
+        // [핵심] Y축 변화를 제거하여 VFX가 공중에 뜨거나 땅에 파묻히지 않게 만듭니다.
+        direction.y = 0f;
+        direction.Normalize(); // Y를 0으로 만들었으니 벡터를 다시 정규화해줍니다.
+
+        float distance = 1f; // 카메라 앞쪽으로 살짝 밀어줄 거리 (1m는 생각보다 멉니다)
+
+        // 2. 평면 기준으로 카메라 방향 전진 + 타겟의 중심 높이(예: Vector3.up)를 고려하여 스폰 위치 계산
+        // target.transform.position에 보통 발밑이 기준이라면 Vector3.up * 1f 등을 더해 가슴 높이로 맞추는 것이 좋습니다.
+        Vector3 spawnPosition = target.transform.position + (direction * distance) + (Vector3.up * 1.5f);
+
+        VFXobj.transform.position = spawnPosition;
+        VFXobj.transform.SetParent(VFXParent);
+
+        // 3. VFX가 카메라를 똑바로 바라보도록 회전 (선택 사항)
+        // 2D 텍스처 형태의 이펙트라면 이 코드가 있어야 카메라에서 이펙트가 정면으로 보입니다.
+        //VFXobj.transform.lookAt(mainCamera.transform);
+
+        VFXobj.SetActive(true);
+
     }
 
 

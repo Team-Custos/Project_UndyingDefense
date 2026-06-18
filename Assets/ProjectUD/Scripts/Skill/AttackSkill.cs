@@ -152,9 +152,25 @@ public class AttackSkill : SkillBase
         }
     }
 
-    
 
-    
+    public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfx) //원거리 원형 공격
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+        int targetCount = Physics.OverlapSphereNonAlloc(pivotTarget.transform.position, radius, targets, unit.EnemyLayer);
+        Debug.Log(targetCount);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                Attack(unit, target);
+                target.AddVFX(vfx, target.transform);
+            }
+        }
+    }
+
+
+
 
     //public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab)
     //{
@@ -243,7 +259,7 @@ public class AttackSkill : SkillBase
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
         Vector3 dir = (target.transform.position - transform.position).normalized;
-        unit.AddVFX(vfxPrefab, dir);
+        target.AddVFX(vfxPrefab, dir);
     }
 
 
@@ -427,7 +443,8 @@ public class AttackSkill : SkillBase
         GameObject hitVFX = data.Info.HitVFX;
         if (hitVFX != null)
         {
-            target.AddVFX(hitVFX, unit.transform);
+            //target.AddVFX(hitVFX, unit.transform);
+            target.AddVFX(hitVFX, target);
         }
 
         //ParticleSystem hitVFX = null;
@@ -455,7 +472,8 @@ public class AttackSkill : SkillBase
         GameObject critVFX = data.Info.CritVFX;
         if (critVFX != null)
         {
-            target.AddVFX(critVFX, unit.transform);
+            //target.AddVFX(critVFX, unit.transform);
+            target.AddVFX(critVFX, target);
         }
 
         //ParticleSystem critVFX = null;
@@ -523,8 +541,8 @@ public class AttackSkill : SkillBase
 
             finalPercent += data.InduseEffectSuccessRate;
 
-            Debug.Log($"유닛 멘탈 : {unit.Mental},  타겟 멘탈 : {target.Mental}");
-            Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}%");
+            Debug.Log($"{unit.Data.Name} : {unit.Mental},  {target.Data.Name} : {target.Mental}");
+            Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}");
 
             return Mathf.Clamp01(finalPercent);
         }
@@ -538,6 +556,12 @@ public class AttackSkill : SkillBase
     }
     public void GenerateSkill(Unit unit, Unit pivotUnit, GameObject obj)
     {
+        // 소환물 소환()
+        // 소환물을 지정한 위치에 소환
+        // 지정된 위치 = 대상의 위치 -> targetUnit or 특정 위치 
+
+        // 스킬 데이터에 있는-> 데미지, 속성
+
         GameObject skillObj = Instantiate(obj, pivotUnit.transform.position, Quaternion.identity);
         ThunderCloud thunderCloud = skillObj.GetComponent<ThunderCloud>();
         if(thunderCloud != null)
@@ -545,4 +569,6 @@ public class AttackSkill : SkillBase
             thunderCloud.Initialize(unit);
         }
     }
+
+
 }
