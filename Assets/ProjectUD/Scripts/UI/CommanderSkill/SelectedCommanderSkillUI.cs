@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 
 public class SelectedCommanderSkillUI : MonoBehaviour
@@ -9,6 +10,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
     [SerializeField] private SelectedCSkillBtnUI[] selectedCSkillBtns;
     [SerializeField] private CommanderSkillUI commanderSkillUI;
     [SerializeField] private MessageUI warningMessage;
+    [SerializeField] private Button saveButton; // 저장 버튼 연결
 
     private CommandSkillData[] selectedCSkills = new CommandSkillData[3];
     private List<string> selectCSkillID = new List<string>();
@@ -17,6 +19,12 @@ public class SelectedCommanderSkillUI : MonoBehaviour
     private bool canAdd = false;
     private bool isSaved = true;
 
+    private void SetSaveButtonState(bool isChanged)
+    {
+        if (saveButton != null)
+            saveButton.interactable = isChanged;
+    }
+
     public void SetCSkillList(CommandSkillData[] datas)
     {
         selectedCSkills = datas;
@@ -24,6 +32,9 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         {
             SetCSkill(i);
         }
+        //--UI 열릴 때 항상 비활성화로 초기화
+        isSaved = true;
+        SetSaveButtonState(false); // 추가
     }
 
     public void SetCSkill(int index)
@@ -58,6 +69,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 SetCSkill(i);
                 //--선택 스킬 변경
                 isSaved = false;
+                //--저장 버튼 활성화
+                SetSaveButtonState(true); // 추가
                 return true;
             }
         }
@@ -74,6 +87,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
         //--선택 스킬 변경
         isSaved = false;
+        //--저장 버튼 활성화
+        SetSaveButtonState(true); // 추가
     }
 
     public void RemoveSkill(CommandSkillData data)
@@ -125,6 +140,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         }
 
         isSaved = true;
+        // 저장 후 버튼 비활성화
+        SetSaveButtonState(false); // 추가
     }
     public bool IsSaved()
     {

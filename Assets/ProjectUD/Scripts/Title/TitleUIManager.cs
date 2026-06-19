@@ -44,12 +44,26 @@ public class TitleUIManager : MonoBehaviour
         {
             gameStartBtn.onClick.AddListener(() =>
             {
-                SoundManager.Instance.PlaySFX(startSfx);
+                if (PlayerPrefs.GetInt("IntroVideo") == 0)
+                {
+                    SoundManager.Instance.PlaySFX(startSfx);
 
-                LoadingSceneManager.LoadScene("IntroScene");
+                    LoadingSceneManager.LoadScene("IntroScene");
+
+                }
+                else
+                {
+                    SoundManager.Instance.PlaySFX(startSfx);
+
+                    LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+                }
+
+                //SoundManager.Instance.PlaySFX(startSfx);
+
+                //LoadingSceneManager.LoadScene("IntroScene");
 
                 // --- 저장데이터 초기화
-                
+
 
                 //DOTween.Sequence()
                 //.AppendInterval(startSfx.length)
@@ -196,5 +210,6 @@ public class TitleUIManager : MonoBehaviour
     public void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
+        SettingManager.Instance.ResetToDefault();
     }
 }

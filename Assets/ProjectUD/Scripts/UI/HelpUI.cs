@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using DG.Tweening;
 using InputEventInterface;
 using Unity.VisualScripting;
@@ -13,7 +14,9 @@ public class HelpUI : MonoBehaviour, IInputESC
     [SerializeField] private InGameManager inGameManager;
 
     [SerializeField] private Button manulBtn;
+    [SerializeField] private TextMeshProUGUI manulBtnText;
     [SerializeField] private Button attributeBtn;
+    [SerializeField] private TextMeshProUGUI attributeBtnText;
 
     [SerializeField] private GameObject manulPanel;
     [SerializeField] private GameObject attributePanel;
@@ -36,7 +39,9 @@ public class HelpUI : MonoBehaviour, IInputESC
         manulPanel.SetActive(true);
         attributePanel.SetActive(false);
         manulBtn.image.sprite = activSprite;
+        manulBtnText.color = Color.yellow;
         attributeBtn.image.sprite = deactivSprite;
+        attributeBtnText.color = Color.white;
     }
 
     public void OnAttribute()
@@ -45,7 +50,9 @@ public class HelpUI : MonoBehaviour, IInputESC
         manulPanel.SetActive(false);
         attributePanel.SetActive(true);
         manulBtn.image.sprite = deactivSprite;
+        manulBtnText.color = Color.white;
         attributeBtn.image.sprite = activSprite;
+        attributeBtnText.color = Color.yellow;
     }
 
     public void SlideRight()
@@ -119,6 +126,7 @@ public class HelpUI : MonoBehaviour, IInputESC
         ResetToFirstPanel();
         gameObject.SetActive(true);
         inputEventManager.OnESCTarget = this;
+        OnManuel();
     }
 
     public void CloseHelp()

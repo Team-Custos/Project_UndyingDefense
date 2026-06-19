@@ -1,13 +1,16 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class CommanderSkillUI : MonoBehaviour
+public class CommanderSkillUI : MonoBehaviour, IInputESC
 {
+    [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private CommandSkillRepository cSkillRepository;
     [SerializeField] private GameObject[] pageBtnArray;
     [SerializeField] private CommandSkillBtnUI[] cSkillBtnArray;
@@ -259,6 +262,8 @@ public class CommanderSkillUI : MonoBehaviour
         //ShowCommandSkill();
         gameObject.SetActive(true );
         ShowAlarm();
+
+        inputEventManager.OnESCTarget = this;
     }
 
     public void HideUI()    // 뒤로가기
@@ -271,6 +276,8 @@ public class CommanderSkillUI : MonoBehaviour
         }
         gameObject.SetActive(false);
 
+        inputEventManager.OnESCTarget = null;
+
     }
 
     public void ConfirmPanelCancleBtn()
@@ -282,5 +289,15 @@ public class CommanderSkillUI : MonoBehaviour
     {
         confirmSavePanel.SetActive(false);
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = null;
+    }
+
+    public void OnESC(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            HideUI();
+        }
     }
 }
