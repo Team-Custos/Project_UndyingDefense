@@ -28838,6 +28838,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 21649798}
   sSkillInfoText: {fileID: 21649797}
   sSkilNameText: {fileID: 21649796}
+  sAbilityNameText: {fileID: 1771508493766129144}
+  sAbilityInfoText: {fileID: 1771508493766129143}
   unitStateImage:
   - {fileID: 660086394}
   - {fileID: 202682342}
@@ -52615,6 +52617,8 @@ MonoBehaviour:
   portraitImg: {fileID: 0}
   hpBarUI: {fileID: 567817879}
   hpTextUI: {fileID: 139754859}
+  hitUI: {fileID: 0}
+  animator: {fileID: 0}
   noticeUI: {fileID: 751923282}
   noticeTimerUI: {fileID: 2532806955720346971}
   errorPanel: {fileID: 434517989}
@@ -70128,6 +70132,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 0}
   sSkillInfoText: {fileID: 0}
   sSkilNameText: {fileID: 0}
+  sAbilityNameText: {fileID: 0}
+  sAbilityInfoText: {fileID: 0}
   unitStateImage:
   - {fileID: 282221630}
   - {fileID: 1767241628}
@@ -94112,7 +94118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1745055781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118296,6 +118302,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1771508493766129143 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1913195635212886047, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1771508493766129140}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1771508493766129144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6785226962984390476, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1771508493766129140}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &1774284716948644013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -121095,6 +121125,8 @@ MonoBehaviour:
   portraitImg: {fileID: 0}
   hpBarUI: {fileID: 7564025048168808014}
   hpTextUI: {fileID: 8333936936176508184}
+  hitUI: {fileID: 0}
+  animator: {fileID: 0}
   noticeUI: {fileID: 2596611874688463175}
   noticeTimerUI: {fileID: 6775125311394541428}
   errorPanel: {fileID: 2382524824821827843}

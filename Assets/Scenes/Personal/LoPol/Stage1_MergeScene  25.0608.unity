@@ -20790,6 +20790,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &348849309 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1913195635212886047, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 415007553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &348849310 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6785226962984390476, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 415007553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &349020057
 GameObject:
   m_ObjectHideFlags: 0
@@ -29479,6 +29503,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 1356237123}
   sSkillInfoText: {fileID: 369379443}
   sSkilNameText: {fileID: 1200396397}
+  sAbilityNameText: {fileID: 348849310}
+  sAbilityInfoText: {fileID: 348849309}
   unitStateImage:
   - {fileID: 249477856}
   - {fileID: 631953350}
@@ -52811,6 +52837,8 @@ MonoBehaviour:
   portraitImg: {fileID: 0}
   hpBarUI: {fileID: 567817879}
   hpTextUI: {fileID: 139754859}
+  hitUI: {fileID: 0}
+  animator: {fileID: 0}
   noticeUI: {fileID: 751923282}
   noticeTimerUI: {fileID: 2532806955720346971}
   errorPanel: {fileID: 434517989}
@@ -70415,6 +70443,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 0}
   sSkillInfoText: {fileID: 0}
   sSkilNameText: {fileID: 0}
+  sAbilityNameText: {fileID: 0}
+  sAbilityInfoText: {fileID: 0}
   unitStateImage:
   - {fileID: 282221630}
   - {fileID: 1767241628}

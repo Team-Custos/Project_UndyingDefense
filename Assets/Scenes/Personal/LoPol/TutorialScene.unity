@@ -25287,6 +25287,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 0}
   sSkillInfoText: {fileID: 0}
   sSkilNameText: {fileID: 0}
+  sAbilityNameText: {fileID: 0}
+  sAbilityInfoText: {fileID: 0}
   unitStateImage:
   - {fileID: 626401922}
   - {fileID: 1887891173}
@@ -53456,6 +53458,8 @@ MonoBehaviour:
   gSkillNameText: {fileID: 1616025944}
   sSkillInfoText: {fileID: 502684577}
   sSkilNameText: {fileID: 815262922}
+  sAbilityNameText: {fileID: 1859069026}
+  sAbilityInfoText: {fileID: 1375719259}
   unitStateImage:
   - {fileID: 770812632}
   - {fileID: 1214205113}
@@ -53897,6 +53901,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &1375719259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1913195635212886047, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1376235167
 GameObject:
   m_ObjectHideFlags: 0
@@ -60133,6 +60149,8 @@ MonoBehaviour:
   portraitImg: {fileID: 0}
   hpBarUI: {fileID: 1737745272}
   hpTextUI: {fileID: 801379123}
+  hitUI: {fileID: 0}
+  animator: {fileID: 0}
   noticeUI: {fileID: 833488742}
   noticeTimerUI: {fileID: 1236864688}
   errorPanel: {fileID: 1190891631}
@@ -72512,6 +72530,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &1859069026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6785226962984390476, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1859990870 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
