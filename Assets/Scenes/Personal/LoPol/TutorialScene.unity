@@ -17003,6 +17003,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &458718689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+    type: 3}
+  m_PrefabInstance: {fileID: 869192626}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869192628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2974f2d04ddb54482bf44f844f35fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &460323677 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5452713907113469983, guid: 8daaea2bb8c9aea4684d2b3766934e24,
@@ -32055,16 +32067,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 415572253}
+      objectReference: {fileID: 458718689}
     - target: {fileID: 753700044870630488, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadLobbyScene
+      value: OnBackButtonClicked
       objectReference: {fileID: 0}
     - target: {fileID: 753700044870630488, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: InGameManager, Assembly-CSharp
+      value: SettingUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1091645688668862500, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -32289,6 +32301,31 @@ PrefabInstance:
       propertyPath: inputEventManager
       value: 
       objectReference: {fileID: 1105637569}
+    - target: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 415572253}
+    - target: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: closeConfirmMessage.m_TableEntryReference.m_KeyId
+      value: 51432404615217152
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.data[0]._MemberName
+      value: LoadLobbyScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027975004823179965, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: closeConfirmMessage.m_TableReference.m_TableCollectionName
+      value: GUID:bb9fadd325e0b74479f48960fd127383
+      objectReference: {fileID: 0}
     - target: {fileID: 3051276325000132257, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_Camera
@@ -32423,6 +32460,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 93
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869024389257446689, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000823652393056040, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
