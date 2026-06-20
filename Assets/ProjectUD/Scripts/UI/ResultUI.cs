@@ -36,7 +36,7 @@ public class ResultUI : MonoBehaviour
             resultCommentTextUI.text = LocalizationSettings.StringDatabase.GetLocalizedString("IngameUI", "TXT_resultWin01",
                  LocalizationSettings.SelectedLocale);
             timeRecordTextUI.gameObject.SetActive(true);
-            timeRecordTextUI.text = record;
+            timeRecordTextUI.text = record + '"';
         }
         else
         {

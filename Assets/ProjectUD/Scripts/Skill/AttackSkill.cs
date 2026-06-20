@@ -379,7 +379,7 @@ public class AttackSkill : SkillBase
         calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
 
         //Debug.Log("피해량" + target.DamageTakenMult);
-        //Debug.Log("데미지" + calcDamage);
+        Debug.Log("데미지" + calcDamage);
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {
