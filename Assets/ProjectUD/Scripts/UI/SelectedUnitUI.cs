@@ -55,6 +55,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image unitSSkillImage;
     [SerializeField] private Image unitGSkillImage;
     [SerializeField] private Image specialAbilityImage;
+    [SerializeField] private TextMeshProUGUI dfTypeText;
     [SerializeField] private TextMeshProUGUI critText;
     [SerializeField] private TextMeshProUGUI moveSpeedText;
     [SerializeField] private TextMeshProUGUI atSpeedText;
@@ -312,6 +313,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
+        dfTypeText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"CON_defense{unitData.ArmorType}", LocalizationSettings.SelectedLocale);
+
         //attackTypeText.text = unitData.AttackType;
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
@@ -435,6 +439,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unit.Data.DfTypeIcon;
+
+        dfTypeText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", $"CON_defense{unit.Data.ArmorType}", LocalizationSettings.SelectedLocale);
 
         //attackTypeText.text = unit.Data.AttackType;
 

@@ -5,12 +5,12 @@ public class FearEffect : DurationEffect
     [SerializeField] private GameObject weakenEffectPrefab;
 
     [Header("■ Fear Options")]
-    [SerializeField] private float atkPercent;
+    [SerializeField] private float damageTakenPercent;
     [SerializeField] private int mental;
 
     public override void Activate()
     {
-        target.AddAtkMult(atkPercent);
+        target.AddDamageTakenMult(damageTakenPercent);
         target.AddMental(mental);
 
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
@@ -18,7 +18,7 @@ public class FearEffect : DurationEffect
 
     public override void OnRemove()
     {
-        target.AddAtkMult(-atkPercent);
+        target.AddDamageTakenMult(-damageTakenPercent);
         target.AddMental(-mental);
 
         if (effectImage != null)

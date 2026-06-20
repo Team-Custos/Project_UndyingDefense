@@ -259,9 +259,14 @@ public class AttackSkill : SkillBase
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
         Vector3 dir = (target.transform.position - transform.position).normalized;
-        target.AddVFX(vfxPrefab, dir);
+        unit.AddVFX(vfxPrefab, dir);
     }
 
+
+    public void ShowVFX(Unit unit, GameObject vfx)
+    {
+        unit.AddVFX(vfx, unit.transform);
+    }
 
 
 
@@ -372,6 +377,9 @@ public class AttackSkill : SkillBase
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
         calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
+
+        //Debug.Log("피해량" + target.DamageTakenMult);
+        //Debug.Log("데미지" + calcDamage);
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {

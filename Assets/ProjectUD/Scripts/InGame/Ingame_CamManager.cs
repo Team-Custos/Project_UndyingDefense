@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
-//카메라 조작을 위한 스크립트. (삭제 예정.)
+//카메라 조작을 위한 스크립트
 public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWheel, IInputOnSpace
 {
     [Header("■ Components")]
@@ -110,29 +110,57 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     public void OnNavigate(InputAction.CallbackContext context)
     {
-
         if (context.started || context.performed)
         {
             if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
                 return;
 
-            Vector2 input = context.ReadValue<Vector2>();
-            moveDirection = Vector3.zero;
 
-            
-            if (input.y > 0f) // W 키
-                moveDirection += new Vector3(1f, 0f, 1f);
-            if (input.y < 0f) // S 키
-                moveDirection += new Vector3(-1f, 0f, -1f);
-            if (input.x > 0f) // D 키
-                moveDirection += new Vector3(1f, 0f, -1f);
-            if (input.x < 0f) // A 키
-                moveDirection += new Vector3(-1f, 0f, 1f);
+            Vector2 input = context.ReadValue<Vector2>();
+
+
+            Vector3 forward = virtualCamPos.forward;
+            Vector3 right = virtualCamPos.right;
+
+
+            // 높이 방향 제거
+            forward.y = 0;
+            right.y = 0;
+
+
+            forward.Normalize();
+            right.Normalize();
+
+
+            moveDirection = forward * input.y + right * input.x;
         }
         else if (context.canceled)
         {
-            moveDirection = Vector3.zero; // 키를 떼면 멈추기
+            moveDirection = Vector3.zero;
         }
+
+        //if (context.started || context.performed)
+        //{
+        //    if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
+        //        return;
+
+        //    Vector2 input = context.ReadValue<Vector2>();
+        //    moveDirection = Vector3.zero;
+
+
+        //    if (input.y > 0f) // W 키
+        //        moveDirection += new Vector3(1f, 0f, 1f);
+        //    if (input.y < 0f) // S 키
+        //        moveDirection += new Vector3(-1f, 0f, -1f);
+        //    if (input.x > 0f) // D 키
+        //        moveDirection += new Vector3(1f, 0f, -1f);
+        //    if (input.x < 0f) // A 키
+        //        moveDirection += new Vector3(-1f, 0f, 1f);
+        //}
+        //else if (context.canceled)
+        //{
+        //    moveDirection = Vector3.zero; // 키를 떼면 멈추기
+        //}
     }
 
 

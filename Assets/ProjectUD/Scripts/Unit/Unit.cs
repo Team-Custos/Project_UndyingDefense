@@ -1499,7 +1499,7 @@ public abstract class Unit : MonoBehaviour
     {
         // 받는 피해량
         damageTakenMult += percent * 0.01f;
-        Debug.Log("피해량 : " + damageTakenMult);
+        //Debug.Log("피해량 : " + damageTakenMult);
     }
 
     public void ChangeInterval(float percent) // interval을 변화시키는 함수
@@ -1688,7 +1688,7 @@ public abstract class Unit : MonoBehaviour
         direction.y = 0f;
         direction.Normalize();
 
-        float distance = 1f; 
+        float distance = 0.6f; 
 
         Vector3 spawnPosition = target.transform.position + (direction * distance) + (Vector3.up * 1.5f);
 
