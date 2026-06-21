@@ -2,9 +2,11 @@ using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 public class SettingUI : MonoBehaviour, IInputESC
 {
@@ -13,6 +15,17 @@ public class SettingUI : MonoBehaviour, IInputESC
 
     [Header("인게임 매니저")]
     [SerializeField] private InGameManager inGameManager;
+
+    [Header("시스템 확인 창")]
+    [SerializeField] private SystemConfirmUI systemConfirmUI;
+
+    [Header("확인창 Localization - Close")]
+    [SerializeField] private LocalizedString closeConfirmMessage;
+    [SerializeField] private UltEvent BackEvent;
+
+    [Header("확인창 Localization - Reset")]
+    [SerializeField] private LocalizedString resetConfirmMessage;
+    [SerializeField] private UltEvent ResetEvent;
 
     [Header("그래픽해상도")]
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -158,7 +171,7 @@ public class SettingUI : MonoBehaviour, IInputESC
     // ── 버튼 OnClick 에 연결 
 
     /// 초기값 버튼. 모든 슬라이더를 50%로 리셋.
-    public void OnResetButtonClicked()
+    public void OnResetCorfirmButtonClicked()
     {
         SettingManager.Instance.ResetToDefault();
         InitializeUI(); // 슬라이더 UI도 동기화
@@ -167,6 +180,12 @@ public class SettingUI : MonoBehaviour, IInputESC
     /// 저장 & 닫기 버튼
     public void OnCloseButtonClicked()
     {
+        if(systemConfirmUI.gameObject.activeSelf)
+        {
+            systemConfirmUI.gameObject.SetActive(false);
+            return;
+        }
+
         if (GlobalSoundManager.instance != null)
         {
             GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
@@ -174,6 +193,8 @@ public class SettingUI : MonoBehaviour, IInputESC
 
         SettingManager.Instance.SaveSettings();
         gameObject.SetActive(false);
+
+        inputEventManager.OnESCTarget = null;
 
         if (inGameManager != null)
         {
@@ -207,5 +228,15 @@ public class SettingUI : MonoBehaviour, IInputESC
         {
             OnCloseButtonClicked();
         }
+    }
+
+    public void OnResetButtonClicked()
+    {
+        systemConfirmUI.SetConfirmUI(resetConfirmMessage, ResetEvent);
+    }
+
+    public void OnBackButtonClicked()
+    {
+        systemConfirmUI.SetConfirmUI(closeConfirmMessage, BackEvent);
     }
 }

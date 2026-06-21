@@ -15812,6 +15812,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!114 &518791612 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+    type: 3}
+  m_PrefabInstance: {fileID: 1188906884059424133}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939606610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db2974f2d04ddb54482bf44f844f35fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &519834538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -56676,6 +56688,31 @@ PrefabInstance:
       propertyPath: inputEventManager
       value: 
       objectReference: {fileID: 1590103094}
+    - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 856739625}
+    - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: closeConfirmMessage.m_TableEntryReference.m_KeyId
+      value: 51432404615217152
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: BackEvent._PersistentCalls.Array.data[0]._MemberName
+      value: LoadLobbyScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: closeConfirmMessage.m_TableReference.m_TableCollectionName
+      value: GUID:bb9fadd325e0b74479f48960fd127383
+      objectReference: {fileID: 0}
     - target: {fileID: 5518538397530903576, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_IsActive
@@ -57052,16 +57089,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 856739625}
+      objectReference: {fileID: 518791612}
     - target: {fileID: 7682086522506248078, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadLobbyScene
+      value: OnBackButtonClicked
       objectReference: {fileID: 0}
     - target: {fileID: 7682086522506248078, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: InGameManager, Assembly-CSharp
+      value: SettingUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7698831134198716434, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
