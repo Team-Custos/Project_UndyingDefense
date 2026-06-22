@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 8cec99a52ee84ed4eb3a1bf69b3405aa, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 9116760602823622659
   m_TableData:
   - m_Id: 1182269947904
     m_Localized: Training Ground
@@ -125,7 +126,8 @@ MonoBehaviour:
   - m_Id: 1182274142243
     m_Localized: Cooltime {num}s
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 9116760602823622659
   - m_Id: 1182274142244
     m_Localized: Basic Skill
     m_Metadata:
@@ -267,6 +269,20 @@ MonoBehaviour:
     m_Localized: Namwon Castle
     m_Metadata:
       m_Items: []
+  - m_Id: 78870014753030144
+    m_Localized: Range {num}steps
+    m_Metadata:
+      m_Items:
+      - rid: 9116760602823622659
+  - m_Id: 78870101143109632
+    m_Localized: Mental {num}
+    m_Metadata:
+      m_Items:
+      - rid: 9116760602823622659
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 9116760602823622659
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 23c007451301000000c0c84cdc33180100c0086af0331801

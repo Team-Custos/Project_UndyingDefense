@@ -25,6 +25,7 @@ public class UnitData : ScriptableObject
 
     [SerializeField] private SkillData generalSkill;
     [SerializeField] private SkillData specialSkill;
+    [SerializeField] private SpecialAbility specialAbility;
     [SerializeField] private string campName;   // 유닛의 진영 정보 (도감 UI에 필요)
 
     public string Name => unitName;
@@ -39,6 +40,7 @@ public class UnitData : ScriptableObject
     public string CampName => campName;
     public SkillData SpecialSkill => specialSkill;
     public SkillData GeneralSkill => generalSkill;
+    public SpecialAbility SpecialAbility => specialAbility;
 
 
     //public float MaxHp => maxHp;
