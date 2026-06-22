@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 8cec99a52ee84ed4eb3a1bf69b3405aa, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1837174480972808196
   m_TableData:
   - m_Id: 1182269947904
     m_Localized: Training Ground
@@ -267,6 +268,20 @@ MonoBehaviour:
     m_Localized: Namwon Castle
     m_Metadata:
       m_Items: []
+  - m_Id: 78653096844750848
+    m_Localized: Range {num}steps
+    m_Metadata:
+      m_Items:
+      - rid: 1837174480972808196
+  - m_Id: 78653101064220672
+    m_Localized: Mental {num}
+    m_Metadata:
+      m_Items:
+      - rid: 1837174480972808196
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1837174480972808196
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0070ea29936e170100706a25946e1701

@@ -52,6 +52,7 @@ public abstract class Unit : MonoBehaviour
     //[SerializeField] private UltEvent<Unit>[] stateEvents;
     //[SerializeField] private SpecialAbility specialAbility;
 
+
     protected float maxhp;
     protected float hp;
     protected float critPercent;
@@ -1260,9 +1261,8 @@ public abstract class Unit : MonoBehaviour
         //        targetUnit = SearchNearestTarget(UnitStats.sightRange);
 
 
-            //    }
-            //}
-
+        //    }
+        //}
 
             //float nearestDistance = float.MaxValue;
             //bool hasAvailablePath = false;

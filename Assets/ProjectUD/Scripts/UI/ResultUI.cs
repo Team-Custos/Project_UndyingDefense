@@ -7,13 +7,14 @@ using static UnityEngine.Rendering.DebugUI;
 public class ResultUI : MonoBehaviour
 {
     [Header("■ UI")]
-    [SerializeField] private TextMeshProUGUI rewardTitleUI;
+    [SerializeField] private GameObject recordUI;
     [SerializeField] private TextMeshProUGUI rewardTextUI;
     [SerializeField] private TextMeshProUGUI timeRecordTextUI;
     [SerializeField] private Image windowUI;
     [SerializeField] private Image lightEffect;
     [SerializeField] private Image underlayEffect;
     [SerializeField] private TextMeshProUGUI resultCommentTextUI;
+
 
     [Header("■ Window Sprites")]
     [SerializeField] private Sprite winSprite;
@@ -40,6 +41,8 @@ public class ResultUI : MonoBehaviour
         }
         else
         {
+            recordUI.SetActive(false);
+
             windowUI.sprite = loseSprite;
             lightEffect.gameObject.SetActive(false);
             underlayEffect.color = loseColor;
