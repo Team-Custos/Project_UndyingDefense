@@ -16,6 +16,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
     [Header("RectTransform")]
     [SerializeField] private RectTransform portraitSelectUI;
     [SerializeField] private RectTransform portraitOpenBtn; // 버튼 RectTransform 추가
+    [SerializeField] private RectTransform panelCloseBtn; // 패널 뒤로가기 버튼
 
     [Header("Button Sprites")]
     [SerializeField] private Image portraitOpenBtnImage; // 버튼 이미지 추가
@@ -216,8 +217,9 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             // 초상화 선택 UI가 아니라면 UI 닫기
             bool inPanel = RectTransformUtility.RectangleContainsScreenPoint(portraitSelectUI, clickPosition);
             bool inBtn = RectTransformUtility.RectangleContainsScreenPoint(portraitOpenBtn, clickPosition);
+            bool inBackBtn = RectTransformUtility.RectangleContainsScreenPoint(panelCloseBtn, clickPosition);
 
-            if(!inPanel && !inBtn)
+            if (!inPanel && !inBtn && !inBackBtn)
             {
                 DisableSelectedPanel();
             }
