@@ -155,7 +155,7 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("LobbyUI", "CON_defenseType1", LocalizationSettings.SelectedLocale);
         armorTypeTxt.text = $"{armorT} :";
         //---
-        critChance.text = stats.critChance.ToString();
+        critChance.text = $"{stats.critChance}%";
         string critT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_critChance", LocalizationSettings.SelectedLocale);
         critChanceTxt.text = $"{critT} :";
@@ -170,7 +170,7 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
         mentalTxt.text = $"{mentalT} :";
         //---
-        attackRange.text = stats.attackRange.ToString();
+        attackRange.text = $"{stats.attackRange / 2}보";
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
         attackRangeTxt.text = $"{attackRangeT} :";

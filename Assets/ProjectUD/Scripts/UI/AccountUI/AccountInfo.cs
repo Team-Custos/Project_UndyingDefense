@@ -89,6 +89,16 @@ public class AccountInfo : MonoBehaviour, IInputESC
     // 뒤로가기 버튼
     public void OnClickBackBtn()
     {
+        if(nickNamePanelScript.gameObject.activeSelf)
+        {
+            //nickNamePanelScript.gameObject.SetActive(false);
+            return;
+        }
+        if(portraitPanel.activeSelf)
+        {
+            //portraitPanel.SetActive(false);
+            return;
+        }
         gameObject.SetActive(false);
 
         inputEventManager.OnESCTarget = null;
