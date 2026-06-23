@@ -33,8 +33,11 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [Header("■ Notice")]
     [SerializeField] private NoticeUI noticeUI;
     [SerializeField] private NoticeUI noticeTimerUI;
+
     [SerializeField] private GameObject errorPanel;
     [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private MessageUI messageUI;
+
     [SerializeField] private Image regionNameUI;
 
     [Header("■ Result")]
@@ -194,10 +197,12 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     // -- Localization 수정
     public void ShowError(string table, string id)
     {
+        messageUI.AddMessage(LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
+                 LocalizationSettings.SelectedLocale));
         errorPanel.SetActive(true);
         //errorText.text = id;
-        errorText.text = LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
-                 LocalizationSettings.SelectedLocale);
+        //errorText.text = LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
+        //         LocalizationSettings.SelectedLocale);
     }
 
     public void SetspawnBtnPriceTextColor()

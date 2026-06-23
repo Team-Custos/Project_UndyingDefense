@@ -62,23 +62,34 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private TextMeshProUGUI atRangeText;
     [SerializeField] private TextMeshProUGUI mentalText;
     [SerializeField] private Image[] tierImage;
-    [SerializeField] private TextMeshProUGUI gSkillInfoText;
-    [SerializeField] private TextMeshProUGUI gSkillNameText;
-    [SerializeField] private TextMeshProUGUI sSkillInfoText;
-    [SerializeField] private TextMeshProUGUI sSkilNameText;
-    [SerializeField] private TextMeshProUGUI sAbilityNameText;
-    [SerializeField] private TextMeshProUGUI sAbilityInfoText;
-
 
     [SerializeField] private Image[] unitStateImage;
     [SerializeField] private UnitStateUI[] unitStateUIs;
     [SerializeField] private GameObject unitStatePanel;
     [SerializeField] private GameObject typeInfo;
 
-
-
     [SerializeField] private GameObject allyUnitUI;
     [SerializeField] private GameObject enemyUnitUI;
+
+    [Header("======= SkillInfo =======")]
+
+    // 기본 스킬
+    [SerializeField] private TextMeshProUGUI gSkillNameText;
+    [SerializeField] private TextMeshProUGUI gSkillInfoText;
+    [SerializeField] private TextMeshProUGUI gSkillEffectText;
+    [SerializeField] private TextMeshProUGUI gSkillEtcText;
+    
+    // 특수 스킬
+    [SerializeField] private TextMeshProUGUI sSkilNameText;
+    [SerializeField] private TextMeshProUGUI sSkillInfoText;
+    [SerializeField] private TextMeshProUGUI sSkillEffectText;
+    [SerializeField] private TextMeshProUGUI sSkillEtcText;
+
+    // 특수 능력
+    [SerializeField] private TextMeshProUGUI sAbilityNameText;
+    [SerializeField] private TextMeshProUGUI sAbilityInfoText;
+    [SerializeField] private TextMeshProUGUI sAbilityEffectText;
+
 
     private void Start()
     {
@@ -320,6 +331,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
+        UpdateSkillInfo(unitData);
+
+        /*
+
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
 
         //gSkillNameText.text = unit.GeneralSkill.Data.Name;
@@ -369,6 +384,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
         else
             specialAbilityImage.gameObject.SetActive(false);
+
+        */
 
         FieldLocalization(unitStats);
 
@@ -447,6 +464,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         //unitGSkillText.text = unit.GeneralSkill.Data.name;
 
+        UpdateSkillInfo(unit.Data);
+
+        /*
+
         unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
         //gSkillNameText.text = unit.GeneralSkill.Data.Name;
         //gSkillInfoText.text = unit.GeneralSkill.Data.Description;
@@ -500,6 +521,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
         else
             specialAbilityImage.gameObject.SetActive(false);
+
+        */
 
         FieldLocalization(unit.UnitStats);
 
@@ -647,5 +670,88 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         unitDurationPrefab.SetActive(false);
         unitDuration.fillAmount = 0f;
+    }
+
+    private void UpdateSkillInfo(UnitData unitData)
+    {
+        unitGSkillImage.sprite = unitData.GeneralSkill.Icon;
+        //--Local 스킬이름
+        gSkillNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_name", LocalizationSettings.SelectedLocale);
+        //--Local 스킬 설명 (desc + effect)
+        gSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_desc", LocalizationSettings.SelectedLocale);
+        gSkillEffectText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_effect", LocalizationSettings.SelectedLocale);
+
+        // Smart String Arguments용
+        string gCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = unitData.GeneralSkill.CoolTime } });
+
+        var gRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unitData.GeneralSkill.Range } });
+
+        var gMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unitData.GeneralSkill.ActiveMental } });
+
+        gSkillEtcText.text = $"{gCooltime} / {gRange} / {gMental}";
+        //infoGSkillEtc.text = $"쿨타임 {unitData.GeneralSkill.CoolTime}초 / 사거리 {unitData.GeneralSkill.Range}보 / 멘탈 요구 {unitData.GeneralSkill.ActiveMental}";
+
+        // special skill
+        unitSSkillImage.sprite = unitData.SpecialSkill.Icon;
+        sSkilNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_name", LocalizationSettings.SelectedLocale);
+        sSkillInfoText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_desc", LocalizationSettings.SelectedLocale);
+        sSkillEffectText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_effect", LocalizationSettings.SelectedLocale);
+
+        // Smart String Arguments용
+        var sCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = unitData.SpecialSkill.CoolTime } });
+
+        var sRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unitData.SpecialSkill.Range } });
+
+        var sMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unitData.SpecialSkill.ActiveMental } });
+
+        sSkillEtcText.text = $"{sCooltime} / {sRange} / {sMental}";
+        //infoSSkillEtc.text = $"쿨타임 {unitData.SpecialSkill.CoolTime}초 / 사거리 {unitData.SpecialSkill.Range}보 / 멘탈 요구 {unitData.SpecialSkill.ActiveMental}";
+
+        if (unitData.SpecialAbility != null)
+        {
+            // 아이콘이 있는 경우 알파값1로 변경
+            specialAbilityImage.sprite = unitData.SpecialAbility.Icon;
+            specialAbilityImage.gameObject.SetActive(true);
+            //specialAbilityImage.color = new Color(1, 1, 1, 1f);
+            //specialAbilityImage.sprite = unitData.SpecialAbility.Icon;
+
+            sAbilityNameText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
+            sAbilityInfoText.text = LocalizationSettings.StringDatabase.
+                GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
+            sAbilityEffectText.text = LocalizationSettings.StringDatabase.
+                GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_effect", LocalizationSettings.SelectedLocale);
+
+
+        }
+        else
+        {
+            specialAbilityImage.gameObject.SetActive(false);
+
+            // 아이콘이 없는 경우 알파값0으로 변경
+            //passiveIcon.color = new Color(1, 1, 1, 0f);
+            //infoAbilityName.text = "";
+            //infoAbilityDescript.text = "";
+            //infoAbilityEffect.text = "";
+            //passiveIcon.gameObject.SetActive(false);
+        }
     }
 }
