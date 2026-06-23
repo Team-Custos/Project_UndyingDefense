@@ -40,12 +40,25 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private Image specialIcon;
     [SerializeField] private Image passiveIcon;
 
-    //[SerializeField] private TextMeshProUGUI infoGSkillText;
-    //[SerializeField] private TextMeshProUGUI infoSSkillText;
+    [Header("Tooltip")]
+    [SerializeField] private ToolTipUI[] tooltips;
+
+    [Header("기본스킬")]
+    [SerializeField] private TextMeshProUGUI infoGSkillName;
     [SerializeField] private TextMeshProUGUI infoGSkillDescript;
-    [SerializeField] private TextMeshProUGUI infoSSkillDescript;
     [SerializeField] private TextMeshProUGUI infoGSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoGSkillEtc;
+
+    [Header("특수스킬")]
+    [SerializeField] private TextMeshProUGUI infoSSkillName;
+    [SerializeField] private TextMeshProUGUI infoSSkillDescript;
     [SerializeField] private TextMeshProUGUI infoSSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoSSkillEtc;
+
+    [Header("특수능력")]
+    [SerializeField] private TextMeshProUGUI infoAbilityName;
+    [SerializeField] private TextMeshProUGUI infoAbilityDescript;
+    [SerializeField] private TextMeshProUGUI infoAbilityEffect;
 
     [Header("Defense")]
     [SerializeField] private TextMeshProUGUI armorType;
@@ -114,23 +127,80 @@ public class UnitInfoPanelUI : MonoBehaviour
         specialIcon.sprite = unitData.SpecialSkill.Icon;
 
         //--Local 스킬이름
-        //infoGSkillText.text = LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_name", LocalizationSettings.SelectedLocale);
-        //infoSSkillText.text = LocalizationSettings.StringDatabase.
-        //    GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_name", LocalizationSettings.SelectedLocale);
+        infoGSkillName.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_name", LocalizationSettings.SelectedLocale);
         //--Local 스킬 설명 (desc + effect)
         infoGSkillDescript.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_desc", LocalizationSettings.SelectedLocale);
         infoGSkillEffect.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitSkill", $"{unitData.GeneralSkill.Name}_effect", LocalizationSettings.SelectedLocale);
 
+        // Smart String Arguments용
+        string gCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = unitData.GeneralSkill.CoolTime } });
+
+        var gRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unitData.GeneralSkill.Range } });
+
+        var gMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unitData.GeneralSkill.ActiveMental } });
+
+        infoGSkillEtc.text = $"{gCooltime} / {gRange} / {gMental}";
+        //infoGSkillEtc.text = $"쿨타임 {unitData.GeneralSkill.CoolTime}초 / 사거리 {unitData.GeneralSkill.Range}보 / 멘탈 요구 {unitData.GeneralSkill.ActiveMental}";
+
+        // special skill
+        infoSSkillName.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_name", LocalizationSettings.SelectedLocale);
         infoSSkillDescript.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_desc", LocalizationSettings.SelectedLocale);
         infoSSkillEffect.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitSkill", $"{unitData.SpecialSkill.Name}_effect", LocalizationSettings.SelectedLocale);
 
+        // Smart String Arguments용
+        var sCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime", 
+            new object[] { new { num = unitData.SpecialSkill.CoolTime } });
+
+        var sRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unitData.SpecialSkill.Range } });
+
+        var sMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unitData.SpecialSkill.ActiveMental } });
+
+        infoSSkillEtc.text = $"{sCooltime} / {sRange} / {sMental}";
+        //infoSSkillEtc.text = $"쿨타임 {unitData.SpecialSkill.CoolTime}초 / 사거리 {unitData.SpecialSkill.Range}보 / 멘탈 요구 {unitData.SpecialSkill.ActiveMental}";
 
         // passiveSkill
+        if(unitData.SpecialAbility != null)
+        {
+            // 아이콘이 있는 경우 알파값1로 변경
+            passiveIcon.gameObject.SetActive(true);
+            passiveIcon.color = new Color(1,1,1,1f);
+            passiveIcon.sprite = unitData.SpecialAbility.Icon;
+
+            infoAbilityName.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
+            infoAbilityDescript.text = LocalizationSettings.StringDatabase.
+                GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
+            infoAbilityEffect.text = LocalizationSettings.StringDatabase.
+                GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_effect", LocalizationSettings.SelectedLocale);
+        }
+        else
+        {
+            // 아이콘이 없는 경우 알파값0으로 변경
+            passiveIcon.color = new Color(1, 1, 1, 0f);
+            infoAbilityName.text = "";
+            infoAbilityDescript.text = "";
+            infoAbilityEffect.text = "";
+            passiveIcon.gameObject.SetActive(false);
+        }
+
+
 
         // stats
         hp.text = stats.maxHp.ToString();
