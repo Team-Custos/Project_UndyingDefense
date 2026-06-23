@@ -19,7 +19,7 @@ public class AccountInfo : MonoBehaviour, IInputESC
     [SerializeField] private TextMeshProUGUI nickNameText;
     [SerializeField] private TextMeshProUGUI commanderRankTxt;
     //[SerializeField] private Button resetBtn;
-    //[SerializeField] private PortraitSelectManager portraitSelectManager;
+    [SerializeField] private PortraitSelectManager portraitSelectManager;
 
     public void Start()
     {
@@ -91,13 +91,12 @@ public class AccountInfo : MonoBehaviour, IInputESC
     {
         if(nickNamePanelScript.gameObject.activeSelf)
         {
-            //nickNamePanelScript.gameObject.SetActive(false);
-            return;
+            nickNamePanelScript.gameObject.SetActive(false);
         }
         if(portraitPanel.activeSelf)
         {
-            //portraitPanel.SetActive(false);
-            return;
+            portraitPanel.SetActive(false);
+            portraitSelectManager.DisableSelectedPanel();
         }
         gameObject.SetActive(false);
 
@@ -108,7 +107,18 @@ public class AccountInfo : MonoBehaviour, IInputESC
     {
         if (context.performed)
         {
-            OnClickBackBtn();
+            //if (portraitPanel.activeSelf)
+            //{
+            //    portraitPanel.SetActive(false);
+            //}
+            if (nickNamePanelScript.gameObject.activeSelf)
+            {
+                nickNamePanelScript.gameObject.SetActive(false);
+                return;
+            }
+            gameObject.SetActive(false);
+
+            inputEventManager.OnESCTarget = null;
         }
     }
 }

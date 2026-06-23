@@ -142,7 +142,7 @@ public class UnitInfoPanelUI : MonoBehaviour
 
         var gRange = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillRange",
-            new object[] { new { num = unitData.GeneralSkill.Range } });
+            new object[] { new { num = unitData.GeneralSkill.Range / 2 } });
 
         var gMental = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillMental",
@@ -166,7 +166,7 @@ public class UnitInfoPanelUI : MonoBehaviour
 
         var sRange = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillRange",
-            new object[] { new { num = unitData.SpecialSkill.Range } });
+            new object[] { new { num = unitData.SpecialSkill.Range / 2 } });
 
         var sMental = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillMental",

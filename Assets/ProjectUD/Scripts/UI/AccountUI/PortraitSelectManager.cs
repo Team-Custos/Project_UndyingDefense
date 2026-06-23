@@ -101,10 +101,25 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
 
         int toShow = dataCount - ((pageNum - 1) * 12);
         int temp = Mathf.Min(toShow, 12);
+
+        bool foundCurrent = false;
         for (int i = 0; i < temp; i++)
         {
-            portraits[i].SetPortraitData(portraitDataList[((pageNum - 1) * 12) + i], playerRank);
+            var data = portraitDataList[((pageNum - 1) * 12) + i];
+            portraits[i].SetPortraitData(data, playerRank);
             portraits[i].gameObject.SetActive(true);
+
+            if(currentPortraitData != null && data.portraitID == currentPortraitData.portraitID)
+            {
+                indicator.transform.position = portraits[i].transform.position;
+                indicator.gameObject.SetActive(true);
+                foundCurrent = true;
+            }
+        }
+
+        if (!foundCurrent)
+        {
+            indicator.gameObject.SetActive(false);
         }
     }
 
