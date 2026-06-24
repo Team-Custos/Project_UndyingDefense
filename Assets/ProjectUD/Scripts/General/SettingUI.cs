@@ -230,13 +230,17 @@ public class SettingUI : MonoBehaviour, IInputESC
         }
     }
 
+    // 설정창 초기화 버튼용
     public void OnResetButtonClicked()
     {
         systemConfirmUI.SetConfirmUI(resetConfirmMessage, ResetEvent);
+        inputEventManager.OnESCTarget = null;
     }
 
+    // 설정창_메인로비 게임종료 버튼용
     public void OnBackButtonClicked()
     {
         systemConfirmUI.SetConfirmUI(closeConfirmMessage, BackEvent);
+        inputEventManager.OnESCTarget = null;
     }
 }

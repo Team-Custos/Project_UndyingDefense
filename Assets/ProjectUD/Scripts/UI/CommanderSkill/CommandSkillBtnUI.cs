@@ -34,7 +34,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private string sName;
     private string sDescription;
     private string sEffect;
-
+    private string sCoolTime;
     private bool isSelected = false;
     private bool isActive = false;
 
@@ -91,7 +91,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
-    public void SetBtn(int i, bool canUse, Sprite sprite, string name, string desc, string effect)
+    public void SetBtn(int i, bool canUse, Sprite sprite, string name, string desc, string effect, string coolTime)
     {
         index = i;
         SetActiveSkillBtn(canUse);
@@ -100,6 +100,7 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
         sName = name;
         sDescription = desc;
         sEffect = effect;
+        sCoolTime = coolTime;
     }
 
     public void ResetButton()
@@ -112,8 +113,9 @@ public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        descriptionPanel.SetPanel(sName, sDescription, sEffect);
+        descriptionPanel.SetPanel(sName, sDescription, sEffect, sCoolTime);
         descriptionPanel.transform.position = hoverPosition.position;
+        descriptionPanel.SetPanelHeight();
         descriptionPanel.ShowPanel();
     }
 

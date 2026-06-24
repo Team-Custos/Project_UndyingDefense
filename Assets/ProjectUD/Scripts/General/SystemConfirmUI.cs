@@ -1,14 +1,19 @@
+using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UltEvents;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
 public class SystemConfirmUI : MonoBehaviour
 {
+    [SerializeField] SettingUI settingUI;
+    [SerializeField] PlayerInputEventManager inputEventManager;
+
     [SerializeField] TextMeshProUGUI confirmText;
     private UltEvent confirmEvent;
 
@@ -28,5 +33,6 @@ public class SystemConfirmUI : MonoBehaviour
     public void CancelEventInvoke()
     {
         gameObject.SetActive(false);
+        inputEventManager.OnESCTarget = settingUI;
     }
 }

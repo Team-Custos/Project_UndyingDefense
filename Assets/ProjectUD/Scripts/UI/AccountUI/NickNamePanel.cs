@@ -8,10 +8,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class NickNamePanel : MonoBehaviour, IInputESC
+public class NickNamePanel : MonoBehaviour
 {
-    [Header("Input Event Manager")]
-    [SerializeField] private PlayerInputEventManager inputEventManager;
+    //[Header("Input Event Manager")]
+    //[SerializeField] private PlayerInputEventManager inputEventManager;
 
     [Header("ReferenceClass")]
     [SerializeField] private AccountInfo accountInfo;
@@ -59,14 +59,14 @@ public class NickNamePanel : MonoBehaviour, IInputESC
         lobbyManager.SetLobbyNickName(nickname);
         gameObject.SetActive(false);
 
-        inputEventManager.OnESCTarget = accountInfo;
+        //inputEventManager.OnESCTarget = accountInfo;
     }
 
     public void OnClickCancleBtn()  // 취소버튼
     {
         gameObject.SetActive(false);
 
-        inputEventManager.OnESCTarget = accountInfo;
+        //inputEventManager.OnESCTarget = accountInfo;
     }
 
     public void ShowNicknamePanel()
@@ -74,7 +74,7 @@ public class NickNamePanel : MonoBehaviour, IInputESC
         nickNameInput.text = PlayerPrefs.GetString("PlayerName");
         gameObject.SetActive(true);
 
-        inputEventManager.OnESCTarget = this;
+        //inputEventManager.OnESCTarget = this;
     }
 
     private bool ValidateNickname(string nickname)
@@ -89,11 +89,11 @@ public class NickNamePanel : MonoBehaviour, IInputESC
         return validPattern.IsMatch(nickname);
     }
 
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if(context.performed)
-        {
-            OnClickCancleBtn();
-        }
-    }
+    //public void OnESC(InputAction.CallbackContext context)
+    //{
+    //    if(context.performed)
+    //    {
+    //        OnClickCancleBtn();
+    //    }
+    //}
 }

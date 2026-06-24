@@ -194,9 +194,9 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
         }
     }
 
-    public void SetCSkillBtn(int i, bool canUse, Sprite image, string name, string desc, string effect)
+    public void SetCSkillBtn(int i, bool canUse, Sprite image, string name, string desc, string effect, string coolTime)
     {
-        cSkillBtnArray[i].SetBtn(i, canUse, image, name, desc, effect);
+        cSkillBtnArray[i].SetBtn(i, canUse, image, name, desc, effect, coolTime);
         cSkillBtnArray[i].gameObject.SetActive(true);
 
         // To do: 해금여부에 따른 잠금이미지 & 업적 비활성화
@@ -226,13 +226,19 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
             string skillDescId = cData.Id + "_desc";
             string skillEffectId = cData.Id + "_effect";
 
+            var sCooltime = LocalizationSettings.StringDatabase.
+           GetLocalizedString("CommonUI", "CON_skillCooltime",
+           new object[] { new { num = cData.CoolTime } });
+
             SetCSkillBtn(i, canUseSkill, cData.Icon,
                 LocalizationSettings.StringDatabase.
                 GetLocalizedString("CommanderSkill", $"{skillNameId}", LocalizationSettings.SelectedLocale),
                 LocalizationSettings.StringDatabase.
                 GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
                 LocalizationSettings.StringDatabase.
-                GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));  //unit.Name);
+                GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale),
+                sCooltime
+                );  //unit.Name);
 
             cSkillBtnArray[i].gameObject.SetActive(true);
         }
@@ -272,6 +278,9 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
         if (!isSaved)
         {
             confirmSavePanel.SetActive(true);
+
+            inputEventManager.OnESCTarget = null;
+
             return;
         }
         gameObject.SetActive(false);
@@ -283,6 +292,8 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
     public void ConfirmPanelCancleBtn()
     {
         confirmSavePanel.SetActive(false);
+
+        inputEventManager.OnESCTarget = this;
     }
 
     public void ConfirmPanelOKBtn()
