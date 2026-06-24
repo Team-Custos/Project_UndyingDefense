@@ -21,7 +21,7 @@ public class ButtonTextColorSync : MonoBehaviour, IPointerDownHandler, IPointerU
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        targetText.color = normalColor; // 떼면 바로 복귀
+        //targetText.color = normalColor; // 떼면 바로 복귀
     }
 
     public void OnPointerEnter(PointerEventData eventData)

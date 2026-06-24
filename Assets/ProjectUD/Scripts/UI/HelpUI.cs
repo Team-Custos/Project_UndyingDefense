@@ -22,7 +22,9 @@ public class HelpUI : MonoBehaviour, IInputESC
     [SerializeField] private GameObject attributePanel;
 
     [SerializeField] private Sprite activSprite;
+    [SerializeField] private Color activColor;
     [SerializeField] private Sprite deactivSprite;
+    [SerializeField] private Color deactivColor;
 
     [SerializeField] private RectTransform[] panels;
     [SerializeField] private RectTransform[] enemyPanels;
@@ -39,9 +41,9 @@ public class HelpUI : MonoBehaviour, IInputESC
         manulPanel.SetActive(true);
         attributePanel.SetActive(false);
         manulBtn.image.sprite = activSprite;
-        manulBtnText.color = Color.yellow;
+        manulBtnText.color = activColor;
         attributeBtn.image.sprite = deactivSprite;
-        attributeBtnText.color = Color.white;
+        attributeBtnText.color = deactivColor;
     }
 
     public void OnAttribute()
@@ -50,9 +52,9 @@ public class HelpUI : MonoBehaviour, IInputESC
         manulPanel.SetActive(false);
         attributePanel.SetActive(true);
         manulBtn.image.sprite = deactivSprite;
-        manulBtnText.color = Color.white;
+        manulBtnText.color = deactivColor;
         attributeBtn.image.sprite = activSprite;
-        attributeBtnText.color = Color.yellow;
+        attributeBtnText.color = activColor;
     }
 
     public void SlideRight()

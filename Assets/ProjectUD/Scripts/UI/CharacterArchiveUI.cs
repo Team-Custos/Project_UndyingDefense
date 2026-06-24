@@ -39,7 +39,9 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
     [SerializeField] private TextMeshProUGUI[] tabButtonTexts; // 버튼 텍스트
     [SerializeField] private Image[] tabButtonImages; // 탭 버튼 이미지들
     [SerializeField] private Sprite selectedSprite; // 선택 이미지
+    [SerializeField] private Color selectedColor; // 선택 색상
     [SerializeField] private Sprite normalSprite;   // 기본 이미지
+    [SerializeField] private Color normalColor;   // 기본 색상
     [SerializeField] private string[] buttonKeys;
 
     [SerializeField] private Image[] pageBtnImages;
@@ -64,7 +66,7 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
             // 이미지 교체
             tabButtonImages[i].sprite = isSelected ? selectedSprite : normalSprite;
             // 글자 색 변경
-            tabButtonTexts[i].color = isSelected ? Color.yellow : Color.white;
+            tabButtonTexts[i].color = isSelected ? selectedColor : normalColor;
         }
 
 
