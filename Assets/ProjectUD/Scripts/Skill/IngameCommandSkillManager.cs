@@ -11,7 +11,7 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 {
     //------지휘관 스킬 로드 & 셋팅
     [SerializeField] private CommandSkillRepository cSkillRepository;
-    [SerializeField] private CommandSkill[] commandSkillList;
+    [SerializeField] private CommandSkill[] commandSkillList;       // 총 commandSkill 배열
     [SerializeField] private SkillButtonCooldownUI[] cSkillBtns;
 
     [Header("인디케이터")]
@@ -380,6 +380,10 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         //    return;
         //beingUsedCommandskill = commandSkill;
         // 인디케이터
+
+        Debug.Log(currentSelected[i].Name);
+        if (currentSelected[i].TargetType == CommandSkill.TargetType.NONE)
+            return;
 
         if (indicator == null)
         {

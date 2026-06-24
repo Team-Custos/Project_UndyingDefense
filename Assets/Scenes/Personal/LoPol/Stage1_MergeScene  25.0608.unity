@@ -2190,6 +2190,16 @@ PrefabInstance:
       objectReference: {fileID: 485910518}
     - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: spawnCosts.Array.data[0]
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: spawnCosts.Array.data[2]
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159912685654656875, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: ingameCommandSkillManager
       value: 
       objectReference: {fileID: 284765897}
@@ -18427,9 +18437,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cSkillRepository: {fileID: 959838907}
   commandSkillList:
-  - {fileID: 603175499}
   - {fileID: 1520834511}
   - {fileID: 56833493}
+  - {fileID: 603175499}
   - {fileID: 108907262}
   cSkillBtns:
   - {fileID: 715436446}
@@ -52543,7 +52553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDataTable: {fileID: 4900000, guid: e8c7040c2c2b77b43bd1c73a02e5c553, type: 3}
+  waveDataTable: {fileID: 4900000, guid: a91cd42021df20f4f8d7a929b1e3ce96, type: 3}
   path: UnitData/Enemy
 --- !u!114 &942100006
 MonoBehaviour:
