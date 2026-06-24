@@ -57,12 +57,11 @@ public class AttackSkill : SkillBase
             return crushHitVFX;
         }
     }
-    public void SectorAttack(Unit unit, float radius, float angle) //부채꼴 공격
+    public void FanAttack(Unit unit, float radius, float angle) //부채꼴 공격
     {
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
-        // 1. [수정] 원형 탐색의 기준점을 완벽하게 시전자(unit)의 위치로 설정
         int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
 
         float half = angle * 0.5f;
@@ -117,7 +116,7 @@ public class AttackSkill : SkillBase
             if (ang <= half)
             {
                 Attack(unit, target);
-                target.AddVFX(vfx, target.transform);
+                //target.AddVFX(vfx, target.transform);
             }
         }
     }
@@ -222,10 +221,6 @@ public class AttackSkill : SkillBase
             }
         }
 
-        // 3. 실시간으로 변하는 값을 기즈모 변수에 저장
-        //gizmoUnit = unit;
-        //gizmoX = AreaZ; // 기즈모의 가로폭 (X축)
-        //gizmoZ = AreaX; // 기즈모의 세로폭 (Z축)
     }
 
     // 기즈모 디버깅을 위한 변수들
@@ -576,6 +571,14 @@ public class AttackSkill : SkillBase
         {
             thunderCloud.Initialize(unit);
         }
+    }
+
+    public void SummonThunderCloud(Unit unit, Unit pivotUnit, GameObject obj)
+    {
+        pivotUnit.AddVFX(obj, pivotUnit.transform);
+
+
+
     }
 
 
