@@ -26,6 +26,7 @@ public class InGameManager : MonoBehaviour, IInputESC
     private string recordText = "";
 
     public bool IsGameStart => isGameStart;
+    public bool IsGamgePause => isGamePause;
     public float TimeRecord => timeRecord;
     [Header("■ PlayerPrefs Event")]
     [SerializeField] private UltEvent gameWin;
@@ -123,19 +124,20 @@ public class InGameManager : MonoBehaviour, IInputESC
 #endif
     }
 
-    public void PauseGame()
+    public void PauseGame()   // 게임 일시 정지
     {
-        SoundManager.Instance.PlayUIClickSFX();
-        if (!isGamePause)
-        {
-            Time.timeScale = 0f;
-            isGamePause = true;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-            isGamePause = false;
-        }
+        //SoundManager.Instance.PlayUIClickSFX();
+
+        isGamePause = true;
+        ingameScreenUI.OnOffSettingUI(isGamePause);
+        Time.timeScale = 0.0f;
+    }
+
+    public void ResumeGame()  // 게임 재개
+    {
+        isGamePause = false;
+        ingameScreenUI.OnOffSettingUI(isGamePause);
+        Time.timeScale = 1.0f; 
     }
 
     public void OnESC(InputAction.CallbackContext context)
@@ -145,14 +147,17 @@ public class InGameManager : MonoBehaviour, IInputESC
             if (dollyCamera.IsCamPanning || !isGameStart)
                 return;
 
+            if(isGamePause)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
 
-            //if (enemyUnitSpawner.IsGameOver)
-            //    return;
+            ingameScreenUI.OnOffSettingUI(isGamePause);
 
-            //inputEventManager.OnESCTarget = this;
-
-            //SoundManager.Instance.playCancleSFX();
-            ingameScreenUI.OnOffSettingUI();
         }
     }
 

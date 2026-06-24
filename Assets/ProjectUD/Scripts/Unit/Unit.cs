@@ -68,6 +68,7 @@ public abstract class Unit : MonoBehaviour
     protected float intervalCheck; // interval 체크용
     protected float intervalMultiplier = 1f;
     protected bool isStop = false;
+    private float finalDamage;
 
     protected UnitStats unitStats;
     [SerializeField] private string unitId;
@@ -1399,14 +1400,19 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void TakeDamage(float Damage)
     {
+        finalDamage = 0f;
+
         hp -= Damage;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
+
+        finalDamage += Damage;
 
         if (hp <= 0)
         {
             Die();
         }
 
+        // ex) 자폭
         ActivateSpecialAbility(ActiveType.HP);
 
         if (selectedUnitUI != null)

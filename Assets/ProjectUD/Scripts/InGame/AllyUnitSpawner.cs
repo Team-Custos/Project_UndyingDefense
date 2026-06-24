@@ -270,7 +270,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     // 단축키로 유닛 스폰
     public void OnUnitSpawn(InputAction.CallbackContext context)
     {
-        if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
+        if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart || inGameManager.IsGamgePause)
             return;
 
         if (selectedUnitManager.SelectedUnit != null)

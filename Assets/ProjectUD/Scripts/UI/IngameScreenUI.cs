@@ -164,22 +164,19 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         inputEventManager.OnESCTarget = inGameManager;
     }
 
-    public void OnOffSettingUI()
+    public void OnOffSettingUI(bool isGamePause)
     {
-        if (settingUI.activeSelf)
+        if (isGamePause)
         {
             //SoundManager.Instance.playCancleSFX();
-            settingUI.SetActive(false);
+            settingUI.SetActive(true);
             SoundManager.Instance.PlayCancelUISFX();
-            Time.timeScale = 1.0f;
+            //Time.timeScale = 1.0f;
         }
         else
         {
             SoundManager.Instance.PlayUIClickSFX();
-            settingUI.SetActive(true);
-
-
-            Time.timeScale = 0.0f;
+            settingUI.SetActive(false);
         }
     }
 
@@ -189,7 +186,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         {
             SoundManager.Instance.PlayCancelUISFX();
             settingUI.SetActive(false);
-            Time.timeScale = 1.0f;
+            //Time.timeScale = 1.0f;
         }
 
     }

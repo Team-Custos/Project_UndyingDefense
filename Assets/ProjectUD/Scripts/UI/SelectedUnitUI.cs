@@ -691,13 +691,13 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         var gRange = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillRange",
-            new object[] { new { num = unitData.GeneralSkill.Range } });
+            new object[] { new { num = unitData.GeneralSkill.Range / 2 } });
 
         var gMental = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillMental",
             new object[] { new { num = unitData.GeneralSkill.ActiveMental } });
 
-        gSkillEtcText.text = $"{gCooltime} / {gRange} / {gMental}";
+        gSkillEtcText.text = $"{gCooltime} / {gRange}  / {gMental}";
         //infoGSkillEtc.text = $"쿨타임 {unitData.GeneralSkill.CoolTime}초 / 사거리 {unitData.GeneralSkill.Range}보 / 멘탈 요구 {unitData.GeneralSkill.ActiveMental}";
 
         // special skill
@@ -716,7 +716,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         var sRange = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillRange",
-            new object[] { new { num = unitData.SpecialSkill.Range } });
+            new object[] { new { num = unitData.SpecialSkill.Range / 2 } });
 
         var sMental = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_skillMental",

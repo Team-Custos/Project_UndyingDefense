@@ -13,7 +13,8 @@ public class SpecialAbility : MonoBehaviour
         HP,         // HP에 따라 ex) 자폭
         KILL,       // 대상을 처치했을 때 ex) 흡혈
         DIE,        // 사망 시 ex) 독구름
-        MENTAL      // 멘탈에 따라 ex)
+        MENTAL,      // 멘탈에 따라 ex)
+        ATTACK,     // 공격 시 ex) 영생
     }
 
     [SerializeField] private new string name;
@@ -23,13 +24,14 @@ public class SpecialAbility : MonoBehaviour
     [SerializeField] private UltEvent<Unit> onActivate;
     [SerializeField] private ActiveType activeType;
     [SerializeField] private AudioClip audioClip; // 스킬 발동 시 재생할 오디오
-    //[SerializeField] private SpecialAbilityData data;
+    private float damage;
 
     public string Name => name;
     public string Id => id;
     //public string Description => description;
     public Sprite Icon => icon;
     public ActiveType ActiveCondition => activeType;
+    public float Damage { get; set; }
 
     public void Activate(Unit unit)
     {
@@ -79,10 +81,11 @@ public class SpecialAbility : MonoBehaviour
     }
 
     // 영생
-    public void Immortality(Unit unit, float value)
+    public void Immortality(Unit unit, float percent, GameObject vfx)
     {
-        unit.TakeDamage(-unit.Maxhp * value);
-        Debug.Log("회복량 : " + -unit.Maxhp * value);
+        unit.TakeDamage(-Damage * percent);
+        unit.AddVFX(vfx, unit.transform.position);
+        Debug.Log($"회복 량 : {Damage * percent}");
     }
 
     // 공격 특수 능력 용 데미지 계산

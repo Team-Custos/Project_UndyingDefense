@@ -12,16 +12,9 @@ public class AttackSkill : SkillBase
     protected Collider[] targets;
     protected const int maxTargetCount = 100;
 
-    //protected static Effect slashCritEffect;
-    //protected static Effect pierceCritEffect;
-    //protected static Effect crushCritEffect;
-
     protected static ParticleSystem slashHitVFX;
     protected static ParticleSystem pierceHitVFX;
     protected static ParticleSystem crushHitVFX;
-    //protected static ParticleSystem slashCritVFX;
-    //protected static ParticleSystem pierceCritVFX;
-    //protected static ParticleSystem crushCritVFX;
      
     public override SkillData Data => data;
 
@@ -85,8 +78,6 @@ public class AttackSkill : SkillBase
                 Attack(unit, target);
             }
         }
-
-        
     }
 
     
@@ -116,7 +107,6 @@ public class AttackSkill : SkillBase
             if (ang <= half)
             {
                 Attack(unit, target);
-                //target.AddVFX(vfx, target.transform);
             }
         }
     }
@@ -374,7 +364,7 @@ public class AttackSkill : SkillBase
         calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
 
         //Debug.Log("피해량" + target.DamageTakenMult);
-        Debug.Log("데미지" + calcDamage);
+        //Debug.Log("데미지" + calcDamage);
 
         if (Random.Range(0f, 1f) <= calcCrit)
         {
@@ -389,8 +379,21 @@ public class AttackSkill : SkillBase
         }
 
         target.TakeDamage(calcDamage);
-        //Debug.Log("데미지 : " + calcDamage);
 
+        if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
+        {
+            Debug.Log($"최종 데미지 : {calcDamage}");
+            unit.SpecialAbility.Damage = calcDamage;
+            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.ATTACK);
+        }
+
+
+        if (target.IsDead)
+        {
+            //Debug.Log("회복 전 체력 : " + unit.Hp);
+            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL);
+            //Debug.Log("회복 후 체력 :" + unit.Hp);
+        }
 
         // 스킬 별 효과 발동 확률 계산 후 효과 발동
         if (data.InduseEffectPrefab != null && Random.Range(0f, 1f) <= CalculateEffectPercent(unit, target))
@@ -399,12 +402,7 @@ public class AttackSkill : SkillBase
         }
 
         // 적 처치 특수 능력 발동
-        if (target.IsDead)
-        {
-            //Debug.Log("회복 전 체력 : " + unit.Hp);
-            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL);
-            //Debug.Log("회복 후 체력 :" + unit.Hp);
-        }
+        
     }
 
     public void AttackFortress(Unit unit, Fortress fortress)
