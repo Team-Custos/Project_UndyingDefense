@@ -9381,10 +9381,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &221976525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22769,10 +22775,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &607149243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23504,10 +23516,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &626401922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32717,6 +32735,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3407228088549145633, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: settingUI
+      value: 
+      objectReference: {fileID: 458718689}
+    - target: {fileID: 3407228088549145633, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: inputEventManager
+      value: 
+      objectReference: {fileID: 1105637569}
     - target: {fileID: 3478145213124208300, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -33505,10 +33533,6 @@ PrefabInstance:
         type: 3}
       insertIndex: 12
       addedObject: {fileID: 601914023}
-    - targetCorrespondingSourceObject: {fileID: 465241773296459601, guid: 8daaea2bb8c9aea4684d2b3766934e24,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 604727880}
     - targetCorrespondingSourceObject: {fileID: 6819296453442858202, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       insertIndex: 1
@@ -33533,6 +33557,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 608349046}
+    - targetCorrespondingSourceObject: {fileID: 465241773296459601, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 604727880}
     - targetCorrespondingSourceObject: {fileID: 8254926603441986876, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       insertIndex: 3
@@ -35759,10 +35787,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &925944945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57379,10 +57413,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &1450552587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68615,10 +68655,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &1729580603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74050,10 +74096,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 1752192731}
-  stateNameText: {fileID: 1485714827}
-  stateDescriptionText: {fileID: 1727970727}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!114 &1887891173
 MonoBehaviour:
   m_ObjectHideFlags: 0

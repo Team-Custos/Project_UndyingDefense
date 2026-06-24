@@ -20,6 +20,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
     private string sName;
     private string sDescription;
     private string sEffect;
+    private string sCoolTime;
 
     // -- 더블 클릭용 메서드
     /*
@@ -49,8 +50,9 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         if(skillData == null)
             return;
-        descriptionPanel.SetPanel(sName, sDescription, sEffect);
+        descriptionPanel.SetPanel(sName, sDescription, sEffect, sCoolTime);
         descriptionPanel.transform.position = hoverPosition.position;
+        descriptionPanel.SetPanelHeight();
         descriptionPanel.ShowPanel();
     }
 
@@ -59,7 +61,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
         descriptionPanel.HidePanel();
     }
 
-    public void SetSelectedCSkillUI(int i, CommandSkillData data, string name, string desc, string effect)
+    public void SetSelectedCSkillUI(int i, CommandSkillData data, string name, string desc, string effect, string coolTime)
     {
         if(data != null)
         {
@@ -71,6 +73,7 @@ public class SelectedCSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointer
             sName = name;
             sDescription = desc;
             sEffect = effect;
+            sCoolTime = coolTime;
             removeBtn.SetActive(true);
         }
         else

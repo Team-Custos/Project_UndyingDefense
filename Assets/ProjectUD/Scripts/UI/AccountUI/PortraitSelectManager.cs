@@ -72,12 +72,6 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
 
     }
 
-    private IEnumerator RegisterClickNextFrame()
-    {
-        yield return null; // 한 프레임 대기
-        inputEventManager.OnClickTarget = this;
-    }
-
     private void SetPageBtn()
     {
         ResetPageBtn();
@@ -207,7 +201,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         {
             SetPortraitData(onSelectPortraitData);
             confirmBtn.interactable = false;
-            indicator.gameObject.SetActive(false);
+            //indicator.gameObject.SetActive(false);
             //isChange = false;
 
             // 선택한 초상화 저장

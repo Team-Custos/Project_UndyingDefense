@@ -113,7 +113,7 @@ public class AccountInfo : MonoBehaviour, IInputESC
             //}
             if (nickNamePanelScript.gameObject.activeSelf)
             {
-                nickNamePanelScript.gameObject.SetActive(false);
+                //nickNamePanelScript.gameObject.SetActive(false);
                 return;
             }
             gameObject.SetActive(false);

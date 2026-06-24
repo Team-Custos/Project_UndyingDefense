@@ -42,12 +42,15 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         if (selectedCSkills[index] == null)
         {
             //selectedCSkillBtns[index].ClearSelectedCSkillUI();
-            selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
+            selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty, string.Empty);
             return;
         }
         string skillNameId = selectedCSkills[index].Id + "_name";
         string skillDescId = selectedCSkills[index].Id + "_desc";
         string skillEffectId = selectedCSkills[index].Id + "_effect";
+        var sCooltime = LocalizationSettings.StringDatabase.
+           GetLocalizedString("CommonUI", "CON_skillCooltime",
+           new object[] { new { num = selectedCSkills[index].CoolTime } });
 
         selectedCSkillBtns[index].SetSelectedCSkillUI(index, selectedCSkills[index],
             LocalizationSettings.StringDatabase.
@@ -55,7 +58,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
             LocalizationSettings.StringDatabase.
             GetLocalizedString("CommanderSkill", $"{skillDescId}", LocalizationSettings.SelectedLocale),
             LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale));
+            GetLocalizedString("CommanderSkill", $"{skillEffectId}", LocalizationSettings.SelectedLocale),
+            sCooltime);
     }
 
     public bool AddSkill(CommandSkillData data)
@@ -84,7 +88,7 @@ public class SelectedCommanderSkillUI : MonoBehaviour
         commanderSkillUI.DeSelectCommanderSkill(selectedCSkills[index]);
         selectedCSkills[index] = null;
         //selectedCSkillBtns[index].ClearSelectedCSkillUI();
-        selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty);
+        selectedCSkillBtns[index].SetSelectedCSkillUI(index, null, string.Empty, string.Empty, string.Empty, string.Empty);
         //--선택 스킬 변경
         isSaved = false;
         //--저장 버튼 활성화
