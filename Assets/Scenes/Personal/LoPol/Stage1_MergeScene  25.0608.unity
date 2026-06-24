@@ -2772,6 +2772,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6881085991906727214, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7090137316518269225, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive
@@ -3187,16 +3192,16 @@ PrefabInstance:
       addedObject: {fileID: 963602306}
     - targetCorrespondingSourceObject: {fileID: 7967176758721293639, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
-      insertIndex: 5
+      insertIndex: 11
       addedObject: {fileID: 415007563}
     - targetCorrespondingSourceObject: {fileID: 7967176758721293639, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
-      insertIndex: 9
-      addedObject: {fileID: 1687462589}
+      insertIndex: 12
+      addedObject: {fileID: 593545741}
     - targetCorrespondingSourceObject: {fileID: 7967176758721293639, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
-      insertIndex: 13
-      addedObject: {fileID: 593545741}
+      insertIndex: 14
+      addedObject: {fileID: 1687462589}
     - targetCorrespondingSourceObject: {fileID: 8254926603441986876, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       insertIndex: 3
@@ -8579,10 +8584,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!1001 &121430355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18150,10 +18161,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!1001 &282272847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45043,10 +45060,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!4 &812447681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
@@ -58054,10 +58077,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!1001 &1044276057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75445,10 +75474,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!1 &1379026682
 GameObject:
   m_ObjectHideFlags: 0
@@ -89244,10 +89279,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!1 &1640831926
 GameObject:
   m_ObjectHideFlags: 0
@@ -94635,10 +94676,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4432bd36873cc3d49b6d30052f619fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitStatePanel: {fileID: 117625578}
-  stateNameText: {fileID: 1933596999}
-  stateDescriptionText: {fileID: 1819033256}
+  toolTipUI: {fileID: 0}
+  statusPanel: {fileID: 0}
+  statusNameText: {fileID: 0}
+  statusTypeText: {fileID: 0}
+  statusDescText: {fileID: 0}
+  statusEffectText: {fileID: 0}
   yPos: 120
+  xLimit: 0
+  unitStatePanelRectTransform: {fileID: 0}
+  iconRectTransform: {fileID: 0}
 --- !u!4 &1767507308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,

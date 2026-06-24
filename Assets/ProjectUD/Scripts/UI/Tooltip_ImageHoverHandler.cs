@@ -9,7 +9,6 @@ public class Tooltip_ImageHoverHandler : Ingame_ImageHoverHandler
     public override void OnPointerExit(PointerEventData eventData)
     {
         mouseOverObject.SetActive(false);
-
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

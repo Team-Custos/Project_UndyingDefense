@@ -13,15 +13,6 @@ public class ToolTipUI : MonoBehaviour
     [SerializeField] private GameObject skillDescriptionPanel;
     [SerializeField] private GameObject skillEffectPanel;
 
-    // 로폴 추가
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI desctText;
-    [SerializeField] private TextMeshProUGUI effectText;
-    [SerializeField]
-
-
-
-
     // 텍스트의 길이가 길어지면 패널의 크기를 조정하는 기능
     public void SetPanelHeight()
     {

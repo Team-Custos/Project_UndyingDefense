@@ -64,7 +64,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image[] tierImage;
 
     [SerializeField] private Image[] unitStateImage;
-    [SerializeField] private UnitStateUI[] unitStateUIs;
+    [SerializeField] private StatusUI[] unitStateUIs;
     [SerializeField] private GameObject unitStatePanel;
     [SerializeField] private GameObject typeInfo;
 
