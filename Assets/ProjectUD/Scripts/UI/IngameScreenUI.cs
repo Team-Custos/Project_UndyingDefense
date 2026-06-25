@@ -61,14 +61,21 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     private void LoadPortraitInGame()
     {
-        int savedID = PlayerPrefs.GetInt("SelectedPortraitID", 0);
+        int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
 
         // Resources에서 전체 로드 후 ID로 찾기
         PortraitData[] allData = Resources.LoadAll<PortraitData>("Data/PortraitData");
         PortraitData portrait = System.Array.Find(allData, p => p.portraitID == savedID);
+        if (portrait == null)
+        {
+            // ID가 없는 경우 기본값으로 설정 (예: 첫 번째 데이터)
+            portrait = allData.Length > 0 ? allData[0] : null;
+        }
 
-        if (portrait != null)
+        else    //(portrait != null)
+        { 
             portraitImg.sprite = portrait.portrait;
+        }
     }
 
     public void SetWaveNumber(int waveNum, int maxWave, bool infinite)
