@@ -381,7 +381,13 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         //beingUsedCommandskill = commandSkill;
         // 인디케이터
 
-        Debug.Log(currentSelected[i].Name);
+        //Debug.Log(currentSelected[i].Name);
+
+        if (currentSelected[i] == null)
+        {
+            Debug.LogError("Selected CommandSkill is null!");
+        }
+
         if (currentSelected[i].TargetType == CommandSkill.TargetType.NONE)
             return;
 

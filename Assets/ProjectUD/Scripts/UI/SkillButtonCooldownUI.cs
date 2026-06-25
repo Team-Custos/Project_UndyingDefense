@@ -10,12 +10,14 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
     private CommandSkill commandSkill;
     private CommandSkillData commandSkillData;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
-    [SerializeField] private Image cooldownImage;
+    [SerializeField] private ToolTipUI toolTipUI;
 
+    [SerializeField] private Image cooldownImage;
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private TextMeshProUGUI commandSkillNameText;
-    [SerializeField] private TextMeshProUGUI commandSkillCoolText;
     [SerializeField] private TextMeshProUGUI commandSkillDescriptionText;
+    [SerializeField] private TextMeshProUGUI commandSkilEffectText;
+    [SerializeField] private TextMeshProUGUI commandSkillCoolText;
     [SerializeField] private Image skillIcon;
     [SerializeField] private GameObject alarmIcon;
 
@@ -76,6 +78,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             skillIcon.color = new Color(1, 1, 1, 0);
             commandSkillNameText.text = string.Empty;
             commandSkillDescriptionText.text = string.Empty;
+            commandSkilEffectText.text = string.Empty;
             coolTime = 0f;
             cooldownCheck = 0f;
             commandSkillCoolText.text = string.Empty;
@@ -89,6 +92,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         skillIcon.sprite = commandSkillData.Icon;
         commandSkillNameText.text = name;
         commandSkillDescriptionText.text = desc;
+        commandSkilEffectText.text = effect;
 
         coolTime = commandSkillData.CoolTime;
         cooldownCheck = coolTime;
@@ -132,12 +136,14 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
     public void OnPointerExit(PointerEventData eventData)
     {
         infoPanel.SetActive(false);
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (commandSkillData != null)
+        {
             infoPanel.SetActive(true);
+            toolTipUI.SetPanelHeight();
+        }
     }
 }
