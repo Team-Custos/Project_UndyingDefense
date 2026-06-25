@@ -329,7 +329,9 @@ public class AllyUnit : Unit
             case Mode.SEIGE:
                 {
                     if (!navObstacle.enabled)
+                    {
                         Debug.Log("obstacle 꺼져있음");
+                    }
 
                     if (isSiegeActivated)
                     {
@@ -719,13 +721,15 @@ public class AllyUnit : Unit
                             transform.position = targetTile.transform.position;
 
                             navAgent.enabled = false;
+
+                            navObstacle.transform.rotation = Quaternion.Euler(0, 90, 0);
                             navObstacle.enabled = true;
 
                             // carve 회전 조정
-                            Vector3 direction = Vector3.left;
-                            Quaternion rot = Quaternion.LookRotation(direction);
+                            //Vector3 direction = Vector3.left;
+                            //Quaternion rot = Quaternion.LookRotation(direction);
 
-                            navObstacle.transform.rotation = rot;
+                            //navObstacle.transform.rotation = Quaternion.Euler(0, 90, 0);
 
                         }
                         else // 주변 이동 가능 타일이 없으면 변경 취소
@@ -818,6 +822,8 @@ public class AllyUnit : Unit
             if (mode == Mode.SEIGE)
             {
                 upgradedUnit.navAgent.enabled = false;
+
+                upgradedUnit.navObstacle.transform.rotation = Quaternion.Euler(0, 90, 0);
                 upgradedUnit.navObstacle.enabled = true;
             }
             else

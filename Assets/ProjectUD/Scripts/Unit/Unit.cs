@@ -710,7 +710,7 @@ public abstract class Unit : MonoBehaviour
 
             if(targets.Count == 0)
             {
-               Debug.Log("검색된 대상 없음");
+               //Debug.Log("검색된 대상 없음");
             }
         }
     }
@@ -1106,7 +1106,7 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()     // 쿨타임과 필요 멘탈치를 충족해야 스킬 반환
     {
-        if (specialSkill.Data.ActiveMental > mental)
+        if (specialSkill != null && specialSkill.Data.ActiveMental > mental)
             Debug.Log("멘탈 수치 부족");
 
         if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.ActiveMental <= mental)
