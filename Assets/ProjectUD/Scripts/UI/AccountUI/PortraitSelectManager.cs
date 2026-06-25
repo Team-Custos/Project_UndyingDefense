@@ -192,6 +192,7 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         if (portraitDataList != null && portraitDataList.Count > 0)
         {
             SetPortraitData(portraitDataList[0]);
+            PlayerPrefs.SetInt("SelectedPortraitID", portraitDataList[0].portraitID);
         }
     }
 
