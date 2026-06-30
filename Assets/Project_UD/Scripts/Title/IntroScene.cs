@@ -29,6 +29,12 @@ public class IntroScene : MonoBehaviour
     [SerializeField] private UltEvent nextDialogue;
     [SerializeField] private GameObject skipBtn;
 
+    [Header("2배속 기능")]
+    [SerializeField] private GameObject speedBtn;           // 2배속 버튼 (선택)
+    private bool isFastForward = false;
+    private double fadeOutVideoTime = -1; // 페이드아웃이 시작되어야 하는 "영상 재생 시간" 기준점
+
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -39,7 +45,13 @@ public class IntroScene : MonoBehaviour
             videoPlayer.Play();
             videoPlayer.loopPointReached += vp => OnVideoFinished();
             // 영상 소리 페이드 아웃 예약
-            ScheduleVideoAudioFadeOut();
+            //ScheduleVideoAudioFadeOut();
+
+            // 영상 소리 페이드 아웃 시점 계산 (영상 길이 - 3초 지점) _ 260701 2배속 구현중 코드 변경
+            fadeOutVideoTime = videoPlayer.length - 3.0;
+
+            // 매 프레임 영상 재생 시간을 체크해서 페이드아웃 트리거
+            videoPlayer.frame = 0; // 안전하게 초기화
         }
         else
         {
@@ -49,16 +61,19 @@ public class IntroScene : MonoBehaviour
             
     }
 
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space) && !isSkipped)
-    //    {
-    //        isSkipped = true;
-
-    //        videoPlayer.Stop();
-    //        OnVideoFinished(videoPlayer); // 강제로 처리
-    //    }
-    //}
+    // 260701 2배속 기능 구현중
+    void Update()
+    {
+        // 영상 재생 중일 때만 체크
+        if (videoPlayer.gameObject.activeSelf && videoPlayer.isPlaying && fadeOutVideoTime > 0)
+        {
+            if (videoPlayer.time >= fadeOutVideoTime)
+            {
+                FadeOutVideoAudio();
+                fadeOutVideoTime = -1; // 한 번만 실행
+            }
+        }
+    }
 
     public void SkipVideo() // 인트로 
     {
@@ -77,6 +92,13 @@ public class IntroScene : MonoBehaviour
         //    ShowDialogue();
         //    isStatementSkipped = true;
         //}
+    }
+
+    // 2배속 버튼 메서드
+    public void ToggleVideoSpeed()
+    {
+        isFastForward = !isFastForward;
+        videoPlayer.playbackSpeed = isFastForward ? 2f : 1f;
     }
 
     private void OnVideoFinished()
@@ -100,18 +122,12 @@ public class IntroScene : MonoBehaviour
     private void FadeInStatementImage()
     {
         if (statementCanvasGroup == null) return;
-
-        //statementCanvasGroup.gameObject.SetActive(true);
-        //statementCanvasGroup.alpha = 0;
-        //statementCanvasGroup.DOFade(1f, duration)
-        //    .SetEase(Ease.OutQuad);
         OnVideoFinished();
     }
 
     private void OnFirstBgmEnded()
     {
         if(isStatementSkipped) return;
-
 
         // 대화창 
         ShowDialogue();
@@ -121,10 +137,6 @@ public class IntroScene : MonoBehaviour
     {
         nextDialogue.Invoke();
         dialogueCanvasGroup.gameObject.SetActive(true);
-
-        //dialogueCanvasGroup.alpha = 0;
-        //dialogueCanvasGroup.DOFade(1f, duration)
-        //    .SetEase(Ease.OutQuad);
     }
 
     public void PlayDeclarationDropAnimation()
@@ -133,16 +145,16 @@ public class IntroScene : MonoBehaviour
         SoundManager.Instance.PlaySFX(bgSfx);
     }
 
-    private void ScheduleVideoAudioFadeOut()
-    {
-        double videoDuration = videoPlayer.length;
+    //private void ScheduleVideoAudioFadeOut()
+    //{
+    //    double videoDuration = videoPlayer.length;
 
-        // 끝나기 1.5초 전에 페이드아웃 시작
-        double fadeOutStartTime = videoDuration - 3.0f;
+    //    // 끝나기 1.5초 전에 페이드아웃 시작
+    //    double fadeOutStartTime = videoDuration - 3.0f;
 
-        if (fadeOutStartTime > 0)
-            Invoke(nameof(FadeOutVideoAudio), (float)fadeOutStartTime);
-    }
+    //    if (fadeOutStartTime > 0)
+    //        Invoke(nameof(FadeOutVideoAudio), (float)fadeOutStartTime);
+    //}
 
     private void FadeOutVideoAudio()
     {
