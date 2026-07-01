@@ -3,6 +3,7 @@ using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
@@ -427,7 +428,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
-        atRangeText.text = $"{attackRangeT} <color={pointColor}>{unitStats.attackRange / 2}보</color>";
+        var atRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRangeValue",
+            new object[] { new { num = unitStats.attackRange / 2 } });
+        atRangeText.text = $"{attackRangeT} <color={pointColor}>{atRange}</color>";
     }
 
     public void UpdateUnitInfo(Unit unit)

@@ -243,7 +243,10 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
         mentalTxt.text = $"{mentalT} :";
         //---
-        attackRange.text = $"{stats.attackRange / 2}보";
+        var atRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRangeValue",
+            new object[] { new { num = stats.attackRange / 2 } });
+        attackRange.text = $"{atRange}";
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
         attackRangeTxt.text = $"{attackRangeT} :";

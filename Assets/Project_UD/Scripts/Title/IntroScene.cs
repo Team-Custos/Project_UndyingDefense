@@ -31,6 +31,7 @@ public class IntroScene : MonoBehaviour
 
     [Header("2배속 기능")]
     [SerializeField] private GameObject speedBtn;           // 2배속 버튼 (선택)
+    [SerializeField] private Animator speedBtnAnim;
     private bool isFastForward = false;
     private double fadeOutVideoTime = -1; // 페이드아웃이 시작되어야 하는 "영상 재생 시간" 기준점
 
@@ -99,6 +100,15 @@ public class IntroScene : MonoBehaviour
     {
         isFastForward = !isFastForward;
         videoPlayer.playbackSpeed = isFastForward ? 2f : 1f;
+
+        if(isFastForward)
+        {
+            speedBtnAnim.SetBool("VideoSpeedDouble", true);
+        }
+        else
+        {
+            speedBtnAnim.SetBool("VideoSpeedDouble", false);
+        }
     }
 
     private void OnVideoFinished()
