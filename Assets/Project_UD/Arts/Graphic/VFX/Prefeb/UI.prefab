@@ -12354,21 +12354,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7517303138383554389
-Transform:
+--- !u!224 &7517303138383554389
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6555128173252067095}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -951, y: -538.5, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 945643952163945747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -951, y: -538.5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6472837927142072166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14592,11 +14596,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 3037345465149975825}
   infoPanel: {fileID: 8893529448886106999}
   commandSkillNameText: {fileID: 426632687702319286}
-  commandSkillCoolText: {fileID: 7998423344070525059}
   commandSkillDescriptionText: {fileID: 2889871815874129665}
+  commandSkilEffectText: {fileID: 0}
+  commandSkillCoolText: {fileID: 7998423344070525059}
   skillIcon: {fileID: 0}
   alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}
@@ -14869,11 +14875,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 7055369971400448098}
   infoPanel: {fileID: 5944252408398027343}
   commandSkillNameText: {fileID: 5308049133305209688}
-  commandSkillCoolText: {fileID: 1056867789362075899}
   commandSkillDescriptionText: {fileID: 5701164954237117620}
+  commandSkilEffectText: {fileID: 0}
+  commandSkillCoolText: {fileID: 1056867789362075899}
   skillIcon: {fileID: 0}
   alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}
@@ -15918,11 +15926,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 5508519888873098078}
   infoPanel: {fileID: 6238142325507453566}
   commandSkillNameText: {fileID: 753827683288842446}
-  commandSkillCoolText: {fileID: 1413281948239292836}
   commandSkillDescriptionText: {fileID: 1756642846815817598}
+  commandSkilEffectText: {fileID: 0}
+  commandSkillCoolText: {fileID: 1413281948239292836}
   skillIcon: {fileID: 0}
   alarmIcon: {fileID: 0}
   skillButton: {fileID: 0}

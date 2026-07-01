@@ -85,7 +85,6 @@ public class SpecialAbility : MonoBehaviour
     {
         unit.TakeDamage(-Damage * percent);
         unit.AddVFX(vfx, unit.transform.position);
-        Debug.Log($"회복 량 : {Damage * percent}");
     }
 
     // 공격 특수 능력 용 데미지 계산

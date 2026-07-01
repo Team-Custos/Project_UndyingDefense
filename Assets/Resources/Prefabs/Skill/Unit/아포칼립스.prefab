@@ -47,6 +47,27 @@ MonoBehaviour:
   onActivate:
     _PersistentCalls:
     - _Target: {fileID: 6375392396568558309}
+      _MemberName: ShowVFX
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 1
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 13
+        _Int: 0
+        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 4309986064837992034, guid: 03f532d68f76d2e42a794941764a074e,
+          type: 3}
+    - _Target: {fileID: 6375392396568558309}
       _MemberName: AreaAttack
       _PersistentArguments:
       - _Type: 14
@@ -73,29 +94,8 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-    - _Target: {fileID: 6375392396568558309}
-      _MemberName: ShowVFX
-      _PersistentArguments:
-      - _Type: 14
-        _Int: 1
-        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 4309986064837992034, guid: 03f532d68f76d2e42a794941764a074e,
-          type: 3}
   onAttackFortress:
     _PersistentCalls: []
   targetRule: 0
-  animationStateTime: 0
+  animationStateTime: 0.1
   data: {fileID: 11400000, guid: 24ddfd68c541da54481bf4de574a1120, type: 2}

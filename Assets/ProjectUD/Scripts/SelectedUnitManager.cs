@@ -1,5 +1,6 @@
 using InputEventInterface;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -141,14 +142,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 }
                 else if (hit.collider.CompareTag("Tile"))
                 {
-                    //if(commandSkillManager.isCommandSkillActive)
-                    //{
-                    //    commandSkillManager.clickPos.position = hit.point;
-                    //    commandSkillManager.isCommandSkillActive = false;
-                    //    commandSkillManager.clickPos = null;
-                    //    return;
-                    //}
-
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
                         // 시즈모드시 타일 누르면 선택 해제
@@ -171,17 +164,17 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         // 프리 모드시 이동 불가 타일 확인
                         else if ((selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                         {
-                            //Tile tile = hit.collider.GetComponent<Tile>();
-                            //if(tile.TileAllyUnit != null)
-                            //{
-                            //    ingameScreenUI.ShowError("병사가 이동할 수 없습니다");
-                            //    return;
-                            //}
-
-                            selectedAllyUnit.MoveCommandDestination(hit.point);
-                            mouseIndicatorParticle.gameObject.SetActive(true);
-                            mouseIndicatorParticle.Play();
-                            mouseIndicatorParticle.transform.position = hit.point;
+                            if(selectedAllyUnit.IsPathBlocked(hit.point))
+                            {
+                                //ingameScreenUI.ShowError("IngameUI", "MSG_noMove");
+                            }
+                            else
+                            {
+                                selectedAllyUnit.UpdateCommandDestination(hit.point);
+                                mouseIndicatorParticle.transform.position = hit.point;
+                                mouseIndicatorParticle.gameObject.SetActive(true);
+                                mouseIndicatorParticle.Play();
+                            }
                         }
                     }
                 }
@@ -200,6 +193,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
+            if(!inGameManager.IsGameStart || inGameManager.IsGamgePause)
+                return;
+
             DeSelecteUnit();
             inputEventManager.OnESCTarget = inGameManager;
 
@@ -316,18 +312,22 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         {
             if (selectedUnit != null)
             {
-                selectedUnit.gameObject.SetActive(false);
+                Debug.Log("삭제 키 잠금");
+                return;
 
-                if (selectedUnit is EnemyUnit)
-                {
-                    EnemyUnit enemyUnit = selectedUnit as EnemyUnit; 
-                    enemyUnitSpawner.OnEnemyDead();
-                }
 
-                selectedUnit = null;
+                //selectedUnit.gameObject.SetActive(false);
 
-                unitSelectUI.HideHp();
-                unitSelectUI.HideAllyUI();
+                //if (selectedUnit is EnemyUnit)
+                //{
+                //    EnemyUnit enemyUnit = selectedUnit as EnemyUnit; 
+                //    enemyUnitSpawner.OnEnemyDead();
+                //}
+
+                //selectedUnit = null;
+
+                //unitSelectUI.HideHp();
+                //unitSelectUI.HideAllyUI();
             }
         }
     }
@@ -336,7 +336,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
-            if (!inGameManager.IsGameStart)
+            if (!inGameManager.IsGameStart || inGameManager.IsGamgePause)
                 return;
 
             if (selectedUnit != null && selectedUnit is AllyUnit)
@@ -367,7 +367,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
-            if (!inGameManager.IsGameStart)
+            if (!inGameManager.IsGameStart || inGameManager.IsGamgePause) 
                 return;
 
             if (selectedAllyUnit != null)
@@ -388,7 +388,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     {
         if (context.performed)
         {
-            if (!inGameManager.IsGameStart)
+            if (!inGameManager.IsGameStart || inGameManager.IsGamgePause)
                 return;
 
             if (selectedAllyUnit != null && isUpgradeOn)

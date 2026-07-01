@@ -98,13 +98,6 @@ public class AllyUnit : Unit
     //    }
     //}
 
-    public void MoveCommandDestination(Vector3 pos)
-    {
-        freeModeState = FreeModeState.MOVECOMMAND;
-        commandDestination = pos;
-    }
-
-
     public override void Initialize() // 유닛 소환시
     {
         base.Initialize();
@@ -869,6 +862,14 @@ public class AllyUnit : Unit
         if (selectedUnitUI != null)
             selectedUnitUI.HideAllyUI();
     }
+
+    public void UpdateCommandDestination(Vector3 pos)
+    {
+
+        freeModeState = FreeModeState.MOVECOMMAND;
+        commandDestination = pos;
+    }
+
 
     public void SetExecutionUnit(Unit target)
     {

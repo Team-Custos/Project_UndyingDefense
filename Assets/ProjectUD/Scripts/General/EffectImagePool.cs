@@ -27,7 +27,7 @@ public class EffectImagePool : MonoBehaviour
     {
 
         GameObject obj = Instantiate(effectImagePrefab);
-        obj.transform.SetParent(transform);
+        obj.transform.SetParent(transform, false);
 
         EffectImage effectImage = obj.GetComponent<EffectImage>();
         effectImage.Initialize(this);

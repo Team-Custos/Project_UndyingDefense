@@ -715,6 +715,14 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    public bool IsPathBlocked(Vector3 targetPos)
+    {
+        if (NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, pathForSearch) &&
+            pathForSearch.status == NavMeshPathStatus.PathComplete)
+            return false;
+
+        return true;
+    }
 
     protected bool IsPathBlocked(Unit target)
     {
@@ -1245,105 +1253,6 @@ public abstract class Unit : MonoBehaviour
 
         navAgent.SetPath(path);
 
-        // 타겟이 멀어지면 다시 이동
-        //if(!IsTargetInAttackRange(targetUnit, unitStats.attackRange))
-        //{
-        //    Debug.Log(111111111);
-        //    navAgent.SetDestination(targetUnit.transform.position);
-        //}
-
-
-
-
-        //if (Vector3.Distance(transform.position, targetPos) <= navAgent.stoppingDistance + 0.2f)
-        //{
-        //    if (!IsTargetInAttackRange(target, UnitStats.attackRange))
-        //    {
-        //        targetUnit = SearchNearestTarget(UnitStats.sightRange);
-
-
-        //    }
-        //}
-
-            //float nearestDistance = float.MaxValue;
-            //bool hasAvailablePath = false;
-
-            //Vector3 result = Vector3.zero;
-            //Vector3 startDir = (transform.position - target.transform.position).normalized;
-
-            //for (float i = 0f; i < 6f; i++)
-            //{
-            //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
-            //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-
-            //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
-
-            //    if (path.status == NavMeshPathStatus.PathComplete)
-            //    {
-            //        float distance = Vector3.Distance(transform.position, targetPos);
-
-            //        if (distance < nearestDistance)
-            //        {
-            //            if (!hasAvailablePath)
-            //                hasAvailablePath = true;
-
-            //            nearestDistance = distance;
-            //            result = targetPos;
-            //            //navAgent.SetPath(path);
-            //        }
-            //    }
-
-
-            //    //if (path.status != NavMeshPathStatus.PathInvalid)
-            //    //{
-            //    //    float distance = Vector3.Distance(transform.position, targetPos);
-
-            //    //    if (distance < nearestDistance)
-            //    //    {
-            //    //        if (!hasAvailablePath)
-            //    //            hasAvailablePath = true;
-
-            //    //        nearestDistance = distance;
-            //    //        result = targetPos;
-            //    //        navAgent.SetPath(path);
-            //    //    }
-            //    //}
-            //}
-
-            //if (hasAvailablePath)
-            //{
-            //    if (navAgent.isStopped)
-            //        navAgent.isStopped = false;
-
-            //    navAgent.SetDestination(result);
-            //}
-            //else
-            //{
-            //    Unit newTarget = SearchNearestTarget(unitStats.sightRange, targetUnit);
-
-            //    if (newTarget != null)
-            //    {
-            //        targetUnit = newTarget;
-            //        //MoveTo(targetUnit);
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("1111111");
-            //    }
-            //}
-            //Vector3 startDir = (transform.position - target.transform.position).normalized;
-            //for (float i = 0f; i < 6f; i++)
-            //{
-            //    Vector3 dir = Quaternion.AngleAxis(60f * i, Vector3.up) * startDir;
-            //    Vector3 targetPos = target.transform.GetNearPosition(dir, target.nearbyDistance);
-
-            //    NavMesh.CalculatePath(transform.position, targetPos, navAgent.areaMask, path);
-
-            //    if (path.status != NavMeshPathStatus.PathInvalid)
-            //    {
-            //        navAgent.SetPath(path);
-            //    }
-            //}
     }
 
     

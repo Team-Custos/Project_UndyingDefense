@@ -515,11 +515,12 @@ public class EnemyUnit : Unit
                         if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                         {
                             currentSkill = GetAvailableSkill();
+                            
                         }
 
                          if (currentSkill != null)
                          {
-                             SkillBase.TargetType skillTargetType = currentSkill.GetTargetType(); // 스킬 대상 종류 확인
+                            SkillBase.TargetType skillTargetType = currentSkill.GetTargetType(); // 스킬 대상 종류 확인
 
                              switch (skillTargetType)
                              {

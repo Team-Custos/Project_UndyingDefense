@@ -198,8 +198,9 @@ public class SettingUI : MonoBehaviour, IInputESC
 
         if (inGameManager != null)
         {
+            inGameManager.ResumeGame();
             inputEventManager.OnESCTarget = inGameManager;
-            Time.timeScale = 1.0f;
+            //Time.timeScale = 1.0f;
             //SoundManager.Instance.PlayCancelUISFX();
         }
             
@@ -208,7 +209,7 @@ public class SettingUI : MonoBehaviour, IInputESC
 
     private void OnDisable()
     {
-        SettingManager.Instance.SaveSettings(); 
+        SettingManager.Instance.SaveSettings();
     }
 
     private void RefreshAllTexts()

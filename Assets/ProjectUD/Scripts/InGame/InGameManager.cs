@@ -156,7 +156,7 @@ public class InGameManager : MonoBehaviour, IInputESC
                 PauseGame();
             }
 
-            ingameScreenUI.OnOffSettingUI(isGamePause);
+            //ingameScreenUI.OnOffSettingUI(isGamePause);
 
         }
     }

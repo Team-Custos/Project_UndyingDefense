@@ -55,10 +55,17 @@ public class AttackSkill : SkillBase
         if (targets == null)
             targets = new Collider[maxTargetCount];
 
+
         int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
 
         float half = angle * 0.5f;
         Vector3 forward = unit.transform.forward;
+
+        if (targetCount <= 0)
+        {
+            Debug.Log("공격 대상 없음");
+            return;
+        }
 
         for (int i = 0; i < targetCount; i++)
         {
@@ -161,14 +168,6 @@ public class AttackSkill : SkillBase
 
 
 
-    //public void AreaAttack(Unit unit, Unit pivotTarget, float radius, GameObject vfxPrefab)
-    //{
-
-    //}
-
-
-
-
 
     public void AreaAttack(Unit unit, Unit pivotTarget, float AreaX, float AreaY, float AreaZ)//사각형 공격
     {
@@ -201,7 +200,7 @@ public class AttackSkill : SkillBase
         Vector3 half = new Vector3(AreaZ * 0.5f, 0.5f, AreaX * 0.5f);
 
         int targetCount = Physics.OverlapBoxNonAlloc(center, half, targets, unit.transform.rotation, unit.EnemyLayer);
-        Debug.Log($"타겟 수 : {targetCount}");
+        //Debug.Log($"타겟 수 : {targetCount}");
 
         for (int i = 0; i < targetCount; i++)
         {
@@ -213,33 +212,6 @@ public class AttackSkill : SkillBase
 
     }
 
-    // 기즈모 디버깅을 위한 변수들
-    //private Unit gizmoUnit;
-    //private float gizmoX;
-    //private float gizmoZ;
-
-    //private void OnDrawGizmosSelected()
-    //{
-    //    // 시전자 유닛이 없으면 그리지 않음
-    //    if (gizmoUnit == null)
-    //        return;
-
-    //    // 바뀐 규칙에 맞게 중심점 재계산 (Y축 높이는 살짝 띄워줌)
-    //    Vector3 center = gizmoUnit.transform.position + gizmoUnit.transform.forward * (gizmoZ * 0.5f);
-    //    center.y += 0.1f;
-
-    //    // DrawWireCube는 '절반(half)'이 아니라 '전체 크기(size)'를 요구하므로 2를 곱하지 않고 그대로 씁니다.
-    //    Vector3 size = new Vector3(gizmoX, 0.5f, gizmoZ);
-
-    //    // 기즈모 색상을 붉은색으로 설정
-    //    Gizmos.color = Color.red;
-
-    //    // [중요] 유닛이 회전할 때 기즈모 상자도 같이 회전하도록 매트릭스 정렬
-    //    Gizmos.matrix = Matrix4x4.TRS(center, gizmoUnit.transform.rotation, Vector3.one);
-
-    //    // 매트릭스가 중심(center)을 기준으로 잡혀있으므로, 로컬 좌표인 Vector3.zero 위치에 상자를 그립니다.
-    //    Gizmos.DrawWireCube(Vector3.zero, size);
-    //}
 
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
@@ -382,7 +354,6 @@ public class AttackSkill : SkillBase
 
         if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
         {
-            Debug.Log($"최종 데미지 : {calcDamage}");
             unit.SpecialAbility.Damage = calcDamage;
             unit.ActivateSpecialAbility(SpecialAbility.ActiveType.ATTACK);
         }
@@ -542,8 +513,8 @@ public class AttackSkill : SkillBase
 
             finalPercent += data.InduseEffectSuccessRate;
 
-            Debug.Log($"{unit.Data.Name} : {unit.Mental},  {target.Data.Name} : {target.Mental}");
-            Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}");
+            //Debug.Log($"{unit.Data.Name} : {unit.Mental},  {target.Data.Name} : {target.Mental}");
+            //Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}");
 
             return Mathf.Clamp01(finalPercent);
         }

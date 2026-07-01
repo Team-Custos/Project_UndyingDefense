@@ -54,6 +54,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private Image dfTypeIcon;
     [SerializeField] private Image unitSSkillImage;
     [SerializeField] private Image unitGSkillImage;
+    [SerializeField] private GameObject specialAbilityUI;
     [SerializeField] private Image specialAbilityImage;
     [SerializeField] private TextMeshProUGUI dfTypeText;
     [SerializeField] private TextMeshProUGUI critText;
@@ -333,67 +334,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         UpdateSkillInfo(unitData);
 
-        /*
-
-        unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
-
-        //gSkillNameText.text = unit.GeneralSkill.Data.Name;
-        //gSkillInfoText.text = unit.GeneralSkill.Data.Description;
-
-        gSkillNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-        gSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-        //infoGSkillEffect.text = LocalizationSettings.StringDatabase.
-        //GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-        if (unit.SpecialSkill != null)
-        {
-            unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
-            //sSkilNameText.text = unit.SpecialSkill.Data.Name;
-            //sSkillInfoText.text = unit.SpecialSkill.Data.Description;
-
-            sSkilNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-            sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-            unitSSkillImage.gameObject.SetActive(true);
-
-        }
-        else
-            unitSSkillImage.gameObject.SetActive(false);
-
-
-        if (unit.SpecialAbility != null)
-        {
-            specialAbilityImage.sprite = unit.SpecialAbility.Icon;
-            //sSkilNameText.text = unit.PassiveSkill.Data.Name;
-            //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
-
-            sAbilityNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
-            sAbilityInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
-            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-            specialAbilityImage.gameObject.SetActive(true);
-        }
-        else
-            specialAbilityImage.gameObject.SetActive(false);
-
-        */
-
         FieldLocalization(unitStats);
 
-        //critText.text = "치명타율 : " + unitStats.critChance.ToString() + "%";
-        //moveSpeedText.text = "이동속도 : " + unitStats.moveSpeed.ToString();
-        //atSpeedText.text = "공격속도 : " + unitStats.attackSpeed;
-        //atRangeText.text = "공격거리 : " + (unitStats.attackRange / 2).ToString() + "칸";
-        //mentalText.text = "멘탈 : " + unitStats.mental.ToString();
 
         // 상태 이미지 끄기
         for(int i = 0; i < unitStateImage.Length; i++)
@@ -466,63 +408,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         UpdateSkillInfo(unit.Data);
 
-        /*
-
-        unitGSkillImage.sprite = unit.GeneralSkill.Data.Icon;
-        //gSkillNameText.text = unit.GeneralSkill.Data.Name;
-        //gSkillInfoText.text = unit.GeneralSkill.Data.Description;
-
-        gSkillNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-        gSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-        //infoGSkillEffect.text = LocalizationSettings.StringDatabase.
-        //GetLocalizedString("UnitSkill", $"{unit.GeneralSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-        if (unit.SpecialSkill != null)
-        {
-            unitSSkillImage.sprite = unit.SpecialSkill.Data.Icon;
-
-            //sSkilNameText.text = unit.SpecialSkill.Data.Name;
-            //sSkillInfoText.text = unit.SpecialSkill.Data.Description;
-
-            sSkilNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-            sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-
-            unitSSkillImage.gameObject.SetActive(true);
-        }
-        else
-            unitSSkillImage.gameObject.SetActive(false);
-
-        if (unit.SpecialAbility != null)
-        {
-            specialAbilityImage.sprite = unit.SpecialAbility.Icon;
-
-            sAbilityNameText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
-            sAbilityInfoText.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("SpecialAbility", $"{unit.SpecialAbility.Id}_desc", LocalizationSettings.SelectedLocale);
-
-            specialAbilityImage.gameObject.SetActive(true);
-
-            //sSkilNameText.text = unit.PassiveSkill.Data.Name;
-            //sSkillInfoText.text = unit.PassiveSkill.Data.Description;
-
-            //Special.text = LocalizationSettings.StringDatabase.
-            //GetLocalizedString("UnitSkill", $"{unit.PassiveSkill.Data.Name}_name", LocalizationSettings.SelectedLocale);
-            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            //GetLocalizedString("UnitSkill", $"{unit.PassiveSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
-            //sSkillInfoText.text = LocalizationSettings.StringDatabase.
-            //    GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
-        }
-        else
-            specialAbilityImage.gameObject.SetActive(false);
-
-        */
 
         FieldLocalization(unit.UnitStats);
 
@@ -650,6 +535,9 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         if (context.performed)
         {
+            if (inGameManager.IsGamgePause)
+                return;
+
             if (selecteUnitManger.SelectedUnit is AllyUnit)
                 upgradeMenuUI.HideUpgradeUI();
 
@@ -727,9 +615,11 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         if (unitData.SpecialAbility != null)
         {
+
             // 아이콘이 있는 경우 알파값1로 변경
             specialAbilityImage.sprite = unitData.SpecialAbility.Icon;
-            specialAbilityImage.gameObject.SetActive(true);
+            specialAbilityUI.SetActive(true);
+            //specialAbilityImage.gameObject.SetActive(true);
             //specialAbilityImage.color = new Color(1, 1, 1, 1f);
             //specialAbilityImage.sprite = unitData.SpecialAbility.Icon;
 
@@ -744,7 +634,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
         else
         {
-            specialAbilityImage.gameObject.SetActive(false);
+            specialAbilityUI.SetActive(false);
+            //specialAbilityImage.gameObject.SetActive(false);
 
             // 아이콘이 없는 경우 알파값0으로 변경
             //passiveIcon.color = new Color(1, 1, 1, 0f);

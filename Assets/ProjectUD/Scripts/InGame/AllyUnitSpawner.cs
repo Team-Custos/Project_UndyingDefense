@@ -387,6 +387,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     {
         if(context.performed)
         {
+            if (inGameManager.IsGamgePause)
+                return;
+
             CancelSpawn();
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
