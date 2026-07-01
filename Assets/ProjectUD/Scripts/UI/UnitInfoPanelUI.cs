@@ -39,6 +39,7 @@ public class UnitInfoPanelUI : MonoBehaviour
     [SerializeField] private Image generalIcon;
     [SerializeField] private Image specialIcon;
     [SerializeField] private Image passiveIcon;
+    [SerializeField] private GameObject abilityPanel;
 
     [Header("Tooltip")]
     [SerializeField] private ToolTipUI[] tooltips;
@@ -182,6 +183,7 @@ public class UnitInfoPanelUI : MonoBehaviour
             passiveIcon.gameObject.SetActive(true);
             passiveIcon.color = new Color(1,1,1,1f);
             passiveIcon.sprite = unitData.SpecialAbility.Icon;
+            abilityPanel.SetActive(true);
 
             infoAbilityName.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("SpecialAbility", $"{unitData.SpecialAbility.Id}_name", LocalizationSettings.SelectedLocale);
@@ -198,6 +200,7 @@ public class UnitInfoPanelUI : MonoBehaviour
             infoAbilityDescript.text = "";
             infoAbilityEffect.text = "";
             passiveIcon.gameObject.SetActive(false);
+            abilityPanel.SetActive(false);
         }
 
 
@@ -240,7 +243,10 @@ public class UnitInfoPanelUI : MonoBehaviour
             GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
         mentalTxt.text = $"{mentalT} :";
         //---
-        attackRange.text = $"{stats.attackRange / 2}보";
+        var atRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRangeValue",
+            new object[] { new { num = stats.attackRange / 2 } });
+        attackRange.text = $"{atRange}";
         string attackRangeT = LocalizationSettings.StringDatabase.
             GetLocalizedString("CommonUI", "CON_attackRange", LocalizationSettings.SelectedLocale);
         attackRangeTxt.text = $"{attackRangeT} :";
