@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CommandSkillBtnUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CommandSkillBtnUI : MonoBehaviour
 {
     [SerializeField] private CommanderSkillUI commanderSkillUI;
     [SerializeField] private GameObject selectedIndicator;

@@ -458,7 +458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 140}
+  m_AnchoredPosition: {x: -4, y: 0}
   m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7696153315409232551
@@ -592,6 +592,7 @@ GameObject:
   - component: {fileID: 4878283832212407931}
   - component: {fileID: 3143805331373063215}
   - component: {fileID: 701358991694597019}
+  - component: {fileID: 7050757659214811965}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -641,7 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6603774, g: 0.57144946, b: 0.49528304, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -657,6 +658,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7050757659214811965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8842999757563710019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83cc6e7c7bbe8594f9849091f03ff914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentBtnUI: {fileID: 9124698959260951256}
 --- !u!1001 &1368686780707730667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -783,17 +797,17 @@ PrefabInstance:
     - target: {fileID: 1338512689857355098, guid: 426f485f9e8692448a7971ef6a74f8c4,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1338512689857355098, guid: 426f485f9e8692448a7971ef6a74f8c4,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
-      value: 233296085000
+      value: 82479164955344896
       objectReference: {fileID: 0}
     - target: {fileID: 1338512689857355098, guid: 426f485f9e8692448a7971ef6a74f8c4,
         type: 3}
       propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
-      value: GUID:013b8f13aa28bb74ea7aceac36d155b2
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
       objectReference: {fileID: 0}
     - target: {fileID: 4697804900115701890, guid: 426f485f9e8692448a7971ef6a74f8c4,
         type: 3}
