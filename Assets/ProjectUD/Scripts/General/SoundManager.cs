@@ -64,10 +64,14 @@ public class SoundManager : Singleton<SoundManager>
     {
         bgmAudio.mute = isMute;
         bgmOneShotAudio.mute = isMute;
+        uiAudio.mute = isMute;
 
         if (audioSourcePool != null)
+        {
             foreach (var src in audioSourcePool.List)
                 src.mute = isMute;
+
+        }
     }
 
     // ── 볼륨 내부 _ 마스터 × 개별 = 실제 볼륨
@@ -86,6 +90,9 @@ public class SoundManager : Singleton<SoundManager>
     private void ApplyCombatVolume()
     {
         if (audioSourcePool == null) return;
+
+        Debug.Log(audioSourcePool.List.Count);
+
         foreach (var src in audioSourcePool.List)
             src.volume = masterVolume * combatVolume;
     }
@@ -204,7 +211,7 @@ public class SoundManager : Singleton<SoundManager>
     }
 
 
-    public AudioSource GetAudioSource()
+    private AudioSource GetAudioSource()
     {
         if (audioSourcePool == null)
             audioSourcePool = new ObjectPoolWithList<AudioSource>(() => CreateAudioSource());
@@ -212,12 +219,23 @@ public class SoundManager : Singleton<SoundManager>
         AudioSource audioSource = audioSourcePool.Pool.Get();
         audioSourcePool.List.Add(audioSource);
 
+        SettingManager st = SettingManager.Instance;
+
+        if(st != null)
+        {
+            if (st.IsMuted)
+                audioSource.mute = true;
+            else
+                audioSource.mute = false;
+        }
+
+
         audioSource.volume = masterVolume * combatVolume; // 새로 생성된 AudioSource의 볼륨을 현재 설정에 맞게 조정
         return audioSource;
     }
 
 
-    public AudioSource CreateAudioSource()
+    private AudioSource CreateAudioSource()
     {
         GameObject obj = Instantiate(audioSourcePrefab);
         obj.transform.SetParent(transform);
@@ -232,7 +250,7 @@ public class SoundManager : Singleton<SoundManager>
 
     public void ReturnAudioSource(AudioSource source)
     {
-        audioSourcePool.List.Remove(source);
-        audioSourcePool.Pool.Release(source);
+        audioSourcePool.List.Remove(source);    // 리스트에서 제거
+        audioSourcePool.Pool.Release(source);   // 풀로 반환
     }
 }

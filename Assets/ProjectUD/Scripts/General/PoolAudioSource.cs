@@ -16,7 +16,7 @@ public class PoolAudioSource : MonoBehaviour
 
     private void Update()
     {
-        if (!audioSource.isPlaying)
+        if (!audioSource.isPlaying)     // 오디오 재생 종료
         {
             soundManager.ReturnAudioSource(audioSource);
             audioSource.clip = null;

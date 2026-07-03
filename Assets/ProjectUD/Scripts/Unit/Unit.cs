@@ -721,6 +721,7 @@ public abstract class Unit : MonoBehaviour
             pathForSearch.status == NavMeshPathStatus.PathComplete)
             return false;
 
+        Debug.Log("이동 불가 지역");
         return true;
     }
 

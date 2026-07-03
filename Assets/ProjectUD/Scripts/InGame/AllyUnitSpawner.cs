@@ -299,75 +299,57 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!hit.transform.CompareTag("Tile"))
-                    return;
-
-
-
-                ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
-                AllyUnit unit = pool.Pool.Get();
-
-                var allyUnitData = unit.Data as AllyUnitData;
-
-                if (inGameManager.inGameGold < allyUnitData.Cost)
+                if (hit.transform.CompareTag("Tile"))
                 {
-                    //--Localization
-                    //ingameScreenUI.ShowError("군자금이 모자랍니다!");
-                    ingameScreenUI.ShowError("IngameUI", "MSG_noGold");
-                    return;
+                    ObjectPoolWithList<AllyUnit> pool = unitPools[selectedIndex];
+                    AllyUnit unit = pool.Pool.Get();
+
+                    var allyUnitData = unit.Data as AllyUnitData;
+
+                    if (inGameManager.inGameGold < allyUnitData.Cost)
+                    {
+                        //--Localization
+                        //ingameScreenUI.ShowError("군자금이 모자랍니다!");
+                        ingameScreenUI.ShowError("IngameUI", "MSG_noGold");
+                        return;
+                    }
+
+                    // 유닛의 소환 방향 설정
+                    unit.transform.forward = spawnDirection.forward;
+
+                    // 소환진 설정
+                    UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
+
+
+                    Tile tile = hit.transform.GetComponent<Tile>();
+                    if (tile.SetAllyUnit(unit) == null)
+                    {
+                        ingameScreenUI.ShowError("IngameUI", "MSG_noPlace");
+                        return;
+                    }
+
+
+
+                    UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
+                    unitGrid.SetTargetTile(tile);
+
+                    spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
+
+
+
+                    spawnPoint.gameObject.SetActive(true);
+                    SoundManager.Instance.PlaySFX(allySummon, unit.transform.position);
+                    spawnPoint.Initialize(unit);
+
+
+
+                    inGameManager.SetGold(allyUnitData.Cost, false);
+                    ingameScreenUI.SetspawnBtnPriceTextColor();
                 }
-
-                // 유닛의 소환 방향 설정
-                unit.transform.forward = spawnDirection.forward;
-
-                // 소환진 설정
-                UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
-
-
-                Tile tile = hit.transform.GetComponent<Tile>();
-                if (tile.SetAllyUnit(unit) == null)
+                else if(hit.transform.CompareTag("Obstacle"))
                 {
-                    //--Localization
-                    //ingameScreenUI.ShowError("그곳엔 장애물이 있습니다.");
                     ingameScreenUI.ShowError("IngameUI", "MSG_noPlace");
-                    return;
                 }
-                    
-                   
-
-                UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
-                unitGrid.SetTargetTile(tile);
-
-                spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
-
-
-
-                //Vector3Int cellPos = grid.WorldToCell(hit.point);
-                //Vector3 center = grid.GetCellCenterWorld(cellPos);
-
-                //if (!gridManager.OccupiedGridDic.ContainsKey(grid.GetCellCenterWorld(cellPos)))
-                //{
-                //    Debug.Log(grid.GetCellCenterWorld(cellPos));
-                //    gridManager.OccupiedGridDic.Add(grid.GetCellCenterWorld(cellPos), true);
-                //}
-
-                //Debug.Log(grid.WorldToCell(hit.point));
-                spawnPoint.gameObject.SetActive(true);
-                SoundManager.Instance.PlaySFX(allySummon, unit.transform.position);
-                spawnPoint.Initialize(unit);
-
-                
-                //unit.Setpriority(priority);
-                //if (priority > 100)
-                //{
-                //    priority = 51; // 우선순위 초기화
-                //}
-                //else
-                //    priority++;
-
-                inGameManager.SetGold(allyUnitData.Cost, false);
-                ingameScreenUI.SetspawnBtnPriceTextColor();
-                    
             }
         }
     }

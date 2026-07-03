@@ -70,7 +70,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 if (inputEventManager.IsPointerOnUIElements())
                     return;
 
-                if (hit.collider.CompareTag("Unit"))
+                if (hit.collider.CompareTag("Unit"))    // 유닛 클릭
                 {
                     allyUnitSpawner.CancelSpawn();
                     inputEventManager.OnRightClickTarget = this;
@@ -140,7 +140,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                     unitSelectUI.ShowHp(selectedUnit);
                 }
-                else if (hit.collider.CompareTag("Tile"))
+                else if (hit.collider.CompareTag("Tile")) // 타일 클릭
                 {
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
@@ -166,7 +166,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         {
                             if(selectedAllyUnit.IsPathBlocked(hit.point))
                             {
-                                //ingameScreenUI.ShowError("IngameUI", "MSG_noMove");
+                                ingameScreenUI.ShowError("IngameUI", "MSG_noMove");
                             }
                             else
                             {
@@ -178,6 +178,22 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         }
                     }
                 }
+                else if (hit.collider.CompareTag("Obstacle")) // 장애물 클릭
+                {
+                    if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
+                    {
+                        if ((selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
+                        {
+                            ingameScreenUI.ShowError("IngameUI", "MSG_noMove2");
+                        }
+                    }
+
+                }
+                else        // 그 외
+                {
+                    //Debug.Log(hit.collider.tag);
+                }
+
                 //else
                 //{
                 //    Debug.Log(hit.collider.name);

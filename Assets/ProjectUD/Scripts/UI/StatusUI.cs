@@ -15,7 +15,7 @@ public class StatusUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private TextMeshProUGUI statusDescText;
     [SerializeField] private TextMeshProUGUI statusEffectText;
     [SerializeField] private float yPos;
-    [SerializeField] private float xLimit;
+    [SerializeField] private float xPos;
 
     [SerializeField] private RectTransform unitStatePanelRectTransform;
     [SerializeField] private RectTransform iconRectTransform;
@@ -37,17 +37,10 @@ public class StatusUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         Vector2 iconPos = iconRectTransform.anchoredPosition;
-
-        if (iconPos.x >= xLimit)
-            iconPos.x = xLimit;
-
-        Vector2 panelPos = iconPos + new Vector2(0, yPos);
-
+        Vector2 panelPos = iconPos + new Vector2(xPos, yPos);
 
 
         unitStatePanelRectTransform.anchoredPosition = panelPos;
-
-
 
         statusPanel.SetActive(true);
 
