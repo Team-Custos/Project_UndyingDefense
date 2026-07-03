@@ -121,4 +121,14 @@ public class AccountInfo : MonoBehaviour, IInputESC
             inputEventManager.OnESCTarget = null;
         }
     }
+
+    // 강제로 마우스 호버링 상태를 해제하는 기능
+    private void OnDisable()
+    {
+        var hoverHandlers = GetComponentsInChildren<Ingame_ImageHoverHandler>(true);
+        foreach (var handler in hoverHandlers)
+        {
+            handler.ForceExit();
+        }
+    }
 }

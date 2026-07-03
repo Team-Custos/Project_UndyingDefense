@@ -21,4 +21,9 @@ public class Ingame_ImageHoverHandler : MonoBehaviour, IPointerEnterHandler, IPo
         mouseOverObject.SetActive(true);
     }
 
+    // 강제로 호버 상태를 해제할 때 사용
+    public void ForceExit()
+    {
+        mouseOverObject.SetActive(false);
+    }
 }

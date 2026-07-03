@@ -35,16 +35,17 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
 
     private void ShowAlarm()
     {
-        IReadOnlyList<string> alarms = rankSystem.GetRewardAlarms();
+        // 260703 _ (임시) 지휘관 스킬 창 해금 알림 메시지 비활성화
+        //IReadOnlyList<string> alarms = rankSystem.GetRewardAlarms();
 
-        if (alarms == null || alarms.Count == 0)
-            return;
+        //if (alarms == null || alarms.Count == 0)
+        //    return;
 
-        for (int i = 0; i < alarms.Count; i++)
-        {
-            rewardAlarm.AddMessage($"[ {alarms[i]} ] 스킬을 배웠습니다!");
-        }
-        rankSystem.ResetAlarmList();
+        //for (int i = 0; i < alarms.Count; i++)
+        //{
+        //    rewardAlarm.AddMessage($"[ {alarms[i]} ] 스킬을 배웠습니다!");
+        //}
+        //rankSystem.ResetAlarmList();
     }
 
     private void LoadSelectedSkill()

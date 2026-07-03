@@ -28,6 +28,11 @@ public class SystemConfirmUI : MonoBehaviour
     {
         confirmEvent?.Invoke();
         gameObject.SetActive(false);
+
+        if(settingUI != null && inputEventManager != null && settingUI.gameObject.activeSelf)
+        {
+            inputEventManager.OnESCTarget = settingUI;
+        }
     }
 
     public void CancelEventInvoke()

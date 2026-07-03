@@ -66,16 +66,17 @@ public class RankSystem : MonoBehaviour
         lobbyManager.SetLobbyPortrait(rankData.rewardCommanderProfile);
 
         // 일단 지휘관 스킬만 해금
-        for (int i = 0; i < rankData.rewardCommandSkillID.Count; i++)
-        {
-            PlayerPrefsData.instance.SetHaveCommanderSkills(rankData.rewardCommandSkillID[i]);
+        // 260703 _ (임시) 미구현 스킬 해금 비활성화
+        //for (int i = 0; i < rankData.rewardCommandSkillID.Count; i++)
+        //{
+        //    PlayerPrefsData.instance.SetHaveCommanderSkills(rankData.rewardCommandSkillID[i]);
 
-            string skillName = LocalizationSettings.StringDatabase.
-            GetLocalizedString("CommanderSkill", $"{rankData.rewardCommandSkillID[i]}_name", LocalizationSettings.SelectedLocale);
+        //    string skillName = LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("CommanderSkill", $"{rankData.rewardCommandSkillID[i]}_name", LocalizationSettings.SelectedLocale);
 
-            rewardAlarms.Add(skillName);
-            Debug.Log($"[RankSystem] {skillName} 보상 알림 추가");
-        }
+        //    rewardAlarms.Add(skillName);
+        //    Debug.Log($"[RankSystem] {skillName} 보상 알림 추가");
+        //}
     }
 
     public IReadOnlyList<string> GetRewardAlarms()
