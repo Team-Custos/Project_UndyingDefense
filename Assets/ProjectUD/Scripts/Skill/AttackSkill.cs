@@ -216,13 +216,13 @@ public class AttackSkill : SkillBase
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
         Vector3 dir = (target.transform.position - transform.position).normalized;
-        unit.AddVFX(vfxPrefab, dir);
+        unit.AddVFX(vfxPrefab, dir, false);
     }
 
 
     public void ShowVFX(Unit unit, GameObject vfx)
     {
-        unit.AddVFX(vfx, unit.transform);
+        unit.AddVFX(vfx, unit.transform, false);
     }
 
 

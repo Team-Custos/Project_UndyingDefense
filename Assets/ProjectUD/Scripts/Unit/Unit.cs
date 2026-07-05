@@ -1547,50 +1547,55 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    public void AddVFX(GameObject vfx, Transform rot) // hit & Crit VFX (오브젝트풀링 사용)
+    public void AddVFX(GameObject vfx, Transform rot, bool attach = true) // hit & Crit VFX (오브젝트풀링 사용)
     {
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)
             return;
 
-        VFXobj.transform.SetParent(VFXParent);
+        if (attach)
+        {
+            VFXobj.transform.SetParent(VFXParent);
+            VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
+            VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
+        }
+        else
+        {
+            VFXobj.transform.SetParent(null);
+            VFXobj.transform.position = rot.position;
+        }
+
         VFXobj.SetActive(true);
-        VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
-        VFXobj.transform.localRotation = rot.localRotation * Quaternion.Euler(0f, 90f, 0f); //Quaternion.Euler(0f, 0f, 0f);
+        
     }
 
-    public void AddVFX(GameObject vfx, Vector3 dir) // hit & Crit VFX (오브젝트풀링 사용)
+    public void AddVFX(GameObject vfx, Vector3 dir, bool attach = true) // hit & Crit VFX (오브젝트풀링 사용)
     {
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)
             return;
 
-        VFXobj.transform.SetParent(VFXParent);
-        VFXobj.transform.forward = dir;
-        VFXobj.transform.localPosition = Vector3.zero;
+        if (attach)
+        {
+            VFXobj.transform.SetParent(VFXParent);
+            VFXobj.transform.forward = dir;
+            VFXobj.transform.localPosition = Vector3.zero;
+
+        }
+        else
+        {
+            VFXobj.transform.SetParent(null);
+
+            VFXobj.transform.forward = dir;
+            VFXobj.transform.position = this.transform.position;
+            //VFXobj.transform.position = Vector3.zero;
+        }
         VFXobj.SetActive(true);
 
     }
 
     public void AddVFX(GameObject vfx, Unit target) // hit & Crit VFX (오브젝트풀링 사용)
     {
-        //GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
-        //if (VFXobj == null)
-        //    return;
-
-        //Camera mainCamera = Camera.main;
-        //Vector3 direction = (mainCamera.transform.position - target.transform.position).normalized;
-
-        //float distance = 1f; // VFX를 타겟에서 얼마나 떨어뜨릴지 결정하는 거리
-
-        //Vector3 spawnPosition = target.transform.position + direction * distance;
-        //VFXobj.transform.position = spawnPosition;
-        //VFXobj.transform.SetParent(VFXParent);
-        ////VFXobj.transform.localPosition = Vector3.up * VFXobj.transform.localPosition.y;
-
-        ////VFXobj.transform.forward = dir;
-        ////VFXobj.transform.localPosition = Vector3.zero;
-        //VFXobj.SetActive(true);
 
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)

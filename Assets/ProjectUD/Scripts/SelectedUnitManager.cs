@@ -281,14 +281,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         if (inGameManager.inGameGold < nextUnitData.Cost)
         {
             Debug.Log("골드 부족");
-            //unitSelectUI.HideUpgrdeUI();
-            // 승급불과 효과음 추가 예정
             return;
         }
 
         SoundManager.Instance.PlayUIClickSFX();
 
         selectedAllyUnit.UpgradeOrder(index);
+
+        isUpgradeOn = false;
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnRightClickTarget = this;
@@ -425,7 +425,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     
 
                     UpgradeSelectedUnit(upgradeOption - 1);
-                    isUpgradeOn = false;
+                    //isUpgradeOn = false;
                 }
                 else
                     return;
