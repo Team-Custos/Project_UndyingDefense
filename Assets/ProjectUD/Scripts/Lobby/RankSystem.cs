@@ -4,22 +4,29 @@ using System.ComponentModel.Design;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 public class RankSystem : MonoBehaviour
 {
     [SerializeField] private LobbyManager lobbyManager;
 
+    [SerializeField] private RankUpCongratulationUI rankUpCongratulationPanel;
+
     [SerializeField] private RankData[] rankDatas;
     [SerializeField] private TextMeshProUGUI commanderName;
     //[SerializeField] private MessageUI rewardAlarm;
 
+    private RankData nextRankData;
     private int currentRank;
     private float currentPoints;
     private List<string> rewardAlarms = new List<string>();
 
+    public RankData NextRankData => nextRankData;
+
     private void Start()
     {
         //UpdateRank();
+        RefreshNextRankData();
     }
 
     public void UpdateRank()
@@ -31,6 +38,8 @@ public class RankSystem : MonoBehaviour
 
         currentPoints = PlayerPrefs.GetFloat("Point");
         currentRank = PlayerPrefs.GetInt("CommanderRank");
+
+        RefreshNextRankData();
 
         foreach (var rankData in rankDatas)
         {
@@ -54,6 +63,17 @@ public class RankSystem : MonoBehaviour
         }
     }
 
+    private void RefreshNextRankData()
+    {
+        RankData next = null;
+        foreach (var rankData in rankDatas)
+        {
+            if (rankData.rank > currentRank && (next == null || rankData.rank < next.rank))
+                next = rankData;
+        }
+        nextRankData = next;
+    }
+
     private void RankUp(RankData rankData)
     {
         currentRank = rankData.rank;
@@ -64,6 +84,9 @@ public class RankSystem : MonoBehaviour
 
         // 로비 초상화테두리 변경
         lobbyManager.SetLobbyPortrait(rankData.rewardCommanderProfile);
+
+        // 다음 랭크 데이터 갱신
+        RefreshNextRankData();
 
         // 일단 지휘관 스킬만 해금
         // 260703 _ (임시) 미구현 스킬 해금 비활성화
@@ -77,6 +100,11 @@ public class RankSystem : MonoBehaviour
         //    rewardAlarms.Add(skillName);
         //    Debug.Log($"[RankSystem] {skillName} 보상 알림 추가");
         //}
+
+        // 보상 알림 UI 활성화
+        rankUpCongratulationPanel.SetRankUpInfo(rankData.commanderRankIcon, commanderName.text);
+        rankUpCongratulationPanel.ShowPanel();
+
     }
 
     public IReadOnlyList<string> GetRewardAlarms()

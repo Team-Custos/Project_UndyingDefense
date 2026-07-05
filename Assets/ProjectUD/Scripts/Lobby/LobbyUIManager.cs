@@ -95,6 +95,7 @@ public class LobbyUIManager : MonoBehaviour
         //CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
         // 설정 창 on/off
+        /*
         if(lobbySettingBtn != null)
         {
 
@@ -108,7 +109,7 @@ public class LobbyUIManager : MonoBehaviour
                 SoundManager.Instance.PlayUIClickSFX();
                 lobbySettingPanel.SetActive(true);
             });
-        }
+        }*/
 
         //if(settingCloseBtn != null)
         //{
@@ -157,6 +158,7 @@ public class LobbyUIManager : MonoBehaviour
         //}
 
         // UI 판넬 On / Off
+        /*
         if (stageStartBtn != null)
         {
             stageStartBtn.onClick.AddListener(() =>
@@ -175,8 +177,9 @@ public class LobbyUIManager : MonoBehaviour
             });
 
         }
+        */
 
-
+        /*
         if (localSituationPanelCloseBtn != null)
         {
             localSituationPanelCloseBtn.onClick.AddListener(() =>
@@ -206,6 +209,7 @@ public class LobbyUIManager : MonoBehaviour
 
             });
         }
+        */
         // UI 판넬 On/Off
 
 

@@ -8,6 +8,7 @@ public class RankData : ScriptableObject
     public int rank;
     public float requirePoint;
     public string commanderID;
+    public Sprite commanderRankIcon;
     public List<string> rewardCommandSkillID;
     public Sprite rewardCommanderProfile;
     //public List<Sprite> rewardCommanderProfile;

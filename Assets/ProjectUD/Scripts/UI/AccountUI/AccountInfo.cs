@@ -9,8 +9,13 @@ using UnityEngine.UI;
 
 public class AccountInfo : MonoBehaviour, IInputESC
 {
+    [Header("Input Event Manager")]
     [SerializeField] private PlayerInputEventManager inputEventManager;
 
+    [Header("Rank System")]
+    [SerializeField] private RankSystem rankSystem;
+
+    [Header("-- Portrait/Nickname/Commander Rank --")]
     [SerializeField] private Image portraitLineImg;
     [SerializeField] private Button nickNameBtn;
     [SerializeField] private GameObject portraitPanel;
@@ -18,6 +23,10 @@ public class AccountInfo : MonoBehaviour, IInputESC
     [SerializeField] private GameObject resetCheckPanel;
     [SerializeField] private TextMeshProUGUI nickNameText;
     [SerializeField] private TextMeshProUGUI commanderRankTxt;
+
+    [Header("-- Point --")]
+    [SerializeField] private TextMeshProUGUI pointPercentTxt;
+    [SerializeField] private Image percentageBar;
     //[SerializeField] private Button resetBtn;
     [SerializeField] private PortraitSelectManager portraitSelectManager;
 
@@ -30,6 +39,9 @@ public class AccountInfo : MonoBehaviour, IInputESC
         Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
         commanderRankTxt.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
+
+        pointPercentTxt.text = $"{PlayerPrefs.GetFloat("Point").ToString()}/{rankSystem.NextRankData.requirePoint}";
+        percentageBar.fillAmount = PlayerPrefs.GetFloat("Point") / rankSystem.NextRankData.requirePoint;
     }
 
     public void ShowAccountPanel(Sprite portraitLine)
