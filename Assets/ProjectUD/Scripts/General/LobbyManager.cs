@@ -109,8 +109,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
             if(guemsan.clearTime != 0)
             {
+                //guemsanRecordText.text = $"{guemsan.clearTime}";
+                guemsanRecordText.text = ConvertToTime(guemsan.clearTime);
                 guemsanRecordPanel.SetActive(true);
-                guemsanRecordText.text = $"{guemsan.clearTime}";
             }
         }
         if(namhan.isOpen)
@@ -121,8 +122,9 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
             if (namhan.clearTime != 0)
             {
-                guemsanRecordPanel.SetActive(true);
-                guemsanRecordText.text = $"{guemsan.clearTime}";
+                //guemsanRecordText.text = $"{namhan.clearTime}";
+                namhanRecordText.text = ConvertToTime(namhan.clearTime);
+                namhanRecordPanel.SetActive(true);
             }
         }
         if (namwon.isOpen)
@@ -133,10 +135,23 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
 
             if (namwon.clearTime != 0)
             {
+                //namwonRecordText.text = $"{namwon.clearTime}";
+                namwonRecordText.text = ConvertToTime(namwon.clearTime);
                 namwonRecordPanel.SetActive(true);
-                namwonRecordText.text = $"{namwon.clearTime}";
             }
         }
+    }
+
+    // 클리어 타임을 시각용으로 변환
+    private string ConvertToTime(float timeRecord)
+    {
+        int minutes = Mathf.FloorToInt(timeRecord / 60f);
+        int seconds = Mathf.FloorToInt(timeRecord % 60f);
+        int milliseconds = Mathf.FloorToInt((timeRecord % 1f) * 100f);
+
+        string recordText = $"{minutes:00} : {seconds:00} : {milliseconds:00}\"";
+
+        return recordText ;
     }
 
     public void BeforeTutorial() // 훈련장으로 안내하기 위한 

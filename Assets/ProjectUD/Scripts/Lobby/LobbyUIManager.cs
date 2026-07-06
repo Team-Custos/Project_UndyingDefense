@@ -95,7 +95,7 @@ public class LobbyUIManager : MonoBehaviour
         //CommandSkillDeckIndex = new int[commandSkillDeckListImage.Length];
 
         // 설정 창 on/off
-        /*
+        
         if(lobbySettingBtn != null)
         {
 
@@ -109,7 +109,7 @@ public class LobbyUIManager : MonoBehaviour
                 SoundManager.Instance.PlayUIClickSFX();
                 lobbySettingPanel.SetActive(true);
             });
-        }*/
+        }
 
         //if(settingCloseBtn != null)
         //{

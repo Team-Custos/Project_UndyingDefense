@@ -130,6 +130,12 @@ public class SettingManager : Singleton<SettingManager>
 
     public void LoadSettings()
     {
+        if (PlayerPrefs.GetInt("IntroVideo") == 0)
+        {
+            ResetToDefault();
+            return;
+        }
+
         MasterVolume = PlayerPrefs.GetFloat(KEY_MASTER);
         BGMVolume = PlayerPrefs.GetFloat(KEY_BGM);
         SFXVolume = PlayerPrefs.GetFloat(KEY_SFX);
