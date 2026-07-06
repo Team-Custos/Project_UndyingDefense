@@ -1591,7 +1591,6 @@ public abstract class Unit : MonoBehaviour
             //VFXobj.transform.position = Vector3.zero;
         }
         VFXobj.SetActive(true);
-
     }
 
     public void AddVFX(GameObject vfx, Unit target) // hit & Crit VFX (오브젝트풀링 사용)

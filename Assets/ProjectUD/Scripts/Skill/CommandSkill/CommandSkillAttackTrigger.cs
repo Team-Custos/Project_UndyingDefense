@@ -109,7 +109,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             GameObject VFXobj = Instantiate(data.StartVFX.gameObject);
             VFXobj.transform.SetParent(transform);
             VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            //VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             Destroy(VFXobj, data.StartVFX.main.duration);
         }
         if (data.LoopVFX != null)
@@ -117,7 +117,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             GameObject VFXobj = Instantiate(data.LoopVFX.gameObject);
             VFXobj.transform.SetParent(transform);
             VFXobj.transform.localPosition = Vector3.zero;// + Vector3.up * VFXobj.transform.localPosition.y;
-            VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            //VFXobj.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
             SoundManager.Instance.PlaySFX(data.LoopSFX, VFXobj.transform.position);
         }

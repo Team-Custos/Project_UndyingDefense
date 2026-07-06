@@ -314,13 +314,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                         return;
                     }
 
-                    // 유닛의 소환 방향 설정
-                    unit.transform.forward = spawnDirection.forward;
-
-                    // 소환진 설정
-                    UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
-
-
                     Tile tile = hit.transform.GetComponent<Tile>();
                     if (tile.SetAllyUnit(unit) == null)
                     {
@@ -328,7 +321,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                         return;
                     }
 
+                    // 유닛의 소환 방향 설정
+                    unit.transform.forward = spawnDirection.forward;
 
+                    // 소환진 설정
+                    UnitSpawnPoint spawnPoint = spawnPointPool.Pool.Get();
 
                     UnitGrid unitGrid = unit.UnitGrid.GetComponent<UnitGrid>();
                     unitGrid.SetTargetTile(tile);
@@ -336,17 +333,15 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     spawnPoint.transform.position = tile.transform.position; // grid.CellToWorld(grid.WorldToCell(hit.point)) + new Vector3(grid.cellSize.x * 0.5f, 0f, grid.cellSize.y * 0.5f);
 
 
-
                     spawnPoint.gameObject.SetActive(true);
                     SoundManager.Instance.PlaySFX(allySummon, unit.transform.position);
                     spawnPoint.Initialize(unit);
 
 
-
                     inGameManager.SetGold(allyUnitData.Cost, false);
                     ingameScreenUI.SetspawnBtnPriceTextColor();
                 }
-                else if(hit.transform.CompareTag("Obstacle"))
+                else// if(hit.transform.CompareTag("Obstacle"))
                 {
                     ingameScreenUI.ShowError("IngameUI", "MSG_noPlace");
                 }

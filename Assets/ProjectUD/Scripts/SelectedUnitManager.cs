@@ -178,7 +178,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         }
                     }
                 }
-                else if (hit.collider.CompareTag("Obstacle")) // 장애물 클릭
+                else if (!hit.collider.CompareTag("Tile"))
                 {
                     if (selectedAllyUnit != null && selectedAllyUnit.IsSelected)
                     {
@@ -189,15 +189,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     }
 
                 }
-                else        // 그 외
+                else
                 {
-                    //Debug.Log(hit.collider.tag);
+                    Debug.Log(hit.collider.name);
                 }
-
-                //else
-                //{
-                //    Debug.Log(hit.collider.name);
-                //}
 
             }
         }
