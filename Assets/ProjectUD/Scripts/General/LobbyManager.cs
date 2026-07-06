@@ -1,13 +1,14 @@
+using DG.Tweening;
 using InputEventInterface;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UltEvents;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static StagePrefsData;
-using TMPro;
-using System;
 
 public class LobbyManager : MonoBehaviour, IInputOnSpace
 {
@@ -53,12 +54,21 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
     [SerializeField] private Button namwonBtn;
+    [Header("Guemsan")]
     [SerializeField] private GameObject guemsanLock;
     [SerializeField] private GameObject guemsanCloud;
+    [SerializeField] private GameObject guemsanRecordPanel;
+    [SerializeField] private TextMeshProUGUI guemsanRecordText;
+    [Header("Namhan")]
     [SerializeField] private GameObject namhanLock;
     [SerializeField] private GameObject namhanCloud;
+    [SerializeField] private GameObject namhanRecordPanel;
+    [SerializeField] private TextMeshProUGUI namhanRecordText;
+    [Header("Namwon")]
     [SerializeField] private GameObject namwonLock;
     [SerializeField] private GameObject namwonCloud;
+    [SerializeField] private GameObject namwonRecordPanel;
+    [SerializeField] private TextMeshProUGUI namwonRecordText;
     [Header("StagePrefsData")]
     [SerializeField] private SpeakingArray afterWinGusan;
 
@@ -96,18 +106,36 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             guemsanBtn.enabled = true;
             guemsanLock.SetActive(false);
             guemsanCloud.SetActive(false);
+
+            if(guemsan.clearTime != 0)
+            {
+                guemsanRecordPanel.SetActive(true);
+                guemsanRecordText.text = $"{guemsan.clearTime}";
+            }
         }
         if(namhan.isOpen)
         {
             namhanBtn.enabled = true;
             namhanLock.SetActive(false);
             namhanCloud.SetActive(false);
+
+            if (namhan.clearTime != 0)
+            {
+                guemsanRecordPanel.SetActive(true);
+                guemsanRecordText.text = $"{guemsan.clearTime}";
+            }
         }
         if (namwon.isOpen)
         {
             namwonBtn.enabled = true;
             namwonLock.SetActive(false);
             namwonCloud.SetActive(false);
+
+            if (namwon.clearTime != 0)
+            {
+                namwonRecordPanel.SetActive(true);
+                namwonRecordText.text = $"{namwon.clearTime}";
+            }
         }
     }
 
@@ -226,7 +254,13 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void LoadTutorialScene()     // 훈련장 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
-        LoadingSceneManager.LoadScene("TutorialScene");
+        DOTween.Sequence()
+            .AppendInterval(battleStartSfx.length)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.LoadScene("TutorialScene");
+            });
+        //LoadingSceneManager.LoadScene("TutorialScene");
         //UserDataModel.instance.SetTutorialEnd(true);
         //PlayerPrefs.SetInt("IsTutorialEnd", 1);
     }
@@ -234,7 +268,13 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void LoadInGameScene()   // 금산성 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
-        LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
+        DOTween.Sequence()
+            .AppendInterval(battleStartSfx.length)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
+            });
+        //LoadingSceneManager.LoadScene("Stage1_MergeScene  25.0608");
         //UserDataModel.instance.SetGameFinished(true);
         //PlayerPrefs.SetInt("IsGeumsanFinished", 1);
     }
@@ -242,13 +282,25 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void LoadNamhanGameScene()   // 남한산성 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
-        LoadingSceneManager.LoadScene("Stage2_MergeScene LevelDesign");
+        DOTween.Sequence()
+            .AppendInterval(battleStartSfx.length)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.LoadScene("Stage2_MergeScene LevelDesign");
+            });
+        //LoadingSceneManager.LoadScene("Stage2_MergeScene LevelDesign");
     }
 
     public void LoadNamwonGameScene()   // 남원성 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
-        LoadingSceneManager.LoadScene("Stage3_MergeScene LevelDesign");
+        DOTween.Sequence()
+            .AppendInterval(battleStartSfx.length)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.LoadScene("Stage3_MergeScene LevelDesign");
+            });
+       //LoadingSceneManager.LoadScene("Stage3_MergeScene LevelDesign");
     }
 
     public void OnSpace(InputAction.CallbackContext context)

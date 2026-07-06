@@ -47,15 +47,27 @@ public class TitleUIManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("IntroVideo") == 0)
                 {
                     SoundManager.Instance.PlaySFX(startSfx);
+                    DOTween.Sequence()
+                    .AppendInterval(startSfx.length)
+                    .OnComplete(() =>
+                        {
+                            LoadingSceneManager.LoadScene("IntroScene");
+                        });
 
-                    LoadingSceneManager.LoadScene("IntroScene");
+                    //LoadingSceneManager.LoadScene("IntroScene");
 
                 }
                 else
                 {
                     SoundManager.Instance.PlaySFX(startSfx);
+                    DOTween.Sequence()
+                    .AppendInterval(startSfx.length)
+                    .OnComplete(() =>
+                        {
+                            LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+                        });
 
-                    LoadingSceneManager.LoadScene("LobbyScene_LoPol");
+                    //LoadingSceneManager.LoadScene("LobbyScene_LoPol");
                 }
 
                 //SoundManager.Instance.PlaySFX(startSfx);
