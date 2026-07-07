@@ -18938,6 +18938,8 @@ MonoBehaviour:
   - {fileID: 558740278}
   - {fileID: 60109453}
   - {fileID: 30696834}
+  fireArea: {fileID: 0}
+  fireAreaPos: {fileID: 0}
   OilBottleWaitTime: 0.2
 --- !u!4 &323247169
 Transform:
@@ -64389,12 +64391,12 @@ PrefabInstance:
     - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
       propertyPath: onActivate._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[4]._X
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
       propertyPath: onActivate._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[5]._X
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -336196044479407675, guid: 53de35c36c8bcc844a698fb861d1737b,
         type: 3}
@@ -101915,6 +101917,9 @@ MonoBehaviour:
   - {fileID: 1765210980}
   - {fileID: 645524634}
   - {fileID: 1869343017}
+  fireArea: {fileID: 1498961464031686815, guid: 3c61f802bbf91cb4882b0c6f87b53db9,
+    type: 3}
+  fireAreaPos: {fileID: 964669677}
   OilBottleWaitTime: 0.2
 --- !u!4 &1868894738
 Transform:

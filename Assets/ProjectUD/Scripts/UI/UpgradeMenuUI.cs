@@ -1,15 +1,6 @@
-using InputEventInterface;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using TMPro;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
-using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using UnityEngine.UI;
 
 public class UpgradeMenuUI : MonoBehaviour
@@ -60,14 +51,23 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoCrtiText;
     [SerializeField] private TextMeshProUGUI infoMoveSpeedText;
     [SerializeField] private TextMeshProUGUI infoAttackSpeedText;
+
+    [Header(" ■ 기본 스킬 정보")]
     [SerializeField] private Image infoGSkillImage;
     [SerializeField] private TextMeshProUGUI infoGSkillText;
+    [SerializeField] private TextMeshProUGUI infoGSkillDescript;
+    [SerializeField] private TextMeshProUGUI infoGSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoGSkillEtc;
+
+
+    [Header(" ■ 특수 스킬 정보")]
     [SerializeField] private Image infoSSkillImage;
     [SerializeField] private TextMeshProUGUI infoSSkillText;
-    [SerializeField] private TextMeshProUGUI infoGSkillDescript;
     [SerializeField] private TextMeshProUGUI infoSSkillDescript;
-    [SerializeField] private TextMeshProUGUI infoGSkillEffect;
     [SerializeField] private TextMeshProUGUI infoSSkillEffect;
+    [SerializeField] private TextMeshProUGUI infoSSkillEtc;
+
+    [Header(" ■ 나머지")]
     [SerializeField] private TextMeshProUGUI infoMentalText;
     [SerializeField] private TextMeshProUGUI infoAttackRangeText;
     [SerializeField] private TextMeshProUGUI infoRecommendedRoleText;
@@ -157,6 +157,34 @@ public class UpgradeMenuUI : MonoBehaviour
             GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_desc", LocalizationSettings.SelectedLocale);
         infoSSkillEffect.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitSkill", $"{unit.SpecialSkill.Data.Name}_effect", LocalizationSettings.SelectedLocale);
+
+        string gCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = unit.GeneralSkill.Data.CoolTime } });
+
+        var gRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unit.GeneralSkill.Data.Range / 2 } });
+
+        var gMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unit.GeneralSkill.Data.ActiveMental } });
+
+        infoGSkillEtc.text = $"{gCooltime} / {gRange}  / {gMental}";
+
+        var sCooltime = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = unit.SpecialSkill.Data.CoolTime } });
+
+        var sRange = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillRange",
+            new object[] { new { num = unit.SpecialSkill.Data.Range / 2 } });
+
+        var sMental = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", "CON_skillMental",
+            new object[] { new { num = unit.SpecialSkill.Data.ActiveMental } });
+
+        infoSSkillEtc.text = $"{sCooltime} / {sRange} / {sMental}";
     }
 
     public void ToggleUpgradeUnit(int index)

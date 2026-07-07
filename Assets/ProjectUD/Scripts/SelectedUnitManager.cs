@@ -166,7 +166,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                         {
                             if(selectedAllyUnit.IsPathBlocked(hit.point))
                             {
-                                ingameScreenUI.ShowError("IngameUI", "MSG_noMove");
+                                ingameScreenUI.ShowError("IngameUI", "MSG_noMove2");
                             }
                             else
                             {
@@ -184,7 +184,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                     {
                         if ((selectedAllyUnit.ModeType == AllyUnit.Mode.FREE))
                         {
-                            ingameScreenUI.ShowError("IngameUI", "MSG_noMove2");
+                            ingameScreenUI.ShowError("IngameUI", "MSG_noMove");
                         }
                     }
 
