@@ -74,7 +74,8 @@ public class SettingUI : MonoBehaviour, IInputESC
         // 그래픽 옵션 동기화
         //resolutionDropdown.value = sm.ResolutionIndex; => 추후 해상도 옵션 추가 시 구현
         //resolutionDropdown.value = 0;   //현재 1920x1080 옵션 하나뿐이므로 항상 0으로 초기화
-        resolutionDropdown.value = sm.ApplyResolutionDropdownIndex(); // 저장된 해상도 인덱스 적용
+        //resolutionDropdown.value = sm.ApplyResolutionDropdownIndex(); // 저장된 해상도 인덱스 적용
+        resolutionDropdown.value = sm.GetSavedResolutionIndex();
         windowedModeToggle.isOn = !sm.IsFullScreen;
 
         // 품질 옵션 동기화
@@ -100,13 +101,15 @@ public class SettingUI : MonoBehaviour, IInputESC
     {
         if (isInitializing) return;
 
+        SettingManager.Instance.SetResolution(index);
+
         // 현재는 index 0 = 1920x1080 하나만 존재
-        switch (index)
-        {
-            case 0: SettingManager.Instance.SetResolution(1920, 1080); break;
-            case 1: SettingManager.Instance.SetResolution(1600, 900); break;
-            case 2: SettingManager.Instance.SetResolution(1280, 720); break;
-        }
+        //switch (index)
+        //{
+        //    case 0: SettingManager.Instance.SetResolution(1920, 1080, index); break;
+        //    case 1: SettingManager.Instance.SetResolution(1600, 900, index); break;
+        //    case 2: SettingManager.Instance.SetResolution(1280, 720, index); break;
+        //}
     }
 
     // Dropdown OnValueChanged에 연결_그래픽 품질
