@@ -200,11 +200,13 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     public void Attack(Unit target)
     {
         float calcDamage = data.Damage;
-        float calcCrit = (target.CritVulnerability + data.BonusCrit) * 0.01f;
-        if (data.AttackData != null && IsBlocked(target.Armortype))
+        float calcCrit = (data.BonusCrit + target.CritVulnerability) * 0.01f;
+
+
+        calcDamage *= Mathf.Max(0f, target.DamageTakenMult);    // 피해량 계산
+
+        if (IsBlocked(target.Armortype))
         {
-            //float calcBlockRate = 1f - (0.3f * target.BlockPercent * 0.01f);
-            //calcDamage *= calcBlockRate;
             float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
             calcDamage *= calcBlockRate;
 
@@ -215,22 +217,23 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             //Debug.Log($"치명타 율 : {calcCrit}");
         }
 
-        calcDamage *= target.DamageTakenMult;
+        if (Random.Range(0f, 1f) <= calcCrit)
+        {
+            AddCritVFX(target);
+            AddCritSFX(target.transform.position);
+            ActivateCriticalEffect(target);
+            Debug.Log("적용");
+        }
+        else
+        {
+            AddHitVFX(target);
+            AddHitSFX(target.transform.position);
+            Debug.Log("미적용");
+        }
 
         target.TakeDamage(calcDamage);
-        //target.PlayHitSFX(data.AttackType);       // Unit 에서 주석처리한 메서드
-        if (data.AttackData != null)
-        {
-            AddHitSFX(target.transform);
-            AddHitVFX(target);
-        }
-        if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
-        {
-            //if (data.InduseEffectPrefab != null)
-            //{
-            //    target.AddEffect(data.InduseEffectPrefab);
-            //}
-        }
+
+        Debug.Log(calcDamage);
     }
 
     public void AddHitSFX(Transform transform)
@@ -242,41 +245,74 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     private void AddHitVFX(Unit target)     // 피격 연출
     {
+        if (data == null || data.AttackData == null)
+            return;
+
         GameObject hitVFX = data.AttackData.HitVFX;
         if (hitVFX != null)
         {
             target.AddVFX(hitVFX, target.transform);
         }
-
-        //ParticleSystem hitVFX = null;
-        //switch (data.AttackType)
-        //{
-        //    case AttackType.SLASH:
-        //        hitVFX = SlashHitVFX;
-        //        break;
-        //    case AttackType.PIERCE:
-        //        hitVFX = PierceHitVFX;
-        //        break;
-        //    case AttackType.CRUSH:
-        //        hitVFX = CrushHitVFX;
-        //        break;
-        //}
-
-        //if (hitVFX != null)
-        //{
-        //    target.AddVFX(hitVFX, target.transform.position + incomingDirection);
-        //}
     }
 
     private bool IsBlocked(ArmorType armorType)
     {
+        if (data == null || data.AttackData == null)
+            return false;
+
         return
             (data.AttackData.Type == AttackType.SLASH && armorType == ArmorType.STEELPLATED) ||
             (data.AttackData.Type == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (data.AttackData.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
-    
 
 
+    public void AddCritSFX(Vector3 pos)
+    {
+        if (data == null || data.AttackData == null)
+            return;
+
+        SoundManager.Instance.PlaySFX(data.AttackData.CritSFXClip, pos);
+    }
+
+
+    private void ActivateCriticalEffect(Unit target)
+    {
+        if (data == null ||data.AttackData == null)
+            return;
+
+        target.AddEffect(data.AttackData.CritEffectPrefab, target, Vector3.zero);
+
+    }
+
+
+    public void AddHitSFX(Vector3 pos)
+    {
+        if (data == null || data.AttackData == null)
+            return;
+
+        AudioClip[] audios = data.AttackData.HitSFXClip;
+
+        if (audios.Length > 0)
+        {
+            AudioClip audio = audios[Random.Range(0, audios.Length)];
+            SoundManager.Instance.PlaySFX(audio, pos);
+        }
+
+    }
+
+    private void AddCritVFX(Unit target)
+    {
+        if (data == null || data.AttackData == null)
+            return;
+
+        GameObject critVFX = data.AttackData.CritVFX;
+        if (critVFX != null)
+        {
+            //target.AddVFX(critVFX, unit.transform);
+            target.AddVFX(critVFX, target);
+        }
+
+    }
 }
