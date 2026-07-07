@@ -153,7 +153,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
     public void HideSpaceImage()    // 기획 변경 space바 이미지 항상 띄우기로 인한 사용 안 함
     {
-        //spaceBarImage.DOKill();
-        //spaceBarImage.DOFade(0f, fadeDuration);
+        spaceBarImage.DOKill();
+        spaceBarImage.DOFade(0f, fadeDuration);
     }
 }
