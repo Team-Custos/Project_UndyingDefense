@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
             dialogueLine.text = lines[currentLineIndex];
             if (currentLineIndex == 1)
             {
-                HideSpaceImage();
+                //HideSpaceImage();
             }
             //return;
         }
@@ -151,9 +151,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         spaceBarImage.DOFade(1f, fadeDuration).SetDelay(delay);
     }
 
-    public void HideSpaceImage()
+    public void HideSpaceImage()    // 기획 변경 space바 이미지 항상 띄우기로 인한 사용 안 함
     {
-        spaceBarImage.DOKill();
-        spaceBarImage.DOFade(0f, fadeDuration);
+        //spaceBarImage.DOKill();
+        //spaceBarImage.DOFade(0f, fadeDuration);
     }
 }

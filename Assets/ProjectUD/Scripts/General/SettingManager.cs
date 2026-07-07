@@ -12,6 +12,7 @@ public class SettingManager : Singleton<SettingManager>
     private const string KEY_MUTE = "Vol_Mute";
     private const string KEY_QUALITY = "QualityLevel";
     private const string KEY_RESOLUTION = "ResolutionIndex";
+    private const string KEY_FULLSCREEN = "IsFullScreen";
 
     // 현재 볼륨 상태 (0~1 정규화 값, UI와 동기화됨)
     public float MasterVolume { get; private set; } = 0.5f;
@@ -19,12 +20,20 @@ public class SettingManager : Singleton<SettingManager>
     public float SFXVolume { get; private set; } = 0.5f;
     public float UIVolume { get; private set; } = 0.5f;
     public bool IsMuted { get; private set; } = false;
-    //public int ResolutionIndex { get; private set; } = 0;   // 현재 해상도 인덱스 (추후 확장)
+    public int ResolutionIndex { get; private set; } = 0;   // 현재 해상도 인덱스 (추후 확장)
     //public int QualityLevel => QualitySettings.GetQualityLevel();
 
     // 그래픽 설정 (추후 확장)
     public bool IsFullScreen { get; private set; } = true;
     private Resolution[] resolutions;
+
+    // 드롭다운 인덱스와 1:1 매칭되는 해상도 프리셋 (SettingUI와 중복 정의 방지)_260707
+    private static readonly Vector2Int[] ResolutionPresets = new Vector2Int[]
+    {
+        new Vector2Int(1920, 1080),
+        new Vector2Int(1600, 900),
+        new Vector2Int(1280, 720)
+    };
 
     protected override void Awake()
     {
@@ -70,9 +79,21 @@ public class SettingManager : Singleton<SettingManager>
         return options;
     }
 
-    public void SetResolution(int width, int height)
+    // ── 해상도 변경 (직접 width, height 지정) (예전)
+    public void SetResolution(int width, int height, int index)
     {
+        ResolutionIndex = index;
         Screen.SetResolution(width, height, IsFullScreen);
+    }
+
+    // ── 해상도 종류 변경 (드롭다운 인덱스 기반)  _ 260707 추가
+    public void SetResolution(int index)
+    {
+        if (index < 0 || index >= ResolutionPresets.Length) index = 0;
+
+        ResolutionIndex = index;
+        Vector2Int res = ResolutionPresets[index];
+        Screen.SetResolution(res.x, res.y, IsFullScreen);
     }
 
     // ── 그래픽 품질 변경
@@ -124,7 +145,8 @@ public class SettingManager : Singleton<SettingManager>
         PlayerPrefs.SetFloat(KEY_UI, UIVolume);
         PlayerPrefs.SetInt(KEY_MUTE, IsMuted ? 1 : 0);
         PlayerPrefs.SetInt(KEY_QUALITY, QualitySettings.GetQualityLevel());
-        PlayerPrefs.SetInt(KEY_RESOLUTION, 0); // 현재 해상도 옵션 하나뿐이므로 항상 0 저장
+        PlayerPrefs.SetInt(KEY_RESOLUTION, ResolutionIndex); // 현재 해상도 옵션 인덱스 저장
+        PlayerPrefs.SetInt(KEY_FULLSCREEN, IsFullScreen ? 1 : 0); // 추가 _ 260707
         PlayerPrefs.Save();
     }
 
@@ -141,7 +163,15 @@ public class SettingManager : Singleton<SettingManager>
         SFXVolume = PlayerPrefs.GetFloat(KEY_SFX);
         UIVolume = PlayerPrefs.GetFloat(KEY_UI);
         IsMuted = PlayerPrefs.GetInt(KEY_MUTE) == 1;
+        IsFullScreen = PlayerPrefs.GetInt(KEY_FULLSCREEN, 1) == 1; // fullscreen 먼저 로드
+
         ApplyQualityDropdownIndex(); // 저장된 품질 인덱스 적용
+
+        //ApplyResolutionDropdownIndex(); // 저장된 해상도 인덱스 적용
+
+        // 해상도 인덱스 로드 후 SetResolution 호출 _ 260707
+        int savedResolutionIndex = PlayerPrefs.GetInt(KEY_RESOLUTION, 0);
+        SetResolution(savedResolutionIndex);
     }
 
     /// 초기값 버튼 — 모든 볼륨을 50%로 초기화하고 즉시 저장.
@@ -174,10 +204,12 @@ public class SettingManager : Singleton<SettingManager>
         //return qualityIndex;
     }
 
-    public int ApplyResolutionDropdownIndex()
+    public int ApplyResolutionDropdownIndex()   // 사용 안 함
     {
         // 해상도 Dropdown과 동기화
         int resolutionIndex = PlayerPrefs.GetInt(KEY_RESOLUTION);
         return resolutionIndex;
     }
+
+    public int GetSavedResolutionIndex() => ResolutionIndex;
 }
