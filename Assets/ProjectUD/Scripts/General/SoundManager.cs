@@ -223,10 +223,7 @@ public class SoundManager : Singleton<SoundManager>
 
         if(st != null)
         {
-            if (st.IsMuted)
-                audioSource.mute = true;
-            else
-                audioSource.mute = false;
+            audioSource.mute = st.IsMuted;
         }
 
 
