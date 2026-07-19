@@ -361,5 +361,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     {
         // 계정 정보 패널 열기
         accountInfoPanel.ShowAccountPanel(portraitLine.sprite);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 }

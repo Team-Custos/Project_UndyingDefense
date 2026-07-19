@@ -59,12 +59,22 @@ public class NickNamePanel : MonoBehaviour
         lobbyManager.SetLobbyNickName(nickname);
         gameObject.SetActive(false);
 
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
+
         //inputEventManager.OnESCTarget = accountInfo;
     }
 
     public void OnClickCancleBtn()  // 취소버튼
     {
         gameObject.SetActive(false);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
 
         //inputEventManager.OnESCTarget = accountInfo;
     }

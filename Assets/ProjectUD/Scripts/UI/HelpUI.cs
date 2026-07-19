@@ -123,7 +123,8 @@ public class HelpUI : MonoBehaviour, IInputESC
 
     public void OpenHelp()
     {
-        SoundManager.Instance.PlayUIClickSFX();
+        // OnManeul 에서 PlayUIClickSFX() 호출하므로 여기서는 주석처리
+        //SoundManager.Instance.PlayUIClickSFX();
         currentIndex = 0;
         ResetToFirstPanel();
         gameObject.SetActive(true);
@@ -138,6 +139,11 @@ public class HelpUI : MonoBehaviour, IInputESC
 
         if(inGameManager != null)
             inputEventManager.OnESCTarget = inGameManager;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     private void ResetToFirstPanel()

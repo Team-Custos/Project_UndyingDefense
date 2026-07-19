@@ -51,6 +51,11 @@ public class LobbyPageController : MonoBehaviour
                 isSliding = false;
                 UpdateArrowState();
             });
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     private void UpdateArrowState()

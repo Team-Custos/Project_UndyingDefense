@@ -9303,6 +9303,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2974f2d04ddb54482bf44f844f35fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &635310485 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9138039153942048384, guid: 348f27b8705b0c444acfd3904cbc5af5,
+    type: 3}
+  m_PrefabInstance: {fileID: 5697774840926549481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &649191251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19221,6 +19233,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393604491}
   m_CullTransparentMesh: 1
+--- !u!114 &1402705880 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9138039153942048384, guid: 348f27b8705b0c444acfd3904cbc5af5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1957108716}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1412109962
 GameObject:
   m_ObjectHideFlags: 0
@@ -29200,7 +29224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -29516,6 +29540,11 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 1957108719}
+    - target: {fileID: 9155422706375747787, guid: 348f27b8705b0c444acfd3904cbc5af5,
+        type: 3}
+      propertyPath: messageBG
+      value: 
+      objectReference: {fileID: 1402705880}
     - target: {fileID: 9155422706375747787, guid: 348f27b8705b0c444acfd3904cbc5af5,
         type: 3}
       propertyPath: messagePanel
@@ -34496,6 +34525,11 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 1805804111}
+    - target: {fileID: 9155422706375747787, guid: 348f27b8705b0c444acfd3904cbc5af5,
+        type: 3}
+      propertyPath: messageBG
+      value: 
+      objectReference: {fileID: 635310485}
     - target: {fileID: 9155422706375747787, guid: 348f27b8705b0c444acfd3904cbc5af5,
         type: 3}
       propertyPath: messagePanel

@@ -189,9 +189,9 @@ public class SettingUI : MonoBehaviour, IInputESC
             return;
         }
 
-        if (GlobalSoundManager.instance != null)
+        if(SoundManager.Instance != null)
         {
-            GlobalSoundManager.instance.PlayLobbySFX(GlobalSoundManager.lobbySfx.sfx_click);
+            SoundManager.Instance.PlayUIClickSFX();
         }
 
         SettingManager.Instance.SaveSettings();
@@ -239,6 +239,11 @@ public class SettingUI : MonoBehaviour, IInputESC
     {
         systemConfirmUI.SetConfirmUI(resetConfirmMessage, ResetEvent);
         inputEventManager.OnESCTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     // 설정창_메인로비 게임종료 버튼용
@@ -246,5 +251,10 @@ public class SettingUI : MonoBehaviour, IInputESC
     {
         systemConfirmUI.SetConfirmUI(closeConfirmMessage, BackEvent);
         inputEventManager.OnESCTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 }

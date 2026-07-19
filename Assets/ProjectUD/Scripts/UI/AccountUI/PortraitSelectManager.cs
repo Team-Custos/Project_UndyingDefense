@@ -70,6 +70,10 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnClickTarget = this;
 
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     private void SetPageBtn()
@@ -174,6 +178,11 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             confirmBtn.interactable = (onSelectPortraitData != null && currentPortraitData != null 
                 && onSelectPortraitData.portraitID != currentPortraitData.portraitID);
         }
+
+        if(SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void LoadSavedPortrait()
@@ -208,6 +217,11 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
             // 선택한 초상화 저장
             PlayerPrefs.SetInt("SelectedPortraitID", onSelectPortraitData.portraitID);
             PlayerPrefs.Save();
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayUIClickSFX();
+            }
         }
     }
 
@@ -248,6 +262,11 @@ public class PortraitSelectManager : MonoBehaviour, IInputClick, IInputESC
 
         inputEventManager.OnESCTarget = accountUI;  // ESC 입력 이벤트 타겟을 계정 정보 UI로 변경
         inputEventManager.OnClickTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnESC(InputAction.CallbackContext context)

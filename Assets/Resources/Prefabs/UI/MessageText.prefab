@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   message: {fileID: 2879458362407384259}
+  messageBG: {fileID: 0}
   messagePanel: {fileID: 0}
   sfx: {fileID: 8300000, guid: 08e758d955645ab418e952cdf2286987, type: 3}
   duration: 3
@@ -279,6 +280,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: "\uC2E0\uCD9C\uB0B4\uAE30\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uC544\uCD5C\uB30022\uAE00\uC790"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8741778994594992738, guid: 13f6be64b3616f642b26d99ec5fff75a,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8741778994594992738, guid: 13f6be64b3616f642b26d99ec5fff75a,
         type: 3}
