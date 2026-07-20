@@ -14,6 +14,7 @@ public class DialogueUI : MonoBehaviour
     // 애니메이션 이벤트가 호출할 함수
     public void OnFadeInAnimationComplete()
     {
+        Debug.Log("[OnFadeInAnimationComplete] 호출됨");
         onFadeInComplete?.Invoke();
         onFadeInComplete = null; // 한 번 쓰고 정리 (원치 않는 중복 호출 방지)
     }

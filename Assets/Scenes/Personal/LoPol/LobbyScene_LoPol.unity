@@ -16407,6 +16407,7 @@ MonoBehaviour:
   spaceBarImage: {fileID: 853859700}
   fadeDuration: 1
   nextEventDelay: 1.5
+  typeSpeed: 0.03
 --- !u!1001 &1229773387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27851,6 +27852,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2033448923}
     m_Modifications:
+    - target: {fileID: 1095330033823025000, guid: 4d7d3edf9fefa8e4eb87551af0998d17,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 41562e3c02ed03b4e930d561cfbf7f78,
+        type: 3}
     - target: {fileID: 1896003943760415909, guid: 4d7d3edf9fefa8e4eb87551af0998d17,
         type: 3}
       propertyPath: m_Name
@@ -27959,6 +27966,11 @@ PrefabInstance:
     - target: {fileID: 6107746780217821443, guid: 4d7d3edf9fefa8e4eb87551af0998d17,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6399353832055006045, guid: 4d7d3edf9fefa8e4eb87551af0998d17,
+        type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -28551,6 +28563,7 @@ MonoBehaviour:
   spaceBarImage: {fileID: 0}
   fadeDuration: 1
   nextEventDelay: 1.5
+  typeSpeed: 0.03
   ingameDialogueData: {fileID: 11400000, guid: d8b3e6e3f8dbc264caa9427c55c1918e, type: 2}
   speakingArray: {fileID: 0}
 --- !u!1001 &1914820588

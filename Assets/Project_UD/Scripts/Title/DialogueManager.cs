@@ -66,12 +66,33 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
+
+        SetupCurrentSpeaking(); // 캐릭터 데이터 + 대사 목록을 미리 준비
+
+        bool alreadyActive = dialogueui.gameObject.activeSelf;
+        if (alreadyActive) {
+            ShowDialogue(); // 이미 활성화되어 있다면 바로 대사 시작
+            return;
+        }
         dialogueui.gameObject.SetActive(true);
         dialogueui.onFadeInComplete = () => ShowDialogue(); // 대화 UI 페이드인 끝나고 대사 시작
     }
 
+    // 기존 ShowDialogue()에서 캐릭터 세팅 + 대사 로드 부분만 분리
+    protected void SetupCurrentSpeaking()
+    {
+        dialogueLine.text = "";
+        currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
+        CharacterData currentCharData = currentSpeaking.GetCharacterData();
+
+        lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
+
+        dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+    }
+
     public virtual void ShowDialogue()
     {
+        /*
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
 
@@ -82,6 +103,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         //--
 
         dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+        */
 
         //-- 타이핑 연출 수정
         //dialogueLine.text = lines[currentLineIndex];
