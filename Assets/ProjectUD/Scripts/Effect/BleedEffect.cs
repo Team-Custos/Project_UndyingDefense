@@ -30,13 +30,13 @@ public class BleedEffect : TickStackEffect
     {
         // 과다 출혈 효과
         target.AddInstantEffect(overBleedVfx);
-        target.TakeDamage(20);
+        target.TakeDamage(20, null);
         SoundManager.Instance.PlaySFX(overBleedSound, target.transform.position);
     }
 
     protected override void OnTick()
     {
-        target.TakeDamage(baseDamage + (damagePerStack * stack));
+        target.TakeDamage(baseDamage + (damagePerStack * stack), null);
         float a = baseDamage + (damagePerStack * stack);
     }
 

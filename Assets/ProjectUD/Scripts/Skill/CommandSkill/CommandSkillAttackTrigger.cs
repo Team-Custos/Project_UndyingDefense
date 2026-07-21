@@ -231,7 +231,7 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             Debug.Log("미적용");
         }
 
-        target.TakeDamage(calcDamage);
+        target.TakeDamage(calcDamage, null);
 
         Debug.Log(calcDamage);
     }

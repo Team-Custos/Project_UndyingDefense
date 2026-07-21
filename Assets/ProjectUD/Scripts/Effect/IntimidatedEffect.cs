@@ -4,13 +4,15 @@ public class IntimidatedEffect : StackEffect
 {
     [Header("■ Intimidated Options")]
     [SerializeField] private float damageTakenPercent;
+    [SerializeField] private int mentalAmount;
 
     [Header("■ Max Stack")]
     [SerializeField] private GameObject maxStackEffectPrefab;
 
     protected override void OnStack()
     {
-        target.AddDamageTakenMult(damageTakenPercent);
+        target.AddDamageTakenMult(damageTakenPercent);  // 받는 데미지 증가
+        target.AddMental(-mentalAmount);
     }
 
     public override void Activate()
@@ -27,6 +29,7 @@ public class IntimidatedEffect : StackEffect
     public override void OnRemove()
     {
         target.AddDamageTakenMult(-damageTakenPercent * stack);
+        target.AddMental(mentalAmount * stack);
         //Debug.Log(target.DamageTakenMult);
 
 

@@ -143,6 +143,7 @@ public abstract class Unit : MonoBehaviour
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
     public ArmorType Armortype => armorType;
+    public Unit TargetUnit => targetUnit;
 
     public bool IsSelected
     {
@@ -234,6 +235,11 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+
+    protected virtual void Update()
+    {
+        ActivateSpecialAbility(ActiveType.ALWAYS, null);
+    }
     public virtual void Initialize()
     {
         if (path == null)
@@ -270,7 +276,7 @@ public abstract class Unit : MonoBehaviour
             specialSkill.Initialize();
 
         //InvokeEvent(SpecialAbility.BASIC);
-        ActivateSpecialAbility(ActiveType.ALWAYS);
+        ActivateSpecialAbility(ActiveType.ALWAYS, null);
 
         //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
 
@@ -357,24 +363,7 @@ public abstract class Unit : MonoBehaviour
         this.selectedUnitManager = selectedUnitManager;
     }
 
-    protected virtual void Update()
-    {
-        //PassiveSkillCheck();
-
-        //if (navAgent.velocity.magnitude > navObstacle.carvingMoveThreshold)
-        //    lastMoveTime = Time.time;
-
-        //if (lastMoveTime + navObstacle.carvingTimeToStationary < Time.time)
-        //{
-        //    if (navAgent.enabled)
-        //    {
-        //        navAgent.enabled = false;
-        //        navObstacle.enabled = true;
-        //        navObstacle.carvingMoveThreshold = moveThresholdOnStop;
-        //        modelAnimator.SetBool("isRunning", false);
-        //    }
-        //}
-    }
+    
 
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
@@ -1308,7 +1297,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    public virtual void TakeDamage(float Damage)
+    public virtual void TakeDamage(float Damage, Unit attacker)
     {
         finalDamage = 0f;
 
@@ -1322,8 +1311,11 @@ public abstract class Unit : MonoBehaviour
             Die();
         }
 
+        if(attacker != null)
+            ActivateSpecialAbility(ActiveType.TAKE_DAMAGE, attacker);
+
         // ex) 자폭
-        ActivateSpecialAbility(ActiveType.HP);
+        ActivateSpecialAbility(ActiveType.HP, null);
 
         if (selectedUnitUI != null)
         {
@@ -1646,11 +1638,11 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    public void ActivateSpecialAbility(ActiveType activeType)
+    public void ActivateSpecialAbility(ActiveType activeType, Unit target)
     {
         if(specialAbility != null && activeType == specialAbility.ActiveCondition)
         {
-            specialAbility.Activate(this);
+            specialAbility.Activate(this, target);
         }
     }
 

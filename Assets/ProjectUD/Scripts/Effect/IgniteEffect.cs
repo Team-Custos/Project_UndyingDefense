@@ -39,7 +39,7 @@ public class IgniteEffect : TickStackEffect
     }
     protected override void OnTick()
     {
-        target.TakeDamage(damagePerStack);
+        target.TakeDamage(damagePerStack, null);
     }
 
     public override void OnRemove() 

@@ -221,14 +221,10 @@ public class SoundManager : Singleton<SoundManager>
 
         SettingManager st = SettingManager.Instance;
 
-        if(st != null)
-        {
-            if (st.IsMuted)
-                audioSource.mute = true;
-            else
-                audioSource.mute = false;
-        }
-
+        if (st != null)
+            audioSource.mute = st.IsMuted;
+        else
+            Debug.Log("SettingManager Null");
 
         audioSource.volume = masterVolume * combatVolume; // 새로 생성된 AudioSource의 볼륨을 현재 설정에 맞게 조정
         return audioSource;

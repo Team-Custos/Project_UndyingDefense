@@ -22,7 +22,7 @@ public class PoisonEffect : TickEffect
 
     protected override void OnTick()
     {
-        target.TakeDamage(target.Maxhp * hpPercentDamage * 0.01f);
+        target.TakeDamage(target.Maxhp * hpPercentDamage * 0.01f, null);
     }
 
 

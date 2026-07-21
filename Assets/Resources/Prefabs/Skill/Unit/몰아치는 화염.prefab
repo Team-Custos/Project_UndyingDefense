@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3099222559418409559
+--- !u!1 &8675126071776639299
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7331682342289549304}
-  - component: {fileID: 7828191408039269637}
+  - component: {fileID: 4887701372474759928}
+  - component: {fileID: 6005588856818494454}
   m_Layer: 0
-  m_Name: "\uC911\uB3C5"
+  m_Name: "\uBAB0\uC544\uCE58\uB294 \uD654\uC5FC"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7331682342289549304
+--- !u!4 &4887701372474759928
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3099222559418409559}
+  m_GameObject: {fileID: 8675126071776639299}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,41 +32,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7828191408039269637
+--- !u!114 &6005588856818494454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3099222559418409559}
+  m_GameObject: {fileID: 8675126071776639299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5a2df3a60b43754e8af81e95f4b962f, type: 3}
+  m_Script: {fileID: 11500000, guid: 022dc3484a117af40b2cdc1cca3a9a2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: Posion
-  effectName: "\uC911\uB3C5"
-  description: 
-  maxStack: 3
-  stackVFX: []
-  endVFX: {fileID: 0}
   onActivate:
-    _PersistentCalls: []
-  onMaxStack:
-    _PersistentCalls: []
-  maxStackEffectPrefab: {fileID: 0}
-  duration: 5
-  tickTime: 1
-  onTick:
     _PersistentCalls:
-    - _Target: {fileID: 7828191408039269637}
-      _MemberName: DealDamagePercent
+    - _Target: {fileID: 6005588856818494454}
+      _MemberName: FanAttack
       _PersistentArguments:
-      - _Type: 5
+      - _Type: 14
         _Int: 0
-        _String: 
-        _X: 10
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
         _Y: 0
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 5
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 60
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onAttackFortress:
+    _PersistentCalls: []
+  targetRule: 0
+  animationStateTime: 0
+  data: {fileID: 11400000, guid: ef00f1567b203be41bf188505251c9fd, type: 2}

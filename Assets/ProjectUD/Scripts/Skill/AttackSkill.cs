@@ -1,8 +1,6 @@
 using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
-using Unity.VisualScripting;
-
 public class AttackSkill : SkillBase
 {
     [Header("■ Data")]
@@ -350,19 +348,19 @@ public class AttackSkill : SkillBase
             AddHitSFX(target.transform.position);
         }
 
-        target.TakeDamage(calcDamage);
+        target.TakeDamage(calcDamage, unit);
 
         if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
         {
             unit.SpecialAbility.Damage = calcDamage;
-            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.ATTACK);
+            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.ATTACK, null);
         }
 
 
         if (target.IsDead)
         {
             //Debug.Log("회복 전 체력 : " + unit.Hp);
-            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL);
+            unit.ActivateSpecialAbility(SpecialAbility.ActiveType.KILL, null);
             //Debug.Log("회복 후 체력 :" + unit.Hp);
         }
 
@@ -373,7 +371,7 @@ public class AttackSkill : SkillBase
         }
 
         // 적 처치 특수 능력 발동
-        
+
     }
 
     public void AttackFortress(Unit unit, Fortress fortress)

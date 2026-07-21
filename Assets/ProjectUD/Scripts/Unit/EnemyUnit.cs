@@ -181,7 +181,7 @@ public class EnemyUnit : Unit
 
     protected override void Update()
     {
-        //base.Update();
+        base.Update();
 
         if (isStop)
             return;
@@ -719,9 +719,9 @@ public class EnemyUnit : Unit
         isSkillActive = false;
     }
 
-    public override void TakeDamage(float Damage)
+    public override void TakeDamage(float Damage, Unit attacker)
     {
-        base.TakeDamage(Damage);
+        base.TakeDamage(Damage, attacker);
 
         //if (HpPercent * 100f <= angerTriggerPercent && !isDead)
         //{

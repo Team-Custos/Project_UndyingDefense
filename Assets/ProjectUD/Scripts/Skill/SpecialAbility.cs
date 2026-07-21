@@ -15,15 +15,18 @@ public class SpecialAbility : MonoBehaviour
         DIE,        // 사망 시 ex) 독구름
         MENTAL,      // 멘탈에 따라 ex)
         ATTACK,     // 공격 시 ex) 영생
+        TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
     }
 
     [SerializeField] private new string name;
     [SerializeField] private string id;
     //private string description;
     [SerializeField] private Sprite icon;
-    [SerializeField] private UltEvent<Unit> onActivate;
+    [SerializeField] private UltEvent<Unit, Unit> onActivate;
     [SerializeField] private ActiveType activeType;
     [SerializeField] private AudioClip audioClip; // 스킬 발동 시 재생할 오디오
+
+    private Collider[] targets;
     private float damage;
 
     public string Name => name;
@@ -33,11 +36,11 @@ public class SpecialAbility : MonoBehaviour
     public ActiveType ActiveCondition => activeType;
     public float Damage { get; set; }
 
-    public void Activate(Unit unit)
+    public void Activate(Unit unit, Unit target)
     {
         if (onActivate != null)
         {
-            onActivate.Invoke(unit);
+            onActivate.Invoke(unit, target);
         }
     }
 
@@ -83,9 +86,50 @@ public class SpecialAbility : MonoBehaviour
     // 영생
     public void Immortality(Unit unit, float percent, GameObject vfx)
     {
-        unit.TakeDamage(-Damage * percent);
+        unit.TakeDamage(-Damage * percent, null);
         unit.AddVFX(vfx, unit.transform.position);
     }
+
+    // 원한
+    public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)   
+    {
+        float randomValue = Random.value;
+
+        if (randomValue <= percent)
+        {
+            Debug.Log(randomValue);
+
+            target.AddEffect(effect, target, Vector3.zero);
+        }
+    }
+
+    public void Immortality(Unit unit, float radius, float percent, GameObject vfx)
+    {
+        if (targets == null)
+            targets = new Collider[30];
+
+        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
+
+        if (targetCount <= 0)
+            return;
+
+        Debug.Log(targetCount);
+
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                if(target.IsDead)
+                {
+                    float recoveryHp = target.Maxhp * percent;
+                    unit.TakeDamage(-recoveryHp, null);
+                    unit.AddVFX(vfx, unit.transform.position);
+                    Debug.Log(-recoveryHp);
+                }
+            }
+        }
+    }
+
 
     // 공격 특수 능력 용 데미지 계산
     private void Attack(Unit unit, Unit target, float damage, AttackData attackData)
@@ -123,7 +167,7 @@ public class SpecialAbility : MonoBehaviour
             SoundManager.Instance.PlaySFX(attackData.HitSFXClip[random], target.transform.position);
         }
 
-        target.TakeDamage(calcDamage);
+        target.TakeDamage(calcDamage, unit);
         //Debug.Log(target.Data.Name + ":" + calcDamage);
     }
 

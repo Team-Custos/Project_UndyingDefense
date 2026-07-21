@@ -87,7 +87,7 @@ public class SkillAttackTrigger : MonoBehaviour
         calcDamage *= target.DamageTakenMult;
 
 
-        target.TakeDamage(calcDamage);
+        target.TakeDamage(calcDamage, null);
         if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
         {
             if (data.InduseEffectPrefab != null)

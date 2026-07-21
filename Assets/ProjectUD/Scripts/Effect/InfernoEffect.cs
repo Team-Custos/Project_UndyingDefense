@@ -85,7 +85,7 @@ public class InfernoEffect : TickEffect
 
     protected override void OnTick()
     {
-        target.TakeDamage(damage);
+        target.TakeDamage(damage, null);
     }
 
     public override bool IsSameType(GameObject effectPrefab)

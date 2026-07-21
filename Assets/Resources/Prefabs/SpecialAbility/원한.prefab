@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8629626338088976046
+--- !u!1 &3272279308540918718
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7434015172272022382}
-  - component: {fileID: -659031292845732175}
+  - component: {fileID: 6087136779530694478}
+  - component: {fileID: 391319948902025395}
   m_Layer: 0
-  m_Name: "\uC704\uCD95"
+  m_Name: "\uC6D0\uD55C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7434015172272022382
+--- !u!4 &6087136779530694478
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629626338088976046}
+  m_GameObject: {fileID: 3272279308540918718}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,44 +32,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-659031292845732175
+--- !u!114 &391319948902025395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629626338088976046}
+  m_GameObject: {fileID: 3272279308540918718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f429d03f071b27a4d9eacdd27a797019, type: 3}
+  m_Script: {fileID: 11500000, guid: 2166915a912a5904e9ee20366ae79348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: Shrink
-  effectName: "\uC704"
-  description: "5\uCD08 \uB3D9\uC548 \uACF5\uACA9\uB825 15% \uAC10\uC18C. \uCD5C\uB300
-    3\uBC88\uAE4C\uC9C0 \uC2A4\uD0DD\uB41C\uB2E4. 4\uBC88 \uC2A4\uD0DD\uC2DC \uACF5\uD3EC
-    \uD6A8\uACFC\uAC00 \uBC1C\uB3D9\uB41C\uB2E4."
-  maxStack: 0
-  stackVFX: []
-  endVFX: {fileID: 0}
+  name: "\uC6D0\uD55C"
+  id: USkillAbility003
+  icon: {fileID: 21300000, guid: 7acad973dfcc929448bf037961d342bc, type: 3}
   onActivate:
     _PersistentCalls:
-    - _Target: {fileID: -659031292845732175}
-      _MemberName: AddAdditionalDamage
+    - _Target: {fileID: 391319948902025395}
+      _MemberName: Resent
       _PersistentArguments:
-      - _Type: 5
-        _Int: 0
-        _String: 
-        _X: -15
+      - _Type: 14
+        _Int: 1
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
         _Y: 0
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-  onMaxStack:
-    _PersistentCalls:
-    - _Target: {fileID: -659031292845732175}
-      _MemberName: AddEffect
-      _PersistentArguments:
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 0.1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
       - _Type: 13
         _Int: 0
         _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -78,7 +76,16 @@ MonoBehaviour:
         _Y: 0
         _Z: 0
         _W: 0
-        _Object: {fileID: 8629626338088976046, guid: b0af3e702857c374999e8dac327264f8,
+        _Object: {fileID: 3099222559418409559, guid: 28a3c728cbab988469990855a60d2b2d,
           type: 3}
-  maxStackEffectPrefab: {fileID: 0}
-  duration: 5
+      - _Type: 13
+        _Int: 0
+        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  activeType: 6
+  audioClip: {fileID: 0}

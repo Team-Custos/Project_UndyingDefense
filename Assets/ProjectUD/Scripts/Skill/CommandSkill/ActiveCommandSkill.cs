@@ -246,7 +246,7 @@ public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
             AddHitSFX(target.transform.position);
         }
 
-        target.TakeDamage(calcDamage);
+        target.TakeDamage(calcDamage, null);
 
     }
 

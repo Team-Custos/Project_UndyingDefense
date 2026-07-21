@@ -55,7 +55,6 @@ public class CommandSkill_FireOilCtrl : MonoBehaviour
                 oilBottleIdx++;
                 if (oilBottleIdx >= OilBottlePos.Length)
                 {
-                    Debug.Log(oilBottleIdx);
                     oilBottleIdx = 0;
                     isSpawned = true;
 

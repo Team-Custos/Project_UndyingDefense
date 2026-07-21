@@ -31,7 +31,7 @@ public class TrapCtrl : AttackSkill
             // calcDamage *= unit.AttackDamageMultiplier;
             calcDamage *= target.DamageTakenMult;
 
-            target.TakeDamage(calcDamage);
+            target.TakeDamage(calcDamage, null);
             target.AddEffect(bindEffectPrefab, target, Vector3.zero);
         }
     }
