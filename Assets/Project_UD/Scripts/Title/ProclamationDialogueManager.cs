@@ -18,7 +18,8 @@ public class ProclamationDialogueManager : DialogueManager
 
         lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
 
-        dialogueLine.text = lines[currentLineIndex];
+        //dialogueLine.text = lines[currentLineIndex];
+        SetDialogueText(lines[currentLineIndex]);
         if (lines.Count > 1)
         {
             dialogueLine.DOFade(1F, fadeDuration);

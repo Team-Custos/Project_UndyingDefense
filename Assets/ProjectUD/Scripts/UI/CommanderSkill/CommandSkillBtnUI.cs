@@ -95,7 +95,16 @@ public class CommandSkillBtnUI : MonoBehaviour
     {
         index = i;
         SetActiveSkillBtn(canUse);
-        icon.sprite = sprite;
+        if(sprite == null)
+        {
+            icon.sprite = null;
+            icon.color =  new Color(0.65f, 0.6f, 0.5f, 1);
+        }
+        else
+        {
+            icon.sprite = sprite;
+            icon.color = Color.white;
+        }
         skillName.text = name;  
         sName = name;
         sDescription = desc;

@@ -139,6 +139,12 @@ public class SoundManager : Singleton<SoundManager>
             bgmOneShotAudio.PlayOneShot(clip);
     }
 
+    public void PlayUISFX(AudioClip clip) // UI 용
+    {
+        if (clip != null && uiAudio != null)
+            uiAudio.PlayOneShot(clip);
+    }
+
     public void PlaySFX(Vector3 pos, params AudioClip[] clips)
     {
         if (clips == null)
@@ -195,7 +201,7 @@ public class SoundManager : Singleton<SoundManager>
     public void PlayUIClickSFX()
     {
         //bgmOneShotAudio.PlayOneShot(uiClickClip);
-        //uiAudio.PlayOneShot(uiClickClip);
+        uiAudio.PlayOneShot(uiClickClip);
     }
 
     public void PlayUnableUIClickSFX()

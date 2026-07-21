@@ -27,11 +27,19 @@ public class LanguageChanger : MonoBehaviour
     public void ChangeToKorean()
     {
         ChangeLanguage("ko-KR");
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void ChangeToEnglish()
     {
         ChangeLanguage("en");
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     private void ChangeLanguage(string localeCode)

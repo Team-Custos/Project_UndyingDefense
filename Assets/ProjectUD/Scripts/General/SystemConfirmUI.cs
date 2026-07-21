@@ -33,11 +33,21 @@ public class SystemConfirmUI : MonoBehaviour
         {
             inputEventManager.OnESCTarget = settingUI;
         }
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void CancelEventInvoke()
     {
         gameObject.SetActive(false);
         inputEventManager.OnESCTarget = settingUI;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 }

@@ -83,6 +83,11 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
 
         unitDetailPanel.SetActive(false);
         isDetailOn = false;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
@@ -203,6 +208,12 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
         OnTabBtnClick(name);    // 도감창 열면 보여질 첫 페이지
 
         inputEventManager.OnESCTarget = this;
+
+        // 탭버튼 누를 때마다 클릭 사운드 재생되므로 주석 처리
+        //if (SoundManager.Instance != null)
+        //{
+        //    SoundManager.Instance.PlayUIClickSFX();
+        //}
     }
 
     public void HideCharacterArchive()  // 도감창 뒤로가기 버튼용
@@ -210,6 +221,11 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
         gameObject.SetActive(false);
 
         inputEventManager.OnESCTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnESC(InputAction.CallbackContext context)

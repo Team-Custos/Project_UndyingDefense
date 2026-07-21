@@ -1,13 +1,13 @@
+using DG.Tweening;
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+//using UltEvents;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
-using DG.Tweening;
-using UltEvents;
+using UnityEngine.UI;
 using static DialogueData;
 
 public class DialogueManager : MonoBehaviour, IInputOnSpace
@@ -35,7 +35,12 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     //-- 로컬라이즈 대화 저장용
     private Dictionary<string, List<string>> dialogueDictionary = new Dictionary<string, List<string>>();
 
-    
+    [Header("Typewriter")]
+    [SerializeField] protected float typeSpeed = 0.03f; // 글자당 딜레이
+    protected bool isTyping = false;
+    protected Coroutine typingCoroutine;
+
+
     // 로컬라이즈 테이블에서 대화 단락 가져오기
     public List<string> GetLocalDialogue(string table, string id)
     {
@@ -61,12 +66,33 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         inputManager.OnSpaceTarget = this;  // 대화를 보여줄 때 타겟가져오기
         currentSpeakingArray = speakingArray;
+
+        SetupCurrentSpeaking(); // 캐릭터 데이터 + 대사 목록을 미리 준비
+
+        bool alreadyActive = dialogueui.gameObject.activeSelf;
+        if (alreadyActive) {
+            ShowDialogue(); // 이미 활성화되어 있다면 바로 대사 시작
+            return;
+        }
         dialogueui.gameObject.SetActive(true);
-        ShowDialogue();
+        dialogueui.onFadeInComplete = () => ShowDialogue(); // 대화 UI 페이드인 끝나고 대사 시작
+    }
+
+    // 기존 ShowDialogue()에서 캐릭터 세팅 + 대사 로드 부분만 분리
+    protected void SetupCurrentSpeaking()
+    {
+        dialogueLine.text = "";
+        currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
+        CharacterData currentCharData = currentSpeaking.GetCharacterData();
+
+        lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
+
+        dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
     }
 
     public virtual void ShowDialogue()
     {
+        /*
         currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
         CharacterData currentCharData = currentSpeaking.GetCharacterData();   // 지역변수로 만들기
 
@@ -77,8 +103,12 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         //--
 
         dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
-        
-        dialogueLine.text = lines[currentLineIndex];
+        */
+
+        //-- 타이핑 연출 수정
+        //dialogueLine.text = lines[currentLineIndex];
+        SetDialogueText(lines[currentLineIndex]);
+        //--
         if (lines.Count > 1)
         {
             //nextBtn.gameObject.SetActive(true);
@@ -90,12 +120,53 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
             ReadLine();
     }
 
+    // 타이핑 연출을 위한 메서드 (코루틴)
+    // 기존 ShowDialogue()에서 dialogueLine.text = lines[currentLineIndex]; 대신
+    protected void SetDialogueText(string text)
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeLine(text));
+    }
+
+    protected IEnumerator TypeLine(string text)
+    {
+        Debug.Log($"[TypeLine] 시작, text: {text}");
+        isTyping = true;
+        dialogueLine.text = "";
+
+        foreach (char c in text)
+        {
+            dialogueLine.text += c;
+            yield return new WaitForSeconds(typeSpeed);
+        }
+
+        isTyping = false;
+        typingCoroutine = null;
+        Debug.Log("[TypeLine] 완료");
+    }
+
+    protected void SkipTyping()
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        dialogueLine.text = lines[currentLineIndex];
+        isTyping = false;
+        typingCoroutine = null;
+    }
+
+    //-------------------------------------------------------------------------
+
     public void ReadLine()  // 다른곳에서 불러올 이벤트로
     {
         if (currentLineIndex < lines.Count - 1)
         {
             currentLineIndex++;
-            dialogueLine.text = lines[currentLineIndex];
+            //-- 타이핑 연출 수정
+            //dialogueLine.text = lines[currentLineIndex];
+            SetDialogueText(lines[currentLineIndex]);
             if (currentLineIndex == 1)
             {
                 //HideSpaceImage();
@@ -139,8 +210,23 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
     public void OnSpace(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        // 260720 -- 이전 코드
+        //if (context.performed)
+        //{
+        //    ReadLine();
+        //}
+
+        if (!context.performed) return;
+        Debug.Log($"[OnSpace] 호출됨, isTyping = {isTyping}");
+
+        if (isTyping)
         {
+            // 타이핑 중이면 스킵 -> 전체 텍스트 즉시 표시
+            SkipTyping();
+        }
+        else
+        {
+            // 다 보여준 상태면 다음 대사로
             ReadLine();
         }
     }

@@ -266,6 +266,10 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
         LoadCanUseSkill();
         LoadSelectedSkill();
         OnPageBtnClick(1);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
         //ShowCommandSkill();
         gameObject.SetActive(true );
         ShowAlarm();
@@ -288,6 +292,11 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
 
         inputEventManager.OnESCTarget = null;
 
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
+
     }
 
     public void ConfirmPanelCancleBtn()
@@ -295,6 +304,11 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
         confirmSavePanel.SetActive(false);
 
         inputEventManager.OnESCTarget = this;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void ConfirmPanelOKBtn()
@@ -303,6 +317,11 @@ public class CommanderSkillUI : MonoBehaviour, IInputESC
         gameObject.SetActive(false);
 
         inputEventManager.OnESCTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnESC(InputAction.CallbackContext context)

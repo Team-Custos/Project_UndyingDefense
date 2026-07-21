@@ -57,6 +57,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
         // 닉네임 변경 UI로 이동
         Debug.Log("닉네임 변경 버튼 클릭");
         nickNamePanelScript.ShowNicknamePanel();
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void SetNickName(string name)
@@ -67,6 +72,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
     public void OnClickResetBtn()
     {
         resetCheckPanel.SetActive(true);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     // 기획상 게임초기화 버튼 삭제 (안쓰는 메서드)
@@ -88,6 +98,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
     public void OnClickResetCancelBtn()
     {
         resetCheckPanel.SetActive(false);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnClickPortraitBtn()
@@ -95,6 +110,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
         // 프로필 사진 변경 UI로 이동
         Debug.Log("프로필 사진 변경 버튼 클릭");
         portraitPanel.SetActive(true);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
 
     }
 
@@ -113,6 +133,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
         gameObject.SetActive(false);
 
         inputEventManager.OnESCTarget = null;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 
     public void OnESC(InputAction.CallbackContext context)
@@ -131,6 +156,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
             gameObject.SetActive(false);
 
             inputEventManager.OnESCTarget = null;
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayUIClickSFX();
+            }
         }
     }
 

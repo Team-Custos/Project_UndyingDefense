@@ -4,10 +4,12 @@ using System.Globalization;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MessageUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI message;
+    [SerializeField] private Image messageBG;
     [SerializeField] private GameObject messagePanel;
     [SerializeField] private AudioClip sfx;
     [SerializeField] private float duration;
@@ -19,6 +21,37 @@ public class MessageUI : MonoBehaviour
     private void Start()
     {
         //animator = GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        ResetState();
+    }
+
+    private void OnDisable()
+    {
+        ResetState();
+    }
+
+    private void ResetState()
+    {
+        showTimer = 0f;
+        messages.Clear();
+
+        if (message != null)
+            message.text = string.Empty;
+
+        if (messagePanel != null)
+            messagePanel.SetActive(false);
+
+        if(messageBG != null)
+            messageBG.color = new Color(1f, 1f, 1f, 0f); // 배경 이미지 투명하게 초기화
+
+        if (animator != null)
+        {
+            animator.Rebind();  // 애니메이터를 기본 상태로 되돌림 (트리거 값도 초기화됨)
+            animator.Update(0f);
+        }
     }
 
     private void Update()
@@ -47,6 +80,7 @@ public class MessageUI : MonoBehaviour
             }
         }
     }
+
     private void ShowNextMessage()
     {
         showTimer = duration;
@@ -55,7 +89,7 @@ public class MessageUI : MonoBehaviour
         messagePanel.SetActive(true);
         message.gameObject.SetActive(true);
         animator.SetTrigger("FadeIn");
-        SoundManager.Instance.PlaySFX(sfx);
+        SoundManager.Instance.PlayUISFX(sfx);
     }
 
     private void RemoveMessage()

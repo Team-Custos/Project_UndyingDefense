@@ -72,7 +72,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [Header("StagePrefsData")]
     [SerializeField] private SpeakingArray afterWinGusan;
 
-
+    // -- 씬 로딩 중복 방지용 플래그 -- 260718
+    private bool isLoadingScene = false;
 
     private ScriptableObject[] so;
 
@@ -266,6 +267,28 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
     }
 
+    // -- 씬 로딩 메서드 -- 260718
+    private void LoadSceneWithSfx(string sceneName)
+    {
+        if (isLoadingScene) return;
+        isLoadingScene = true;
+
+        SoundManager.Instance.PlaySFX(battleStartSfx);
+        DOTween.Sequence()
+            .AppendInterval(battleStartSfx.length)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.LoadScene(sceneName);
+            });
+    }
+
+    public void LoadTutorialScene() => LoadSceneWithSfx("TutorialScene");
+    public void LoadInGameScene() => LoadSceneWithSfx("Stage1_MergeScene  25.0608");
+    public void LoadNamhanGameScene() => LoadSceneWithSfx("Stage2_MergeScene LevelDesign");
+    public void LoadNamwonGameScene() => LoadSceneWithSfx("Stage3_MergeScene LevelDesign");
+
+    // 260718 이전 전장 열기 코드, 주석 처리
+    /*
     public void LoadTutorialScene()     // 훈련장 버튼 메서드
     {
         SoundManager.Instance.PlaySFX(battleStartSfx);
@@ -317,6 +340,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             });
        //LoadingSceneManager.LoadScene("Stage3_MergeScene LevelDesign");
     }
+    */
 
     public void OnSpace(InputAction.CallbackContext context)
     {
@@ -337,5 +361,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     {
         // 계정 정보 패널 열기
         accountInfoPanel.ShowAccountPanel(portraitLine.sprite);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUIClickSFX();
+        }
     }
 }
