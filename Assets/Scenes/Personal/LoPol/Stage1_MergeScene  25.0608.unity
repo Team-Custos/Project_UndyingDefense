@@ -1259,6 +1259,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4092244686081392523, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4166064875123476565, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: timeRecordTextUI
@@ -16656,7 +16661,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 2030394660}
   waveDataLoader: {fileID: 942100005}
   allyUnitSpawner: {fileID: 1866204814}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 1562171546}
 --- !u!4 &510280747
 Transform:
@@ -56445,7 +56450,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 0}
   waveDataLoader: {fileID: 0}
   allyUnitSpawner: {fileID: 0}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 0}
 --- !u!4 &2131853358 stripped
 Transform:

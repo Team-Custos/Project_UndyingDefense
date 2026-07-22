@@ -93,13 +93,13 @@ public class SpecialAbility : MonoBehaviour
     // 원한
     public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)   
     {
-        float randomValue = Random.value;
+        float randomValue = Random.value; // 0 ~1 사이의 랜덤 값 생성 ex) 0.01, 0.3 0.9
 
         if (randomValue <= percent)
         {
-            Debug.Log(randomValue);
-
+            Debug.Log("원한 발동 :" + randomValue);
             target.AddEffect(effect, target, Vector3.zero);
+            target.AddVFX(vfx, target.transform.position);
         }
     }
 
@@ -124,7 +124,7 @@ public class SpecialAbility : MonoBehaviour
                     float recoveryHp = target.Maxhp * percent;
                     unit.TakeDamage(-recoveryHp, null);
                     unit.AddVFX(vfx, unit.transform.position);
-                    Debug.Log(-recoveryHp);
+                    Debug.Log("회복량 : " + recoveryHp);
                 }
             }
         }

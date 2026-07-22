@@ -27,14 +27,13 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Wave Options")] // 웨이브에 사용되는 변수들
-    [SerializeField] private bool isInfiniteMode = false;
+    [SerializeField] private bool isTutorial = false;
     private int curWave = 0; // 현재 웨이브
     private float waveTimer = 20f;
     private bool isWaveEnd = true;  // 웨이브가 끝났는지 여부
     private bool isWaveWait = true; // 웨이브 준비 상태
     private float waveDelay = 4.0f;
     private bool isFortressAttacked = false;
-    private int infiniteWaveCount = 1;
     public bool IsWaveEnd => isWaveEnd;
     public int CurWave => curWave;
 
@@ -63,23 +62,12 @@ public class WaveManager : MonoBehaviour
                     curWave++;
                     enemyUnitSpawner.StartSpawn(waveDatas[curWave - 1]);
 
-                    if(!isInfiniteMode)
-                    {
-                        ingameScreenUI.SetWaveNumber(curWave, waveDatas.Length, false);
-                        //--Localize
-                        //ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
-                        ShowWaveStart("NTF_battleWaveStart", curWave);
-                        allyUnitSpawner.SetIdleState(false);
-                    }
-                    else
-                    {
-                        //--Localize
-                        ingameScreenUI.SetWaveNumber(infiniteWaveCount, 0, true);
-                        //ingameScreenUI.ShowNotice(infiniteWaveCount + "차 침공 시작");
-                        ShowWaveStart("NTF_battleWaveStart", infiniteWaveCount);
-                        allyUnitSpawner.SetIdleState(false);
-                    }
-                    
+                    ingameScreenUI.SetWaveNumber(curWave, waveDatas.Length, false);
+                    //--Localize
+                    //ingameScreenUI.ShowNotice(curWave + "차 침공 시작");
+                    ShowWaveStart("NTF_battleWaveStart", curWave);
+                    allyUnitSpawner.SetIdleState(false);
+
                     SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
                     fortress.ResetFortressState();
                     waveTimer = 20f;
@@ -113,36 +101,11 @@ public class WaveManager : MonoBehaviour
     {
         if (curWave >= waveDataLoader.WaveDataList.Count)//waveDatas.Length)
         {
-            if(!isInfiniteMode)
-            {
-                SoundManager.Instance.StopBGM();
-                inGameManager.WinGame();
-                //SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleWin]);
-            }
-            else
-            {
-                //--Localize
-                ingameScreenUI.ShowNotice(LocalizationSettings.StringDatabase.
-                    GetLocalizedString("IngameUI", "NTF_battleWaveWin", LocalizationSettings.SelectedLocale));
-                //ingameScreenUI.ShowNotice("방어 성공");
-                //---
+            SoundManager.Instance.StopBGM();
+            inGameManager.WinGame();
+
+            if(isTutorial)
                 SetTutorialEnd();
-                //---
-                SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
-
-                inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
-                ingameScreenUI.SetspawnBtnPriceTextColor();
-                upgradeMenuUI.UpdateUpgradeCostTxt();
-
-
-                curWave = 0;
-                isWaveEnd = true;
-                isFortressAttacked = false;
-                infiniteWaveCount++;
-
-                allyUnitSpawner.SetIdleState(isWaveEnd);
-            }
-            
         }
         else
         {
@@ -151,7 +114,6 @@ public class WaveManager : MonoBehaviour
                     GetLocalizedString("IngameUI", "NTF_battleWaveWin", LocalizationSettings.SelectedLocale));
             //ingameScreenUI.ShowNotice("방어 성공");
             //---
-            SetTutorialEnd();
             //---
             SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
@@ -163,8 +125,6 @@ public class WaveManager : MonoBehaviour
             isWaveEnd = true;
             isFortressAttacked = false;
 
-            if (isInfiniteMode)
-                infiniteWaveCount++;
 
             allyUnitSpawner.SetIdleState(isWaveEnd);
         }

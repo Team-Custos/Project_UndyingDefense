@@ -225,7 +225,6 @@ public class AttackSkill : SkillBase
 
 
 
-
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
         if (unit.IsDead)
@@ -347,6 +346,10 @@ public class AttackSkill : SkillBase
             AddHitVFX(unit, target);
             AddHitSFX(target.transform.position);
         }
+
+        //Debug.Log(calcCrit);
+
+        //Debug.Log("데미지 : " + calcDamage);
 
         target.TakeDamage(calcDamage, unit);
 
@@ -514,6 +517,8 @@ public class AttackSkill : SkillBase
             //Debug.Log($"{unit.Data.Name} : {unit.Mental},  {target.Data.Name} : {target.Mental}");
             //Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}");
 
+
+            Debug.Log("상태 발동 확률 : " + finalPercent);
             return Mathf.Clamp01(finalPercent);
         }
     }

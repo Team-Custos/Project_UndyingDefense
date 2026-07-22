@@ -16175,8 +16175,8 @@ MonoBehaviour:
     _PersistentCalls: []
   gameFinish:
     _PersistentCalls: []
-  id: 
-  stagePrefsData: {fileID: 0}
+  id: UNQ_tutorial
+  stagePrefsData: {fileID: 1095295302}
   winPoint: 0
   losePoint: 0
 --- !u!4 &415572254
@@ -35372,6 +35372,79 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 894749294}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &895121583
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274916351147450979, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8446796234018502599, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_Name
+      value: fx_punishment
+      objectReference: {fileID: 0}
+    - target: {fileID: 8446796234018502599, guid: 053f77602a7670c44a7f9cef7ca952b3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 053f77602a7670c44a7f9cef7ca952b3, type: 3}
 --- !u!1001 &899547087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56231,7 +56304,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 1936867425}
   waveDataLoader: {fileID: 0}
   allyUnitSpawner: {fileID: 0}
-  isInfiniteMode: 1
+  isTutorial: 0
   stagePrefsData: {fileID: 0}
 --- !u!4 &1409587473
 Transform:
@@ -68158,14 +68231,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   waveDatas:
   - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
-  - {fileID: 11400000, guid: 01b0f0e89af63554f85b05cd4a19a1b5, type: 2}
-  - {fileID: 11400000, guid: 755b1e4487959fd4e9aec066c60824a5, type: 2}
-  - {fileID: 11400000, guid: 26730a2c50f297f4cadb759023608fd9, type: 2}
-  - {fileID: 11400000, guid: f79ebf53a0ddc58428ba7444d098ccd4, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
+  - {fileID: 11400000, guid: a218b88a1b8bdcd4e9bf77ef629af88d, type: 2}
   dollyCamera: {fileID: 478265408}
   waveDataLoader: {fileID: 824689422}
   allyUnitSpawner: {fileID: 1418562301}
-  isInfiniteMode: 1
+  isTutorial: 1
   stagePrefsData: {fileID: 1095295302}
 --- !u!4 &1713546832
 Transform:
@@ -84213,7 +84291,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 0}
   waveDataLoader: {fileID: 0}
   allyUnitSpawner: {fileID: 0}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 0}
 --- !u!1 &2131560353
 GameObject:
@@ -84972,6 +85050,7 @@ SceneRoots:
   - {fileID: 1105637571}
   - {fileID: 1471531578}
   - {fileID: 1251858463}
+  - {fileID: 895121583}
   - {fileID: 1981519341}
   - {fileID: 1365833132}
   - {fileID: 1009779026}

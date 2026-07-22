@@ -425,4 +425,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             }
         }
     }
+
+    public void SearchImmortalityUnit()
+    {
+        // 적군 딕셔너리에서 헨리 검색
+        // 헨리가 있으면 -> 헨리와 거리 계산
+        // 거리가 가까우면 헨리 특수 효과 발동
+    }
 }

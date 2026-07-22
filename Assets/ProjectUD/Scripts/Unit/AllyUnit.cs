@@ -1025,6 +1025,7 @@ public class AllyUnit : Unit
 
         isDead = true;
 
+
         if (state == State.STUN)
         {
             base.RemoveStun();

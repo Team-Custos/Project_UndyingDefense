@@ -112,10 +112,10 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
         switch (mentalDifference)
         {
-            case 4: return 0.8f;
-            case 3: return 0.6f;
-            case 2: return 0.4f;
-            case 1: return 0.2f;
+            case 4: return 1f;
+            case 3: return 0.75f;
+            case 2: return 0.5f;
+            case 1: return 0.25f;
             case 0: return 0f;
             case -1: return -0.2f;
             case -2: return -0.4f;
@@ -123,7 +123,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
             case -4: return -0.8f;
             default:
                 // 4보다 크면 0.8, 그 외(-4보다 작으면) -0.8 반환
-                if (mentalDifference > 4) return 0.8f;
+                if (mentalDifference > 4) return 1f;
                 else return -0.8f;
         }
 
