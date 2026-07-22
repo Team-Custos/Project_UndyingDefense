@@ -19363,8 +19363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898daff6cc7935045a9771de03ed337b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameManager: {fileID: 693347759}
-  inputEventManager: {fileID: 122149541}
 --- !u!1001 &339930086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29632,7 +29630,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 2030394660}
   waveDataLoader: {fileID: 942100005}
   allyUnitSpawner: {fileID: 1866204814}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 1562171546}
 --- !u!4 &510280747
 Transform:
@@ -39768,8 +39766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898daff6cc7935045a9771de03ed337b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGameManager: {fileID: 0}
-  inputEventManager: {fileID: 1590103094}
 --- !u!4 &705343323
 Transform:
   m_ObjectHideFlags: 0
@@ -53736,6 +53732,8 @@ MonoBehaviour:
   hpTextUI: {fileID: 139754859}
   hitUI: {fileID: 0}
   animator: {fileID: 0}
+  speedBtn: {fileID: 0}
+  speedBtnAnim: {fileID: 0}
   noticeUI: {fileID: 751923282}
   noticeTimerUI: {fileID: 2532806955720346971}
   errorPanel: {fileID: 434517989}
@@ -57723,7 +57721,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 311500981}
   waveDataLoader: {fileID: 34717631}
   allyUnitSpawner: {fileID: 0}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 0}
 --- !u!4 &1023733845
 Transform:
@@ -114051,6 +114049,160 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1706735839}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2105812126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2105812127}
+  - component: {fileID: 2105812131}
+  - component: {fileID: 2105812130}
+  - component: {fileID: 2105812129}
+  - component: {fileID: 2105812128}
+  m_Layer: 5
+  m_Name: SpeedBtn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2105812127
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105812126}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7967176758734550213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -282, y: -76}
+  m_SizeDelta: {x: 88.5, y: 73.5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &2105812128
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105812126}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b54e03aa7828a3346a917b5cb80cabb1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2105812129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105812126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300000, guid: 68e262e7fa635db4eba28e2914f9d977, type: 3}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2105812130}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 693347759}
+        m_TargetAssemblyTypeName: InGameManager, Assembly-CSharp
+        m_MethodName: ToggleGameSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2105812130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105812126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: a532c2ef379edeb429609b2d0241d3e2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2105812131
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105812126}
+  m_CullTransparentMesh: 1
 --- !u!1 &2106811767 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1684522707588662193, guid: 101ce1abed57a274cba6a6ffc4ffb87d,
@@ -115379,7 +115531,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 0}
   waveDataLoader: {fileID: 0}
   allyUnitSpawner: {fileID: 0}
-  isInfiniteMode: 0
+  isTutorial: 0
   stagePrefsData: {fileID: 0}
 --- !u!4 &2131853358 stripped
 Transform:
@@ -122148,6 +122300,8 @@ MonoBehaviour:
   hpTextUI: {fileID: 8333936936176508184}
   hitUI: {fileID: 100717148}
   animator: {fileID: 100717147}
+  speedBtn: {fileID: 2105812129}
+  speedBtnAnim: {fileID: 2105812128}
   noticeUI: {fileID: 2596611874688463175}
   noticeTimerUI: {fileID: 6775125311394541428}
   errorPanel: {fileID: 444733399}
@@ -131960,6 +132114,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5851140480768653460}
+  - {fileID: 2105812127}
   - {fileID: 5161994496319943039}
   - {fileID: 3125108746663103710}
   - {fileID: 5954686779694199822}

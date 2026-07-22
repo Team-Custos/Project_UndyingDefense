@@ -30,6 +30,10 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private Image hitUI;       // 성 피격시 나타나는 이미지
     [SerializeField] private Animator animator;
 
+    [Header("■ 배속 기능")]
+    [SerializeField] private Button speedBtn;
+    [SerializeField] private Animator speedBtnAnim;
+
     [Header("■ Notice")]
     [SerializeField] private NoticeUI noticeUI;
     [SerializeField] private NoticeUI noticeTimerUI;
@@ -240,6 +244,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         commandSkillPanel.SetActive(on);
         spawnPanel.SetActive(on);
         recordTextUI.gameObject.SetActive(on);
+        speedBtn.gameObject.SetActive(on);
     }
 
     public void SetRecordTextUI(string text)
@@ -257,5 +262,10 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         {
             newReorcUI.SetActive(false);
         }
+    }
+
+    public void UpdateSpeedButtonAni(bool isFastForward)
+    {
+        speedBtnAnim.SetBool("VideoSpeedDouble", isFastForward);
     }
 }

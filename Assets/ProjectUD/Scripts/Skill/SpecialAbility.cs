@@ -100,6 +100,7 @@ public class SpecialAbility : MonoBehaviour
             Debug.Log("원한 발동 :" + randomValue);
             target.AddEffect(effect, target, Vector3.zero);
             target.AddVFX(vfx, target.transform.position);
+            SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
         }
     }
 

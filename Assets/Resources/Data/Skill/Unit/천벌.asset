@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: USkillNerf003
   icon: {fileID: 0}
-  coolTime: 3
+  coolTime: 20
   targetType: 0
   range: 5
   activeMental: 3
-  attackSFX: []
+  attackSFX:
+  - {fileID: 8300000, guid: 00036ba8874f39247bb8c2362c226ca6, type: 3}
   effectPrefab: {fileID: 9176701577400336566, guid: 97e11b8d0d96ecb42afa5fe1d71957e3,
     type: 3}
   vfx: {fileID: 8446796234018502599, guid: 053f77602a7670c44a7f9cef7ca952b3, type: 3}

@@ -4,8 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
-public class InGameManager : MonoBehaviour, IInputESC
+public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 {
     public float inGameGold;
     [SerializeField] private IngameScreenUI ingameScreenUI;
@@ -24,6 +25,8 @@ public class InGameManager : MonoBehaviour, IInputESC
     private bool isGamePause = false;
     private float timeRecord = 0f;   // 현재 게임 플레이 시간 기록용 변수
     private string recordText = "";
+
+    private bool isFastForward = false;
 
     public bool IsGameStart => isGameStart;
     public bool IsGamgePause => isGamePause;
@@ -62,6 +65,7 @@ public class InGameManager : MonoBehaviour, IInputESC
         SoundManager.Instance.PlaySFX(inGameIntro);
 
         inputEventManager.OnESCTarget = this;
+        inputEventManager.OnSpeedUpTarget = this;
     }
 
     private void Update()
@@ -137,7 +141,11 @@ public class InGameManager : MonoBehaviour, IInputESC
     {
         isGamePause = false;
         ingameScreenUI.OnOffSettingUI(isGamePause);
-        Time.timeScale = 1.0f; 
+
+        if(isFastForward)
+            Time.timeScale = 2f;
+        else
+            Time.timeScale = 1.0f; 
     }
 
     public void OnESC(InputAction.CallbackContext context)
@@ -221,5 +229,26 @@ public class InGameManager : MonoBehaviour, IInputESC
     private void PlayWinBGM()
     {
         SoundManager.Instance.PlayBGM(winBgm);
+    }
+
+    public void ToggleGameSpeed()
+    {
+        if (isGamePause || dollyCamera.IsCamPanning)
+            return;
+
+        isFastForward = !isFastForward;
+
+        Time.timeScale = isFastForward ? 2f : 1f;
+
+        ingameScreenUI.UpdateSpeedButtonAni(isFastForward);
+
+    }
+
+    public void OnSpeedUp(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ToggleGameSpeed();
+        }
     }
 }
