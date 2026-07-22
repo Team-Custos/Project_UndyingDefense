@@ -8,6 +8,10 @@ using DG.Tweening;
 
 public class TitleUIManager : MonoBehaviour
 {
+    [Header("Screen Blocker")]
+    [SerializeField] private GameObject inputBlocker;
+
+    [Header("UI Elements")]
     public Button gameStartBtn;
     public Button gameEndBtn;
     public GameObject loadingPanel;
@@ -46,6 +50,17 @@ public class TitleUIManager : MonoBehaviour
             {
                 if (PlayerPrefs.GetInt("IntroVideo") == 0)
                 {
+                    gameStartBtn.enabled = false;
+                    var anim = gameStartBtn.GetComponent<Animator>();
+                    if (anim != null)
+                    {
+                        anim.ResetTrigger("Normal");
+                        anim.ResetTrigger("Highlighted");
+                        anim.ResetTrigger("Selected");
+                        anim.ResetTrigger("Disabled");
+                        anim.Play("Pressed", 0, 0f);
+                    }
+
                     SoundManager.Instance.PlaySFX(startSfx);
                     DOTween.Sequence()
                     .AppendInterval(startSfx.length)
@@ -59,6 +74,17 @@ public class TitleUIManager : MonoBehaviour
                 }
                 else
                 {
+                    gameStartBtn.enabled = false;
+                    var anim = gameStartBtn.GetComponent<Animator>();
+                    if (anim != null)
+                    {
+                        anim.ResetTrigger("Normal");
+                        anim.ResetTrigger("Highlighted");
+                        anim.ResetTrigger("Selected");
+                        anim.ResetTrigger("Disabled");
+                        anim.Play("Pressed", 0, 0f);
+                    }
+
                     SoundManager.Instance.PlaySFX(startSfx);
                     DOTween.Sequence()
                     .AppendInterval(startSfx.length)
