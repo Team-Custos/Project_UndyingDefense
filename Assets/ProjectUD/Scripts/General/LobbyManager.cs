@@ -51,6 +51,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [Header("StagePrefsData")]
     [SerializeField] private StagePrefsData stagePrefsData;
 
+    [Header("Stage Buttons")]
+    [SerializeField] private Button tutorialBtn;
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
     [SerializeField] private Button namwonBtn;
@@ -73,6 +75,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private SpeakingArray afterWinGusan;
 
     // -- 씬 로딩 중복 방지용 플래그 -- 260718
+    [Header("Screen Blocker")]
+    [SerializeField] private GameObject inputBlocker; // Canvas 최하단, 풀스크린 Image, Raycast Target ON
     private bool isLoadingScene = false;
 
     private ScriptableObject[] so;
@@ -268,10 +272,25 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     }
 
     // -- 씬 로딩 메서드 -- 260718
-    private void LoadSceneWithSfx(string sceneName)
+    private void LoadSceneWithSfx(string sceneName, Button clickedButton)
     {
         if (isLoadingScene) return;
         isLoadingScene = true;
+
+        inputBlocker.SetActive(true);
+
+        clickedButton.enabled = false; // pointer 이벤트 처리 중단 → Pressed 상태 유지
+        //clickedButton.GetComponent<Animator>()?.Play("Pressed");
+        var anim = clickedButton.GetComponent<Animator>();
+        Debug.Log(anim == null ? "Animator 못 찾음" : "Animator 찾음");
+        if (anim != null)
+        {
+            anim.ResetTrigger("Normal");
+            anim.ResetTrigger("Highlighted");
+            anim.ResetTrigger("Selected");
+            anim.ResetTrigger("Disabled");
+            anim.Play("Pressed", 0, 0f);
+        }
 
         SoundManager.Instance.PlaySFX(battleStartSfx);
         DOTween.Sequence()
@@ -282,10 +301,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
             });
     }
 
-    public void LoadTutorialScene() => LoadSceneWithSfx("TutorialScene");
-    public void LoadInGameScene() => LoadSceneWithSfx("Stage1_MergeScene  25.0608");
-    public void LoadNamhanGameScene() => LoadSceneWithSfx("Stage2_MergeScene LevelDesign");
-    public void LoadNamwonGameScene() => LoadSceneWithSfx("Stage3_MergeScene LevelDesign");
+    public void LoadTutorialScene() => LoadSceneWithSfx("TutorialScene", tutorialBtn);
+    public void LoadInGameScene() => LoadSceneWithSfx("Stage1_MergeScene  25.0608", guemsanBtn);
+    public void LoadNamhanGameScene() => LoadSceneWithSfx("Stage2_MergeScene LevelDesign", namhanBtn);
+    public void LoadNamwonGameScene() => LoadSceneWithSfx("Stage3_MergeScene LevelDesign", namwonBtn);
 
     // 260718 이전 전장 열기 코드, 주석 처리
     /*
