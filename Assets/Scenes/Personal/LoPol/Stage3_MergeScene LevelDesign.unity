@@ -51799,11 +51799,13 @@ MonoBehaviour:
   effectImagePool: {fileID: 0}
   dollyCamera: {fileID: 311500981}
   waveManager: {fileID: 0}
+  enemyUnitSpawner: {fileID: 0}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 0}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 418159408}
@@ -101843,11 +101845,13 @@ MonoBehaviour:
   effectImagePool: {fileID: 934271226050852778}
   dollyCamera: {fileID: 2030394660}
   waveManager: {fileID: 510280746}
+  enemyUnitSpawner: {fileID: 963799560}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 4606055465534684351}
@@ -125191,8 +125195,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.6850014, y: 0.94000244}
-  m_SizeDelta: {x: -11.73, y: -11.279998}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4218292296470526362
 RectTransform:
@@ -131443,8 +131447,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.65999985, y: -0.35500336}
-  m_SizeDelta: {x: -12.059998, y: -11.690006}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7609477948224171328
 MonoBehaviour:
@@ -133603,8 +133607,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.6699829, y: 0.20500946}
-  m_SizeDelta: {x: -10.959969, y: -12.069983}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8844188756721432394
 GameObject:

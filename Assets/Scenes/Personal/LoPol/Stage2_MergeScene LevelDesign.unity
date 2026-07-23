@@ -24656,11 +24656,13 @@ MonoBehaviour:
   effectImagePool: {fileID: 4043269551651857318}
   dollyCamera: {fileID: 311500981}
   waveManager: {fileID: 1023733844}
+  enemyUnitSpawner: {fileID: 679628028}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 792731994311977139}
@@ -57710,6 +57712,26 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 465044318400637970, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 465044318400637970, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 465044318400637970, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 465044318400637970, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 470599391437390096, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -57778,6 +57800,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: d2c52cadd8c28bc47ab6a63177bb9e56,
         type: 3}
+    - target: {fileID: 966673900026204142, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966673900026204142, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966673900026204142, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966673900026204142, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1040524679677599408, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -58263,6 +58305,26 @@ PrefabInstance:
       propertyPath: commandSkillDescriptionText
       value: 
       objectReference: {fileID: 1810634486}
+    - target: {fileID: 5233557920865307993, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233557920865307993, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233557920865307993, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233557920865307993, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5398806560292344171, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: inGameManager

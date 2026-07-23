@@ -246,4 +246,12 @@ public class EnemyUnitSpawner : MonoBehaviour
     {
         bonusGoldPercent += percent * 0.01f;
     }
+
+    public List<EnemyUnit> GetActivateEnemy(EnemyUnitData enemyData)
+    {
+        if (poolDic.TryGetValue(enemyData, out var pool))
+            return pool.List;
+
+        return null;
+    }
 }

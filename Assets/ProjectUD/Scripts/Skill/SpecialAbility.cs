@@ -12,10 +12,11 @@ public class SpecialAbility : MonoBehaviour
         ALWAYS,     // 상시 ex) 금강불괴
         HP,         // HP에 따라 ex) 자폭
         KILL,       // 대상을 처치했을 때 ex) 흡혈
-        DIE,        // 사망 시 ex) 독구름
-        MENTAL,      // 멘탈에 따라 ex)
-        ATTACK,     // 공격 시 ex) 영생
+        ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
+        Enemy_Dead   // 적이 죽었을 때 ex) 영생
+
+
     }
 
     [SerializeField] private new string name;
@@ -83,8 +84,8 @@ public class SpecialAbility : MonoBehaviour
         Debug.Log("금강불괴");
     }
 
-    // 영생
-    public void Immortality(Unit unit, float percent, GameObject vfx)
+    // 흡혈
+    public void LifeSteal(Unit unit, float percent, GameObject vfx)
     {
         unit.TakeDamage(-Damage * percent, null);
         unit.AddVFX(vfx, unit.transform.position);
@@ -104,31 +105,14 @@ public class SpecialAbility : MonoBehaviour
         }
     }
 
-    public void Immortality(Unit unit, float radius, float percent, GameObject vfx)
+    public void Immortality(Unit unit, Unit target, float percent, GameObject vfx)
     {
-        if (targets == null)
-            targets = new Collider[30];
+        float hpAmount = target.Maxhp * percent;
 
-        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
-
-        if (targetCount <= 0)
-            return;
-
-        Debug.Log(targetCount);
-
-        for (int i = 0; i < targetCount; i++)
-        {
-            if (targets[i].TryGetComponent(out Unit target))
-            {
-                if(target.IsDead)
-                {
-                    float recoveryHp = target.Maxhp * percent;
-                    unit.TakeDamage(-recoveryHp, null);
-                    unit.AddVFX(vfx, unit.transform.position);
-                    Debug.Log("회복량 : " + recoveryHp);
-                }
-            }
-        }
+        unit.TakeDamage(-hpAmount, null);
+        Debug.Log("회복량 : " +  hpAmount);
+        unit.AddVFX(vfx, unit.transform.position);
+        SoundManager.Instance.PlaySFX(audioClip, unit.transform.position);
     }
 
 

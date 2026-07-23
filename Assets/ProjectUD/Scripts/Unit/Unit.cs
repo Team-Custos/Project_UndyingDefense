@@ -238,7 +238,7 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        ActivateSpecialAbility(ActiveType.ALWAYS, null);
+        //ActivateSpecialAbility(ActiveType.ALWAYS, null);
     }
     public virtual void Initialize()
     {

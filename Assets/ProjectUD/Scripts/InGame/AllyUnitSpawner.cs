@@ -26,11 +26,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [SerializeField] private EffectImagePool effectImagePool;
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private WaveManager waveManager;
+    [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
     [SerializeField] private Image[] alarmImages;
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
+    [SerializeField] private EnemyUnitData immortalityUnit;
 
     [Header("■ Spawn Point")]
     [SerializeField] private GameObject spawnPointPrefab;
@@ -426,10 +428,28 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         }
     }
 
-    public void SearchImmortalityUnit()
+    public void SearchImmortalityUnit(Unit unit)
     {
-        // 적군 딕셔너리에서 헨리 검색
-        // 헨리가 있으면 -> 헨리와 거리 계산
-        // 거리가 가까우면 헨리 특수 효과 발동
+        List<EnemyUnit> units = enemyUnitSpawner.GetActivateEnemy(immortalityUnit);
+
+        if (units == null || units.Count == 0)
+            return;
+
+        foreach (EnemyUnit enemy in units)
+        {
+            float distance = Vector3.Distance(unit.transform.position, enemy.transform.position);
+
+            if (distance <= 5f)
+            {
+                enemy.ActivateSpecialAbility(SpecialAbility.ActiveType.Enemy_Dead, unit);
+            }
+            else
+            {
+                Debug.Log(distance);
+                return;
+            }
+                
+        }
+
     }
 }

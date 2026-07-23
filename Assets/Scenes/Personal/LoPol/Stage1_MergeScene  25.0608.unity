@@ -1274,6 +1274,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4166064875123476565, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: timeRecordTextUI
@@ -2009,6 +2029,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7638975001484682321, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: infoPanel
@@ -2199,6 +2239,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1866204814}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8879024059884677455, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -49239,11 +49299,13 @@ MonoBehaviour:
   effectImagePool: {fileID: 1181318908}
   dollyCamera: {fileID: 2030394660}
   waveManager: {fileID: 510280746}
+  enemyUnitSpawner: {fileID: 963799560}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 1149416982}
