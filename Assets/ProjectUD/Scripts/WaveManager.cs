@@ -130,7 +130,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private void SetTutorialEnd()
+    private void SetTutorialEnd()   // 나중에 StagePrefsData로 메서드 옮기기
     {
         PlayerPrefs.SetInt("IsTutorialEnd", 1);
         StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsanCastle");

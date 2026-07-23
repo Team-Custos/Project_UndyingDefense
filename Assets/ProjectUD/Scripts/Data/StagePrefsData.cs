@@ -191,6 +191,18 @@ public class StagePrefsData : MonoBehaviour
 
         stagePlayerPrefs[id] = stagedata;
     }
+    public void SetTutorialFinish()
+    {
+        //PlayerPrefs.SetInt("IsTutorialFinished", 1);
+        Debug.Log("훈련장종료");
+    }
+
+    public void SetTutorialWin()
+    {
+        PlayerPrefs.SetInt("TutorialWin", 1);
+        PlayerPrefs.SetInt("IsTutorialEnd", 1);
+        Debug.Log("훈련장 이김");
+    }
     public void SetGuemsanFinish()  // 인게임매니저 이벤트용 메서드
     {
         PlayerPrefs.SetInt("IsGeumsanFinished", 1);
