@@ -56,6 +56,10 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
     [SerializeField] private Button namwonBtn;
+    [Header("tutorial")]
+    //[SerializeField] private GameObject tutorialLock;
+    [SerializeField] private GameObject tutorialRecordPanel;
+    [SerializeField] private TextMeshProUGUI tutorialRecordText;
     [Header("Guemsan")]
     [SerializeField] private GameObject guemsanLock;
     [SerializeField] private GameObject guemsanCloud;
@@ -99,12 +103,19 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     }
     public void CheckStage()
     {
+        StageData tutorial = stagePrefsData.GetStageData("UNQ_tutorial");
         StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsanCastle");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
         StageData namwon = stagePrefsData.GetStageData(("UNQ_namwonCastle"));
         Debug.Log($"금산전투 해금여부 : {guemsan.isOpen}, 남한산성 해금여부 : {namhan.isOpen}");
         Debug.Log($"금산전투 Win여부 : {PlayerPrefs.GetInt("GeumsanWin")}");
         Debug.Log($"금산전투 클리어여부 : {guemsan.isStageEnd}, 남한산성 클리어여부 : {namhan.isStageEnd}");
+
+        if(tutorial.clearTime != 0)
+        {
+            tutorialRecordText.text = ConvertToTime(tutorial.clearTime);
+            tutorialRecordPanel.SetActive(true);
+        }
 
         if (guemsan.isOpen)
         {
