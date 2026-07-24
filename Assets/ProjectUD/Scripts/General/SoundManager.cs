@@ -91,7 +91,6 @@ public class SoundManager : Singleton<SoundManager>
     {
         if (audioSourcePool == null) return;
 
-        Debug.Log(audioSourcePool.List.Count);
 
         foreach (var src in audioSourcePool.List)
             src.volume = masterVolume * combatVolume;

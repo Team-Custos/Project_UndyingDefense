@@ -68,7 +68,7 @@ public class WaveManager : MonoBehaviour
                     ShowWaveStart("NTF_battleWaveStart", curWave);
                     allyUnitSpawner.SetIdleState(false);
 
-                    SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
+                    SoundManager.Instance.PlayUISFX(waveSfxClip[(int)waveSfx.sfx_waveStart]);
                     fortress.ResetFortressState();
                     waveTimer = 20f;
                     waveDelay = 4f;
@@ -115,7 +115,7 @@ public class WaveManager : MonoBehaviour
             //ingameScreenUI.ShowNotice("방어 성공");
             //---
             //---
-            SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
+            SoundManager.Instance.PlayUISFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
             inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
             ingameScreenUI.SetspawnBtnPriceTextColor();
@@ -149,7 +149,7 @@ public class WaveManager : MonoBehaviour
 
     public void PlayLoseSfx()
     {
-        SoundManager.Instance.PlaySFX(waveSfxClip[(int)waveSfx.sfx_battleLose]);
+        SoundManager.Instance.PlayUISFX(waveSfxClip[(int)waveSfx.sfx_battleLose]);
     }
 
 }
