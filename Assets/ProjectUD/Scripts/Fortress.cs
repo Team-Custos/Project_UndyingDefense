@@ -67,7 +67,7 @@ public class Fortress : MonoBehaviour
         ingameUI.ShowFortressHitUI();
 
         if (hp > 0f)
-            SoundManager.Instance.PlaySFX(damageSound[Random.Range(0, damageSound.Length)]);
+            SoundManager.Instance.PlaySFX(damageSound[Random.Range(0, damageSound.Length)], transform.position);
         //audioSource.PlayOneShot(damageSound[Random.Range(0, damageSound.Length)]);//데미지 사운드 출력
     }
 

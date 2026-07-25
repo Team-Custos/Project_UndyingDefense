@@ -6976,6 +6976,7 @@ MonoBehaviour:
   effectImagePool: {fileID: 0}
   dollyCamera: {fileID: 1936867425}
   waveManager: {fileID: 0}
+  enemyUnitSpawner: {fileID: 0}
   alarmImages:
   - {fileID: 1896428217}
   - {fileID: 1998401896}
@@ -6984,6 +6985,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 0}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 1906587491}
@@ -12510,6 +12512,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 1936867425}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 0}
+  inGameBgm: {fileID: 0}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
@@ -16319,6 +16322,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 478265408}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 1365833131}
+  inGameBgm: {fileID: 8300000, guid: 831117addb0753345886db2b771ed498, type: 3}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
   winBgm: {fileID: 8300000, guid: 009708deaf0928c47a4fca3efcfb08c1, type: 3}
@@ -17826,7 +17830,6 @@ MonoBehaviour:
   inGameManager: {fileID: 415572253}
   waveManager: {fileID: 1713546831}
   enemyUnitSpawner: {fileID: 1402139191}
-  inGmaeBgm: {fileID: 8300000, guid: 021a972980663384d891f8e5ada12b30, type: 3}
   virtualCamera: {fileID: 2020728294}
   isCamPanning: 1
   panningDuration: 9
@@ -21851,8 +21854,10 @@ MonoBehaviour:
   linePositions: {fileID: 0}
   audioSource: {fileID: 585491304}
   damageSound:
-  - {fileID: 8300000, guid: 8f2fcd6de08435b44959234a02630a72, type: 3}
-  - {fileID: 8300000, guid: 382282a1e064944418192c41b1a5b7d9, type: 3}
+  - {fileID: 8300000, guid: d7b0450dd45941c488fda0b8fc9f3983, type: 3}
+  - {fileID: 8300000, guid: 6fc72021e0afc2a4585a570fe6477353, type: 3}
+  - {fileID: 8300000, guid: 831658e4d48bec54b8e8e6e2bad16804, type: 3}
+  - {fileID: 8300000, guid: 653ee85447fa44849b897deecae87be0, type: 3}
 --- !u!82 &585491304
 AudioSource:
   m_ObjectHideFlags: 0
@@ -32641,7 +32646,7 @@ PrefabInstance:
     - target: {fileID: 1516172177440090003, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_text
-      value: "1 / \u221E  \uC6E8\uC774\uBE0C"
+      value: "1 / 10 \uC6E8\uC774\uBE0C"
       objectReference: {fileID: 0}
     - target: {fileID: 1584093368476789896, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -33065,6 +33070,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152222453242848476, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4166064875123476565, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -33653,8 +33678,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.66000366
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7605906045578324854, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7638975001484682321, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -33796,6 +33836,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1418562301}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818762437612688834, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8879024059884677455, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -56942,6 +57002,7 @@ MonoBehaviour:
   effectImagePool: {fileID: 869192681}
   dollyCamera: {fileID: 478265408}
   waveManager: {fileID: 1713546831}
+  enemyUnitSpawner: {fileID: 1402139191}
   alarmImages:
   - {fileID: 523125358}
   - {fileID: 771561438}
@@ -56950,6 +57011,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
+  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 869192680}
@@ -77548,7 +77610,6 @@ MonoBehaviour:
   inGameManager: {fileID: 0}
   waveManager: {fileID: 1409587472}
   enemyUnitSpawner: {fileID: 2030995722}
-  inGmaeBgm: {fileID: 8300000, guid: 021a972980663384d891f8e5ada12b30, type: 3}
   virtualCamera: {fileID: 1094198683}
   isCamPanning: 1
   panningDuration: 9

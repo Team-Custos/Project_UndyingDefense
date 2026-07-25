@@ -17,6 +17,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     [SerializeField] private AudioClip inGameIntro;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
 
+    [SerializeField] private AudioClip inGameBgm;
     [SerializeField] private AudioClip winSfx;
     [SerializeField] private AudioClip loseSfx;
     [SerializeField] private AudioClip winBgm;
@@ -250,5 +251,10 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
         {
             ToggleGameSpeed();
         }
+    }
+
+    public void PlayInGameBGM()
+    {
+        SoundManager.Instance.PlayBGM(inGameBgm);
     }
 }

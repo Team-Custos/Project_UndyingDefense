@@ -1025,6 +1025,7 @@ public class AllyUnit : Unit
 
         isDead = true;
 
+        spawner.SearchImmortalityUnit(this);
 
         if (state == State.STUN)
         {

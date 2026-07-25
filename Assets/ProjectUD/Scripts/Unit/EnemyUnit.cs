@@ -181,7 +181,7 @@ public class EnemyUnit : Unit
 
     protected override void Update()
     {
-        base.Update();
+        //base.Update();
 
         if (isStop)
             return;

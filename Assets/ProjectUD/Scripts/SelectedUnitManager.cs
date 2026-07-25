@@ -291,7 +291,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         inGameManager.SetGold(nextUnitData.Cost, false);
         ingameScreenUI.SetspawnBtnPriceTextColor();
 
-        SoundManager.Instance.PlaySFX(upgradeSfx, selectedAllyUnit.transform.position);
+        SoundManager.Instance.PlayUISFX(upgradeSfx);
 
         unitSelectUI.HideUpgrdeUI();
         unitSelectUI.HideAllyUI();
@@ -306,11 +306,11 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
         if(selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE)
         {
-            SoundManager.Instance.PlaySFX(siegeSfx, selectedAllyUnit.transform.position);
+            SoundManager.Instance.PlayUISFX(siegeSfx);
         }
         else if (selectedAllyUnit.ModeType == AllyUnit.Mode.FREE)
         {
-            SoundManager.Instance.PlaySFX(freeSfx, selectedAllyUnit.transform.position);
+            SoundManager.Instance.PlayUISFX(freeSfx);
         }
 
         selectedAllyUnit.ChangeOrder();

@@ -12,7 +12,7 @@ public class DollyCamera : MonoBehaviour
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
-    [SerializeField] private AudioClip inGmaeBgm;
+    
     [SerializeField] private GameObject virtualCamera;
     [SerializeField] private bool isCamPanning = true;
     public bool IsCamPanning => isCamPanning;
@@ -49,7 +49,7 @@ public class DollyCamera : MonoBehaviour
 
             if(eventIndex == 3)
             {
-                SoundManager.Instance.PlayBGM(inGmaeBgm);
+                inGameManager.PlayInGameBGM();
                 ingameScreenUI.OnOffInGameUI(true);
                 inGameManager.StartGame();
                 isCamPanning = false;

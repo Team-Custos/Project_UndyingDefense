@@ -103,6 +103,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         {
             int random = Random.Range(0, Data.AttackSFX.Length);
             SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
+            Debug.Log(Data.AttackSFX[random].name + " : " + Data.AttackSFX[random].length);
         }
     }
 
