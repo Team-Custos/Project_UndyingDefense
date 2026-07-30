@@ -11709,6 +11709,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 216344513}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &290130625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3141759796133322583, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149071154}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &292570591
 GameObject:
   m_ObjectHideFlags: 0
@@ -25895,6 +25901,7 @@ MonoBehaviour:
   sAbilityNameText: {fileID: 0}
   sAbilityInfoText: {fileID: 0}
   sAbilityEffectText: {fileID: 0}
+  skillToolTip: []
 --- !u!4 &697713693
 Transform:
   m_ObjectHideFlags: 0
@@ -37101,6 +37108,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf16c39e35b497840b9a727ece7e63d3, type: 3}
+--- !u!1 &947713941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3241132053582486446, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149071154}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &948996114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40180,6 +40193,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3625306572621157489, guid: cf16c39e35b497840b9a727ece7e63d3,
     type: 3}
   m_PrefabInstance: {fileID: 361361026}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1050373157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4863605196218226391, guid: ca985f77601a2ad47bbada62843bb8ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 1149071154}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1050530347
 PrefabInstance:
@@ -54623,6 +54642,10 @@ MonoBehaviour:
   sAbilityNameText: {fileID: 1149071159}
   sAbilityInfoText: {fileID: 1149071158}
   sAbilityEffectText: {fileID: 1149071157}
+  skillToolTip:
+  - {fileID: 290130625}
+  - {fileID: 1050373157}
+  - {fileID: 947713941}
 --- !u!4 &1365833132
 Transform:
   m_ObjectHideFlags: 0

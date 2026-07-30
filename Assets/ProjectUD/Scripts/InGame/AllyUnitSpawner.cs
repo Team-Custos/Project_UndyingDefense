@@ -441,15 +441,13 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
             if (distance <= 5f)
             {
-                enemy.ActivateSpecialAbility(SpecialAbility.ActiveType.Enemy_Dead, unit);
+                enemy.ActivateSpecialAbility(SpecialAbility.ActiveType.DEAD, unit);
             }
             else
             {
                 Debug.Log(distance);
                 return;
             }
-                
         }
-
     }
 }

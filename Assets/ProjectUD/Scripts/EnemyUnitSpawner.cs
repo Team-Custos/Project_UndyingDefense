@@ -166,22 +166,12 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         Unit unit = enemyUnit.GetComponent<Unit>();
 
-        //Vector3 pos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-
-        //if (curWaveData.MonsterSpawnInfos[spawnDataIndex].SpawnPosIndexs[spawnDataIndex] == 0)
-        //{
-        //    pos = aSpawnPoints[Random.Range(0, aSpawnPoints.Length)].position;
-        //}
-        //else if (curWaveData.MonsterSpawnInfos[spawnDataIndex].SpawnPosIndexs[spawnDataIndex] == 1)
-        //{
-        //    pos = aSpawnPoints[Random.Range(0, bSpawnPoints.Length)].position;
-        //}
-
         enemyUnit.transform.position = pos;
         enemyUnit.transform.forward = spawnDirection.forward;
         enemyUnit.Initialize(fortress.GetPosition(spawnCount));
         enemyUnit.gameObject.SetActive(true);
         SoundManager.Instance.PlaySFX(enmeySpawnSfx, enemyUnit.transform.position);
+
 
         enemySpawnVfx.transform.position = pos;
         enemySpawnVfx.gameObject.SetActive(true);

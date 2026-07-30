@@ -368,7 +368,7 @@ public class AttackSkill : SkillBase
         }
 
         // 스킬 별 효과 발동 확률 계산 후 효과 발동
-        if (data.InduseEffectPrefab != null && Random.Range(0f, 1f) <= CalculateEffectPercent(unit, target))
+        if (data.InduseEffectPrefab != null && Random.value < CalculateEffectPercent(unit, target))
         {
             target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
         }

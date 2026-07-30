@@ -14,7 +14,7 @@ public class SpecialAbility : MonoBehaviour
         KILL,       // 대상을 처치했을 때 ex) 흡혈
         ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
-        Enemy_Dead   // 적이 죽었을 때 ex) 영생
+        DEAD   // 적이 죽었을 때 ex) 영생
 
 
     }

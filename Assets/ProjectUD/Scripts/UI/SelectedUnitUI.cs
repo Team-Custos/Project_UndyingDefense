@@ -92,6 +92,8 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     [SerializeField] private TextMeshProUGUI sAbilityInfoText;
     [SerializeField] private TextMeshProUGUI sAbilityEffectText;
 
+    [SerializeField] private GameObject[] skillToolTip;
+
 
     private void Start()
     {
@@ -430,6 +432,10 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         unitStatePanel.SetActive(false);
         typeInfo.SetActive(false);
 
+        for(int i = 0; i < skillToolTip.Length; i++)
+        {
+            skillToolTip[i].SetActive(false);
+        }
     }
 
     public void UpdateHPUI(Unit unit)

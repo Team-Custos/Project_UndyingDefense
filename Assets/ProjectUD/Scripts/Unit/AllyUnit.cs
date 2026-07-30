@@ -84,19 +84,10 @@ public class AllyUnit : Unit
     private bool isSiegeActivated = true;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
 
+    private EnemyUnit ImmortalityEnemy;
 
 
-    //protected static AudioClip[] AllyDeadSFX
-    //{
-    //    get
-    //    {
-    //        if (allyDeadSFX == null)
-    //        {
-    //            allyDeadSFX = Resources.LoadAll<AudioClip>("Sound/SFX/효과음/캐릭터/DeathSFX/AllyDeath");
-    //        }
-    //        return allyDeadSFX;
-    //    }
-    //}
+
 
     public override void Initialize() // 유닛 소환시
     {
@@ -1070,4 +1061,8 @@ public class AllyUnit : Unit
         state = State.IDLE;
     }
 
+    public void SetImmortalityUnit(EnemyUnit enmeyUnit)
+    {
+        ImmortalityEnemy = enmeyUnit;
+    }
 }
