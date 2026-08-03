@@ -39,6 +39,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     [SerializeField] protected float typeSpeed = 0.03f; // 글자당 딜레이
     protected bool isTyping = false;
     protected Coroutine typingCoroutine;
+    protected System.Action onTypingComplete; // 타이핑 완료 시 실행할 콜백
 
 
     // 로컬라이즈 테이블에서 대화 단락 가져오기
