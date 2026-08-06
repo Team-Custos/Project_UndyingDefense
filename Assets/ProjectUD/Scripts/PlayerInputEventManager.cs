@@ -57,7 +57,7 @@ public class PlayerInputEventManager : MonoBehaviour
         if (OnClickTarget != null)
             OnClickTarget.OnClick(context);
 
-        Debug.Log(OnClickTarget);
+        //Debug.Log(OnClickTarget);
 
         //switch(leftClickState)
         //{

@@ -354,6 +354,8 @@ public class AttackSkill : SkillBase
 
         target.TakeDamage(calcDamage, unit);
 
+        Debug.Log("피해량 : " + calcDamage);
+
         if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
         {
             unit.SpecialAbility.Damage = calcDamage;

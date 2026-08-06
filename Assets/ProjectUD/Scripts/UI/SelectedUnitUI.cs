@@ -325,7 +325,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;
 
-        atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
+        //atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
 
         dfTypeText.text = LocalizationSettings.StringDatabase.
@@ -402,7 +402,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
 
         AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;
 
-        atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
+        //atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unit.Data.DfTypeIcon;
 
         dfTypeText.text = LocalizationSettings.StringDatabase.
