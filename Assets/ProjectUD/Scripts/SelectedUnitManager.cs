@@ -1,6 +1,5 @@
 using InputEventInterface;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -16,6 +15,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
     [SerializeField] private Ingame_CamManager camManager;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
+
     [SerializeField] private ParticleSystem mouseIndicatorParticle;
 
     [SerializeField] private Button upgradeBtn;
@@ -55,6 +55,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
         inputEventManager.OnUnitModeChangeTarget = this;
         inputEventManager.OnUnitUpgradeTarget = this;
         inputEventManager.OnPerformUnitUpgradeTarget = this;
+        //inGameManager.CancleClickState();
     }
 
     // 마우스 좌클릭 선택 
@@ -72,7 +73,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 if (hit.collider.CompareTag("Unit"))    // 유닛 클릭
                 {
-                    allyUnitSpawner.CancelSpawn();
+                    //allyUnitSpawner.CancelSpawn();
+                    inGameManager.CancleInputState(InputState.UNIT_SPAWN);
                     inputEventManager.OnRightClickTarget = this;
                     inputEventManager.OnESCTarget = this;
 
@@ -210,33 +212,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
             DeSelecteUnit();
             inputEventManager.OnESCTarget = inGameManager;
 
-            //Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            //RaycastHit hit;
-
-            //if (Physics.Raycast(ray, out hit))
-            //{
-            //    if (selectedUnit != null)
-            //    {
-            //        selectedUnit.IsSelected = false;
-            //        selectedUnit = null;
-            //        unitSelectUI.HideAllyUI();
-            //        unitSelectUI.HideHp();
-            //        unitSelectUI.HideUpgrdeUI();
-            //        unitSelectUI.HideUntInfo();
-            //    }
-            //    else
-            //    {
-            //        unitSelectUI.HideUntInfo();
-            //    }
-
-            //    commandSkillManager.CancelSkill();
-
-
-
-            //    allyUnitSpawner.CancelSpawn();
-            //}
-
-            //isUpgradeOn = false;
         }
     }
 

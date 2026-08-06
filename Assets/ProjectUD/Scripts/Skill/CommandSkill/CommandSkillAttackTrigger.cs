@@ -222,18 +222,15 @@ public class CommandSkillAttackTrigger : MonoBehaviour
             AddCritVFX(target);
             AddCritSFX(target.transform.position);
             ActivateCriticalEffect(target);
-            Debug.Log("적용");
         }
         else
         {
             AddHitVFX(target);
             AddHitSFX(target.transform.position);
-            Debug.Log("미적용");
         }
 
         target.TakeDamage(calcDamage, null);
 
-        Debug.Log(calcDamage);
     }
 
     public void AddHitSFX(Transform transform)

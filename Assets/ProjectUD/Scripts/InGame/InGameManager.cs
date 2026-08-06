@@ -4,7 +4,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Video;
+
+
+// 입력 상태
+public enum InputState
+{
+    UNIT_CONTROL,   // 유닛 조작 상태
+    UNIT_SPAWN,     // 유닛(아군) 소환 상태
+    COMMAND_SKILL,  // 지휘관 스킬 사용 상태
+    UI_SETTING,     // UI 조작 상태(설정 창)
+    UNIT_UPGRADE   // 유닛 승급 상태
+}
+
 
 public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 {
@@ -16,6 +27,9 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private AudioClip inGameIntro;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private SelectedUnitManager selectedUnitManager;
+    [SerializeField] private CommandSkillTargetingController commandSkillTargetingController;
+
 
     [SerializeField] private AudioClip inGameBgm;
     [SerializeField] private AudioClip winSfx;
@@ -44,6 +58,8 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     [SerializeField] private float winPoint;
     [SerializeField] private float losePoint;
 
+    [Header("ClickState")]
+    private InputState inputState;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -67,6 +83,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnSpeedUpTarget = this;
+        UpdateInputState(InputState.UNIT_CONTROL);
     }
 
     private void Update()
@@ -133,6 +150,9 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     {
         //SoundManager.Instance.PlayUIClickSFX();
 
+        //CancleClickState(ClickState.UI_SETTING);
+        //UpdateClickState(ClickState.UI_SETTING);
+
         isGamePause = true;
         ingameScreenUI.OnOffSettingUI(isGamePause);
         Time.timeScale = 0.0f;
@@ -165,7 +185,6 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
                 PauseGame();
             }
 
-            //ingameScreenUI.OnOffSettingUI(isGamePause);
 
         }
     }
@@ -256,5 +275,37 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     public void PlayInGameBGM()
     {
         SoundManager.Instance.PlayBGM(inGameBgm);
+    }
+
+
+    // 클릭 상태 변경 ex) 유닛 소환 -> 지휘관 스킬
+    public void UpdateInputState(InputState nextState)
+    {
+        if(inputState == nextState)
+            return;
+
+        inputState = nextState;
+    }
+
+    // 클릭 상태 취소 : 상태 변경 + 우클릭/ESc
+    public void CancleInputState(InputState nextState)
+    {
+        if(nextState == inputState)
+            return;
+
+        switch (inputState)
+        {
+            case InputState.UNIT_CONTROL:
+                selectedUnitManager.DeSelecteUnit();
+                break;
+
+            case InputState.UNIT_SPAWN:
+                allyUnitSpawner.CancelSpawn();
+                break;
+
+            case InputState.COMMAND_SKILL:
+                commandSkillTargetingController.CancelTargeting();
+                break;
+        }
     }
 }

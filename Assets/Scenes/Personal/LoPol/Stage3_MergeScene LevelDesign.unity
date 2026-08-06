@@ -5776,6 +5776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 1738695677}
   infoPanel: {fileID: 1889759192}
@@ -7487,6 +7488,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitManager: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 3798324312073329517}
 --- !u!114 &122149542
 MonoBehaviour:
@@ -9611,7 +9615,7 @@ MonoBehaviour:
   uiSfxClip: []
   audioSourcePrefab: {fileID: 6984110101576558204, guid: e75dcaa9cba8ca348b19c8a2055dbe67,
     type: 3}
-  maxDistance: 80
+  maxDistance: 120
   minDistance: 30
 --- !u!4 &147697480
 Transform:
@@ -15083,6 +15087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circle: {fileID: 625627162}
+  inGameManager: {fileID: 693347759}
   inputEventManager: {fileID: 122149541}
   mainCamera: {fileID: 1741201207}
   SelectedUnitManager: {fileID: 485910518}
@@ -38595,6 +38600,7 @@ MonoBehaviour:
   ingameScreenUI: {fileID: 959445840}
   waveManager: {fileID: 1023733844}
   waveDataLoader: {fileID: 34717631}
+  allyUnitSpawner: {fileID: 0}
   fortress: {fileID: 987298097}
   unitDataLoader: {fileID: 34717629}
   durationEffectPool: {fileID: 1835584665}
@@ -38602,6 +38608,7 @@ MonoBehaviour:
   hitVFXPool: {fileID: 1091578119}
   skillVFXPool: {fileID: 0}
   effectImagePool: {fileID: 0}
+  immortalityEnemy: {fileID: 0}
   spawnInterval: 1.5
   aSpawnPoints: []
   bSpawnPoints: []
@@ -39412,6 +39419,8 @@ MonoBehaviour:
   dollyCamera: {fileID: 2030394660}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 505122982}
+  selectedUnitManager: {fileID: 485910518}
+  commandSkillTargetingController: {fileID: 252438794}
   inGameBgm: {fileID: 8300000, guid: 831117addb0753345886db2b771ed498, type: 3}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -48622,6 +48631,8 @@ MonoBehaviour:
   dollyCamera: {fileID: 311500981}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 0}
+  selectedUnitManager: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   inGameBgm: {fileID: 0}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -51810,7 +51821,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
-  immortalityUnit: {fileID: 0}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 418159408}
@@ -54375,6 +54385,7 @@ MonoBehaviour:
   ingameScreenUI: {fileID: 3159912685642456809}
   waveManager: {fileID: 510280746}
   waveDataLoader: {fileID: 942100005}
+  allyUnitSpawner: {fileID: 1866204814}
   fortress: {fileID: 1421765648}
   unitDataLoader: {fileID: 942100006}
   durationEffectPool: {fileID: 1866007800}
@@ -54382,6 +54393,7 @@ MonoBehaviour:
   hitVFXPool: {fileID: 1997073973}
   skillVFXPool: {fileID: 1997073973}
   effectImagePool: {fileID: 934271226050852778}
+  immortalityEnemy: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnInterval: 1.5
   aSpawnPoints:
   - {fileID: 835990108}
@@ -83415,6 +83427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 1710118426}
   infoPanel: {fileID: 956116799}
@@ -86456,6 +86469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 2045177741}
   infoPanel: {fileID: 966434835}
@@ -88043,6 +88057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitManager: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 959445836}
 --- !u!114 &1590103095
 MonoBehaviour:
@@ -101859,7 +101876,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
-  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 4606055465534684351}
@@ -117953,6 +117969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 284765897}
+  inGameManager: {fileID: 693347759}
   toolTipUI: {fileID: 1096147523}
   cooldownImage: {fileID: 829040521637630300}
   infoPanel: {fileID: 1096147521}
@@ -127051,6 +127068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 284765897}
+  inGameManager: {fileID: 693347759}
   toolTipUI: {fileID: 618192801}
   cooldownImage: {fileID: 5897514442984555053}
   infoPanel: {fileID: 618192797}
@@ -131578,6 +131596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 284765897}
+  inGameManager: {fileID: 693347759}
   toolTipUI: {fileID: 2088313706}
   cooldownImage: {fileID: 8480402057082881248}
   infoPanel: {fileID: 2088313702}

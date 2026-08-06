@@ -15,17 +15,16 @@ public class SpecialAbility : MonoBehaviour
         ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
         DEAD   // 적이 죽었을 때 ex) 영생
-
-
     }
 
-    [SerializeField] private new string name;
     [SerializeField] private string id;
     //private string description;
     [SerializeField] private Sprite icon;
     [SerializeField] private UltEvent<Unit, Unit> onActivate;
     [SerializeField] private ActiveType activeType;
-    [SerializeField] private AudioClip audioClip; // 스킬 발동 시 재생할 오디오
+    [SerializeField] private AudioClip audioClip; // 능력 발동 시 재생할 오디오
+    [SerializeField] private GameObject auraVFX;
+    [SerializeField] private Unit unit;
 
     private Collider[] targets;
     private float damage;
@@ -36,6 +35,11 @@ public class SpecialAbility : MonoBehaviour
     public Sprite Icon => icon;
     public ActiveType ActiveCondition => activeType;
     public float Damage { get; set; }
+
+    private void Start()
+    {
+        AuraVFXScaleMult();
+    }
 
     public void Activate(Unit unit, Unit target)
     {
@@ -49,7 +53,11 @@ public class SpecialAbility : MonoBehaviour
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab, float damage, AttackData attackData)
     {
         if (unit.IsDead)
+        {
+            Debug.Log("자폭 미발동");
             return;
+        }
+            
 
         if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp >= 0f)
         {
@@ -73,7 +81,6 @@ public class SpecialAbility : MonoBehaviour
             }
 
             unit.Die();
-            Debug.Log("자폭");
         }
     }
 
@@ -100,19 +107,25 @@ public class SpecialAbility : MonoBehaviour
         {
             Debug.Log("원한 발동 :" + randomValue);
             target.AddEffect(effect, target, Vector3.zero);
-            target.AddVFX(vfx, target.transform.position);
+            target.AddVFX(vfx, target.transform.position, true, target.VfxScaleMult(target.Data.Tier));
             SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
         }
     }
 
-    public void Immortality(Unit unit, Unit target, float percent, GameObject vfx)
+    // 영생
+    public void Immortality(Unit unit, Unit target, float range, float percent, GameObject vfx)
     {
-        float hpAmount = target.Maxhp * percent;
+        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
-        unit.TakeDamage(-hpAmount, null);
-        Debug.Log("회복량 : " +  hpAmount);
-        unit.AddVFX(vfx, unit.transform.position);
-        SoundManager.Instance.PlaySFX(audioClip, unit.transform.position);
+        if (distance <= range)
+        {
+            float hpAmount = target.Maxhp * percent;
+
+            unit.TakeDamage(-hpAmount, null);
+            Debug.Log("회복량 : " + hpAmount);
+            unit.AddVFX(vfx, unit.transform.position);
+            SoundManager.Instance.PlaySFX(audioClip, unit.transform.position);
+        }
     }
 
 
@@ -165,4 +178,12 @@ public class SpecialAbility : MonoBehaviour
             (attackType == AttackType.PIERCE && armorType == ArmorType.ANTIPIERCING) ||
             (attackType == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
+
+    private void AuraVFXScaleMult()
+    {
+        if (auraVFX == null)
+            return;
+
+        auraVFX.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
+    }    
 }

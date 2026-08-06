@@ -5,7 +5,7 @@ using static Unit;
 using AttackTriggerType = CommandSkillAttackTrigger.AttackTriggerType;
 using AttackType = AttackData.AttackType;
 
-public class ActiveCommandSkill : CommandSkill, IInputClick//ayo_0117
+public class ActiveCommandSkill : CommandSkill//ayo_0117
 {
     [Header("■ Data")]
     [SerializeField] private ActiveCommandSkillData data;

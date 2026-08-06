@@ -22,10 +22,6 @@ public class EffectSkill : SkillBase
             finalPercent = Mathf.Clamp01(CalculateCurseEffectPercent(unit.Mental, target.Mental));
         }
 
-        Debug.Log(unit.Mental);
-        Debug.Log(target.Mental);
-
-        Debug.Log("최종 발동 확률 : " + finalPercent);
 
         if(Random.value <= finalPercent)
         {

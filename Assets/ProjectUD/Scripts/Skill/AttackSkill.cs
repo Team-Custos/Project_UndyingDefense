@@ -1,6 +1,7 @@
 using UnityEngine;
 using AttackType = AttackData.AttackType;
 using ArmorType = Unit.ArmorType;
+using UnityEngine.UIElements;
 public class AttackSkill : SkillBase
 {
     [Header("■ Data")]
@@ -367,8 +368,10 @@ public class AttackSkill : SkillBase
             //Debug.Log("회복 후 체력 :" + unit.Hp);
         }
 
+        float random = Random.value;
+
         // 스킬 별 효과 발동 확률 계산 후 효과 발동
-        if (data.InduseEffectPrefab != null && Random.value < CalculateEffectPercent(unit, target))
+        if (data.InduseEffectPrefab != null && random < CalculateEffectPercent(unit, target))
         {
             target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
         }
@@ -514,11 +517,6 @@ public class AttackSkill : SkillBase
 
             finalPercent += data.InduseEffectSuccessRate;
 
-            //Debug.Log($"{unit.Data.Name} : {unit.Mental},  {target.Data.Name} : {target.Mental}");
-            //Debug.Log($"최종 확률 : {Mathf.Clamp01(finalPercent)}");
-
-
-            Debug.Log("상태 발동 확률 : " + finalPercent);
             return Mathf.Clamp01(finalPercent);
         }
     }

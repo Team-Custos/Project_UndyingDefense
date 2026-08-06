@@ -99,6 +99,8 @@ public abstract class DurationEffect : MonoBehaviour
         if (pool == null)
             return;
 
+        transform.localScale = Vector3.one; // 풀에 반환시 원래 크기로
+
         if (gameObject.activeInHierarchy)
             gameObject.SetActive(false);
 

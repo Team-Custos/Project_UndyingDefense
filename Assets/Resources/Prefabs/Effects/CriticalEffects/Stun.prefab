@@ -48,7 +48,6 @@ MonoBehaviour:
   id: stts_stun
   effectName: "\uAE30\uC808"
   iconSprite: {fileID: 21300000, guid: d3e70e888d3989346961a1148c06e5f5, type: 3}
-  description: "3\uCD08 \uB3D9\uC548 \uD589\uB3D9 \uBD88\uAC00"
   duration: 3
   type: 4
   shockEffectPrefab: {fileID: 3529214762719723730, guid: b7d0b352f7efd8644b71df278ea7bbf4,
@@ -61,20 +60,35 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1795500977350048129}
     m_Modifications:
+    - target: {fileID: 7646540342053362402, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342100539577, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540342481352738, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7646540342771427604, guid: e632f24824962f94195c54f61613e1d5,
         type: 3}
@@ -140,6 +154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: vfx_stunCon
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646540343551465508, guid: e632f24824962f94195c54f61613e1d5,
+        type: 3}
+      propertyPath: looping
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -84,7 +84,7 @@ public class AllyUnit : Unit
     private bool isSiegeActivated = true;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
 
-    private EnemyUnit ImmortalityEnemy;
+    private EnemyUnit ImmortalityEnemy;    // 영생 보유 적 유닛
 
 
 
@@ -1016,7 +1016,10 @@ public class AllyUnit : Unit
 
         isDead = true;
 
-        spawner.SearchImmortalityUnit(this);
+        //spawner.SearchImmortalityUnit(this);
+
+        if (ImmortalityEnemy != null)
+            ImmortalityEnemy.ActivateSpecialAbility(SpecialAbility.ActiveType.DEAD, this);
 
         if (state == State.STUN)
         {
@@ -1061,7 +1064,7 @@ public class AllyUnit : Unit
         state = State.IDLE;
     }
 
-    public void SetImmortalityUnit(EnemyUnit enmeyUnit)
+    public void SetImmortalityEnemy(EnemyUnit enmeyUnit)
     {
         ImmortalityEnemy = enmeyUnit;
     }

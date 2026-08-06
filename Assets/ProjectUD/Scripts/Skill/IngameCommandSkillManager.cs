@@ -157,42 +157,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         }
     }
 
-    public void ActivateCommandSkill(ActiveCommandSkill skill, Transform pos)
-    {
-        /*
-        if (btnClickSFX[activatedSkillButtonIdx] != null)
-        {
-            SoundManager.Instance.PlaySFX(btnClickSFX[activatedSkillButtonIdx]);
-        }
-
-        if (skill.Data.StartSFX != null)
-        {
-            //SoundManager.Instance.PlaySFX(skill.Data.StartSFX);
-        }
-
-        switch (skill.Data.TargetType)
-        {
-            case CommandSkill.TargetType.NONE:
-                skill.Activate();
-                break;
-            case CommandSkill.TargetType.UNIT:
-                skill.Activate(selectedTargetUnit);
-                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, selectedTargetUnit.transform.position);
-                selectedTargetUnit = null;
-                break;
-            case CommandSkill.TargetType.MOUSEPOSAREA:
-                inputEventManager.OnClickTarget = this;
-                //skill.Activate(pos);
-                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, pos.position);
-                break;
-            case CommandSkill.TargetType.AREA:
-                //skill.Activate(BurningOilPos);
-                //SoundManager.Instance.PlaySFX(skill.Data.StartSFX, BurningOilPos.position);
-                //BurningOilCtrl.SpawnStart();
-                break;
-        }
-        */
-    }
 
     public void OnClick(InputAction.CallbackContext context)
     {
@@ -278,102 +242,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
         //}
     }
-
-    public void GetClickControl(int idx, CommandSkill commandSkill)
-    {
-        /*
-        activeSkill = commandSkill as ActiveCommandSkill;
-        Debug.Log($"액티브 스킬 셋팅 완료 {activeSkill.name}");
-
-        //if (!activeSkill.IsCoolDown)                                 //!skill[idx].IsCoolDown)
-        //{
-        //    Debug.Log(activeSkill.name + "이 쿨타임 중...");         //skill[idx].name + "이 쿨타임 중...)");
-        //    SoundManager.Instance.PlayUnableUIClickSFX();
-        //    return;
-        //}
-
-        CommandSkillData skillData = activeSkill.Data;              //skill[idx]
-
-        activatedSkillButtonIdx = idx;
-
-        if (skillData.TargetType == CommandSkill.TargetType.MOUSEPOSAREA
-            || skillData.TargetType == CommandSkill.TargetType.UNIT)
-        {
-            allyUnitSpawner.CancelSpawn();
-            inputEventManager.OnClickTarget = this;
-            inputEventManager.OnESCTarget = this;
-            inputEventManager.OnRightClickTarget = this;
-            SelectedUnitManager.DeSelecteUnit();
-
-            if (idx >= 0 && idx < alarmImages.Length)
-            {
-                if (alarmImages[idx] != null)
-                {
-                    alarmImages[idx].gameObject.SetActive(false);
-                }
-            }
-
-            if (isSkillActivated && activatedSkillButtonIdx == idx)
-            {
-                isSkillActivated = false;
-                if (idx == 0)
-                {
-                    selectedUI0.gameObject.SetActive(false);
-                    circle.SetActive(false);
-                }
-                else if (idx == 1)
-                {
-                    selectedUI1.gameObject.SetActive(false);
-                    circle.SetActive(false);
-                }
-            }
-            else
-            {
-                if (isSkillActivated)
-                {
-                    if (activatedSkillButtonIdx == 0)
-                        selectedUI0.gameObject.SetActive(false);
-                    else if (activatedSkillButtonIdx == 1)
-                        selectedUI1.gameObject.SetActive(false);
-                    circle.SetActive(false);
-                }
-
-                isSkillActivated = true;
-
-                if (idx == 0)
-                {
-                    selectedUI0.gameObject.SetActive(true);
-                    selectedUI1.gameObject.SetActive(false);
-                    circle.SetActive(false);
-                }
-                else if (idx == 1)
-                {
-                    selectedUI0.gameObject.SetActive(false);
-                    selectedUI1.gameObject.SetActive(true);
-                    circle.SetActive(true);
-                }
-            }
-        }
-        else if (skillData.TargetType == CommandSkill.TargetType.AREA)
-        {
-            if (idx >= 0 && idx < alarmImages.Length)
-            {
-                if (alarmImages[idx] != null)
-                {
-                    alarmImages[idx].gameObject.SetActive(false);
-                }
-            }
-
-            selectedUI0.gameObject.SetActive(false);
-            selectedUI1.gameObject.SetActive(false);
-            isSkillActivated = false;
-            circle.SetActive(false);
-            ActivateCommandSkill(activeSkill, BurningOilPos);                  //skill[idx], BurningOilPos);
-            //SoundManager.Instance.PlayUIClickSFX();
-        }
-        */
-    }
-
     public void SetBeingUsedCommandSkill(int i) //, CommandSkill commandSkill)
     {
         //if (commandSkill == null)
@@ -443,10 +311,12 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     {
         if (context.performed)
         {
-            CancelSkill();
+            //CancelSkill();
+            ingameManager.CancleInputState(InputState.UNIT_CONTROL);
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
+            ingameManager.UpdateInputState(InputState.UNIT_CONTROL);
         }
     }
 
@@ -454,10 +324,12 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     {
         if (context.performed)
         {
-            CancelSkill();
+            //CancelSkill();
+            ingameManager.CancleInputState(InputState.UNIT_CONTROL);
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
+            ingameManager.UpdateInputState(InputState.UNIT_CONTROL);
         }
     }
 }

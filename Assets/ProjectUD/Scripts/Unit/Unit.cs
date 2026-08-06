@@ -6,6 +6,7 @@ using ActiveType = SpecialAbility.ActiveType;
 using UltEvents;
 using AYellowpaper.SerializedCollections;
 using DG.Tweening;
+using System.Collections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -1301,6 +1302,9 @@ public abstract class Unit : MonoBehaviour
         hp -= Damage;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
+        // ex) 자폭
+        ActivateSpecialAbility(ActiveType.HP, null);
+
         if (hp <= 0)
         {
             Die();
@@ -1309,8 +1313,7 @@ public abstract class Unit : MonoBehaviour
         if(attacker != null)
             ActivateSpecialAbility(ActiveType.TAKE_DAMAGE, attacker);
 
-        // ex) 자폭
-        ActivateSpecialAbility(ActiveType.HP, null);
+        
 
         if (selectedUnitUI != null)
         {
@@ -1457,15 +1460,6 @@ public abstract class Unit : MonoBehaviour
         // 효과 목록 중에 추가된 효과가 존재할 경우.
         if (prevEffect != null)
         {
-            //if(prevEffect.Type == EffectType.CURSE)
-            //{
-            //    float finalProbability = 0.5f + CalculateCurseEffectProbability(this.Mental, unit.Mental);
-            //    Debug.Log("확률 : " + finalProbability);
-
-            //    if (Random.Range(0f, 1f) > finalProbability)
-            //        return;
-            //}
-
             if (prevEffect.Prefab == effectPrefab) // 기존 효과와 동일한 경우
             {
                 prevEffect.Reapply(effectPrefab);
@@ -1480,19 +1474,14 @@ public abstract class Unit : MonoBehaviour
         {
             DurationEffect effect = durationEffectPool.GetDurationEffect(effectPrefab);
 
-            //if(effect.Type == EffectType.CURSE)
-            //{
-            //    float finalProbability = 0.5f + CalculateCurseEffectProbability(Mental, unit.Mental);
-            //    Debug.Log("확률 : " + finalProbability);
-            //    if (Random.Range(0f, 1f) > finalProbability)
-            //        return;
-            //}
-
             effectList.Add(effect);
 
             effect.transform.SetParent(effectParent);
             effect.transform.position = pos;
             effect.Initialize(this);
+
+            effect.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
+
             effect.Activate();
             effect.gameObject.SetActive(true);
         }
@@ -1556,7 +1545,7 @@ public abstract class Unit : MonoBehaviour
         
     }
 
-    public void AddVFX(GameObject vfx, Vector3 dir, bool attach = true) // hit & Crit VFX (오브젝트풀링 사용)
+    public void AddVFX(GameObject vfx, Vector3 dir, bool attach = true, float scale = 1f) // hit & Crit VFX (오브젝트풀링 사용)
     {
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)
@@ -1577,6 +1566,9 @@ public abstract class Unit : MonoBehaviour
             VFXobj.transform.position = this.transform.position;
             //VFXobj.transform.position = Vector3.zero;
         }
+
+        VFXobj.transform.localScale = Vector3.one * scale;
+
         VFXobj.SetActive(true);
     }
 
@@ -1778,26 +1770,19 @@ public abstract class Unit : MonoBehaviour
         this.armorType = armorType;
     }
 
-    //public float CalculateCurseEffectProbability(int unitMental, int targetMental)
-    //{
-    //    int mentalDifference = unitMental - targetMental;
 
-    //    switch (mentalDifference)
-    //    {
-    //        case 4: return 0.8f;
-    //        case 3: return  0.6f; 
-    //        case 2: return  0.4f; 
-    //        case 1: return  0.2f; 
-    //        case 0: return  0f;
-    //        case -1: return -0.2f;
-    //        case -2: return -0.4f; 
-    //        case -3: return -0.6f; 
-    //        case -4: return -0.8f;
-    //        default:
-    //            // 4보다 크면 80f, 그 외(-4보다 작으면) -80f 반환
-    //            if (mentalDifference > 4) return 0.8f;
-    //            else return -0.8f;
-    //    }
-
-    //}
+    public float VfxScaleMult(int tier)
+    {
+        switch(tier)
+        {
+            case 1: return 0.7f;
+            case 2: return 0.75f;
+            case 3: return 0.8f;
+            case 4: return 0.85f;
+            case 5: return 1f;   
+            default:
+                Debug.LogError("티어 범위 밖");
+                return 1f;
+        }
+    }
 }

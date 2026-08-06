@@ -10,6 +10,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
     private CommandSkill commandSkill;
     private CommandSkillData commandSkillData;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private ToolTipUI toolTipUI;
 
     [SerializeField] private Image cooldownImage;
@@ -125,6 +126,8 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             SoundManager.Instance.PlayUnableUIClickSFX();
             return;
         }
+
+        inGameManager.CancleInputState(InputState.COMMAND_SKILL);
         commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
 
 

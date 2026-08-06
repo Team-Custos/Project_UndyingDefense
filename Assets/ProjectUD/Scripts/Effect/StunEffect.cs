@@ -7,6 +7,8 @@ public class StunEffect : DurationEffect
     public override void Activate()
     {
         target.GetStun();
+        transform.position = target.HeightPos.position;
+
 
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
     }

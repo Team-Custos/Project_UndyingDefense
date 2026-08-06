@@ -8,6 +8,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private WaveDataLoader waveDataLoader;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
 
     [Header("■ Components")]
     [SerializeField] private Fortress fortress;
@@ -18,6 +19,7 @@ public class EnemyUnitSpawner : MonoBehaviour
     [SerializeField] private VFXObjectPool skillVFXPool;
     [SerializeField] private EffectImagePool effectImagePool;
 
+    [SerializeField] private EnemyUnitData immortalityEnemy;
 
     [Header("■ Options")]
     [SerializeField] private float spawnInterval = 1.5f;
@@ -175,6 +177,14 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         enemySpawnVfx.transform.position = pos;
         enemySpawnVfx.gameObject.SetActive(true);
+
+        if(data == immortalityEnemy)
+        {
+            Debug.Log("영생 유닛 소환");
+            allyUnitSpawner.SetImmortalityUnit(enemyUnit);
+        }
+
+
         enemySpawnVfx.Play();
 
         activateEnemyCount++;
@@ -184,6 +194,11 @@ public class EnemyUnitSpawner : MonoBehaviour
     {
         poolDic[enmeyUnitData].List.Remove(enemyUnit);
         activateEnemyCount--;
+
+        if(enmeyUnitData == immortalityEnemy)
+        {
+            allyUnitSpawner.SetImmortalityUnit(null);
+        }
 
 
         float bonusGold = enmeyUnitData.Gold * (1f + bonusGoldPercent);

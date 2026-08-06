@@ -6985,7 +6985,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
-  immortalityUnit: {fileID: 0}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 1906587491}
@@ -12518,6 +12517,8 @@ MonoBehaviour:
   dollyCamera: {fileID: 1936867425}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 0}
+  selectedUnitManager: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   inGameBgm: {fileID: 0}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -13239,6 +13240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 1025561327}
   infoPanel: {fileID: 1810152513}
@@ -16328,6 +16330,8 @@ MonoBehaviour:
   dollyCamera: {fileID: 478265408}
   inGameIntro: {fileID: 8300000, guid: d73534c675dfa794d923c4bbef5df272, type: 3}
   selectedUnitUI: {fileID: 1365833131}
+  selectedUnitManager: {fileID: 296548010}
+  commandSkillTargetingController: {fileID: 1611628872}
   inGameBgm: {fileID: 8300000, guid: 831117addb0753345886db2b771ed498, type: 3}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -26164,6 +26168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 257010430}
   infoPanel: {fileID: 1895568151}
@@ -31064,7 +31069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDataTable: {fileID: 4900000, guid: c02b96bd1584ed047a0db4a5616e475c, type: 3}
+  waveDataTable: {fileID: 4900000, guid: e8c7040c2c2b77b43bd1c73a02e5c553, type: 3}
   path: UnitData/Enemy
 --- !u!114 &824689423
 MonoBehaviour:
@@ -32557,6 +32562,11 @@ PrefabInstance:
       objectReference: {fileID: 1082936479}
     - target: {fileID: 673844277527622017, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: inGameManager
+      value: 
+      objectReference: {fileID: 415572253}
+    - target: {fileID: 673844277527622017, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: commandSkillManager
       value: 
       objectReference: {fileID: 870483654}
@@ -33243,6 +33253,11 @@ PrefabInstance:
       objectReference: {fileID: 2121328300}
     - target: {fileID: 5036255151241224534, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: inGameManager
+      value: 
+      objectReference: {fileID: 415572253}
+    - target: {fileID: 5036255151241224534, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: commandSkillManager
       value: 
       objectReference: {fileID: 870483654}
@@ -33733,6 +33748,11 @@ PrefabInstance:
       propertyPath: commandSkill
       value: 
       objectReference: {fileID: 2004964767}
+    - target: {fileID: 7638975001484682321, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: inGameManager
+      value: 
+      objectReference: {fileID: 415572253}
     - target: {fileID: 7638975001484682321, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: commandSkillManager
@@ -42898,6 +42918,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitManager: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 869192682}
 --- !u!114 &1105637570
 MonoBehaviour:
@@ -51839,6 +51862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitManager: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 1541778262}
 --- !u!114 &1311904122
 MonoBehaviour:
@@ -56134,6 +56160,7 @@ MonoBehaviour:
   ingameScreenUI: {fileID: 869192683}
   waveManager: {fileID: 1713546831}
   waveDataLoader: {fileID: 824689422}
+  allyUnitSpawner: {fileID: 1418562301}
   fortress: {fileID: 585491303}
   unitDataLoader: {fileID: 824689423}
   durationEffectPool: {fileID: 1333897620}
@@ -56141,6 +56168,7 @@ MonoBehaviour:
   hitVFXPool: {fileID: 1874598971}
   skillVFXPool: {fileID: 1874598971}
   effectImagePool: {fileID: 869192681}
+  immortalityEnemy: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnInterval: 1.5
   aSpawnPoints:
   - {fileID: 2146658173}
@@ -57034,7 +57062,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
   - {fileID: 11400000, guid: d4c8e7005b8c3c940b94d9c54314b8ef, type: 2}
   - {fileID: 11400000, guid: e7344272751e74a48ad16e408fca2c30, type: 2}
-  immortalityUnit: {fileID: 11400000, guid: ef738e82a443a9846bf2f26dcd4de180, type: 2}
   spawnPointPrefab: {fileID: 2803312306544439301, guid: 645cd6dc4f0f5e045ae928ad30e89eaa,
     type: 3}
   unitSpawnUI: {fileID: 869192680}
@@ -64243,6 +64270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitManager: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
+  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 0}
 --- !u!114 &1590103095
 MonoBehaviour:
@@ -64718,6 +64748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circle: {fileID: 265344260}
+  inGameManager: {fileID: 415572253}
   inputEventManager: {fileID: 1105637569}
   mainCamera: {fileID: 1251858459}
   SelectedUnitManager: {fileID: 296548010}
@@ -72439,7 +72470,7 @@ MonoBehaviour:
   uiSfxClip: []
   audioSourcePrefab: {fileID: 6984110101576558204, guid: e75dcaa9cba8ca348b19c8a2055dbe67,
     type: 3}
-  maxDistance: 80
+  maxDistance: 120
   minDistance: 30
 --- !u!4 &1811479017
 Transform:
@@ -81145,6 +81176,7 @@ MonoBehaviour:
   ingameScreenUI: {fileID: 1541778265}
   waveManager: {fileID: 1409587472}
   waveDataLoader: {fileID: 0}
+  allyUnitSpawner: {fileID: 0}
   fortress: {fileID: 1676721041}
   unitDataLoader: {fileID: 1943153814}
   durationEffectPool: {fileID: 1376648097}
@@ -81152,6 +81184,7 @@ MonoBehaviour:
   hitVFXPool: {fileID: 736784197}
   skillVFXPool: {fileID: 0}
   effectImagePool: {fileID: 0}
+  immortalityEnemy: {fileID: 0}
   spawnInterval: 1.5
   aSpawnPoints: []
   bSpawnPoints: []
@@ -83640,6 +83673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   commandSkillManager: {fileID: 0}
+  inGameManager: {fileID: 0}
   toolTipUI: {fileID: 0}
   cooldownImage: {fileID: 679173106}
   infoPanel: {fileID: 161433565}

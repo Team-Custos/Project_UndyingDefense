@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using InputEventInterface;
+using System.Collections;
+
+
 
 public class PlayerInputEventManager : MonoBehaviour
 {
@@ -23,6 +26,12 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputUpArrow OnUpArrowTarget { set; private get; }
     public IInputDownArrow OnDownArrowTarget { set; private get; }
 
+    [SerializeField] private SelectedUnitManager selectedUnitManager;
+    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
+    [SerializeField] private CommandSkillTargetingController commandSkillTargetingController;
+
+    private InputState leftClickState;
+
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
 
@@ -41,10 +50,29 @@ public class PlayerInputEventManager : MonoBehaviour
             OnNavigateTarget.OnNavigate(context);
     }
 
+
+    // 좌클릭에 대한 권한을 가진 상태에 따라 이벤트를 전달
     public void OnClick(InputAction.CallbackContext context)
     {
         if (OnClickTarget != null)
             OnClickTarget.OnClick(context);
+
+        Debug.Log(OnClickTarget);
+
+        //switch(leftClickState)
+        //{
+        //    case LeftClickState.UNIT_CONTROL:
+        //        selectedUnitManager.OnClick(context);
+        //        break;
+
+        //    case LeftClickState.UNIT_SPAWN:
+        //        allyUnitSpawner.OnClick(context);
+        //        break;
+
+        //    case LeftClickState.COMMAND_SKILL:
+        //        commandSkillTargetingController.OnClick(context);
+        //        break;
+        //}
     }
 
     public void OnRightClick(InputAction.CallbackContext context)
@@ -133,5 +161,4 @@ public class PlayerInputEventManager : MonoBehaviour
         if(OnDownArrowTarget != null)
             OnDownArrowTarget.OnDownArrow(context);
     }
-
 }

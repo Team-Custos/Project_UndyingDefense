@@ -9,6 +9,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
 {
     private ActiveCommandSkill currentSkill;
     [SerializeField] private GameObject circle;
+    [SerializeField] private InGameManager inGameManager;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager SelectedUnitManager;   // 유닛 선택 스킬_집중포화스킬
@@ -43,9 +44,11 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
     {
         currentSkill = skill;
 
+        //inGameManager.CancleClickState(ClickState.COMMAND_SKILL);
         inputEventManager.OnClickTarget = this;
         inputEventManager.OnRightClickTarget = this;
         inputEventManager.OnESCTarget = this;
+        inGameManager.UpdateInputState(InputState.COMMAND_SKILL);
 
         switch (skill.Data.TargetType)
         {
@@ -56,6 +59,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         }
     }
 
+    // 지휘관 스킬 취소
     public void CancelTargeting()
     {
         circle.SetActive(false);
@@ -63,7 +67,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         currentSkill = null;
         indicator.SetActive(false);
 
-        RestoreInputTarget();
+        // RestoreInputTarget();
     }
 
     private void RestoreInputTarget()
@@ -71,6 +75,8 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         inputEventManager.OnClickTarget = SelectedUnitManager;
         inputEventManager.OnESCTarget = ingameManager;
         inputEventManager.OnRightClickTarget = SelectedUnitManager;
+        //inGameManager.CancleLeftClick(clickState);
+        inGameManager.UpdateInputState(InputState.UNIT_CONTROL);
     }
 
     public void OnClick(InputAction.CallbackContext context)
@@ -99,6 +105,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         if (context.performed)
         {
             CancelTargeting();
+            RestoreInputTarget();
         }
     }
 
@@ -107,6 +114,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         if (context.performed)
         {
             CancelTargeting();
+            RestoreInputTarget();
         }
     }
 

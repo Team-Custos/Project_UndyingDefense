@@ -32,7 +32,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
     [Header("■ Units")]
     [SerializeField] private AllyUnitData[] units;
-    [SerializeField] private EnemyUnitData immortalityUnit;
+    private EnemyUnit immortalityEnemy;
 
     [Header("■ Spawn Point")]
     [SerializeField] private GameObject spawnPointPrefab;
@@ -40,7 +40,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     [Header("■ UI")]
     [SerializeField] private UnitSpawnUI unitSpawnUI;
     [SerializeField] private GameObject indicator;
-
 
 
     [Header("■ Ground Layer")]
@@ -173,6 +172,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         }
 
         UpgradeUnitInitialize(upgradeUnit, allyUnitData, allyUnitPrefab, transform, tile, effectImagePool, waveManager);
+
         return upgradeUnit;
     }
 
@@ -194,6 +194,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
         upgradeUnit.gameObject.SetActive(true);
         upgradeUnit.UnitGrid.SetTargetTile(tile);
+
+        if (immortalityEnemy != null)
+            upgradeUnit.SetImmortalityEnemy(immortalityEnemy);
     }
 
     private UnitSpawnPoint CreateSpawnPoint()
@@ -226,7 +229,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
 
         if (index == selectedIndex)
         {
-            CancelSpawn();
+            //CancelSpawn();
+            inGameManager.CancleInputState(InputState.UNIT_CONTROL);
+            inGameManager.UpdateInputState(InputState.UNIT_CONTROL);
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
@@ -242,12 +247,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 }
             }
 
-            selectedUnitManager.DeSelecteUnit();
-            commandSkillManager.CancelSkill();
             selectedIndex = index;
             spawn = true;
             //indicator.SetActive(true);
             inputMng.OnClickTarget = this;
+            inGameManager.CancleInputState(InputState.UNIT_SPAWN);
+            inGameManager.UpdateInputState(InputState.UNIT_SPAWN);
             unitSpawnUI.Select(index);
 
             //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
@@ -323,6 +328,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                         return;
                     }
 
+                    if(immortalityEnemy != null)
+                        unit.SetImmortalityEnemy(immortalityEnemy);
                     // 유닛의 소환 방향 설정
                     unit.transform.forward = spawnDirection.forward;
 
@@ -355,10 +362,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
     {
         if (context.performed)
         {
-            CancelSpawn();
+            //CancelSpawn();
+            inGameManager.CancleInputState(InputState.UNIT_CONTROL);
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
+            inGameManager.UpdateInputState(InputState.UNIT_CONTROL);
         }
     }
 
@@ -369,10 +378,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             if (inGameManager.IsGamgePause)
                 return;
 
-            CancelSpawn();
+            //CancelSpawn();
+            inGameManager.CancleInputState(InputState.UNIT_CONTROL);
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
+            inGameManager.UpdateInputState(InputState.UNIT_CONTROL);
         }
     }
 
@@ -428,26 +439,32 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         }
     }
 
-    public void SearchImmortalityUnit(Unit unit)
+    // 소환 된 유닛들에게 영생 유닛 정보 전달
+    private void SetActiveUnitImmortalityEnemy(EnemyUnit immortalityEnemy)
     {
-        List<EnemyUnit> units = enemyUnitSpawner.GetActivateEnemy(immortalityUnit);
-
-        if (units == null || units.Count == 0)
-            return;
-
-        foreach (EnemyUnit enemy in units)
+        foreach (var pool in unitPools)
         {
-            float distance = Vector3.Distance(unit.transform.position, enemy.transform.position);
-
-            if (distance <= 5f)
+            foreach (var unit in pool.List)
             {
-                enemy.ActivateSpecialAbility(SpecialAbility.ActiveType.DEAD, unit);
-            }
-            else
-            {
-                Debug.Log(distance);
-                return;
+                if (unit != null)
+                    unit.SetImmortalityEnemy(immortalityEnemy);
             }
         }
+
+        foreach (var kvp in upgradeUnitPoolsDic)
+        {
+            foreach (var unit in kvp.Value.List)
+            {
+                if (unit != null)
+                    unit.SetImmortalityEnemy(immortalityEnemy);
+            }
+        }
+    }
+
+    // 영생 유닛이 소환 / 사망 시 호출
+    public void SetImmortalityUnit(EnemyUnit ImmortalityEnemy)
+    {
+        this.immortalityEnemy = ImmortalityEnemy;
+        SetActiveUnitImmortalityEnemy(ImmortalityEnemy);
     }
 }

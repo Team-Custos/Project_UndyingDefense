@@ -29,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8405376943695421872}
   m_Father: {fileID: 0}
@@ -115,6 +115,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FX_Fire_Burn_1Stack
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673829490113448162, guid: 86fe1e0d55e88e74f8711db708589664,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673829490113448162, guid: 86fe1e0d55e88e74f8711db708589664,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673829490113448162, guid: 86fe1e0d55e88e74f8711db708589664,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5673829490113448162, guid: 86fe1e0d55e88e74f8711db708589664,
         type: 3}
