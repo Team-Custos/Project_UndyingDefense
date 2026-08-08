@@ -3,10 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
-using UltEvents;
 using AYellowpaper.SerializedCollections;
-using DG.Tweening;
-using System.Collections;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -49,9 +46,8 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
 
-    [Header("■ State Events")]
-    //[SerializeField] private UltEvent<Unit>[] stateEvents;
-    //[SerializeField] private SpecialAbility specialAbility;
+    [Header("■ Audio Clip")]
+    [SerializeField] private AudioClip recoverySFX;
 
 
     protected float maxhp;
@@ -1314,6 +1310,26 @@ public abstract class Unit : MonoBehaviour
             ActivateSpecialAbility(ActiveType.TAKE_DAMAGE, attacker);
 
         
+
+        if (selectedUnitUI != null)
+        {
+            selectedUnitUI.UpdateHPUI(this);
+        }
+    }
+
+
+    // 체력 회복 
+    public virtual void RecoveryHp(float amount, AudioClip recoverySFX = null)
+    {
+        hp += amount;
+        hp = Mathf.Clamp(hp, 0f, Maxhp);
+
+        if (recoverySFX == null)
+            recoverySFX = this.recoverySFX;
+
+        SoundManager.Instance.PlaySFX(recoverySFX, this.transform.position);
+
+
 
         if (selectedUnitUI != null)
         {

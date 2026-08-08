@@ -94,7 +94,7 @@ public class SpecialAbility : MonoBehaviour
     // 흡혈
     public void LifeSteal(Unit unit, float percent, GameObject vfx)
     {
-        unit.TakeDamage(-Damage * percent, null);
+        unit.RecoveryHp(Damage * percent, null);
         unit.AddVFX(vfx, unit.transform.position);
     }
 
@@ -121,7 +121,7 @@ public class SpecialAbility : MonoBehaviour
         {
             float hpAmount = target.Maxhp * percent;
 
-            unit.TakeDamage(-hpAmount, null);
+            unit.RecoveryHp(hpAmount, null);
             Debug.Log("회복량 : " + hpAmount);
             unit.AddVFX(vfx, unit.transform.position);
             SoundManager.Instance.PlaySFX(audioClip, unit.transform.position);
