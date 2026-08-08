@@ -9,12 +9,17 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     public Text buttonText;
     public GameObject textPanel;
     public Vector3 hoverScale = new Vector3(1.1f, 1.1f, 1f);
-    public Vector3 pressedScale = new Vector3(0.9f, 0.9f, 1f);
+    public Vector3 pressedScale = new Vector3(1.1f, 1.1f, 1f);
     public Vector3 normalScale = Vector3.one;
     public float scaleDuration = 0.1f;
 
     private Vector3 originalTextScale;
     private Vector3 originalTextPanelScale;
+
+    [Header("Hover SFX")]
+    public AudioClip hoverSfxClip;
+    public float hoverSfxInterval = 1f; // 호버링 사운드 재생 최소 간격(초)
+    private float lastHoverSfxTime = -Mathf.Infinity;
 
     private void Start()
     {
@@ -37,6 +42,8 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
     {
         if (this.gameObject.tag == "UnInteractiveUi")
             return;
+
+        PlayHoverSFX();
 
         // 호버링 시 버튼, 텍스트, 패널 크기 증가
         StartCoroutine(ScaleButton(hoverScale));
@@ -99,6 +106,19 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         {
             StartCoroutine(ScalePanel(originalTextPanelScale));
         }
+    }
+
+    // 호버링 사운드 재생 (인터벌 체크 포함)
+    private void PlayHoverSFX()
+    {
+        if (hoverSfxClip == null)
+            return;
+
+        if (Time.unscaledTime - lastHoverSfxTime < hoverSfxInterval)
+            return;
+
+        SoundManager.Instance.PlaySFX(hoverSfxClip);
+        lastHoverSfxTime = Time.unscaledTime;
     }
 
     // 버튼 크기 변경 코루틴

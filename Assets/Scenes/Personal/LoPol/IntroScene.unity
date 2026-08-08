@@ -1075,6 +1075,8 @@ MonoBehaviour:
   selectIndicator: {fileID: 2090126614}
   selectedUI: {fileID: 2090126614}
   inputManager: {fileID: 836510259}
+  choiceSelectSFX: {fileID: 8300000, guid: 09619d7d055b276419263b4b8c7867c6, type: 3}
+  choiceConfirmSFX: {fileID: 8300000, guid: 79c90eb45a8731f41a8a6d8f62c6bc0b, type: 3}
 --- !u!4 &829484277
 Transform:
   m_ObjectHideFlags: 0
@@ -4462,6 +4464,11 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 8795581385314084732, guid: f80f302396a81c44ea8f6751a1c045b5,
+        type: 3}
+      propertyPath: speakerInSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 94fd5ed0785b83047a1ed607b5e7943b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

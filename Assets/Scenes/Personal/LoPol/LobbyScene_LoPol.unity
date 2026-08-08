@@ -3840,7 +3840,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -4497244139495979834, guid: 249935a0eb1932348b1b7de02faa0d87,
+      objectReference: {fileID: 8786618003209967747, guid: e0d3529816bb6284b8686d218f4c920a,
         type: 2}
     - target: {fileID: 265451568502874335, guid: 426f485f9e8692448a7971ef6a74f8c4,
         type: 3}
@@ -6925,7 +6925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 3}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &472524656
@@ -12263,6 +12263,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1225665816}
+    - target: {fileID: 8795581385314084732, guid: f80f302396a81c44ea8f6751a1c045b5,
+        type: 3}
+      propertyPath: speakerInSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 94fd5ed0785b83047a1ed607b5e7943b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21080,6 +21085,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1842660029}
     m_Modifications:
+    - target: {fileID: 1293529727142102813, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1293529727142102813, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3643456365288262543, guid: 53c411bd988be1e478ac504cee46cc25,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -24942,7 +24957,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -60}
-  m_SizeDelta: {x: 300, y: 100}
+  m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1699023074
 MonoBehaviour:
@@ -29952,6 +29967,8 @@ MonoBehaviour:
   selectIndicator: {fileID: 6238803664639506447}
   selectedUI: {fileID: 6238803664639506447}
   inputManager: {fileID: 346775373}
+  choiceSelectSFX: {fileID: 0}
+  choiceConfirmSFX: {fileID: 0}
 --- !u!4 &1985498939
 Transform:
   m_ObjectHideFlags: 0
@@ -33260,6 +33277,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 504278958191195585, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 504278958191195585, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 985533420021815093, guid: 53c411bd988be1e478ac504cee46cc25,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -33274,6 +33301,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105097185735948210, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105097185735948210, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.y
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 2444914059490093017, guid: 53c411bd988be1e478ac504cee46cc25,
         type: 3}
@@ -33434,6 +33471,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Page0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8829567299723872374, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8829567299723872374, guid: 53c411bd988be1e478ac504cee46cc25,
+        type: 3}
+      propertyPath: pressedScale.y
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 8914136972157115347, guid: 53c411bd988be1e478ac504cee46cc25,
         type: 3}
@@ -35737,7 +35784,7 @@ PrefabInstance:
     - target: {fileID: 7712721815656778894, guid: 6ef40bf82dcb5d64f84b76429b9e9ab5,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7712721815656778894, guid: 6ef40bf82dcb5d64f84b76429b9e9ab5,
         type: 3}
@@ -36347,6 +36394,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerCommanderRank (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8741778994594992738, guid: 13f6be64b3616f642b26d99ec5fff75a,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC2E0\uCD9C\uB0B4\uAE30"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
