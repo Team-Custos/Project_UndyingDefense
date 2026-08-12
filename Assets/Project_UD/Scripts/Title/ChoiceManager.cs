@@ -19,6 +19,10 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
     [SerializeField] private PlayerInputEventManager inputManager;
     private int indicatorIndex = 0;
 
+    [Header("Choice SFX")]
+    [SerializeField] private AudioClip choiceSelectSFX;
+    [SerializeField] private AudioClip choiceConfirmSFX;
+
     private ChoiceArray choicearray; // currentChoiceArray 등으로 이름 변경 고려
 
     private void Start()
@@ -162,6 +166,7 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
         if (context.performed)
         {
             SelectChoice();
+            SoundManager.Instance.PlayUISFX(choiceConfirmSFX);
         }
     }
 
@@ -174,6 +179,7 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
 
             indicatorIndex--;
             selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
+            SoundManager.Instance.PlayUISFX(choiceSelectSFX);
         }
     }
 
@@ -186,6 +192,7 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
 
             indicatorIndex++;
             selectIndicator.transform.position = choiceui.GetButton(indicatorIndex).transform.position;
+            SoundManager.Instance.PlayUISFX(choiceSelectSFX);
         }
     }
 }

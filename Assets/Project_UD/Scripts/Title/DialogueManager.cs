@@ -1,5 +1,6 @@
 using DG.Tweening;
 using InputEventInterface;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -108,6 +109,7 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
 
         //-- 타이핑 연출 수정
         //dialogueLine.text = lines[currentLineIndex];
+        /* //260808 콜백 추가 전 코드
         SetDialogueText(lines[currentLineIndex]);
         //--
         if (lines.Count > 1)
@@ -119,6 +121,34 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         }
         else
             ReadLine();
+        */
+
+        if(lines.Count > 1)
+        {
+            ShowSpaceImage(3f);
+        }
+
+        ShowLine(0);
+    }
+
+    // 특정 줄(index)을 타이핑으로 보여주고, 마지막 줄이면 완료 시 자동으로 다음 이벤트로 진행
+    protected void ShowLine(int index)
+    {
+        currentLineIndex = index;
+        bool isLastLine = (currentLineIndex >= lines.Count - 1);
+
+        SetDialogueText(lines[currentLineIndex]);
+
+        if (isLastLine)
+        {
+            // 마지막 줄: 타이핑이 끝나는 순간 자동으로 다음으로 진행 (space 불필요)
+            onTypingComplete = AdvanceSpeaking;
+        }
+        else
+        {
+            // 마지막 줄이 아님: 타이핑만 끝내고 space 입력 대기
+            onTypingComplete = null;
+        }
     }
 
     // 타이핑 연출을 위한 메서드 (코루틴)
@@ -146,6 +176,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         isTyping = false;
         typingCoroutine = null;
         Debug.Log("[TypeLine] 완료");
+
+        onTypingComplete?.Invoke();
+        onTypingComplete = null;
     }
 
     protected void SkipTyping()
@@ -156,6 +189,9 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         dialogueLine.text = lines[currentLineIndex];
         isTyping = false;
         typingCoroutine = null;
+
+        onTypingComplete?.Invoke();
+        onTypingComplete = null;
     }
 
     //-------------------------------------------------------------------------
@@ -164,17 +200,18 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
     {
         if (currentLineIndex < lines.Count - 1)
         {
-            currentLineIndex++;
-            //-- 타이핑 연출 수정
-            //dialogueLine.text = lines[currentLineIndex];
-            SetDialogueText(lines[currentLineIndex]);
-            if (currentLineIndex == 1)
+            if(currentLineIndex < lines.Count - 1)
             {
-                //HideSpaceImage();
+                ShowLine(currentLineIndex + 1);
             }
-            //return;
-        }
+            //-- 260808-- ShowLine()로 통합
+            //currentLineIndex++;
+            //SetDialogueText(lines[currentLineIndex]);
+            ////-- 타이핑 연출 수정
+            ////dialogueLine.text = lines[currentLineIndex];
 
+        }
+        /*  // 260808-- AdvanceSpeaking()로 통합
         if (currentLineIndex >= lines.Count - 1)
         {
             currentSpeakingIndex++;
@@ -188,7 +225,24 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
                 return;
             }
             ShowDialogue();
+        }*/
+    }
+
+    protected void AdvanceSpeaking()
+    {
+        currentSpeakingIndex++;
+        currentLineIndex = 0;
+
+        if (currentSpeakingIndex >= currentSpeakingArray.GetArrayLength())
+        {
+            currentSpeakingIndex = 0;
+            inputManager.OnSpaceTarget = null;
+            EndSpeaking();
+            return;
         }
+
+        SetupCurrentSpeaking();
+        ShowDialogue();
     }
 
     public void EndSpeaking()
