@@ -13260,9 +13260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64bbd6c4de50e6469730ae225630a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedUnitManager: {fileID: 0}
-  allyUnitSpawner: {fileID: 0}
-  commandSkillTargetingController: {fileID: 0}
   graphicRaycaster: {fileID: 869192682}
 --- !u!114 &1105637570
 MonoBehaviour:
@@ -13518,6 +13515,34 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0d94061c-c6b6-4cbb-ac27-6449da9c2051
     m_ActionName: Player/OnSpace[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 744ce468-10fd-4cb6-8053-461eefea86e0
+    m_ActionName: Player/OnUpArrow[/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: df033ef9-d128-4cfa-809e-f0b3e4e76148
+    m_ActionName: Player/OnDownArrow[/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1ccb5126-ae60-475c-8a71-5c883c94eff9
+    m_ActionName: Player/OnClick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1105637569}
+        m_TargetAssemblyTypeName: PlayerInputEventManager, Assembly-CSharp
+        m_MethodName: OnFunction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4f129da9-8ff2-4338-a47e-e344a85ec41b
+    m_ActionName: Player/OnFunction[/Keyboard/f1,/Keyboard/f2,/Keyboard/f3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

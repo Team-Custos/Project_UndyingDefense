@@ -1746,8 +1746,10 @@ public abstract class Unit : MonoBehaviour
             {
                 AnimatorOverrideController aoc = modelAnimator.runtimeAnimatorController as AnimatorOverrideController;
                 aoc[stateName] = clip;
+                Debug.Log(clip.name);
             }
         }
+
 
         modelAnimator.SetTrigger(stateName);
     }

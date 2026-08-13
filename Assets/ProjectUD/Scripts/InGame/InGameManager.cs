@@ -6,14 +6,15 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 
-// 입력 상태
-public enum InputState
+// 조작 중 상태 
+public enum OperateState
 {
-    UNIT_CONTROL,   // 유닛 조작 상태
+    DEFAULT,        // 기본 상태
     UNIT_SPAWN,     // 유닛(아군) 소환 상태
-    COMMAND_SKILL,  // 지휘관 스킬 사용 상태
-    UI_SETTING,     // UI 조작 상태(설정 창)
-    UNIT_UPGRADE   // 유닛 승급 상태
+    CS_Area,        // 지휘관 스킬 영역 지정
+    CS_Target,      // 지휘관 스킬 대상 지정
+    UNIT_CONTROL,   // 유닛 선택
+    UNIT_UPGRADE    // 유닛 승급 상태
 }
 
 
@@ -59,7 +60,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     [SerializeField] private float losePoint;
 
     [Header("ClickState")]
-    private InputState inputState;
+    private OperateState inputState;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -83,7 +84,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnSpeedUpTarget = this;
-        UpdateInputState(InputState.UNIT_CONTROL);
+        UpdateOperateState(OperateState.UNIT_CONTROL);
     }
 
     private void Update()
@@ -279,7 +280,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 
 
     // 클릭 상태 변경 ex) 유닛 소환 -> 지휘관 스킬
-    public void UpdateInputState(InputState nextState)
+    public void UpdateOperateState(OperateState nextState)
     {
         if(inputState == nextState)
             return;
@@ -288,22 +289,22 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     }
 
     // 클릭 상태 취소 : 상태 변경 + 우클릭/ESc
-    public void CancleInputState(InputState nextState)
+    public void CancleOperateState(OperateState nextState)
     {
         if(nextState == inputState)
             return;
 
         switch (inputState)
         {
-            case InputState.UNIT_CONTROL:
+            case OperateState.UNIT_CONTROL:
                 selectedUnitManager.DeSelecteUnit();
                 break;
 
-            case InputState.UNIT_SPAWN:
+            case OperateState.UNIT_SPAWN:
                 allyUnitSpawner.CancelSpawn();
                 break;
 
-            case InputState.COMMAND_SKILL:
+            case OperateState.CS_Area:
                 commandSkillTargetingController.CancelTargeting();
                 break;
         }

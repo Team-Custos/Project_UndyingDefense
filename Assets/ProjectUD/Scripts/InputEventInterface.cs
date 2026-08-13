@@ -75,4 +75,9 @@ namespace InputEventInterface
     {
         void OnDownArrow(InputAction.CallbackContext context);
     }
+
+    public interface IInputFunction
+    {
+        void OnFunction(InputAction.CallbackContext context);
+    }
 }

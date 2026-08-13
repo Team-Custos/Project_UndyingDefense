@@ -130,6 +130,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OnFunction",
+                    "type": "Button",
+                    "id": "4f129da9-8ff2-4338-a47e-e344a85ec41b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -444,7 +453,7 @@
                 {
                     "name": "",
                     "id": "d6769a7a-c2c1-44e7-83a8-e45d7233d638",
-                    "path": "<Keyboard>/1",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -455,7 +464,7 @@
                 {
                     "name": "",
                     "id": "b4888170-2d54-4945-bb52-2979b76bf0f4",
-                    "path": "<Keyboard>/2",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -515,6 +524,39 @@
                     "processors": "",
                     "groups": "Gamepad;Keyboard&Mouse",
                     "action": "OnClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e11b9b04-3637-4373-af74-3ddbaaa8eaa0",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OnFunction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05799d15-1545-485b-b094-9c81a4e904a2",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OnFunction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eb37391e-fcea-4a2d-b259-a066a8a28a52",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OnFunction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

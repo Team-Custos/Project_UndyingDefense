@@ -48,7 +48,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         inputEventManager.OnClickTarget = this;
         inputEventManager.OnRightClickTarget = this;
         inputEventManager.OnESCTarget = this;
-        inGameManager.UpdateInputState(InputState.COMMAND_SKILL);
+        inGameManager.UpdateOperateState(OperateState.CS_Area);
 
         switch (skill.Data.TargetType)
         {
@@ -76,7 +76,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         inputEventManager.OnESCTarget = ingameManager;
         inputEventManager.OnRightClickTarget = SelectedUnitManager;
         //inGameManager.CancleLeftClick(clickState);
-        inGameManager.UpdateInputState(InputState.UNIT_CONTROL);
+        inGameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
     }
 
     public void OnClick(InputAction.CallbackContext context)

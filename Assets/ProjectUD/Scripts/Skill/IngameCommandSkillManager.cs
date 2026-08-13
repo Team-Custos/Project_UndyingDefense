@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick
+public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick, IInputFunction
 {
     //------지휘관 스킬 로드 & 셋팅
     [SerializeField] private CommandSkillRepository cSkillRepository;
@@ -55,23 +55,9 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
     private void Start()
     {
         LoadCSkillData();
-        
+        inputEventManager.OnFunctionTarget = this;
     }
 
-    void Update()
-    {
-        //if (isSkillActivated)
-        //{
-        //    if (inputEventManager.IsPointerOnUIElements())
-        //        return;
-
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
-        //    {
-        //        circle.transform.position = hit.point;
-        //    }
-        //}
-    }
     private void Awake()
     {
         if (GetComponentsInChildren<CommandSkill>() == null)
@@ -312,11 +298,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         if (context.performed)
         {
             //CancelSkill();
-            ingameManager.CancleInputState(InputState.UNIT_CONTROL);
+            ingameManager.CancleOperateState(OperateState.UNIT_CONTROL);
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateInputState(InputState.UNIT_CONTROL);
+            ingameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
         }
     }
 
@@ -325,11 +311,45 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         if (context.performed)
         {
             //CancelSkill();
-            ingameManager.CancleInputState(InputState.UNIT_CONTROL);
+            ingameManager.CancleOperateState(OperateState.UNIT_CONTROL);
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateInputState(InputState.UNIT_CONTROL);
+            ingameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+        }
+    }
+
+    public void OnFunction(InputAction.CallbackContext context)
+    {
+
+        if (context.performed)
+        {
+            string keyName = context.control.name;
+
+            int skillIndex = -1;
+
+            switch(keyName)
+            {
+                case "f1":
+                    skillIndex = 0;
+                    break;
+
+                case "f2":
+                    skillIndex = 1;
+                    break;
+
+                case "f3":
+                    skillIndex = 2;
+                    break;
+
+                default:
+                    return;
+            }
+
+            if (skillIndex == -1)
+                return;
+
+            cSkillBtns[skillIndex].OnButtonClick();
         }
     }
 }

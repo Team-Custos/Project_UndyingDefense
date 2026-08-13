@@ -25,12 +25,7 @@ public class PlayerInputEventManager : MonoBehaviour
     public IInputOnSpace OnSpaceTarget { set; private get; }
     public IInputUpArrow OnUpArrowTarget { set; private get; }
     public IInputDownArrow OnDownArrowTarget { set; private get; }
-
-    [SerializeField] private SelectedUnitManager selectedUnitManager;
-    [SerializeField] private AllyUnitSpawner allyUnitSpawner;
-    [SerializeField] private CommandSkillTargetingController commandSkillTargetingController;
-
-    private InputState leftClickState;
+    public IInputFunction OnFunctionTarget { set; private get; }
 
 
     [SerializeField] private GraphicRaycaster graphicRaycaster;
@@ -160,5 +155,11 @@ public class PlayerInputEventManager : MonoBehaviour
     {
         if(OnDownArrowTarget != null)
             OnDownArrowTarget.OnDownArrow(context);
+    }
+
+    public void OnFunction(InputAction.CallbackContext context)
+    {
+        if (OnFunctionTarget != null)
+            OnFunctionTarget.OnFunction(context);
     }
 }

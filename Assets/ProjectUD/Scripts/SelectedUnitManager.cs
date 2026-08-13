@@ -74,7 +74,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 if (hit.collider.CompareTag("Unit"))    // 유닛 클릭
                 {
                     //allyUnitSpawner.CancelSpawn();
-                    inGameManager.CancleInputState(InputState.UNIT_SPAWN);
+                    inGameManager.CancleOperateState(OperateState.UNIT_SPAWN);
                     inputEventManager.OnRightClickTarget = this;
                     inputEventManager.OnESCTarget = this;
 
@@ -386,16 +386,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
 
                 string keyName = context.control.name;
 
-                if (int.TryParse(keyName, out int upgradeOption))
+                if (keyName == "z")
                 {
-                    if(upgradeOption == 2 && allyUnitData.UpgradeUnits.Length <= 1)
-                    {
+                    UpgradeSelectedUnit(0);
+                }
+                else if (keyName == "x")
+                {
+                    if (allyUnitData.UpgradeUnits.Length <= 1)
                         return;
-                    }
-                    
 
-                    UpgradeSelectedUnit(upgradeOption - 1);
-                    //isUpgradeOn = false;
+                    UpgradeSelectedUnit(1);
                 }
                 else
                     return;
