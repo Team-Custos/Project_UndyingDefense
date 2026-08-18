@@ -204,7 +204,7 @@ public class ActiveCommandSkill : CommandSkill//ayo_0117
         trigger.SetArea(AreaX, AreaY, AreaZ);
 
         //ayo_0117
-        SoundManager.Instance.PlaySFX(Data.StartSFX, pivotTarget.position);
+        SoundManager.Instance.PlaySFX(Data.LoopSFX, pivotTarget.position);
         coolTimeCheck -= Data.CoolTime;
 
     }

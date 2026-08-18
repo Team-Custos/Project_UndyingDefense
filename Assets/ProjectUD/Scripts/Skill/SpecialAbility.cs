@@ -96,7 +96,7 @@ public class SpecialAbility : MonoBehaviour
     {
         unit.RecoveryHp(Damage * percent);
         unit.ActivateRecovery();
-        unit.AddVFX(vfx, unit.transform.position);
+        //unit.AddVFX(vfx, unit.transform.position);
     }
 
     // 원한
@@ -125,7 +125,7 @@ public class SpecialAbility : MonoBehaviour
             unit.RecoveryHp(hpAmount);
             unit.ActivateRecovery();
             Debug.Log("회복량 : " + hpAmount);
-            unit.AddVFX(vfx, unit.transform.position);
+            //unit.AddVFX(vfx, unit.transform.position);
             SoundManager.Instance.PlaySFX(audioClip, unit.transform.position);
         }
     }
