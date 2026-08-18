@@ -8,6 +8,7 @@ public class DialogueUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI speaker;
     [SerializeField] private Image characterImage;
+    [SerializeField] private AudioClip speakerInSFX;
 
     public System.Action onFadeInComplete;
 
@@ -23,5 +24,13 @@ public class DialogueUI : MonoBehaviour
     {
         characterImage.sprite = characterSprite;
         speaker.text = characterName;
+    }
+
+    public void PlaySpeakerInSFX()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUISFX(speakerInSFX);
+        }
     }
 }

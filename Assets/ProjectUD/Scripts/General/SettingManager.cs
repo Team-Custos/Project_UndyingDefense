@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class SettingManager : Singleton<SettingManager>
 {
@@ -13,6 +14,10 @@ public class SettingManager : Singleton<SettingManager>
     private const string KEY_QUALITY = "QualityLevel";
     private const string KEY_RESOLUTION = "ResolutionIndex";
     private const string KEY_FULLSCREEN = "IsFullScreen";
+
+    private const string KEY_LANGUAGE = "LocaleCode";
+    public const string DEFAULT_LOCALE = "ko-KR";
+
 
     // 현재 볼륨 상태 (0~1 정규화 값, UI와 동기화됨)
     public float MasterVolume { get; private set; } = 0.5f;
@@ -35,6 +40,7 @@ public class SettingManager : Singleton<SettingManager>
         new Vector2Int(1280, 720)
     };
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,13 +51,44 @@ public class SettingManager : Singleton<SettingManager>
         for(int i = 0; i < resolutions.Length; i++) {
             Debug.Log($"지원 해상도 {i+1} : {resolutions[i].width} X {resolutions[i].height}");
         }
-        
+
+        var initOp = LocalizationSettings.InitializationOperation;
+        if (initOp.IsDone)
+        {
+            ApplySavedLanguage();
+        }
+        else
+        {
+            initOp.Completed += _ => ApplySavedLanguage();
+        }
+    }
+
+    private void ApplySavedLanguage()
+    {
+        string savedCode = PlayerPrefs.GetString(KEY_LANGUAGE, DEFAULT_LOCALE);
+        var locale = LocalizationSettings.AvailableLocales.GetLocale(savedCode);
+        if (locale != null)
+        {
+            LocalizationSettings.SelectedLocale = locale;
+        }
     }
 
     private void Start()
     {
         // SoundManager가 초기화된 이후 시점에 저장된 볼륨 일괄 적용
         ApplyAllToSoundManager();
+    }
+
+    // ── 언어 변경
+    public void ChangeLanguage(string localeCode)
+    {
+        var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+        if (locale != null)
+        {
+            LocalizationSettings.SelectedLocale = locale;
+            PlayerPrefs.SetString(KEY_LANGUAGE, localeCode);
+            PlayerPrefs.Save();
+        }
     }
 
     // ── 그래픽 설정 변경 (추후 확장)
@@ -174,7 +211,7 @@ public class SettingManager : Singleton<SettingManager>
         SetResolution(savedResolutionIndex);
     }
 
-    /// 초기값 버튼 — 모든 볼륨을 50%로 초기화하고 즉시 저장.
+    /// 초기값 버튼 — 모든 볼륨을 50%로 초기화하고 즉시 저장. & 창 모드 끄기 _ 260730
     public void ResetToDefault()
     {
         SetMasterVolume(0.5f);
@@ -182,6 +219,9 @@ public class SettingManager : Singleton<SettingManager>
         SetCombatVolume(0.5f);
         SetUIVolume(0.5f);
         SetMute(false);
+        SetFullScreen(true);
+        SetResolution(0); // 1920x1080으로 초기화 (드롭다운 인덱스 0)
+        ChangeLanguage(DEFAULT_LOCALE);
         SaveSettings();
     }
 

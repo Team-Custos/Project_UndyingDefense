@@ -5,6 +5,9 @@ using UnityEngine.Localization.Settings;
 
 public class LanguageChanger : MonoBehaviour
 {
+    private const string KEY_LANGUAGE = "LocaleCode";
+    public const string DEFAULT_LOCALE = "ko-KR"; // 초기화 시 기본 언어
+
     [Header("한국어 버튼")]
     [SerializeField] private Image koreanButtonImage;
     [SerializeField] private TextMeshProUGUI koreanButtonText;
@@ -44,10 +47,26 @@ public class LanguageChanger : MonoBehaviour
 
     private void ChangeLanguage(string localeCode)
     {
-        var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
-        if (locale != null)
-            LocalizationSettings.SelectedLocale = locale;
+        //var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+        //if (locale != null)
+        //{
+        //    LocalizationSettings.SelectedLocale = locale;
+        //    SaveLanguage(localeCode);
+        //}
+        SettingManager.Instance.ChangeLanguage(localeCode);
         RefreshButtonStates();
+    }
+
+    private void SaveLanguage(string localeCode)
+    {
+        PlayerPrefs.SetString(KEY_LANGUAGE, localeCode);
+        PlayerPrefs.Save();
+    }
+
+    // 초기화 버튼용 — 한국어로 되돌리고 저장
+    public void ResetToDefaultLanguage()
+    {
+        ChangeLanguage(DEFAULT_LOCALE);
     }
 
     private void RefreshButtonStates()
