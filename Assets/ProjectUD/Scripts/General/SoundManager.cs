@@ -115,6 +115,9 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(AudioClip clip, Vector3 pos)
     {
+        if(clip == null)
+            return;
+
         AudioSource audioSource = GetAudioSource();
 
         if(audioSource != null)
