@@ -76,7 +76,7 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         inputEventManager.OnESCTarget = ingameManager;
         inputEventManager.OnRightClickTarget = SelectedUnitManager;
         //inGameManager.CancleLeftClick(clickState);
-        inGameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+        inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
     }
 
     public void OnClick(InputAction.CallbackContext context)

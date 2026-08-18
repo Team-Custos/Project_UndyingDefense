@@ -298,11 +298,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         if (context.performed)
         {
             //CancelSkill();
-            ingameManager.CancleOperateState(OperateState.UNIT_CONTROL);
+            ingameManager.CancleOperateState(OperateState.ALLYUNIT);
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+            ingameManager.UpdateOperateState(OperateState.ALLYUNIT);
         }
     }
 
@@ -311,11 +311,11 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
         if (context.performed)
         {
             //CancelSkill();
-            ingameManager.CancleOperateState(OperateState.UNIT_CONTROL);
+            ingameManager.CancleOperateState(OperateState.ALLYUNIT);
             inputEventManager.OnRightClickTarget = SelectedUnitManager;
             inputEventManager.OnESCTarget = ingameManager;
             inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+            ingameManager.UpdateOperateState(OperateState.ALLYUNIT);
         }
     }
 

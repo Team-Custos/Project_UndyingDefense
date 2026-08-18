@@ -251,8 +251,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
             spawn = true;
             //indicator.SetActive(true);
             inputMng.OnClickTarget = this;
-            inGameManager.CancleOperateState(OperateState.UNIT_SPAWN);
-            inGameManager.UpdateOperateState(OperateState.UNIT_SPAWN);
+            inGameManager.CancleOperateState(OperateState.SPAWN);
+            inGameManager.UpdateOperateState(OperateState.SPAWN);
             unitSpawnUI.Select(index);
 
             //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
@@ -363,11 +363,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if (context.performed)
         {
             //CancelSpawn();
-            inGameManager.CancleOperateState(OperateState.UNIT_CONTROL);
+            inGameManager.CancleOperateState(OperateState.ALLYUNIT);
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
-            inGameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+            inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
         }
     }
 
@@ -379,11 +379,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                 return;
 
             //CancelSpawn();
-            inGameManager.CancleOperateState(OperateState.UNIT_CONTROL);
+            inGameManager.CancleOperateState(OperateState.ALLYUNIT);
             inputMng.OnESCTarget = inGameManager;
             inputMng.OnRightClickTarget = selectedUnitManager;
             inputMng.OnClickTarget = selectedUnitManager;
-            inGameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
+            inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
         }
     }
 

@@ -74,7 +74,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputRightClick,
                 if (hit.collider.CompareTag("Unit"))    // 유닛 클릭
                 {
                     //allyUnitSpawner.CancelSpawn();
-                    inGameManager.CancleOperateState(OperateState.UNIT_SPAWN);
+                    inGameManager.CancleOperateState(OperateState.SPAWN);
                     inputEventManager.OnRightClickTarget = this;
                     inputEventManager.OnESCTarget = this;
 

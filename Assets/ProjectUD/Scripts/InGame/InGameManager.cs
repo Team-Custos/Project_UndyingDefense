@@ -9,16 +9,16 @@ using UnityEngine.SceneManagement;
 // 조작 중 상태 
 public enum OperateState
 {
-    DEFAULT,        // 기본 상태
-    UNIT_SPAWN,     // 유닛(아군) 소환 상태
-    CS_Area,        // 지휘관 스킬 영역 지정
-    CS_Target,      // 지휘관 스킬 대상 지정
-    UNIT_CONTROL,   // 유닛 선택
-    UNIT_UPGRADE    // 유닛 승급 상태
+    DEFAULT,      // 기본 상태
+    SPAWN,        // 소환 조작
+    CS_Area,      // 지휘관 스킬 영역 지정
+    CS_Target,    // 지휘관 스킬 대상 지정
+    ALLYUNIT,     // 아군 유닛 선택
+    UPGRADE       // 승급 진행 상태
 }
 
 
-public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
+public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedUp
 {
     public float inGameGold;
     [SerializeField] private IngameScreenUI ingameScreenUI;
@@ -30,6 +30,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
     [SerializeField] private SelectedUnitUI selectedUnitUI;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private CommandSkillTargetingController commandSkillTargetingController;
+    [SerializeField] private Camera mainCamera;
 
 
     [SerializeField] private AudioClip inGameBgm;
@@ -84,7 +85,7 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnSpeedUpTarget = this;
-        UpdateOperateState(OperateState.UNIT_CONTROL);
+        UpdateOperateState(OperateState.ALLYUNIT);
     }
 
     private void Update()
@@ -278,6 +279,23 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
         SoundManager.Instance.PlayBGM(inGameBgm);
     }
 
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (inputEventManager.IsPointerOnUIElements())
+                    return;
+
+
+            }
+        }
+    }
+
 
     // 클릭 상태 변경 ex) 유닛 소환 -> 지휘관 스킬
     public void UpdateOperateState(OperateState nextState)
@@ -296,11 +314,11 @@ public class InGameManager : MonoBehaviour, IInputESC, IInputSpeedUp
 
         switch (inputState)
         {
-            case OperateState.UNIT_CONTROL:
+            case OperateState.ALLYUNIT:
                 selectedUnitManager.DeSelecteUnit();
                 break;
 
-            case OperateState.UNIT_SPAWN:
+            case OperateState.SPAWN:
                 allyUnitSpawner.CancelSpawn();
                 break;
 

@@ -3962,6 +3962,7 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1365833131}
   selectedUnitManager: {fileID: 296548010}
   commandSkillTargetingController: {fileID: 1611628872}
+  mainCamera: {fileID: 0}
   inGameBgm: {fileID: 8300000, guid: 831117addb0753345886db2b771ed498, type: 3}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -8082,7 +8083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDataTable: {fileID: 4900000, guid: c02b96bd1584ed047a0db4a5616e475c, type: 3}
+  waveDataTable: {fileID: 4900000, guid: e8c7040c2c2b77b43bd1c73a02e5c553, type: 3}
   path: UnitData/Enemy
 --- !u!114 &824689423
 MonoBehaviour:
@@ -9871,6 +9872,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333936936154858650, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8358082801688646866, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -15119,6 +15125,7 @@ MonoBehaviour:
   fireArea: {fileID: 1498961464031686815, guid: 3c61f802bbf91cb4882b0c6f87b53db9,
     type: 3}
   fireAreaPos: {fileID: 1474213464}
+  sfx: {fileID: 0}
   OilBottleWaitTime: 0.2
 --- !u!4 &1248865695
 Transform:

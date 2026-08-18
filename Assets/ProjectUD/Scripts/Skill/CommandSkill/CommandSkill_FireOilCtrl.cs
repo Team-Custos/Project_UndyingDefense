@@ -8,39 +8,29 @@ public class CommandSkill_FireOilCtrl : MonoBehaviour
     [SerializeField] private Transform[] OilBottlePos;
     [SerializeField] private GameObject fireArea;
     [SerializeField] private Transform fireAreaPos;
+    [SerializeField] private AudioClip sfx;
     private int oilBottleIdx = 0;
 
     [SerializeField] private float OilBottleWaitTime;
     private float OilBottleWaitTimeCheck = 0f;
-
-    private float generateFireTimer = -1f;
 
 
 
     private bool isSpawned = true;
     private List<float> RandomNumExistList = new List<float>();
 
+
     public void SpawnStart()
     {
         OilBottleWaitTimeCheck = 0f;
         oilBottleIdx = 0;
         isSpawned = false;
+        GenerateFireArea();
     }
 
 
     private void Update()
     {
-        // 불 생성 대기 타이머
-        if (generateFireTimer >= 0f)
-        {
-            generateFireTimer -= Time.deltaTime;
-
-            if (generateFireTimer <= 0f)
-            {
-                generateFireTimer = -1f;
-                GenerateFireArea();
-            }
-        }
 
         if (!isSpawned)
         {
@@ -58,8 +48,6 @@ public class CommandSkill_FireOilCtrl : MonoBehaviour
                     oilBottleIdx = 0;
                     isSpawned = true;
 
-                    // 0.4초 후 GenerateFireArea 실행
-                    generateFireTimer = 0.4f;
                 }
             }
         }

@@ -46,8 +46,10 @@ public abstract class Unit : MonoBehaviour
     [Header("■ Nearby Distance")]
     [SerializeField] private float nearbyDistance; // 캐릭터 '주변' 위치를 계산하기 위한 거리.
 
-    [Header("■ Audio Clip")]
+    [Header("■ Recovery")]
     [SerializeField] private AudioClip recoverySFX;
+    [SerializeField] private AudioClip healStateSFX;
+    [SerializeField] private GameObject recoveryVFX;
 
 
     protected float maxhp;
@@ -1319,16 +1321,10 @@ public abstract class Unit : MonoBehaviour
 
 
     // 체력 회복 
-    public virtual void RecoveryHp(float amount, AudioClip recoverySFX = null)
+    public virtual void RecoveryHp(float amount)
     {
         hp += amount;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
-
-        if (recoverySFX == null)
-            recoverySFX = this.recoverySFX;
-
-        SoundManager.Instance.PlaySFX(recoverySFX, this.transform.position);
-
 
 
         if (selectedUnitUI != null)
@@ -1746,7 +1742,6 @@ public abstract class Unit : MonoBehaviour
             {
                 AnimatorOverrideController aoc = modelAnimator.runtimeAnimatorController as AnimatorOverrideController;
                 aoc[stateName] = clip;
-                Debug.Log(clip.name);
             }
         }
 
@@ -1802,5 +1797,16 @@ public abstract class Unit : MonoBehaviour
                 Debug.LogError("티어 범위 밖");
                 return 1f;
         }
+    }
+
+    public void ActivateRecovery()
+    {
+        AddVFX(recoveryVFX, this.transform.position);
+        SoundManager.Instance.PlaySFX(recoverySFX, this.transform.position);
+    }
+
+    public void PlayHealStateSFX()
+    {
+        SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
 }

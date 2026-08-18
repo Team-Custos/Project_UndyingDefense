@@ -24,7 +24,6 @@ public class CommandSkillAttackTrigger : MonoBehaviour
     [SerializeField] private float tickTime = 0.1f;
     private float tickTimeCheck = 0f;
 
-    [SerializeField] private AudioClip loopSFX;
 
     // 범위를 가진 스킬
     protected Collider[] targets;
@@ -32,7 +31,6 @@ public class CommandSkillAttackTrigger : MonoBehaviour
 
     private AttackTriggerType triggerType;
 
-    [SerializeField] private IgniteEffect IgniteEffect;
 
 
     public void SetTriggerType(AttackTriggerType Type)
