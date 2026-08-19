@@ -77,7 +77,8 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
             return;
         }
         dialogueui.gameObject.SetActive(true);
-        dialogueui.onFadeInComplete = () => ShowDialogue(); // 대화 UI 페이드인 끝나고 대사 시작
+        //dialogueui.onFadeInComplete = () => ShowDialogue(); // 대화 UI 페이드인 끝나고 대사 시작
+        dialogueui.onFadeInComplete = ShowDialogue; // 대화 UI 페이드인 끝나고 대사 시작
     }
 
     // 기존 ShowDialogue()에서 캐릭터 세팅 + 대사 로드 부분만 분리
