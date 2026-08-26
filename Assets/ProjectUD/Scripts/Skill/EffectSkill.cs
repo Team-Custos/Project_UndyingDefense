@@ -52,7 +52,14 @@ public class EffectSkill : SkillBase
         if (data.VFX != null)
         {
             unit.AddVFX(data.VFX, unit.transform.position);
+        }
+    }
 
+    public void ShowVFX(Unit unit, bool isAttach)
+    {
+        if (data.VFX != null)   
+        {
+            unit.AddVFX(data.VFX, unit.transform, isAttach);
         }
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static CommandSkill;
 
-public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInputESC, IInputRightClick
+public class CommandSkillTargetingController : MonoBehaviour, IInputClick
 {
     private ActiveCommandSkill currentSkill;
     [SerializeField] private GameObject circle;
@@ -46,15 +46,18 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
 
         //inGameManager.CancleClickState(ClickState.COMMAND_SKILL);
         inputEventManager.OnClickTarget = this;
-        inputEventManager.OnRightClickTarget = this;
-        inputEventManager.OnESCTarget = this;
         inGameManager.UpdateOperateState(OperateState.CS_Area);
 
         switch (skill.Data.TargetType)
         {
             case TargetType.AREA:
+                circle.SetActive(false);
+                break;
             case TargetType.MOUSEPOSAREA:
                 circle.SetActive(true);
+                break;
+            case TargetType.UNIT:
+                circle.SetActive(false);
                 break;
         }
     }
@@ -72,9 +75,9 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
 
     private void RestoreInputTarget()
     {
-        inputEventManager.OnClickTarget = SelectedUnitManager;
-        inputEventManager.OnESCTarget = ingameManager;
-        inputEventManager.OnRightClickTarget = SelectedUnitManager;
+        inputEventManager.OnClickTarget = inGameManager;
+        //inputEventManager.OnESCTarget = ingameManager;
+        //inputEventManager.OnRightClickTarget = SelectedUnitManager;
         //inGameManager.CancleLeftClick(clickState);
         inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
     }
@@ -100,23 +103,23 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick, IInpu
         }
     }
 
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            CancelTargeting();
-            RestoreInputTarget();
-        }
-    }
+    //public void OnESC(InputAction.CallbackContext context)
+    //{
+    //    if (context.performed)
+    //    {
+    //        CancelTargeting();
+    //        RestoreInputTarget();
+    //    }
+    //}
 
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            CancelTargeting();
-            RestoreInputTarget();
-        }
-    }
+    //public void OnRightClick(InputAction.CallbackContext context)
+    //{
+    //    if (context.performed)
+    //    {
+    //        CancelTargeting();
+    //        RestoreInputTarget();
+    //    }
+    //}
 
 
 }

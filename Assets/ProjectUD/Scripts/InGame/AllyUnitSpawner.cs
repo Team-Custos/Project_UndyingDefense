@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInputESC, IInputRightClick
+public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 {
     [Header("■ Components")]
     [SerializeField] private PlayerInputEventManager inputMng;
@@ -221,45 +221,29 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         {
             //-- Localization
             ingameScreenUI.ShowError("IngameUI", "MSG_noGold");
-            //ingameScreenUI.ShowError("군자금이 모자랍니다!");
         }
 
-        inputMng.OnESCTarget = this;
-        inputMng.OnRightClickTarget = this;
 
-        if (index == selectedIndex)
+        if (index >= 0 && index < alarmImages.Length)
         {
-            //CancelSpawn();
-            //inGameManager.CancleOperateState(OperateState.UNIT_CONTROL);
-            //inGameManager.UpdateOperateState(OperateState.UNIT_CONTROL);
-            //inputMng.OnESCTarget = inGameManager;
-            //inputMng.OnRightClickTarget = selectedUnitManager;
-            //inputMng.OnClickTarget = selectedUnitManager;
-            //selectedUnitUI.HideUntInfo();
-        }
-        else
-        {
-            if (index >= 0 && index < alarmImages.Length)
+            if (alarmImages[index] != null)
             {
-                if (alarmImages[index] != null)
-                {
-                    alarmImages[index].gameObject.SetActive(false);
-                }
+                alarmImages[index].gameObject.SetActive(false);
             }
-
-            selectedIndex = index;
-            spawn = true;
-            //indicator.SetActive(true);
-            inputMng.OnClickTarget = this;
-            inGameManager.CancleOperateState(OperateState.SPAWN);
-            inGameManager.UpdateOperateState(OperateState.SPAWN);
-            unitSpawnUI.Select(index);
-
-            //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
-
-
-            selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
         }
+
+        selectedIndex = index;
+        spawn = true;
+        //indicator.SetActive(true);
+        inputMng.OnClickTarget = this;
+        //inGameManager.CancleOperateState(OperateState.SPAWN);
+        inGameManager.UpdateOperateState(OperateState.SPAWN);
+        unitSpawnUI.Select(index);
+
+        //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
+
+
+        selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
 
         SoundManager.Instance.PlayUIClickSFX();
     }
@@ -280,8 +264,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
         if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart || inGameManager.IsGamgePause)
             return;
 
-        if (selectedUnitManager.SelectedUnit != null)
-            return;
+        if (selectedUnitManager.SelectedUnit != null )
+        {
+            selectedUnitManager.DeSelecteUnit();
+
+            //return;
+        }
 
         if (context.performed)
         {
@@ -355,35 +343,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn, IInp
                     ingameScreenUI.ShowError("IngameUI", "MSG_noPlace");
                 }
             }
-        }
-    }
-
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            //CancelSpawn();
-            inGameManager.CancleOperateState(OperateState.ALLYUNIT);
-            inputMng.OnESCTarget = inGameManager;
-            inputMng.OnRightClickTarget = selectedUnitManager;
-            inputMng.OnClickTarget = selectedUnitManager;
-            inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
-        }
-    }
-
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        if(context.performed)
-        {
-            if (inGameManager.IsGamgePause)
-                return;
-
-            //CancelSpawn();
-            inGameManager.CancleOperateState(OperateState.ALLYUNIT);
-            inputMng.OnESCTarget = inGameManager;
-            inputMng.OnRightClickTarget = selectedUnitManager;
-            inputMng.OnClickTarget = selectedUnitManager;
-            inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
         }
     }
 

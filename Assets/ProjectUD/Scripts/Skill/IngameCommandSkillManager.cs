@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, IInputRightClick, IInputFunction
+public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputFunction
 {
     //------지휘관 스킬 로드 & 셋팅
     [SerializeField] private CommandSkillRepository cSkillRepository;
@@ -293,31 +293,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputESC, 
 
     }
 
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            //CancelSkill();
-            ingameManager.CancleOperateState(OperateState.ALLYUNIT);
-            inputEventManager.OnESCTarget = ingameManager;
-            inputEventManager.OnRightClickTarget = SelectedUnitManager;
-            inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateOperateState(OperateState.ALLYUNIT);
-        }
-    }
-
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            //CancelSkill();
-            ingameManager.CancleOperateState(OperateState.ALLYUNIT);
-            inputEventManager.OnRightClickTarget = SelectedUnitManager;
-            inputEventManager.OnESCTarget = ingameManager;
-            inputEventManager.OnClickTarget = SelectedUnitManager;
-            ingameManager.UpdateOperateState(OperateState.ALLYUNIT);
-        }
-    }
 
     public void OnFunction(InputAction.CallbackContext context)
     {

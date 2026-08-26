@@ -10,15 +10,15 @@ using UnityEngine.SceneManagement;
 public enum OperateState
 {
     DEFAULT,      // 기본 상태
-    SPAWN,        // 소환 조작
-    CS_Area,      // 지휘관 스킬 영역 지정
-    CS_Target,    // 지휘관 스킬 대상 지정
-    ALLYUNIT,     // 아군 유닛 선택
-    UPGRADE       // 승급 진행 상태
+    SPAWN,        // 소환 조작 중 상태 
+    CS_Area,      // 지휘관 스킬 영역 지정 중 상태
+    CS_Target,    // 지휘관 스킬 대상 지정 중 상태
+    ALLYUNIT,     // 아군 유닛 선택 중 상태
+    UPGRADE       // 승급 진행 상태 중 상태
 }
 
 
-public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedUp
+public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedUp, IInputRightClick
 {
     public float inGameGold;
     [SerializeField] private IngameScreenUI ingameScreenUI;
@@ -61,7 +61,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     [SerializeField] private float losePoint;
 
     [Header("ClickState")]
-    private OperateState inputState;
+    private OperateState operateState;
 
     protected static AudioClip coinDropSFX;
     protected static AudioClip CoinDropSFX
@@ -83,9 +83,12 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
         SoundManager.Instance.PlaySFX(inGameIntro);
 
+        inputEventManager.OnClickTarget = this;
         inputEventManager.OnESCTarget = this;
         inputEventManager.OnSpeedUpTarget = this;
-        UpdateOperateState(OperateState.ALLYUNIT);
+        inputEventManager.OnRightClickTarget = this;
+        UpdateOperateState(OperateState.DEFAULT);
+
     }
 
     private void Update()
@@ -171,25 +174,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
             Time.timeScale = 1.0f; 
     }
 
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (dollyCamera.IsCamPanning || !isGameStart)
-                return;
-
-            if(isGamePause)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-
-
-        }
-    }
 
     public void LoseGame()
     {
@@ -291,28 +275,113 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 if (inputEventManager.IsPointerOnUIElements())
                     return;
 
+                if (hit.collider.CompareTag("Unit"))    // 유닛 클릭
+                {
+                    Unit unit = hit.collider.GetComponent<Unit>();
+
+                    if (unit.IsDead)
+                    {
+                        return;
+                    }
+
+                    if (unit is AllyUnit)
+                    {
+                        AllyUnit allyUnit = unit as AllyUnit;
+                        if (allyUnit.IsChange || allyUnit.IsUpgrade)
+                            return;
+
+                        selectedUnitUI.ShowAllyUI(allyUnit);
+                        UpdateOperateState(OperateState.ALLYUNIT);
+                    }
+                    else
+                        UpdateOperateState(OperateState.DEFAULT);
+
+                    SoundManager.Instance.PlayUIClickSFX();
+
+
+                    if (selectedUnitManager.SelectedUnit != null)   // 기존에 선택한 유닛이 잇음
+                    {
+                        if (unit != selectedUnitManager.SelectedUnit)    // 선택한 유닛이 새 유닛
+                        {
+                            // 기존 유닛 해제
+                            selectedUnitManager.DeSelecteUnit();
+
+                            // 새 유닛 설정
+                            selectedUnitManager.SetSelectedUnit(unit);
+                        }
+
+                    }
+                    else
+                    {
+                        // 새 유닛 설정
+                        selectedUnitManager.SetSelectedUnit(unit);
+                    }
+
+
+                    selectedUnitUI.UpdateUnitInfo(unit);
+                    selectedUnitUI.ShowHp(unit);
+                    inputEventManager.OnClickTarget = selectedUnitManager;
+                }
 
             }
         }
     }
 
-
-    // 클릭 상태 변경 ex) 유닛 소환 -> 지휘관 스킬
-    public void UpdateOperateState(OperateState nextState)
+    private void UpdateGameState()
     {
-        if(inputState == nextState)
+        if (dollyCamera.IsCamPanning || !isGameStart)
             return;
 
-        inputState = nextState;
+        if (isGamePause)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
     }
 
-    // 클릭 상태 취소 : 상태 변경 + 우클릭/ESc
-    public void CancleOperateState(OperateState nextState)
+    public void OnESC(InputAction.CallbackContext context)
     {
-        if(nextState == inputState)
+        if (context.performed)
+        {
+            if(operateState == OperateState.DEFAULT)
+                UpdateGameState();
+            else
+                CancelCurrentOperate();
+        }
+    }
+
+    public void OnRightClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            CancelCurrentOperate();
+        }
+    }
+
+    // 조작 중 상태 변경 ex) 유닛 소환 -> 지휘관 스킬
+    public void UpdateOperateState(OperateState nextState)
+    {
+        // 같은 상태로 전환 시 취소X
+        if(operateState == nextState)
             return;
 
-        switch (inputState)
+        // 기존 조작 중 상태 취소
+        CancelOperateState(nextState);
+
+        operateState = nextState;
+        Debug.Log($"현재 조작 중 상태 : {operateState}");
+    }
+
+    // 기존 조작 중 상태 취소 : 상태 변경 시 or 취소(우클릭/ESC)
+    public void CancelOperateState(OperateState nextState)
+    {
+        if (operateState == nextState)
+            return;
+
+        switch (operateState)
         {
             case OperateState.ALLYUNIT:
                 selectedUnitManager.DeSelecteUnit();
@@ -323,8 +392,43 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 break;
 
             case OperateState.CS_Area:
+            case OperateState.CS_Target:
                 commandSkillTargetingController.CancelTargeting();
                 break;
+
+            case OperateState.UPGRADE:
+                selectedUnitManager.UpdateUpgradeState(false);
+                break;
+        }
+
+        operateState = nextState;
+    }
+
+    private void CancelCurrentOperate()
+    {
+        if(selectedUnitManager.SelectedUnit != null && selectedUnitManager.SelectedUnit is EnemyUnit)
+        {
+            selectedUnitManager.DeSelecteUnit();
+            operateState = OperateState.DEFAULT;
+        }
+
+        OperateState cancelState = GetCancelState();
+
+        CancelOperateState(cancelState);
+    }
+
+
+    // 상태 취소 시 전환될 상태 반환
+    private OperateState GetCancelState()
+    {
+        switch (operateState)
+        {
+            case OperateState.UPGRADE:
+                return OperateState.ALLYUNIT;
+
+            default:
+                inputEventManager.OnClickTarget = this;
+                return OperateState.DEFAULT;
         }
     }
 }

@@ -1359,7 +1359,8 @@ public abstract class Unit : MonoBehaviour
             // ui 제거
             selectedUnitUI.HideHp();
             selectedUnitUI.HideAllyUI();
-            selectedUnitUI.HideUpgrdeUI();
+            //selectedUnitUI.HideUpgrdeUI();
+            selectedUnitManager.UpdateUpgradeState(false);
             selectedUnitUI.HideUntInfo();
         }
 

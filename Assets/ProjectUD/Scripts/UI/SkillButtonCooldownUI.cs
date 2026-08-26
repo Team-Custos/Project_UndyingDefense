@@ -127,7 +127,7 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             return;
         }
 
-        inGameManager.CancleOperateState(OperateState.CS_Area);
+        //inGameManager.CancleOperateState(OperateState.CS_Area);
         commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
 
 
