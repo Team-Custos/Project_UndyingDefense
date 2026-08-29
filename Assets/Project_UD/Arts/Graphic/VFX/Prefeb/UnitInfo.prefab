@@ -6619,6 +6619,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7204198487680524359}
     m_Modifications:
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 1182274142244
+      objectReference: {fileID: 0}
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 1307898957963093329, guid: a49ff9e729a5ff4449fcff6f080fe164,
         type: 3}
       propertyPath: m_Name
@@ -9688,6 +9698,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4802002413107983441}
     m_Modifications:
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 55243049135554560
+      objectReference: {fileID: 0}
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 1307898957963093329, guid: a49ff9e729a5ff4449fcff6f080fe164,
         type: 3}
       propertyPath: m_Name
@@ -10131,14 +10151,76 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4697804900115701890, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3822098606143632138}
   m_SourcePrefab: {fileID: 100100000, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e, type: 3}
+--- !u!1 &4429535184787790883 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4697804900115701890, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8955735936782744737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3822098606143632138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4429535184787790883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:bb9fadd325e0b74479f48960fd127383
+    m_TableEntryReference:
+      m_KeyId: 61216374800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9216115986020539518}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!224 &8541479060851868907 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 774697828040702026, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e,
     type: 3}
   m_PrefabInstance: {fileID: 8955735936782744737}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9216115986020539518 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 265451568502874335, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8955735936782744737}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4429535184787790883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9007746192093159257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10147,6 +10229,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 554112914351969632}
     m_Modifications:
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 51432404615217153
+      objectReference: {fileID: 0}
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:bb9fadd325e0b74479f48960fd127383
+      objectReference: {fileID: 0}
     - target: {fileID: 1307898957963093329, guid: a49ff9e729a5ff4449fcff6f080fe164,
         type: 3}
       propertyPath: m_Name
@@ -10292,6 +10384,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5590501747351886576}
     m_Modifications:
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 1182274142245
+      objectReference: {fileID: 0}
+    - target: {fileID: -7157318866931612990, guid: a49ff9e729a5ff4449fcff6f080fe164,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 1307898957963093329, guid: a49ff9e729a5ff4449fcff6f080fe164,
         type: 3}
       propertyPath: m_Name

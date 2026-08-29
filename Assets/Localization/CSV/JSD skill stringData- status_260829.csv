@@ -1,0 +1,63 @@
+Key,Korean (South Korea)(ko-KR),English(en)
+stts_shock_name,충격,Shock
+stts_shock_desc,강한 타격으로 몸의 균형이 무너져 움직임과 공격이 둔해진다.,"A heavy blow throws the target off balance, slowing movement and attacks."
+stts_shock_effect,"1초 동안 이동 속도 20%, 공격 속도 20% 감소. 최대 3번까지 스택된다. 4번 스택시 기절 효과가 발동된다.",Movement Speed and Attack Speed -20% for 1 sec. Stacks up to 3 times. Applying a 4th stack triggers Stun.
+stts_stun_name,기절,Stun
+stts_stun_desc,누적된 충격으로 정신을 잃어 잠시 아무 행동도 할 수 없게 된다.,"Repeated impacts knock the target unconscious, preventing all actions for a short time."
+stts_stun_effect,3초 동안 행동 불가,Unable to move or act for 3 sec.
+stts_bleed_name,출혈,Bleed
+stts_bleed_desc,날카로운 공격에 상처를 입어 지속적으로 체력이 감소한다.,A deep wound causes the target to continuously lose HP.
+stts_bleed_effect,3초 동안 초당 3 데미지를 입힌다. 최대 3번까지 스택된다. 스택마다 초당 데미지 2 증가. 4번 스택시 과다 출혈 상태가 발동된다.,Deals 3 damage per sec for 3 sec. Stacks up to 3 times. Damage per sec increases by 2 per stack. Applying a 4th stack triggers Heavy Bleeding.
+stts_agony_name,고통,Agony
+stts_agony_desc,극심한 통증으로 방어 자세가 흐트러져 치명적인 공격에 취약해진다.,"Intense pain disrupts the target's defense, leaving them vulnerable to critical hits."
+stts_agony_effect,3초 동안 치명타를 입을 확률 30% 증가.,Chance to receive a critical hit +30% for 3 sec.
+stts_poisoned_name,중독,Poisoned
+stts_poisoned_desc,독이 몸에 퍼져 시간이 지날수록 생명력을 갉아먹는다.,"Poison spreads through the body, gradually draining the target's life."
+stts_poisoned_effect,3초 동안 초당 최대 체력의 2% 감소.,Loses 2% of Max HP per sec for 3 sec.
+stts_binded_name,결박,Bound
+stts_binded_desc,몸이 묶이거나 움직임이 억눌려 일정 시간 이동할 수 없게 된다.,The target is restrained and unable to move for a short time.
+stts_binded_effect,2초동안 이동이 불가.,Unable to move for 2 sec.
+stts_ignited_name,점화,Ignited
+stts_ignited_desc,불길이 옮겨붙어 지속적으로 화염 피해를 입는다.,"Flames spread across the target, dealing continuous fire damage."
+stts_ignited_effect,3초 동안 초당 3 데미지를 입힌다. 최대 3번까지 스택된다. 4번 스택시 작열 효과가 발동된다.,Deals 3 damage per sec for 3 sec. Stacks up to 3 times. Applying a 4th stack triggers Scorch.
+stts_scorch_name,작열,Scorch
+stts_scorch_desc,거센 불길이 몸을 뒤덮어 큰 화염 피해를 입고 주변으로 불씨를 퍼뜨린다.,"Intense flames engulf the target, dealing heavy fire damage and spreading flames nearby."
+stts_scorch_effect,5초 동안 초당 8 데미지를 입힌다. 50% 확률로 5m 반경 적에게 점화 효과가 발생한다.,Deals 8 damage per sec for 5 sec. 50% chance to inflict Ignited on enemies within 5 m.
+stts_electrocuted_name,감전,Eletrocuted
+stts_electrocuted_desc,번개의 기운이 몸을 타고 흘러 정신이 흔들리고 움직임이 둔해진다.,"Electricity courses through the body, disrupting the mind and slowing movement."
+stts_electrocuted_effect,"5초 동안 멘탈이 1 감소, 이동 속도 20% 감소.",Mental -1 and Movement Speed -20% for 5 sec.
+stts_intimidated_name,위축,Intimidated
+stts_intimidated_desc,압도적인 기세에 눌려 전의를 잃고 받는 피해가 증가한다.,"Overwhelmed by the enemy's presence, the target loses resolve and takes increased damage."
+stts_intimidated_effect,"5초 동안 받는 데미지 10% 증가, 멘탈 1 감소. 최대 3번까지 스택된다. 4번 스택시 공포 효과가 발동된다.",Damage Taken +10% and Mental -1 for 5 sec. Stacks up to 3 times. Applying a 4th stack triggers Fear.
+stts_fear_name,공포,Fear
+stts_fear_desc,극심한 두려움에 사로잡혀 정신이 크게 흔들리고 방어가 무너진다.,"Overcome by terror, the target's mind falters and their defenses collapse."
+stts_fear_effect,"5초 동안 받는 데미지 50% 증가, 멘탈이 4 감소.",Damage Taken +50% and Mental -4 for 5 sec.
+stts_weakened_name,약화,Weakened
+stts_weakened_desc,기운이 빠져 공격에 힘을 싣지 못하고 주는 피해가 감소한다.,"The target loses strength, reducing the power of their attacks."
+stts_weakened_effect,5초 동안 주는 데미지 30% 감소,Damage Dealt -30% for 5 sec.
+stts_armorBroken_name,방어구 파괴,Armor Broken
+stts_armorBroken_desc,방어구가 손상되어 본래의 방어 상성을 제대로 발휘하지 못한다.,Damaged armor can no longer provide its normal defensive advantage.
+stts_armorBroken_effect,5초 동안 방어 상성 무시,Defense matchup is ignored for 5 sec.
+stts_battlezeal_name,투지 상승,Battle Zeal
+stts_battlezeal_desc,전투 의지가 끓어올라 더 빠르게 공격을 몰아친다.,"Fighting spirit surges, allowing the unit to attack more rapidly."
+stts_battlezeal_effect,5초 동안 공격 속도 30% 증가.,Attack Speed +30% for 5 sec.
+stts_swiftyfeet_name,신속기동,Swifty Feet
+stts_swiftyfeet_desc,몸놀림이 가벼워져 전장을 빠르게 이동할 수 있게 된다.,Lighter movement allows the unit to move swiftly across the battlefield.
+stts_swiftyfeet_effect,5초 동안 이동 속도 30% 증가.,Movement Speed +30% for 5 sec.
+stts_focus_name,집중,Focus
+stts_focus_desc,정신을 가다듬어 멘탈이 상승하고 정신 작용에 더 강해진다.,"The unit steadies their mind, increasing Mental and resistance to mental effects."
+stts_focus_effect,5초 동안 멘탈 1 증가.,Mental +1 for 5 sec.
+stts_defensivestance_name,불괴,Defensive Stance
+stts_defensivestance_desc,굳건한 의지와 방어 자세로 받는 피해를 크게 줄인다.,A steadfast defensive stance greatly reduces incoming damage.
+stts_defensivestance_effect,5초 동안 받는 데미지 30% 감소.,Damage Taken -30% for 5 sec.
+stts_heal_name,재생,Heal
+stts_heal_desc,회복의 기운이 몸을 감싸 일정 시간 동안 생명력을 회복한다.,"Restorative energy surrounds the unit, gradually recovering HP."
+stts_heal_effect,5초 동안 초당 최대 체력의 4% 회복,Restores 4% of Max HP per sec for 5 sec.
+stts_type_CRIT,치명 상태,Crit
+stts_type_ETC,기타 상태,Other
+stts_type_BUFF,버프 상태,Buff
+stts_type_NATURE,자연 상태,Nature
+stts_type_CURSE,저주 상태,Curse
+stts_unbending_name,불굴의 의지,Unbending
+stts_unbending_desc,,
+stts_unbending_effect,5초 동안 받는 데미지 50 감소,Damage Taken -50 for 5 sec.

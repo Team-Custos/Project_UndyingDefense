@@ -53,7 +53,12 @@ public class WaveManager : MonoBehaviour
             {
                 waveTimer -= Time.deltaTime;
                 ingameScreenUI.ShowTimer();
-                ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
+                //--Localize 260829 _ ayo
+                string waveTimerText = LocalizationSettings.StringDatabase.
+                    GetLocalizedString("IngameUI", "NTF_battleReadyTime",
+                    new object[] { new { sec = (int)waveTimer, num = curWave + 1 } });
+                ingameScreenUI.SetNoticeText(waveTimerText);
+                //ingameScreenUI.SetNoticeText("웨이브 시작까지 " + (int)waveTimer + "초");
 
                 if (waveTimer <= 0f)
                 {
