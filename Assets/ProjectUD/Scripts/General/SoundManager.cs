@@ -135,7 +135,7 @@ public class SoundManager : Singleton<SoundManager>
         //sfxAudio.PlayOneShot(clip);
     }
 
-    public void PlaySFX(AudioClip clip) // UI 용
+    public void PlaySFX(AudioClip clip) // 배경용
     {
         if(clip != null && bgmOneShotAudio != null)
             bgmOneShotAudio.PlayOneShot(clip);

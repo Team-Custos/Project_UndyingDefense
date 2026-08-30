@@ -117,7 +117,7 @@ public class UIButtonController : MonoBehaviour, IPointerEnterHandler, IPointerD
         if (Time.unscaledTime - lastHoverSfxTime < hoverSfxInterval)
             return;
 
-        SoundManager.Instance.PlaySFX(hoverSfxClip);
+        SoundManager.Instance.PlayUISFX(hoverSfxClip);
         lastHoverSfxTime = Time.unscaledTime;
     }
 
