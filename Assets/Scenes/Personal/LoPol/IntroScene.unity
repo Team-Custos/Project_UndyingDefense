@@ -899,6 +899,12 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 199364278}
+--- !u!1 &534394696 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4201004459958516730, guid: f80f302396a81c44ea8f6751a1c045b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 615581372293490296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &773136879
 GameObject:
   m_ObjectHideFlags: 0
@@ -3235,6 +3241,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Text_\uC774\uB984\uC4F0\uAE30_\uBC1D\uAC8C"
       objectReference: {fileID: 0}
+    - target: {fileID: 4697804900115701890, guid: f8c501bd4a8491a418f1abff3f7debef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4472,7 +4483,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4201004459958516730, guid: f80f302396a81c44ea8f6751a1c045b5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8695724935518865478}
   m_SourcePrefab: {fileID: 100100000, guid: f80f302396a81c44ea8f6751a1c045b5, type: 3}
 --- !u!114 &615581372293490299 stripped
 MonoBehaviour:
@@ -4640,7 +4655,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 615581372293490296}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 534394696}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c77c4168c7335f84aac47e3f6d76c8f4, type: 3}
@@ -4652,6 +4667,26 @@ CanvasGroup:
     type: 3}
   m_PrefabInstance: {fileID: 615581372293490296}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8695724935518865478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534394696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ca7b1bdb4151d4b9f9d80d78a2ebcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 0}
+  dialogueui: {fileID: 0}
+  dialogueLine: {fileID: 0}
+  nextBtn: {fileID: 0}
+  spaceBarImage: {fileID: 0}
+  fadeDuration: 1
+  nextEventDelay: 1.5
+  typeSpeed: 0.03
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

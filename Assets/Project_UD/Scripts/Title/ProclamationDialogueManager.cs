@@ -14,18 +14,23 @@ public class ProclamationDialogueManager : DialogueManager
 
     public override void ShowDialogue()
     {
-        currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
+        base.ShowDialogue();
 
-        lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
+        //currentSpeaking = currentSpeakingArray.GetSpeaking(currentSpeakingIndex);
 
-        //dialogueLine.text = lines[currentLineIndex];
-        SetDialogueText(lines[currentLineIndex]);
-        if (lines.Count > 1)
-        {
-            dialogueLine.DOFade(1F, fadeDuration);
-            ShowSpaceImage(3f);
-        }
-        else
-            ReadLine();
+        //lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
+
+        ////dialogueLine.text = lines[currentLineIndex];
+        //SetDialogueText(lines[currentLineIndex]);
+        ////if (lines.Count > 1)
+        ////{
+        ////    dialogueLine.DOFade(1F, fadeDuration);
+        ////    ShowSpaceImage(3f);
+        ////}
+        //dialogueLine.DOFade(1F, fadeDuration);
+        //ShowSpaceImage(3f);
+
+        //else
+        //    ReadLine();
     }
 }

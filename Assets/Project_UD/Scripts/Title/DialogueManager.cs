@@ -89,8 +89,10 @@ public class DialogueManager : MonoBehaviour, IInputOnSpace
         CharacterData currentCharData = currentSpeaking.GetCharacterData();
 
         lines = GetLocalDialogue(currentSpeaking.GetTableName(), currentSpeaking.GetSpeakingID());
-
-        dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+        if (currentCharData)
+        {
+            dialogueui.SetDialogueCharacter(currentCharData.characterSprite, currentCharData.characterName);
+        }
     }
 
     public virtual void ShowDialogue()
