@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Localization.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -98,7 +100,10 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         coolTime = commandSkillData.CoolTime;
         cooldownCheck = coolTime;
 
-        commandSkillCoolText.text = "쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
+        //-- Localize 260829_ayo
+        commandSkillCoolText.text = LocalizationSettings.StringDatabase.GetLocalizedString("CommonUI", "CON_skillCooltime",
+            new object[] { new { num = commandSkillData.CoolTime } });
+        //"쿨타임 " + commandSkillData.CoolTime.ToString() + "초";
     }
 
     public void SetCommandSkill(CommandSkill skill)

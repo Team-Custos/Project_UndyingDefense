@@ -37,9 +37,9 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
 
     public void ShowChoiceArray(ChoiceArray choiceArrayData) // 매개변수 이름 변경 (필드와 구분)
     {
-        inputManager.OnSpaceTarget = this;
-        inputManager.OnUpArrowTarget = this;
-        inputManager.OnDownArrowTarget = this;
+        //inputManager.OnSpaceTarget = this;
+        //inputManager.OnUpArrowTarget = this;
+        //inputManager.OnDownArrowTarget = this;
 
         if (choiceui == null)
         {
@@ -92,6 +92,14 @@ public class ChoiceManager : MonoBehaviour, IInputOnSpace, IInputUpArrow, IInput
         {
             if (choiceUIObj != null) 
                 choiceUIObj.SetActive(true);
+
+            // 페이드인 애니메이션이 끝난 뒤에 입력 제어권을 가져오도록 변경
+            choiceui.onFadeInComplete = () =>
+            {
+                inputManager.OnSpaceTarget = this;
+                inputManager.OnUpArrowTarget = this;
+                inputManager.OnDownArrowTarget = this;
+            };
         }
         else
         {

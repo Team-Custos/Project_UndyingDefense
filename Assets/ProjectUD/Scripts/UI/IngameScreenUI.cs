@@ -87,7 +87,10 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         if(infinite)
             waveTextUI.text = $" {waveNum} / ∞ 웨이브";
         else
-            waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
+            waveTextUI.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("IngameUI", "TXT_waveNumber",
+            new object[] { new { num = waveNum, max = maxWave } });     //--Localize 260829 _ ayo
+            //waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
     }
 
     public void UpdateGoldTextUI(float gold)

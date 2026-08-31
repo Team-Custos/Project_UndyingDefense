@@ -9,6 +9,8 @@ public class ChoiceUI : MonoBehaviour
     [SerializeField] private ChoiceButtonUI[] buttonUIArray;
     [SerializeField] private Image selectIndicator;
 
+    public System.Action onFadeInComplete; // 선택지 연출 완료 콜백
+
     public void SetButtonData(int j, string choiceText, UltEvent choiceEvent)
     {
         buttonUIArray[j].SetButton(j, choiceText, choiceEvent);
@@ -31,6 +33,13 @@ public class ChoiceUI : MonoBehaviour
     public ChoiceButtonUI GetButton(int i)
     {
         return buttonUIArray[i];
+    }
+
+    // 페이드인 애니메이션의 마지막 프레임에 Animation Event로 연결
+    public void OnFadeInAnimationComplete()
+    {
+        onFadeInComplete?.Invoke();
+        onFadeInComplete = null;
     }
 
     private void OnDisable()
