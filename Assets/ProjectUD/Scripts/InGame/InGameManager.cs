@@ -79,7 +79,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
     private void Start()
     {
-        ingameScreenUI.SetGoldTextUI(inGameGold);
+        ingameScreenUI.UpdateGoldTextUI(inGameGold);
 
         SoundManager.Instance.PlaySFX(inGameIntro);
 
@@ -119,7 +119,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
             inGameGold -= gold;
         }
 
-        ingameScreenUI.SetGoldTextUI(inGameGold);
+        ingameScreenUI.UpdateGoldTextUI(inGameGold);
     }
 
     public void ReLoadeCurrentScene()
@@ -284,17 +284,18 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                         return;
                     }
 
-                    if (unit is AllyUnit)
+                    AllyUnit allyUnit = unit as AllyUnit;
+
+                    if (allyUnit != null)
                     {
-                        AllyUnit allyUnit = unit as AllyUnit;
                         if (allyUnit.IsChange || allyUnit.IsUpgrade)
                             return;
 
-                        selectedUnitUI.ShowAllyUI(allyUnit);
                         UpdateOperateState(OperateState.ALLYUNIT);
                     }
                     else
                         UpdateOperateState(OperateState.DEFAULT);
+
 
                     SoundManager.Instance.PlayUIClickSFX();
 
@@ -316,6 +317,11 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                         // 새 유닛 설정
                         selectedUnitManager.SetSelectedUnit(unit);
                     }
+
+                    if(allyUnit != null)
+                        selectedUnitUI.ShowAllyUI(allyUnit);
+                    else
+                        selectedUnitUI.HideAllyUI();
 
 
                     selectedUnitUI.UpdateUnitInfo(unit);
@@ -347,7 +353,12 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         if (context.performed)
         {
             if(operateState == OperateState.DEFAULT)
+            {
+                if (selectedUnitManager.SelectedUnit is EnemyUnit)
+                    selectedUnitManager.DeSelecteUnit();
+                else
                 UpdateGameState();
+            }
             else
                 CancelCurrentOperate();
         }
@@ -357,7 +368,14 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (context.performed)
         {
-            CancelCurrentOperate();
+            if (operateState == OperateState.DEFAULT)
+            {
+                if (selectedUnitManager.SelectedUnit is EnemyUnit)
+                    selectedUnitManager.DeSelecteUnit();
+
+            }
+            else
+                CancelCurrentOperate();
         }
     }
 
@@ -384,7 +402,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         switch (operateState)
         {
             case OperateState.ALLYUNIT:
-                selectedUnitManager.DeSelecteUnit();
+                if(nextState != OperateState.UPGRADE)
+                    selectedUnitManager.DeSelecteUnit();
                 break;
 
             case OperateState.SPAWN:
@@ -392,12 +411,17 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 break;
 
             case OperateState.CS_Area:
+                commandSkillTargetingController.CancleAreaSkill();
+                break;
+
             case OperateState.CS_Target:
-                commandSkillTargetingController.CancelTargeting();
+                commandSkillTargetingController.CancleTargetSkill();
                 break;
 
             case OperateState.UPGRADE:
-                selectedUnitManager.UpdateUpgradeState(false);
+                selectedUnitManager.CancleUpgrade();
+                if(nextState != OperateState.ALLYUNIT)
+                    selectedUnitManager.DeSelecteUnit();
                 break;
         }
 
@@ -406,12 +430,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
     private void CancelCurrentOperate()
     {
-        if(selectedUnitManager.SelectedUnit != null && selectedUnitManager.SelectedUnit is EnemyUnit)
-        {
-            selectedUnitManager.DeSelecteUnit();
-            operateState = OperateState.DEFAULT;
-        }
-
         OperateState cancelState = GetCancelState();
 
         CancelOperateState(cancelState);

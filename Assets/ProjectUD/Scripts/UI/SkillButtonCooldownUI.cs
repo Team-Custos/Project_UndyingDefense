@@ -111,8 +111,6 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         if(alarmIcon != null && alarmIcon.activeSelf)
             alarmIcon.SetActive(false);
 
-        //commandSkillManager.GetClickControl(index, commandSkill);
-        // ayo_0117
         if (commandSkill == null)
         {
             Debug.Log("스킬이 설정되지 않았습니다.");
@@ -130,10 +128,16 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         //inGameManager.CancleOperateState(OperateState.CS_Area);
         commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
 
+        if(commandSkillData.TargetType == CommandSkill.TargetType.NONE)
+        {
+            inGameManager.UpdateOperateState(OperateState.DEFAULT);
+        }
+
 
 
         commandSkill.Activate();
         SoundManager.Instance.PlayUIClickSFX();
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

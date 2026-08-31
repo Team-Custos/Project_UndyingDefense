@@ -163,7 +163,7 @@ public class SelectedUnitUI : MonoBehaviour
     {
         unitUpgradeMenuPrefab.SetActive(false);
         //SoundManager.Instance.playCancleSFX();
-        selecteUnitManger.UpdateUpgradeState(false);
+        selecteUnitManger.CancleUpgrade();
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -175,18 +175,21 @@ public class SelectedUnitUI : MonoBehaviour
             return;
 
         SoundManager.Instance.PlayUIClickSFX();
-        unitMenuPrefab.SetActive(false);
+        //unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
         //inputEventManager.OnRightClickTarget = this;
         //inputEventManager.OnESCTarget = this;
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
-        selecteUnitManger.UpdateUpgradeState(true);
+        //selecteUnitManger.UpdateUpgradeState(true);
     }
 
     public void ShowAllyUI(AllyUnit allyUnit)
     {
-        if(selecteUnitManger.SelectedUnit == null)
+        if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
+        {
+            Debug.Log("선택된 유닛 없음");
             return;
+        }
 
         allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
         
@@ -206,13 +209,6 @@ public class SelectedUnitUI : MonoBehaviour
             upgradeBtn.interactable = true;
 
         unitMenuPrefab.SetActive(true);
-
-        
-
-        //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
-
-
-        //unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit, allyUnitData, upgradeOption);
     }
 
     public void HideAllyUI()
@@ -220,7 +216,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitMenuPrefab.SetActive(false);
         SoundManager.Instance.PlayUIClickSFX();
         //selectedUnit = null;
-        selecteUnitManger.UpdateUpgradeState(false);
+        //selecteUnitManger.CancleUpgrade();
     }
 
     private void UpdateUI()

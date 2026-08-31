@@ -33,6 +33,9 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick
     }
     private void UpdateCirclePosition()
     {
+        if (ingameManager.IsGamgePause)
+            return;
+
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
@@ -44,9 +47,8 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick
     {
         currentSkill = skill;
 
-        //inGameManager.CancleClickState(ClickState.COMMAND_SKILL);
         inputEventManager.OnClickTarget = this;
-        inGameManager.UpdateOperateState(OperateState.CS_Area);
+        //inGameManager.UpdateOperateState(OperateState.CS_Area);
 
         switch (skill.Data.TargetType)
         {
@@ -54,32 +56,37 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick
                 circle.SetActive(false);
                 break;
             case TargetType.MOUSEPOSAREA:
+                inGameManager.UpdateOperateState(OperateState.CS_Area);
                 circle.SetActive(true);
                 break;
             case TargetType.UNIT:
+                inGameManager.UpdateOperateState(OperateState.CS_Target);
                 circle.SetActive(false);
                 break;
         }
     }
 
     // 지휘관 스킬 취소
-    public void CancelTargeting()
+    public void CancleTargetSkill()
+    {
+        currentSkill.SetSkillState(false);
+        currentSkill = null;
+        indicator.SetActive(false);
+
+    }
+    public void CancleAreaSkill()
     {
         circle.SetActive(false);
         currentSkill.SetSkillState(false);
         currentSkill = null;
         indicator.SetActive(false);
 
-        // RestoreInputTarget();
     }
 
     private void RestoreInputTarget()
     {
         inputEventManager.OnClickTarget = inGameManager;
-        //inputEventManager.OnESCTarget = ingameManager;
-        //inputEventManager.OnRightClickTarget = SelectedUnitManager;
-        //inGameManager.CancleLeftClick(clickState);
-        inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
+        inGameManager.UpdateOperateState(OperateState.DEFAULT);
     }
 
     public void OnClick(InputAction.CallbackContext context)

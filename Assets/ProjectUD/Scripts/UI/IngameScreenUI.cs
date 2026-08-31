@@ -90,7 +90,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
             waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
     }
 
-    public void SetGoldTextUI(float gold)
+    public void UpdateGoldTextUI(float gold)
     {
         goldTextUI.text = ((int)gold).ToString();
     }

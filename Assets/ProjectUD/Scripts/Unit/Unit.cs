@@ -1360,7 +1360,7 @@ public abstract class Unit : MonoBehaviour
             selectedUnitUI.HideHp();
             selectedUnitUI.HideAllyUI();
             //selectedUnitUI.HideUpgrdeUI();
-            selectedUnitManager.UpdateUpgradeState(false);
+            selectedUnitManager.CancleUpgrade();
             selectedUnitUI.HideUntInfo();
         }
 
@@ -1434,6 +1434,7 @@ public abstract class Unit : MonoBehaviour
         intervalMultiplier += percent * 0.01f;
         interval = intervalCheck * intervalMultiplier;
     }
+
 
 
     public virtual void RemoveProvoked()
@@ -1745,6 +1746,8 @@ public abstract class Unit : MonoBehaviour
                 aoc[stateName] = clip;
             }
         }
+
+        //modelAnimator.SetFloat("animationSpeed", 3f);
 
 
         modelAnimator.SetTrigger(stateName);

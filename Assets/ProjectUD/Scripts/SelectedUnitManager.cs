@@ -27,27 +27,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
     private Unit selectedUnit;
     private AllyUnit selectedAllyUnit;
-    private bool isUpgradeOn;
+    private bool isActivateUpgrade;
     private bool rightClickOn;
 
+    public bool IsActivateUpgrade => isActivateUpgrade;
     public bool RightClickOn => rightClickOn;
 
     public Unit SelectedUnit => selectedUnit;
-
-    public void UpdateUpgradeState(bool on)
-    {
-        if(on)
-        {
-            isUpgradeOn = true;
-            inGameManager.UpdateOperateState(OperateState.UPGRADE);
-        }
-        else
-        {
-            isUpgradeOn = false;
-            unitSelectUI.HideUpgrdeUI();
-        }
-    }
-
 
     private void Start()
     {
@@ -79,13 +65,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                         return;
 
 
-                    if (unit is AllyUnit)
+                    AllyUnit allyUnit = unit as AllyUnit;
+
+                    if (allyUnit != null)
                     {
-                        AllyUnit allyUnit = unit as AllyUnit;
                         if (allyUnit.IsChange || allyUnit.IsUpgrade)
                             return;
 
-                        unitSelectUI.ShowAllyUI(allyUnit);
                         inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
                     }
                     else
@@ -114,21 +100,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                         SetSelectedUnit(unit);
                     }
 
+                    if (allyUnit != null)
+                        unitSelectUI.ShowAllyUI(allyUnit);
+                    else
+                        unitSelectUI.HideAllyUI();
 
-                    unitSelectUI.UpdateUnitInfo(selectedUnit);
-
-
-                    //if (selectedUnit is AllyUnit)
-                    //{
-                    //    selectedAllyUnit = (AllyUnit)selectedUnit;
-                    //    unitSelectUI.ShowAllyUI((AllyUnit)selectedUnit);
-                    //}
-                    //else
-                    //{
-                    //    unitSelectUI.HideAllyUI();
-                    //}
-
-                    unitSelectUI.ShowHp(selectedUnit);
+                    unitSelectUI.UpdateUnitInfo(unit);
+                    unitSelectUI.ShowHp(unit);
+                    //inputEventManager.OnClickTarget = this;
                 }
                 else if (hit.collider.CompareTag("Tile")) // 타일 클릭
                 {
@@ -179,7 +158,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
 
 
-    public void ShowUpgradeMenu()
+    public void ActivateUpgrade()
     {
         if(selectedUnit.Data.Tier >= 4)
         {
@@ -187,15 +166,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             return;
         }
 
-        //if(selectedUnit.Data.Name == "수행자")
-        //{
-        //    SoundManager.Instance.PlayUnableUIClickSFX();
-        //    //upgradeBtn.interactable = false;
-        //    return;
-        //}
-
-        //upgradeBtn.interactable = true;
         SoundManager.Instance.PlayUIClickSFX();
+
+        inGameManager.UpdateOperateState(OperateState.UPGRADE);
+        isActivateUpgrade = true;
 
         unitSelectUI.ShowUpgradeMenu(selectedUnit);
     }
@@ -203,7 +177,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     public void UpgradeSelectedUnit(int index)
     {
         AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
-
 
         AllyUnitData nextUnitData = allyUnitData.UpgradeUnits[index] as AllyUnitData;
 
@@ -222,15 +195,15 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
         selectedAllyUnit.UpgradeOrder(index);
 
-        UpdateUpgradeState(false);
+        CancleUpgrade();
+        inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
 
         inGameManager.SetGold(nextUnitData.Cost, false);
         ingameScreenUI.SetspawnBtnPriceTextColor();
 
         SoundManager.Instance.PlayUISFX(upgradeSfx);
 
-        //unitSelectUI.HideUpgrdeUI();
-        UpdateUpgradeState(false);
+        //UpdateUpgradeState(false);
         unitSelectUI.HideAllyUI();
     }
 
@@ -293,9 +266,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                     selectedAllyUnit.IsUpgrade)
                     return;
 
-                ShowUpgradeMenu();
+                ActivateUpgrade();
 
-                isUpgradeOn = true;
+                isActivateUpgrade = true;
 
                 
             }
@@ -319,10 +292,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                     selectedAllyUnit.IsUpgrade)
                     return;
 
-                if(isUpgradeOn)
+                if(isActivateUpgrade)
                 {
-                    isUpgradeOn = false;
-                    unitSelectUI.HideUpgrdeUI();
+                    CancleUpgrade();
+                    inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
                 }
 
                 ModeChangeSelectedUnit();
@@ -337,7 +310,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             if (!inGameManager.IsGameStart || inGameManager.IsGamgePause)
                 return;
 
-            if (selectedAllyUnit != null && isUpgradeOn)
+            if (selectedAllyUnit != null && isActivateUpgrade)
             {
                 AllyUnitData allyUnitData = selectedAllyUnit.Data as AllyUnitData;
 
@@ -363,6 +336,12 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         }
     }
 
+    public void CancleUpgrade()
+    {
+        isActivateUpgrade = false;
+        unitSelectUI.HideUpgrdeUI();
+    }
+
     public void DeSelecteUnit()
     {
         if (selectedUnit != null)
@@ -370,12 +349,11 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             selectedUnit.IsSelected = false;
             selectedUnit.SetSelectedUnitUI(null);
             selectedUnit.SetSelectedUnitManager(null);
-            unitSelectUI.HideAllyUI();
             unitSelectUI.HideHp();
-            unitSelectUI.OffUpgradeUI();
             unitSelectUI.HideUntInfo();
             selectedUnit = null;
             selectedAllyUnit = null;
+            unitSelectUI.HideAllyUI();
         }
     }
 

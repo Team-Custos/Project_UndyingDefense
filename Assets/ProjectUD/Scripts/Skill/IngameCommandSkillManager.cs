@@ -254,10 +254,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputFunct
         indicator.SetActive(true);
 
 
-        //inputEventManager.OnESCTarget = this;
-        //inputEventManager.OnRightClickTarget = this;
-        //selectedUI0 = cSkillBtns[i].transform;
-        //selectedUI0.gameObject.SetActive(true);
     }
     public void ResetButton()
     {
