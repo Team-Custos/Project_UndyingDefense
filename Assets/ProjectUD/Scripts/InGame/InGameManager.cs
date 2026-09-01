@@ -158,9 +158,13 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         //CancleClickState(ClickState.UI_SETTING);
         //UpdateClickState(ClickState.UI_SETTING);
 
+        CancelAllOperateState();
+
         isGamePause = true;
         ingameScreenUI.OnOffSettingUI(isGamePause);
         Time.timeScale = 0.0f;
+
+
     }
 
     public void ResumeGame()  // 게임 재개
@@ -352,7 +356,13 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (context.performed)
         {
-            if(operateState == OperateState.DEFAULT)
+            if (isGamePause)
+            {
+                UpdateGameState();
+                return;
+            }
+
+            if (operateState == OperateState.DEFAULT)
             {
                 if (selectedUnitManager.SelectedUnit is EnemyUnit)
                     selectedUnitManager.DeSelecteUnit();
@@ -361,6 +371,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
             }
             else
                 CancelCurrentOperate();
+
+            Debug.Log(1111);
         }
     }
 
@@ -448,5 +460,45 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 inputEventManager.OnClickTarget = this;
                 return OperateState.DEFAULT;
         }
+    }
+
+    private void CancelAllOperateState()
+    {
+        switch (operateState)
+        {
+            case OperateState.ALLYUNIT:
+                selectedUnitManager.DeSelecteUnit();
+                break;
+
+            case OperateState.SPAWN:
+                allyUnitSpawner.CancelSpawn();
+                break;
+
+            case OperateState.CS_Area:
+                commandSkillTargetingController.CancleAreaSkill();
+                break;
+
+            case OperateState.CS_Target:
+                commandSkillTargetingController.CancleTargetSkill();
+                break;
+
+            case OperateState.UPGRADE:
+                selectedUnitManager.CancleUpgrade();
+                selectedUnitManager.DeSelecteUnit();
+                break;
+        }
+
+        // DEFAULT 상태에서 선택되어 있던 적 유닛도 해제
+        if (selectedUnitManager.SelectedUnit != null)
+        {
+            selectedUnitManager.DeSelecteUnit();
+        }
+
+        // 클릭 입력 권한 복구
+        inputEventManager.OnClickTarget = this;
+
+        // 최종적으로 기본 상태
+        operateState = OperateState.DEFAULT;
+
     }
 }

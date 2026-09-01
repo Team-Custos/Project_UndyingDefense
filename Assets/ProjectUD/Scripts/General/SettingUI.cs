@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Localization;
+using System.Data.Common;
 
 public class SettingUI : MonoBehaviour, IInputESC
 {
@@ -55,7 +56,9 @@ public class SettingUI : MonoBehaviour, IInputESC
     private void OnEnable()
     {
         InitializeUI();
-        inputEventManager.OnESCTarget = this;
+
+        if(inGameManager == null)
+            inputEventManager.OnESCTarget = this;
     }
 
     private void InitializeUI()
@@ -206,7 +209,6 @@ public class SettingUI : MonoBehaviour, IInputESC
             //Time.timeScale = 1.0f;
             //SoundManager.Instance.PlayCancelUISFX();
         }
-            
     }
 
 

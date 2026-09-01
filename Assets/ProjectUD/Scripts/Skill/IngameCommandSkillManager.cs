@@ -230,12 +230,6 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputFunct
     }
     public void SetBeingUsedCommandSkill(int i) //, CommandSkill commandSkill)
     {
-        //if (commandSkill == null)
-        //    return;
-        //beingUsedCommandskill = commandSkill;
-        // 인디케이터
-
-        //Debug.Log(currentSelected[i].Name);
 
         if (currentSelected[i] == null)
         {
@@ -273,25 +267,27 @@ public class IngameCommandSkillManager : MonoBehaviour, IInputClick, IInputFunct
         //inputEventManager.OnClickTarget = SelectedUnitManager;
         //selectedUI0.gameObject.SetActive(false);
     }
-    public void CancelSkill()
-    {
-        //selectedUI0.gameObject.SetActive(false);
-        //selectedUI1.gameObject.SetActive(false);
-        //circle.SetActive(false);
-        //isSkillActivated = false;
-        //ayo_0117
-        //if (beingUsedCommandskill == null)
-        //    return;
-        //beingUsedCommandskill.SetSkillState(false);
-        //beingUsedCommandskill = null;
-        // 인디케이터
-        indicator.SetActive(false);
+    //public void CancelSkill()
+    //{
+    //    //selectedUI0.gameObject.SetActive(false);
+    //    //selectedUI1.gameObject.SetActive(false);
+    //    //circle.SetActive(false);
+    //    //isSkillActivated = false;
+    //    //ayo_0117
+    //    //if (beingUsedCommandskill == null)
+    //    //    return;
+    //    //beingUsedCommandskill.SetSkillState(false);
+    //    //beingUsedCommandskill = null;
+    //    // 인디케이터
+    //    indicator.SetActive(false);
 
-    }
+    //}
 
 
     public void OnFunction(InputAction.CallbackContext context)
     {
+        if (!ingameManager.IsGameStart || ingameManager.IsGamgePause)
+            return;
 
         if (context.performed)
         {

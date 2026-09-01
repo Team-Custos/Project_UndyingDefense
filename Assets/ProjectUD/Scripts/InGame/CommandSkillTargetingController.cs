@@ -56,11 +56,9 @@ public class CommandSkillTargetingController : MonoBehaviour, IInputClick
                 circle.SetActive(false);
                 break;
             case TargetType.MOUSEPOSAREA:
-                inGameManager.UpdateOperateState(OperateState.CS_Area);
                 circle.SetActive(true);
                 break;
             case TargetType.UNIT:
-                inGameManager.UpdateOperateState(OperateState.CS_Target);
                 circle.SetActive(false);
                 break;
         }

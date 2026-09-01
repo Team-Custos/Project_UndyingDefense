@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Localization.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
@@ -131,14 +130,24 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         }
 
         //inGameManager.CancleOperateState(OperateState.CS_Area);
-        commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
+            //, commandSkill);
 
-        if(commandSkillData.TargetType == CommandSkill.TargetType.NONE)
+        switch (commandSkillData.TargetType)
         {
-            inGameManager.UpdateOperateState(OperateState.DEFAULT);
+            case CommandSkill.TargetType.NONE:
+                inGameManager.UpdateOperateState(OperateState.DEFAULT);
+                break;
+
+            case CommandSkill.TargetType.UNIT:
+                inGameManager.UpdateOperateState(OperateState.CS_Target);
+                break;
+
+            case CommandSkill.TargetType.MOUSEPOSAREA:
+                inGameManager.UpdateOperateState(OperateState.CS_Area);
+                break;
         }
 
-
+        commandSkillManager.SetBeingUsedCommandSkill(index);
 
         commandSkill.Activate();
         SoundManager.Instance.PlayUIClickSFX();

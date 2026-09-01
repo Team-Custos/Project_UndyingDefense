@@ -23238,7 +23238,7 @@ MonoBehaviour:
   selectedUnitUI: {fileID: 1285506504}
   selectedUnitManager: {fileID: 1137951088}
   commandSkillTargetingController: {fileID: 632568193}
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 1346724710}
   inGameBgm: {fileID: 8300000, guid: 831117addb0753345886db2b771ed498, type: 3}
   winSfx: {fileID: 8300000, guid: fac6b25615514494885f7d2599706ef8, type: 3}
   loseSfx: {fileID: 8300000, guid: 4de4e2c9de60e8a4d9b321f01cc6980d, type: 3}
@@ -58951,6 +58951,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1137951088}
+    - target: {fileID: 7604545945352050440, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ActivateUpgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 7650198451433854680, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

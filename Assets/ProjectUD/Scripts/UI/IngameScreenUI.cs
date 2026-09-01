@@ -153,29 +153,29 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     public void OnOffSetting()
     {
-        if (settingUI.activeSelf)
-        {
-            settingUI.SetActive(false);
-            SoundManager.Instance.PlayCancelUISFX();
-            Time.timeScale = 1.0f;
-        }
-        else
-        {
-            SoundManager.Instance.PlayUIClickSFX();
-            settingUI.SetActive(true);
+        //if (settingUI.activeSelf)
+        //{
+        //    settingUI.SetActive(false);
+        //    SoundManager.Instance.PlayCancelUISFX();
+        //    Time.timeScale = 1.0f;
+        //}
+        //else
+        //{
+        //    SoundManager.Instance.PlayUIClickSFX();
+        //    settingUI.SetActive(true);
 
-            allyUnitSpawner.CancelSpawn();
-            ingameCommandSkillManager.CancelSkill();
-            //ayo_0117
-            //cSkillTargetingCtrl.CancelTargeting();
-            upgradeMenuUI.HideUpgradeUI();
-            selectedUnitManager.DeSelecteUnit();
+        //    allyUnitSpawner.CancelSpawn();
+        //    ingameCommandSkillManager.CancelSkill();
+        //    //ayo_0117
+        //    //cSkillTargetingCtrl.CancelTargeting();
+        //    upgradeMenuUI.HideUpgradeUI();
+        //    selectedUnitManager.DeSelecteUnit();
 
 
-            Time.timeScale = 0.0f;
-        }
+        //    Time.timeScale = 0.0f;
+        //}
 
-        inputEventManager.OnESCTarget = inGameManager;
+        //inputEventManager.OnESCTarget = inGameManager;
     }
 
     public void OnOffSettingUI(bool isGamePause)
