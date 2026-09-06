@@ -37,6 +37,7 @@ public class AccountInfo : MonoBehaviour, IInputESC
         // 닉네임 버튼에 클릭 이벤트 등록
         //NickNameBtn.onClick.AddListener(OnClickNickNameBtn);
         nickNameText.text = PlayerPrefs.GetString("PlayerName");
+        UpdateCommanderRankText();
         //string commanderID = PlayerPrefs.GetString("CommanderID");
         //Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
         //commanderRankTxt.text = LocalizationSettings.StringDatabase.
@@ -46,7 +47,7 @@ public class AccountInfo : MonoBehaviour, IInputESC
         percentageBar.fillAmount = PlayerPrefs.GetFloat("Point") / rankSystem.NextRankData.requirePoint;
     }
 
-    private void OnLocaleChanged(Locale locale)
+    private void OnLocaleChanged(Locale locale) // 로케일 변경 시 지휘관 랭크 텍스트 바로 업데이트하는 방법
     {
         UpdateCommanderRankText();
     }
