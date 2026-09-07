@@ -116,7 +116,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                         // 시즈모드시 타일 누르면 선택 해제
                         if ((selectedAllyUnit.ModeType == AllyUnit.Mode.SEIGE))
                         {
-                            DeSelecteUnit();
+                            ingameScreenUI.ShowError("IngameUI", "MSG_noMove2");
                         }
 
                         // 프리 모드시 이동 불가 타일 확인

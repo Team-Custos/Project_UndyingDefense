@@ -153,17 +153,11 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
     public void PauseGame()   // 게임 일시 정지
     {
-        //SoundManager.Instance.PlayUIClickSFX();
-
-        //CancleClickState(ClickState.UI_SETTING);
-        //UpdateClickState(ClickState.UI_SETTING);
-
-        CancelAllOperateState();
+        CancelOperateState();
 
         isGamePause = true;
         ingameScreenUI.OnOffSettingUI(isGamePause);
         Time.timeScale = 0.0f;
-
 
     }
 
@@ -380,13 +374,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (context.performed)
         {
-            if (operateState == OperateState.DEFAULT)
-            {
-                if (selectedUnitManager.SelectedUnit is EnemyUnit)
-                    selectedUnitManager.DeSelecteUnit();
-
-            }
-            else
                 CancelCurrentOperate();
         }
     }
@@ -442,9 +429,16 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
     private void CancelCurrentOperate()
     {
-        OperateState cancelState = GetCancelState();
-
-        CancelOperateState(cancelState);
+        if (operateState == OperateState.DEFAULT)
+        {
+            if (selectedUnitManager.SelectedUnit is EnemyUnit)
+                selectedUnitManager.DeSelecteUnit();
+        }
+        else
+        {
+            OperateState cancelState = GetCancelState();
+            CancelOperateState(cancelState);
+        }
     }
 
 
@@ -462,7 +456,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
     }
 
-    private void CancelAllOperateState()
+    private void CancelOperateState()
     {
         switch (operateState)
         {
@@ -488,16 +482,13 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 break;
         }
 
-        // DEFAULT 상태에서 선택되어 있던 적 유닛도 해제
         if (selectedUnitManager.SelectedUnit != null)
         {
             selectedUnitManager.DeSelecteUnit();
         }
 
-        // 클릭 입력 권한 복구
         inputEventManager.OnClickTarget = this;
 
-        // 최종적으로 기본 상태
         operateState = OperateState.DEFAULT;
 
     }

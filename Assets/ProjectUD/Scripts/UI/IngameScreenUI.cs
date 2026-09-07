@@ -49,7 +49,6 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
     [SerializeField] private Image[] spawnBtnsImages;
-    [SerializeField] private int[] spawnCosts;
 
     [SerializeField] private GameObject fortressPanel;
     [SerializeField] private GameObject goldPanel;
@@ -220,7 +219,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
-            if (spawnCosts[i] > inGameManager.inGameGold)
+            if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
             {
                 spawnBtnPriceText[i].color = Color.red;
                 spawnBtnsImages[i].tag = "UnInteractiveUi";

@@ -57,6 +57,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     [SerializeField] private AudioClip allySummon;
 
+    public AllyUnitData[] Units => units;
+
+
+
     private void Start()
     {
         selectedIndex = -1;
@@ -211,12 +215,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
     public void ToggleSpawnUnit(int index)
     {
-        if (index == 3)
-        {
-            SoundManager.Instance.PlayUnableUIClickSFX();
-            return;
-        }
-
         if (inGameManager.inGameGold < units[index].Cost)
         {
             //-- Localization
