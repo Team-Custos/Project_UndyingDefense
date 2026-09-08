@@ -57,8 +57,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     [SerializeField] private StagePrefsData stagePrefsData;
 
     [Header("공로포인트")]
-    [SerializeField] private float winPoint;
-    [SerializeField] private float losePoint;
+    private float meritPoint = 0f;  // 공훈도
 
     [Header("ClickState")]
     private OperateState operateState;
@@ -177,8 +176,10 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(losePoint, false, "");
-        PlayerPrefsData.instance.SetPoint(losePoint);
+
+        ingameScreenUI.ShowResult(meritPoint, false, "");
+        PlayerPrefsData.instance.SetPoint(meritPoint);
+        //PlayerPrefsData.instance.SetPoint(losePoint);
         //UserDataModel.instance.SetGameFinished(true);
 
         //UserDataModel.instance.SetGameFinished(true);
@@ -199,12 +200,13 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         isGameStart = false;
         selectedUnitUI.HideUntInfo();
-        ingameScreenUI.ShowResult(winPoint, true, recordText);
-        PlayerPrefsData.instance.SetPoint(winPoint);
-        //UserDataModel.instance.SetGameFinished(true);
-        //UserDataModel.instance.SetGameWin(true);
-        //UserDataModel.instance.SetGameFinished(true);
-        //---
+
+        ingameScreenUI.ShowResult(meritPoint, true, recordText);
+        PlayerPrefsData.instance.SetPoint(meritPoint);
+        //PlayerPrefsData.instance.SetPoint(winPoint);
+
+
+
         if (gameFinish != null && PlayerPrefs.GetInt("IsGeumsanFinished") == 0)
             gameFinish.Invoke();
         if(gameWin != null)
@@ -490,6 +492,21 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         inputEventManager.OnClickTarget = this;
 
         operateState = OperateState.DEFAULT;
+    }
 
+    public void SetMeritPoint(int curWave, bool isWin)
+    {
+        if (isWin)
+        {
+            meritPoint = curWave * 3f + 40f;
+            Debug.Log($"획득 공훈도 : {meritPoint} = {curWave} * 3 + 40");
+        }
+        else
+        {
+            meritPoint = curWave * 3f;
+            Debug.Log($"획득 공훈도 : {meritPoint} = {curWave} * 3");
+        }
+
+        
     }
 }

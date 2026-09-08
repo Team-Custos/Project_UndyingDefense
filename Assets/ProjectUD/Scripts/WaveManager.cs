@@ -36,6 +36,7 @@ public class WaveManager : MonoBehaviour
     private bool isFortressAttacked = false;
     public bool IsWaveEnd => isWaveEnd;
     public int CurWave => curWave;
+    public bool IsTutorial => isTutorial;
 
     [Header("StagePrefsData")]
     [SerializeField] private StagePrefsData stagePrefsData;
@@ -107,10 +108,13 @@ public class WaveManager : MonoBehaviour
         if (curWave >= waveDataLoader.WaveDataList.Count)//waveDatas.Length)
         {
             SoundManager.Instance.StopBGM();
-            inGameManager.WinGame();
 
-            if(isTutorial)
+            if (isTutorial)
                 SetTutorialEnd();
+            else
+                inGameManager.SetMeritPoint(curWave, true);
+
+            inGameManager.WinGame();
         }
         else
         {
