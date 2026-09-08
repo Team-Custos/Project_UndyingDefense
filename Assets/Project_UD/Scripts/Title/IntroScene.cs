@@ -121,7 +121,8 @@ public class IntroScene : MonoBehaviour
         // 2. statement 페이드 인
         //FadeInStatementImage();
         skipBtn.SetActive(false);
-        statementCanvasGroup.gameObject.SetActive(true);
+        //statementCanvasGroup.gameObject.SetActive(true);
+        nextDialogue.Invoke();
 
         // 3. firstHalfBgm 길이만큼 후에 다음 단계 실행
         //Invoke(nameof(OnFirstBgmEnded), firstHalfBgm.length);
@@ -140,13 +141,13 @@ public class IntroScene : MonoBehaviour
         if(isStatementSkipped) return;
 
         // 대화창 
-        ShowDialogue();
+        //ShowDialogue();
     }
 
     private void ShowDialogue()
     {
-        nextDialogue.Invoke();
-        dialogueCanvasGroup.gameObject.SetActive(true);
+        //nextDialogue.Invoke();
+        //dialogueCanvasGroup.gameObject.SetActive(true);
     }
 
     public void PlayDeclarationDropAnimation()
