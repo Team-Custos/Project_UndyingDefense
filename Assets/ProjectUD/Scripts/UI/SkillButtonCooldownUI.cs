@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Localization.Editor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
@@ -116,8 +115,6 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
         if(alarmIcon != null && alarmIcon.activeSelf)
             alarmIcon.SetActive(false);
 
-        //commandSkillManager.GetClickControl(index, commandSkill);
-        // ayo_0117
         if (commandSkill == null)
         {
             Debug.Log("스킬이 설정되지 않았습니다.");
@@ -132,13 +129,29 @@ public class SkillButtonCooldownUI : MonoBehaviour, IPointerEnterHandler, IPoint
             return;
         }
 
-        inGameManager.CancleOperateState(OperateState.CS_Area);
-        commandSkillManager.SetBeingUsedCommandSkill(index);    //, commandSkill);
+        //inGameManager.CancleOperateState(OperateState.CS_Area);
+            //, commandSkill);
 
+        switch (commandSkillData.TargetType)
+        {
+            case CommandSkill.TargetType.NONE:
+                inGameManager.UpdateOperateState(OperateState.DEFAULT);
+                break;
 
+            case CommandSkill.TargetType.UNIT:
+                inGameManager.UpdateOperateState(OperateState.CS_Target);
+                break;
+
+            case CommandSkill.TargetType.MOUSEPOSAREA:
+                inGameManager.UpdateOperateState(OperateState.CS_Area);
+                break;
+        }
+
+        commandSkillManager.SetBeingUsedCommandSkill(index);
 
         commandSkill.Activate();
         SoundManager.Instance.PlayUIClickSFX();
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

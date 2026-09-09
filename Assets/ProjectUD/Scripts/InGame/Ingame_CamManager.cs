@@ -115,6 +115,11 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
             if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
                 return;
 
+            if (selectedUnitManager.IsActivateUpgrade)
+            {
+                Debug.Log("업그레이드 조작 중 상태");
+                return;
+            }
 
             Vector2 input = context.ReadValue<Vector2>();
 

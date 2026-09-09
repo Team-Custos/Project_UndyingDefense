@@ -53,7 +53,7 @@ public class ResultUI : MonoBehaviour
             timeRecordTextUI.gameObject.SetActive(false);
         }
 
-        rewardTextUI.text = ((int)reward).ToString("0,0");
+        rewardTextUI.text = ((int)reward).ToString();
     }
 
     public void Hide()

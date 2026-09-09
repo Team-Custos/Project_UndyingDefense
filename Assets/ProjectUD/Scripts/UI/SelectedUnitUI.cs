@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
+public class SelectedUnitUI : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private SelectedUnitManager selecteUnitManger;
@@ -152,20 +152,18 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
     {
         upgradeMenuUI.HideUpgradeUI();
         //SoundManager.Instance.playCancleSFX();
-        selecteUnitManger.OnUpgrade(false);
+        //selecteUnitManger.UpdateUpgradeState(false);
 
         if(selecteUnitManger.SelectedUnit is AllyUnit)
             ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
 
-        inputEventManager.OnESCTarget = selecteUnitManger;
-        inputEventManager.OnRightClickTarget = selecteUnitManger;
     }
 
     public void OffUpgradeUI()
     {
         unitUpgradeMenuPrefab.SetActive(false);
         //SoundManager.Instance.playCancleSFX();
-        selecteUnitManger.OnUpgrade(false);
+        selecteUnitManger.CancleUpgrade();
     }
 
     public void ShowUpgradeMenu(Unit unit)
@@ -177,18 +175,21 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             return;
 
         SoundManager.Instance.PlayUIClickSFX();
-        unitMenuPrefab.SetActive(false);
+        //unitMenuPrefab.SetActive(false);
         unitUpgradeMenuPrefab.SetActive(true);
-        inputEventManager.OnRightClickTarget = this;
-        inputEventManager.OnESCTarget = this;
+        //inputEventManager.OnRightClickTarget = this;
+        //inputEventManager.OnESCTarget = this;
         upgradeMenuUI.SetUnitUpgradeMenu(unit);
-        selecteUnitManger.OnUpgrade(true);
+        //selecteUnitManger.UpdateUpgradeState(true);
     }
 
     public void ShowAllyUI(AllyUnit allyUnit)
     {
-        if(selecteUnitManger.SelectedUnit == null)
+        if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
+        {
+            Debug.Log("선택된 유닛 없음");
             return;
+        }
 
         allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
         
@@ -208,13 +209,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             upgradeBtn.interactable = true;
 
         unitMenuPrefab.SetActive(true);
-
-        
-
-        //unitMenuUI.PerformModeChange((AllyUnit)selectedUnit);
-
-
-        //unitMenuUI.PerformUpgrade((AllyUnit)selectedUnit, allyUnitData, upgradeOption);
     }
 
     public void HideAllyUI()
@@ -222,7 +216,7 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         unitMenuPrefab.SetActive(false);
         SoundManager.Instance.PlayUIClickSFX();
         //selectedUnit = null;
-        selecteUnitManger.OnUpgrade(false);
+        //selecteUnitManger.CancleUpgrade();
     }
 
     private void UpdateUI()
@@ -233,17 +227,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
             {
                 unitHP.fillAmount = selecteUnitManger.SelectedUnit.HpPercent;
 
-                //Vector3 worldPosition = selecteUnitManger.SelectedUnit.HeightPos.position;
-
-                //// 월드 좌표로 HP UI 위치 고정
-                //unitHPPrefab.transform.position = worldPosition;
-
-                //// UI가 항상 카메라를 바라보도록
-                //unitHPPrefab.transform.rotation = Quaternion.LookRotation(mainCamera.transform.forward);
-
-                //// 카메라 거리 기반 크기 보정 (줌인/줌아웃에도 안정적인 크기)
-                //float dist = Vector3.Distance(mainCamera.transform.position, worldPosition);
-                //unitHPPrefab.transform.localScale = Vector3.one * dist * 0.0015f;
 
                 Vector3 worldPosition = selecteUnitManger.SelectedUnit.transform.position + Vector3.up * selecteUnitManger.SelectedUnit.HeightPos.position.y;
                 Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
@@ -525,35 +508,6 @@ public class SelectedUnitUI : MonoBehaviour, IInputESC, IInputRightClick
         }
     }
 
-
-    public void OnESC(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if(selecteUnitManger.SelectedUnit is AllyUnit)
-                upgradeMenuUI.HideUpgradeUI();
-
-            inputEventManager.OnESCTarget = selecteUnitManger;
-            inputEventManager.OnRightClickTarget = selecteUnitManger;
-            selecteUnitManger.OnUpgrade(false);
-        }
-    }
-
-    public void OnRightClick(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (inGameManager.IsGamgePause)
-                return;
-
-            if (selecteUnitManger.SelectedUnit is AllyUnit)
-                upgradeMenuUI.HideUpgradeUI();
-
-            inputEventManager.OnRightClickTarget = selecteUnitManger;
-            inputEventManager.OnESCTarget = selecteUnitManger;
-            selecteUnitManger.OnUpgrade(false);
-        }
-    }
 
     public void ShowUnitDurtion(float durtiaon)
     {

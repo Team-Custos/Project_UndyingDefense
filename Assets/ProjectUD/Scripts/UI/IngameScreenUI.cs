@@ -49,7 +49,6 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     [SerializeField] private TextMeshProUGUI[] spawnBtnPriceText;
     [SerializeField] private Image[] spawnBtnsImages;
-    [SerializeField] private int[] spawnCosts;
 
     [SerializeField] private GameObject fortressPanel;
     [SerializeField] private GameObject goldPanel;
@@ -93,7 +92,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
             //waveTextUI.text = $" {waveNum} / {maxWave} 웨이브";
     }
 
-    public void SetGoldTextUI(float gold)
+    public void UpdateGoldTextUI(float gold)
     {
         goldTextUI.text = ((int)gold).ToString();
     }
@@ -153,29 +152,29 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     public void OnOffSetting()
     {
-        if (settingUI.activeSelf)
-        {
-            settingUI.SetActive(false);
-            SoundManager.Instance.PlayCancelUISFX();
-            Time.timeScale = 1.0f;
-        }
-        else
-        {
-            SoundManager.Instance.PlayUIClickSFX();
-            settingUI.SetActive(true);
+        //if (settingUI.activeSelf)
+        //{
+        //    settingUI.SetActive(false);
+        //    SoundManager.Instance.PlayCancelUISFX();
+        //    Time.timeScale = 1.0f;
+        //}
+        //else
+        //{
+        //    SoundManager.Instance.PlayUIClickSFX();
+        //    settingUI.SetActive(true);
 
-            allyUnitSpawner.CancelSpawn();
-            ingameCommandSkillManager.CancelSkill();
-            //ayo_0117
-            //cSkillTargetingCtrl.CancelTargeting();
-            upgradeMenuUI.HideUpgradeUI();
-            selectedUnitManager.DeSelecteUnit();
+        //    allyUnitSpawner.CancelSpawn();
+        //    ingameCommandSkillManager.CancelSkill();
+        //    //ayo_0117
+        //    //cSkillTargetingCtrl.CancelTargeting();
+        //    upgradeMenuUI.HideUpgradeUI();
+        //    selectedUnitManager.DeSelecteUnit();
 
 
-            Time.timeScale = 0.0f;
-        }
+        //    Time.timeScale = 0.0f;
+        //}
 
-        inputEventManager.OnESCTarget = inGameManager;
+        //inputEventManager.OnESCTarget = inGameManager;
     }
 
     public void OnOffSettingUI(bool isGamePause)
@@ -220,7 +219,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
-            if (spawnCosts[i] > inGameManager.inGameGold)
+            if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
             {
                 spawnBtnPriceText[i].color = Color.red;
                 spawnBtnsImages[i].tag = "UnInteractiveUi";

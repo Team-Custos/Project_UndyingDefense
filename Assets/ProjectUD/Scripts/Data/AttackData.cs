@@ -11,7 +11,8 @@ public class AttackData : ScriptableObject
         ELECTRIC,
         FIRE,
         POISON,
-        NONE
+        NONE,
+        TURE_DAMAGE
     }
 
     [Header("■ Data")]
