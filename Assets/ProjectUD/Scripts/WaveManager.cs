@@ -112,7 +112,7 @@ public class WaveManager : MonoBehaviour
             if (isTutorial)
                 SetTutorialEnd();
             else
-                inGameManager.SetMeritPoint(curWave, true);
+                inGameManager.SetMeritPoint(curWave, true); // 게임 성공시 성공 웨이브 수 = 현재 웨이브 수
 
             inGameManager.WinGame();
         }
