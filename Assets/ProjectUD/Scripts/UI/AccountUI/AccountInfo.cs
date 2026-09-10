@@ -1,9 +1,11 @@
 using InputEventInterface;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
@@ -35,13 +37,26 @@ public class AccountInfo : MonoBehaviour, IInputESC
         // 닉네임 버튼에 클릭 이벤트 등록
         //NickNameBtn.onClick.AddListener(OnClickNickNameBtn);
         nickNameText.text = PlayerPrefs.GetString("PlayerName");
-        string commanderID = PlayerPrefs.GetString("CommanderID");
-        Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
-        commanderRankTxt.text = LocalizationSettings.StringDatabase.
-            GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
+        UpdateCommanderRankText();
+        //string commanderID = PlayerPrefs.GetString("CommanderID");
+        //Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
+        //commanderRankTxt.text = LocalizationSettings.StringDatabase.
+        //    GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
 
         pointPercentTxt.text = $"{PlayerPrefs.GetFloat("Point").ToString()}/{rankSystem.NextRankData.requirePoint}";
         percentageBar.fillAmount = PlayerPrefs.GetFloat("Point") / rankSystem.NextRankData.requirePoint;
+    }
+
+    private void OnLocaleChanged(Locale locale) // 로케일 변경 시 지휘관 랭크 텍스트 바로 업데이트하는 방법
+    {
+        UpdateCommanderRankText();
+    }
+
+    private void UpdateCommanderRankText()
+    {
+        string commanderID = PlayerPrefs.GetString("CommanderID");
+        commanderRankTxt.text = LocalizationSettings.StringDatabase.
+           GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
     }
 
     public void ShowAccountPanel(Sprite portraitLine)
@@ -164,6 +179,11 @@ public class AccountInfo : MonoBehaviour, IInputESC
         }
     }
 
+    private void OnEnable()
+    {
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+    }
+
     // 강제로 마우스 호버링 상태를 해제하는 기능
     private void OnDisable()
     {
@@ -172,5 +192,7 @@ public class AccountInfo : MonoBehaviour, IInputESC
         {
             handler.ForceExit();
         }
+
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
     }
 }

@@ -12,6 +12,7 @@ using UnityEngine.Localization.Settings;
 public class SystemConfirmUI : MonoBehaviour
 {
     [SerializeField] SettingUI settingUI;
+    [SerializeField] AccountInfo accountInfo;
     [SerializeField] PlayerInputEventManager inputEventManager;
 
     [SerializeField] TextMeshProUGUI confirmText;
@@ -33,6 +34,10 @@ public class SystemConfirmUI : MonoBehaviour
         {
             inputEventManager.OnESCTarget = settingUI;
         }
+        else if(accountInfo != null && inputEventManager != null && accountInfo.gameObject.activeSelf)
+        {
+            inputEventManager.OnESCTarget = accountInfo;
+        }
 
         if (SoundManager.Instance != null)
         {
@@ -43,7 +48,14 @@ public class SystemConfirmUI : MonoBehaviour
     public void CancelEventInvoke()
     {
         gameObject.SetActive(false);
-        inputEventManager.OnESCTarget = settingUI;
+        if(accountInfo != null && inputEventManager != null && accountInfo.gameObject.activeSelf)
+        {
+            inputEventManager.OnESCTarget = accountInfo;
+        }
+        else if(settingUI != null && inputEventManager != null && settingUI.gameObject.activeSelf)
+        {
+            inputEventManager.OnESCTarget = settingUI;
+        }
 
         if (SoundManager.Instance != null)
         {
