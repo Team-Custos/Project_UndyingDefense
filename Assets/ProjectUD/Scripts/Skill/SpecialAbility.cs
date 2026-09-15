@@ -130,6 +130,33 @@ public class SpecialAbility : MonoBehaviour
         }
     }
 
+    public void DispelCurseEffect(Unit unit, Unit target, float range, GameObject vfx)
+    {
+        if (unit == null || target == null || unit.IsDead || target.IsDead)
+            return;
+
+        float distance = Vector3.Distance(
+            unit.transform.position,
+            target.transform.position
+        );
+
+        if (distance > range)
+            return;
+
+        if (!target.HasEffect(EffectType.CURSE))
+            return;
+
+        bool isRemoved = target.RemoveEffectsByType(EffectType.CURSE);
+
+        if (!isRemoved)
+            return;
+
+        if (vfx != null)
+        {
+            target.AddVFX(vfx, target.transform, true);
+        }
+    }
+
 
     // 공격 특수 능력 용 데미지 계산
     private void Attack(Unit unit, Unit target, float damage, AttackData attackData)
