@@ -23,6 +23,8 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI recordTextUI;
     [SerializeField] private GameObject newReorcUI;
     [SerializeField] private Image portraitImg;
+    [SerializeField] private TextMeshProUGUI playerName;
+    [SerializeField] private TextMeshProUGUI commanderRank;
 
     [Header("■ HP Bar")]    // 성 HP UI
     [SerializeField] private Image hpBarUI;
@@ -59,13 +61,19 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     private void Start()
     {
-        LoadPortraitInGame();
+        LoadPlayerAccountInGame();
     }
 
-    private void LoadPortraitInGame()
+    private void LoadPlayerAccountInGame()
     {
-        int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
+        playerName.text = PlayerPrefs.GetString("PlayerName");
 
+        string commanderID = PlayerPrefs.GetString("CommanderID");
+        Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
+        commanderRank.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
+
+        int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
         // Resources에서 전체 로드 후 ID로 찾기
         PortraitData[] allData = Resources.LoadAll<PortraitData>("Data/PortraitData");
         PortraitData portrait = System.Array.Find(allData, p => p.portraitID == savedID);
