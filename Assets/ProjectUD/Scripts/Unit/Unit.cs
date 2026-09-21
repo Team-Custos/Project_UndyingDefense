@@ -1813,4 +1813,36 @@ public abstract class Unit : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
+
+    public bool HasEffect(EffectType effectType)
+    {
+        return effectList.Exists(effect =>
+            effect != null && effect.Type == effectType
+        );
+    }
+
+    public bool RemoveEffectsByType(EffectType effectType)
+    {
+        bool isRemoved = false;
+
+        for (int i = effectList.Count - 1; i >= 0; i--)
+        {
+            DurationEffect effect = effectList[i];
+
+            if (effect == null || effect.Type != effectType)
+                continue;
+
+            effect.RemoveEffect();
+            effectList.RemoveAt(i);
+
+            isRemoved = true;
+        }
+
+        if (isRemoved)
+        {
+            UpdateState();
+        }
+
+        return isRemoved;
+    }
 }

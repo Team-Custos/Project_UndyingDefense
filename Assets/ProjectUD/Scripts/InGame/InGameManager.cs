@@ -494,17 +494,17 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         operateState = OperateState.DEFAULT;
     }
 
-    public void SetMeritPoint(int curWave, bool isWin)
+    public void SetMeritPoint(int successWave, bool isWin)
     {
         if (isWin)
         {
-            meritPoint = curWave * 3f + 40f;
-            Debug.Log($"획득 공훈도 : {meritPoint} = {curWave} * 3 + 40");
+            meritPoint = successWave * 3f + 40f;
+            Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3 + 40");
         }
         else
         {
-            meritPoint = curWave * 3f;
-            Debug.Log($"획득 공훈도 : {meritPoint} = {curWave} * 3");
+            meritPoint = successWave * 3f;
+            Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3");
         }
 
         
