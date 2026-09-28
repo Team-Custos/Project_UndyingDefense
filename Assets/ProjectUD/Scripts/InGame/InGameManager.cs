@@ -119,6 +119,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
 
         ingameScreenUI.UpdateGoldTextUI(inGameGold);
+
     }
 
     public void ReLoadeCurrentScene()

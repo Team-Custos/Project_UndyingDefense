@@ -111,6 +111,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         hpTextUI.text = $"{(int)hp} / {(int)maxHp}";
     }
 
+    //----기획서상 게임 진행 알림---보류
     public void ShowFortressHitUI()
     {
         animator.SetTrigger("Hit");
@@ -217,13 +218,14 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         messageUI.AddMessage(LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
                  LocalizationSettings.SelectedLocale));
-        errorPanel.SetActive(true);
+        //errorPanel.SetActive(true);
         //errorText.text = id;
         //errorText.text = LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
         //         LocalizationSettings.SelectedLocale);
     }
 
-    public void SetspawnBtnPriceTextColor()
+    // 유닛스포너에서 사용중.. 골드가 바뀔 때마다 확인(텍스트 색 바뀜)
+    public void SetspawnBtnPriceTextColor() 
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
