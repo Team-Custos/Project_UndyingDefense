@@ -187,7 +187,7 @@ public class EnemyUnit : Unit
             return;
             
 
-        interval -= Time.deltaTime;
+        intervalCheck -= Time.deltaTime;
 
         if (isDeferredState)
         {
@@ -234,9 +234,9 @@ public class EnemyUnit : Unit
                         SkillBase skill = GetSpecialSkill();
                         if (skill != null)
                         {
-                            if (stateDurationCheck >= skill.AnimationStateTime && isSkillActive)
+                            if (stateDurationCheck >= skillActivateTime && isSkillActive)
                             {
-                                base.ActivateSkill(skill, targetUnit);
+                                ActivateSkillEffect(skill, targetUnit);
                                 SkillBase.TargetType skillTargetType = skill.GetTargetType();
                                 if (skillTargetType == SkillBase.TargetType.ALLY ||
                                     skillTargetType == SkillBase.TargetType.SELF)
@@ -255,9 +255,9 @@ public class EnemyUnit : Unit
 
                         if (skill != null)
                         {
-                            if (stateDurationCheck >= skill.AnimationStateTime && isSkillActive)
+                            if (stateDurationCheck >= skillActivateTime && isSkillActive)
                             {
-                                base.ActivateSkill(skill, targetUnit);
+                                ActivateSkillEffect(skill, targetUnit);
                             }
                         }
                     }
@@ -268,7 +268,7 @@ public class EnemyUnit : Unit
 
                         if (skill != null)
                         {
-                            if (stateDurationCheck >= skill.AnimationStateTime && isSkillActive)
+                            if (stateDurationCheck >= skillActivateTime && isSkillActive)
                             {
                                 ActivateFortressSkil();
                             }
@@ -285,6 +285,7 @@ public class EnemyUnit : Unit
                     }    
                     else
                     {
+                        modelAnimator.SetFloat("animationSpeed", 1f);
 
                         stateDurationCheck = 0f;
                         stateDuration = 0f;
@@ -296,10 +297,8 @@ public class EnemyUnit : Unit
                             gameObject.SetActive(false);
                             pool.Pool.Release(this);
                         }
-                            
 
                         state = State.IDLE;
-
                     }
                 }
                 break;
@@ -349,7 +348,7 @@ public class EnemyUnit : Unit
 
                     if (distance <= range)
                     {
-                        if(interval <= 0f)
+                        if(intervalCheck <= 0f)
                         {
                             SkillBase generalSkill = GetGeneralSkill();
                             if (generalSkill != null)
@@ -367,7 +366,7 @@ public class EnemyUnit : Unit
                         SearchReachableTargets(unitStats.sightRange, enemyLayer);
                         if (targets.Count > 0)
                         {
-                            if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
+                            if (intervalCheck <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                             {
                                 currentSkill = GetAvailableSkill();
                             }
@@ -380,13 +379,13 @@ public class EnemyUnit : Unit
                                  {
                                      case SkillBase.TargetType.NONE:
                                          {
-                                             UpdateSkillState(currentSkill, null);
+                                             ActivateSkill(currentSkill, null);
                                              break;
                                          }
                                     case SkillBase.TargetType.SELF:
                                         {
                                             targetUnit = this;
-                                            UpdateSkillState(currentSkill, this);
+                                            ActivateSkill(currentSkill, this);
                                             break;
                                         }
                                     case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
@@ -398,7 +397,7 @@ public class EnemyUnit : Unit
                                              {
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
-                                                     UpdateSkillState(currentSkill, targetUnit);
+                                                     ActivateSkill(currentSkill, targetUnit);
                                                  }
                                                  else
                                                  {
@@ -422,7 +421,7 @@ public class EnemyUnit : Unit
                                                  {
                                                      if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                      {
-                                                         UpdateSkillState(currentSkill, targetUnit);
+                                                         ActivateSkill(currentSkill, targetUnit);
                                                      }
                                                      else
                                                      {
@@ -447,7 +446,7 @@ public class EnemyUnit : Unit
 
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
                                                  {
-                                                     UpdateSkillState(currentSkill, targetUnit);
+                                                     ActivateSkill(currentSkill, targetUnit);
                                                  }
                                                  else // 스킬 사거리 < 대상과 거리 < 시야 사거리
                                                  {
@@ -471,7 +470,7 @@ public class EnemyUnit : Unit
                                                 {
                                                     if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                     {
-                                                        UpdateSkillState(currentSkill, targetUnit);
+                                                        ActivateSkill(currentSkill, targetUnit);
                                                     }
                                                     else
                                                     {
@@ -512,7 +511,7 @@ public class EnemyUnit : Unit
                     SearchReachableTargets(unitStats.sightRange, enemyLayer);
                     if (targets.Count > 0)
                     {
-                        if (interval <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
+                        if (intervalCheck <= 0f && currentSkill == null)     // 인터벌 중이 아니고, 보유 스킬이 없는 경우 스킬 선택
                         {
                             currentSkill = GetAvailableSkill();
                             
@@ -526,13 +525,13 @@ public class EnemyUnit : Unit
                              {
                                  case SkillBase.TargetType.NONE:
                                      {
-                                         UpdateSkillState(currentSkill, null);
+                                         ActivateSkill(currentSkill, null);
                                          break;
                                      }
                                 case SkillBase.TargetType.SELF:
                                     {
                                         targetUnit = this;
-                                        UpdateSkillState(currentSkill, this);
+                                        ActivateSkill(currentSkill, this);
                                         break;
                                     }
                                 case SkillBase.TargetType.ALLY:     // 탐색 -> 스킬 발동 or 이동
@@ -544,7 +543,7 @@ public class EnemyUnit : Unit
                                          {
                                              if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                              {
-                                                 UpdateSkillState(currentSkill, targetUnit);
+                                                 ActivateSkill(currentSkill, targetUnit);
                                              }
                                              else
                                              {
@@ -568,7 +567,7 @@ public class EnemyUnit : Unit
                                              {
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
-                                                     UpdateSkillState(currentSkill, targetUnit);
+                                                     ActivateSkill(currentSkill, targetUnit);
                                                  }
                                                  else
                                                  {
@@ -592,7 +591,7 @@ public class EnemyUnit : Unit
 
                                              if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
                                              {
-                                                 UpdateSkillState(currentSkill, targetUnit);
+                                                 ActivateSkill(currentSkill, targetUnit);
                                              }
                                              else // 스킬 사거리 < 대상과 거리 < 시야 사거리
                                              {
@@ -615,7 +614,7 @@ public class EnemyUnit : Unit
                                              {
                                                  if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                  {
-                                                     UpdateSkillState(currentSkill, targetUnit);
+                                                     ActivateSkill(currentSkill, targetUnit);
                                                  }
                                                  else
                                                  {
@@ -643,7 +642,7 @@ public class EnemyUnit : Unit
 
                         if (distance <= range)   // 사거리 내 도달
                         {
-                            if (interval <= 0f)
+                            if (intervalCheck <= 0f)
                             {
                                 SkillBase generalSkill = GetGeneralSkill();
                                 if (generalSkill != null)
@@ -664,36 +663,20 @@ public class EnemyUnit : Unit
 
     }
 
-    private  void UpdateSkillState(SkillBase skill, Unit target)
+    public override void ActivateSkill(SkillBase skill, Unit target)
     {
+        base.ActivateSkill(skill, target);
+
         if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
-            PlayAnimation("GeneralSkill");
-            //modelAnimator.SetTrigger("GeneralSkill");
+            PlayAnimation("GeneralSkill", attackSpeedMult);
         }
         else if(skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
-            PlayAnimation("SpecialSkill");
-            //modelAnimator.SetTrigger("SpecialSkill");
+            PlayAnimation("SpecialSkill", attackSpeedMult);
         }
-
-        isSkillActive = true;
-
-        if (target != this)
-            transform.LookAt(target.transform);
-
-        navAgent.isStopped = true;
-
-        //float dist = Vector3.Distance(transform.position, target.transform.position);
-        //Debug.Log("실제 거리 : " + dist);
-        //Debug.Log("스킬 사용 거리 : " + CurrentSKill.Data.Range);
-
-        //base.ActivateSkill(skill, target);
-        interval = intervalCheck;
-        currentSkill = null;
-        //hasTargetPos = false;
     }
 
     protected void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 상태
@@ -705,7 +688,7 @@ public class EnemyUnit : Unit
 
         transform.LookAt(fortress.transform.position);
         isSkillActive = true;
-        interval = intervalCheck;
+        intervalCheck = interval;
 
         if (navAgent.enabled)
         {

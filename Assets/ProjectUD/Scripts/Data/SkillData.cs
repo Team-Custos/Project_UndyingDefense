@@ -13,6 +13,7 @@ public class SkillData : ScriptableObject
     //[SerializeField] private AudioClip[] startSFX;
     //[SerializeField] private ParticleSystem startVFX;
     [SerializeField] private AudioClip[] attackSFX;
+    [SerializeField] private float activateTime;
 
 
     public string Name => name;
@@ -24,4 +25,5 @@ public class SkillData : ScriptableObject
     public AudioClip[] AttackSFX => attackSFX;
     public float Range => range;
     public int ActiveMental => activeMental;
+    public float ActivateTime => activateTime;
 }

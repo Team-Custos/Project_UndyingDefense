@@ -31,7 +31,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
     public abstract SkillData Data { get; }
 
-    public float AnimationStateTime => animationStateTime;
+    //public float AnimationStateTime => animationStateTime;
 
     private bool isCoolTimeOn = true;
     public bool IsCoolDown => coolTimeCheck >= Data.CoolTime; // IsCoolDown이 true면 스킬이 쿨타임이 차서 사용 가능하다는 의미.

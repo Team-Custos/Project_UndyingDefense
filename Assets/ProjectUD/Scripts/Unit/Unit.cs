@@ -58,14 +58,14 @@ public abstract class Unit : MonoBehaviour
     protected float critVulnerability; // 치명타를 받을 확률.
     protected int mental; // 정신력
     // protected float moveSpeed;
-    protected float attackSpeedMult;
+    protected float attackSpeedMult = 1f;
     protected float moveSpeedMult;
     protected float damageTakenMult; // 피해량 비율
     protected float atkMult; // 공격력 비율
     protected float blockPercent; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
-    protected float interval; // 유닛의 공격 간격(속도) interval 마다 스킬 사용 가능
-    protected float intervalCheck; // interval 체크용
-    protected float intervalMultiplier = 1f;
+    protected float interval; // 유닛의 스킬 사용 주기
+    protected float intervalCheck;
+    protected float skillActivateTime;
     protected bool isStop = false;
 
     protected UnitStats unitStats;
@@ -135,7 +135,7 @@ public abstract class Unit : MonoBehaviour
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
     public float NearbyDistance => nearbyDistance;
-    public float Interval => interval;
+    public float Interval => intervalCheck;
     public bool IsDead => isDead;
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
@@ -236,7 +236,7 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        //ActivateSpecialAbility(ActiveType.ALWAYS, null);
+        ///ActivateSpecialAbility(ActiveType.ALWAYS, null);
     }
     public virtual void Initialize()
     {
@@ -331,8 +331,8 @@ public abstract class Unit : MonoBehaviour
             hp = unitStats.maxHp;
             critPercent = unitStats.critChance;
             mental = unitStats.mental;
-            intervalCheck = unitStats.interval;
-            interval = 0;
+            interval = unitStats.interval;
+            intervalCheck = 0;
             navAgent.speed = unitStats.moveSpeed;
             //navAgent.stoppingDistance = 1.0f;
 
@@ -361,45 +361,52 @@ public abstract class Unit : MonoBehaviour
         this.selectedUnitManager = selectedUnitManager;
     }
 
-    
+    // 스킬 발동
+    public virtual void ActivateSkill(SkillBase skill, Unit target)
+    {
+        if (isDead) return;
+
+        isSkillActive = true;
+
+        if (target != this)
+            transform.LookAt(target.transform);
+
+        intervalCheck = interval / attackSpeedMult;
+        skillActivateTime = skill.Data.ActivateTime / attackSpeedMult;
+
+        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
+
+        if (navAgent.enabled)
+            navAgent.isStopped = true;
+
+        modelAnimator.SetBool("isRunning", false);
+
+        currentSkill = null;
+
+        if (stateDurationCheck >= stateDuration)
+        {
+            stateDurationCheck = 0f;
+            stateDuration = 0f;
+        }
+
+    }
 
 
-    protected virtual void ActivateSkill(SkillBase skill, Unit target) 
+    // 스킬 효과 발동
+    protected void ActivateSkillEffect(SkillBase skill, Unit target) 
     {
         if (target == null)
             return;
+
         skill.Activate(this, target);
         isSkillActive = false;
-
-        //if(target.IsDead)
-        //{
-        //    ActivateSpecialAbility(ActiveType.KILL);
-        //}
-
-        //if (stateDurationCheck < skill.AnimationStateTime)
-        //{
-        //    stateDurationCheck += Time.deltaTime;
-        //}
-        //else
-        //{
-
-        //}   
     }
-
 
 
     protected virtual void ActivateFortressSkill(SkillBase skill, Fortress target)
     {
         skill.Activate(this, target);
 
-        //if (stateDurationCheck < skill.AnimationStateTime)
-        //{
-        //    stateDurationCheck += Time.deltaTime;
-        //}
-        //else
-        //{
-
-        //}
     }
 
     public virtual Unit SearchTarget(float range, LayerMask targetLayer, SkillBase skill)
@@ -1342,7 +1349,7 @@ public abstract class Unit : MonoBehaviour
 
         stateDurationCheck = 0f;
 
-        interval = intervalCheck; //interval 초기화
+        intervalCheck = 0f; //intervalCheck 초기화
 
         isDeferredState = false;
         deferredStateDurationCheck = deferredStateDuration;
@@ -1391,10 +1398,10 @@ public abstract class Unit : MonoBehaviour
             mental = 0;
     }
 
+    // 스킬 속도 변화 함수
     public void AddAttackSpeedMult(float percent)
     {
-        attackSpeedMult += percent * 0.01f;
-        //attackSpeed = unitStats.attackSpeed * Mathf.Max(0f, attackSpeedMult);
+        attackSpeedMult += percent * 0.01f;  // ex) 1 += 30 * 0.01f = 1.3
     }
 
     public void AddCriticalVulnerability(float amount)
@@ -1421,19 +1428,6 @@ public abstract class Unit : MonoBehaviour
         //Debug.Log("피해량 : " + damageTakenMult);
     }
 
-    public void ChangeInterval(float percent) // interval을 변화시키는 함수
-    {
-        intervalMultiplier -= percent * 0.01f; 
-        interval = intervalCheck * intervalMultiplier;
-        intervalCheck = interval;
-    }
-
-    public void RevertInterval(float percent)
-    {
-        intervalCheck = unitStats.interval;
-        intervalMultiplier += percent * 0.01f;
-        interval = intervalCheck * intervalMultiplier;
-    }
 
 
 
@@ -1734,7 +1728,7 @@ public abstract class Unit : MonoBehaviour
         effectImage.SetStack(hasStack, stack);
     }
 
-    public void PlayAnimation(string stateName)
+    public void PlayAnimation(string stateName, float animationSpeed = 1f)
     {
         if(stateAnimDic.ContainsKey(stateName))
         {
@@ -1747,18 +1741,11 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        //modelAnimator.SetFloat("animationSpeed", 3f);
-
+        modelAnimator.SetFloat("animationSpeed", animationSpeed);
 
         modelAnimator.SetTrigger(stateName);
     }
 
-    protected void Rotation(Transform targetTr)
-    {
-        Vector3 direction = targetTr.position - transform.position;
-        Quaternion rot = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10f);
-    }
     public virtual void SetDeferredState()
     {
         isDeferredState = true;
@@ -1814,35 +1801,4 @@ public abstract class Unit : MonoBehaviour
         SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
 
-    public bool HasEffect(EffectType effectType)
-    {
-        return effectList.Exists(effect =>
-            effect != null && effect.Type == effectType
-        );
-    }
-
-    public bool RemoveEffectsByType(EffectType effectType)
-    {
-        bool isRemoved = false;
-
-        for (int i = effectList.Count - 1; i >= 0; i--)
-        {
-            DurationEffect effect = effectList[i];
-
-            if (effect == null || effect.Type != effectType)
-                continue;
-
-            effect.RemoveEffect();
-            effectList.RemoveAt(i);
-
-            isRemoved = true;
-        }
-
-        if (isRemoved)
-        {
-            UpdateState();
-        }
-
-        return isRemoved;
-    }
 }

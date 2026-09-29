@@ -42,11 +42,14 @@ public class ArrowCtrl : ProjectileCtrl
 
     private void Update()
     {
-        if (timeCheck < time)
+        if (timeCheck < time)   // 날아가는 중
         {
             timeCheck += Time.deltaTime;
+
+            Vector3 direction = transform.position - targetUnit.transform.position;
+            transform.Translate(direction * speed * Time.deltaTime);
         }
-        else
+        else    // 목표에 도달 -> 효과 적용 및 제거
         {
             if (targetUnit != null && !reachedTarget)
             {
@@ -66,7 +69,7 @@ public class ArrowCtrl : ProjectileCtrl
 
     public void Shoot(Vector3 dir)
     {
-        rb.velocity = dir * speed;
+        //rb.velocity = dir * speed;
         timeCheck = 0f;
     }
 
