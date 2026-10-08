@@ -92,8 +92,8 @@ public class VFXObjectPool : MonoBehaviour
 
         this.unit = unit;
 
-        if (unit.IsDead)
-            return null;
+        //if (unit.IsDead)
+        //    return null;
 
         if (vfxDic.ContainsKey(vfx))
         {

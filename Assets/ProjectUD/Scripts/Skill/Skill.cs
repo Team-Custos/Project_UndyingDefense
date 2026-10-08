@@ -26,9 +26,6 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     protected float coolTimeCheck;
 
 
-    [Header("■ AnimationStateTime")]
-    [SerializeField] private float animationStateTime; // 애니메이션의 상태를 체크하는 시간
-
     public abstract SkillData Data { get; }
 
     //public float AnimationStateTime => animationStateTime;
@@ -52,7 +49,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         if (onActivate != null)
         {
             onActivate.Invoke(unit, null);
-            PlayAttackSFX();
+            PlaySkillSFX();
         }
             
     }
@@ -63,7 +60,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         if (onActivate != null)
         {
             onActivate.Invoke(unit, target);
-            PlayAttackSFX();
+            PlaySkillSFX();
         }
             
     }
@@ -92,20 +89,19 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
             coolTimeCheck += Time.deltaTime;
     }
 
-    protected void PlayAttackSFX()
+    protected void PlaySkillSFX()
     {
         if (Data == null || Data.AttackSFX == null || Data.AttackSFX.Length == 0)
         {
             return;
         }
 
-        if (Data.AttackSFX.Length > 0)
-        {
-            int random = Random.Range(0, Data.AttackSFX.Length);
-            SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
-        }
+        int random = Random.Range(0, Data.AttackSFX.Length);
+        SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
     }
 
+
+    // 유닛 멘탈 차이에 따른 저주 상태 발동 확률 계산
     protected float CalculateCurseEffectPercent(int unitMental, int targetMental)
     {
         int mentalDifference = unitMental - targetMental;

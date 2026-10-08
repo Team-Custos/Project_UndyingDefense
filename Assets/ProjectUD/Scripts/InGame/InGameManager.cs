@@ -391,7 +391,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         CancelOperateState(nextState);
 
         operateState = nextState;
-        Debug.Log($"현재 조작 중 상태 : {operateState}");
     }
 
     // 기존 조작 중 상태 취소 : 상태 변경 시 or 취소(우클릭/ESC)

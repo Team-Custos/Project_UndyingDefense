@@ -167,63 +167,77 @@ public class AllyUnit : Unit
 
         switch (state)
         {
-            case State.STUN:
-                break;
             case State.GENERALSKILL:
             case State.SPECIALSKILL:
-            case State.DEAD:
                 {
+                    if (navAgent.enabled)
+                        modelAnimator.SetBool("isRunning", false);
 
-                    if (state != State.DEAD)
+                    if (targetUnit != null && targetUnit != this)
+                        LookAt(targetUnit.transform.position);
+
+
+
+                    #region 261002_기존 코드
+                    //if (state == State.SPECIALSKILL)
+                    //{
+                    //    if (targetUnit != null && targetUnit != this)
+                    //        LookAt(targetUnit.transform.position);
+                    //    SkillBase skill = GetSpecialSkill();
+                    //    if (skill != null)
+                    //    {
+                    //        // 만약에 현재 시간이 효과 발동 시점보다 지났고,
+                    //        // 스킬 효과 발동을 아직 안했다면
+
+                    //        if (stateDurationCheck >= skillEffectActivationTime && !isSkillEffectAlreadyActivated)
+                    //        {
+                    //            isSkillEffectAlreadyActivated = true;
+                    //            ActivateSkillEffect(skill, targetUnit);
+
+                    //            SkillBase.TargetType skillTargetType = skill.GetTargetType();
+                    //            if(skillTargetType ==  SkillBase.TargetType.ALLY ||
+                    //                skillTargetType == SkillBase.TargetType.SELF)
+                    //            {
+                    //                targetUnit = null;
+                    //            }    
+                    //        }
+                    //    }
+                    //}
+
+                    //if (state == State.GENERALSKILL)
+                    //{
+                    //    if (targetUnit != null)
+                    //        LookAt(targetUnit.transform.position);
+                    //    SkillBase skill = GetGeneralSkill();
+
+                    //    if (skill != null)
+                    //    {
+                    //        if (stateDurationCheck >= skillEffectActivationTime && isSkillEffectAlreadyActivated)
+                    //        {
+                    //            isSkillEffectAlreadyActivated = true;
+                    //            ActivateSkillEffect(skill, targetUnit);
+                    //        }
+                    //    }
+                    //}
+                    #endregion
+
+                    SkillBase skill = currentSkill;
+                    if (skill != null)
                     {
-                        if (navAgent.enabled)
+                        if (stateDurationCheck >= skillEffectActivationTime && !isSkillEffectAlreadyActivated)
                         {
-                            modelAnimator.SetBool("isRunning", false);
-                        }
-                    }
-
-
-                    if (state == State.SPECIALSKILL)
-                    {
-                        if (targetUnit != null && targetUnit != this)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetSpecialSkill();
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skillActivateTime && isSkillActive)
+                            isSkillEffectAlreadyActivated = true;
+                            ActivateSkillEffect(skill, targetUnit);
+                            // 효과 발동 이후, 현재 스킬의 대상이 아군 또는 자기 자신이면
+                            SkillBase.TargetType skillTargetType = skill.GetTargetType();
+                            if (skillTargetType == SkillBase.TargetType.ALLY ||
+                                skillTargetType == SkillBase.TargetType.SELF)
                             {
-                                ActivateSkillEffect(skill, targetUnit);
-
-                                SkillBase.TargetType skillTargetType = skill.GetTargetType();
-                                if(skillTargetType ==  SkillBase.TargetType.ALLY ||
-                                    skillTargetType == SkillBase.TargetType.SELF)
-                                {
-                                    targetUnit = null;
-                                }
-                                    
+                                // 대상을 초기화
+                                targetUnit = null;
                             }
                         }
                     }
-
-                    if (state == State.GENERALSKILL)
-                    {
-                        if (targetUnit != null)
-                            LookAt(targetUnit.transform.position);
-                        SkillBase skill = GetGeneralSkill();
-
-                        if (skill != null)
-                        {
-                            if (stateDurationCheck >= skillActivateTime && isSkillActive)
-                            {
-                                ActivateSkillEffect(skill, targetUnit);
-                            }
-                        }
-                    }
-
-
-
-                    if (stateDuration <= 0f)
-                        return;
 
                     if (stateDurationCheck < stateDuration)
                     {
@@ -231,30 +245,30 @@ public class AllyUnit : Unit
                     }
                     else
                     {
+                        // 스킬 발동이 종료된 후, 애니메이션이 조건없이 전환된다.
+                        // 애니메이션 속도가 공격 속도의 영향을 받아 1f 아닌 경우가 존재하므로
+                        // 애니메이션 속도는 1f로 초기화되어야 한다.
                         modelAnimator.SetFloat("animationSpeed", 1f);
-
-                        if (state == State.DEAD)
-                        {
-                            gameObject.SetActive(false);
-                            pool.Pool.Release(this);
-                        }
-
-                        stateDurationCheck = 0f;
-                        stateDuration = 0f;
-
+                        currentSkill = null;
                         state = State.IDLE;
-
-                        //if(mode == Mode.FREE)
-                        //    navObstacle.enabled = false;
+                    }
+                }
+                break;
+            case State.DEAD:
+                {
+                    if (stateDurationCheck < stateDuration)
+                    {
+                        stateDurationCheck += Time.deltaTime;
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
+                        pool.Pool.Release(this);
                     }
                 }
                 break;
             case State.IDLE:
                 {
-                    //if(mode == Mode.FREE)
-                    //    navAgent.isStopped = true;
-
-
                     if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동 중일 때
                     {
                         navAgent.isStopped = false;
@@ -355,13 +369,13 @@ public class AllyUnit : Unit
                         {
                             case SkillBase.TargetType.NONE: // 바로 발동
                                 {
-                                    ActivateSkill(currentSkill, null);
+                                    UseSkill(currentSkill, null);
                                     break;
                                 }
                             case SkillBase.TargetType.SELF:
                                 {
                                     targetUnit = this;
-                                    ActivateSkill(currentSkill, this);
+                                    UseSkill(currentSkill, this);
                                     break;
                                 }
                             case SkillBase.TargetType.ALLY:
@@ -372,7 +386,7 @@ public class AllyUnit : Unit
                                     targetUnit = base.SearchTarget(currentSkill.Data.Range, allyLayer, currentSkill);
                                     if (targetUnit != null)
                                     {
-                                        ActivateSkill(currentSkill, targetUnit);
+                                        UseSkill(currentSkill, targetUnit);
                                         //targetUnit = null;
                                     }
                                     else
@@ -387,7 +401,7 @@ public class AllyUnit : Unit
                                             }
                                             else
                                             {
-                                                ActivateSkill(currentSkill, targetUnit);
+                                                UseSkill(currentSkill, targetUnit);
                                                 //targetUnit = null;
                                             }
                                         }
@@ -409,7 +423,7 @@ public class AllyUnit : Unit
                                         }
                                         else
                                         {
-                                            ActivateSkill(currentSkill, targetUnit);
+                                            UseSkill(currentSkill, targetUnit);
                                         }
                                     }
                                     else
@@ -417,7 +431,7 @@ public class AllyUnit : Unit
                                         targetUnit = SearchTarget(currentSkill.Data.Range, enemyLayer, currentSkill);
                                         if(targetUnit != null)
                                         {
-                                            ActivateSkill(currentSkill, targetUnit);
+                                            UseSkill(currentSkill, targetUnit);
                                         }
                                         else
                                         {
@@ -431,7 +445,7 @@ public class AllyUnit : Unit
                                                 }
                                                 else
                                                 {
-                                                    ActivateSkill(currentSkill, targetUnit);
+                                                    UseSkill(currentSkill, targetUnit);
                                                 }
                                             }
                                             else
@@ -500,13 +514,13 @@ public class AllyUnit : Unit
                                     {
                                         case SkillBase.TargetType.NONE:
                                             {
-                                                ActivateSkill(currentSkill, null);
+                                                UseSkill(currentSkill, null);
                                                 break;
                                             }
                                         case SkillBase.TargetType.SELF:
                                             {
                                                 targetUnit = this;
-                                                ActivateSkill(currentSkill, this);
+                                                UseSkill(currentSkill, this);
                                                 break;
                                             }
                                         case SkillBase.TargetType.ALLY:
@@ -518,7 +532,7 @@ public class AllyUnit : Unit
                                                 {
                                                     if(IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                     {
-                                                        ActivateSkill(currentSkill, targetUnit);
+                                                        UseSkill(currentSkill, targetUnit);
                                                         //targetUnit = null;
                                                     }
                                                     else
@@ -542,7 +556,7 @@ public class AllyUnit : Unit
                                                     {
                                                         if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range) || targetUnit == this)
                                                         {
-                                                            ActivateSkill(currentSkill, targetUnit);
+                                                            UseSkill(currentSkill, targetUnit);
                                                             //targetUnit = null;
                                                         }
                                                         else
@@ -569,7 +583,7 @@ public class AllyUnit : Unit
 
                                                     if (IsTargetInAttackRange(targetUnit, currentSkill.Data.Range)) // 스킬 사거리내 존재
                                                     {
-                                                        ActivateSkill(currentSkill, targetUnit);
+                                                        UseSkill(currentSkill, targetUnit);
                                                     }
                                                     else // 스킬 사거리 < 대상과 거리 < 시야 사거리
                                                     {
@@ -595,7 +609,7 @@ public class AllyUnit : Unit
                                                     {
                                                         if(IsTargetInAttackRange(targetUnit, currentSkill.Data.Range))
                                                         {
-                                                            ActivateSkill(currentSkill, targetUnit);
+                                                            UseSkill(currentSkill, targetUnit);
                                                         }
                                                         else
                                                         {
@@ -941,23 +955,26 @@ public class AllyUnit : Unit
 
     
 
-    // 이름 변경 -> ???
-    public override void ActivateSkill(SkillBase skill, Unit target)
+    public override void UseSkill(SkillBase skill, Unit target)
     {
-        base.ActivateSkill(skill, target);
+        base.UseSkill(skill, target);
 
         if (skill == GeneralSkill)
         {
             state = State.GENERALSKILL;
-            PlayAnimation("GeneralSkill", attackSpeedMult);
+            SetRandomStateAnimationClip("GeneralSkill");
+            modelAnimator.SetTrigger("GeneralSkill");
         }
         else if (skill == SpecialSkill)
         {
             state = State.SPECIALSKILL;
-            PlayAnimation("SpecialSkill", attackSpeedMult);
+            SetRandomStateAnimationClip("SpecialSkill");
+            modelAnimator.SetTrigger("SpecialSkill");
         }
 
-        Debug.Log($"스킬 발동 시점 : {skillActivateTime}");
+        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
+
+        //Debug.Log($"스킬 발동 시점 : {skillActivateTime}");
     }
 
 

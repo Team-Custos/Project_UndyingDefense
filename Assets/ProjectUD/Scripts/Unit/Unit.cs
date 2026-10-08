@@ -65,7 +65,7 @@ public abstract class Unit : MonoBehaviour
     protected float blockPercent; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
     protected float interval; // 유닛의 스킬 사용 주기
     protected float intervalCheck;
-    protected float skillActivateTime;
+    protected float skillEffectActivationTime;
     protected bool isStop = false;
 
     protected UnitStats unitStats;
@@ -98,7 +98,7 @@ public abstract class Unit : MonoBehaviour
     protected const int maxTargetCount = 100;
 
     protected bool isSelected;
-    protected bool isSkillActive = false; // 스킬 사용중인지를 확인하는 변수
+    protected bool isSkillEffectAlreadyActivated = false; // 스킬 사용중인지를 확인하는 변수
 
     protected const float moveThresholdOnStop = float.MaxValue;
 
@@ -361,18 +361,18 @@ public abstract class Unit : MonoBehaviour
         this.selectedUnitManager = selectedUnitManager;
     }
 
-    // 스킬 발동
-    public virtual void ActivateSkill(SkillBase skill, Unit target)
+    // 스킬 사용 시작 함수
+    public virtual void UseSkill(SkillBase skill, Unit target)
     {
         if (isDead) return;
 
-        isSkillActive = true;
+        //isSkillEffectAlreadyActivated = false;
 
         if (target != this)
             transform.LookAt(target.transform);
 
         intervalCheck = interval / attackSpeedMult;
-        skillActivateTime = skill.Data.ActivateTime / attackSpeedMult;
+        skillEffectActivationTime = skill.Data.ActivateTime / attackSpeedMult;
 
         modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
 
@@ -381,14 +381,29 @@ public abstract class Unit : MonoBehaviour
 
         modelAnimator.SetBool("isRunning", false);
 
-        currentSkill = null;
+        isSkillEffectAlreadyActivated = false;
 
-        if (stateDurationCheck >= stateDuration)
+         if(skill.Data.StartVFX != null)
         {
-            stateDurationCheck = 0f;
-            stateDuration = 0f;
+            Debug.Log(skill.Data.StartVFX + " 발동");
+            AddVFX(skill.Data.StartVFX, target.transform);
         }
 
+         if(skill.Data.StartSFX != null)
+        {
+            Debug.Log(skill.Data.StartSFX.name + " 발동");
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
+        }
+
+
+        //currentSkill = null;
+
+        //if (stateDurationCheck >= stateDuration)
+        //{
+        //    stateDurationCheck = 0f;
+        //    stateDuration = 0f;
+        //}
+        stateDurationCheck = 0f;
     }
 
 
@@ -399,7 +414,8 @@ public abstract class Unit : MonoBehaviour
             return;
 
         skill.Activate(this, target);
-        isSkillActive = false;
+        //currentSkill = null;
+        //isSkillEffectAlreadyActivated = true;
     }
 
 
@@ -1357,6 +1373,10 @@ public abstract class Unit : MonoBehaviour
         navAgent.enabled = false;
         collider.enabled = false;
 
+        SetRandomStateAnimationClip("Die");
+        modelAnimator.SetFloat("animationSpeed", 1f);
+        modelAnimator.SetTrigger("Die");
+
         PlayAnimation("Die");
         //modelAnimator.SetTrigger("Die");
 
@@ -1580,8 +1600,24 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
     }
 
-    public void AddVFX(GameObject vfx, Unit target) // hit & Crit VFX (오브젝트풀링 사용)
+    public void AddVFX(GameObject vfx, Vector3 pos, float angle)
     {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return;
+
+        VFXobj.transform.position = pos;
+        VFXobj.transform.rotation = transform.rotation * Quaternion.Euler(0f, angle, 0f);
+
+        VFXobj.SetActive(true);
+    }
+
+
+    // 피격 VFX 생성 함수 : 생성 위치를 카메라 위치에 따라 조정
+    public void AddVFX(GameObject vfx, Unit target)
+    {
+        if (target.IsDead)
+            return;
 
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)
@@ -1605,8 +1641,7 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
 
     }
-
-
+    
     public void AddVFX(ParticleSystem VFX)
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
@@ -1744,6 +1779,23 @@ public abstract class Unit : MonoBehaviour
         modelAnimator.SetFloat("animationSpeed", animationSpeed);
 
         modelAnimator.SetTrigger(stateName);
+    }
+
+    // 어떤 상태의 경우 여러 개의 애니메이션 중 하나를 랜덤으로 골라 재생하는 경우가 있다.
+    // ex. 사망, 수행자의 주먹질 애니메이션...
+    // 그것에 대응하는 메서드.
+    protected void SetRandomStateAnimationClip(string stateName)
+    {
+        if (stateAnimDic.ContainsKey(stateName))
+        {
+            AnimationClip[] arr = stateAnimDic[stateName];
+            AnimationClip clip = arr[Random.Range(0, arr.Length)];
+            if (clip != null)
+            {
+                AnimatorOverrideController aoc = modelAnimator.runtimeAnimatorController as AnimatorOverrideController;
+                aoc[stateName] = clip;
+            }
+        }
     }
 
     public virtual void SetDeferredState()

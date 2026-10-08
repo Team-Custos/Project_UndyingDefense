@@ -224,6 +224,10 @@ public class AttackSkill : SkillBase
         unit.AddVFX(vfx, unit.transform, false);
     }
 
+    public void ShowVFX(Unit unit, GameObject vfx, float angle)
+    {
+        unit.AddVFX(vfx, unit.transform.position, angle);
+    }
 
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
@@ -274,8 +278,8 @@ public class AttackSkill : SkillBase
                 arrowCtrl.SetEvent(() => {
                     Attack(unit, target);
                 });
-                arrowCtrl.CalculateTime(distance);
-                arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+                //arrowCtrl.CalculateTime(distance);
+                //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
             }
             else
             {
@@ -283,8 +287,8 @@ public class AttackSkill : SkillBase
                 arrowCtrl.SetEvent(() => {
                     AttackFortress(unit, fortress);
                 });
-                arrowCtrl.CalculateTime(distance);
-                arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+                //arrowCtrl.CalculateTime(distance);
+                //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
             }
             
 
@@ -292,21 +296,62 @@ public class AttackSkill : SkillBase
         if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
         {
             Vector3 targetPos = target.transform.position;
-            projectile.transform.position = this.transform.position;
+            projectile.transform.position = this.transform.position + Vector3.up;
 
-            float durationTime = 1f;
             granadeCtrl.SetData(data);
             granadeCtrl.SetTargetLayer(unit.EnemyLayer);
-            granadeCtrl.JumpTowards(targetPos, durationTime);
+            granadeCtrl.SetTargetPos(targetPos);
+            granadeCtrl.JumpTowards();
         }
 
-        // 람다식 Lambda Expression
-        // 임시 메서드(무명 메서드)
+    }
+    
 
-        // ([인수]) => { [코드]들 }
+    // 유닛 대상 투사체 공격
+    public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
 
+        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
-        //projectile.GetComponent<Projectile>().Shoot(target.transform.position, () => Attack(unit, target));
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+        {
+            arrowCtrl.SetTarget(target);
+            arrowCtrl.SetEvent(() => {
+                Attack(unit, target);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+        }
+        if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
+        {
+            Vector3 targetPos = target.transform.position;
+            //projectile.transform.position = this.transform.position;
+
+            granadeCtrl.SetData(data);
+            granadeCtrl.SetTargetLayer(unit.EnemyLayer);
+            granadeCtrl.SetTargetPos(targetPos);
+            granadeCtrl.JumpTowards();
+        }
+    }
+
+    // 성 대상 투사체 공격
+    public void ShootProjectile(Unit unit, Fortress fortress, GameObject projectilePrefab)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
+
+        float distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+        {
+            arrowCtrl.SetTarget(fortress);
+            arrowCtrl.SetEvent(() => {
+                AttackFortress(unit, fortress);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+        }
+
     }
 
 
