@@ -385,13 +385,11 @@ public abstract class Unit : MonoBehaviour
 
          if(skill.Data.StartVFX != null)
         {
-            Debug.Log(skill.Data.StartVFX + " 발동");
-            AddVFX(skill.Data.StartVFX, target.transform);
+            AddVFX(skill.Data.StartVFX, transform, false);
         }
 
          if(skill.Data.StartSFX != null)
         {
-            Debug.Log(skill.Data.StartSFX.name + " 발동");
             SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
         }
 

@@ -239,6 +239,11 @@ public class AllyUnit : Unit
                         }
                     }
 
+                    // 아직 공격 애니메이션의 길이를 받지 못했다면,
+                    // 이번 Update에서는 아래의 타이머 증가 X
+                    if (stateDuration <= 0f)
+                        return;
+
                     if (stateDurationCheck < stateDuration)
                     {
                         stateDurationCheck += Time.deltaTime;
@@ -248,7 +253,15 @@ public class AllyUnit : Unit
                         // 스킬 발동이 종료된 후, 애니메이션이 조건없이 전환된다.
                         // 애니메이션 속도가 공격 속도의 영향을 받아 1f 아닌 경우가 존재하므로
                         // 애니메이션 속도는 1f로 초기화되어야 한다.
+
                         modelAnimator.SetFloat("animationSpeed", 1f);
+
+
+                        // 이전 공격이 끝났으므로 이전 애니메이션의 길이를 지운다.
+                        // 다음 공격 애니메이션의 길이는 아직 받지 않은 상태가 된다.
+                        stateDuration = 0f;
+
+                        //stateDurationCheck = 0f;
                         currentSkill = null;
                         state = State.IDLE;
                     }
@@ -256,6 +269,9 @@ public class AllyUnit : Unit
                 break;
             case State.DEAD:
                 {
+                    if (stateDuration <= 0f)
+                        return;
+
                     if (stateDurationCheck < stateDuration)
                     {
                         stateDurationCheck += Time.deltaTime;
@@ -269,7 +285,7 @@ public class AllyUnit : Unit
                 break;
             case State.IDLE:
                 {
-                    if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동 중일 때
+                    if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동
                     {
                         navAgent.isStopped = false;
                         state = State.RUN;

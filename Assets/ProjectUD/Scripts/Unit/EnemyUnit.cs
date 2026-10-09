@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Resources;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -231,6 +230,11 @@ public class EnemyUnit : Unit
                         }
                     }
 
+                    // 아직 공격 애니메이션의 길이를 받지 못했다면,
+                    // 이번 Update에서는 아래의 타이머 증가 X
+                    if (stateDuration <= 0f)
+                        return;
+
                     if (stateDurationCheck < stateDuration)
                     {
                         stateDurationCheck += Time.deltaTime;
@@ -241,6 +245,10 @@ public class EnemyUnit : Unit
                         // 애니메이션 속도가 공격 속도의 영향을 받아 1f 아닌 경우가 존재하므로
                         // 애니메이션 속도는 1f로 초기화되어야 한다.
                         modelAnimator.SetFloat("animationSpeed", 1f);
+
+                        // 이전 공격이 끝났으므로 이전 애니메이션의 길이를 지운다.
+                        // 다음 공격 애니메이션의 길이는 아직 받지 않은 상태가 된다.
+                        stateDuration = 0f;
 
                         currentSkill = null;
                         state = State.IDLE;
@@ -265,6 +273,11 @@ public class EnemyUnit : Unit
                         }
                     }
 
+                    // 아직 공격 애니메이션의 길이를 받지 못했다면,
+                    // 이번 Update에서는 아래의 타이머 증가 X
+                    if (stateDuration <= 0f)
+                        return;
+
                     if (stateDurationCheck < stateDuration)
                     {
                         stateDurationCheck += Time.deltaTime;
@@ -274,7 +287,10 @@ public class EnemyUnit : Unit
                         modelAnimator.SetFloat("animationSpeed", 1f);
                         stateDurationCheck = 0f;
 
-                        
+                        // 이전 공격이 끝났으므로 이전 애니메이션의 길이를 지운다.
+                        // 다음 공격 애니메이션의 길이는 아직 받지 않은 상태가 된다.
+                        stateDuration = 0f;
+
                         state = State.IDLE;
                     }
 
@@ -284,6 +300,9 @@ public class EnemyUnit : Unit
             case State.DEAD:
             case State.BATTLECRY:
                 {
+                    if (stateDuration <= 0f)
+                        return;
+
                     modelAnimator.SetBool("isRunning", false);
 
                     if (stateDurationCheck < stateDuration)

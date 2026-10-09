@@ -257,54 +257,54 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
-    {
-        // 투사체 발사
-        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
+    //public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
+    //{
+    //    // 투사체 발사
+    //    GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
 
-        float distance;
+    //    float distance;
 
-        if (isUnit)
-            distance = Vector3.Distance(unit.transform.position, target.transform.position);
-        else
-            distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+    //    if (isUnit)
+    //        distance = Vector3.Distance(unit.transform.position, target.transform.position);
+    //    else
+    //        distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
 
 
-        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
-        {
-            if(isUnit)
-            {
-                arrowCtrl.SetTarget(target);
-                arrowCtrl.SetEvent(() => {
-                    Attack(unit, target);
-                });
-                //arrowCtrl.CalculateTime(distance);
-                //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
-            }
-            else
-            {
-                arrowCtrl.SetTarget(fortress);
-                arrowCtrl.SetEvent(() => {
-                    AttackFortress(unit, fortress);
-                });
-                //arrowCtrl.CalculateTime(distance);
-                //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
-            }
+    //    if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+    //    {
+    //        if(isUnit)
+    //        {
+    //            arrowCtrl.SetTarget(target);
+    //            arrowCtrl.SetEvent(() => {
+    //                Attack(unit, target);
+    //            });
+    //            //arrowCtrl.CalculateTime(distance);
+    //            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+    //        }
+    //        else
+    //        {
+    //            arrowCtrl.SetTarget(fortress);
+    //            arrowCtrl.SetEvent(() => {
+    //                AttackFortress(unit, fortress);
+    //            });
+    //            //arrowCtrl.CalculateTime(distance);
+    //            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+    //        }
             
 
-        }
-        if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
-        {
-            Vector3 targetPos = target.transform.position;
-            projectile.transform.position = this.transform.position + Vector3.up;
+    //    }
+    //    if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
+    //    {
+    //        Vector3 targetPos = target.transform.position;
+    //        projectile.transform.position = this.transform.position + Vector3.up;
 
-            granadeCtrl.SetData(data);
-            granadeCtrl.SetTargetLayer(unit.EnemyLayer);
-            granadeCtrl.SetTargetPos(targetPos);
-            granadeCtrl.JumpTowards();
-        }
+    //        granadeCtrl.SetData(data);
+    //        granadeCtrl.SetTargetLayer(unit.EnemyLayer);
+    //        granadeCtrl.SetTargetPos(targetPos);
+    //        granadeCtrl.JumpTowards();
+    //    }
 
-    }
+    //}
     
 
     // 유닛 대상 투사체 공격

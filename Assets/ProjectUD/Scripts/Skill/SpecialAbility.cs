@@ -106,7 +106,6 @@ public class SpecialAbility : MonoBehaviour
 
         if (randomValue <= percent)
         {
-            Debug.Log("원한 발동 :" + randomValue);
             target.AddEffect(effect, target, Vector3.zero);
             target.AddVFX(vfx, target.transform.position, true, target.VfxScaleMult(target.Data.Tier));
             SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
