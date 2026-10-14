@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -32,6 +33,15 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] firstUpgradeUnitTierImage;
     [SerializeField] private Image lockImage;
+    //--추가
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitHpText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitMentalText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitAttackRangeText;
+    [SerializeField] private Image firstUpgradeUnitGSkillImage;
+    [SerializeField] private Image firstGSkillAttackTypeIcon;
+    [SerializeField] private Image firstUpgradeUnitSSkillImage;
+    [SerializeField] private Image firstSSkillAttackTypeIcon;
+    [SerializeField] private Image firstUpgradeUnitAbilityImage;
 
     [Header(" ■ 두번째 업그레이드 유닛")]
     [SerializeField] private Image secondUpgradeUnitBackImage;
@@ -41,6 +51,15 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] secondUpgradeUnitTierImage;
+    //--추가
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitHpText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitMentalText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitAttackRangeText;
+    [SerializeField] private Image secondUpgradeUnitGSkillImage;
+    [SerializeField] private Image secondGSkillAttackTypeIcon;
+    [SerializeField] private Image secondUpgradeUnitSSkillImage;
+    [SerializeField] private Image secondSSkillAttackTypeIcon;
+    [SerializeField] private Image secondUpgradeUnitAbilityImage;
 
     [Header(" ■ 업그레이드할 유니의 정보")]
     [SerializeField]private GameObject infoPanel;
@@ -187,6 +206,7 @@ public class UpgradeMenuUI : MonoBehaviour
         infoSSkillEtc.text = $"{sCooltime} / {sRange} / {sMental}";
     }
 
+    // 업그레이드 유닛아이콘 버튼 메서드
     public void ToggleUpgradeUnit(int index)
     {
 
@@ -302,7 +322,8 @@ public class UpgradeMenuUI : MonoBehaviour
 
     }
 
-    public void PerformUpgrade()
+    // 승급버튼용 메서드
+    public void PerformUpgrade()    
     {
         if (upgradeIndex == -1)
             return;
@@ -331,6 +352,7 @@ public class UpgradeMenuUI : MonoBehaviour
         firstUpgradeBtn.interactable = true;
         lockImage.gameObject.SetActive(false);
 
+        //----
         // 현재 선택된 유닛
         selectedUnitImage.sprite = selectedUnit.Data.Icon;
         //selectedUnitNameText.text = selectedUnit.Data.Name;
@@ -343,7 +365,7 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             selectedUnitTierImage[i].gameObject.SetActive(i < selectedUnit.Data.Tier);
         }
-
+        //----
 
         AllyUnitData allyUnitData = (AllyUnitData)currentUnitData;
 
@@ -359,23 +381,43 @@ public class UpgradeMenuUI : MonoBehaviour
             //    lockImage.gameObject.SetActive(true);
             //}
 
+            // 업그레이드 유닛 패널 오브젝트 1번 활성화 구현하기
+
             secondUpgradeUnitBackImage.gameObject.SetActive(false);
             twoLine.SetActive(false);
             oneLine.SetActive(true);
             firstUpgradeUnitBackImage.rectTransform.position = middlePos.position;
 
-            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
+            //---
+            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];   // 필요없는 코드. 확인해보기
             firstUnitData = firstUpgradeUnitData;
             firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
 
+            //----
             if (firstUpgradeUnitData != null)
             {
                 // 첫번째 업그레이드 유닛
                 firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
                 //firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
                 FieldNameLocalization(firstUpgradeUnitData, firstUpgradeUnitNameText);
-                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
+                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;   // 삭제하기
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
+
+                //---리디자인으로 인한 추가
+                /*
+                firstUpgradeUnitHpText.text =
+                    firstUpgradeUnit.UnitStats.maxHp.ToString() + " (+ " + (firstUpgradeUnit.UnitStats.maxHp - currentUnit.Maxhp).ToString() + ")";
+                firstUpgradeUnitMentalText.text = firstUpgradeUnit.UnitStats.mental.ToString();
+                firstUpgradeUnitAttackRangeText.text = firstUpgradeUnit.UnitStats.attackRange.ToString();
+
+                firstUpgradeUnitGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
+                firstUpgradeUnitSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
+                firstUpgradeUnitAbilityImage.sprite = firstUpgradeUnit.SpecialAbility.Icon;
+
+                AttackSkillData gSkillData = firstUpgradeUnit.GeneralSkill.Data as AttackSkillData;
+                firstGSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
+                AttackSkillData sSkillData = firstUpgradeUnit.SpecialSkill.Data as AttackSkillData;
+                firstSSkillAttackTypeIcon.sprite = sSkillData.Info.TypeIcon;*/
 
                 for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
                 {
@@ -493,7 +535,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
 
 
-    private void SetUnitBackImage(Unit selectedUnit)
+    private void SetUnitBackImage(Unit selectedUnit)    // 유닛 등급에 따라 배경 이미지 변경-> 없어도 되는 기능?
     {
         if(selectedUnit.Data.Tier == 1)
         {

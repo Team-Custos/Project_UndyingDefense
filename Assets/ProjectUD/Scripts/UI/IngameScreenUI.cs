@@ -138,7 +138,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         noticeTimerUI.Hide();
     }
 
-
+    // --  성 공격받는 알림
     public void ShowPerWaveNotice()
     {
         //--Localize
@@ -147,6 +147,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         //noticeUI.SetText("성이 현재 공격받고있습니다!", true);
     }
 
+    // -- 웨이브 타이머용 NoticeUI 텍스트 셋팅
     public void SetNoticeText(string text)
     {
         noticeTimerUI.SetText(text, false);
