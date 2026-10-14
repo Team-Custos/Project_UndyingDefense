@@ -166,7 +166,7 @@ public class SelectedUnitUI : MonoBehaviour
         selecteUnitManger.CancleUpgrade();
     }
 
-    public void ShowUpgradeMenu(Unit unit)
+    public void ShowUpgradeMenu(Unit unit)      // SelectUnitManager에서 전달해주는 것이 좋을지도? 안되는 건 아님..근데 참조를 줄이기 위해서.
     {
         if (unit.Data.Tier >= 4)
             return;
@@ -183,7 +183,7 @@ public class SelectedUnitUI : MonoBehaviour
         //selecteUnitManger.UpdateUpgradeState(true);
     }
 
-    public void ShowAllyUI(AllyUnit allyUnit)
+    public void ShowAllyUI(AllyUnit allyUnit)   // 유닛UI를 보여주는 것
     {
         if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
         {
@@ -211,7 +211,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitMenuPrefab.SetActive(true);
     }
 
-    public void HideAllyUI()
+    public void HideAllyUI()   // 알리 유닛 UI를 숨기는 것
     {
         unitMenuPrefab.SetActive(false);
         SoundManager.Instance.PlayUIClickSFX();
@@ -283,7 +283,8 @@ public class SelectedUnitUI : MonoBehaviour
         }
     }
 
-    public void UpdateUnitInfoByBtn(UnitData unitData, UnitDataLoader unitDataLoader)
+    // 선택 대상 정보 창
+    public void UpdateUnitInfoByBtn(UnitData unitData, UnitDataLoader unitDataLoader)   // 데이터로더 말고 유닛스탯을 매개변수로 받아서 처리하도록 수정 필요_261014
     {
         Unit unit = unitData.Prefab.GetComponent<Unit>();
 
@@ -304,7 +305,7 @@ public class SelectedUnitUI : MonoBehaviour
 
         SetUnitTierIcon(unitData.Tier);
 
-        AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;
+        //AttackSkillData attackSkillData = unit.GeneralSkill.Data as AttackSkillData;    // 필요없음
 
         //atTypeIcon.sprite = attackSkillData.Info.TypeIcon;
         dfTypeIcon.sprite = unitData.DfTypeIcon;
@@ -330,7 +331,8 @@ public class SelectedUnitUI : MonoBehaviour
 
     //string pointColor = "#000000";
 
-    private void FieldLocalization(UnitStats unitStats)     //260408 로폴 수정
+    // 선택 대상 정보 창
+    private void FieldLocalization(UnitStats unitStats)     //260408 로폴 수정  
     {
         //string mentalT = LocalizationSettings.StringDatabase.
         //    GetLocalizedString("CommonUI", "CON_mental", LocalizationSettings.SelectedLocale);
@@ -359,7 +361,8 @@ public class SelectedUnitUI : MonoBehaviour
         atRangeText.text = $"{atRange}";  //$"{attackRangeT} <color={pointColor}>{atRange}</color>";
     }
 
-    public void UpdateUnitInfo(Unit unit)
+    // 선택 대상 정보 창
+    public void UpdateUnitInfo(Unit unit) 
     {
        unit.SetSelectedUnitUI(this);
 
@@ -406,7 +409,8 @@ public class SelectedUnitUI : MonoBehaviour
 
         UpdateUnitStateUI();
     }
-    
+
+    // 선택 대상 정보 창
     public void HideUntInfo()
     {
         unitInfoImage.gameObject.SetActive(false);
@@ -522,6 +526,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitDuration.fillAmount = 0f;
     }
 
+    // 선택 대상 정보 창
     private void UpdateSkillInfo(UnitData unitData)
     {
         unitGSkillImage.sprite = unitData.GeneralSkill.Icon;
