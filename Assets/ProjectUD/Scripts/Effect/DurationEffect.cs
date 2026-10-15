@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public enum EffectType
 {
-    BUFF,       // 버프
-    CURSE,      // 저주
-    CRIT,       // 치명
-    NATURE,       // 자연
-    ETC         // 기타
+    BUFF,           // 버프
+    CURSE,          // 저주
+    CRIT,           // 치명
+    ELEMENTAL,      // 원소 피해
+    NONACT          // 행동 제어
 }
 
 public abstract class DurationEffect : MonoBehaviour

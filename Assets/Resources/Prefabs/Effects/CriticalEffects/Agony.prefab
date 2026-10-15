@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4632548793864464441}
-  - component: {fileID: 8607305459044705749}
+  - component: {fileID: 2666407194237009675}
   m_Layer: 0
-  m_Name: Indestructible
+  m_Name: Agony
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8607305459044705749
+--- !u!114 &2666407194237009675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 9176701577400336566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c4fa17812d81445bf5ba8363253584, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d6b0cdad10d4374685f2e699b99a97f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: stts_defensivestance
-  effectName: "\uBD88\uAD34"
-  iconSprite: {fileID: 21300000, guid: 7c79387c74cd13547943f0b008cc04ae, type: 3}
-  duration: 5
-  type: 0
-  percent: 30
+  id: stts_agony
+  effectName: "\uACE0\uD1B5"
+  iconSprite: {fileID: 21300000, guid: 7ec1b3d5998a5d04d90959c1c53c99ea, type: 3}
+  description: "3\uCD08 \uB3D9\uC548 \uCE58\uBA85\uD0C0\uB97C \uC785\uC744 \uD655\uB960
+    30% \uC99D\uAC00."
+  duration: 3
+  type: 2
+  critPercent: 30
+  painSound: {fileID: 8300000, guid: 73f5b0967f3692647adc156573dc616c, type: 3}

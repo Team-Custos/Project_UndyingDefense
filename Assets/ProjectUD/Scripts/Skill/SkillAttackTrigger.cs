@@ -36,7 +36,7 @@ public class SkillAttackTrigger : MonoBehaviour
 
     private void Start()
     {
-        PlayVFX();
+        //PlayVFX();
         Destroy(gameObject, 0.5f);
     }
 

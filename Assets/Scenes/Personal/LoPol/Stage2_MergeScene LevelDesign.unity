@@ -23256,8 +23256,6 @@ MonoBehaviour:
       _PersistentArguments: []
   id: UNQ_namhanFortress
   stagePrefsData: {fileID: 2066415665}
-  winPoint: 100
-  losePoint: 20
 --- !u!1001 &858771693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58936,7 +58934,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1285506504}
+      objectReference: {fileID: 856739625}
+    - target: {fileID: 7400483059421956912, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CancelCurrentOperate
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400483059421956912, guid: b13c8d6afd252c3499aabb49eed86d72,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InGameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7517303138383554389, guid: b13c8d6afd252c3499aabb49eed86d72,
         type: 3}
       propertyPath: m_AnchoredPosition.x

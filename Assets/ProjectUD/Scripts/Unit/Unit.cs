@@ -31,6 +31,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Transform effectParent;
     [SerializeField] protected Transform VFXParent;
     [SerializeField] protected Transform heightPos;
+    [SerializeField] private Transform weaponTransform;
 
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
@@ -142,6 +143,7 @@ public abstract class Unit : MonoBehaviour
     public EffectImagePool EffectImagePool => effectImagePool;
     public ArmorType Armortype => armorType;
     public Unit TargetUnit => targetUnit;
+    public Transform WeaponTransform => weaponTransform;
 
     public bool IsSelected
     {
@@ -268,7 +270,8 @@ public abstract class Unit : MonoBehaviour
         armorType = Data.ArmorType;
 
         // 스킬 쿨타임 초기화
-        generalSkill.Initialize();
+        if (generalSkill != null)
+            generalSkill.Initialize();
 
         if(specialSkill != null)
             specialSkill.Initialize();
@@ -368,7 +371,7 @@ public abstract class Unit : MonoBehaviour
 
         //isSkillEffectAlreadyActivated = false;
 
-        if (target != this)
+        if (target != null && target != this)
             transform.LookAt(target.transform);
 
         intervalCheck = interval / attackSpeedMult;
@@ -408,12 +411,10 @@ public abstract class Unit : MonoBehaviour
     // 스킬 효과 발동
     protected void ActivateSkillEffect(SkillBase skill, Unit target) 
     {
-        if (target == null)
-            return;
+        //if (target != null && target.isDead)
+        //    return;
 
         skill.Activate(this, target);
-        //currentSkill = null;
-        //isSkillEffectAlreadyActivated = true;
     }
 
 
@@ -1479,6 +1480,12 @@ public abstract class Unit : MonoBehaviour
         if (unit.IsDead)
             return;
 
+        if(effectPrefab == null)
+        {
+            Debug.Log("effect 없음");
+            return;
+        }
+
 
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));
 
@@ -1596,6 +1603,20 @@ public abstract class Unit : MonoBehaviour
         VFXobj.transform.localScale = Vector3.one * scale;
 
         VFXobj.SetActive(true);
+    }
+
+    public GameObject GetVFX(GameObject vfx)
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return null;
+        else
+        {
+            VFXobj.transform.SetParent(null);
+            VFXobj.SetActive(false);
+            return VFXobj;
+
+        }
     }
 
     public void AddVFX(GameObject vfx, Vector3 pos, float angle)

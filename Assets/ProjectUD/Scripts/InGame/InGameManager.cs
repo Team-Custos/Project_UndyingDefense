@@ -57,7 +57,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     [SerializeField] private StagePrefsData stagePrefsData;
 
     [Header("공로포인트")]
-    private float meritPoint = 0f;  // 공훈도
+    private int meritPoint = 0;  // 공훈도
 
     [Header("ClickState")]
     private OperateState operateState;
@@ -428,7 +428,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         operateState = nextState;
     }
 
-    private void CancelCurrentOperate()
+    public void CancelCurrentOperate()
     {
         if (operateState == OperateState.DEFAULT)
         {
@@ -497,12 +497,12 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (isWin)
         {
-            meritPoint = successWave * 3f + 40f;
+            meritPoint = successWave * 3 + 40;
             Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3 + 40");
         }
         else
         {
-            meritPoint = successWave * 3f;
+            meritPoint = successWave * 3;
             Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3");
         }
 

@@ -229,6 +229,16 @@ public class AttackSkill : SkillBase
         unit.AddVFX(vfx, unit.transform.position, angle);
     }
 
+    public void ApplyVFX(Unit unit, Unit target, GameObject vfxPrefab)
+    {
+        GameObject vfx = unit.GetVFX(vfxPrefab);
+        Vector3 dir = (target.transform.position - unit.transform.position).normalized;
+
+        vfx.transform.forward = dir;
+        vfx.transform.position = unit.WeaponTransform.position;
+        vfx.SetActive(true);
+    }
+
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
     {
@@ -381,17 +391,28 @@ public class AttackSkill : SkillBase
         //Debug.Log("피해량" + target.DamageTakenMult);
         //Debug.Log("데미지" + calcDamage);
 
-        if (Random.Range(0f, 1f) <= calcCrit)
+
+        // 베기, 찌르기, 때리기 경우에만 치명타 계산
+        if (data.Info.Type == AttackType.SLASH ||
+            data.Info.Type == AttackType.PIERCE ||
+            data.Info.Type == AttackType.CRUSH)
         {
-            AddCritVFX(unit, target);
-            AddCritSFX(target.transform.position);
-            ActivateCriticalEffect(unit, target);
+            if (Random.Range(0f, 1f) <= calcCrit)
+            {
+                AddCritVFX(unit, target);
+                AddCritSFX(target.transform.position);
+                ActivateCriticalEffect(unit, target);
+            }
+            else
+            {
+                AddHitVFX(unit, target);
+                AddHitSFX(target.transform.position);
+            }
         }
         else
-        {
-            AddHitVFX(unit, target);
-            AddHitSFX(target.transform.position);
-        }
+            Debug.Log(data.Info.Type);
+
+        
 
         //Debug.Log(calcCrit);
 
@@ -422,8 +443,6 @@ public class AttackSkill : SkillBase
         {
             target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
         }
-
-        // 적 처치 특수 능력 발동
 
     }
 

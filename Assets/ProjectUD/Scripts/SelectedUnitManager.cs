@@ -1,4 +1,5 @@
 using InputEventInterface;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -268,7 +269,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
                 ActivateUpgrade();
 
-                isActivateUpgrade = true;
+                //isActivateUpgrade = true;
 
                 
             }

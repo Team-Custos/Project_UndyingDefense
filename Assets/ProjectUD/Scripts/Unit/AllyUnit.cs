@@ -67,9 +67,10 @@ public class AllyUnit : Unit
 
 
     [SerializeField] private NavMeshObstacle navObstacle;
+    [SerializeField] private GameObject siegeModeVFx;
     [SerializeField] private GameObject changeEffet;
-    [SerializeField] private GameObject defaultSiegeEffect;
-    [SerializeField] private GameObject activeSiegeEffect;
+    //[SerializeField] private GameObject defaultSiegeEffect;
+    //[SerializeField] private GameObject activeSiegeEffect;
     [SerializeField] private UnitGrid unitGrid;
     [SerializeField] private AudioClip[] allyDeadSFX;
 
@@ -77,9 +78,9 @@ public class AllyUnit : Unit
 
     private Vector3 commandDestination;  // 이동명령 목적지
 
-    [SerializeField] private float siegeEffectInterval = 0.3f;
+    //[SerializeField] private float siegeEffectInterval = 0.3f;
 
-    private bool isSiegeActivated = true;
+    //private bool isSiegeActivated = true;
     private bool isAvailableToSiege = false; // 시즈 모드 가능한지 확인
 
     private EnemyUnit ImmortalityEnemy;    // 영생 보유 적 유닛
@@ -101,8 +102,7 @@ public class AllyUnit : Unit
         navAgent.enabled = false;
 
         mode = Mode.SEIGE;
-        isSiegeActivated = true;
-        siegeEffectInterval = 0.3f;
+        siegeModeVFx.SetActive(true);
 
         navAgent.avoidancePriority = 2;
 
@@ -347,23 +347,6 @@ public class AllyUnit : Unit
                     if (!navObstacle.enabled)
                     {
                         Debug.Log("obstacle 꺼져있음");
-                    }
-
-                    if (isSiegeActivated)
-                    {
-                        siegeEffectInterval -= Time.deltaTime;
-
-                        if (siegeEffectInterval > 0)
-                        {
-                            activeSiegeEffect.SetActive(true);
-                        }
-                        else
-                        {
-                            activeSiegeEffect.SetActive(false);
-                            defaultSiegeEffect.SetActive(true);
-                            siegeEffectInterval = 0.3f;
-                            isSiegeActivated = false;
-                        }
                     }
 
                     if (idleState == IdleState.DEFAULT || isDeferredState)
@@ -691,9 +674,6 @@ public class AllyUnit : Unit
                         {
                             selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
                         }
-
-                        if (defaultSiegeEffect.activeSelf)
-                            defaultSiegeEffect.SetActive(false);
                     }
                     else    // 변경 끝
                     {
@@ -780,7 +760,7 @@ public class AllyUnit : Unit
 
                             isAvailableToSiege = false;
                             mode = Mode.SEIGE;
-                            isSiegeActivated = true;
+                            siegeModeVFx.SetActive(true);
 
                             changeDuration = 3f;
                             isChange = false;
@@ -795,6 +775,7 @@ public class AllyUnit : Unit
     public void ChangeOrder()
     {
         isChange = true;
+        siegeModeVFx.SetActive(false);
 
         if (selectedUnitUI != null)
             selectedUnitUI.HideAllyUI();
@@ -817,8 +798,6 @@ public class AllyUnit : Unit
             if (!changeEffet.activeSelf)
                 changeEffet.SetActive(true);
 
-            defaultSiegeEffect.SetActive(false);
-
             if (selectedUnitUI != null)
             {
                 selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
@@ -839,12 +818,14 @@ public class AllyUnit : Unit
 
                 upgradedUnit.navObstacle.transform.rotation = Quaternion.Euler(0, 90, 0);
                 upgradedUnit.navObstacle.enabled = true;
+                upgradedUnit.siegeModeVFx.SetActive(true);
             }
             else
             {
                 upgradedUnit.navAgent.enabled = true;
                 upgradedUnit.navObstacle.enabled = false;
                 upgradedUnit.freeModeState = FreeModeState.COMBAT;
+                upgradedUnit.siegeModeVFx.SetActive(false);
             }
 
 
@@ -880,13 +861,14 @@ public class AllyUnit : Unit
         isUpgrade = true;
         upgradeIndex = index;
 
+        siegeModeVFx.SetActive(false);
+
         if (selectedUnitUI != null)
             selectedUnitUI.HideAllyUI();
     }
 
     public void UpdateCommandDestination(Vector3 pos)
     {
-
         freeModeState = FreeModeState.MOVECOMMAND;
         commandDestination = pos;
     }
@@ -1038,6 +1020,7 @@ public class AllyUnit : Unit
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
 
         unitGrid.ClearTile();
+        siegeModeVFx.SetActive(false);
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }

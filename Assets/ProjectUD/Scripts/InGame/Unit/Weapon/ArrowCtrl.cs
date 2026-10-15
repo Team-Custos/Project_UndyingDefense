@@ -27,6 +27,7 @@ public class ArrowCtrl : ProjectileCtrl
         else
         {
             Debug.Log("목표 없음");
+            Destroy(gameObject);
             return;
         }
 
