@@ -28,6 +28,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private AudioClip inGameIntro;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private SelectedUnitInfoPanel selectedUnitInfoPanel;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private CommandSkillTargetingController commandSkillTargetingController;
     [SerializeField] private Camera mainCamera;
@@ -176,7 +177,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     public void LoseGame()
     {
         isGameStart = false;
-        selectedUnitUI.HideUntInfo();
+        //selectedUnitUI.HideUnitInfo();
+        selectedUnitInfoPanel.HideUnitInfo();
 
         ingameScreenUI.ShowResult(meritPoint, false, "");
         PlayerPrefsData.instance.SetPoint(meritPoint);
@@ -200,7 +202,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     public void WinGame()
     {
         isGameStart = false;
-        selectedUnitUI.HideUntInfo();
+        //selectedUnitUI.HideUnitInfo();
+        selectedUnitInfoPanel.HideUnitInfo();
 
         ingameScreenUI.ShowResult(meritPoint, true, recordText);
         PlayerPrefsData.instance.SetPoint(meritPoint);
@@ -325,7 +328,9 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                         selectedUnitUI.HideAllyUI();
 
 
-                    selectedUnitUI.UpdateUnitInfo(unit);
+                    //selectedUnitUI.UpdateUnitInfo(unit);
+                    selectedUnitInfoPanel.UpdateUnitInfo(unit);
+
                     selectedUnitUI.ShowHp(unit);
                     inputEventManager.OnClickTarget = selectedUnitManager;
                 }

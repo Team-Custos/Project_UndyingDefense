@@ -150,6 +150,7 @@ public abstract class Unit : MonoBehaviour
     }
 
     protected SelectedUnitUI selectedUnitUI;
+    protected SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
     protected SelectedUnitManager selectedUnitManager;
 
     protected static AudioClip[] slashHitSFX;
@@ -360,6 +361,12 @@ public abstract class Unit : MonoBehaviour
     {
         this.selectedUnitManager = selectedUnitManager;
     }
+
+    public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
+    {
+        this.selectedUnitInfoPanel = selectedUnitInfoPanel;
+    }
+    
 
     
 
@@ -1313,9 +1320,14 @@ public abstract class Unit : MonoBehaviour
 
         
 
-        if (selectedUnitUI != null)
+        //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
+        //{
+        //    selectedUnitUI.UpdateHPUI(this);
+        //}
+
+        if (selectedUnitInfoPanel != null)
         {
-            selectedUnitUI.UpdateHPUI(this);
+            selectedUnitInfoPanel.UpdateHPUI(this);
         }
     }
 
@@ -1327,9 +1339,14 @@ public abstract class Unit : MonoBehaviour
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
 
-        if (selectedUnitUI != null)
+        //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
+        //{
+        //    selectedUnitUI.UpdateHPUI(this);
+        //}
+
+        if (selectedUnitInfoPanel != null)
         {
-            selectedUnitUI.UpdateHPUI(this);
+            selectedUnitInfoPanel.UpdateHPUI(this);
         }
     }
 
@@ -1361,7 +1378,8 @@ public abstract class Unit : MonoBehaviour
             selectedUnitUI.HideAllyUI();
             //selectedUnitUI.HideUpgrdeUI();
             selectedUnitManager.CancleUpgrade();
-            selectedUnitUI.HideUntInfo();
+            //selectedUnitUI.HideUnitInfo();
+            selectedUnitInfoPanel.HideUnitInfo();
         }
 
         if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
@@ -1649,9 +1667,14 @@ public abstract class Unit : MonoBehaviour
 
     public void UpdateState()
     {
-        if(selectedUnitUI != null)
+        //if(selectedUnitUI != null)        // 261018_ayo
+        //{
+        //    selectedUnitUI.UpdateUnitStateUI();
+        //}
+
+        if (selectedUnitInfoPanel != null)
         {
-            selectedUnitUI.UpdateUnitStateUI();
+            selectedUnitInfoPanel.UpdateUnitStateUI();
         }
     }
 

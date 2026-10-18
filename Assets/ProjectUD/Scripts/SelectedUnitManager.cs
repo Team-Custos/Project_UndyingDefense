@@ -6,7 +6,13 @@ using UnityEngine.UI;
 public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade
 {
-    [SerializeField] private SelectedUnitUI unitSelectUI;
+    [Header("Selected Unit UI")]
+    [SerializeField] private SelectedUnitUI unitSelectUI;                   // 선택한 유닛 UI
+    [Header("Selected Unit Info Panel")]
+    [SerializeField] private SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
+    [Header("Unit Upgrade UI")]
+    [SerializeField] private UpgradeMenuUI unitUpgradeMenuUI;                      // 유닛 업그레이드 UI
+
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
@@ -105,7 +111,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                     else
                         unitSelectUI.HideAllyUI();
 
-                    unitSelectUI.UpdateUnitInfo(unit);
+                    //unitSelectUI.UpdateUnitInfo(unit);
+                    selectedUnitInfoPanel.UpdateUnitInfo(unit);
                     unitSelectUI.ShowHp(unit);
                     //inputEventManager.OnClickTarget = this;
                 }
@@ -171,7 +178,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         inGameManager.UpdateOperateState(OperateState.UPGRADE);
         isActivateUpgrade = true;
 
-        unitSelectUI.ShowUpgradeMenu(selectedUnit);
+        // 병사 승급 창 
+        //unitSelectUI.ShowUpgradeMenu(selectedUnit);
+        if (!inGameManager.IsGameStart)
+            return;
+
+        unitUpgradeMenuUI.gameObject.SetActive(true);
+        unitUpgradeMenuUI.SetUnitUpgradeMenu(selectedUnit);
     }
 
     public void UpgradeSelectedUnit(int index)
@@ -349,8 +362,10 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             selectedUnit.IsSelected = false;
             selectedUnit.SetSelectedUnitUI(null);
             selectedUnit.SetSelectedUnitManager(null);
+            selectedUnit.SetSelectedUnitInfoPanel(null);
             unitSelectUI.HideHp();
-            unitSelectUI.HideUntInfo();
+            //unitSelectUI.HideUnitInfo();
+            selectedUnitInfoPanel.HideUnitInfo();
             selectedUnit = null;
             selectedAllyUnit = null;
             unitSelectUI.HideAllyUI();
@@ -363,6 +378,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         selectedUnit.IsSelected = true;
         selectedUnit.SetSelectedUnitUI(unitSelectUI);
         selectedUnit.SetSelectedUnitManager(this);
+        selectedUnit.SetSelectedUnitInfoPanel(selectedUnitInfoPanel);
 
         if (selectedUnit is AllyUnit)
             selectedAllyUnit = (AllyUnit)selectedUnit;

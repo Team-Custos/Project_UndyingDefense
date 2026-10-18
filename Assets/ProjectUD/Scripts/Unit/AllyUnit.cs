@@ -823,7 +823,8 @@ public class AllyUnit : Unit
                 isSelected = false;
                 upgradedUnit.isSelected = true;
 
-                selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                //selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                selectedUnitInfoPanel.UpdateUnitInfo(upgradedUnit);   // 선택한 유닛 정보 패널
 
 
                 upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
