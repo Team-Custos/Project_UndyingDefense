@@ -9,29 +9,30 @@ public class UpgradeUnitPanel : MonoBehaviour
 {
     [Header("NameTextTable")]
     [SerializeField] private FactionNameTextTable fNameTextTable;
+    [SerializeField] private Button upgradeBtn;     // 승급버튼?
+    [SerializeField] private Image unitAtTypeImage;     // 필요없음
 
-    [SerializeField] private Image firstUpgradeUnitImage;
-    [SerializeField] private Button firstUpgradeBtn;
-    [SerializeField] private TextMeshProUGUI firstUpgradeUnitNameText;
-    [SerializeField] private Image firstUpgradeUnitAtTypeImage;
-    [SerializeField] private Image firstUpgradeUnitDfTypeImage;
-    [SerializeField] private Image[] firstUpgradeUnitTierImage;
-    [SerializeField] private TextMeshProUGUI firstUpgradeUnitHpText;
-    [SerializeField] private TextMeshProUGUI firstUpgradeUnitMentalText;
-    [SerializeField] private TextMeshProUGUI firstUpgradeUnitAttackRangeText;
-    [SerializeField] private Image firstUpgradeUnitGSkillImage;
-    [SerializeField] private Image firstGSkillAttackTypeIcon;
-    [SerializeField] private Image firstUpgradeUnitSSkillImage;
-    [SerializeField] private Image firstSSkillAttackTypeIcon;
-    [SerializeField] private Image firstUpgradeUnitAbilityImage;
+    [SerializeField] private Image unitImage;
+    [SerializeField] private TextMeshProUGUI unitNameText;
+    [SerializeField] private Image unitDfTypeImage;
+
+    [SerializeField] private Image[] unitTierImage;
+
+    [SerializeField] private TextMeshProUGUI hpValue;
+    [SerializeField] private TextMeshProUGUI mentalValue;
+    [SerializeField] private TextMeshProUGUI attackRangeValue;
+
+    [SerializeField] private Image generalSkillImage;
+    [SerializeField] private Image generalSkillAttackTypeIcon;
+    [SerializeField] private Image specialSkillImage;
+    [SerializeField] private Image specialSkillAttackTypeIcon;
+    [SerializeField] private Image abilityImage;
 
     [Header("승급버튼")]
     [SerializeField] private Button upgradePerformBtn;
     [SerializeField] private TextMeshProUGUI upgradeCostTxt;
 
-    private UnitData firstUpgradeUnitData;
-    private Unit firstUpgradeUnit;
-    private Unit currentUnit;
+    private Unit upgradeUnit;
 
     private float cost;
 
@@ -41,52 +42,57 @@ public class UpgradeUnitPanel : MonoBehaviour
             GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
-    // 매개변수 업글유닛, 인덱스, 현재 선택된 유닛maxHp, 현재 골드 
-    // UpgradeMenuUI에서 호출할 함수용으로 만들기
-    public void SetUnitUpgradeMenu(Unit selectedUnit)
+    private void FieldStatLocalization()
     {
-        if (selectedUnit is EnemyUnit)
+
+    }
+
+    // 매개변수 업글유닛, 유닛의 인덱스, 현재 선택된 유닛maxHp, 현재 골드 
+    // UpgradeMenuUI에서 호출할 함수용으로 만들기
+    public void SetUpgradeUnitPanel(Unit _upgradeUnit, int index, float selectedUnitMaxHp)
+    {
+        if (_upgradeUnit is EnemyUnit)
             return;
 
-        currentUnit = selectedUnit;
-        AllyUnitData currentUnitData = (AllyUnitData)selectedUnit.Data;
+        upgradeUnit = _upgradeUnit;
+        AllyUnitData upgradeUnitData = (AllyUnitData)_upgradeUnit.Data;
 
 
-        firstUpgradeUnitData = currentUnitData.UpgradeUnits[0]; // 업그레이드 유닛이 UnitData로 들어가 있음
+        upgradePerformBtn.interactable = false; //? 
 
-        upgradePerformBtn.interactable = false;
-        firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
-
-        firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
-        FieldNameLocalization(firstUpgradeUnitData, firstUpgradeUnitNameText);
-        firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
+        //---unit image / name / dfType icon---
+        unitImage.sprite = upgradeUnitData.Icon;
+        FieldNameLocalization(upgradeUnitData, unitNameText);
+        unitDfTypeImage.sprite = upgradeUnitData.DfTypeIcon;
 
         //---리디자인으로 인한 추가
+        //---stats---               // unit 필요
+        hpValue.text =
+            upgradeUnit.UnitStats.maxHp.ToString() + " (+ " + (upgradeUnit.UnitStats.maxHp - selectedUnitMaxHp).ToString() + ")";
+        mentalValue.text = upgradeUnit.UnitStats.mental.ToString();
+        attackRangeValue.text = upgradeUnit.UnitStats.attackRange.ToString();
 
-        firstUpgradeUnitHpText.text =
-            firstUpgradeUnit.UnitStats.maxHp.ToString() + " (+ " + (firstUpgradeUnit.UnitStats.maxHp - currentUnit.Maxhp).ToString() + ")";
-        firstUpgradeUnitMentalText.text = firstUpgradeUnit.UnitStats.mental.ToString();
-        firstUpgradeUnitAttackRangeText.text = firstUpgradeUnit.UnitStats.attackRange.ToString();
+        //---skill and ability icons--- // unit 필요
+        generalSkillImage.sprite = upgradeUnit.GeneralSkill.Data.Icon;
+        specialSkillImage.sprite = upgradeUnit.SpecialSkill.Data.Icon;
+        abilityImage.sprite = upgradeUnit.SpecialAbility.Icon;
 
-        firstUpgradeUnitGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
-        firstUpgradeUnitSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
-        firstUpgradeUnitAbilityImage.sprite = firstUpgradeUnit.SpecialAbility.Icon;
+        //---skill attack type icon---  // unit 필요
+        AttackSkillData gSkillData = upgradeUnit.GeneralSkill.Data as AttackSkillData;
+        generalSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
+        AttackSkillData sSkillData = upgradeUnit.SpecialSkill.Data as AttackSkillData;
+        specialSkillAttackTypeIcon.sprite = sSkillData.Info.TypeIcon;
 
-        AttackSkillData gSkillData = firstUpgradeUnit.GeneralSkill.Data as AttackSkillData;
-        firstGSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
-        AttackSkillData sSkillData = firstUpgradeUnit.SpecialSkill.Data as AttackSkillData;
-        firstSSkillAttackTypeIcon.sprite = sSkillData.Info.TypeIcon;
-
-        for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
+        //---tier image---
+        for (int i = 0; i < unitTierImage.Length; i++)
         {
-            if (i < firstUpgradeUnitData.Tier)
-                firstUpgradeUnitTierImage[i].gameObject.SetActive(true); // 켜기
+            if (i < upgradeUnitData.Tier)
+                unitTierImage[i].gameObject.SetActive(true); // 켜기
             else
-                firstUpgradeUnitTierImage[i].gameObject.SetActive(false); // 끄기
+                unitTierImage[i].gameObject.SetActive(false); // 끄기
         }
 
-        AllyUnitData upgradeUnitData = (AllyUnitData)firstUpgradeUnitData;
-
+        //---upgrade cost---
         cost = upgradeUnitData.Cost;
         upgradeCostTxt.text = cost.ToString();
 

@@ -4,8 +4,39 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class UpgradeMenuUI : MonoBehaviour
+public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하는 객체
 {
+    [Header(" ■ 승급 유닛 패널 배열")]
+    [SerializeField] private UpgradeUnitPanel[] upgradeUnitPanels;
+
+    private Unit selectedUnit;
+
+    // 선택된 유닛의 업그레이드 가능한 유닛들의 정보를 전달하는 메서드
+    public void SetUpgradeUnitMenu(Unit selectedUnit)
+    {
+        if (selectedUnit is EnemyUnit)
+            return;
+        this.selectedUnit = selectedUnit;
+
+        AllyUnitData selectedUnitData = (AllyUnitData)selectedUnit.Data;
+        for (int i = 0; i < upgradeUnitPanels.Length; i++)
+        {
+            if (i < selectedUnitData.UpgradeUnits.Length)
+            {
+                upgradeUnitPanels[i].gameObject.SetActive(true);
+                // 업글가능 유닛데이터에서 유닛을 가져와서 패널에 세팅
+                selectedUnitData.UpgradeUnits[i].Prefab.TryGetComponent<Unit>(out Unit upgradeUnit);
+                upgradeUnitPanels[i].SetUpgradeUnitPanel(upgradeUnit, i, selectedUnit.UnitStats.maxHp);
+            }
+            else
+            {
+                upgradeUnitPanels[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------
+
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
@@ -159,6 +190,7 @@ public class UpgradeMenuUI : MonoBehaviour
             GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
+    // 혹시 모를 툴팁 추가를 위해 함수 놔두기
     private void FieldSkillLocalization(Unit unit)
     {
         //--Local 스킬이름
@@ -206,7 +238,7 @@ public class UpgradeMenuUI : MonoBehaviour
         infoSSkillEtc.text = $"{sCooltime} / {sRange} / {sMental}";
     }
 
-    // 업그레이드 유닛아이콘 버튼 메서드
+    // 업그레이드 유닛아이콘 버튼 메서드   // 리디자인에서 필요없는 기능.
     public void ToggleUpgradeUnit(int index)
     {
 
@@ -322,7 +354,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
     }
 
-    // 승급버튼용 메서드
+    // 승급버튼용 메서드 => 승급 버튼에 SelectedUnitManager의 UpgradeSelectedUnit() 메서드 이벤트 등록하기
     public void PerformUpgrade()    
     {
         if (upgradeIndex == -1)
@@ -332,6 +364,7 @@ public class UpgradeMenuUI : MonoBehaviour
         SoundManager.Instance.PlayUIClickSFX();
     }
 
+    // ---기능 이전
     public void SetUnitUpgradeMenu(Unit selectedUnit)
     {
         if (selectedUnit is EnemyUnit)
@@ -557,7 +590,8 @@ public class UpgradeMenuUI : MonoBehaviour
         }
     }
 
-    public void UpdateUpgradeCostTxt()
+    // --- UpgradeUnitPanel.cs 로 이동 > 참조 바꾸기 & 현재 골드 매개변수로 전달 받기
+    public void UpdateUpgradeCostTxt()  // 골드 텍스트 색생 업데이트 WaveManager, EnemyUnitSpawner 에서 호출
     {
         currentGoldText.text = inGameManager.inGameGold.ToString();
 
@@ -568,27 +602,22 @@ public class UpgradeMenuUI : MonoBehaviour
         }
     }
 
+    // 업그레이드 UI 닫기
     public void HideUpgradeUI()
     {
         //selectedUI.gameObject.SetActive(false);
 
+        //for(int i = 0; i < frameImage.Length; i++)
+        //{
+        //    frameImage[i].sprite = frameIcon;
+        //}
 
-        if (selectedUnitManager.SelectedUnit is AllyUnit)
-            selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
-
-        for(int i = 0; i < frameImage.Length; i++)
-        {
-            frameImage[i].sprite = frameIcon;
-        }
-
-        upgradePerformBtn.interactable = false;
-
-        
+        //upgradePerformBtn.interactable = false;
 
         gameObject.SetActive(false);
     }
 
-
+    // 업그레이드 유닛 선택 시 프레임 이미지 변경
     public void Select(int index)
     {
         if (upgradeIndex != index)

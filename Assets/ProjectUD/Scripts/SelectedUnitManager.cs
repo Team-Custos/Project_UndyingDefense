@@ -352,7 +352,13 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     public void CancleUpgrade()
     {
         isActivateUpgrade = false;
-        unitSelectUI.HideUpgrdeUI();
+        // 병사승급 UI 닫기 & 선택한 유닛 UI 보여주기
+        if(selectedUnit != null && selectedUnit is AllyUnit)
+        {
+            unitSelectUI.ShowAllyUI(selectedAllyUnit);
+        }
+        unitUpgradeMenuUI.HideUpgradeUI();
+        //unitSelectUI.HideUpgrdeUI();
     }
 
     public void DeSelecteUnit()

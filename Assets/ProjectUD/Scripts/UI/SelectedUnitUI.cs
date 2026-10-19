@@ -150,9 +150,9 @@ public class SelectedUnitUI : MonoBehaviour
 
     }
 
-    public void HideUpgrdeUI()
+    public void HideUpgrdeUI()      // SelectedUnitManager에서 ShowAllyUI 호출하는 것으로 변경.    // 메서드 삭제   
     {
-        upgradeMenuUI.HideUpgradeUI();
+        //upgradeMenuUI.HideUpgradeUI();
         //SoundManager.Instance.playCancleSFX();
         //selecteUnitManger.UpdateUpgradeState(false);
 
@@ -161,7 +161,7 @@ public class SelectedUnitUI : MonoBehaviour
 
     }
 
-    public void OffUpgradeUI()
+    public void OffUpgradeUI()  // 삭제 예정
     {
         unitUpgradeMenuPrefab.SetActive(false);
         //SoundManager.Instance.playCancleSFX();
