@@ -205,9 +205,10 @@ public class EnemyUnitSpawner : MonoBehaviour
 
         inGameManager.SetGold(bonusGold, true);
         ingameScreenUI.SetspawnBtnPriceTextColor();
-        upgradeMenuUI.UpdateUpgradeCostTxt();
-        
-        
+        //upgradeMenuUI.UpdateUpgradeCostTxt();       // 삭제 예정 코드
+        upgradeMenuUI.UpdateCostTxtColor(inGameManager.inGameGold);         // 리팩토링 코드
+
+
     }
 
     public void OnEnemyDead()

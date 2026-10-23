@@ -128,7 +128,8 @@ public class WaveManager : MonoBehaviour
 
             inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
             ingameScreenUI.SetspawnBtnPriceTextColor();
-            upgradeMenuUI.UpdateUpgradeCostTxt();
+            //upgradeMenuUI.UpdateUpgradeCostTxt();               // 삭제 예정 코드_261021
+            upgradeMenuUI.UpdateCostTxtColor(inGameManager.inGameGold);     // 리팩토링 코드
 
 
             isWaveEnd = true;

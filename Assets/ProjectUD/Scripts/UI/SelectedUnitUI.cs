@@ -178,10 +178,10 @@ public class SelectedUnitUI : MonoBehaviour
 
         SoundManager.Instance.PlayUIClickSFX();
         //unitMenuPrefab.SetActive(false);
-        unitUpgradeMenuPrefab.SetActive(true);
+        //unitUpgradeMenuPrefab.SetActive(true);
         //inputEventManager.OnRightClickTarget = this;
         //inputEventManager.OnESCTarget = this;
-        upgradeMenuUI.SetUnitUpgradeMenu(unit);
+        //upgradeMenuUI.SetUnitUpgradeMenu(unit);
         //selecteUnitManger.UpdateUpgradeState(true);
     }
 

@@ -165,7 +165,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
 
 
-    public void ActivateUpgrade()
+    public void ActivateUpgrade()   // 승급 버튼 클릭 이벤트용 메서드
     {
         if(selectedUnit.Data.Tier >= 4)
         {
@@ -179,12 +179,11 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         isActivateUpgrade = true;
 
         // 병사 승급 창 
-        //unitSelectUI.ShowUpgradeMenu(selectedUnit);
+        //unitSelectUI.ShowUpgradeMenu(selectedUnit);             // 삭제할 코드
         if (!inGameManager.IsGameStart)
             return;
-
-        unitUpgradeMenuUI.gameObject.SetActive(true);
-        unitUpgradeMenuUI.SetUnitUpgradeMenu(selectedUnit);
+        float gold = inGameManager.inGameGold;
+        unitUpgradeMenuUI.SetUpgradeUnitMenu(selectedUnit, gold);     // 리팩토링 코드_261021
     }
 
     public void UpgradeSelectedUnit(int index)
@@ -316,6 +315,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         }
     }
 
+    // 단축키 병사 승급 
     public void OnPerformUnitUpgrade(InputAction.CallbackContext context)
     {
         if (context.performed)
