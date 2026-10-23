@@ -8204,7 +8204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c63df4484aa104744b2a13f4b3135adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveDataTable: {fileID: 4900000, guid: c02b96bd1584ed047a0db4a5616e475c, type: 3}
+  waveDataTable: {fileID: 4900000, guid: e8c7040c2c2b77b43bd1c73a02e5c553, type: 3}
   path: UnitData/Enemy
 --- !u!114 &824689423
 MonoBehaviour:
@@ -10267,18 +10267,28 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 415572253}
     - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CancelCurrentOperate
+      value: CancelUnitUpgrade
       objectReference: {fileID: 0}
     - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: InGameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: ALLYUNIT
       objectReference: {fileID: 0}
     - target: {fileID: 8998772556468468371, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}

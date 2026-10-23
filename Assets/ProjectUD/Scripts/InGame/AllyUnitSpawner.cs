@@ -183,10 +183,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, 
         Transform transform, Tile tile, EffectImagePool poolEffectImage, WaveManager waveManager)
     {
-        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this, waveManager);
-        upgradeUnit.Initialize();
         UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
         upgradeUnit.SetUnitStats(unitStats);
+        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this, waveManager);
+        upgradeUnit.Initialize();
 
         upgradeUnit.SetDurationEffectPool(durationEffectPool);
         upgradeUnit.SetInstantEffectPool(instantEffectPool);

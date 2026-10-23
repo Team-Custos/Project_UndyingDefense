@@ -56,13 +56,19 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
     public void Activate(Unit unit, Unit target)
     {
-        coolTimeCheck -= Data.CoolTime;
+        //coolTimeCheck -= Data.CoolTime;
         if (onActivate != null)
         {
             onActivate.Invoke(unit, target);
             PlaySkillSFX();
         }
             
+    }
+
+    public void ResetCoolTime()
+    {
+        // Unit의 ActivateSkillEffect가 아닌 UseSkill에서 쿨타임 초기화(스킬 사용 판정)
+        coolTimeCheck -= Data.CoolTime;
     }
 
     public void Activate(Unit unit, Fortress fortress)

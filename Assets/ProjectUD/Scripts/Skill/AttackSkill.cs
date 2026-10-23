@@ -320,6 +320,9 @@ public class AttackSkill : SkillBase
     // 유닛 대상 투사체 공격
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)
     {
+        if (target == null)
+            return;
+
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
 
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
@@ -367,6 +370,9 @@ public class AttackSkill : SkillBase
 
     public void Attack(Unit unit, Unit target)
     {
+        if (target == null)
+            return;
+
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
@@ -410,17 +416,10 @@ public class AttackSkill : SkillBase
             }
         }
         else
-            Debug.Log(data.Info.Type);
+            Debug.Log($"{data.Info.Type} : 치명타 발생 X");
 
-        
-
-        //Debug.Log(calcCrit);
-
-        //Debug.Log("데미지 : " + calcDamage);
 
         target.TakeDamage(calcDamage, unit);
-
-        //Debug.Log("피해량 : " + calcDamage);
 
         if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
         {

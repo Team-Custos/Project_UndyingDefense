@@ -240,6 +240,11 @@ public abstract class Unit : MonoBehaviour
     {
         ///ActivateSpecialAbility(ActiveType.ALWAYS, null);
     }
+
+    private void Start()
+    {
+        modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
+    }
     public virtual void Initialize()
     {
         if (path == null)
@@ -263,7 +268,10 @@ public abstract class Unit : MonoBehaviour
         attackSpeedMult = 1f;
         atkMult = 1f;
         damageTakenMult = 1f;
-        
+
+        //Debug.Log(modelAnimator.GetFloat("moveAnimationSpeed"));
+        //modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
+        //Debug.Log(modelAnimator.GetFloat("moveAnimationSpeed"));
 
         collider.enabled = true;
         deferredStateDurationCheck = deferredStateDuration;
@@ -384,6 +392,7 @@ public abstract class Unit : MonoBehaviour
 
         modelAnimator.SetBool("isRunning", false);
 
+        skill.ResetCoolTime();  // 스킬 사용 판정
         isSkillEffectAlreadyActivated = false;
 
          if(skill.Data.StartVFX != null)
@@ -1404,10 +1413,15 @@ public abstract class Unit : MonoBehaviour
         stateDuration = duration;
     }
 
+    // 초기화(소환) 시 moveAnimationSpped = unitStats.moveSpeed / 3f;
+
     public void AddMoveSpeedMult(float percent)
     {
         moveSpeedMult += percent * 0.01f;
         navAgent.speed = unitStats.moveSpeed * Mathf.Max(0f, moveSpeedMult);
+
+        // move 애니메이션 배속 설정
+        modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
     }
 
     public void AddMental(int amount)
@@ -1477,14 +1491,8 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(GameObject effectPrefab ,Unit unit, Vector3 pos)
     {
-        if (unit.IsDead)
+        if (unit.IsDead || effectPrefab == null)
             return;
-
-        if(effectPrefab == null)
-        {
-            Debug.Log("effect 없음");
-            return;
-        }
 
 
         DurationEffect prevEffect = effectList.Find(effect => effect.IsSameType(effectPrefab));

@@ -289,7 +289,9 @@ public class AllyUnit : Unit
                     {
                         navAgent.isStopped = false;
                         state = State.RUN;
+                        //modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
                         modelAnimator.SetBool("isRunning", true);
+
                     }
                     else
                     {
@@ -660,6 +662,7 @@ public class AllyUnit : Unit
         modelAnimator.SetBool("isRunning", false);
 
         changeDuration -= Time.deltaTime;
+        currentSkill = null;    // 모드 변경 시 보유 스킬 초기화 => 스킬 선택 단계로 유도
 
         switch (mode)
         {

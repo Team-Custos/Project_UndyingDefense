@@ -360,15 +360,14 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
             if (operateState == OperateState.DEFAULT)
             {
+                // 기본 조작 중 상태 시 적군 유닛이 선택되어 있으면 적군 유닛 선택 취소
                 if (selectedUnitManager.SelectedUnit is EnemyUnit)
                     selectedUnitManager.DeSelecteUnit();
-                else
+                else    // 게임 일시 정지
                 UpdateGameState();
             }
-            else
+            else    // 현재 조작중 상태 취소
                 CancelCurrentOperate();
-
-            Debug.Log(1111);
         }
     }
 
@@ -376,7 +375,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (context.performed)
         {
-                CancelCurrentOperate();
+            CancelCurrentOperate();
         }
     }
 
@@ -419,13 +418,19 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 break;
 
             case OperateState.UPGRADE:
-                selectedUnitManager.CancleUpgrade();
-                if(nextState != OperateState.ALLYUNIT)
+                //selectedUnitManager.CancleUpgrade();
+                CancelUnitUpgrade();
+                if (nextState != OperateState.ALLYUNIT)
                     selectedUnitManager.DeSelecteUnit();
                 break;
         }
 
         operateState = nextState;
+    }
+
+    public void CancelUnitUpgrade() // UnityEvent에서 호출하기 위해 따로 만듦.
+    {
+        selectedUnitManager.CancleUpgrade();
     }
 
     public void CancelCurrentOperate()
@@ -437,8 +442,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
         else
         {
-            OperateState cancelState = GetCancelState();
-            CancelOperateState(cancelState);
+            OperateState nextState = GetCancelState();
+            CancelOperateState(nextState);
         }
     }
 

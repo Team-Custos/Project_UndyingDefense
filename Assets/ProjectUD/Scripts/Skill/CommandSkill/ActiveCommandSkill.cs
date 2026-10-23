@@ -232,20 +232,29 @@ public class ActiveCommandSkill : CommandSkill//ayo_0117
             //Debug.Log($"치명타 율 : {calcCrit}");
         }
 
-        if (Random.Range(0f, 1f) <= calcCrit)
+        // 베기, 찌르기, 때리기 경우에만 치명타 계산
+        if (data.AttackData.Type == AttackType.SLASH ||
+            data.AttackData.Type == AttackType.PIERCE ||
+            data.AttackData.Type == AttackType.CRUSH)
         {
-            AddCritVFX(target);
-            AddCritSFX(target.transform.position);
-            ActivateCriticalEffect(target);
-            Debug.Log("적용");
+            if (Random.Range(0f, 1f) <= calcCrit)
+            {
+                AddCritVFX(target);
+                AddCritSFX(target.transform.position);
+                ActivateCriticalEffect(target);
+                Debug.Log("적용");
+            }
+            else
+            {
+                Debug.Log("미적용");
+                AddHitVFX(target);
+                AddHitSFX(target.transform.position);
+            }
         }
         else
-        {
-            Debug.Log("미적용");
-            AddHitVFX(target);
-            AddHitSFX(target.transform.position);
-        }
+            Debug.Log($"{data.AttackData.Type} : 치명타 발생 X");
 
+        
         target.TakeDamage(calcDamage, null);
 
     }
