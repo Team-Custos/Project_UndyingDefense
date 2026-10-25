@@ -331,7 +331,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                     //selectedUnitUI.UpdateUnitInfo(unit);
                     selectedUnitInfoPanel.UpdateUnitInfo(unit);
 
-                    selectedUnitUI.ShowHp(unit);
+                    //selectedUnitUI.ShowHp(unit);    // 삭제 예정_261025
+                    selectedUnitUI.Show(unit);
                     inputEventManager.OnClickTarget = selectedUnitManager;
                 }
 

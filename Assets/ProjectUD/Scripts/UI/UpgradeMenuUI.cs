@@ -25,10 +25,13 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
         {
             if (i < selectedUnitData.UpgradeUnits.Length)
             {
-                upgradeUnitPanels[i].gameObject.SetActive(true);
                 // 업글가능 유닛데이터에서 유닛을 가져와서 패널에 세팅
                 AllyUnitData upgradeUnitData = selectedUnitData.UpgradeUnits[i] as AllyUnitData;
-                UnitStats upgradeUnitStats = unitDataLoader.GetUnitDataById(upgradeUnitData.Id);
+                UnitStats upgradeUnitStats = 
+                    upgradeUnitData != null ? unitDataLoader.GetUnitDataById(upgradeUnitData.Id) : null;
+                bool valid = upgradeUnitStats != null;
+                upgradeUnitPanels[i].gameObject.SetActive(valid);
+                if (!valid) { Debug.LogWarning($"승급 데이터 없음: index {i}", this); continue; }
                 upgradeUnitPanels[i].SetUpgradeUnitPanel(upgradeUnitData, upgradeUnitStats,  i, selectedUnit.UnitStats.maxHp, gold);
             }
             else

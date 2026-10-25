@@ -113,7 +113,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
                     //unitSelectUI.UpdateUnitInfo(unit);
                     selectedUnitInfoPanel.UpdateUnitInfo(unit);
-                    unitSelectUI.ShowHp(unit);
+                    //unitSelectUI.ShowHp(unit);    // 삭제 261025
+                    unitSelectUI.Show(unit);
                     //inputEventManager.OnClickTarget = this;
                 }
                 else if (hit.collider.CompareTag("Tile")) // 타일 클릭
@@ -365,11 +366,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     {
         if (selectedUnit != null)
         {
+            //ayo _261025
+            selectedUnit.OnHpChanged -= unitSelectUI.SetHp;
+            selectedUnit.OnDead -= HandleSelectedUnitDead;
+
             selectedUnit.IsSelected = false;
             selectedUnit.SetSelectedUnitUI(null);
             selectedUnit.SetSelectedUnitManager(null);
             selectedUnit.SetSelectedUnitInfoPanel(null);
-            unitSelectUI.HideHp();
+            //unitSelectUI.HideHp();    // 삭제 261025
+            unitSelectUI.Hide();
             //unitSelectUI.HideUnitInfo();
             selectedUnitInfoPanel.HideUnitInfo();
             selectedUnit = null;
@@ -380,7 +386,14 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
     public void SetSelectedUnit(Unit unit)
     {
-        selectedUnit = unit;
+        // ayo _ 261025
+        if (selectedUnit != null && selectedUnit != unit)   // 대입 전 구독 해제
+        {
+            selectedUnit.OnHpChanged -= unitSelectUI.SetHp;
+            selectedUnit.OnDead -= HandleSelectedUnitDead;
+        }
+
+        selectedUnit = unit;                                // 유닛 대입하고
         selectedUnit.IsSelected = true;
         selectedUnit.SetSelectedUnitUI(unitSelectUI);
         selectedUnit.SetSelectedUnitManager(this);
@@ -390,5 +403,19 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             selectedAllyUnit = (AllyUnit)selectedUnit;
         else
             selectedAllyUnit = null;
+
+        selectedUnit.OnHpChanged += unitSelectUI.SetHp;     // 구독은 마지막에
+        selectedUnit.OnDead += HandleSelectedUnitDead;
+    }
+
+    private void HandleSelectedUnitDead(Unit unit)
+    {
+        Debug.Log($"[Dead] {unit.name} / selected: {(selectedUnit != null ? selectedUnit.name : "null")}", unit);
+
+        if (unit != selectedUnit)
+            return;
+
+        CancleUpgrade();      // 기존 Die()에서 하던 것 그대로
+        DeSelecteUnit();
     }
 }

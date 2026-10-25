@@ -38,6 +38,14 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private float upgradeXpos;
     [SerializeField] private float menuYpos;
 
+    [SerializeField] private GameObject typeInfo;
+
+    [SerializeField] private GameObject allyUnitUI;
+    [SerializeField] private GameObject enemyUnitUI;
+
+    //--ayo 추가
+    private Unit target;
+
     //[Header("NameTextTable")]
     //[SerializeField] private FactionNameTextTable fNameTextTable;
 
@@ -68,10 +76,6 @@ public class SelectedUnitUI : MonoBehaviour
     //[SerializeField] private StatusUI[] unitStateUIs;
     //[SerializeField] private GameObject unitStatePanel;
     //--------------------------------
-    [SerializeField] private GameObject typeInfo;
-
-    [SerializeField] private GameObject allyUnitUI;
-    [SerializeField] private GameObject enemyUnitUI;
 
     //[Header("======= SkillInfo =======")]
 
@@ -104,36 +108,157 @@ public class SelectedUnitUI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    //void Update()
+    //{
+        //if (selecteUnitManger.SelectedUnit != null)
+        //{
+        //    UpdateUnitUI();
+
+        //    if (selecteUnitManger.SelectedUnit.HpPercent <= 0)
+        //        return;
+
+        //    if (selecteUnitManger.SelectedUnit is AllyUnit)
+        //    {
+        //        allyUnitUI.SetActive(true);
+        //        allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+        //        enemyUnitUI.SetActive(false);
+        //    }
+        //    else if (selecteUnitManger.SelectedUnit is EnemyUnit)
+        //    {
+        //        enemyUnitUI.SetActive(true);
+        //        enemyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+        //        allyUnitUI.SetActive(false);
+        //    }
+        //}
+    //}
+
+    //--리팩토링 261025
+
+    private void LateUpdate()
     {
-        if (selecteUnitManger.SelectedUnit != null)
-        {
-            UpdateUI();
+        if (target == null || target.IsDead)
+            return;
 
-            if (selecteUnitManger.SelectedUnit.HpPercent <= 0)
-                return;
-
-            if (selecteUnitManger.SelectedUnit is AllyUnit)
-            {
-                allyUnitUI.SetActive(true);
-                allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
-                enemyUnitUI.SetActive(false);
-            }
-            else if (selecteUnitManger.SelectedUnit is EnemyUnit)
-            {
-                enemyUnitUI.SetActive(true);
-                enemyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
-                allyUnitUI.SetActive(false);
-            }
-        }
+        UpdateUnitUIPosition();   // 위치 갱신만
     }
 
+    private void UpdateUnitUIPosition()
+    {
+        // 체력바 위치 (기존 UpdateUnitUI의 unitHPPrefab 부분)
+        Vector3 hpWorldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
+        unitHPPrefab.transform.position = mainCamera.WorldToScreenPoint(hpWorldPos);
+
+        // 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
+        float currentFov = framingTransposer.m_CameraDistance;
+        float zoomPercent = (currentFov - ingameCamManager.ZoomMin)
+                          / (ingameCamManager.ZoomMax - ingameCamManager.ZoomMin);
+        float menuY = Mathf.Lerp(2.0f, 3.0f, zoomPercent);   // 기존 menuYpos를 지역 변수로
+
+        Vector3 menuWorldPos = target.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercent * menuY);
+        unitMenuPrefab.transform.position = mainCamera.WorldToScreenPoint(menuWorldPos);
+
+        // 아군/적군 UI 위치 (기존 Update에 있던 부분)
+        if (target is AllyUnit)
+            allyUnitUI.transform.position = target.transform.position;
+        else
+            enemyUnitUI.transform.position = target.transform.position;
+    }
+
+    // Manager가 선택/해제할 때 호출
+    public void Show(Unit unit)
+    {
+        if (unit == null)
+            return;
+
+        target = unit;
+
+        bool isAlly = unit is AllyUnit;
+        allyUnitUI.SetActive(isAlly);
+        enemyUnitUI.SetActive(!isAlly);
+
+        HideUnitDuration();
+        unitHPPrefab.SetActive(true);
+        SetHp(unit.HpPercent);
+    }
+
+    public void Hide()
+    {
+        target = null;
+
+        allyUnitUI.SetActive(false);
+        enemyUnitUI.SetActive(false);
+        unitHPPrefab.SetActive(false);
+        typeInfo.SetActive(false);
+
+
+    }
+
+    // HP (체력이 바뀔 때만 호출)
+    public void SetHp(float percent) => unitHP.fillAmount = percent;
+
+    
+    public void ShowAllyUI(AllyUnit allyUnit)   // 유닛UI를 보여주는 것
+    {
+        //if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
+        //{
+        //    Debug.Log("선택된 유닛 없음");
+        //    return;
+        //}
+
+        //allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
+
+        //if(allyUnit.ModeType == AllyUnit.Mode.FREE)
+        //{
+        //    modeChangeBtnImage.sprite = siegeIcon;
+        //}
+        //else if(allyUnit.ModeType == AllyUnit.Mode.SEIGE)
+        //{
+        //    modeChangeBtnImage.sprite = freeIcon;
+        //}
+        //if (allyUnit.Data.Tier >= 4)
+        //    upgradeBtn.interactable = false;
+        //else
+        //    upgradeBtn.interactable = true;
+
+        if (allyUnit == null)
+            return;
+
+        modeChangeBtnImage.sprite = allyUnit.ModeType == AllyUnit.Mode.FREE ? siegeIcon : freeIcon;
+        upgradeBtn.interactable = allyUnit.Data.Tier < 4;
+
+
+        unitMenuPrefab.SetActive(true);
+    }
+
+    public void HideAllyUI()   // 알리 유닛 UI를 숨기는 것
+    {
+        unitMenuPrefab.SetActive(false);
+        SoundManager.Instance.PlayUIClickSFX();
+        //selectedUnit = null;
+        //selecteUnitManger.CancleUpgrade();
+    }
+
+    public void ShowUnitDuration(float durtiaon)
+    {
+        unitDurationPrefab.SetActive(true);
+
+        unitDuration.fillAmount = durtiaon;
+    }
+
+    public void HideUnitDuration()
+    {
+        unitDurationPrefab.SetActive(false);
+        unitDuration.fillAmount = 0f;
+    }
+
+    //261025 리팩토링 전 코드
+    //-- 기존 -- 삭제 예정-------------------------------------------------------------
     public void ShowHp(Unit unit)
     {
         HideUnitDuration();
-        unit = selecteUnitManger.SelectedUnit; 
+        unit = selecteUnitManger.SelectedUnit;
         unitHPPrefab.SetActive(true);
-        
+
     }
 
     public void HideHp()
@@ -150,13 +275,13 @@ public class SelectedUnitUI : MonoBehaviour
 
     }
 
-    public void HideUpgrdeUI()      // SelectedUnitManager에서 ShowAllyUI 호출하는 것으로 변경.    // 메서드 삭제   
+    public void HideUpgrdeUI()      // 삭제 예정 // SelectedUnitManager에서 ShowAllyUI 호출하는 것으로 변경.      
     {
         //upgradeMenuUI.HideUpgradeUI();
         //SoundManager.Instance.playCancleSFX();
         //selecteUnitManger.UpdateUpgradeState(false);
 
-        if(selecteUnitManger.SelectedUnit is AllyUnit)
+        if (selecteUnitManger.SelectedUnit is AllyUnit)
             ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
 
     }
@@ -168,7 +293,7 @@ public class SelectedUnitUI : MonoBehaviour
         selecteUnitManger.CancleUpgrade();
     }
 
-    public void ShowUpgradeMenu(Unit unit)      // SelectUnitManager에서 전달해주는 것이 좋을지도? 안되는 건 아님..근데 참조를 줄이기 위해서.
+    public void ShowUpgradeMenu(Unit unit)      // 삭제 예정 // SelectUnitManager에서 전달해주는 것이 좋을지도? 안되는 건 아님..근데 참조를 줄이기 위해서.
     {
         if (unit.Data.Tier >= 4)
             return;
@@ -185,43 +310,8 @@ public class SelectedUnitUI : MonoBehaviour
         //selecteUnitManger.UpdateUpgradeState(true);
     }
 
-    public void ShowAllyUI(AllyUnit allyUnit)   // 유닛UI를 보여주는 것
-    {
-        if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
-        {
-            Debug.Log("선택된 유닛 없음");
-            return;
-        }
 
-        allyUnit = (AllyUnit)selecteUnitManger.SelectedUnit;
-        
-
-        if(allyUnit.ModeType == AllyUnit.Mode.FREE)
-        {
-            modeChangeBtnImage.sprite = siegeIcon;
-        }
-        else if(allyUnit.ModeType == AllyUnit.Mode.SEIGE)
-        {
-            modeChangeBtnImage.sprite = freeIcon;
-        }
-
-        if (allyUnit.Data.Tier >= 4)
-            upgradeBtn.interactable = false;
-        else
-            upgradeBtn.interactable = true;
-
-        unitMenuPrefab.SetActive(true);
-    }
-
-    public void HideAllyUI()   // 알리 유닛 UI를 숨기는 것
-    {
-        unitMenuPrefab.SetActive(false);
-        SoundManager.Instance.PlayUIClickSFX();
-        //selectedUnit = null;
-        //selecteUnitManger.CancleUpgrade();
-    }
-
-    private void UpdateUI()
+    private void UpdateUnitUI()     // 삭제 예정 // LateUpdate에서 위치 갱신만 하도록 변경. 기능 분리.
     {
         if(selecteUnitManger.SelectedUnit != null)
         {
@@ -516,18 +606,6 @@ public class SelectedUnitUI : MonoBehaviour
     //}
 
 
-    public void ShowUnitDurtion(float durtiaon)
-    {
-        unitDurationPrefab.SetActive(true);
-
-        unitDuration.fillAmount = durtiaon;
-    }
-
-    public void HideUnitDuration()
-    {
-        unitDurationPrefab.SetActive(false);
-        unitDuration.fillAmount = 0f;
-    }
 
     //// 선택 대상 정보 창
     //private void UpdateSkillInfo(UnitData unitData)

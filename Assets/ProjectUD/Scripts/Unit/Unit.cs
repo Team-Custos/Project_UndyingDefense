@@ -1,9 +1,11 @@
+using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
-using AYellowpaper.SerializedCollections;
+using AttackType = AttackData.AttackType;
+using Random = UnityEngine.Random;      // 이벤트 구독을 위해 System을 추가하면서 Random에 대한 명시 추가_ayo 261025
 
 public abstract class Unit : MonoBehaviour
 {
@@ -162,7 +164,11 @@ public abstract class Unit : MonoBehaviour
 
     protected static GameObject unitDeathVFX;
 
+    //---인게임 UI_hp바 관련 이벤트
+    public event Action<float> OnHpChanged;   // 피격·회복 시 HpPercent 전달
+    public event Action<Unit> OnDead;
 
+    
 
     protected static AudioClip[] SlashHitSFX
     {
@@ -337,7 +343,8 @@ public abstract class Unit : MonoBehaviour
             navAgent.speed = unitStats.moveSpeed;
             //navAgent.stoppingDistance = 1.0f;
 
-
+            // ayo_261025 이벤트 추가
+            OnHpChanged?.Invoke(HpPercent);     // 승급 등으로 스탯이 바뀔 때
         }
         else
             Debug.Log("데이터 없음");
@@ -1307,6 +1314,9 @@ public abstract class Unit : MonoBehaviour
         hp -= Damage;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
+        // ayo_261025 이벤트 추가
+        OnHpChanged?.Invoke(HpPercent);
+
         // ex) 자폭
         ActivateSpecialAbility(ActiveType.HP, null);
 
@@ -1337,6 +1347,9 @@ public abstract class Unit : MonoBehaviour
     {
         hp += amount;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
+
+        // ayo_261025 이벤트 추가
+        OnHpChanged?.Invoke(HpPercent);
 
 
         //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
@@ -1371,23 +1384,25 @@ public abstract class Unit : MonoBehaviour
         //modelAnimator.SetTrigger("Die");
 
 
-        if (selectedUnitUI != null)
-        {
-            // ui 제거
-            selectedUnitUI.HideHp();
-            selectedUnitUI.HideAllyUI();
-            //selectedUnitUI.HideUpgrdeUI();
-            selectedUnitManager.CancleUpgrade();
-            //selectedUnitUI.HideUnitInfo();
-            selectedUnitInfoPanel.HideUnitInfo();
-        }
+        // ayo _ 261025 SelectedUnitManager 리팩토링으로 주석처리
+        //if (selectedUnitUI != null)
+        //{
+        //    // ui 제거
+        //    //selectedUnitUI.HideHp();  // 삭제 _261025
+        //    selectedUnitUI.Hide();
+        //    selectedUnitUI.HideAllyUI();
+        //    //selectedUnitUI.HideUpgrdeUI();
+        //    selectedUnitManager.CancleUpgrade();
+        //    //selectedUnitUI.HideUnitInfo();
+        //    selectedUnitInfoPanel.HideUnitInfo();
+        //}
 
-        if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
-        {
-            selectedUnitManager.DeSelecteUnit();
-        }
+        //if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
+        //{
+        //    selectedUnitManager.DeSelecteUnit();
+        //}
+        OnDead?.Invoke(this);   // ayo_261025
 
-        
     }
 
 

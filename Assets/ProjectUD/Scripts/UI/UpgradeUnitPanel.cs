@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -52,9 +53,9 @@ public class UpgradeUnitPanel : MonoBehaviour
     // UpgradeMenuUI에서 호출할 함수용으로 만들기
     public void SetUpgradeUnitPanel(UnitData _upgradeUnitData, UnitStats upgradeUnitStats, int index, float selectedUnitMaxHp, float gold)
     {
-        if (_upgradeUnitData is EnemyUnitData)
+        if (!(_upgradeUnitData is AllyUnitData allyData))
             return;
-
+        /*
         AllyUnitData upgradeUnitData = (AllyUnitData)_upgradeUnitData;
 
         Debug.Log($"unitImage null? {unitImage == null} / Data null? {upgradeUnitData == null}", this);
@@ -91,8 +92,17 @@ public class UpgradeUnitPanel : MonoBehaviour
         }
 
         //---skill attack type icon---  // unitData>SkillData>AttackSkillData로 캐스팅 필요
-        AttackSkillData gSkillData = upgradeUnitData.GeneralSkill as AttackSkillData;
-        generalSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
+        if(upgradeUnitData.GeneralSkill is AttackSkillData)
+        {
+            AttackSkillData gSkillData = upgradeUnitData.GeneralSkill as AttackSkillData;
+            generalSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
+            generalSkillAttackTypeIcon.gameObject.SetActive(true);
+        }
+        else
+        {
+            generalSkillAttackTypeIcon.gameObject.SetActive(false);
+            generalSkillAttackTypeIcon.sprite = null;
+        }
         // specialSkillData가 AttackSkillData인지 확인 후 캐스팅 ( attack 이외에 다른 스킬인 경우가 있음 )
         if(upgradeUnitData.SpecialSkill is AttackSkillData)
         {
@@ -120,7 +130,72 @@ public class UpgradeUnitPanel : MonoBehaviour
         upgradeCostTxt.text = cost.ToString();
 
         UpdateCostTextColorAndPerformBtn(gold);
+        */
 
+        SetBasicInfo(allyData);
+        SetStats(upgradeUnitStats, selectedUnitMaxHp);
+        SetSkillIcons(allyData);
+        SetTier(allyData.Tier);
+        SetCost(allyData.Cost, gold);
+    }
+    //---unit image / name / dfType---
+    private void SetBasicInfo(AllyUnitData data)
+    {
+        unitImage.sprite = data.Icon;
+        FieldNameLocalization(data, unitNameText);
+
+        string dfTypeId = fNameTextTable.GetName(data.ArmorType.ToString());
+        unitDfTypeText.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("CommonUI", dfTypeId, LocalizationSettings.SelectedLocale);
+        unitDfTypeImage.sprite = data.DfTypeIcon;
+    }
+
+    //---stats---
+    private void SetStats(UnitStats stats, float selectedUnitMaxHp)
+    {
+        hpValue.text = $"{stats.maxHp} (+ {stats.maxHp - selectedUnitMaxHp})";
+        mentalValue.text = stats.mental.ToString();
+        attackRangeValue.text = stats.attackRange.ToString();
+    }
+
+    //---skill / ability icons---
+    private void SetSkillIcons(AllyUnitData data)
+    {
+        generalSkillImage.sprite = data.GeneralSkill.Icon;
+        specialSkillImage.sprite = data.SpecialSkill.Icon;
+
+        SetIconOrHide(abilityImage, data.SpecialAbility != null ? data.SpecialAbility.Icon : null);
+        SetIconOrHide(generalSkillAttackTypeIcon, GetAttackTypeIcon(data.GeneralSkill));
+        SetIconOrHide(specialSkillAttackTypeIcon, GetAttackTypeIcon(data.SpecialSkill));
+    }
+
+    //---tier---
+    private void SetTier(int tier)
+    {
+        for (int i = 0; i < unitTierImage.Length; i++)
+            unitTierImage[i].gameObject.SetActive(i < tier);
+    }
+
+    //---cost---
+    private void SetCost(float unitCost, float gold)
+    {
+        cost = unitCost;
+        upgradeCostTxt.text = cost.ToString();
+        UpdateCostTextColorAndPerformBtn(gold);
+    }
+
+    //---helpers---
+    // 공격형 스킬이면 공격타입 아이콘, 아니면 null
+    private Sprite GetAttackTypeIcon(SkillData skill)
+    {
+        return skill is AttackSkillData attackSkill ? attackSkill.Info.TypeIcon : null;
+    }
+
+    // 스프라이트가 있으면 넣고 켜고, 없으면 비우고 끔
+    private void SetIconOrHide(Image image, Sprite sprite)
+    {
+        image.sprite = sprite;
+        image.gameObject.SetActive(sprite != null);
     }
 
     // 골드에 따라 승급버튼 활성화 여부와 골드 텍스트 색상 변경
