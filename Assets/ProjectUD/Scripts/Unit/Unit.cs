@@ -151,9 +151,13 @@ public abstract class Unit : MonoBehaviour
         set => isSelected = value;
     }
 
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026
+    //------------------------------
     protected SelectedUnitUI selectedUnitUI;
     protected SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
-    protected SelectedUnitManager selectedUnitManager;
+    protected SelectedUnitManager selectedUnitManager;       // 매니저 하나를 이용해서 SelectedUnitUI, infoPanel 에게 명령을 내리는 것으로 변경
+                                                             // 유닛은 매니저 하나만 참조를 가질 것
 
     protected static AudioClip[] slashHitSFX;
     protected static AudioClip slashCritSFX;
@@ -164,7 +168,11 @@ public abstract class Unit : MonoBehaviour
 
     protected static GameObject unitDeathVFX;
 
-    //---인게임 UI_hp바 관련 이벤트
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026
+    //------------------------------
+    //---인게임 UI_hp바 관련 이벤트      // 굳이 이벤트를 써야하나 > 변해야하는 내용이 없기 때문에 이벤트를 써야할 이유는 없음.
+    // 변하지 않는 기능 -> 클래스 참조를 가져와서 기능을 따로 실행하는 것이 좋음. 
     public event Action<float> OnHpChanged;   // 피격·회복 시 HpPercent 전달
     public event Action<Unit> OnDead;
 
@@ -1337,7 +1345,8 @@ public abstract class Unit : MonoBehaviour
 
         if (selectedUnitInfoPanel != null)
         {
-            selectedUnitInfoPanel.UpdateHPUI(this);
+            //selectedUnitInfoPanel.UpdateHPUI(this);
+            selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);        // ayo 수정 _261026
         }
     }
 
@@ -1359,7 +1368,8 @@ public abstract class Unit : MonoBehaviour
 
         if (selectedUnitInfoPanel != null)
         {
-            selectedUnitInfoPanel.UpdateHPUI(this);
+            //selectedUnitInfoPanel.UpdateHPUI(this);
+            selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);    // ayo 수정 _261026
         }
     }
 

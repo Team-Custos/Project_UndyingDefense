@@ -120,6 +120,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
 
         ingameScreenUI.UpdateGoldTextUI(inGameGold);
+        // 골드가 바뀌면서 바뀌어야
 
     }
 

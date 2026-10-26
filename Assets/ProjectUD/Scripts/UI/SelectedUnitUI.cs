@@ -164,7 +164,7 @@ public class SelectedUnitUI : MonoBehaviour
             enemyUnitUI.transform.position = target.transform.position;
     }
 
-    // Manager가 선택/해제할 때 호출
+    // Manager가 선택/해제할 때 호출 // 유닛을 판단해와서 따로 UI보여주기 (Ally 인지 Enemy인지)=> SelectedUnitManager 가 판단
     public void Show(Unit unit)
     {
         if (unit == null)
@@ -190,7 +190,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitHPPrefab.SetActive(false);
         typeInfo.SetActive(false);
 
-
+        
     }
 
     // HP (체력이 바뀔 때만 호출)

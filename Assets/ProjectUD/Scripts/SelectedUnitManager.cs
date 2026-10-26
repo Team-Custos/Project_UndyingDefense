@@ -165,7 +165,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     }
 
 
-
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026 _ 병사 승급 비용 관련 진행중
+    //------------------------------
     public void ActivateUpgrade()   // 승급 버튼 클릭 이벤트용 메서드
     {
         if(selectedUnit.Data.Tier >= 4)
@@ -184,7 +186,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         if (!inGameManager.IsGameStart)
             return;
         float gold = inGameManager.inGameGold;
-        unitUpgradeMenuUI.SetUpgradeUnitMenu(selectedUnit, gold);     // 리팩토링 코드_261021
+        unitUpgradeMenuUI.SetUpgradeUnitMenu(selectedUnit, gold);     // 리팩토링 코드_261021 // 골드 안넘겨주기
+        // 여기서 계산
+        AllyUnitData data = selectedUnit.Data as AllyUnitData;
+        UnitData[] upgradeUnitdatas = data.UpgradeUnits;
+        for(int i = 0; i < upgradeUnitdatas.Length; i++)
+        {
+            AllyUnitData upgradeUnitData = upgradeUnitdatas[i] as AllyUnitData;
+            float cost = upgradeUnitData.Cost;
+            //unitUpgradeMenuUI.UpdateCostTxtColor(gold > cost);    // 인덱스 포함
+        }
     }
 
     public void UpgradeSelectedUnit(int index)
@@ -362,6 +373,11 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         //unitSelectUI.HideUpgrdeUI();
     }
 
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026
+    //
+    // >> 이벤트 구독해제가 아니라 hp가 바뀌면-> SelectedUnitManager에서 UI에 일어나야할 일들을 모아서 명령
+    //------------------------------
     public void DeSelecteUnit()
     {
         if (selectedUnit != null)

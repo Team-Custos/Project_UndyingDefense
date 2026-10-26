@@ -14,7 +14,7 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
     private Unit selectedUnit;
 
     // 선택된 유닛의 업그레이드 가능한 유닛들의 정보를 전달하는 메서드
-    public void SetUpgradeUnitMenu(Unit selectedUnit, float gold)
+    public void SetUpgradeUnitMenu(Unit selectedUnit, float gold)       // 골드 받아올 필요 없음 매개변수 수정하기
     {
         if (selectedUnit is EnemyUnit)
             return;
@@ -41,7 +41,15 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
         }
     }
 
-    public void UpdateCostTxtColor(float gold)
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026 _ 진행중
+    //------------------------------
+    public void UpdateCostTxtColor(int index, bool canUpgrade)      // 인덱스, 논리값
+    {
+        upgradeUnitPanels[index].UpdateCostTextColorAndPerformBtn(canUpgrade);
+    }
+
+    public void UpdateCostTxtColor(float gold)      // 여기를 논리값으로 변경 // 이름을 컬러가아니라 UpdateCost로   // 몇번째 승급창의 것을 바꿀것인지
     {
         for (int i = 0; i < upgradeUnitPanels.Length; i++)
         {

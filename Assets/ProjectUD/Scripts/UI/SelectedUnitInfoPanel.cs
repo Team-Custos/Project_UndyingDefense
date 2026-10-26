@@ -65,7 +65,7 @@ public class SelectedUnitInfoPanel : MonoBehaviour
     // 선택 대상 정보 창
     public void UpdateUnitInfoByBtn(UnitData unitData, UnitStats stats) //, UnitDataLoader unitDataLoader)   // 데이터로더 말고 유닛스탯을 매개변수로 받아서 처리하도록 수정 필요_261014
     {
-        Unit unit = unitData.Prefab.GetComponent<Unit>();
+        //Unit unit = unitData.Prefab.GetComponent<Unit>();
 
         //UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
 
@@ -156,7 +156,7 @@ public class SelectedUnitInfoPanel : MonoBehaviour
             return;
         }
 
-        UpdateHPUI(unit);
+        UpdateHPUI(unit.Hp, unit.Maxhp);
         unitImage.sprite = unit.Data.Icon;
         //unitNameText.text = unit.UnitStats.unitName;
         //--Localization
@@ -205,14 +205,16 @@ public class SelectedUnitInfoPanel : MonoBehaviour
         }
     }
 
-    // 선택 대상 정보 창
-    public void UpdateHPUI(Unit unit)
+    // 선택 대상 정보 창           // _ 유닛이 아니라 float로 받아오기
+    public void UpdateHPUI(float hp, float maxHp)//(Unit unit)
     {
-        if (unit != null)
-        {
-            unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";
-            unitHPImage.fillAmount = unit.HpPercent;
-        }
+        //if (unit != null)
+        //{
+        //    unitHPText.text = $"{unit.Hp} / {unit.Maxhp}";  
+        //    unitHPImage.fillAmount = unit.HpPercent;    // unit의 HpPercent 존재.
+        //}
+        unitHPText.text = $"{hp} / {maxHp}";
+        unitHPImage.fillAmount = hp / maxHp;
     }
 
 

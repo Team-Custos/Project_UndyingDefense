@@ -198,8 +198,11 @@ public class UpgradeUnitPanel : MonoBehaviour
         image.gameObject.SetActive(sprite != null);
     }
 
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026 _ 진행중
+    //------------------------------
     // 골드에 따라 승급버튼 활성화 여부와 골드 텍스트 색상 변경
-    public void UpdateCostTextColorAndPerformBtn(float gold)
+    public void UpdateCostTextColorAndPerformBtn(float gold)    // 논리값으로 받아오기 // SelectedUnitManager가 판단해서 
     {
         if (gold < cost)
         {
@@ -210,6 +213,20 @@ public class UpgradeUnitPanel : MonoBehaviour
         {
             upgradePerformBtn.interactable = true;
             upgradeCostTxt.color = Color.white;
+        }
+    }
+
+    public void UpdateCostTextColorAndPerformBtn(bool canUpgrade)    // 논리값용
+    {
+        if (canUpgrade)
+        {
+            upgradePerformBtn.interactable = true;
+            upgradeCostTxt.color = Color.white;
+        }
+        else
+        {
+            upgradePerformBtn.interactable = false;
+            upgradeCostTxt.color = Color.red;
         }
     }
 }
