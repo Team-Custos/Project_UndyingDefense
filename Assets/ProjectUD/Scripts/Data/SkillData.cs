@@ -19,6 +19,11 @@ public class SkillData : ScriptableObject
     [SerializeField] private AudioClip startSFX;       // 스킬 사용 시 재생 될 SFX 
 
 
+    [Header("■ Effect")]
+    [SerializeField] protected GameObject effectPrefab;     // 스킬 적용 시 함께 적용 될 상태
+    [SerializeField] protected float addEffectPercent;      // 상태 적용 확률
+
+
     public string Name => name;
     public float CoolTime => coolTime;
     public TargetType TargetType => targetType;
@@ -31,4 +36,7 @@ public class SkillData : ScriptableObject
     public float ActivateTime => activateTime;
     public GameObject StartVFX => startVFX;
     public AudioClip StartSFX => startSFX;
+
+    public GameObject EffectPrefab => effectPrefab;
+    public float AddEffectPercent => addEffectPercent;
 }

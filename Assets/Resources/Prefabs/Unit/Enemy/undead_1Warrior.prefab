@@ -43,7 +43,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 2c7c1f72901c5e54287c9c4888fa23b4, type: 2}
+      objectReference: {fileID: 9100000, guid: d349cf6df9d866f4fa7d647fb49b7b4a, type: 2}
     - target: {fileID: 4731504696940483504, guid: 90fd6c1274949134690c92770f7888c3,
         type: 3}
       propertyPath: m_Name
@@ -528,9 +528,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
+      propertyPath: generalSkill
+      value: 
+      objectReference: {fileID: 1973000953552324588}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
       propertyPath: healStateSFX
       value: 
       objectReference: {fileID: 8300000, guid: 0f07450558bbe564f9ae5f5b6a40029a, type: 3}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: specialSkill
+      value: 
+      objectReference: {fileID: 2954443426592968354}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: modelAnimator
@@ -697,6 +707,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d70021f8d587be46ab44a9c50c3fa64, type: 3}
+--- !u!114 &2954443426592968354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6005588856818494454, guid: 7d70021f8d587be46ab44a9c50c3fa64,
+    type: 3}
+  m_PrefabInstance: {fileID: 8815912387882919252}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022dc3484a117af40b2cdc1cca3a9a2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4146956654731476908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4887701372474759928, guid: 7d70021f8d587be46ab44a9c50c3fa64,

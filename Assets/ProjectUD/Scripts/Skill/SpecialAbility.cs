@@ -57,7 +57,7 @@ public class SpecialAbility : MonoBehaviour
             Debug.Log("자폭 미발동");
             return;
         }
-            
+
 
         if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp >= 0f)
         {
@@ -100,7 +100,7 @@ public class SpecialAbility : MonoBehaviour
     }
 
     // 원한
-    public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)   
+    public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)
     {
         float randomValue = Random.value; // 0 ~1 사이의 랜덤 값 생성 ex) 0.01, 0.3 0.9
 
@@ -187,5 +187,23 @@ public class SpecialAbility : MonoBehaviour
             return;
 
         auraVFX.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
-    }    
+    }
+
+    // 저주 효과 해제
+    public void ClearCurseEffect(Unit unit, Unit target)
+    {
+        //if(target == this)
+        //    targetUnit.RemoveCurse();
+        //else
+        //{
+
+        //}
+    }
+
+    public void SpawnEnemyUnit(EnemyUnit enemyUnit, Unit target, EnemyUnitData[] enemyDatas)
+    {
+        int randomIndex = Random.Range(0, enemyDatas.Length);
+
+        enemyUnit.EnemySpawner.SpawnEnemy(enemyDatas[randomIndex], target.transform.position);
+    }
 }

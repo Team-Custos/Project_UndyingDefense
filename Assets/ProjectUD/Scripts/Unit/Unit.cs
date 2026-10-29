@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
 using AYellowpaper.SerializedCollections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -115,6 +116,8 @@ public abstract class Unit : MonoBehaviour
     [SerializedDictionary("State", "Animation Clips")]
     public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
 
+    public static event System.Action<Unit> onGetCureseEffect;
+
     public Transform EffectParent => effectParent;
 
     public abstract UnitData Data { get; }
@@ -136,7 +139,6 @@ public abstract class Unit : MonoBehaviour
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
     public float NearbyDistance => nearbyDistance;
-    public float Interval => intervalCheck;
     public bool IsDead => isDead;
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
@@ -284,17 +286,15 @@ public abstract class Unit : MonoBehaviour
         if(specialSkill != null)
             specialSkill.Initialize();
 
+        if (unitStats != null)      // 풀링으로 재 사용시 초기화 해야 될 Stats
+        {
+            mental = unitStats.mental;
+            navAgent.speed = unitStats.moveSpeed;
+            intervalCheck = 0;
+        }
+
         //InvokeEvent(SpecialAbility.BASIC);
         ActivateSpecialAbility(ActiveType.ALWAYS, null);
-
-        //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
-
-        //if(deferredStateObj == null)
-        //{
-        //    deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
-        //}
-        //deferredStateObj.SetActive(false);
-
 
         effectParent.gameObject.SetActive(true);
         for (int idx = 0; idx < effectParent.childCount; idx++)
@@ -309,6 +309,24 @@ public abstract class Unit : MonoBehaviour
             VFXParent.GetChild(i).gameObject.SetActive(false);
         }
 
+    }
+
+    public void SetUnitStats(UnitStats unitStats)
+    {
+        this.unitStats = unitStats;
+
+        if (unitStats != null)
+        {
+            maxhp = unitStats.maxHp;
+            hp = unitStats.maxHp;
+            critPercent = unitStats.critChance;
+            mental = unitStats.mental;
+            interval = unitStats.interval;
+            intervalCheck = 0;
+            navAgent.speed = unitStats.moveSpeed;
+        }
+        else
+            Debug.Log("데이터 없음");
     }
 
     public void SetHitVFXPool(VFXObjectPool hitVFXPool, VFXObjectPool skillVFXPool)
@@ -332,27 +350,6 @@ public abstract class Unit : MonoBehaviour
         this.effectImagePool = effectImagePool;
     }
 
-    public void SetUnitStats(UnitStats unitStats)
-    {
-        this.unitStats = unitStats;
-
-        if (unitStats != null)
-        {
-            maxhp = unitStats.maxHp;
-            hp = unitStats.maxHp;
-            critPercent = unitStats.critChance;
-            mental = unitStats.mental;
-            interval = unitStats.interval;
-            intervalCheck = 0;
-            navAgent.speed = unitStats.moveSpeed;
-            //navAgent.stoppingDistance = 1.0f;
-
-
-        }
-        else
-            Debug.Log("데이터 없음");
-
-    }
 
     public void SetUnitStatsByUpgradeUI(UnitStats unitStats)
     {
@@ -392,7 +389,6 @@ public abstract class Unit : MonoBehaviour
 
         modelAnimator.SetBool("isRunning", false);
 
-        skill.ResetCoolTime();  // 스킬 사용 판정
         isSkillEffectAlreadyActivated = false;
 
          if(skill.Data.StartVFX != null)
@@ -1370,8 +1366,6 @@ public abstract class Unit : MonoBehaviour
 
         stateDurationCheck = 0f;
 
-        intervalCheck = 0f; //intervalCheck 초기화
-
         isDeferredState = false;
         deferredStateDurationCheck = deferredStateDuration;
 
@@ -1521,6 +1515,13 @@ public abstract class Unit : MonoBehaviour
             effect.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
 
             effect.Activate();
+
+            if(effect.Type == EffectType.CURSE)
+            {
+                onGetCureseEffect?.Invoke(this);
+            }
+
+
             effect.gameObject.SetActive(true);
         }
 

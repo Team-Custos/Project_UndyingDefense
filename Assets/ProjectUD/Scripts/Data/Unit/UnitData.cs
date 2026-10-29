@@ -21,7 +21,6 @@ public class UnitData : ScriptableObject
     [SerializeField] private GameObject prefab;
     [SerializeField] private Sprite atTypeIcon;
     [SerializeField] private Sprite dfTypeIcon;
-    [SerializeField, TextArea] private string description;
 
     [SerializeField] private SkillData generalSkill;
     [SerializeField] private SkillData specialSkill;
@@ -34,7 +33,6 @@ public class UnitData : ScriptableObject
     public Sprite AtTypeIcon => atTypeIcon;
     public Sprite DfTypeIcon => dfTypeIcon;
     public GameObject Prefab => prefab;
-    public string Description => description;
     //public string Role => role;
     public string Id => id;
     public string CampName => campName;

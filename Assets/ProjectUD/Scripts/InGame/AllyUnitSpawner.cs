@@ -397,7 +397,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     }
 
     // 소환 된 유닛들에게 영생 유닛 정보 전달
-    private void SetActiveUnitImmortalityEnemy(EnemyUnit immortalityEnemy)
+    private void NotifyImmortalityEnemyInfo(EnemyUnit immortalityEnemy)
     {
         foreach (var pool in unitPools)
         {
@@ -422,6 +422,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     public void SetImmortalityUnit(EnemyUnit ImmortalityEnemy)
     {
         this.immortalityEnemy = ImmortalityEnemy;
-        SetActiveUnitImmortalityEnemy(ImmortalityEnemy);
+        NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
+
 }

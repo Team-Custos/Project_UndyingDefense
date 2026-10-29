@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: USkillAttack135
   icon: {fileID: 21300000, guid: 20d04c851adafb84a8eddd5b55f84e8f, type: 3}
-  coolTime: 20
+  coolTime: 30
   targetType: 0
-  range: 3
-  activeMental: 0
+  range: 0
+  activeMental: 2
   attackSFX: []
-  activateTime: 0.5
-  info: {fileID: 11400000, guid: c8a8c67a69bef094bb97eff14fc0a668, type: 2}
-  damage: 37.5
+  activateTime: 1
+  startVFX: {fileID: 0}
+  startSFX: {fileID: 0}
+  info: {fileID: 11400000, guid: d681a85a26ceb6343a42c9e167963ff0, type: 2}
+  damage: 27
   bonusCritPercent: 0
   ignoreDefenseType: 0
   induseEffectPrefab: {fileID: 0}

@@ -415,9 +415,6 @@ public class AttackSkill : SkillBase
                 AddHitSFX(target.transform.position);
             }
         }
-        else
-            Debug.Log($"{data.Info.Type} : 치명타 발생 X");
-
 
         target.TakeDamage(calcDamage, unit);
 
@@ -435,13 +432,9 @@ public class AttackSkill : SkillBase
             //Debug.Log("회복 후 체력 :" + unit.Hp);
         }
 
-        float random = Random.value;
-
-        // 스킬 별 효과 발동 확률 계산 후 효과 발동
-        if (data.InduseEffectPrefab != null && random < CalculateEffectPercent(unit, target))
-        {
-            target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
-        }
+        // 부여 할 상태가 있으면 확률 계산 후 부여
+        if (data.EffectPrefab != null)
+            ActivateEffect(unit, target);
 
     }
 
@@ -563,28 +556,22 @@ public class AttackSkill : SkillBase
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
-    
-    private float CalculateEffectPercent(Unit unit, Unit target)
-    {
-        float finalPercent = 0f;
+    // 상태 부여 확률 계산
+    //private float CalculateAddEffectPercent(Unit unit, Unit target)
+    //{
+    //    float percent = 0f;
 
-        if (data.InduseEffectPrefab == null)
-            return finalPercent;
-        else
-        {
-           DurationEffect effect = data.InduseEffectPrefab.GetComponent<DurationEffect>();
+    //    DurationEffect effect = data.InduseEffectPrefab.GetComponent<DurationEffect>();
 
-            if (effect.Type == EffectType.CURSE)
-            {
-                // 저주 효과는 추가 계산
-                finalPercent = CalculateCurseEffectPercent(unit.Mental, target.Mental);
-            }
+    //    if (effect.Type == EffectType.CURSE)
+    //        percent = CalculateAddCurseEffectPercent(unit.Mental, target.Mental);     // 저주 상태는 멘탈 차이에 따라 발동  
+    //    else
+    //        percent = data.AddStatusPercent;       // 저주 상태가 아닌 경우는 스킬 자체 확률에 따라 발동
 
-            finalPercent += data.InduseEffectSuccessRate;
+    //    Debug.Log($"{data.name} 상태 부여 확률 : {percent}%");
 
-            return Mathf.Clamp01(finalPercent);
-        }
-    }
+    //    return percent;
+    //}
 
 
     // 소환(설치) 형 스킬 -> 생성 위치, 생성 할 객체

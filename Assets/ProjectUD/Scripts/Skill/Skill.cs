@@ -56,19 +56,13 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
 
     public void Activate(Unit unit, Unit target)
     {
-        //coolTimeCheck -= Data.CoolTime;
+        coolTimeCheck -= Data.CoolTime;
         if (onActivate != null)
         {
             onActivate.Invoke(unit, target);
             PlaySkillSFX();
         }
             
-    }
-
-    public void ResetCoolTime()
-    {
-        // Unit의 ActivateSkillEffect가 아닌 UseSkill에서 쿨타임 초기화(스킬 사용 판정)
-        coolTimeCheck -= Data.CoolTime;
     }
 
     public void Activate(Unit unit, Fortress fortress)
@@ -106,24 +100,49 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         SoundManager.Instance.PlaySFX(Data.AttackSFX[random], transform.position);
     }
 
+    // 계산된 확률로 상태 부여
+    protected void ActivateEffect(Unit unit, Unit target)
+    {
+        float random = Random.value;
 
-    // 유닛 멘탈 차이에 따른 저주 상태 발동 확률 계산
-    protected float CalculateCurseEffectPercent(int unitMental, int targetMental)
+        if (random < CalculateAddEffectPercent(unit, target) * 0.01f)
+            target.AddEffect(Data.EffectPrefab, target, Vector3.zero);
+    }
+
+    // 스킬 발동 시 상태 부여 확률 계산
+    protected float CalculateAddEffectPercent(Unit unit, Unit target)
+    {
+        float percent = 0f;
+
+        DurationEffect effect = Data.EffectPrefab.GetComponent<DurationEffect>();
+
+        if (effect.Type == EffectType.CURSE)
+            percent = CalculateAddCurseEffectPercent(unit.Mental, target.Mental);     // 저주 상태는 멘탈 차이에 따라 발동  
+        else
+            percent = Data.AddEffectPercent;       // 저주 상태가 아닌 경우는 스킬 자체 확률에 따라 발동
+
+        Debug.Log($"{Data.name} 상태 부여 확률 : {percent}%");
+
+        return Mathf.Clamp(percent, 0f, 100f);
+    }
+
+    // 저주 상태는 유닛 간의 멘탈 차이에 따른 확률로 발동
+    protected float CalculateAddCurseEffectPercent(int unitMental, int targetMental)
     {
         int mentalDifference = unitMental - targetMental;
 
+        Debug.Log($"멘탈 차이 : {mentalDifference}");
+
         switch (mentalDifference)
         {
-            case 4: return 1f;
-            case 3: return 0.75f;
-            case 2: return 0.5f;
-            case 1: return 0.25f;
+            case 4: return 100f;
+            case 3: return 75f;
+            case 2: return 50f;
+            case 1: return 25f;
             case 0: return 0f;
             default:
-                // 4보다 크면 0.8, 그 외(-4보다 작으면) -0.8 반환
-                if (mentalDifference > 4) return 1f;
+                if (mentalDifference > 4) return 100f;
                 else return 0f;
         }
-
     }
 }

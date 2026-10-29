@@ -11,26 +11,6 @@ public class EffectSkill : SkillBase
     protected Collider[] targets;
     protected const int maxTargetCount = 10;
 
-    // 상태 이펙트 적용
-    public void ActivateEffect(Unit unit, Unit target)
-    {
-        float finalPercent = 1f;
-
-        DurationEffect effect = data.EffectPrefab.GetComponent<DurationEffect>();
-        if(effect.Type == EffectType.CURSE)
-        {
-            finalPercent = Mathf.Clamp01(CalculateCurseEffectPercent(unit.Mental, target.Mental));
-        }
-
-
-        if(Random.value <= finalPercent)
-        {
-            target.AddEffect(data.EffectPrefab, target, Vector3.zero);
-            
-        }
-    }
-
-
     public void AreaEffectSkill(Unit unit, float radius) //원형
     {
         if (targets == null)
@@ -42,7 +22,33 @@ public class EffectSkill : SkillBase
         {
             if (targets[i].TryGetComponent(out Unit target))
             {
-                ActivateEffect(unit, target);
+                if (target.IsDead)
+                    continue;
+
+                if (data.EffectPrefab != null)
+                    ActivateEffect(unit, target);
+                else
+                    Debug.LogWarning("부여 할 상태 누락");     // 이펙트 스킬은 부여할 상태를 무조건 가지고 있어야함;
+            }
+        }
+    }
+
+    public void AreaRecovery(Unit unit, float radius)
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+
+        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, targetLayerMask);
+        //Debug.Log(targetCount);
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (targets[i].TryGetComponent(out Unit target))
+            {
+                if (target.IsDead)
+                    continue;
+
+                target.RecoveryHp(1000);
+                target.ActivateRecovery();
             }
         }
     }

@@ -88,11 +88,11 @@ public class SkillAttackTrigger : MonoBehaviour
 
 
         target.TakeDamage(calcDamage, null);
-        if (Random.Range(0f, 1f) <= data.InduseEffectSuccessRate * 0.01f)
+        if (Random.Range(0f, 1f) <= data.AddEffectPercent * 0.01f)
         {
-            if (data.InduseEffectPrefab != null)
+            if (data.EffectPrefab != null)
             {
-                target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
+                target.AddEffect(data.EffectPrefab, target, Vector3.zero);
             }
         }
         

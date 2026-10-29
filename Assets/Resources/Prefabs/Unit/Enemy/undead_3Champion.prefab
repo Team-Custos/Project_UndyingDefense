@@ -178,6 +178,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8239685891259876438, guid: 726fcf17936d25346953f608ae0e2dc5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d349cf6df9d866f4fa7d647fb49b7b4a, type: 2}
     - target: {fileID: 8743741705706920842, guid: 726fcf17936d25346953f608ae0e2dc5,
         type: 3}
       propertyPath: m_Name
@@ -196,6 +201,12 @@ PrefabInstance:
 --- !u!4 &3651478819929848384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 632336301638909559, guid: 726fcf17936d25346953f608ae0e2dc5,
+    type: 3}
+  m_PrefabInstance: {fileID: 4209223152800269367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5202524596310720609 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8239685891259876438, guid: 726fcf17936d25346953f608ae0e2dc5,
     type: 3}
   m_PrefabInstance: {fileID: 4209223152800269367}
   m_PrefabAsset: {fileID: 0}
@@ -611,6 +622,11 @@ PrefabInstance:
       propertyPath: specialSkill
       value: 
       objectReference: {fileID: 4716904845757797456}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: modelAnimator
+      value: 
+      objectReference: {fileID: 5202524596310720609}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}
       propertyPath: allyLayer.m_Bits
