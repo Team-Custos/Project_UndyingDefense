@@ -2,6 +2,7 @@ using Cinemachine;
 using InputEventInterface;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
@@ -45,6 +46,7 @@ public class SelectedUnitUI : MonoBehaviour
 
     //--ayo 추가
     private Unit target;
+    private Transform currentUI;
 
     //[Header("NameTextTable")]
     //[SerializeField] private FactionNameTextTable fNameTextTable;
@@ -84,7 +86,7 @@ public class SelectedUnitUI : MonoBehaviour
     //[SerializeField] private TextMeshProUGUI gSkillInfoText;
     //[SerializeField] private TextMeshProUGUI gSkillEffectText;
     //[SerializeField] private TextMeshProUGUI gSkillEtcText;
-    
+
     //// 특수 스킬
     //[SerializeField] private TextMeshProUGUI sSkilNameText;
     //[SerializeField] private TextMeshProUGUI sSkillInfoText;
@@ -148,33 +150,64 @@ public class SelectedUnitUI : MonoBehaviour
         Vector3 hpWorldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
         unitHPPrefab.transform.position = mainCamera.WorldToScreenPoint(hpWorldPos);
 
-        // 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
-        float currentFov = framingTransposer.m_CameraDistance;
-        float zoomPercent = (currentFov - ingameCamManager.ZoomMin)
-                          / (ingameCamManager.ZoomMax - ingameCamManager.ZoomMin);
-        float menuY = Mathf.Lerp(2.0f, 3.0f, zoomPercent);   // 기존 menuYpos를 지역 변수로
+        if(unitMenuPrefab.activeSelf)
+        {
+            // 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
+            float currentFov = framingTransposer.m_CameraDistance;
+            float zoomPercent = (currentFov - ingameCamManager.ZoomMin)
+                              / (ingameCamManager.ZoomMax - ingameCamManager.ZoomMin);
+            float menuY = Mathf.Lerp(2.0f, 3.0f, zoomPercent);   // 기존 menuYpos를 지역 변수로
 
-        Vector3 menuWorldPos = target.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercent * menuY);
-        unitMenuPrefab.transform.position = mainCamera.WorldToScreenPoint(menuWorldPos);
+            Vector3 menuWorldPos = target.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercent * menuY);
+            unitMenuPrefab.transform.position = mainCamera.WorldToScreenPoint(menuWorldPos);
+        }
 
+        currentUI.position = target.transform.position;
         // 아군/적군 UI 위치 (기존 Update에 있던 부분)
-        if (target is AllyUnit)
-            allyUnitUI.transform.position = target.transform.position;
-        else
-            enemyUnitUI.transform.position = target.transform.position;
+        //if (target is AllyUnit)
+        //    allyUnitUI.transform.position = target.transform.position;
+        //else
+        //    enemyUnitUI.transform.position = target.transform.position;
     }
 
     // Manager가 선택/해제할 때 호출 // 유닛을 판단해와서 따로 UI보여주기 (Ally 인지 Enemy인지)=> SelectedUnitManager 가 판단
-    public void Show(Unit unit)
+    //public void Show(Unit unit)
+    //{
+    //    if (unit == null)
+    //        return;
+
+    //    target = unit;
+
+    //    bool isAlly = unit is AllyUnit;
+    //    allyUnitUI.SetActive(isAlly);
+    //    enemyUnitUI.SetActive(!isAlly);
+
+    //    HideUnitDuration();
+    //    unitHPPrefab.SetActive(true);
+    //    SetHp(unit.HpPercent);
+    //}
+
+    // 아군 선택: 공통 + 메뉴
+    public void ShowAlly(AllyUnit unit)
     {
-        if (unit == null)
-            return;
+        ShowCommon(unit, allyUnitUI);
+        enemyUnitUI.SetActive(false);
+        ShowAllyMenu(unit);
+    }
 
+    // 적 선택: 공통. 메뉴 없음
+    public void ShowEnemy(EnemyUnit unit)
+    {
+        ShowCommon(unit, enemyUnitUI);
+        allyUnitUI.SetActive(false);
+        HideAllyMenu();
+    }
+
+    private void ShowCommon(Unit unit, GameObject marker)
+    {
         target = unit;
-
-        bool isAlly = unit is AllyUnit;
-        allyUnitUI.SetActive(isAlly);
-        enemyUnitUI.SetActive(!isAlly);
+        currentUI = marker.transform;
+        marker.SetActive(true);
 
         HideUnitDuration();
         unitHPPrefab.SetActive(true);
@@ -185,19 +218,20 @@ public class SelectedUnitUI : MonoBehaviour
     {
         target = null;
 
+        currentUI = null;
         allyUnitUI.SetActive(false);
         enemyUnitUI.SetActive(false);
         unitHPPrefab.SetActive(false);
         typeInfo.SetActive(false);
 
-        
+        HideAllyMenu();
     }
 
     // HP (체력이 바뀔 때만 호출)
     public void SetHp(float percent) => unitHP.fillAmount = percent;
 
     
-    public void ShowAllyUI(AllyUnit allyUnit)   // 유닛UI를 보여주는 것
+    public void ShowAllyMenu(AllyUnit allyUnit)   // 유닛UI를 보여주는 것
     {
         //if(selecteUnitManger.SelectedUnit == null && !(selecteUnitManger.SelectedUnit is AllyUnit))
         //{
@@ -230,7 +264,7 @@ public class SelectedUnitUI : MonoBehaviour
         unitMenuPrefab.SetActive(true);
     }
 
-    public void HideAllyUI()   // 알리 유닛 UI를 숨기는 것
+    public void HideAllyMenu()   // 알리 유닛 UI를 숨기는 것
     {
         unitMenuPrefab.SetActive(false);
         SoundManager.Instance.PlayUIClickSFX();
@@ -282,7 +316,7 @@ public class SelectedUnitUI : MonoBehaviour
         //selecteUnitManger.UpdateUpgradeState(false);
 
         if (selecteUnitManger.SelectedUnit is AllyUnit)
-            ShowAllyUI((AllyUnit)selecteUnitManger.SelectedUnit);
+            ShowAllyMenu((AllyUnit)selecteUnitManger.SelectedUnit);
 
     }
 

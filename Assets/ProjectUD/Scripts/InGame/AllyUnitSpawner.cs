@@ -338,7 +338,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
 
                     inGameManager.SetGold(allyUnitData.Cost, false);
-                    ingameScreenUI.SetspawnBtnPriceTextColor();
+                    //ingameScreenUI.SetspawnBtnPriceTextColor();
                 }
                 else// if(hit.transform.CompareTag("Obstacle"))
                 {

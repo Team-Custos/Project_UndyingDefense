@@ -7,12 +7,12 @@ using InputEventInterface;
 
 public class IngameScreenUI : MonoBehaviour//, IInputESC
 {
-    [SerializeField] private InGameManager inGameManager;
+    //[SerializeField] private InGameManager inGameManager;             // 리팩토링으로 참조없음. 삭제!
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     [SerializeField] private IngameCommandSkillManager ingameCommandSkillManager;
-    [SerializeField] private SelectedUnitManager selectedUnitManager;
-    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    //[SerializeField] private SelectedUnitManager selectedUnitManager; // 리팩토링으로 참조없음. 삭제!
+    //[SerializeField] private UpgradeMenuUI upgradeMenuUI;             // 리팩토링으로 참조없음. 삭제!
     //ayo_0117
     [SerializeField] private CommandSkillTargetingController cSkillTargetingCtrl;
 
@@ -225,23 +225,42 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         //         LocalizationSettings.SelectedLocale);
     }
 
-    // 유닛스포너에서 사용중.. 골드가 바뀔 때마다 확인(텍스트 색 바뀜)
-    public void SetspawnBtnPriceTextColor() 
+    //------------------------------
+    // UI 관련 리팩토링
+    //------------------------------
+    public void OnGoldChanged(float gold)
+    {
+        UpdateGoldTextUI(gold);
+        SetSpawnBtnPriceTextColor(gold);
+    }
+
+    private void SetSpawnBtnPriceTextColor(float gold)
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
-            if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
-            {
-                spawnBtnPriceText[i].color = Color.red;
-                spawnBtnsImages[i].tag = "UnInteractiveUi";
-            }
-            else
-            {
-                spawnBtnPriceText[i].color = Color.white;
-                spawnBtnsImages[i].tag = "InteractiveUi";
-            }
+            bool canSpawn = allyUnitSpawner.Units[i].Cost <= gold;
+            spawnBtnPriceText[i].color = canSpawn ? Color.white : Color.red;
+            spawnBtnsImages[i].tag = canSpawn ? "InteractiveUi" : "UnInteractiveUi";
         }
     }
+
+    // 유닛스포너에서 사용중.. 골드가 바뀔 때마다 확인(텍스트 색 바뀜)
+    //public void SetspawnBtnPriceTextColor() 
+    //{
+    //    for (int i = 0; i < spawnBtnPriceText.Length; i++)
+    //    {
+    //        if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
+    //        {
+    //            spawnBtnPriceText[i].color = Color.red;
+    //            spawnBtnsImages[i].tag = "UnInteractiveUi";
+    //        }
+    //        else
+    //        {
+    //            spawnBtnPriceText[i].color = Color.white;
+    //            spawnBtnsImages[i].tag = "InteractiveUi";
+    //        }
+    //    }
+    //}
 
     public void ShowRegionName()
     {

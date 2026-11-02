@@ -18,7 +18,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
     [SerializeField] private IngameScreenUI ingameScreenUI;
-    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    //[SerializeField] private UpgradeMenuUI upgradeMenuUI;     // 리팩토링으로 참조없음. 삭제!
     [SerializeField] private Fortress fortress;
     [SerializeField] private AudioClip[] waveSfxClip;
     [SerializeField] private WaveData[] waveDatas; // 웨이브 데이터
@@ -127,9 +127,9 @@ public class WaveManager : MonoBehaviour
             SoundManager.Instance.PlayUISFX(waveSfxClip[(int)waveSfx.sfx_waveWin]);
 
             inGameManager.SetGold(waveDatas[curWave - 1].Reward, true);
-            ingameScreenUI.SetspawnBtnPriceTextColor();
+            //ingameScreenUI.SetspawnBtnPriceTextColor();
             //upgradeMenuUI.UpdateUpgradeCostTxt();               // 삭제 예정 코드_261021
-            upgradeMenuUI.UpdateCostTxtColor(inGameManager.inGameGold);     // 리팩토링 코드
+            //upgradeMenuUI.UpdateCostTxtColor(inGameManager.inGameGold);     // 리팩토링 코드
 
 
             isWaveEnd = true;

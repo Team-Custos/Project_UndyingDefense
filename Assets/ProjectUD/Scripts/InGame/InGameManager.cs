@@ -79,7 +79,9 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
     private void Start()
     {
-        ingameScreenUI.UpdateGoldTextUI(inGameGold);
+        //ingameScreenUI.UpdateGoldTextUI(inGameGold);
+        ingameScreenUI.OnGoldChanged(inGameGold);           // 시작할 때 소환 버튼 색도 같이 세팅
+        selectedUnitManager.OnGoldChanged(inGameGold);      // 시작 골드도 전달
 
         SoundManager.Instance.PlaySFX(inGameIntro);
 
@@ -107,6 +109,9 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
     }
 
+    //------------------------------
+    // UI 관련 리팩토링
+    //------------------------------
     public void SetGold(float gold, bool plus)
     {
         if (plus)
@@ -119,8 +124,11 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
             inGameGold -= gold;
         }
 
-        ingameScreenUI.UpdateGoldTextUI(inGameGold);
-        // 골드가 바뀌면서 바뀌어야
+        // 골드가 바뀌면서 바뀌어야 하는 UI 업데이트
+        //ingameScreenUI.UpdateGoldTextUI(inGameGold);
+        //ingameScreenUI.SetspawnBtnPriceTextColor();     // 소환 버튼 가격 텍스트 색상 업데이트
+        ingameScreenUI.OnGoldChanged(inGameGold);   // 골드 변경 시 인게임 UI에게 알림
+        selectedUnitManager.OnGoldChanged(inGameGold);   // 골드 변경 시 선택 유닛 매니저에게 알림
 
     }
 
@@ -323,18 +331,19 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                         selectedUnitManager.SetSelectedUnit(unit);
                     }
 
-                    if(allyUnit != null)
-                        selectedUnitUI.ShowAllyUI(allyUnit);
-                    else
-                        selectedUnitUI.HideAllyUI();
-
-
-                    //selectedUnitUI.UpdateUnitInfo(unit);
-                    selectedUnitInfoPanel.UpdateUnitInfo(unit);
-
-                    //selectedUnitUI.ShowHp(unit);    // 삭제 예정_261025
-                    selectedUnitUI.Show(unit);
+                    selectedUnitManager.ShowSelectedUnitUI();       // 리팩토링 적용
                     inputEventManager.OnClickTarget = selectedUnitManager;
+                    //if(allyUnit != null)
+                    //    selectedUnitUI.ShowAllyMenu(allyUnit);
+                    //else
+                    //    selectedUnitUI.HideAllyMenu();
+
+
+                    //selectedUnitInfoPanel.UpdateUnitInfo(unit);
+
+                    //selectedUnitUI.Show(unit);
+                    //selectedUnitUI.UpdateUnitInfo(unit);
+                    //selectedUnitUI.ShowHp(unit);    // 삭제 예정_261025
                 }
 
             }

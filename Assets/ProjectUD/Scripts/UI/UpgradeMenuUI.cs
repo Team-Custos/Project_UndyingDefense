@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -14,7 +13,8 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
     private Unit selectedUnit;
 
     // 선택된 유닛의 업그레이드 가능한 유닛들의 정보를 전달하는 메서드
-    public void SetUpgradeUnitMenu(Unit selectedUnit, float gold)       // 골드 받아올 필요 없음 매개변수 수정하기
+    // SelectedUnitManager에서 호출
+    public void SetUpgradeUnitMenu(Unit selectedUnit)       // 골드 받아올 필요 없음 매개변수 수정하기
     {
         if (selectedUnit is EnemyUnit)
             return;
@@ -32,7 +32,7 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
                 bool valid = upgradeUnitStats != null;
                 upgradeUnitPanels[i].gameObject.SetActive(valid);
                 if (!valid) { Debug.LogWarning($"승급 데이터 없음: index {i}", this); continue; }
-                upgradeUnitPanels[i].SetUpgradeUnitPanel(upgradeUnitData, upgradeUnitStats,  i, selectedUnit.UnitStats.maxHp, gold);
+                upgradeUnitPanels[i].SetUpgradeUnitPanel(upgradeUnitData, upgradeUnitStats,  i, selectedUnit.UnitStats.maxHp);
             }
             else
             {
@@ -44,20 +44,13 @@ public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하
     //------------------------------
     // UI 관련 리팩토링 필요_261026 _ 진행중
     //------------------------------
-    public void UpdateCostTxtColor(int index, bool canUpgrade)      // 인덱스, 논리값
+    // SelectedUnitManager에서 호출하는 메서드
+    public void SetUpgradeAvailable(int index, bool canUpgrade)      // 인덱스, 논리값
     {
-        upgradeUnitPanels[index].UpdateCostTextColorAndPerformBtn(canUpgrade);
-    }
+        if (index < 0 || index >= upgradeUnitPanels.Length || !upgradeUnitPanels[index].gameObject.activeSelf)
+            return;
 
-    public void UpdateCostTxtColor(float gold)      // 여기를 논리값으로 변경 // 이름을 컬러가아니라 UpdateCost로   // 몇번째 승급창의 것을 바꿀것인지
-    {
-        for (int i = 0; i < upgradeUnitPanels.Length; i++)
-        {
-            if (upgradeUnitPanels[i].gameObject.activeSelf)
-            {
-                upgradeUnitPanels[i].UpdateCostTextColorAndPerformBtn(gold);
-            }
-        }
+        upgradeUnitPanels[index].UpdateCostTextColorAndPerformBtn(canUpgrade);
     }
 
     // 업그레이드 UI 닫기

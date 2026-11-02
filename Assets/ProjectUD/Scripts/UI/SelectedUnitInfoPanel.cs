@@ -189,7 +189,7 @@ public class SelectedUnitInfoPanel : MonoBehaviour
         //atRangeText.text = "공격거리 : " + (unit.UnitStats.attackRange / 2).ToString() + "칸";
         //mentalText.text = "멘탈 : " + unit.UnitStats.mental.ToString();
 
-        UpdateUnitStateUI();
+        UpdateUnitStateUI(unit.EffectList);
     }
 
     // 선택 대상 정보 창
@@ -227,55 +227,53 @@ public class SelectedUnitInfoPanel : MonoBehaviour
         }
     }
 
-    // 선택 대상 정보 창   // SelectedUnitManager에서 선택된 유닛을 매개변수로 받아오기
-    public void UpdateUnitStateUI()
+    //------------------------------
+    // UI 관련 리팩토링 필요
+    //------------------------------
+    // 선택 대상 정보 창   // v SelectedUnitManager에서 선택된 유닛의 DurationEffect를 매개변수로 받아오기
+    public void UpdateUnitStateUI(IReadOnlyList<DurationEffect> effects)
     {
-        if (selectedUnit != null)
-            //f (selecteUnitManger.SelectedUnit != null)
+        int imageIndex = 0;
+
+        for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
         {
-            IReadOnlyList<DurationEffect> effects = selectedUnit.EffectList;    //selecteUnitManger.SelectedUnit.EffectList;
-            //HashSet<Sprite> usedSprites = new HashSet<Sprite>();
-            int imageIndex = 0;
+            unitStateImage[imageIndex].sprite = effects[imageIndex].IconSprite;
+            unitStateImage[imageIndex].gameObject.SetActive(true);
+            unitStateUIs[imageIndex].SetEffect(effects[imageIndex]);
+            imageIndex++;
 
-            for (int i = 0; i < effects.Count && imageIndex < unitStateImage.Length; i++)
+            //if (sprite != null && !usedSprites.Contains(sprite))
+            //{
+            //    usedSprites.Add(sprite);
+
+            //    // Sprite가 다르면 Sprite 업데이트
+            //    if (unitStateImage[imageIndex].sprite != sprite)
+            //    {
+            //        unitStateImage[imageIndex].sprite = sprite;
+            //    }
+
+            //    // 꺼져있으면 켜기
+            //    if (!unitStateImage[imageIndex].gameObject.activeSelf)
+            //    {
+            //        unitStateImage[imageIndex].gameObject.SetActive(true);
+            //    }
+
+            //    // Effect도 갱신
+            //    unitStateUIs[imageIndex].SetEffect(effect);
+
+            //    imageIndex++;
+            //}
+        }
+
+        // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
+        for (int i = imageIndex; i < unitStateImage.Length; i++)
+        {
+            if (unitStateImage[i].gameObject.activeSelf)
             {
-                unitStateImage[imageIndex].sprite = effects[imageIndex].IconSprite;
-                unitStateImage[imageIndex].gameObject.SetActive(true);
-                unitStateUIs[imageIndex].SetEffect(effects[imageIndex]);
-                imageIndex++;
-
-                //if (sprite != null && !usedSprites.Contains(sprite))
-                //{
-                //    usedSprites.Add(sprite);
-
-                //    // Sprite가 다르면 Sprite 업데이트
-                //    if (unitStateImage[imageIndex].sprite != sprite)
-                //    {
-                //        unitStateImage[imageIndex].sprite = sprite;
-                //    }
-
-                //    // 꺼져있으면 켜기
-                //    if (!unitStateImage[imageIndex].gameObject.activeSelf)
-                //    {
-                //        unitStateImage[imageIndex].gameObject.SetActive(true);
-                //    }
-
-                //    // Effect도 갱신
-                //    unitStateUIs[imageIndex].SetEffect(effect);
-
-                //    imageIndex++;
-                //}
-            }
-
-            // 이펙트가 더 적어졌을 때만 뒤에 남은 이미지를 꺼주기
-            for (int i = imageIndex; i < unitStateImage.Length; i++)
-            {
-                if (unitStateImage[i].gameObject.activeSelf)
-                {
-                    unitStateImage[i].gameObject.SetActive(false);
-                }
+                unitStateImage[i].gameObject.SetActive(false);
             }
         }
+        
     }
 
     // 선택 대상 정보 창

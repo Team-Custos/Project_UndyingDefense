@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -44,14 +42,9 @@ public class UpgradeUnitPanel : MonoBehaviour
             GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
-    private void FieldStatLocalization()
-    {
-
-    }
-
-    // 매개변수 업글유닛데이터, 유닛 스탯, 유닛의 인덱스, 현재 선택된 유닛maxHp, 현재 골드 
+    // 매개변수 업글유닛데이터, 유닛 스탯, 유닛의 인덱스, 현재 선택된 유닛maxHp     (삭제) 현재 골드 
     // UpgradeMenuUI에서 호출할 함수용으로 만들기
-    public void SetUpgradeUnitPanel(UnitData _upgradeUnitData, UnitStats upgradeUnitStats, int index, float selectedUnitMaxHp, float gold)
+    public void SetUpgradeUnitPanel(UnitData _upgradeUnitData, UnitStats upgradeUnitStats, int index, float selectedUnitMaxHp)
     {
         if (!(_upgradeUnitData is AllyUnitData allyData))
             return;
@@ -136,7 +129,7 @@ public class UpgradeUnitPanel : MonoBehaviour
         SetStats(upgradeUnitStats, selectedUnitMaxHp);
         SetSkillIcons(allyData);
         SetTier(allyData.Tier);
-        SetCost(allyData.Cost, gold);
+        SetCost(allyData.Cost);
     }
     //---unit image / name / dfType---
     private void SetBasicInfo(AllyUnitData data)
@@ -177,11 +170,11 @@ public class UpgradeUnitPanel : MonoBehaviour
     }
 
     //---cost---
-    private void SetCost(float unitCost, float gold)
+    private void SetCost(float unitCost)
     {
         cost = unitCost;
         upgradeCostTxt.text = cost.ToString();
-        UpdateCostTextColorAndPerformBtn(gold);
+        //UpdateCostTextColorAndPerformBtn(gold);
     }
 
     //---helpers---
@@ -201,20 +194,6 @@ public class UpgradeUnitPanel : MonoBehaviour
     //------------------------------
     // UI 관련 리팩토링 필요_261026 _ 진행중
     //------------------------------
-    // 골드에 따라 승급버튼 활성화 여부와 골드 텍스트 색상 변경
-    public void UpdateCostTextColorAndPerformBtn(float gold)    // 논리값으로 받아오기 // SelectedUnitManager가 판단해서 
-    {
-        if (gold < cost)
-        {
-            upgradePerformBtn.interactable = false;
-            upgradeCostTxt.color = Color.red;
-        }
-        else
-        {
-            upgradePerformBtn.interactable = true;
-            upgradeCostTxt.color = Color.white;
-        }
-    }
 
     public void UpdateCostTextColorAndPerformBtn(bool canUpgrade)    // 논리값용
     {

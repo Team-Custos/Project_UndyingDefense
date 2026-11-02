@@ -1,11 +1,9 @@
 using AYellowpaper.SerializedCollections;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using ActiveType = SpecialAbility.ActiveType;
 using AttackType = AttackData.AttackType;
-using Random = UnityEngine.Random;      // 이벤트 구독을 위해 System을 추가하면서 Random에 대한 명시 추가_ayo 261025
 
 public abstract class Unit : MonoBehaviour
 {
@@ -154,8 +152,8 @@ public abstract class Unit : MonoBehaviour
     //------------------------------
     // UI 관련 리팩토링 필요_261026
     //------------------------------
-    protected SelectedUnitUI selectedUnitUI;
-    protected SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
+    //protected SelectedUnitUI selectedUnitUI;
+    //protected SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
     protected SelectedUnitManager selectedUnitManager;       // 매니저 하나를 이용해서 SelectedUnitUI, infoPanel 에게 명령을 내리는 것으로 변경
                                                              // 유닛은 매니저 하나만 참조를 가질 것
 
@@ -168,15 +166,6 @@ public abstract class Unit : MonoBehaviour
 
     protected static GameObject unitDeathVFX;
 
-    //------------------------------
-    // UI 관련 리팩토링 필요_261026
-    //------------------------------
-    //---인게임 UI_hp바 관련 이벤트      // 굳이 이벤트를 써야하나 > 변해야하는 내용이 없기 때문에 이벤트를 써야할 이유는 없음.
-    // 변하지 않는 기능 -> 클래스 참조를 가져와서 기능을 따로 실행하는 것이 좋음. 
-    public event Action<float> OnHpChanged;   // 피격·회복 시 HpPercent 전달
-    public event Action<Unit> OnDead;
-
-    
 
     protected static AudioClip[] SlashHitSFX
     {
@@ -351,8 +340,7 @@ public abstract class Unit : MonoBehaviour
             navAgent.speed = unitStats.moveSpeed;
             //navAgent.stoppingDistance = 1.0f;
 
-            // ayo_261025 이벤트 추가
-            OnHpChanged?.Invoke(HpPercent);     // 승급 등으로 스탯이 바뀔 때
+            NotifyHpChanged();
         }
         else
             Debug.Log("데이터 없음");
@@ -367,23 +355,27 @@ public abstract class Unit : MonoBehaviour
         mental = unitStats.mental;
     }
 
-    public void SetSelectedUnitUI(SelectedUnitUI selectedUnitUI)
-    {
-        this.selectedUnitUI = selectedUnitUI;
-    }
+    //public void SetSelectedUnitUI(SelectedUnitUI selectedUnitUI)
+    //{
+    //    this.selectedUnitUI = selectedUnitUI;
+    //}
 
     public void SetSelectedUnitManager(SelectedUnitManager selectedUnitManager)
     {
         this.selectedUnitManager = selectedUnitManager;
     }
 
-    public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
-    {
-        this.selectedUnitInfoPanel = selectedUnitInfoPanel;
-    }
-    
+    //public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
+    //{
+    //    this.selectedUnitInfoPanel = selectedUnitInfoPanel;
+    //}
 
-    
+    private void NotifyHpChanged()
+    {
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitHpChanged(this);
+    }
+
 
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
@@ -1322,8 +1314,7 @@ public abstract class Unit : MonoBehaviour
         hp -= Damage;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
-        // ayo_261025 이벤트 추가
-        OnHpChanged?.Invoke(HpPercent);
+        NotifyHpChanged();  
 
         // ex) 자폭
         ActivateSpecialAbility(ActiveType.HP, null);
@@ -1343,11 +1334,11 @@ public abstract class Unit : MonoBehaviour
         //    selectedUnitUI.UpdateHPUI(this);
         //}
 
-        if (selectedUnitInfoPanel != null)
-        {
-            //selectedUnitInfoPanel.UpdateHPUI(this);
-            selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);        // ayo 수정 _261026
-        }
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    //selectedUnitInfoPanel.UpdateHPUI(this);
+        //    selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);        // ayo 수정 _261026
+        //}
     }
 
 
@@ -1357,20 +1348,18 @@ public abstract class Unit : MonoBehaviour
         hp += amount;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
-        // ayo_261025 이벤트 추가
-        OnHpChanged?.Invoke(HpPercent);
-
+        NotifyHpChanged();
 
         //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
         //{
         //    selectedUnitUI.UpdateHPUI(this);
         //}
 
-        if (selectedUnitInfoPanel != null)
-        {
-            //selectedUnitInfoPanel.UpdateHPUI(this);
-            selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);    // ayo 수정 _261026
-        }
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    //selectedUnitInfoPanel.UpdateHPUI(this);
+        //    selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);    // ayo 수정 _261026
+        //}
     }
 
     public virtual void Die()
@@ -1393,25 +1382,8 @@ public abstract class Unit : MonoBehaviour
         PlayAnimation("Die");
         //modelAnimator.SetTrigger("Die");
 
-
-        // ayo _ 261025 SelectedUnitManager 리팩토링으로 주석처리
-        //if (selectedUnitUI != null)
-        //{
-        //    // ui 제거
-        //    //selectedUnitUI.HideHp();  // 삭제 _261025
-        //    selectedUnitUI.Hide();
-        //    selectedUnitUI.HideAllyUI();
-        //    //selectedUnitUI.HideUpgrdeUI();
-        //    selectedUnitManager.CancleUpgrade();
-        //    //selectedUnitUI.HideUnitInfo();
-        //    selectedUnitInfoPanel.HideUnitInfo();
-        //}
-
-        //if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
-        //{
-        //    selectedUnitManager.DeSelecteUnit();
-        //}
-        OnDead?.Invoke(this);   // ayo_261025
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitDead(this);
 
     }
 
@@ -1697,10 +1669,13 @@ public abstract class Unit : MonoBehaviour
         //    selectedUnitUI.UpdateUnitStateUI();
         //}
 
-        if (selectedUnitInfoPanel != null)
-        {
-            selectedUnitInfoPanel.UpdateUnitStateUI();
-        }
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    selectedUnitInfoPanel.UpdateUnitStateUI();
+        //}
+
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitStateChanged(this);
     }
 
     public void StopUnit()
