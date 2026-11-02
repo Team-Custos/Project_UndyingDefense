@@ -1397,6 +1397,16 @@ PrefabInstance:
       propertyPath: timeRecordTextUI
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4192875781553910348, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 693347759}
+    - target: {fileID: 4192875781553910348, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleGameSpeed
+      objectReference: {fileID: 0}
     - target: {fileID: 4394301575132163736, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive
@@ -16859,7 +16869,6 @@ MonoBehaviour:
   inGameManager: {fileID: 693347759}
   enemyUnitSpawner: {fileID: 963799560}
   ingameScreenUI: {fileID: 875729733}
-  upgradeMenuUI: {fileID: 1244886506}
   fortress: {fileID: 1421765648}
   waveSfxClip:
   - {fileID: 8300000, guid: 2f28c5ceae3dd024a9c3a780a8cb400d, type: 3}
@@ -27968,8 +27977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameManager: {fileID: 693347759}
-  upgradeMenuUI: {fileID: 1244886506}
-  ingameScreenUI: {fileID: 875729733}
   waveManager: {fileID: 510280746}
   waveDataLoader: {fileID: 942100005}
   allyUnitSpawner: {fileID: 1866204814}
@@ -56468,7 +56475,6 @@ MonoBehaviour:
   inGameManager: {fileID: 0}
   enemyUnitSpawner: {fileID: 0}
   ingameScreenUI: {fileID: 0}
-  upgradeMenuUI: {fileID: 0}
   fortress: {fileID: 0}
   waveSfxClip: []
   waveDatas: []

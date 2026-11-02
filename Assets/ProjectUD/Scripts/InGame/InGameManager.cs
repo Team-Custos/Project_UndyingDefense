@@ -189,7 +189,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         //selectedUnitUI.HideUnitInfo();
         selectedUnitInfoPanel.HideUnitInfo();
 
-        ingameScreenUI.ShowResult(meritPoint, false, "");
+        ingameScreenUI.ShowLoseResult(meritPoint);
+        //ingameScreenUI.ShowResult(meritPoint, false, "");
         PlayerPrefsData.instance.SetPoint(meritPoint);
         //PlayerPrefsData.instance.SetPoint(losePoint);
         //UserDataModel.instance.SetGameFinished(true);
@@ -214,7 +215,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         //selectedUnitUI.HideUnitInfo();
         selectedUnitInfoPanel.HideUnitInfo();
 
-        ingameScreenUI.ShowResult(meritPoint, true, recordText);
         PlayerPrefsData.instance.SetPoint(meritPoint);
         //PlayerPrefsData.instance.SetPoint(winPoint);
 
@@ -225,10 +225,16 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         if(gameWin != null)
             gameWin.Invoke();
 
-        if(stagePrefsData.IsNewRecord(timeRecord, id))
-            ingameScreenUI.ShowNewRecordUI(true);
-        else
-            ingameScreenUI.ShowNewRecordUI(false);
+        //  신기록 여부를 ResultUI로 전달하기. 판단은 InGameManager에서 진행
+        bool isNewRecord = stagePrefsData.IsNewRecord(timeRecord, id);   // SetRecordTime보다 먼저!!!!
+        stagePrefsData.SetRecordTime(timeRecord, id);
+        ingameScreenUI.ShowWinResult(meritPoint, recordText, isNewRecord);
+
+        //ingameScreenUI.ShowResult(meritPoint, true, recordText);
+        //if (stagePrefsData.IsNewRecord(timeRecord, id))
+        //    ingameScreenUI.ShowNewRecordUI(true);
+        //else
+        //    ingameScreenUI.ShowNewRecordUI(false);
 
         stagePrefsData.SetRecordTime(timeRecord, id);
         //---

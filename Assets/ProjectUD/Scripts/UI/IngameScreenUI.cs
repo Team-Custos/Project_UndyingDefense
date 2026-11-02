@@ -21,7 +21,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI goldTextUI;
     [SerializeField] private GameObject settingUI;
     [SerializeField] private TextMeshProUGUI recordTextUI;
-    [SerializeField] private GameObject newReorcUI;
+    [SerializeField] private GameObject newReorcUI;         // 결과창의 일부. 결과창으로 이동 예정. (결과창에서만 사용)
     [SerializeField] private Image portraitImg;
     [SerializeField] private TextMeshProUGUI playerName;
     [SerializeField] private TextMeshProUGUI commanderRank;
@@ -153,9 +153,20 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         noticeTimerUI.SetText(text, false);
     }
 
-    public void ShowResult(float reward, bool win, string record)
+    //-------------------------
+    // -- 결과창 관련 리팩토링
+    //-------------------------
+    //public void ShowResult(float reward, bool win, string record)
+    //{
+    //    resultUI.Show(reward, win, record);
+    //}
+    public void ShowWinResult(float reward, string record, bool isNewRecord)
     {
-        resultUI.Show(reward, win, record);
+        resultUI.ShowWin(reward, record, isNewRecord);
+    }
+    public void ShowLoseResult(float reward)
+    {
+        resultUI.ShowLose(reward);
     }
 
     public void HideResult() => resultUI.Hide();
@@ -284,17 +295,17 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         recordTextUI.text = text;
     }
 
-    public void ShowNewRecordUI(bool newRecord)
-    {
-        if(newRecord)
-        {
-            newReorcUI.SetActive(true);
-        }
-        else
-        {
-            newReorcUI.SetActive(false);
-        }
-    }
+    //public void ShowNewRecordUI(bool newRecord)
+    //{
+    //    if(newRecord)
+    //    {
+    //        newReorcUI.SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        newReorcUI.SetActive(false);
+    //    }
+    //}
 
     public void UpdateSpeedButtonAni(bool isFastForward)
     {
