@@ -285,13 +285,6 @@ public abstract class Unit : MonoBehaviour
         if(specialSkill != null)
             specialSkill.Initialize();
 
-        if (unitStats != null)      // 풀링으로 재 사용시 초기화 해야 될 Stats
-        {
-            mental = unitStats.mental;
-            navAgent.speed = unitStats.moveSpeed;
-            intervalCheck = 0;
-        }
-
         //InvokeEvent(SpecialAbility.BASIC);
         ActivateSpecialAbility(ActiveType.ALWAYS, null);
 
@@ -1878,10 +1871,10 @@ public abstract class Unit : MonoBehaviour
     // 상태가 적용 되었을 때 실행 될 이벤트에 등록 될 함수
     public void GetDurationEffect(Unit target, DurationEffect effect)
     {
-        if(specialAbility != null)
-        {
-            specialAbility.OnGetDurationEffect(target, effect);
-        }
+        //if(specialAbility != null)
+        //{
+        //    specialAbility.OnGetDurationEffect(target, effect);
+        //}
     }
 
     public void RemoveCurseEffect()
