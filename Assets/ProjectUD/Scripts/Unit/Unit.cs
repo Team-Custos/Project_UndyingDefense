@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
 using AYellowpaper.SerializedCollections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UltEvents;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -53,6 +53,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private AudioClip healStateSFX;
     [SerializeField] private GameObject recoveryVFX;
 
+    public UltEvent<Unit, DurationEffect> onGetDurationEffect; // 유닛이 효과를 받았을 때 발생하는 이벤트
 
     protected float maxhp;
     protected float hp;
@@ -115,8 +116,6 @@ public abstract class Unit : MonoBehaviour
 
     [SerializedDictionary("State", "Animation Clips")]
     public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
-
-    public static event System.Action<Unit> onGetCureseEffect;
 
     public Transform EffectParent => effectParent;
 
@@ -1516,14 +1515,12 @@ public abstract class Unit : MonoBehaviour
 
             effect.Activate();
 
-            if(effect.Type == EffectType.CURSE)
-            {
-                onGetCureseEffect?.Invoke(this);
-            }
-
-
             effect.gameObject.SetActive(true);
+
+            onGetDurationEffect?.Invoke(this, effect);
         }
+
+        
 
         UpdateState();
     }
@@ -1878,4 +1875,26 @@ public abstract class Unit : MonoBehaviour
         SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
 
+    // 상태가 적용 되었을 때 실행 될 이벤트에 등록 될 함수
+    public void GetDurationEffect(Unit target, DurationEffect effect)
+    {
+        if(specialAbility != null)
+        {
+            specialAbility.OnGetDurationEffect(target, effect);
+        }
+    }
+
+    public void RemoveCurseEffect()
+    {
+        for (int i = effectList.Count - 1; i >= 0; i--)
+        {
+            if (effectList[i].Type != EffectType.CURSE)
+                continue;
+
+            effectList[i].RemoveEffect();
+            effectList.RemoveAt(i);
+        }
+
+        UpdateState();
+    }
 }

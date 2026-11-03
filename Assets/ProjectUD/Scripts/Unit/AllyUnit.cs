@@ -25,18 +25,13 @@ public class AllyUnit : Unit
 
     private enum State
     {
-        IDLE,
+        COMAT_IDLE,     // 기본 대기 상태
+        NORMAL_IDLE,    // 전투 대기 상태
         RUN,
         GENERALSKILL,
         SPECIALSKILL,
         STUN,
         DEAD,
-    }
-
-    private enum IdleState
-    {
-        DEFAULT,    // 기본 대기 모드
-        COMBAT      // 전투 대기 모드
     }
 
     private AllyUnitData data;
@@ -51,7 +46,6 @@ public class AllyUnit : Unit
     public Mode ModeType => mode;
 
     private State state;
-    private IdleState idleState;
     private FreeModeState freeModeState;
 
     public bool IsChange => isChange;
@@ -72,6 +66,7 @@ public class AllyUnit : Unit
     //[SerializeField] private GameObject activeSiegeEffect;
     [SerializeField] private UnitGrid unitGrid;
     [SerializeField] private AudioClip[] allyDeadSFX;
+    //private AllyUnit clearCuresUnit;  // 저주 상태 해제 유닛
 
     public UnitGrid UnitGrid => unitGrid;
 
@@ -92,7 +87,7 @@ public class AllyUnit : Unit
         base.Initialize();
         isDead = false;
         collider.enabled = true;
-        state = State.IDLE;
+        state = State.COMAT_IDLE;
 
         SetIdleState(waveManager.IsWaveEnd);
 
@@ -261,7 +256,7 @@ public class AllyUnit : Unit
 
                         //stateDurationCheck = 0f;
                         currentSkill = null; // 사용한 스킬 초기화 후 스킬 선택 단계로 진입
-                        state = State.IDLE;
+                        state = State.COMAT_IDLE;
                     }
                 }
                 break;
@@ -281,7 +276,8 @@ public class AllyUnit : Unit
                     }
                 }
                 break;
-            case State.IDLE:
+            case State.NORMAL_IDLE:
+            case State.COMAT_IDLE:
                 {
                     if (navAgent.enabled && navAgent.velocity.magnitude > 0f) // 이동
                     {
@@ -293,18 +289,31 @@ public class AllyUnit : Unit
                     }
                     else
                     {
-                        if (idleState == IdleState.DEFAULT)
+                        if(state == State.NORMAL_IDLE)
                         {
                             Vector3 direction = Vector3.left;
                             Quaternion rot = Quaternion.LookRotation(direction);
                             transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10.0f);
                             modelAnimator.SetBool("isRunning", false);
                         }
-                        else
+                        else if(state ==State.COMAT_IDLE)
                         {
                             if (targetUnit != null && targetUnit != this)
                                 LookAt(targetUnit.transform.position);
                         }
+
+                        //if (idleState == IdleState.DEFAULT)
+                        //{
+                        //    Vector3 direction = Vector3.left;
+                        //    Quaternion rot = Quaternion.LookRotation(direction);
+                        //    transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10.0f);
+                        //    modelAnimator.SetBool("isRunning", false);
+                        //}
+                        //else
+                        //{
+                        //    if (targetUnit != null && targetUnit != this)
+                        //        LookAt(targetUnit.transform.position);
+                        //}
                     }
 
                     UpdateMode();
@@ -316,7 +325,7 @@ public class AllyUnit : Unit
 
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        state = State.IDLE;
+                        state = State.COMAT_IDLE;
                         modelAnimator.SetBool("isRunning", false);
                     }
 
@@ -346,7 +355,7 @@ public class AllyUnit : Unit
                     if (!navObstacle.enabled)
                         Debug.Log("obstacle 꺼져있음");
 
-                    if (idleState == IdleState.DEFAULT || isDeferredState)
+                    if (state == State.NORMAL_IDLE || isDeferredState)
                         return;
 
                     //if(interval <= 0f && currentSkill == null)
@@ -485,7 +494,7 @@ public class AllyUnit : Unit
                             }
                         case FreeModeState.COMBAT:
                             {
-                                if (idleState == IdleState.DEFAULT)
+                                if (state == State.NORMAL_IDLE)
                                 {
                                     targetUnit = null;
                                     navAgent.isStopped = true;
@@ -642,15 +651,17 @@ public class AllyUnit : Unit
         if(isWaveEnd)
         {
             targetUnit = null;
-            idleState = IdleState.DEFAULT;
+            state = State.NORMAL_IDLE;
+            //idleState = IdleState.DEFAULT;
         }
         else
-            idleState = IdleState.COMBAT;
+            state = State.COMAT_IDLE;
+            //idleState = IdleState.COMBAT;
     }
 
     public void ChangeMode()
     {
-        state = State.IDLE;
+        state = State.COMAT_IDLE;
         modelAnimator.SetBool("isRunning", false);
 
         changeDuration -= Time.deltaTime;
@@ -780,7 +791,7 @@ public class AllyUnit : Unit
     {
         if (isDead) return;
 
-        state = State.IDLE;
+        state = State.COMAT_IDLE;
         modelAnimator.SetBool("isRunning", false);
 
         upgradeDuraiton -= Time.deltaTime;
@@ -898,7 +909,7 @@ public class AllyUnit : Unit
         {
             //if (navAgent.enabled)
             //    navAgent.isStopped = false;
-            state = State.IDLE;
+            state = State.COMAT_IDLE;
         }
 
         //if (navAgent.enabled)
@@ -1023,7 +1034,7 @@ public class AllyUnit : Unit
     public override void SetDeferredState()
     {
         base.SetDeferredState();
-        state = State.IDLE;
+        state = State.COMAT_IDLE;
     }
 
     public void SetImmortalityEnemy(EnemyUnit enmeyUnit)

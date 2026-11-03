@@ -28,6 +28,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
 
+
     [SerializeField] private Image[] alarmImages;
 
     [Header("■ Units")]
@@ -113,19 +114,14 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
         unit.SetUnitStats(unitStats);
 
-
-        //Seeker seeker = obj.GetComponent<Seeker>();
-        //if(seeker)
-        //{
-        //    seeker.Initialize(data, unitPools[index], this);
-        //    UnitStats seekerStats = unitDataLoader.GetUnitDataById(seeker.UnitId);
-        //    seeker.SetUnitStats(seekerStats);
-        //}
-
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetInstantEffectPool(instantEffectPool);
         unit.SetEffectImagePool(effectImagePool);
         unit.SetHitVFXPool(hitVFXPool, skillVFXPool);
+
+        // 상태를 받았을 때 실행 될 함수 등록
+        unit.onGetDurationEffect += unit.GetDurationEffect;
+
         unitPools[index].List.Add(unit);
 
         return unit;
@@ -171,6 +167,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
             upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
+
+            // 상태를 받았을 때 실행 될 함수 등록
+            upgradeUnit.onGetDurationEffect += upgradeUnit.GetDurationEffect;
 
             //return upgradeUnit;
         }
@@ -237,9 +236,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         //inGameManager.CancleOperateState(OperateState.SPAWN);
         inGameManager.UpdateOperateState(OperateState.SPAWN);
         unitSpawnUI.Select(index);
-
-        //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
-
 
         selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
 
@@ -314,6 +310,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                         return;
                     }
 
+                    // 소환 될 유닛에게 영생 유닛 정보 알려줌
                     if(immortalityEnemy != null)
                         unit.SetImmortalityEnemy(immortalityEnemy);
                     // 유닛의 소환 방향 설정
@@ -342,16 +339,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 }
             }
         }
-    }
-
-    public void ResetAllyUnitRotation(AllyUnit allyUnit)
-    {
-        //allyUnit.transform.forward = spawnDirection.forward;
-
-        Vector3 direction = spawnDirection.forward;
-        Quaternion rot = Quaternion.LookRotation(direction);
-        allyUnit.transform.rotation = Quaternion.Slerp(allyUnit.transform.rotation, rot, Time.deltaTime * 10.0f);
-
     }
 
     public void StopActivateAlly()
@@ -425,4 +412,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
 
+    //public void SetClearCurseAlly(AllyUnit clearCurseAlly)
+    //{
+    //    this.clearCurseAlly = clearCurseAlly;
+
+    //}
 }

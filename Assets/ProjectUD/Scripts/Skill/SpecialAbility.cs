@@ -14,7 +14,8 @@ public class SpecialAbility : MonoBehaviour
         KILL,       // 대상을 처치했을 때 ex) 흡혈
         ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
-        DEAD   // 적이 죽었을 때 ex) 영생
+        DEAD,   // 적이 죽었을 때 ex) 영생
+        GET_EFFECT
     }
 
     [SerializeField] private string id;
@@ -189,21 +190,26 @@ public class SpecialAbility : MonoBehaviour
         auraVFX.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
     }
 
-    // 저주 효과 해제
-    public void ClearCurseEffect(Unit unit, Unit target)
-    {
-        //if(target == this)
-        //    targetUnit.RemoveCurse();
-        //else
-        //{
-
-        //}
-    }
-
     public void SpawnEnemyUnit(EnemyUnit enemyUnit, Unit target, EnemyUnitData[] enemyDatas)
     {
         int randomIndex = Random.Range(0, enemyDatas.Length);
 
         enemyUnit.EnemySpawner.SpawnEnemy(enemyDatas[randomIndex], target.transform.position);
+    }
+
+    public void OnGetDurationEffect(Unit target, DurationEffect effect)
+    {
+        if (target.IsDead)
+            return;
+
+        Activate(unit, target);
+    }
+
+    public void ClearCurseEffect(Unit target)
+    {
+        for(int i = 0; i < target.EffectList.Count; i++)
+        {
+            Debug.Log("저주 효과 해제 : " + target.EffectList[i].name);
+        }
     }
 }
