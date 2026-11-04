@@ -197,19 +197,15 @@ public class SpecialAbility : MonoBehaviour
         enemyUnit.EnemySpawner.SpawnEnemy(enemyDatas[randomIndex], target.transform.position);
     }
 
+
     public void OnGetDurationEffect(Unit target, DurationEffect effect)
     {
-        if (target.IsDead)
-            return;
-
-        Activate(unit, target);
+        target.RemoveDurationEffect(effect);
+        Debug.Log("능력 발동");
     }
 
-    public void ClearCurseEffect(Unit target)
-    {
-        for(int i = 0; i < target.EffectList.Count; i++)
-        {
-            Debug.Log("저주 효과 해제 : " + target.EffectList[i].name);
-        }
-    }
+    //private void ClearCurseEffect(Unit target, DurationEffect effect)
+    //{
+    //    target.RemoveDurationEffect(effect);
+    //}
 }

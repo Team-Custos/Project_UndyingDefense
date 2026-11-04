@@ -385,7 +385,10 @@ public abstract class Unit : MonoBehaviour
 
          if(skill.Data.StartVFX != null)
         {
-            AddVFX(skill.Data.StartVFX, transform, false);
+            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
+            vfx.transform.position = transform.position;
+            vfx.transform.rotation = transform.rotation;
+            vfx.SetActive(true);
         }
 
          if(skill.Data.StartSFX != null)
@@ -1571,7 +1574,24 @@ public abstract class Unit : MonoBehaviour
         }
 
         VFXobj.SetActive(true);
-        
+    }
+
+    public GameObject AddVFX(GameObject vfx, bool attach = true)
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+
+        if (attach)
+        {
+            VFXobj.transform.SetParent(VFXParent);
+        }
+        else
+        {
+            VFXobj.transform.SetParent(null);
+        }
+
+        VFXobj.SetActive(false);
+
+        return VFXobj;
     }
 
     public void AddVFX(GameObject vfx, Vector3 dir, bool attach = true, float scale = 1f) // hit & Crit VFX (오브젝트풀링 사용)
@@ -1877,16 +1897,13 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
-    public void RemoveCurseEffect()
+    public void RemoveDurationEffect(DurationEffect effect)
     {
-        for (int i = effectList.Count - 1; i >= 0; i--)
-        {
-            if (effectList[i].Type != EffectType.CURSE)
-                continue;
+        if (effect == null)
+            return;
 
-            effectList[i].RemoveEffect();
-            effectList.RemoveAt(i);
-        }
+        effect.RemoveEffect();
+        effectList.Remove(effect);
 
         UpdateState();
     }

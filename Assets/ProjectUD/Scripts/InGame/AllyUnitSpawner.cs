@@ -120,7 +120,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         unit.SetHitVFXPool(hitVFXPool, skillVFXPool);
 
         // 상태를 받았을 때 실행 될 함수 등록
-        unit.onGetDurationEffect += unit.GetDurationEffect;
+        RegisterGetEffectEvent(unit);
 
         unitPools[index].List.Add(unit);
 
@@ -169,7 +169,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
             // 상태를 받았을 때 실행 될 함수 등록
-            upgradeUnit.onGetDurationEffect += upgradeUnit.GetDurationEffect;
+            RegisterGetEffectEvent(upgradeUnit);
 
             //return upgradeUnit;
         }
@@ -412,9 +412,50 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
 
-    //public void SetClearCurseAlly(AllyUnit clearCurseAlly)
-    //{
-    //    this.clearCurseAlly = clearCurseAlly;
+    // 상태 적용 시 특수 능력 발동 경우
 
-    //}
+    // 소환 되어있는 유닛들에게 상태 적용 시 발동되는 능력 이벤트 적용
+    private void RegisterGetEffectEvent(AllyUnit newUnit)
+    {
+        // 새로 소환되는 유닛의 능력이 상태 적용 시 발동되는 능력이면 자기 자신의 이벤트에 자기 능력 등록
+        if (newUnit.SpecialAbility != null && newUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
+            newUnit.onGetDurationEffect += newUnit.SpecialAbility.OnGetDurationEffect;
+
+        foreach (var pool in unitPools)
+        {
+            foreach (AllyUnit existingUnit in pool.List)
+            {
+                if (existingUnit != null)
+                    RegisterGetEffectEvent(existingUnit, newUnit);
+            }
+        }
+
+        foreach (var pool in upgradeUnitPoolsDic)
+        {
+            foreach (var existingUnit in pool.Value.List)
+            {
+                if (existingUnit != null)
+                    RegisterGetEffectEvent(existingUnit, newUnit);
+            }
+        }
+    }
+
+    // 기존 유닛이 상태 적용 시 발동되는 능력을 보유 했으면 새 유닛 이벤트에 기존 유닛의 능력 등록
+    private void RegisterGetEffectEvent(AllyUnit existingUnit, AllyUnit newUnit)
+    {
+        // 새 유닛이 정화 유닛이면 기존 일반 유닛 이벤트에 새 유닛의 능력 등록
+        if (newUnit.SpecialAbility != null && newUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
+        {
+            if (existingUnit.SpecialAbility == null || 
+                existingUnit.SpecialAbility.ActiveCondition != SpecialAbility.ActiveType.GET_EFFECT)
+                existingUnit.onGetDurationEffect += newUnit.SpecialAbility.OnGetDurationEffect;
+
+            return;
+        }
+
+        // 새 유닛이 일반 유닛이면 기존 정화 유닛의 능력을 새 유닛 이벤트에 등록
+        if (existingUnit.SpecialAbility != null && 
+            existingUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
+            newUnit.onGetDurationEffect += existingUnit.SpecialAbility.OnGetDurationEffect;
+    }
 }
