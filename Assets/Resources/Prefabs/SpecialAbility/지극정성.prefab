@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6087136779530694478}
-  - component: {fileID: 391319948902025395}
+  - component: {fileID: -1495539943519626008}
   m_Layer: 0
   m_Name: "\uC9C0\uADF9\uC815\uC131"
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &391319948902025395
+--- !u!114 &-1495539943519626008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,25 +41,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3272279308540918718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2166915a912a5904e9ee20366ae79348, type: 3}
+  m_Script: {fileID: 11500000, guid: 6720e6202f0ca2f4abc5f17d22f18a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: USkillAbility006
-  icon: {fileID: 21300000, guid: 7acad973dfcc929448bf037961d342bc, type: 3}
+  icon: {fileID: 0}
   onActivate:
-    _PersistentCalls:
-    - _Target: {fileID: 391319948902025395}
-      _MemberName: ClearCurseEffect
-      _PersistentArguments:
-      - _Type: 14
-        _Int: 1
-        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-  activeType: 6
+    _PersistentCalls: []
+  activeType: 0
   audioClip: {fileID: 0}
   auraVFX: {fileID: 0}
   unit: {fileID: 0}
+  range: 5
+  onClearCurse:
+    _PersistentCalls: []
+  vfx: {fileID: 394121244687453882, guid: d1fb32ea1e5157a489259e8d9a29f77c, type: 3}

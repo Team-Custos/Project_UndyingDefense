@@ -1,5 +1,6 @@
 using InputEventInterface;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -27,6 +28,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
+    [SerializeField] private SpecialAbility specialAbility;
 
 
     [SerializeField] private Image[] alarmImages;
@@ -54,11 +56,16 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic =
         new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
 
+    private List<Unit> appliedCurseEffectUnitList = new List<Unit>();       // 저주 상태에 걸린 유닛 관리용 리스트
+
     [SerializeField] SelectedUnitManager selectedUnitManager;
 
     [SerializeField] private AudioClip allySummon;
 
     public AllyUnitData[] Units => units;
+    public SpecialAbility SpecialAbility => specialAbility;
+    public IReadOnlyList<Unit> AppliedCurseEffectUnitList => appliedCurseEffectUnitList;
+
 
 
 
@@ -111,6 +118,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this, waveManager);
+
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
         unit.SetUnitStats(unitStats);
 
@@ -118,9 +126,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         unit.SetInstantEffectPool(instantEffectPool);
         unit.SetEffectImagePool(effectImagePool);
         unit.SetHitVFXPool(hitVFXPool, skillVFXPool);
-
-        // 상태를 받았을 때 실행 될 함수 등록
-        RegisterGetEffectEvent(unit);
 
         unitPools[index].List.Add(unit);
 
@@ -168,8 +173,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
-            // 상태를 받았을 때 실행 될 함수 등록
-            RegisterGetEffectEvent(upgradeUnit);
 
             //return upgradeUnit;
         }
@@ -412,50 +415,131 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
 
-    // 상태 적용 시 특수 능력 발동 경우
-
-    // 소환 되어있는 유닛들에게 상태 적용 시 발동되는 능력 이벤트 적용
-    private void RegisterGetEffectEvent(AllyUnit newUnit)
+    public void Register(Unit target)
     {
-        // 새로 소환되는 유닛의 능력이 상태 적용 시 발동되는 능력이면 자기 자신의 이벤트에 자기 능력 등록
-        if (newUnit.SpecialAbility != null && newUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
-            newUnit.onGetDurationEffect += newUnit.SpecialAbility.OnGetDurationEffect;
+        target.onGetCurseEffect -= OnGetCurseEffect;
+        target.onGetCurseEffect += OnGetCurseEffect;
 
-        foreach (var pool in unitPools)
-        {
-            foreach (AllyUnit existingUnit in pool.List)
-            {
-                if (existingUnit != null)
-                    RegisterGetEffectEvent(existingUnit, newUnit);
-            }
-        }
+        target.onRemoveCurseEffect -= UpdateCurseUnitList;
+        target.onRemoveCurseEffect += UpdateCurseUnitList;
 
-        foreach (var pool in upgradeUnitPoolsDic)
-        {
-            foreach (var existingUnit in pool.Value.List)
-            {
-                if (existingUnit != null)
-                    RegisterGetEffectEvent(existingUnit, newUnit);
-            }
-        }
+        UpdateCurseUnitList(target);
     }
 
-    // 기존 유닛이 상태 적용 시 발동되는 능력을 보유 했으면 새 유닛 이벤트에 기존 유닛의 능력 등록
-    private void RegisterGetEffectEvent(AllyUnit existingUnit, AllyUnit newUnit)
+    // 아군이 사망하거나 비활성화될 때 호출.
+    public void Unregister(Unit target)
     {
-        // 새 유닛이 정화 유닛이면 기존 일반 유닛 이벤트에 새 유닛의 능력 등록
-        if (newUnit.SpecialAbility != null && newUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
-        {
-            if (existingUnit.SpecialAbility == null || 
-                existingUnit.SpecialAbility.ActiveCondition != SpecialAbility.ActiveType.GET_EFFECT)
-                existingUnit.onGetDurationEffect += newUnit.SpecialAbility.OnGetDurationEffect;
-
+        if (target == null)
             return;
+
+        target.onGetCurseEffect -= OnGetCurseEffect;
+        target.onRemoveCurseEffect -= UpdateCurseUnitList;
+
+        appliedCurseEffectUnitList.Remove(target);
+    }
+
+
+
+
+    // 유닛에게 상태 효과가 적용되었을 때 호출
+    private void OnGetCurseEffect(Unit target, DurationEffect effect)
+    {
+        UpdateCurseUnitList(target);
+    }
+
+
+    // 저주가 부여된 유닛 리스트 관리 -> 적용 / 제거 시 호출
+    private void UpdateCurseUnitList(Unit target)
+    {
+        bool hasCurse = false;
+
+        if (!target.IsDead)
+        {
+            foreach (DurationEffect effect in target.EffectList)
+            {
+                if (effect != null &&effect.gameObject.activeSelf &&effect.Type == EffectType.CURSE)
+                {
+                    hasCurse = true;
+                    break;
+                }
+            }
         }
 
-        // 새 유닛이 일반 유닛이면 기존 정화 유닛의 능력을 새 유닛 이벤트에 등록
-        if (existingUnit.SpecialAbility != null && 
-            existingUnit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.GET_EFFECT)
-            newUnit.onGetDurationEffect += existingUnit.SpecialAbility.OnGetDurationEffect;
+        if (hasCurse)
+        {
+            // 저주가 여러 개여도 대상은 한 번만 등록.
+            if (!appliedCurseEffectUnitList.Contains(target))
+                appliedCurseEffectUnitList.Add(target);
+        }
+        else
+        {
+            // 마지막 저주가 없어졌거나 대상이 사망했다면 제거.
+            appliedCurseEffectUnitList.Remove(target);
+        }
     }
+
+
+
+
+    //public void ResgisterAbility(Unit spawnUnit)
+    //{
+    //    // 스폰 될 유닛이 특수 능력을 가지고 있는지 확인
+    //    if(spawnUnit.SpecialAbility != null)        // 스폰 된 유닛이 특수 능력을 가지고 있음
+    //    {
+    //        SpecialAbility specialAbility = spawnUnit.SpecialAbility;
+
+    //        foreach (var pool in unitPools)
+    //        {
+    //            foreach (var unit in pool.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환 된 유닛들 중 같은 특수 능력을 보유 하지 않는 유닛들 등록
+    //                if(unit.SpecialAbility == null || unit.SpecialAbility != specialAbility)
+    //                    spawnUnit.SpecialAbility.Register(unit);
+    //            }
+    //        }
+
+    //        foreach (var kvp in upgradeUnitPoolsDic)
+    //        {
+    //            foreach (var unit in kvp.Value.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환 된 유닛들 중 같은 특수 능력을 보유 하지 않는 유닛들 등록
+    //                if (unit.SpecialAbility == null || unit.SpecialAbility != specialAbility)
+    //                    spawnUnit.SpecialAbility.Register(unit);
+    //            }
+    //        }
+    //    }
+    //    else    // 스폰될 유닛 특수 능력 없음
+    //    {
+    //        foreach (var pool in unitPools)
+    //        {
+    //            foreach (var unit in pool.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환되어 있는 유닛 중 특수 능력 보유 유닛과 연결
+    //                if(unit.SpecialAbility != null)
+    //                    unit.SpecialAbility.Register(spawnUnit);
+    //            }
+    //        }
+
+    //        foreach (var kvp in upgradeUnitPoolsDic)
+    //        {
+    //            foreach (var unit in kvp.Value.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                if (unit.SpecialAbility != null)
+    //                    unit.SpecialAbility.Register(spawnUnit);
+    //            }
+    //        }
+    //    }
+    //}
 }

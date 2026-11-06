@@ -25,7 +25,7 @@ public class SpecialAbility : MonoBehaviour
     [SerializeField] private ActiveType activeType;
     [SerializeField] private AudioClip audioClip; // 능력 발동 시 재생할 오디오
     [SerializeField] private GameObject auraVFX;
-    [SerializeField] private Unit unit;
+    [SerializeField] protected Unit unit;
 
     private Collider[] targets;
     private float damage;
@@ -40,6 +40,22 @@ public class SpecialAbility : MonoBehaviour
     private void Start()
     {
         AuraVFXScaleMult();
+    }
+
+    // 능력 소유 유닛 설정
+    public virtual void Initialize(Unit unit)
+    {
+        //this.unit = unit;
+    }
+
+    public virtual void Register(Unit target)
+    {
+
+    }
+
+    public virtual void Unregister(Unit target)
+    {
+
     }
 
     public void Activate(Unit unit, Unit target)
@@ -200,8 +216,9 @@ public class SpecialAbility : MonoBehaviour
 
     public void OnGetDurationEffect(Unit target, DurationEffect effect)
     {
-        target.RemoveDurationEffect(effect);
-        Debug.Log("능력 발동");
+        //target.RemoveDurationEffect(effect);
+        //Activate(unit, target);
+        Debug.Log("상태 부여 시 발동되는 능력 적용");
     }
 
     //private void ClearCurseEffect(Unit target, DurationEffect effect)

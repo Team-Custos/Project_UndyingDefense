@@ -50,6 +50,7 @@ public class AllyUnit : Unit
 
     public bool IsChange => isChange;
     public bool IsUpgrade => isUpgrade;
+    public AllyUnitSpawner Spawner => spawner;
 
     public override UnitData Data => data;
 
@@ -101,16 +102,12 @@ public class AllyUnit : Unit
 
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
+        if (SpecialAbility != null)
+            SpecialAbility.Initialize(this);
 
-        //mode = Mode.FREE;
+        spawner.Register(this);
     }
 
-    //public void UpgradeInitialize()
-    //{
-    //    base.Initialize();
-    //    mode = Mode.UPGRADE;
-    //    isDead = false;
-    //}
 
     public void Initialize(AllyUnitData data, ObjectPoolWithList<AllyUnit> pool, AllyUnitSpawner spawner, WaveManager waveManager)
     {
@@ -856,6 +853,7 @@ public class AllyUnit : Unit
             upgradeDuraiton = 3f;
             isUpgrade = false;
 
+            spawner.Unregister(this);
             pool.Pool.Release(this);
             gameObject.SetActive(false);
         }
@@ -1019,6 +1017,7 @@ public class AllyUnit : Unit
             isUpgrade = false;
         }
 
+
         executionUnit = null;
         base.Die();
 
@@ -1026,6 +1025,8 @@ public class AllyUnit : Unit
 
         unitGrid.ClearTile();
         siegeModeVFx.SetActive(false);
+
+        spawner.Unregister(this);
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }
