@@ -282,6 +282,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         //float gold = inGameManager.inGameGold;
         unitUpgradeMenuUI.SetUpgradeUnitMenu(selectedUnit);     // v 리팩토링 코드_261021 // v 골드 안넘겨주기
         RefreshUpgradeCost();
+
+        camManager.FocusSelectedUnit(selectedUnit.transform.position);
     }
 
     //// 인게임매니저에서 골드를 가져와 비용을 확인하고 비용글자색을 바꾸는 메서드

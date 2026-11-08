@@ -112,47 +112,63 @@ public class SelectedUnitUI : MonoBehaviour
     // Update is called once per frame
     //void Update()
     //{
-        //if (selecteUnitManger.SelectedUnit != null)
-        //{
-        //    UpdateUnitUI();
+    //if (selecteUnitManger.SelectedUnit != null)
+    //{
+    //    UpdateUnitUI();
 
-        //    if (selecteUnitManger.SelectedUnit.HpPercent <= 0)
-        //        return;
+    //    if (selecteUnitManger.SelectedUnit.HpPercent <= 0)
+    //        return;
 
-        //    if (selecteUnitManger.SelectedUnit is AllyUnit)
-        //    {
-        //        allyUnitUI.SetActive(true);
-        //        allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
-        //        enemyUnitUI.SetActive(false);
-        //    }
-        //    else if (selecteUnitManger.SelectedUnit is EnemyUnit)
-        //    {
-        //        enemyUnitUI.SetActive(true);
-        //        enemyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
-        //        allyUnitUI.SetActive(false);
-        //    }
-        //}
+    //    if (selecteUnitManger.SelectedUnit is AllyUnit)
+    //    {
+    //        allyUnitUI.SetActive(true);
+    //        allyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+    //        enemyUnitUI.SetActive(false);
+    //    }
+    //    else if (selecteUnitManger.SelectedUnit is EnemyUnit)
+    //    {
+    //        enemyUnitUI.SetActive(true);
+    //        enemyUnitUI.transform.position = selecteUnitManger.SelectedUnit.transform.position;
+    //        allyUnitUI.SetActive(false);
+    //    }
+    //}
     //}
 
     //--리팩토링 261025
 
-    private void LateUpdate()
+    //private void LateUpdate()
+    //{
+    //    if (target == null || target.IsDead)
+    //        return;
+
+    //    UpdateUnitUIPosition();   // 위치 갱신만
+    //}
+
+    // LateUpdate() 삭제 후 아래로 교체
+    private void OnEnable() => CinemachineCore.CameraUpdatedEvent.AddListener(OnCameraUpdated);
+    private void OnDisable() => CinemachineCore.CameraUpdatedEvent.RemoveListener(OnCameraUpdated);
+
+    // Cinemachine이 카메라를 다 움직인 직후에 호출됨
+    private void OnCameraUpdated(CinemachineBrain brain)
     {
         if (target == null || target.IsDead)
             return;
 
-        UpdateUnitUIPosition();   // 위치 갱신만
+        UpdateUnitUIPosition();
     }
 
+    // 필드 정리
+    [SerializeField] private Vector2 menuScreenOffset = new Vector2(120f, -80f);
     private void UpdateUnitUIPosition()
     {
+        //***
         // 체력바 위치 (기존 UpdateUnitUI의 unitHPPrefab 부분)
         Vector3 hpWorldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
         unitHPPrefab.transform.position = mainCamera.WorldToScreenPoint(hpWorldPos);
 
-        if(unitMenuPrefab.activeSelf)
+        if (unitMenuPrefab.activeSelf)
         {
-            // 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
+            //// 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
             float currentFov = framingTransposer.m_CameraDistance;
             float zoomPercent = (currentFov - ingameCamManager.ZoomMin)
                               / (ingameCamManager.ZoomMax - ingameCamManager.ZoomMin);
@@ -161,8 +177,8 @@ public class SelectedUnitUI : MonoBehaviour
             Vector3 menuWorldPos = target.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercent * menuY);
             unitMenuPrefab.transform.position = mainCamera.WorldToScreenPoint(menuWorldPos);
         }
+        //***
 
-        currentUI.position = target.transform.position;
         // 아군/적군 UI 위치 (기존 Update에 있던 부분)
         //if (target is AllyUnit)
         //    allyUnitUI.transform.position = target.transform.position;
