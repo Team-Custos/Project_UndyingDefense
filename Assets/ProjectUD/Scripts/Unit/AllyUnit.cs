@@ -680,8 +680,6 @@ public class AllyUnit : Unit
                         if (selectedUnitManager != null)
                             selectedUnitManager.OnSelectedUnitOrderProgress(this, 1 - (changeDuration / 3.0f));
 
-                        if (defaultSiegeEffect.activeSelf)
-                            defaultSiegeEffect.SetActive(false);
                     }
                     else    // 변경 끝
                     {
@@ -812,7 +810,6 @@ public class AllyUnit : Unit
             if (!changeEffet.activeSelf)
                 changeEffet.SetActive(true);
 
-            defaultSiegeEffect.SetActive(false);
 
             //if (selectedUnitUI != null)
             //{

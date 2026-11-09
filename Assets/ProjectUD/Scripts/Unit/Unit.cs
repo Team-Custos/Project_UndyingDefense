@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UltEvents;
 using ActiveType = SpecialAbility.ActiveType;
 using AttackType = AttackData.AttackType;
 
@@ -307,23 +308,23 @@ public abstract class Unit : MonoBehaviour
 
     }
 
-    public void SetUnitStats(UnitStats unitStats)
-    {
-        this.unitStats = unitStats;
+    //public void SetUnitStats(UnitStats unitStats)
+    //{
+    //    this.unitStats = unitStats;
 
-        if (unitStats != null)
-        {
-            maxhp = unitStats.maxHp;
-            hp = unitStats.maxHp;
-            critPercent = unitStats.critChance;
-            mental = unitStats.mental;
-            interval = unitStats.interval;
-            intervalCheck = 0;
-            navAgent.speed = unitStats.moveSpeed;
-        }
-        else
-            Debug.Log("데이터 없음");
-    }
+    //    if (unitStats != null)
+    //    {
+    //        maxhp = unitStats.maxHp;
+    //        hp = unitStats.maxHp;
+    //        critPercent = unitStats.critChance;
+    //        mental = unitStats.mental;
+    //        interval = unitStats.interval;
+    //        intervalCheck = 0;
+    //        navAgent.speed = unitStats.moveSpeed;
+    //    }
+    //    else
+    //        Debug.Log("데이터 없음");
+    //}
 
     public void SetHitVFXPool(VFXObjectPool hitVFXPool, VFXObjectPool skillVFXPool)
     {
@@ -388,6 +389,49 @@ public abstract class Unit : MonoBehaviour
 
     // 스킬 사용 시작 함수
     public virtual void UseSkill(SkillBase skill, Unit target)
+    {
+        if (isDead) return;
+
+        //isSkillEffectAlreadyActivated = false;
+
+        if (target != null && target != this)
+            transform.LookAt(target.transform);
+
+        intervalCheck = interval / attackSpeedMult;
+        skillEffectActivationTime = skill.Data.ActivateTime / attackSpeedMult;
+
+        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
+
+        if (navAgent.enabled)
+            navAgent.isStopped = true;
+
+        modelAnimator.SetBool("isRunning", false);
+
+        isSkillEffectAlreadyActivated = false;
+
+        if (skill.Data.StartVFX != null)
+        {
+            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
+            vfx.transform.position = transform.position;
+            vfx.transform.rotation = transform.rotation;
+            vfx.SetActive(true);
+        }
+
+        if (skill.Data.StartSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
+        }
+
+
+        //currentSkill = null;
+
+        //if (stateDurationCheck >= stateDuration)
+        //{
+        //    stateDurationCheck = 0f;
+        //    stateDuration = 0f;
+        //}
+        stateDurationCheck = 0f;
+    }
     //public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
     //{
     //    this.selectedUnitInfoPanel = selectedUnitInfoPanel;
