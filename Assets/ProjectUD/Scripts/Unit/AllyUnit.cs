@@ -673,10 +673,15 @@ public class AllyUnit : Unit
                         if (!changeEffet.activeSelf)
                             changeEffet.SetActive(true);
 
-                        if (selectedUnitUI != null)
-                        {
-                            selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
-                        }
+                        //if (selectedUnitUI != null)
+                        //{
+                        //    selectedUnitUI.ShowUnitDuration(1 - (changeDuration / 3.0f));
+                        //}
+                        if (selectedUnitManager != null)
+                            selectedUnitManager.OnSelectedUnitOrderProgress(this, 1 - (changeDuration / 3.0f));
+
+                        if (defaultSiegeEffect.activeSelf)
+                            defaultSiegeEffect.SetActive(false);
                     }
                     else    // 변경 끝
                     {
@@ -686,11 +691,6 @@ public class AllyUnit : Unit
                         NavMesh.CalculatePath(transform.position, transform.position, navAgent.areaMask, path);
                         if (path.status == NavMeshPathStatus.PathComplete)
                         {
-                            if (selectedUnitUI != null)
-                            {
-                                selectedUnitUI.ShowAllyUI(this);
-                                selectedUnitUI.HideUnitDuration();
-                            }
 
                             mode = Mode.FREE;
                             freeModeState = FreeModeState.COMBAT;
@@ -702,6 +702,13 @@ public class AllyUnit : Unit
 
                             changeDuration = 3f;
                             isChange = false;
+                            //if (selectedUnitUI != null)
+                            //{
+                            //    selectedUnitUI.ShowAllyUI(this);
+                            //    selectedUnitUI.HideUnitDuration();
+                            //}
+                            if (selectedUnitManager != null)
+                                selectedUnitManager.OnSelectedUnitModeChanged(this);
                         }
                     }
                 }
@@ -745,18 +752,15 @@ public class AllyUnit : Unit
                             if (!changeEffet.activeSelf)
                                 changeEffet.SetActive(true);
 
-                            if (selectedUnitUI != null)
-                            {
-                                selectedUnitUI.ShowUnitDurtion(1 - (changeDuration / 3.0f));
-                            }
+                            //if (selectedUnitUI != null)
+                            //{
+                            //    selectedUnitUI.ShowUnitDuration(1 - (changeDuration / 3.0f));
+                            //}
+                            if (selectedUnitManager != null)
+                                selectedUnitManager.OnSelectedUnitOrderProgress(this, 1 - (changeDuration / 3.0f));
                         }
                         else
                         {
-                            if (selectedUnitUI != null)
-                            {
-                                selectedUnitUI.ShowAllyUI(this);
-                                selectedUnitUI.HideUnitDuration();
-                            }
 
                             changeEffet.SetActive(false);
 
@@ -768,6 +772,13 @@ public class AllyUnit : Unit
                             changeDuration = 3f;
                             isChange = false;
 
+                            //if (selectedUnitUI != null)
+                            //{
+                            //    selectedUnitUI.ShowAllyUI(this);
+                            //    selectedUnitUI.HideUnitDuration();
+                            //}
+                            if (selectedUnitManager != null)
+                                selectedUnitManager.OnSelectedUnitModeChanged(this);
                         }
                     }
                 }
@@ -780,8 +791,8 @@ public class AllyUnit : Unit
         isChange = true;
         siegeModeVFx.SetActive(false);
 
-        if (selectedUnitUI != null)
-            selectedUnitUI.HideAllyUI();
+        //if (selectedUnitUI != null)
+        //    selectedUnitUI.HideAllyUI();
     }
 
     private void UpgradeUnit()
@@ -801,10 +812,14 @@ public class AllyUnit : Unit
             if (!changeEffet.activeSelf)
                 changeEffet.SetActive(true);
 
-            if (selectedUnitUI != null)
-            {
-                selectedUnitUI.ShowUnitDurtion(1 - (upgradeDuraiton / 3.0f));
-            }
+            defaultSiegeEffect.SetActive(false);
+
+            //if (selectedUnitUI != null)
+            //{
+            //    selectedUnitUI.ShowUnitDuration(1 - (upgradeDuraiton / 3.0f));
+            //}
+            if (selectedUnitManager != null)
+                selectedUnitManager.OnSelectedUnitOrderProgress(this, 1 - (upgradeDuraiton / 3.0f));
         }
         else
         {
@@ -839,14 +854,19 @@ public class AllyUnit : Unit
                 isSelected = false;
                 upgradedUnit.isSelected = true;
 
-                selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                //selectedUnitUI.UpdateUnitInfo(upgradedUnit);
+                //selectedUnitInfoPanel.UpdateUnitInfo(upgradedUnit);   // 선택한 유닛 정보 패널
+
+                if (selectedUnitManager != null)
+                    selectedUnitManager.OnSelectedUnitUpgraded(this, upgradedUnit);
 
 
-                upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
-                upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
+                //upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
+                //upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
 
-                selectedUnitUI.ShowAllyUI(upgradedUnit);
-                selectedUnitUI.ShowHp(upgradedUnit);
+                //selectedUnitUI.ShowAllyUI(upgradedUnit);
+                //selectedUnitUI.ShowHp(upgradedUnit);    // 삭제 _261025
+                //selectedUnitUI.Show(upgradedUnit);
             }
 
             upgradeIndex = -1;
@@ -867,8 +887,10 @@ public class AllyUnit : Unit
 
         siegeModeVFx.SetActive(false);
 
-        if (selectedUnitUI != null)
-            selectedUnitUI.HideAllyUI();
+        //if (selectedUnitUI != null)
+         //   selectedUnitUI.HideAllyUI();
+        //if (selectedUnitUI != null)
+        //    selectedUnitUI.HideAllyUI();
     }
 
     public void UpdateCommandDestination(Vector3 pos)

@@ -16,7 +16,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private Transform spawnDirection;
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
-    [SerializeField] private SelectedUnitUI selectedUnitUI;
+    [SerializeField] private SelectedUnitInfoPanel selectedUnitInfoPanel;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Ingame_CursorManager cursorManager;
     [SerializeField] private UnitDataLoader unitDataLoader;
@@ -240,7 +240,12 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         inGameManager.UpdateOperateState(OperateState.SPAWN);
         unitSpawnUI.Select(index);
 
-        selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
+        //Unit buttonUnit = units[index].Prefab.GetComponent<Unit>();
+
+
+        //selectedUnitUI.UpdateUnitInfoByBtn(units[index], unitDataLoader);
+        UnitStats unitStats = unitDataLoader.GetUnitDataById(units[index].Id);
+        selectedUnitInfoPanel.UpdateUnitInfoByBtn(units[index], unitStats);
 
         SoundManager.Instance.PlayUIClickSFX();
     }
@@ -252,7 +257,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         indicator.SetActive(false);
         //mouseIndicator.SetActive(false);
         unitSpawnUI.Deselect();
-        selectedUnitUI.HideUntInfo();
+        //selectedUnitUI.HideUnitInfo();
+        selectedUnitInfoPanel.HideUnitInfo();
     }
 
     // 단축키로 유닛 스폰
@@ -334,7 +340,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
 
                     inGameManager.SetGold(allyUnitData.Cost, false);
-                    ingameScreenUI.SetspawnBtnPriceTextColor();
+                    //ingameScreenUI.SetspawnBtnPriceTextColor();
                 }
                 else// if(hit.transform.CompareTag("Obstacle"))
                 {

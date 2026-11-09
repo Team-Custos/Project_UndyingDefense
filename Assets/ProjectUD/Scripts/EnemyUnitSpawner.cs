@@ -4,8 +4,8 @@ using UnityEngine;
 public class EnemyUnitSpawner : MonoBehaviour
 {
     [SerializeField] private InGameManager inGameManager;
-    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
-    [SerializeField] private IngameScreenUI ingameScreenUI;
+    //[SerializeField] private UpgradeMenuUI upgradeMenuUI;     // 리팩토링으로 참조없음. 삭제!
+    //[SerializeField] private IngameScreenUI ingameScreenUI;   // 리팩토링으로 참조없음. 삭제!
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private WaveDataLoader waveDataLoader;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
@@ -204,10 +204,11 @@ public class EnemyUnitSpawner : MonoBehaviour
         float bonusGold = enmeyUnitData.Gold * (1f + bonusGoldPercent);
 
         inGameManager.SetGold(bonusGold, true);
-        ingameScreenUI.SetspawnBtnPriceTextColor();
-        upgradeMenuUI.UpdateUpgradeCostTxt();
-        
-        
+        //ingameScreenUI.SetspawnBtnPriceTextColor();
+        //upgradeMenuUI.UpdateUpgradeCostTxt();       // 삭제 예정 코드
+        //upgradeMenuUI.UpdateCostTxtColor(inGameManager.inGameGold);         // 리팩토링 코드
+
+
     }
 
     public void OnEnemyDead()

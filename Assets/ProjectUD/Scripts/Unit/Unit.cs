@@ -1,10 +1,9 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using AttackType = AttackData.AttackType;
 using ActiveType = SpecialAbility.ActiveType;
-using AYellowpaper.SerializedCollections;
-using UltEvents;
+using AttackType = AttackData.AttackType;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -153,8 +152,13 @@ public abstract class Unit : MonoBehaviour
         set => isSelected = value;
     }
 
-    protected SelectedUnitUI selectedUnitUI;
-    protected SelectedUnitManager selectedUnitManager;
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026
+    //------------------------------
+    //protected SelectedUnitUI selectedUnitUI;
+    //protected SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
+    protected SelectedUnitManager selectedUnitManager;       // 매니저 하나를 이용해서 SelectedUnitUI, infoPanel 에게 명령을 내리는 것으로 변경
+                                                             // 유닛은 매니저 하나만 참조를 가질 것
 
     protected static AudioClip[] slashHitSFX;
     protected static AudioClip slashCritSFX;
@@ -164,7 +168,6 @@ public abstract class Unit : MonoBehaviour
     protected static AudioClip crushCritSFX;
 
     protected static GameObject unitDeathVFX;
-
 
 
     protected static AudioClip[] SlashHitSFX
@@ -343,6 +346,27 @@ public abstract class Unit : MonoBehaviour
         this.effectImagePool = effectImagePool;
     }
 
+    public void SetUnitStats(UnitStats unitStats)
+    {
+        this.unitStats = unitStats;
+
+        if (unitStats != null)
+        {
+            maxhp = unitStats.maxHp;
+            hp = unitStats.maxHp;
+            critPercent = unitStats.critChance;
+            mental = unitStats.mental;
+            intervalCheck = unitStats.interval;
+            interval = 0;
+            navAgent.speed = unitStats.moveSpeed;
+            //navAgent.stoppingDistance = 1.0f;
+
+            NotifyHpChanged();
+        }
+        else
+            Debug.Log("데이터 없음");
+
+    }
 
     public void SetUnitStatsByUpgradeUI(UnitStats unitStats)
     {
@@ -352,10 +376,10 @@ public abstract class Unit : MonoBehaviour
         mental = unitStats.mental;
     }
 
-    public void SetSelectedUnitUI(SelectedUnitUI selectedUnitUI)
-    {
-        this.selectedUnitUI = selectedUnitUI;
-    }
+    //public void SetSelectedUnitUI(SelectedUnitUI selectedUnitUI)
+    //{
+    //    this.selectedUnitUI = selectedUnitUI;
+    //}
 
     public void SetSelectedUnitManager(SelectedUnitManager selectedUnitManager)
     {
@@ -364,6 +388,20 @@ public abstract class Unit : MonoBehaviour
 
     // 스킬 사용 시작 함수
     public virtual void UseSkill(SkillBase skill, Unit target)
+    //public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
+    //{
+    //    this.selectedUnitInfoPanel = selectedUnitInfoPanel;
+    //}
+
+    private void NotifyHpChanged()
+    {
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitHpChanged(this);
+    }
+
+
+
+    protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
         if (isDead) return;
 
@@ -1320,6 +1358,8 @@ public abstract class Unit : MonoBehaviour
         hp -= Damage;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
+        NotifyHpChanged();  
+
         // ex) 자폭
         ActivateSpecialAbility(ActiveType.HP, null);
 
@@ -1333,10 +1373,16 @@ public abstract class Unit : MonoBehaviour
 
         
 
-        if (selectedUnitUI != null)
-        {
-            selectedUnitUI.UpdateHPUI(this);
-        }
+        //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
+        //{
+        //    selectedUnitUI.UpdateHPUI(this);
+        //}
+
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    //selectedUnitInfoPanel.UpdateHPUI(this);
+        //    selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);        // ayo 수정 _261026
+        //}
     }
 
 
@@ -1346,11 +1392,18 @@ public abstract class Unit : MonoBehaviour
         hp += amount;
         hp = Mathf.Clamp(hp, 0f, Maxhp);
 
+        NotifyHpChanged();
 
-        if (selectedUnitUI != null)
-        {
-            selectedUnitUI.UpdateHPUI(this);
-        }
+        //if (selectedUnitUI != null)     // 삭제 예정_261018_ayo
+        //{
+        //    selectedUnitUI.UpdateHPUI(this);
+        //}
+
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    //selectedUnitInfoPanel.UpdateHPUI(this);
+        //    selectedUnitInfoPanel.UpdateHPUI(hp, maxhp);    // ayo 수정 _261026
+        //}
     }
 
     public virtual void Die()
@@ -1375,23 +1428,9 @@ public abstract class Unit : MonoBehaviour
         PlayAnimation("Die");
         //modelAnimator.SetTrigger("Die");
 
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitDead(this);
 
-        if (selectedUnitUI != null)
-        {
-            // ui 제거
-            selectedUnitUI.HideHp();
-            selectedUnitUI.HideAllyUI();
-            //selectedUnitUI.HideUpgrdeUI();
-            selectedUnitManager.CancleUpgrade();
-            selectedUnitUI.HideUntInfo();
-        }
-
-        if (selectedUnitManager != null && selectedUnitManager.SelectedUnit == this)
-        {
-            selectedUnitManager.DeSelecteUnit();
-        }
-
-        
     }
 
 
@@ -1718,10 +1757,18 @@ public abstract class Unit : MonoBehaviour
 
     public void UpdateState()
     {
-        if(selectedUnitUI != null)
-        {
-            selectedUnitUI.UpdateUnitStateUI();
-        }
+        //if(selectedUnitUI != null)        // 261018_ayo
+        //{
+        //    selectedUnitUI.UpdateUnitStateUI();
+        //}
+
+        //if (selectedUnitInfoPanel != null)
+        //{
+        //    selectedUnitInfoPanel.UpdateUnitStateUI();
+        //}
+
+        if (selectedUnitManager != null)
+            selectedUnitManager.OnSelectedUnitStateChanged(this);
     }
 
     public void StopUnit()

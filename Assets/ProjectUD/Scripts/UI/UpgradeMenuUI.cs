@@ -3,8 +3,79 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class UpgradeMenuUI : MonoBehaviour
+public class UpgradeMenuUI : MonoBehaviour      // 병사 승급 UI를 관리하는 객체
 {
+    [Header(" ■ 승급 유닛 패널 배열")]
+    [SerializeField] private UpgradeUnitPanel[] upgradeUnitPanels;
+
+    [SerializeField] private UnitDataLoader unitDataLoader;
+
+    private Unit selectedUnit;
+
+    // 선택된 유닛의 업그레이드 가능한 유닛들의 정보를 전달하는 메서드
+    // SelectedUnitManager에서 호출
+    public void SetUpgradeUnitMenu(Unit selectedUnit)       // 골드 받아올 필요 없음 매개변수 수정하기
+    {
+        if (selectedUnit is EnemyUnit)
+            return;
+        this.selectedUnit = selectedUnit;
+        UnitData unitData = selectedUnit.Data;
+        AllyUnitData selectedUnitData = (AllyUnitData)unitData;
+        for (int i = 0; i < upgradeUnitPanels.Length; i++)
+        {
+            if (i < selectedUnitData.UpgradeUnits.Length)
+            {
+                // 업글가능 유닛데이터에서 유닛을 가져와서 패널에 세팅
+                AllyUnitData upgradeUnitData = selectedUnitData.UpgradeUnits[i] as AllyUnitData;
+                UnitStats upgradeUnitStats = 
+                    upgradeUnitData != null ? unitDataLoader.GetUnitDataById(upgradeUnitData.Id) : null;
+                bool valid = upgradeUnitStats != null;
+                upgradeUnitPanels[i].gameObject.SetActive(valid);
+                if (!valid) { Debug.LogWarning($"승급 데이터 없음: index {i}", this); continue; }
+                upgradeUnitPanels[i].SetUpgradeUnitPanel(upgradeUnitData, upgradeUnitStats,  i, selectedUnit.UnitStats.maxHp);
+            }
+            else
+            {
+                upgradeUnitPanels[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026 _ 진행중
+    //------------------------------
+    // SelectedUnitManager에서 호출하는 메서드
+    public void SetUpgradeAvailable(int index, bool canUpgrade)      // 인덱스, 논리값
+    {
+        if (index < 0 || index >= upgradeUnitPanels.Length || !upgradeUnitPanels[index].gameObject.activeSelf)
+            return;
+
+        upgradeUnitPanels[index].UpdateCostTextColorAndPerformBtn(canUpgrade);
+    }
+
+    // 업그레이드 UI 닫기
+    public void HideUpgradeUI()
+    {
+        //selectedUI.gameObject.SetActive(false);
+
+        //for(int i = 0; i < frameImage.Length; i++)
+        //{
+        //    frameImage[i].sprite = frameIcon;
+        //}
+
+        //upgradePerformBtn.interactable = false;
+
+        //gameObject.SetActive(false);
+
+        // 업그레이드 유닛 패널 비활성화
+        for (int i = 0;i < upgradeUnitPanels.Length;i++)
+        {
+            upgradeUnitPanels[i].gameObject.SetActive(false);
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------
+    /*
     [SerializeField] private InGameManager inGameManager;
     [SerializeField] private SelectedUnitManager selectedUnitManager;
     [SerializeField] private SelectedUnitUI selectedUnitUI;
@@ -32,6 +103,15 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image firstUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] firstUpgradeUnitTierImage;
     [SerializeField] private Image lockImage;
+    //--추가
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitHpText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitMentalText;
+    [SerializeField] private TextMeshProUGUI firstUpgradeUnitAttackRangeText;
+    [SerializeField] private Image firstUpgradeUnitGSkillImage;
+    [SerializeField] private Image firstGSkillAttackTypeIcon;
+    [SerializeField] private Image firstUpgradeUnitSSkillImage;
+    [SerializeField] private Image firstSSkillAttackTypeIcon;
+    [SerializeField] private Image firstUpgradeUnitAbilityImage;
 
     [Header(" ■ 두번째 업그레이드 유닛")]
     [SerializeField] private Image secondUpgradeUnitBackImage;
@@ -41,6 +121,15 @@ public class UpgradeMenuUI : MonoBehaviour
     [SerializeField] private Image secondUpgradeUnitAtTypeImage;
     [SerializeField] private Image secondUpgradeUnitDfTypeImage;
     [SerializeField] private Image[] secondUpgradeUnitTierImage;
+    //--추가
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitHpText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitMentalText;
+    [SerializeField] private TextMeshProUGUI secondUpgradeUnitAttackRangeText;
+    [SerializeField] private Image secondUpgradeUnitGSkillImage;
+    [SerializeField] private Image secondGSkillAttackTypeIcon;
+    [SerializeField] private Image secondUpgradeUnitSSkillImage;
+    [SerializeField] private Image secondSSkillAttackTypeIcon;
+    [SerializeField] private Image secondUpgradeUnitAbilityImage;
 
     [Header(" ■ 업그레이드할 유니의 정보")]
     [SerializeField]private GameObject infoPanel;
@@ -134,12 +223,14 @@ public class UpgradeMenuUI : MonoBehaviour
             GetLocalizedString("CommonUI", $"{roleId}", LocalizationSettings.SelectedLocale);
     }
 
+    // --- 기능 이전 완료---
     private void FieldNameLocalization(UnitData data, TextMeshProUGUI text)
     {
         text.text = LocalizationSettings.StringDatabase.
             GetLocalizedString("UnitStringData(Name, Description)", $"{data.Id}_name", LocalizationSettings.SelectedLocale);
     }
 
+    // 혹시 모를 툴팁 추가를 위해 함수 놔두기
     private void FieldSkillLocalization(Unit unit)
     {
         //--Local 스킬이름
@@ -187,6 +278,7 @@ public class UpgradeMenuUI : MonoBehaviour
         infoSSkillEtc.text = $"{sCooltime} / {sRange} / {sMental}";
     }
 
+    // 업그레이드 유닛아이콘 버튼 메서드   // 리디자인에서 필요없는 기능.
     public void ToggleUpgradeUnit(int index)
     {
 
@@ -302,7 +394,8 @@ public class UpgradeMenuUI : MonoBehaviour
 
     }
 
-    public void PerformUpgrade()
+    // 승급버튼용 메서드 => 승급 버튼에 SelectedUnitManager의 UpgradeSelectedUnit() 메서드 이벤트 등록하기
+    public void PerformUpgrade()    
     {
         if (upgradeIndex == -1)
             return;
@@ -311,6 +404,7 @@ public class UpgradeMenuUI : MonoBehaviour
         SoundManager.Instance.PlayUIClickSFX();
     }
 
+    // ---기능 이전 완료---
     public void SetUnitUpgradeMenu(Unit selectedUnit)
     {
         if (selectedUnit is EnemyUnit)
@@ -331,6 +425,7 @@ public class UpgradeMenuUI : MonoBehaviour
         firstUpgradeBtn.interactable = true;
         lockImage.gameObject.SetActive(false);
 
+        //----
         // 현재 선택된 유닛
         selectedUnitImage.sprite = selectedUnit.Data.Icon;
         //selectedUnitNameText.text = selectedUnit.Data.Name;
@@ -343,7 +438,7 @@ public class UpgradeMenuUI : MonoBehaviour
         {
             selectedUnitTierImage[i].gameObject.SetActive(i < selectedUnit.Data.Tier);
         }
-
+        //----
 
         AllyUnitData allyUnitData = (AllyUnitData)currentUnitData;
 
@@ -359,23 +454,43 @@ public class UpgradeMenuUI : MonoBehaviour
             //    lockImage.gameObject.SetActive(true);
             //}
 
+            // 업그레이드 유닛 패널 오브젝트 1번 활성화 구현하기
+
             secondUpgradeUnitBackImage.gameObject.SetActive(false);
             twoLine.SetActive(false);
             oneLine.SetActive(true);
             firstUpgradeUnitBackImage.rectTransform.position = middlePos.position;
 
-            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];
+            //---
+            UnitData firstUpgradeUnitData = allyUnitData.UpgradeUnits[0];   // 필요없는 코드. 확인해보기
             firstUnitData = firstUpgradeUnitData;
             firstUpgradeUnit = firstUpgradeUnitData.Prefab.GetComponent<Unit>();
 
+            //----
             if (firstUpgradeUnitData != null)
             {
                 // 첫번째 업그레이드 유닛
                 firstUpgradeUnitImage.sprite = firstUpgradeUnitData.Icon;
                 //firstUpgradeUnitNameText.text = firstUpgradeUnitData.Name;
                 FieldNameLocalization(firstUpgradeUnitData, firstUpgradeUnitNameText);
-                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;
+                firstUpgradeUnitAtTypeImage.sprite = firstUpgradeUnitData.AtTypeIcon;   // 삭제하기
                 firstUpgradeUnitDfTypeImage.sprite = firstUpgradeUnitData.DfTypeIcon;
+
+                //---리디자인으로 인한 추가
+                
+                firstUpgradeUnitHpText.text =
+                    firstUpgradeUnit.UnitStats.maxHp.ToString() + " (+ " + (firstUpgradeUnit.UnitStats.maxHp - currentUnit.Maxhp).ToString() + ")";
+                firstUpgradeUnitMentalText.text = firstUpgradeUnit.UnitStats.mental.ToString();
+                firstUpgradeUnitAttackRangeText.text = firstUpgradeUnit.UnitStats.attackRange.ToString();
+
+                firstUpgradeUnitGSkillImage.sprite = firstUpgradeUnit.GeneralSkill.Data.Icon;
+                firstUpgradeUnitSSkillImage.sprite = firstUpgradeUnit.SpecialSkill.Data.Icon;
+                firstUpgradeUnitAbilityImage.sprite = firstUpgradeUnit.SpecialAbility.Icon;
+
+                AttackSkillData gSkillData = firstUpgradeUnit.GeneralSkill.Data as AttackSkillData;
+                firstGSkillAttackTypeIcon.sprite = gSkillData.Info.TypeIcon;
+                AttackSkillData sSkillData = firstUpgradeUnit.SpecialSkill.Data as AttackSkillData;
+                firstSSkillAttackTypeIcon.sprite = sSkillData.Info.TypeIcon;
 
                 for (int i = 0; i < firstUpgradeUnitTierImage.Length; i++)
                 {
@@ -493,7 +608,7 @@ public class UpgradeMenuUI : MonoBehaviour
 
 
 
-    private void SetUnitBackImage(Unit selectedUnit)
+    private void SetUnitBackImage(Unit selectedUnit)    // 유닛 등급에 따라 배경 이미지 변경-> 없어도 되는 기능?
     {
         if(selectedUnit.Data.Tier == 1)
         {
@@ -515,7 +630,9 @@ public class UpgradeMenuUI : MonoBehaviour
         }
     }
 
-    public void UpdateUpgradeCostTxt()
+    // ---기능 리팩토링 완--
+    // --- UpgradeUnitPanel.cs 로 이동 > 참조 바꾸기 & 현재 골드 매개변수로 전달 받기
+    public void UpdateUpgradeCostTxt()  // 골드 텍스트 색생 업데이트 WaveManager, EnemyUnitSpawner 에서 호출
     {
         currentGoldText.text = inGameManager.inGameGold.ToString();
 
@@ -525,28 +642,10 @@ public class UpgradeMenuUI : MonoBehaviour
             upgradePerformBtn.interactable = true;
         }
     }
+    */
 
-    public void HideUpgradeUI()
-    {
-        //selectedUI.gameObject.SetActive(false);
-
-
-        if (selectedUnitManager.SelectedUnit is AllyUnit)
-            selectedUnitUI.ShowAllyUI((AllyUnit)selectedUnitManager.SelectedUnit);
-
-        for(int i = 0; i < frameImage.Length; i++)
-        {
-            frameImage[i].sprite = frameIcon;
-        }
-
-        upgradePerformBtn.interactable = false;
-
-        
-
-        gameObject.SetActive(false);
-    }
-
-
+    /*
+    // 업그레이드 유닛 선택 시 프레임 이미지 변경 // 리디자인 하면 없어도 되는 기능?
     public void Select(int index)
     {
         if (upgradeIndex != index)
@@ -574,5 +673,5 @@ public class UpgradeMenuUI : MonoBehaviour
         //selectedUI.gameObject.SetActive(true);
         //Vector3 targetPos = upgardeImage[index].transform.position;
         //selectedUI.position = new Vector3(targetPos.x, targetPos.y, selectedUI.position.z);
-    }
+    }*/
 }

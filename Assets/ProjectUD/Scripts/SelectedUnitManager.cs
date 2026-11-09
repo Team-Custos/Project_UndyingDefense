@@ -7,7 +7,13 @@ using UnityEngine.UI;
 public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     , IInputUnitUpgrade, IInputUnitModeChange, IInputPerformUnitUpgrade
 {
-    [SerializeField] private SelectedUnitUI unitSelectUI;
+    [Header("Selected Unit UI")]
+    [SerializeField] private SelectedUnitUI unitSelectUI;                   // 선택한 유닛 UI
+    [Header("Selected Unit Info Panel")]
+    [SerializeField] private SelectedUnitInfoPanel selectedUnitInfoPanel;   // 선택한 유닛 정보 패널
+    [Header("Unit Upgrade UI")]
+    [SerializeField] private UpgradeMenuUI unitUpgradeMenuUI;                      // 유닛 업그레이드 UI
+
     [SerializeField] private Camera mainCamera;
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
@@ -30,6 +36,8 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     private AllyUnit selectedAllyUnit;
     private bool isActivateUpgrade;
     private bool rightClickOn;
+
+    private float currentGold;
 
     public bool IsActivateUpgrade => isActivateUpgrade;
     public bool RightClickOn => rightClickOn;
@@ -101,13 +109,16 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
                         SetSelectedUnit(unit);
                     }
 
-                    if (allyUnit != null)
-                        unitSelectUI.ShowAllyUI(allyUnit);
-                    else
-                        unitSelectUI.HideAllyUI();
+                    ShowSelectedUnitUI();       // 리팩토링 적용
+                    //if (allyUnit != null)
+                    //    unitSelectUI.ShowAllyMenu(allyUnit);
+                    //else
+                    //    unitSelectUI.HideAllyMenu();
 
-                    unitSelectUI.UpdateUnitInfo(unit);
-                    unitSelectUI.ShowHp(unit);
+                    //selectedUnitInfoPanel.UpdateUnitInfo(unit);
+                    //unitSelectUI.Show(unit);
+                    //unitSelectUI.UpdateUnitInfo(unit);
+                    //unitSelectUI.ShowHp(unit);    // 삭제 261025
                     //inputEventManager.OnClickTarget = this;
                 }
                 else if (hit.collider.CompareTag("Tile")) // 타일 클릭
@@ -158,16 +169,131 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     }
 
 
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026 _ 병사 승급 비용 관련 진행중
+    //------------------------------
 
-    public void ActivateUpgrade() // UnityEvent에서 사용 중
+    //------------------------------
+    // 선택된 유닛이 보고 (Unit/AllyUnit에서 호출)
+    //------------------------------
+
+    // 선택 유닛 UI 표시_ 아군/적 판단은 여기서만
+    public void ShowSelectedUnitUI()
+    {
+        if (selectedAllyUnit != null)
+            unitSelectUI.ShowAlly(selectedAllyUnit);
+        else if (selectedUnit is EnemyUnit enemy)
+            unitSelectUI.ShowEnemy(enemy);
+
+        selectedUnitInfoPanel.UpdateUnitInfo(selectedUnit);
+    }
+
+    public void OnSelectedUnitHpChanged(Unit unit)
+    {
+        if (unit != selectedUnit) return;
+
+        unitSelectUI.SetHp(unit.HpPercent);
+        selectedUnitInfoPanel.UpdateHPUI(unit.Hp, unit.Maxhp);
+    }
+
+    public void OnSelectedUnitStateChanged(Unit unit)
+    {
+        if (unit != selectedUnit) return;
+        selectedUnitInfoPanel.UpdateUnitStateUI(unit.EffectList);
+    }
+
+    public void OnSelectedUnitDead(Unit unit)
+    {
+        if (unit != selectedUnit) return;
+        CancleUpgrade();
+        DeSelecteUnit();
+    }
+
+    // 임무 전환·승급 진행 바
+    public void OnSelectedUnitOrderProgress(AllyUnit unit, float progress)
+    {
+        if (unit != selectedUnit) return;
+        unitSelectUI.ShowUnitDuration(progress);
+    }
+
+    // 임무 전환 완료
+    public void OnSelectedUnitModeChanged(AllyUnit unit)
+    {
+        if (unit != selectedUnit) return;
+        unitSelectUI.HideUnitDuration();
+        unitSelectUI.ShowAllyMenu(unit);
+    }
+
+    // 승급 완료: 선택 대상을 새 유닛으로 교체
+    public void OnSelectedUnitUpgraded(AllyUnit oldUnit, AllyUnit newUnit)
+    {
+        if (oldUnit != selectedUnit) return;
+
+        oldUnit.IsSelected = false;
+        oldUnit.SetSelectedUnitManager(null);
+
+        SetSelectedUnit(newUnit);
+        ShowSelectedUnitUI();
+        //unitSelectUI.Show(newUnit);
+        //unitSelectUI.ShowAllyMenu(newUnit);
+        //selectedUnitInfoPanel.UpdateUnitInfo(newUnit);
+    }
+
+    // InGameManager가 골드를 알려줄 때 호출
+    public void OnGoldChanged(float gold)
+    {
+        currentGold = gold;
+
+        if (isActivateUpgrade)      // 승급창이 열려 있을 때만 갱신
+            RefreshUpgradeCost();
+    }
+
+    // 창을 열 때, 승급창이 열러있을 때 공통   
+    private void RefreshUpgradeCost()
+    {
+        if (selectedUnit == null || !(selectedUnit.Data is AllyUnitData data))
+            return;
+
+        for (int i = 0; i < data.UpgradeUnits.Length; i++)
+        {
+            if (!(data.UpgradeUnits[i] is AllyUnitData upgradeData))
+                continue;
+
+            unitUpgradeMenuUI.SetUpgradeAvailable(i, currentGold >= upgradeData.Cost);
+        }
+    }
+
+    public void ActivateUpgrade()   // 승급 버튼 클릭 이벤트용 메서드
     {
         SoundManager.Instance.PlayUIClickSFX();
 
         inGameManager.UpdateOperateState(OperateState.UPGRADE);
         isActivateUpgrade = true;
 
-        unitSelectUI.ShowUpgradeMenu(selectedUnit);
+        // 병사 승급 창 
+        //unitSelectUI.ShowUpgradeMenu(selectedUnit);             // 삭제할 코드
+        if (!inGameManager.IsGameStart)
+            return;
+        //float gold = inGameManager.inGameGold;
+        unitUpgradeMenuUI.SetUpgradeUnitMenu(selectedUnit);     // v 리팩토링 코드_261021 // v 골드 안넘겨주기
+        RefreshUpgradeCost();
+
+        camManager.FocusSelectedUnit(selectedUnit.transform.position);
     }
+
+    //// 인게임매니저에서 골드를 가져와 비용을 확인하고 비용글자색을 바꾸는 메서드
+    //public void UpdateUpgradePanelCost(float currentGold)
+    //{
+    //    // 여기서 계산
+    //    AllyUnitData data = selectedUnit.Data as AllyUnitData;
+    //    UnitData[] upgradeUnitdatas = data.UpgradeUnits;
+    //    for (int i = 0; i < upgradeUnitdatas.Length; i++)
+    //    {
+    //        AllyUnitData upgradeUnitData = upgradeUnitdatas[i] as AllyUnitData;
+    //        float cost = upgradeUnitData.Cost;
+    //        unitUpgradeMenuUI.UpdateCostTxtColor(i, currentGold > cost);    // 인덱스 포함
+    //    }
+    //}
 
     public void UpgradeSelectedUnit(int index)
     {
@@ -180,7 +306,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
 
         // 골드 부족 여부 확인
-        if (inGameManager.inGameGold < nextUnitData.Cost)
+        if (currentGold < nextUnitData.Cost)    //inGameManager.inGameGold
         {
             Debug.Log("골드 부족");
             return;
@@ -194,12 +320,12 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         inGameManager.UpdateOperateState(OperateState.ALLYUNIT);
 
         inGameManager.SetGold(nextUnitData.Cost, false);
-        ingameScreenUI.SetspawnBtnPriceTextColor();
+        //ingameScreenUI.SetspawnBtnPriceTextColor();
 
         SoundManager.Instance.PlayUISFX(upgradeSfx);
 
         //UpdateUpgradeState(false);
-        unitSelectUI.HideAllyUI();
+        unitSelectUI.HideAllyMenu();
     }
 
     public void ModeChangeSelectedUnit()
@@ -219,7 +345,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         }
 
         selectedAllyUnit.ChangeOrder();
-        unitSelectUI.HideAllyUI();
+        unitSelectUI.HideAllyMenu();
     }
 
     public void OnUnitDelete(InputAction.CallbackContext context)
@@ -302,6 +428,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         }
     }
 
+    // 단축키 병사 승급 
     public void OnPerformUnitUpgrade(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -338,30 +465,46 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     public void CancleUpgrade()
     {
         isActivateUpgrade = false;
-        unitSelectUI.HideUpgrdeUI();
+        // 병사승급 UI 닫기 & 선택한 유닛 UI 보여주기
+        if(selectedUnit != null && selectedUnit is AllyUnit)
+        {
+            unitSelectUI.ShowAllyMenu(selectedAllyUnit);
+        }
+        unitUpgradeMenuUI.HideUpgradeUI();
+        //unitSelectUI.HideUpgrdeUI();
     }
 
+    //------------------------------
+    // UI 관련 리팩토링 필요_261026
+    //
+    // >> 이벤트 구독해제가 아니라 hp가 바뀌면-> SelectedUnitManager에서 UI에 일어나야할 일들을 모아서 명령
+    //------------------------------
     public void DeSelecteUnit()
     {
-        if (selectedUnit != null)
-        {
-            selectedUnit.IsSelected = false;
-            selectedUnit.SetSelectedUnitUI(null);
-            selectedUnit.SetSelectedUnitManager(null);
-            unitSelectUI.HideHp();
-            unitSelectUI.HideUntInfo();
-            selectedUnit = null;
-            selectedAllyUnit = null;
-            unitSelectUI.HideAllyUI();
-        }
+        if(selectedUnit == null)
+            return;
+
+        selectedUnit.IsSelected = false;
+        selectedUnit.SetSelectedUnitManager(null);
+        unitSelectUI.Hide();
+        selectedUnitInfoPanel.HideUnitInfo();
+        selectedUnit = null;
+        selectedAllyUnit = null;
+
+        //unitSelectUI.HideAllyMenu();
+        //selectedUnit.SetSelectedUnitUI(null);
+        //selectedUnit.SetSelectedUnitInfoPanel(null);
+        //unitSelectUI.HideHp();    // 삭제 261025
+        //unitSelectUI.HideUnitInfo();
     }
 
     public void SetSelectedUnit(Unit unit)
     {
-        selectedUnit = unit;
+        selectedUnit = unit;                                // 유닛 대입
         selectedUnit.IsSelected = true;
-        selectedUnit.SetSelectedUnitUI(unitSelectUI);
-        selectedUnit.SetSelectedUnitManager(this);
+        selectedUnit.SetSelectedUnitManager(this);          // 참조는 매니저 하나만
+        //selectedUnit.SetSelectedUnitUI(unitSelectUI);
+        //selectedUnit.SetSelectedUnitInfoPanel(selectedUnitInfoPanel);
 
         if (selectedUnit is AllyUnit)
             selectedAllyUnit = (AllyUnit)selectedUnit;

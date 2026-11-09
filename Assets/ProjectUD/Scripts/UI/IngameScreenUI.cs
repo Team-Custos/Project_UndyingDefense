@@ -7,12 +7,12 @@ using InputEventInterface;
 
 public class IngameScreenUI : MonoBehaviour//, IInputESC
 {
-    [SerializeField] private InGameManager inGameManager;
+    //[SerializeField] private InGameManager inGameManager;             // 리팩토링으로 참조없음. 삭제!
     [SerializeField] private PlayerInputEventManager inputEventManager;
     [SerializeField] private AllyUnitSpawner allyUnitSpawner;
     [SerializeField] private IngameCommandSkillManager ingameCommandSkillManager;
-    [SerializeField] private SelectedUnitManager selectedUnitManager;
-    [SerializeField] private UpgradeMenuUI upgradeMenuUI;
+    //[SerializeField] private SelectedUnitManager selectedUnitManager; // 리팩토링으로 참조없음. 삭제!
+    //[SerializeField] private UpgradeMenuUI upgradeMenuUI;             // 리팩토링으로 참조없음. 삭제!
     //ayo_0117
     [SerializeField] private CommandSkillTargetingController cSkillTargetingCtrl;
 
@@ -21,8 +21,10 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI goldTextUI;
     [SerializeField] private GameObject settingUI;
     [SerializeField] private TextMeshProUGUI recordTextUI;
-    [SerializeField] private GameObject newReorcUI;
+    [SerializeField] private GameObject newReorcUI;         // 결과창의 일부. 결과창으로 이동 예정. (결과창에서만 사용)
     [SerializeField] private Image portraitImg;
+    [SerializeField] private TextMeshProUGUI playerName;
+    [SerializeField] private TextMeshProUGUI commanderRank;
 
     [Header("■ HP Bar")]    // 성 HP UI
     [SerializeField] private Image hpBarUI;
@@ -59,13 +61,19 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
 
     private void Start()
     {
-        LoadPortraitInGame();
+        LoadPlayerAccountInGame();
     }
 
-    private void LoadPortraitInGame()
+    private void LoadPlayerAccountInGame()
     {
-        int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
+        playerName.text = PlayerPrefs.GetString("PlayerName");
 
+        string commanderID = PlayerPrefs.GetString("CommanderID");
+        Debug.Log($"[RankSystem] 현재 지휘관 ID: {commanderID}");
+        commanderRank.text = LocalizationSettings.StringDatabase.
+            GetLocalizedString("LobbyUI", $"{commanderID}", LocalizationSettings.SelectedLocale);
+
+        int savedID = PlayerPrefs.GetInt("SelectedPortraitID");
         // Resources에서 전체 로드 후 ID로 찾기
         PortraitData[] allData = Resources.LoadAll<PortraitData>("Data/PortraitData");
         PortraitData portrait = System.Array.Find(allData, p => p.portraitID == savedID);
@@ -103,6 +111,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         hpTextUI.text = $"{(int)hp} / {(int)maxHp}";
     }
 
+    //----기획서상 게임 진행 알림---보류
     public void ShowFortressHitUI()
     {
         animator.SetTrigger("Hit");
@@ -129,7 +138,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         noticeTimerUI.Hide();
     }
 
-
+    // --  성 공격받는 알림
     public void ShowPerWaveNotice()
     {
         //--Localize
@@ -138,14 +147,26 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         //noticeUI.SetText("성이 현재 공격받고있습니다!", true);
     }
 
+    // -- 웨이브 타이머용 NoticeUI 텍스트 셋팅
     public void SetNoticeText(string text)
     {
         noticeTimerUI.SetText(text, false);
     }
 
-    public void ShowResult(float reward, bool win, string record)
+    //-------------------------
+    // -- 결과창 관련 리팩토링
+    //-------------------------
+    //public void ShowResult(float reward, bool win, string record)
+    //{
+    //    resultUI.Show(reward, win, record);
+    //}
+    public void ShowWinResult(float reward, string record, bool isNewRecord)
     {
-        resultUI.Show(reward, win, record);
+        resultUI.ShowWin(reward, record, isNewRecord);
+    }
+    public void ShowLoseResult(float reward)
+    {
+        resultUI.ShowLose(reward);
     }
 
     public void HideResult() => resultUI.Hide();
@@ -209,28 +230,48 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     {
         messageUI.AddMessage(LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
                  LocalizationSettings.SelectedLocale));
-        errorPanel.SetActive(true);
+        //errorPanel.SetActive(true);
         //errorText.text = id;
         //errorText.text = LocalizationSettings.StringDatabase.GetLocalizedString(table, id,
         //         LocalizationSettings.SelectedLocale);
     }
 
-    public void SetspawnBtnPriceTextColor()
+    //------------------------------
+    // UI 관련 리팩토링
+    //------------------------------
+    public void OnGoldChanged(float gold)
+    {
+        UpdateGoldTextUI(gold);
+        SetSpawnBtnPriceTextColor(gold);
+    }
+
+    private void SetSpawnBtnPriceTextColor(float gold)
     {
         for (int i = 0; i < spawnBtnPriceText.Length; i++)
         {
-            if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
-            {
-                spawnBtnPriceText[i].color = Color.red;
-                spawnBtnsImages[i].tag = "UnInteractiveUi";
-            }
-            else
-            {
-                spawnBtnPriceText[i].color = Color.white;
-                spawnBtnsImages[i].tag = "InteractiveUi";
-            }
+            bool canSpawn = allyUnitSpawner.Units[i].Cost <= gold;
+            spawnBtnPriceText[i].color = canSpawn ? Color.white : Color.red;
+            spawnBtnsImages[i].tag = canSpawn ? "InteractiveUi" : "UnInteractiveUi";
         }
     }
+
+    // 유닛스포너에서 사용중.. 골드가 바뀔 때마다 확인(텍스트 색 바뀜)
+    //public void SetspawnBtnPriceTextColor() 
+    //{
+    //    for (int i = 0; i < spawnBtnPriceText.Length; i++)
+    //    {
+    //        if (allyUnitSpawner.Units[i].Cost > inGameManager.inGameGold)
+    //        {
+    //            spawnBtnPriceText[i].color = Color.red;
+    //            spawnBtnsImages[i].tag = "UnInteractiveUi";
+    //        }
+    //        else
+    //        {
+    //            spawnBtnPriceText[i].color = Color.white;
+    //            spawnBtnsImages[i].tag = "InteractiveUi";
+    //        }
+    //    }
+    //}
 
     public void ShowRegionName()
     {
@@ -254,17 +295,17 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         recordTextUI.text = text;
     }
 
-    public void ShowNewRecordUI(bool newRecord)
-    {
-        if(newRecord)
-        {
-            newReorcUI.SetActive(true);
-        }
-        else
-        {
-            newReorcUI.SetActive(false);
-        }
-    }
+    //public void ShowNewRecordUI(bool newRecord)
+    //{
+    //    if(newRecord)
+    //    {
+    //        newReorcUI.SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        newReorcUI.SetActive(false);
+    //    }
+    //}
 
     public void UpdateSpeedButtonAni(bool isFastForward)
     {
