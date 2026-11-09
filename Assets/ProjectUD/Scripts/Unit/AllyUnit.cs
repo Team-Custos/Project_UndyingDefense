@@ -105,7 +105,7 @@ public class AllyUnit : Unit
         if (SpecialAbility != null)
             SpecialAbility.Initialize(this);
 
-        spawner.Register(this);
+        spawner.RegisterCurseClearEvent(this);
     }
 
 
@@ -853,7 +853,7 @@ public class AllyUnit : Unit
             upgradeDuraiton = 3f;
             isUpgrade = false;
 
-            spawner.Unregister(this);
+            spawner.UnregisterCurseClearEvent(this);
             pool.Pool.Release(this);
             gameObject.SetActive(false);
         }
@@ -1026,7 +1026,7 @@ public class AllyUnit : Unit
         unitGrid.ClearTile();
         siegeModeVFx.SetActive(false);
 
-        spawner.Unregister(this);
+        spawner.UnregisterCurseClearEvent(this);
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }

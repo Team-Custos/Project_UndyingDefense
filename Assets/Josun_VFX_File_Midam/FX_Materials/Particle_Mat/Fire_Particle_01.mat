@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fire_Particle_01
-  m_Shader: {fileID: 4800000, guid: 38dff4c68efd64e448ae73d44a288b6f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7f8498616eb6de148867cb4347769508, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -64,7 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 64a6c982e43065e469daee58201fca13, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -140,6 +140,11 @@ Material:
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _R_Normal_UTile: 1
+    - _R_Normal_Upanner: 0
+    - _R_Normal_VTile: 1
+    - _R_Normal_Vpanner: 0
+    - _Radial_OnOff: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0

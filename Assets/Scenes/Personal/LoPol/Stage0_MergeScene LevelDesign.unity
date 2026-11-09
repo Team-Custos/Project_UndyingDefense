@@ -9449,7 +9449,7 @@ Transform:
   m_GameObject: {fileID: 323247167}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.93, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16569,15 +16569,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 170234252142706481, guid: f9cee776bc80b164cbc72ee20e8e52a3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 425416905699388939, guid: f9cee776bc80b164cbc72ee20e8e52a3,
         type: 3}
       propertyPath: m_Name
-      value: Stage4 LevelDesign
+      value: Stage0 LevelDesign
       objectReference: {fileID: 0}
     - target: {fileID: 5805476405993560702, guid: f9cee776bc80b164cbc72ee20e8e52a3,
         type: 3}
@@ -16627,11 +16622,6 @@ PrefabInstance:
     - target: {fileID: 5805476405993560702, guid: f9cee776bc80b164cbc72ee20e8e52a3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8478937137631899528, guid: f9cee776bc80b164cbc72ee20e8e52a3,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -23179,6 +23169,7 @@ MonoBehaviour:
   dollyCamera: {fileID: 311500981}
   waveManager: {fileID: 1023733844}
   enemyUnitSpawner: {fileID: 679628028}
+  specialAbility: {fileID: 0}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -27766,7 +27757,7 @@ Transform:
   m_GameObject: {fileID: 1061626274}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.06, y: 0.1, z: -5.95}
+  m_LocalPosition: {x: 31.22, y: 0.1, z: -5.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -415,67 +415,49 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
 
-    public void Register(Unit target)
+
+    // 소환시 이벤트 등록
+    public void RegisterCurseClearEvent(Unit target)
     {
-        target.onGetCurseEffect -= OnGetCurseEffect;
-        target.onGetCurseEffect += OnGetCurseEffect;
+        target.onGetCurseEffect -= AddCurseUnit;
+        target.onGetCurseEffect += AddCurseUnit;
 
-        target.onRemoveCurseEffect -= UpdateCurseUnitList;
-        target.onRemoveCurseEffect += UpdateCurseUnitList;
-
-        UpdateCurseUnitList(target);
+        target.onRemoveCurseEffect -= RemoveCurseUnit;
+        target.onRemoveCurseEffect += RemoveCurseUnit;
     }
 
-    // 아군이 사망하거나 비활성화될 때 호출.
-    public void Unregister(Unit target)
+    // 아군이 사망하거나 비활성화될 때 이벤트 제거 및 리스트에서 제거
+    public void UnregisterCurseClearEvent(Unit target)
     {
         if (target == null)
             return;
 
-        target.onGetCurseEffect -= OnGetCurseEffect;
-        target.onRemoveCurseEffect -= UpdateCurseUnitList;
+        target.onGetCurseEffect -= AddCurseUnit;
+        target.onRemoveCurseEffect -= RemoveCurseUnit;
 
-        appliedCurseEffectUnitList.Remove(target);
-    }
-
-
-
-
-    // 유닛에게 상태 효과가 적용되었을 때 호출
-    private void OnGetCurseEffect(Unit target, DurationEffect effect)
-    {
-        UpdateCurseUnitList(target);
-    }
-
-
-    // 저주가 부여된 유닛 리스트 관리 -> 적용 / 제거 시 호출
-    private void UpdateCurseUnitList(Unit target)
-    {
-        bool hasCurse = false;
-
-        if (!target.IsDead)
-        {
-            foreach (DurationEffect effect in target.EffectList)
-            {
-                if (effect != null &&effect.gameObject.activeSelf &&effect.Type == EffectType.CURSE)
-                {
-                    hasCurse = true;
-                    break;
-                }
-            }
-        }
-
-        if (hasCurse)
-        {
-            // 저주가 여러 개여도 대상은 한 번만 등록.
-            if (!appliedCurseEffectUnitList.Contains(target))
-                appliedCurseEffectUnitList.Add(target);
-        }
-        else
-        {
-            // 마지막 저주가 없어졌거나 대상이 사망했다면 제거.
+        if (appliedCurseEffectUnitList.Contains(target))
             appliedCurseEffectUnitList.Remove(target);
-        }
+    }
+
+
+    // 저주가 상태 부여 시 리스트에 추가
+    private void AddCurseUnit(Unit target, DurationEffect effect)
+    {
+        if (target == null || target.IsDead)
+            return;
+
+        if (!appliedCurseEffectUnitList.Contains(target))
+            appliedCurseEffectUnitList.Add(target);
+    }
+
+    // 저주 상태 해제시 리스트에서 제거
+    private void RemoveCurseUnit(Unit target)
+    {
+        if (target == null)
+            return;
+
+        if (appliedCurseEffectUnitList.Contains(target))
+            appliedCurseEffectUnitList.Remove(target);
     }
 
 

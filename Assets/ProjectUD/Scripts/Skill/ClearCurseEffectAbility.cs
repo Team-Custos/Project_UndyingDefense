@@ -32,7 +32,6 @@ public class ClearCurseEffectAbility : SpecialAbility
 
         if (appliedCurseEffectUnitList.Count > 0)
         {
-            // 정화 중 현재 대상이 공통 목록에서 빠질 수 있으므로 역순 순회.
             for (int i = appliedCurseEffectUnitList.Count - 1; i >= 0; i--)
             {
                 Unit target = appliedCurseEffectUnitList[i];
@@ -45,8 +44,6 @@ public class ClearCurseEffectAbility : SpecialAbility
                 if (distance <= range)
                     ClearAllCurseEffect(target);
 
-                // 목록 제거는 효과 제거 알림을 받은 스포너가 처리.
-                // 여기서 RemoveAt()하거나 같은 인덱스를 다시 읽지 않음.
             }
         }
     }
@@ -68,12 +65,8 @@ public class ClearCurseEffectAbility : SpecialAbility
         {
             DurationEffect effect = target.EffectList[i];
 
-            if (effect == null ||
-                !effect.gameObject.activeSelf ||
-                effect.Type != EffectType.CURSE)
-            {
+            if (effect == null || effect.Type != EffectType.CURSE)
                 continue;
-            }
 
             onClearCurse?.Invoke(target, effect);
             curseCleared = true;
