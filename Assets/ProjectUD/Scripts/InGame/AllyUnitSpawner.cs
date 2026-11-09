@@ -15,7 +15,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private Transform spawnDirection;
     [SerializeField] private IngameScreenUI ingameScreenUI;
     [SerializeField] private InGameManager inGameManager;
-    [SerializeField] private SelectedUnitUI selectedUnitUI;
     [SerializeField] private SelectedUnitInfoPanel selectedUnitInfoPanel;
     [SerializeField] private IngameCommandSkillManager commandSkillManager;
     [SerializeField] private Ingame_CursorManager cursorManager;

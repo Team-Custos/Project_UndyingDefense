@@ -35,8 +35,7 @@ public class SelectedUnitUI : MonoBehaviour
     [SerializeField] private Sprite freeIcon;
     [SerializeField] private Sprite siegeIcon;
     [SerializeField] private float yPos;
-    [SerializeField] private float xPos;
-    [SerializeField] private float upgradeXpos;
+    [SerializeField] private float xPos = 40f;
     [SerializeField] private float menuYpos;
 
     [SerializeField] private GameObject typeInfo;
@@ -157,27 +156,41 @@ public class SelectedUnitUI : MonoBehaviour
         UpdateUnitUIPosition();
     }
 
-    // 필드 정리
-    [SerializeField] private Vector2 menuScreenOffset = new Vector2(120f, -80f);
     private void UpdateUnitUIPosition()
     {
-        //***
-        // 체력바 위치 (기존 UpdateUnitUI의 unitHPPrefab 부분)
-        Vector3 hpWorldPos = target.transform.position + Vector3.up * target.HeightPos.position.y;
-        unitHPPrefab.transform.position = mainCamera.WorldToScreenPoint(hpWorldPos);
-
-        if (unitMenuPrefab.activeSelf)
+        //*** 261109 수정
+        if(unitHPPrefab.activeSelf)
         {
-            //// 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
-            float currentFov = framingTransposer.m_CameraDistance;
-            float zoomPercent = (currentFov - ingameCamManager.ZoomMin)
-                              / (ingameCamManager.ZoomMax - ingameCamManager.ZoomMin);
-            float menuY = Mathf.Lerp(2.0f, 3.0f, zoomPercent);   // 기존 menuYpos를 지역 변수로
+            Vector3 worldPosition = target.transform.position + Vector3.up * target.HeightPos.position.y;
+            Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
-            Vector3 menuWorldPos = target.transform.position + Vector3.right * xPos + Vector3.down * (zoomPercent * menuY);
-            unitMenuPrefab.transform.position = mainCamera.WorldToScreenPoint(menuWorldPos);
+            unitHPPrefab.transform.position = screenPosition;
         }
-        //***
+
+        // ***Y축의 위치는 WorldToScreenPoint를 사용하지 않고, 카메라 줌에 따라 Y축 위치를 계산하여 적용!!!
+        // ***X축은 WorldToScreenPoint를 사용하여 화면 좌표로 변환 후 조정!!!
+        if (unitMenuPrefab.activeSelf)      
+        {
+            // 유닛 메뉴 위치 (기존 UpdateUnitUI의 unitMenuPrefab 부분)
+            float currentFov = framingTransposer.m_CameraDistance;
+
+            float maxZoom = ingameCamManager.ZoomMax;
+            float minZoom = ingameCamManager.ZoomMin;
+
+
+
+            float zoomPercnet = (currentFov - minZoom) / (maxZoom - minZoom);
+
+            menuYpos = Mathf.Lerp(2.0f, 3.0f, zoomPercnet);
+
+            Vector3 worldPosition = target.transform.position + Vector3.down * (zoomPercnet * menuYpos);
+            Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition) + (Vector3.right * xPos); 
+
+            unitMenuPrefab.transform.position = screenPosition;
+        }
+
+        //// 아군 / 적군 표시
+        currentUI.position = target.transform.position;
 
         // 아군/적군 UI 위치 (기존 Update에 있던 부분)
         //if (target is AllyUnit)
