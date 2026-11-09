@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UltEvents;
 using ActiveType = SpecialAbility.ActiveType;
 using AttackType = AttackData.AttackType;
 
@@ -31,6 +32,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected Transform effectParent;
     [SerializeField] protected Transform VFXParent;
     [SerializeField] protected Transform heightPos;
+    [SerializeField] private Transform weaponTransform;
 
     [Header("■ Skill")]
     [SerializeField] private SkillBase generalSkill;
@@ -51,6 +53,8 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private AudioClip healStateSFX;
     [SerializeField] private GameObject recoveryVFX;
 
+    public UltEvent<Unit, DurationEffect> onGetCurseEffect;     // 저주 상태를 받았을 때 실행 할 이벤트
+    public UltEvent<Unit> onRemoveCurseEffect;                  // 저주 상태가 제거되었을 때 실행 할 이벤트
 
     protected float maxhp;
     protected float hp;
@@ -58,14 +62,14 @@ public abstract class Unit : MonoBehaviour
     protected float critVulnerability; // 치명타를 받을 확률.
     protected int mental; // 정신력
     // protected float moveSpeed;
-    protected float attackSpeedMult;
+    protected float attackSpeedMult = 1f;
     protected float moveSpeedMult;
     protected float damageTakenMult; // 피해량 비율
     protected float atkMult; // 공격력 비율
     protected float blockPercent; // 방어 계수(방어 상성으로 감소하는 수치의 비율)
-    protected float interval; // 유닛의 공격 간격(속도) interval 마다 스킬 사용 가능
-    protected float intervalCheck; // interval 체크용
-    protected float intervalMultiplier = 1f;
+    protected float interval; // 유닛의 스킬 사용 주기
+    protected float intervalCheck;
+    protected float skillEffectActivationTime;
     protected bool isStop = false;
 
     protected UnitStats unitStats;
@@ -98,7 +102,7 @@ public abstract class Unit : MonoBehaviour
     protected const int maxTargetCount = 100;
 
     protected bool isSelected;
-    protected bool isSkillActive = false; // 스킬 사용중인지를 확인하는 변수
+    protected bool isSkillEffectAlreadyActivated = false; // 스킬 사용중인지를 확인하는 변수
 
     protected const float moveThresholdOnStop = float.MaxValue;
 
@@ -135,13 +139,13 @@ public abstract class Unit : MonoBehaviour
     public string UnitId => unitId;
     public UnitStats UnitStats => unitStats;
     public float NearbyDistance => nearbyDistance;
-    public float Interval => interval;
     public bool IsDead => isDead;
     public Transform HeightPos => heightPos;
     public VFXObjectPool SkillVfxPool => skillVFXPool;
     public EffectImagePool EffectImagePool => effectImagePool;
     public ArmorType Armortype => armorType;
     public Unit TargetUnit => targetUnit;
+    public Transform WeaponTransform => weaponTransform;
 
     public bool IsSelected
     {
@@ -240,7 +244,12 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void Update()
     {
-        //ActivateSpecialAbility(ActiveType.ALWAYS, null);
+        ///ActivateSpecialAbility(ActiveType.ALWAYS, null);
+    }
+
+    private void Start()
+    {
+        modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
     }
     public virtual void Initialize()
     {
@@ -265,29 +274,24 @@ public abstract class Unit : MonoBehaviour
         attackSpeedMult = 1f;
         atkMult = 1f;
         damageTakenMult = 1f;
-        
+
+        //Debug.Log(modelAnimator.GetFloat("moveAnimationSpeed"));
+        //modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
+        //Debug.Log(modelAnimator.GetFloat("moveAnimationSpeed"));
 
         collider.enabled = true;
         deferredStateDurationCheck = deferredStateDuration;
         armorType = Data.ArmorType;
 
         // 스킬 쿨타임 초기화
-        generalSkill.Initialize();
+        if (generalSkill != null)
+            generalSkill.Initialize();
 
         if(specialSkill != null)
             specialSkill.Initialize();
 
         //InvokeEvent(SpecialAbility.BASIC);
         ActivateSpecialAbility(ActiveType.ALWAYS, null);
-
-        //deferredStateVFX = Resources.Load<GameObject>("Prefabs/VFX/VFX_provoked/VFX_provoked_02");
-
-        //if(deferredStateObj == null)
-        //{
-        //    deferredStateObj = Instantiate(deferredStateVFX, HeightPos);
-        //}
-        //deferredStateObj.SetActive(false);
-
 
         effectParent.gameObject.SetActive(true);
         for (int idx = 0; idx < effectParent.childCount; idx++)
@@ -303,6 +307,24 @@ public abstract class Unit : MonoBehaviour
         }
 
     }
+
+    //public void SetUnitStats(UnitStats unitStats)
+    //{
+    //    this.unitStats = unitStats;
+
+    //    if (unitStats != null)
+    //    {
+    //        maxhp = unitStats.maxHp;
+    //        hp = unitStats.maxHp;
+    //        critPercent = unitStats.critChance;
+    //        mental = unitStats.mental;
+    //        interval = unitStats.interval;
+    //        intervalCheck = 0;
+    //        navAgent.speed = unitStats.moveSpeed;
+    //    }
+    //    else
+    //        Debug.Log("데이터 없음");
+    //}
 
     public void SetHitVFXPool(VFXObjectPool hitVFXPool, VFXObjectPool skillVFXPool)
     {
@@ -365,6 +387,51 @@ public abstract class Unit : MonoBehaviour
         this.selectedUnitManager = selectedUnitManager;
     }
 
+    // 스킬 사용 시작 함수
+    public virtual void UseSkill(SkillBase skill, Unit target)
+    {
+        if (isDead) return;
+
+        //isSkillEffectAlreadyActivated = false;
+
+        if (target != null && target != this)
+            transform.LookAt(target.transform);
+
+        intervalCheck = interval / attackSpeedMult;
+        skillEffectActivationTime = skill.Data.ActivateTime / attackSpeedMult;
+
+        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
+
+        if (navAgent.enabled)
+            navAgent.isStopped = true;
+
+        modelAnimator.SetBool("isRunning", false);
+
+        isSkillEffectAlreadyActivated = false;
+
+        if (skill.Data.StartVFX != null)
+        {
+            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
+            vfx.transform.position = transform.position;
+            vfx.transform.rotation = transform.rotation;
+            vfx.SetActive(true);
+        }
+
+        if (skill.Data.StartSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
+        }
+
+
+        //currentSkill = null;
+
+        //if (stateDurationCheck >= stateDuration)
+        //{
+        //    stateDurationCheck = 0f;
+        //    stateDuration = 0f;
+        //}
+        stateDurationCheck = 0f;
+    }
     //public void SetSelectedUnitInfoPanel(SelectedUnitInfoPanel selectedUnitInfoPanel)
     //{
     //    this.selectedUnitInfoPanel = selectedUnitInfoPanel;
@@ -380,40 +447,64 @@ public abstract class Unit : MonoBehaviour
 
     protected virtual void ActivateSkill(SkillBase skill, Unit target) 
     {
-        if (target == null)
-            return;
-        skill.Activate(this, target);
-        isSkillActive = false;
+        if (isDead) return;
 
-        //if(target.IsDead)
+        //isSkillEffectAlreadyActivated = false;
+
+        if (target != null && target != this)
+            transform.LookAt(target.transform);
+
+        intervalCheck = interval / attackSpeedMult;
+        skillEffectActivationTime = skill.Data.ActivateTime / attackSpeedMult;
+
+        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
+
+        if (navAgent.enabled)
+            navAgent.isStopped = true;
+
+        modelAnimator.SetBool("isRunning", false);
+
+        isSkillEffectAlreadyActivated = false;
+
+         if(skill.Data.StartVFX != null)
+        {
+            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
+            vfx.transform.position = transform.position;
+            vfx.transform.rotation = transform.rotation;
+            vfx.SetActive(true);
+        }
+
+         if(skill.Data.StartSFX != null)
+        {
+            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
+        }
+
+
+        //currentSkill = null;
+
+        //if (stateDurationCheck >= stateDuration)
         //{
-        //    ActivateSpecialAbility(ActiveType.KILL);
+        //    stateDurationCheck = 0f;
+        //    stateDuration = 0f;
         //}
-
-        //if (stateDurationCheck < skill.AnimationStateTime)
-        //{
-        //    stateDurationCheck += Time.deltaTime;
-        //}
-        //else
-        //{
-
-        //}   
+        stateDurationCheck = 0f;
     }
 
+
+    // 스킬 효과 발동
+    protected void ActivateSkillEffect(SkillBase skill, Unit target) 
+    {
+        //if (target != null && target.isDead)
+        //    return;
+
+        skill.Activate(this, target);
+    }
 
 
     protected virtual void ActivateFortressSkill(SkillBase skill, Fortress target)
     {
         skill.Activate(this, target);
 
-        //if (stateDurationCheck < skill.AnimationStateTime)
-        //{
-        //    stateDurationCheck += Time.deltaTime;
-        //}
-        //else
-        //{
-
-        //}
     }
 
     public virtual Unit SearchTarget(float range, LayerMask targetLayer, SkillBase skill)
@@ -1116,9 +1207,6 @@ public abstract class Unit : MonoBehaviour
 
     protected SkillBase GetAvailableSkill()     // 쿨타임과 필요 멘탈치를 충족해야 스킬 반환
     {
-        if (specialSkill != null && specialSkill.Data.ActiveMental > mental)
-            Debug.Log("멘탈 수치 부족");
-
         if (specialSkill != null && specialSkill.IsCoolDown && specialSkill.Data.ActiveMental <= mental)
             return specialSkill;
         else if (generalSkill != null && generalSkill.IsCoolDown && generalSkill.Data.ActiveMental <= mental)
@@ -1371,13 +1459,15 @@ public abstract class Unit : MonoBehaviour
 
         stateDurationCheck = 0f;
 
-        interval = intervalCheck; //interval 초기화
-
         isDeferredState = false;
         deferredStateDurationCheck = deferredStateDuration;
 
         navAgent.enabled = false;
         collider.enabled = false;
+
+        SetRandomStateAnimationClip("Die");
+        modelAnimator.SetFloat("animationSpeed", 1f);
+        modelAnimator.SetTrigger("Die");
 
         PlayAnimation("Die");
         //modelAnimator.SetTrigger("Die");
@@ -1393,10 +1483,15 @@ public abstract class Unit : MonoBehaviour
         stateDuration = duration;
     }
 
+    // 초기화(소환) 시 moveAnimationSpped = unitStats.moveSpeed / 3f;
+
     public void AddMoveSpeedMult(float percent)
     {
         moveSpeedMult += percent * 0.01f;
         navAgent.speed = unitStats.moveSpeed * Mathf.Max(0f, moveSpeedMult);
+
+        // move 애니메이션 배속 설정
+        modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
     }
 
     public void AddMental(int amount)
@@ -1406,10 +1501,10 @@ public abstract class Unit : MonoBehaviour
             mental = 0;
     }
 
+    // 스킬 속도 변화 함수
     public void AddAttackSpeedMult(float percent)
     {
-        attackSpeedMult += percent * 0.01f;
-        //attackSpeed = unitStats.attackSpeed * Mathf.Max(0f, attackSpeedMult);
+        attackSpeedMult += percent * 0.01f;  // ex) 1 += 30 * 0.01f = 1.3
     }
 
     public void AddCriticalVulnerability(float amount)
@@ -1436,19 +1531,6 @@ public abstract class Unit : MonoBehaviour
         //Debug.Log("피해량 : " + damageTakenMult);
     }
 
-    public void ChangeInterval(float percent) // interval을 변화시키는 함수
-    {
-        intervalMultiplier -= percent * 0.01f; 
-        interval = intervalCheck * intervalMultiplier;
-        intervalCheck = interval;
-    }
-
-    public void RevertInterval(float percent)
-    {
-        intervalCheck = unitStats.interval;
-        intervalMultiplier += percent * 0.01f;
-        interval = intervalCheck * intervalMultiplier;
-    }
 
 
 
@@ -1479,7 +1561,7 @@ public abstract class Unit : MonoBehaviour
 
     public void AddEffect(GameObject effectPrefab ,Unit unit, Vector3 pos)
     {
-        if (unit.IsDead)
+        if (unit.IsDead || effectPrefab == null)
             return;
 
 
@@ -1512,8 +1594,14 @@ public abstract class Unit : MonoBehaviour
             effect.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
 
             effect.Activate();
+
             effect.gameObject.SetActive(true);
+
+            if(effect.Type == EffectType.CURSE)
+                onGetCurseEffect?.Invoke(this, effect);
         }
+
+        
 
         UpdateState();
     }
@@ -1540,6 +1628,9 @@ public abstract class Unit : MonoBehaviour
     {
         effectList.Remove(effect);
         UpdateState();
+        
+        if(effect.Type == EffectType.CURSE)
+            onRemoveCurseEffect?.Invoke(this);
     }
 
     protected void RemoveAllEffect()
@@ -1571,7 +1662,24 @@ public abstract class Unit : MonoBehaviour
         }
 
         VFXobj.SetActive(true);
-        
+    }
+
+    public GameObject AddVFX(GameObject vfx, bool attach = true)
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+
+        if (attach)
+        {
+            VFXobj.transform.SetParent(VFXParent);
+        }
+        else
+        {
+            VFXobj.transform.SetParent(null);
+        }
+
+        VFXobj.SetActive(false);
+
+        return VFXobj;
     }
 
     public void AddVFX(GameObject vfx, Vector3 dir, bool attach = true, float scale = 1f) // hit & Crit VFX (오브젝트풀링 사용)
@@ -1601,8 +1709,38 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
     }
 
-    public void AddVFX(GameObject vfx, Unit target) // hit & Crit VFX (오브젝트풀링 사용)
+    public GameObject GetVFX(GameObject vfx)
     {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return null;
+        else
+        {
+            VFXobj.transform.SetParent(null);
+            VFXobj.SetActive(false);
+            return VFXobj;
+
+        }
+    }
+
+    public void AddVFX(GameObject vfx, Vector3 pos, float angle)
+    {
+        GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
+        if (VFXobj == null)
+            return;
+
+        VFXobj.transform.position = pos;
+        VFXobj.transform.rotation = transform.rotation * Quaternion.Euler(0f, angle, 0f);
+
+        VFXobj.SetActive(true);
+    }
+
+
+    // 피격 VFX 생성 함수 : 생성 위치를 카메라 위치에 따라 조정
+    public void AddVFX(GameObject vfx, Unit target)
+    {
+        if (target.IsDead)
+            return;
 
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
         if (VFXobj == null)
@@ -1626,8 +1764,7 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
 
     }
-
-
+    
     public void AddVFX(ParticleSystem VFX)
     {
         GameObject VFXobj = Instantiate(VFX.gameObject);
@@ -1757,7 +1894,7 @@ public abstract class Unit : MonoBehaviour
         effectImage.SetStack(hasStack, stack);
     }
 
-    public void PlayAnimation(string stateName)
+    public void PlayAnimation(string stateName, float animationSpeed = 1f)
     {
         if(stateAnimDic.ContainsKey(stateName))
         {
@@ -1770,18 +1907,28 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        //modelAnimator.SetFloat("animationSpeed", 3f);
-
+        modelAnimator.SetFloat("animationSpeed", animationSpeed);
 
         modelAnimator.SetTrigger(stateName);
     }
 
-    protected void Rotation(Transform targetTr)
+    // 어떤 상태의 경우 여러 개의 애니메이션 중 하나를 랜덤으로 골라 재생하는 경우가 있다.
+    // ex. 사망, 수행자의 주먹질 애니메이션...
+    // 그것에 대응하는 메서드.
+    protected void SetRandomStateAnimationClip(string stateName)
     {
-        Vector3 direction = targetTr.position - transform.position;
-        Quaternion rot = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10f);
+        if (stateAnimDic.ContainsKey(stateName))
+        {
+            AnimationClip[] arr = stateAnimDic[stateName];
+            AnimationClip clip = arr[Random.Range(0, arr.Length)];
+            if (clip != null)
+            {
+                AnimatorOverrideController aoc = modelAnimator.runtimeAnimatorController as AnimatorOverrideController;
+                aoc[stateName] = clip;
+            }
+        }
     }
+
     public virtual void SetDeferredState()
     {
         isDeferredState = true;
@@ -1837,35 +1984,5 @@ public abstract class Unit : MonoBehaviour
         SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
 
-    public bool HasEffect(EffectType effectType)
-    {
-        return effectList.Exists(effect =>
-            effect != null && effect.Type == effectType
-        );
-    }
 
-    public bool RemoveEffectsByType(EffectType effectType)
-    {
-        bool isRemoved = false;
-
-        for (int i = effectList.Count - 1; i >= 0; i--)
-        {
-            DurationEffect effect = effectList[i];
-
-            if (effect == null || effect.Type != effectType)
-                continue;
-
-            effect.RemoveEffect();
-            effectList.RemoveAt(i);
-
-            isRemoved = true;
-        }
-
-        if (isRemoved)
-        {
-            UpdateState();
-        }
-
-        return isRemoved;
-    }
 }

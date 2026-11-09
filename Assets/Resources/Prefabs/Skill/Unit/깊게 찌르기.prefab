@@ -47,7 +47,7 @@ MonoBehaviour:
   onActivate:
     _PersistentCalls:
     - _Target: {fileID: 5559337073386126002}
-      _MemberName: AreaAttack
+      _MemberName: Attack
       _PersistentArguments:
       - _Type: 14
         _Int: 0
@@ -57,18 +57,10 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-      - _Type: 5
-        _Int: 0
-        _String: 
-        _X: 1
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-      - _Type: 5
-        _Int: 0
-        _String: 
-        _X: 5
+      - _Type: 14
+        _Int: 1
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
         _Y: 0
         _Z: 0
         _W: 0
@@ -76,5 +68,4 @@ MonoBehaviour:
   onAttackFortress:
     _PersistentCalls: []
   targetRule: 0
-  animationStateTime: 0
   data: {fileID: 11400000, guid: 8af3fbd3b3cf65746bc61c72799acc7d, type: 2}

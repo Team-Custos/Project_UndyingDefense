@@ -14,7 +14,8 @@ public class SpecialAbility : MonoBehaviour
         KILL,       // 대상을 처치했을 때 ex) 흡혈
         ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
-        DEAD   // 적이 죽었을 때 ex) 영생
+        DEAD,   // 적이 죽었을 때 ex) 영생
+        GET_EFFECT
     }
 
     [SerializeField] private string id;
@@ -24,7 +25,7 @@ public class SpecialAbility : MonoBehaviour
     [SerializeField] private ActiveType activeType;
     [SerializeField] private AudioClip audioClip; // 능력 발동 시 재생할 오디오
     [SerializeField] private GameObject auraVFX;
-    [SerializeField] private Unit unit;
+    [SerializeField] protected Unit unit;
 
     private Collider[] targets;
     private float damage;
@@ -39,6 +40,22 @@ public class SpecialAbility : MonoBehaviour
     private void Start()
     {
         AuraVFXScaleMult();
+    }
+
+    // 능력 소유 유닛 설정
+    public virtual void Initialize(Unit unit)
+    {
+        //this.unit = unit;
+    }
+
+    public virtual void Register(Unit target)
+    {
+
+    }
+
+    public virtual void Unregister(Unit target)
+    {
+
     }
 
     public void Activate(Unit unit, Unit target)
@@ -57,7 +74,7 @@ public class SpecialAbility : MonoBehaviour
             Debug.Log("자폭 미발동");
             return;
         }
-            
+
 
         if (unit.Hp <= unit.UnitStats.maxHp * hpToTrigger * 0.01f && unit.Hp >= 0f)
         {
@@ -100,13 +117,12 @@ public class SpecialAbility : MonoBehaviour
     }
 
     // 원한
-    public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)   
+    public void Resent(Unit target, float percent, GameObject effect, GameObject vfx)
     {
         float randomValue = Random.value; // 0 ~1 사이의 랜덤 값 생성 ex) 0.01, 0.3 0.9
 
         if (randomValue <= percent)
         {
-            Debug.Log("원한 발동 :" + randomValue);
             target.AddEffect(effect, target, Vector3.zero);
             target.AddVFX(vfx, target.transform.position, true, target.VfxScaleMult(target.Data.Tier));
             SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
@@ -130,32 +146,6 @@ public class SpecialAbility : MonoBehaviour
         }
     }
 
-    public void DispelCurseEffect(Unit unit, Unit target, float range, GameObject vfx)
-    {
-        if (unit == null || target == null || unit.IsDead || target.IsDead)
-            return;
-
-        float distance = Vector3.Distance(
-            unit.transform.position,
-            target.transform.position
-        );
-
-        if (distance > range)
-            return;
-
-        if (!target.HasEffect(EffectType.CURSE))
-            return;
-
-        bool isRemoved = target.RemoveEffectsByType(EffectType.CURSE);
-
-        if (!isRemoved)
-            return;
-
-        if (vfx != null)
-        {
-            target.AddVFX(vfx, target.transform, true);
-        }
-    }
 
 
     // 공격 특수 능력 용 데미지 계산
@@ -214,5 +204,25 @@ public class SpecialAbility : MonoBehaviour
             return;
 
         auraVFX.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
-    }    
+    }
+
+    public void SpawnEnemyUnit(EnemyUnit enemyUnit, Unit target, EnemyUnitData[] enemyDatas)
+    {
+        int randomIndex = Random.Range(0, enemyDatas.Length);
+
+        enemyUnit.EnemySpawner.SpawnEnemy(enemyDatas[randomIndex], target.transform.position);
+    }
+
+
+    public void OnGetDurationEffect(Unit target, DurationEffect effect)
+    {
+        //target.RemoveDurationEffect(effect);
+        //Activate(unit, target);
+        Debug.Log("상태 부여 시 발동되는 능력 적용");
+    }
+
+    //private void ClearCurseEffect(Unit target, DurationEffect effect)
+    //{
+    //    target.RemoveDurationEffect(effect);
+    //}
 }

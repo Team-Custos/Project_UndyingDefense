@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitStats   // 엑셀로 불러온 유닛 데이터 클래스
+public class UnitStats   // 엑셀로 불러온 유닛 스탯 저장
 {
     public string id;
     public int cost;

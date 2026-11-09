@@ -1,4 +1,5 @@
 using InputEventInterface;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -264,12 +265,6 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
 
     public void ActivateUpgrade()   // 승급 버튼 클릭 이벤트용 메서드
     {
-        if(selectedUnit.Data.Tier >= 4)
-        {
-            Debug.Log("업그레이드 불가");
-            return;
-        }
-
         SoundManager.Instance.PlayUIClickSFX();
 
         inGameManager.UpdateOperateState(OperateState.UPGRADE);
@@ -386,18 +381,22 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
             if (!inGameManager.IsGameStart || inGameManager.IsGamgePause)
                 return;
 
-            if (selectedUnit != null && selectedUnit is AllyUnit)
+            //if (selectedUnit != null && selectedUnit is AllyUnit)
+            //{
+            //    if (selectedAllyUnit.IsChange ||
+            //        selectedAllyUnit.IsUpgrade)
+            //        return;
+
+            //    ActivateUpgrade();
+            //}
+
+            if(selectedAllyUnit == null || selectedAllyUnit.IsChange ||
+                selectedAllyUnit.IsUpgrade || selectedAllyUnit.Data.Tier >= 4)
             {
-                if (selectedAllyUnit.IsChange ||
-                    selectedAllyUnit.IsUpgrade)
-                    return;
-
-                ActivateUpgrade();
-
-                isActivateUpgrade = true;
-
-                
+                return;
             }
+
+            ActivateUpgrade();
         }
     }
 

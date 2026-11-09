@@ -12,7 +12,16 @@ public class SkillData : ScriptableObject
     [SerializeField] private int activeMental = 0;    // 스킬 사용에 필요한 정신력
     //[SerializeField] private AudioClip[] startSFX;
     //[SerializeField] private ParticleSystem startVFX;
-    [SerializeField] private AudioClip[] attackSFX;
+    [SerializeField] private AudioClip[] attackSFX;     // 이름 수정 -> activateSFX
+    [SerializeField] private float activateTime;
+
+    [SerializeField] private GameObject startVFX;       // 스킬 사용 시 생성 될 VFX
+    [SerializeField] private AudioClip startSFX;       // 스킬 사용 시 재생 될 SFX 
+
+
+    [Header("■ Effect")]
+    [SerializeField] protected GameObject effectPrefab;     // 스킬 적용 시 함께 적용 될 상태
+    [SerializeField] protected float addEffectPercent;      // 상태 적용 확률
 
 
     public string Name => name;
@@ -24,4 +33,10 @@ public class SkillData : ScriptableObject
     public AudioClip[] AttackSFX => attackSFX;
     public float Range => range;
     public int ActiveMental => activeMental;
+    public float ActivateTime => activateTime;
+    public GameObject StartVFX => startVFX;
+    public AudioClip StartSFX => startSFX;
+
+    public GameObject EffectPrefab => effectPrefab;
+    public float AddEffectPercent => addEffectPercent;
 }

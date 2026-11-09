@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UltEvents;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -56,6 +57,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private Button guemsanBtn;
     [SerializeField] private Button namhanBtn;
     [SerializeField] private Button namwonBtn;
+    [SerializeField] private Button uiryeongBtn;    // 의령 전장 테스트용 버튼 (261103 LoPol)
+
     [Header("tutorial")]
     //[SerializeField] private GameObject tutorialLock;
     [SerializeField] private GameObject tutorialRecordPanel;
@@ -316,6 +319,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void LoadInGameScene() => LoadSceneWithSfx("Stage1_MergeScene  25.0608", guemsanBtn);
     public void LoadNamhanGameScene() => LoadSceneWithSfx("Stage2_MergeScene LevelDesign", namhanBtn);
     public void LoadNamwonGameScene() => LoadSceneWithSfx("Stage3_MergeScene LevelDesign", namwonBtn);
+    public void LoadUiryeongGameSceme() => LoadSceneWithSfx("Stage0_MergeScene LevelDesign", uiryeongBtn);  // 의령 전장 진입용 함수 (261103 LoPol)
 
     // 260718 이전 전장 열기 코드, 주석 처리
     /*

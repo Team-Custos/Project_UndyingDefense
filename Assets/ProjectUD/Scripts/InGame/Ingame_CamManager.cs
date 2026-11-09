@@ -64,48 +64,62 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
 
     private void Update()
     {
-        if (moveDirection != Vector3.zero && !dollyCamera.IsCamPanning)
+        // 카메라 조작 제한 상태
+        if (dollyCamera.IsCamPanning ||
+            !inGameManager.IsGameStart ||
+            selectedUnitManager.IsActivateUpgrade)
         {
-            Vector3 movement = moveDirection.normalized * moveSpeed * Time.deltaTime;
+            moveDirection = Vector3.zero;
+            return;
+        }
+
+        if (moveDirection != Vector3.zero)
+        {
+            Vector3 movement =
+                moveDirection.normalized * moveSpeed * Time.deltaTime;
+
             cameraPivot.position += movement;
 
-            // 카메라 이동 범위 제한
             Vector3 clampedPosition = cameraPivot.position;
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, xMin, xMax);
-            clampedPosition.z = Mathf.Clamp(clampedPosition.z, zMin, zMax);
+
+            clampedPosition.x =
+                Mathf.Clamp(clampedPosition.x, xMin, xMax);
+
+            clampedPosition.z =
+                Mathf.Clamp(clampedPosition.z, zMin, zMax);
+
             cameraPivot.position = clampedPosition;
         }
 
-        if (!dollyCamera.IsCamPanning)
+        float currentRotationX = virtualCamPos.eulerAngles.x;
+
+        if (float.IsNaN(currentRotationX)) return;
+        if (float.IsNaN(targetRotationX)) return;
+
+        float dampedRotationX = Mathf.SmoothDampAngle(
+            currentRotationX,
+            targetRotationX,
+            ref rotationVelocityX,
+            0.2f
+        );
+
+        if (float.IsNaN(dampedRotationX))
         {
-            float currentRotationX = virtualCamPos.eulerAngles.x;
-
-            if (float.IsNaN(currentRotationX)) return;
-            if (float.IsNaN(targetRotationX)) return;
-
-            float dampedRotationX = Mathf.SmoothDampAngle(
-                currentRotationX,
-                targetRotationX,
-                ref rotationVelocityX,
-                0.2f
-            );
-
-            if (float.IsNaN(dampedRotationX))
-            {
-                rotationVelocityX = 0f;
-                return;
-            }
-
-            Vector3 newEuler = new Vector3(
-                dampedRotationX,
-                virtualCamPos.eulerAngles.y,
-                virtualCamPos.eulerAngles.z
-            );
-
-            if (float.IsNaN(newEuler.y) || float.IsNaN(newEuler.z)) return;
-
-            virtualCamPos.eulerAngles = newEuler;
+            rotationVelocityX = 0f;
+            return;
         }
+
+        Vector3 newEuler = new Vector3(
+            dampedRotationX,
+            virtualCamPos.eulerAngles.y,
+            virtualCamPos.eulerAngles.z
+        );
+
+        if (float.IsNaN(newEuler.y) ||
+            float.IsNaN(newEuler.z))
+            return;
+
+        virtualCamPos.eulerAngles = newEuler;
     }
 
     public void OnNavigate(InputAction.CallbackContext context)
@@ -113,8 +127,9 @@ public class Ingame_CamManager : MonoBehaviour, IInputNavigate, IInputScrollWhee
         if (context.started || context.performed)
         {
             if (dollyCamera.IsCamPanning || !inGameManager.IsGameStart)
+            {
                 return;
-
+            }
             if (selectedUnitManager.IsActivateUpgrade)
             {
                 Debug.Log("업그레이드 조작 중 상태");

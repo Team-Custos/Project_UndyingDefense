@@ -69,7 +69,6 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
             tabButtonTexts[i].color = isSelected ? selectedColor : normalColor;
         }
 
-
         fName = name;
         pageNum = 1;
 
@@ -88,6 +87,7 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
         {
             SoundManager.Instance.PlayUIClickSFX();
         }
+
     }
 
     public void OnCharacterBtnClick(int buttonIndex)  // 버튼 클릭 이벤트용 함수
@@ -166,6 +166,7 @@ public class CharacterArchiveUI : MonoBehaviour, IInputESC
 
         // 페이지 버튼 개수
         int pageCount = (unitCount % 9 == 0) ? unitCount / 9 : (unitCount / 9) + 1;
+
 
         for (int i = 0; i < pageCount; i++) 
         {

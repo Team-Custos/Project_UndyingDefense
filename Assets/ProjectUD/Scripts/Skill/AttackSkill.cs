@@ -224,6 +224,20 @@ public class AttackSkill : SkillBase
         unit.AddVFX(vfx, unit.transform, false);
     }
 
+    public void ShowVFX(Unit unit, GameObject vfx, float angle)
+    {
+        unit.AddVFX(vfx, unit.transform.position, angle);
+    }
+
+    public void ApplyVFX(Unit unit, Unit target, GameObject vfxPrefab)
+    {
+        GameObject vfx = unit.GetVFX(vfxPrefab);
+        Vector3 dir = (target.transform.position - unit.transform.position).normalized;
+
+        vfx.transform.forward = dir;
+        vfx.transform.position = unit.WeaponTransform.position;
+        vfx.SetActive(true);
+    }
 
 
     public void SelfDestruct(Unit unit, float radius, float hpToTrigger, GameObject BoomEffectPrefab)
@@ -253,65 +267,112 @@ public class AttackSkill : SkillBase
         }
     }
 
-    public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
+    //public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
+    //{
+    //    // 투사체 발사
+    //    GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
+
+    //    float distance;
+
+    //    if (isUnit)
+    //        distance = Vector3.Distance(unit.transform.position, target.transform.position);
+    //    else
+    //        distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+
+
+    //    if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+    //    {
+    //        if(isUnit)
+    //        {
+    //            arrowCtrl.SetTarget(target);
+    //            arrowCtrl.SetEvent(() => {
+    //                Attack(unit, target);
+    //            });
+    //            //arrowCtrl.CalculateTime(distance);
+    //            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+    //        }
+    //        else
+    //        {
+    //            arrowCtrl.SetTarget(fortress);
+    //            arrowCtrl.SetEvent(() => {
+    //                AttackFortress(unit, fortress);
+    //            });
+    //            //arrowCtrl.CalculateTime(distance);
+    //            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+    //        }
+            
+
+    //    }
+    //    if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
+    //    {
+    //        Vector3 targetPos = target.transform.position;
+    //        projectile.transform.position = this.transform.position + Vector3.up;
+
+    //        granadeCtrl.SetData(data);
+    //        granadeCtrl.SetTargetLayer(unit.EnemyLayer);
+    //        granadeCtrl.SetTargetPos(targetPos);
+    //        granadeCtrl.JumpTowards();
+    //    }
+
+    //}
+    
+
+    // 유닛 대상 투사체 공격
+    public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)
     {
-        // 투사체 발사
+        if (target == null)
+            return;
+
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
 
-        float distance;
-
-        if (isUnit)
-            distance = Vector3.Distance(unit.transform.position, target.transform.position);
-        else
-            distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
-
+        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
         if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
         {
-            if(isUnit)
-            {
-                arrowCtrl.SetTarget(target);
-                arrowCtrl.SetEvent(() => {
-                    Attack(unit, target);
-                });
-                arrowCtrl.CalculateTime(distance);
-                arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
-            }
-            else
-            {
-                arrowCtrl.SetTarget(fortress);
-                arrowCtrl.SetEvent(() => {
-                    AttackFortress(unit, fortress);
-                });
-                arrowCtrl.CalculateTime(distance);
-                arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
-            }
-            
-
+            arrowCtrl.SetTarget(target);
+            arrowCtrl.SetEvent(() => {
+                Attack(unit, target);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
         }
         if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
         {
             Vector3 targetPos = target.transform.position;
-            projectile.transform.position = this.transform.position;
+            //projectile.transform.position = this.transform.position;
 
-            float durationTime = 1f;
             granadeCtrl.SetData(data);
             granadeCtrl.SetTargetLayer(unit.EnemyLayer);
-            granadeCtrl.JumpTowards(targetPos, durationTime);
+            granadeCtrl.SetTargetPos(targetPos);
+            granadeCtrl.JumpTowards();
+        }
+    }
+
+    // 성 대상 투사체 공격
+    public void ShootProjectile(Unit unit, Fortress fortress, GameObject projectilePrefab)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
+
+        float distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+        {
+            arrowCtrl.SetTarget(fortress);
+            arrowCtrl.SetEvent(() => {
+                AttackFortress(unit, fortress);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
         }
 
-        // 람다식 Lambda Expression
-        // 임시 메서드(무명 메서드)
-
-        // ([인수]) => { [코드]들 }
-
-
-        //projectile.GetComponent<Projectile>().Shoot(target.transform.position, () => Attack(unit, target));
     }
 
 
     public void Attack(Unit unit, Unit target)
     {
+        if (target == null)
+            return;
+
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
@@ -336,25 +397,26 @@ public class AttackSkill : SkillBase
         //Debug.Log("피해량" + target.DamageTakenMult);
         //Debug.Log("데미지" + calcDamage);
 
-        if (Random.Range(0f, 1f) <= calcCrit)
-        {
-            AddCritVFX(unit, target);
-            AddCritSFX(target.transform.position);
-            ActivateCriticalEffect(unit, target);
-        }
-        else
-        {
-            AddHitVFX(unit, target);
-            AddHitSFX(target.transform.position);
-        }
 
-        //Debug.Log(calcCrit);
-
-        //Debug.Log("데미지 : " + calcDamage);
+        // 베기, 찌르기, 때리기 경우에만 치명타 계산
+        if (data.Info.Type == AttackType.SLASH ||
+            data.Info.Type == AttackType.PIERCE ||
+            data.Info.Type == AttackType.CRUSH)
+        {
+            if (Random.Range(0f, 1f) <= calcCrit)
+            {
+                AddCritVFX(unit, target);
+                AddCritSFX(target.transform.position);
+                ActivateCriticalEffect(unit, target);
+            }
+            else
+            {
+                AddHitVFX(unit, target);
+                AddHitSFX(target.transform.position);
+            }
+        }
 
         target.TakeDamage(calcDamage, unit);
-
-        //Debug.Log("피해량 : " + calcDamage);
 
         if(unit.SpecialAbility != null && unit.SpecialAbility.ActiveCondition == SpecialAbility.ActiveType.ATTACK)
         {
@@ -370,15 +432,9 @@ public class AttackSkill : SkillBase
             //Debug.Log("회복 후 체력 :" + unit.Hp);
         }
 
-        float random = Random.value;
-
-        // 스킬 별 효과 발동 확률 계산 후 효과 발동
-        if (data.InduseEffectPrefab != null && random < CalculateEffectPercent(unit, target))
-        {
-            target.AddEffect(data.InduseEffectPrefab, target, Vector3.zero);
-        }
-
-        // 적 처치 특수 능력 발동
+        // 부여 할 상태가 있으면 확률 계산 후 부여
+        if (data.EffectPrefab != null)
+            ActivateEffect(unit, target);
 
     }
 
@@ -500,28 +556,22 @@ public class AttackSkill : SkillBase
             (data.Info.Type == AttackType.CRUSH && armorType == ArmorType.PADDED);
     }
 
-    
-    private float CalculateEffectPercent(Unit unit, Unit target)
-    {
-        float finalPercent = 0f;
+    // 상태 부여 확률 계산
+    //private float CalculateAddEffectPercent(Unit unit, Unit target)
+    //{
+    //    float percent = 0f;
 
-        if (data.InduseEffectPrefab == null)
-            return finalPercent;
-        else
-        {
-           DurationEffect effect = data.InduseEffectPrefab.GetComponent<DurationEffect>();
+    //    DurationEffect effect = data.InduseEffectPrefab.GetComponent<DurationEffect>();
 
-            if (effect.Type == EffectType.CURSE)
-            {
-                // 저주 효과는 추가 계산
-                finalPercent = CalculateCurseEffectPercent(unit.Mental, target.Mental);
-            }
+    //    if (effect.Type == EffectType.CURSE)
+    //        percent = CalculateAddCurseEffectPercent(unit.Mental, target.Mental);     // 저주 상태는 멘탈 차이에 따라 발동  
+    //    else
+    //        percent = data.AddStatusPercent;       // 저주 상태가 아닌 경우는 스킬 자체 확률에 따라 발동
 
-            finalPercent += data.InduseEffectSuccessRate;
+    //    Debug.Log($"{data.name} 상태 부여 확률 : {percent}%");
 
-            return Mathf.Clamp01(finalPercent);
-        }
-    }
+    //    return percent;
+    //}
 
 
     // 소환(설치) 형 스킬 -> 생성 위치, 생성 할 객체

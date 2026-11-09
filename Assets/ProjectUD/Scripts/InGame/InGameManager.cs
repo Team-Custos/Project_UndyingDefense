@@ -58,7 +58,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     [SerializeField] private StagePrefsData stagePrefsData;
 
     [Header("공로포인트")]
-    private float meritPoint = 0f;  // 공훈도
+    private int meritPoint = 0;  // 공훈도
 
     [Header("ClickState")]
     private OperateState operateState;
@@ -383,15 +383,14 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
             if (operateState == OperateState.DEFAULT)
             {
+                // 기본 조작 중 상태 시 적군 유닛이 선택되어 있으면 적군 유닛 선택 취소
                 if (selectedUnitManager.SelectedUnit is EnemyUnit)
                     selectedUnitManager.DeSelecteUnit();
-                else
+                else    // 게임 일시 정지
                 UpdateGameState();
             }
-            else
+            else    // 현재 조작중 상태 취소
                 CancelCurrentOperate();
-
-            Debug.Log(1111);
         }
     }
 
@@ -399,7 +398,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (context.performed)
         {
-                CancelCurrentOperate();
+            CancelCurrentOperate();
         }
     }
 
@@ -414,7 +413,6 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         CancelOperateState(nextState);
 
         operateState = nextState;
-        Debug.Log($"현재 조작 중 상태 : {operateState}");
     }
 
     // 기존 조작 중 상태 취소 : 상태 변경 시 or 취소(우클릭/ESC)
@@ -443,8 +441,9 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
                 break;
 
             case OperateState.UPGRADE:
-                selectedUnitManager.CancleUpgrade();
-                if(nextState != OperateState.ALLYUNIT)
+                //selectedUnitManager.CancleUpgrade();
+                CancelUnitUpgrade();
+                if (nextState != OperateState.ALLYUNIT)
                     selectedUnitManager.DeSelecteUnit();
                 break;
         }
@@ -452,7 +451,12 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         operateState = nextState;
     }
 
-    private void CancelCurrentOperate()
+    public void CancelUnitUpgrade() // UnityEvent에서 호출하기 위해 따로 만듦.
+    {
+        selectedUnitManager.CancleUpgrade();
+    }
+
+    public void CancelCurrentOperate()
     {
         if (operateState == OperateState.DEFAULT)
         {
@@ -461,8 +465,8 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         }
         else
         {
-            OperateState cancelState = GetCancelState();
-            CancelOperateState(cancelState);
+            OperateState nextState = GetCancelState();
+            CancelOperateState(nextState);
         }
     }
 
@@ -521,12 +525,12 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
     {
         if (isWin)
         {
-            meritPoint = successWave * 3f + 40f;
+            meritPoint = successWave * 3 + 40;
             Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3 + 40");
         }
         else
         {
-            meritPoint = successWave * 3f;
+            meritPoint = successWave * 3;
             Debug.Log($"획득 공훈도 : {meritPoint} = {successWave} * 3");
         }
 

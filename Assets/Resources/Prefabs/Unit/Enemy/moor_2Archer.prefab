@@ -633,17 +633,17 @@ PrefabInstance:
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Int
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._Int
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
@@ -653,12 +653,12 @@ PrefabInstance:
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Type
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._Type
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
@@ -678,12 +678,19 @@ PrefabInstance:
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._String
-      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      value: Fortress, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._Object
+      value: 
+      objectReference: {fileID: 8462500469413093967, guid: 763372b55dd1c704ab111c924c322a1c,
+        type: 3}
+    - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
+        type: 3}
       propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[2]._String
-      value: Fortress, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      value: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 6005588856818494454, guid: 5c5d5593d81753f4186d8ac171773486,
         type: 3}
@@ -735,18 +742,33 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.16713992
+      value: -0.038
       objectReference: {fileID: 0}
     - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0415506
+      value: -0.042
       objectReference: {fileID: 0}
     - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.040965255
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
         type: 3}
@@ -782,6 +804,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3623119690436492024, guid: c5595b3b016e4490ca15a26da7dadcde,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3623119690436912856, guid: c5595b3b016e4490ca15a26da7dadcde,
         type: 3}

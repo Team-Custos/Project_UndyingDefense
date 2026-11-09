@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public enum EffectType
 {
-    BUFF,       // 버프
-    CURSE,      // 저주
-    CRIT,       // 치명
-    NATURE,       // 자연
-    ETC         // 기타
+    BUFF,           // 버프
+    CURSE,          // 저주
+    CRIT,           // 치명
+    ELEMENTAL,      // 원소 피해
+    NONACT          // 행동 제어
 }
 
 public abstract class DurationEffect : MonoBehaviour
@@ -74,7 +74,7 @@ public abstract class DurationEffect : MonoBehaviour
     public abstract void Activate();
     public abstract void OnRemove();
 
-    protected virtual void Remove()  // 지속시간 지나면 호출
+    protected virtual void Remove()  // 지속시간 또는 최대 스텍 달성시 제거
     {
         target.RemoveEffect(this);
         OnRemove();
@@ -82,7 +82,7 @@ public abstract class DurationEffect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void RemoveEffect()      // 유닛이 죽으면 호출
+    public void RemoveEffect()
     {
         OnRemove();
         transform.SetParent(null);

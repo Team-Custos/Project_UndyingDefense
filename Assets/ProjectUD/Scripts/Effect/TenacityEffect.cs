@@ -7,13 +7,14 @@ public class TenacityEffect : DurationEffect
 
     public override void Activate()
     {
-        target.ChangeInterval(intervalPercent);
+        //target.ChangeInterval(intervalPercent);
+        target.AddAttackSpeedMult(intervalPercent);
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
     }
 
     public override void OnRemove()
     {
-        target.RevertInterval(intervalPercent);
+        target.AddAttackSpeedMult(-intervalPercent);
 
 
         if (effectImage != null)

@@ -1,5 +1,6 @@
 using InputEventInterface;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -27,6 +28,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private DollyCamera dollyCamera;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private EnemyUnitSpawner enemyUnitSpawner;
+    [SerializeField] private SpecialAbility specialAbility;
+
 
     [SerializeField] private Image[] alarmImages;
 
@@ -53,11 +56,16 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     private Dictionary<GameObject, ObjectPoolWithList<AllyUnit>> upgradeUnitPoolsDic =
         new Dictionary<GameObject, ObjectPoolWithList<AllyUnit>>(); // 업그레이드 유닛을 담을 풀
 
+    private List<Unit> appliedCurseEffectUnitList = new List<Unit>();       // 저주 상태에 걸린 유닛 관리용 리스트
+
     [SerializeField] SelectedUnitManager selectedUnitManager;
 
     [SerializeField] private AudioClip allySummon;
 
     public AllyUnitData[] Units => units;
+    public SpecialAbility SpecialAbility => specialAbility;
+    public IReadOnlyList<Unit> AppliedCurseEffectUnitList => appliedCurseEffectUnitList;
+
 
 
 
@@ -110,22 +118,15 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         obj.SetActive(false);
         AllyUnit unit = obj.GetComponent<AllyUnit>();
         unit.Initialize(data, unitPools[index], this, waveManager);
+
         UnitStats unitStats = unitDataLoader.GetUnitDataById(unit.UnitId);
         unit.SetUnitStats(unitStats);
-
-
-        //Seeker seeker = obj.GetComponent<Seeker>();
-        //if(seeker)
-        //{
-        //    seeker.Initialize(data, unitPools[index], this);
-        //    UnitStats seekerStats = unitDataLoader.GetUnitDataById(seeker.UnitId);
-        //    seeker.SetUnitStats(seekerStats);
-        //}
 
         unit.SetDurationEffectPool(durationEffectPool);
         unit.SetInstantEffectPool(instantEffectPool);
         unit.SetEffectImagePool(effectImagePool);
         unit.SetHitVFXPool(hitVFXPool, skillVFXPool);
+
         unitPools[index].List.Add(unit);
 
         return unit;
@@ -172,6 +173,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
             upgradeUnit = upgradeUnitPoolsDic[allyUnitPrefab].Pool.Get();
             upgradeUnitPoolsDic[allyUnitPrefab].List.Add(upgradeUnit);
 
+
             //return upgradeUnit;
         }
 
@@ -183,10 +185,10 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     private void UpgradeUnitInitialize(AllyUnit upgradeUnit, AllyUnitData allyUnitData, GameObject allyUnitPrefab, 
         Transform transform, Tile tile, EffectImagePool poolEffectImage, WaveManager waveManager)
     {
-        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this, waveManager);
-        upgradeUnit.Initialize();
         UnitStats unitStats = unitDataLoader.GetUnitDataById(upgradeUnit.UnitId);
         upgradeUnit.SetUnitStats(unitStats);
+        upgradeUnit.Initialize(allyUnitData, upgradeUnitPoolsDic[allyUnitPrefab], this, waveManager);
+        upgradeUnit.Initialize();
 
         upgradeUnit.SetDurationEffectPool(durationEffectPool);
         upgradeUnit.SetInstantEffectPool(instantEffectPool);
@@ -317,6 +319,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                         return;
                     }
 
+                    // 소환 될 유닛에게 영생 유닛 정보 알려줌
                     if(immortalityEnemy != null)
                         unit.SetImmortalityEnemy(immortalityEnemy);
                     // 유닛의 소환 방향 설정
@@ -345,16 +348,6 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
                 }
             }
         }
-    }
-
-    public void ResetAllyUnitRotation(AllyUnit allyUnit)
-    {
-        //allyUnit.transform.forward = spawnDirection.forward;
-
-        Vector3 direction = spawnDirection.forward;
-        Quaternion rot = Quaternion.LookRotation(direction);
-        allyUnit.transform.rotation = Quaternion.Slerp(allyUnit.transform.rotation, rot, Time.deltaTime * 10.0f);
-
     }
 
     public void StopActivateAlly()
@@ -400,7 +393,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     }
 
     // 소환 된 유닛들에게 영생 유닛 정보 전달
-    private void SetActiveUnitImmortalityEnemy(EnemyUnit immortalityEnemy)
+    private void NotifyImmortalityEnemyInfo(EnemyUnit immortalityEnemy)
     {
         foreach (var pool in unitPools)
         {
@@ -425,6 +418,116 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     public void SetImmortalityUnit(EnemyUnit ImmortalityEnemy)
     {
         this.immortalityEnemy = ImmortalityEnemy;
-        SetActiveUnitImmortalityEnemy(ImmortalityEnemy);
+        NotifyImmortalityEnemyInfo(ImmortalityEnemy);
     }
+
+
+    // 소환시 이벤트 등록
+    public void RegisterCurseClearEvent(Unit target)
+    {
+        target.onGetCurseEffect -= AddCurseUnit;
+        target.onGetCurseEffect += AddCurseUnit;
+
+        target.onRemoveCurseEffect -= RemoveCurseUnit;
+        target.onRemoveCurseEffect += RemoveCurseUnit;
+    }
+
+    // 아군이 사망하거나 비활성화될 때 이벤트 제거 및 리스트에서 제거
+    public void UnregisterCurseClearEvent(Unit target)
+    {
+        if (target == null)
+            return;
+
+        target.onGetCurseEffect -= AddCurseUnit;
+        target.onRemoveCurseEffect -= RemoveCurseUnit;
+
+        if (appliedCurseEffectUnitList.Contains(target))
+            appliedCurseEffectUnitList.Remove(target);
+    }
+
+
+    // 저주가 상태 부여 시 리스트에 추가
+    private void AddCurseUnit(Unit target, DurationEffect effect)
+    {
+        if (target == null || target.IsDead)
+            return;
+
+        if (!appliedCurseEffectUnitList.Contains(target))
+            appliedCurseEffectUnitList.Add(target);
+    }
+
+    // 저주 상태 해제시 리스트에서 제거
+    private void RemoveCurseUnit(Unit target)
+    {
+        if (target == null)
+            return;
+
+        if (appliedCurseEffectUnitList.Contains(target))
+            appliedCurseEffectUnitList.Remove(target);
+    }
+
+
+
+
+    //public void ResgisterAbility(Unit spawnUnit)
+    //{
+    //    // 스폰 될 유닛이 특수 능력을 가지고 있는지 확인
+    //    if(spawnUnit.SpecialAbility != null)        // 스폰 된 유닛이 특수 능력을 가지고 있음
+    //    {
+    //        SpecialAbility specialAbility = spawnUnit.SpecialAbility;
+
+    //        foreach (var pool in unitPools)
+    //        {
+    //            foreach (var unit in pool.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환 된 유닛들 중 같은 특수 능력을 보유 하지 않는 유닛들 등록
+    //                if(unit.SpecialAbility == null || unit.SpecialAbility != specialAbility)
+    //                    spawnUnit.SpecialAbility.Register(unit);
+    //            }
+    //        }
+
+    //        foreach (var kvp in upgradeUnitPoolsDic)
+    //        {
+    //            foreach (var unit in kvp.Value.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환 된 유닛들 중 같은 특수 능력을 보유 하지 않는 유닛들 등록
+    //                if (unit.SpecialAbility == null || unit.SpecialAbility != specialAbility)
+    //                    spawnUnit.SpecialAbility.Register(unit);
+    //            }
+    //        }
+    //    }
+    //    else    // 스폰될 유닛 특수 능력 없음
+    //    {
+    //        foreach (var pool in unitPools)
+    //        {
+    //            foreach (var unit in pool.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                // 소환되어 있는 유닛 중 특수 능력 보유 유닛과 연결
+    //                if(unit.SpecialAbility != null)
+    //                    unit.SpecialAbility.Register(spawnUnit);
+    //            }
+    //        }
+
+    //        foreach (var kvp in upgradeUnitPoolsDic)
+    //        {
+    //            foreach (var unit in kvp.Value.List)
+    //            {
+    //                if (unit == null)
+    //                    return;
+
+    //                if (unit.SpecialAbility != null)
+    //                    unit.SpecialAbility.Register(spawnUnit);
+    //            }
+    //        }
+    //    }
+    //}
 }

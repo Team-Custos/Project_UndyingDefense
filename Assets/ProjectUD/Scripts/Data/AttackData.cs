@@ -5,30 +5,32 @@ public class AttackData : ScriptableObject
 {
     public enum AttackType
     {
-        SLASH,
-        PIERCE,
-        CRUSH,
-        ELECTRIC,
-        FIRE,
-        POISON,
-        NONE,
-        TURE_DAMAGE
+        SLASH,          // 베기
+        PIERCE,         // 찌르기
+        CRUSH,          // 때리기
+
+        ELECTRIC,       // 전기
+        FIRE,           // 불
+        POISON,         // 독
+        TRUE_DAMAGE,    // 고정 데미지
     }
 
+    // 모든 공격 속성 공통 사용
     [Header("■ Data")]
     [SerializeField] private AttackType type;
-    [SerializeField] private GameObject critEffectPrefab;
     [SerializeField] private Sprite typeIcon;
 
+
+    // SLASH, PIERCE, CRUSH 만 사용
+    [SerializeField] private GameObject critEffectPrefab;       // 치명 상태 부여 Prefab
+
     [Header("■ VFX")]
-    [SerializeField] private GameObject critVFX;
-    [SerializeField] private GameObject hitVFX;
-    //[SerializeField] private float vfxDuration;     // VFX 스스로가 가질 데이터로 변경
-    [SerializeField] private string vfxName;
+    [SerializeField] private GameObject critVFX;                // 치명타 VFX
+    [SerializeField] private GameObject hitVFX;                 // 일반타 VFX
 
     [Header("■ SFX")]
-    [SerializeField] private AudioClip[] hitSFXClip;
-    [SerializeField] private AudioClip critSFXClip;
+    [SerializeField] private AudioClip[] hitSFXClip;            // 치명타 SFX
+    [SerializeField] private AudioClip critSFXClip;             // 일반타 VFX
 
     public AttackType Type => type;
     public Sprite TypeIcon => typeIcon;
@@ -36,7 +38,6 @@ public class AttackData : ScriptableObject
     public GameObject CritVFX => critVFX;
     public GameObject HitVFX => hitVFX;
     //public float VFXDuration => vfxDuration;
-    public string VFXName => vfxName;
     public AudioClip[] HitSFXClip => hitSFXClip;
     public AudioClip CritSFXClip => critSFXClip;
 }
