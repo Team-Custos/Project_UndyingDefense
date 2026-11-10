@@ -63,6 +63,11 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     //[SerializeField] private GameObject tutorialLock;
     [SerializeField] private GameObject tutorialRecordPanel;
     [SerializeField] private TextMeshProUGUI tutorialRecordText;
+    [Header("Uiryeong")]
+    [SerializeField] private GameObject uiryeongLock;
+    [SerializeField] private GameObject uiryeongCloud;
+    [SerializeField] private GameObject uiryeongRecordPanel;
+    [SerializeField] private TextMeshProUGUI uiryeongRecordText;
     [Header("Guemsan")]
     [SerializeField] private GameObject guemsanLock;
     [SerializeField] private GameObject guemsanCloud;
