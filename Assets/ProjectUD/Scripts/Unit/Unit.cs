@@ -409,18 +409,21 @@ public abstract class Unit : MonoBehaviour
 
         isSkillEffectAlreadyActivated = false;
 
-        if (skill.Data.StartVFX != null)
-        {
-            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
-            vfx.transform.position = transform.position;
-            vfx.transform.rotation = transform.rotation;
-            vfx.SetActive(true);
-        }
+        skill.ActivateStartTimeEvent(this);       // StartTime에 발생해야 할 이벤트(VFX, SFX 등)
+        
 
-        if (skill.Data.StartSFX != null)
-        {
-            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
-        }
+        //if (skill.Data.StartVFX != null)
+        //{
+        //    GameObject vfx = AddVFX(skill.Data.StartVFX, false);
+        //    vfx.transform.position = transform.position;
+        //    vfx.transform.rotation = transform.rotation;
+        //    vfx.SetActive(true);
+        //}
+
+        //if (skill.Data.StartSFX != null)
+        //{
+        //    SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
+        //}
 
 
         //currentSkill = null;
@@ -443,52 +446,6 @@ public abstract class Unit : MonoBehaviour
             selectedUnitManager.OnSelectedUnitHpChanged(this);
     }
 
-
-
-    protected virtual void ActivateSkill(SkillBase skill, Unit target) 
-    {
-        if (isDead) return;
-
-        //isSkillEffectAlreadyActivated = false;
-
-        if (target != null && target != this)
-            transform.LookAt(target.transform);
-
-        intervalCheck = interval / attackSpeedMult;
-        skillEffectActivationTime = skill.Data.ActivateTime / attackSpeedMult;
-
-        modelAnimator.SetFloat("animationSpeed", attackSpeedMult);
-
-        if (navAgent.enabled)
-            navAgent.isStopped = true;
-
-        modelAnimator.SetBool("isRunning", false);
-
-        isSkillEffectAlreadyActivated = false;
-
-         if(skill.Data.StartVFX != null)
-        {
-            GameObject vfx = AddVFX(skill.Data.StartVFX, false);
-            vfx.transform.position = transform.position;
-            vfx.transform.rotation = transform.rotation;
-            vfx.SetActive(true);
-        }
-
-         if(skill.Data.StartSFX != null)
-        {
-            SoundManager.Instance.PlaySFX(skill.Data.StartSFX, transform.position);
-        }
-
-
-        //currentSkill = null;
-
-        //if (stateDurationCheck >= stateDuration)
-        //{
-        //    stateDurationCheck = 0f;
-        //    stateDuration = 0f;
-        //}
-        stateDurationCheck = 0f;
-    }
 
 
     // 스킬 효과 발동
@@ -1664,19 +1621,9 @@ public abstract class Unit : MonoBehaviour
         VFXobj.SetActive(true);
     }
 
-    public GameObject AddVFX(GameObject vfx, bool attach = true)
+    public GameObject AddVFX(GameObject vfx)
     {
         GameObject VFXobj = hitVFXPool.GetVFX(vfx, this);
-
-        if (attach)
-        {
-            VFXobj.transform.SetParent(VFXParent);
-        }
-        else
-        {
-            VFXobj.transform.SetParent(null);
-        }
-
         VFXobj.SetActive(false);
 
         return VFXobj;
