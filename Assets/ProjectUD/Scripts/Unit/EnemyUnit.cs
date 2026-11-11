@@ -34,11 +34,6 @@ public class EnemyUnit : Unit
         HIGHTIER        // 티어가 높은 적
     }
 
-    public enum AIStance
-    {
-        NORMAL,
-        AGGRESSIVE
-    }
 
     private enum Mission
     {

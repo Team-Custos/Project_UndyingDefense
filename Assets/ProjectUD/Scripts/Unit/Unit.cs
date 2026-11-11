@@ -118,6 +118,14 @@ public abstract class Unit : MonoBehaviour
     [SerializedDictionary("State", "Animation Clips")]
     public SerializedDictionary<string, AnimationClip[]> stateAnimDic; // = new Dictionary<string, AnimationClip[]>();
 
+    private bool hasIgnoreDefenseType = false; // 방어 상성 무시 여부
+
+    public bool HasIgnoreDefenseType
+    {
+        get => hasIgnoreDefenseType;
+        set => hasIgnoreDefenseType = value;
+    }
+
     public Transform EffectParent => effectParent;
 
     public abstract UnitData Data { get; }
@@ -283,12 +291,15 @@ public abstract class Unit : MonoBehaviour
         deferredStateDurationCheck = deferredStateDuration;
         armorType = Data.ArmorType;
 
-        // 스킬 쿨타임 초기화
+        // 스킬 쿨타임 등 초기화
         if (generalSkill != null)
             generalSkill.Initialize();
 
         if(specialSkill != null)
             specialSkill.Initialize();
+
+        if(specialAbility)
+            specialAbility.Initialize(this);
 
         //InvokeEvent(SpecialAbility.BASIC);
         ActivateSpecialAbility(ActiveType.ALWAYS, null);
