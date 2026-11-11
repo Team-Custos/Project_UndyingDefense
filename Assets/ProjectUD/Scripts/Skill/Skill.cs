@@ -1,5 +1,6 @@
 using UnityEngine;
 using UltEvents;
+using UnityEngine.WSA;
 
 public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클래스
 {
@@ -21,6 +22,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     [Header("■ Events")]
     [SerializeField] private UltEvent<Unit, Unit> onActivate; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit, Fortress> onAttackFortress; // 발동했을 때 실행할 이벤트
+    [SerializeField] private UltEvent<Unit> onSkillUse; // 스킬 사용 시 실행할 이벤트
     [SerializeField] private TargetRule targetRule; // 타겟 선정 방식
 
     protected float coolTimeCheck;
@@ -72,10 +74,10 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
             onAttackFortress.Invoke(unit, fortress);
     }
 
-    public void ActivateFortressSkill(Fortress fortress)
+    public void ActivateStartTimeEvent(Unit unit)
     {
-        if (onAttackFortress != null)
-            onAttackFortress.Invoke(null, fortress);
+        if (onSkillUse != null)
+            onSkillUse.Invoke(unit);
     }
 
     public virtual void Initialize()
@@ -87,6 +89,34 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         if (!IsCoolDown && isCoolTimeOn)
             coolTimeCheck += Time.deltaTime;
+    }
+
+    public void ShowStartTimeVFX(Unit unit, Transform pos)
+    {
+        GameObject vfx = unit.AddVFX(Data.StartVFX);
+        vfx.transform.SetParent(null);
+        vfx.transform.position = pos.position;
+        vfx.transform.rotation = unit.transform.rotation;
+
+        vfx.SetActive(true);
+    }
+    public void ShowStartTimeVFX(Unit unit)
+    {
+        GameObject vfx = unit.AddVFX(Data.StartVFX);
+        vfx.transform.SetParent(null);
+        vfx.transform.position = unit.transform.position;
+        vfx.transform.rotation = unit.transform.rotation;
+
+        vfx.SetActive(true);
+    }
+
+
+    public void PlayStartTimeSFX(Unit unit)
+    {
+        if (Data == null || Data.StartSFX == null)
+            return;
+
+        SoundManager.Instance.PlaySFX(Data.StartSFX, unit.transform.position);
     }
 
     protected void PlaySkillSFX()

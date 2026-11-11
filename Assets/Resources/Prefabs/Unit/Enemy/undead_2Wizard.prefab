@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4019209157018681883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5101474267211889433}
+  m_Layer: 0
+  m_Name: StartVFXPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5101474267211889433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019209157018681883}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.213, z: 0.354}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3131809031007562945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8243956155016299959
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,6 +203,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3683141278957373311, guid: 296a175c86a6d45378d2add500e527c5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5101474267211889433}
     - targetCorrespondingSourceObject: {fileID: 3487406088434881730, guid: 296a175c86a6d45378d2add500e527c5,
         type: 3}
       insertIndex: 1
@@ -185,6 +220,12 @@ PrefabInstance:
 --- !u!4 &2886402322525060988 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3487406088434881730, guid: 296a175c86a6d45378d2add500e527c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1759586678177393598}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3131809031007562945 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3683141278957373311, guid: 296a175c86a6d45378d2add500e527c5,
     type: 3}
   m_PrefabInstance: {fileID: 1759586678177393598}
   m_PrefabAsset: {fileID: 0}
@@ -278,6 +319,52 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 8449672901474104764}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._MemberName
+      value: ShowStartTimeVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Object
+      value: 
+      objectReference: {fileID: 5101474267211889433}
+    - target: {fileID: 6005588856818494454, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._String
+      value: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 8675126071776639299, guid: 286c7cc21a19dbb4788538a9c2d79cb6,
         type: 3}
@@ -509,7 +596,7 @@ PrefabInstance:
     - target: {fileID: 8675126071776639299, guid: 80b7053d14e2a19488f4fe07933ace20,
         type: 3}
       propertyPath: m_Name
-      value: "\uBD88\uC6B4\uC758 \uD30C\uB3D9"
+      value: "\uB9DD\uC790\uC758 \uC0B4\uAE30"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

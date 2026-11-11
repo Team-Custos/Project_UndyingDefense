@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2974963476001595444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5119679118335978210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6961428007657928448}
+  m_Layer: 0
+  m_Name: StartVFXPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6961428007657928448
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5119679118335978210}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.32, z: 0.84}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3398772423921459685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3058793803906026026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,6 +159,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 385578117164919759, guid: f2252134a0d86ce4a9bd61ca341d2d96,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6961428007657928448}
     - targetCorrespondingSourceObject: {fileID: 385578117164919765, guid: f2252134a0d86ce4a9bd61ca341d2d96,
         type: 3}
       insertIndex: 0
@@ -137,6 +172,12 @@ PrefabInstance:
 --- !u!4 &3398772423921459603 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 385578117164919737, guid: f2252134a0d86ce4a9bd61ca341d2d96,
+    type: 3}
+  m_PrefabInstance: {fileID: 3058793803906026026}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3398772423921459685 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 385578117164919759, guid: f2252134a0d86ce4a9bd61ca341d2d96,
     type: 3}
   m_PrefabInstance: {fileID: 3058793803906026026}
   m_PrefabAsset: {fileID: 0}
@@ -309,6 +350,52 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1974668887388968159}
     m_Modifications:
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 4389853785700444076}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._MemberName
+      value: ShowStartTimeVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Type
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Object
+      value: 
+      objectReference: {fileID: 6961428007657928448}
+    - target: {fileID: -8998121551933104840, guid: 76ecd7b02c380bf4c8227472bc520fe2,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._String
+      value: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 4887701372474759928, guid: 76ecd7b02c380bf4c8227472bc520fe2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -448,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 5800827886960093435, guid: 88c852fdf0fdfd9489f89dce0d48d708,
         type: 3}
       propertyPath: m_Name
-      value: "\uD3ED\uD48D"
+      value: "\uB9C8\uB825 \uD3ED\uD48D"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
