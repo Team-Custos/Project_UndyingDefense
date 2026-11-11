@@ -211,6 +211,42 @@ public class AttackSkill : SkillBase
 
     }
 
+    public void AreaProjcetileAttack(Unit unit, float radius, float angle, float yPos,  GameObject projectilePrefab)
+    {
+        if (targets == null)
+            targets = new Collider[maxTargetCount];
+
+
+        int targetCount = Physics.OverlapSphereNonAlloc(unit.transform.position, radius, targets, unit.EnemyLayer);
+
+        float half = angle * 0.5f;
+        Vector3 forward = unit.transform.forward;
+
+        if (targetCount <= 0)
+        {
+            Debug.Log("공격 대상 없음");
+            return;
+        }
+
+        for (int i = 0; i < targetCount; i++)
+        {
+            if (!targets[i].TryGetComponent(out Unit target))
+                continue;
+
+            // unit을 기준으로 적이 있는 방향 계산
+            Vector3 dir = target.transform.position - unit.transform.position;
+            dir.y = 0f;
+
+            // unit의 정면(forward)과 적을 향한 방향(dir) 사이의 각도를 측정
+            float ang = Vector3.Angle(forward, dir);
+
+            // 좌/우 angle/2 (half) 범위 안이면 타격
+            if (ang <= half)
+            {
+                ShootProjectile(unit, target, yPos, projectilePrefab);
+            }
+        }
+    }
 
     public void ShowVFX(Unit unit, Unit target, GameObject vfxPrefab)
     {
@@ -267,56 +303,6 @@ public class AttackSkill : SkillBase
         }
     }
 
-    //public void ShootProjectile(Unit unit, Unit target, Fortress fortress, GameObject projectilePrefab, bool isUnit)//투사체 발사
-    //{
-    //    // 투사체 발사
-    //    GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
-
-    //    float distance;
-
-    //    if (isUnit)
-    //        distance = Vector3.Distance(unit.transform.position, target.transform.position);
-    //    else
-    //        distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
-
-
-    //    if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
-    //    {
-    //        if(isUnit)
-    //        {
-    //            arrowCtrl.SetTarget(target);
-    //            arrowCtrl.SetEvent(() => {
-    //                Attack(unit, target);
-    //            });
-    //            //arrowCtrl.CalculateTime(distance);
-    //            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
-    //        }
-    //        else
-    //        {
-    //            arrowCtrl.SetTarget(fortress);
-    //            arrowCtrl.SetEvent(() => {
-    //                AttackFortress(unit, fortress);
-    //            });
-    //            //arrowCtrl.CalculateTime(distance);
-    //            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
-    //        }
-            
-
-    //    }
-    //    if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
-    //    {
-    //        Vector3 targetPos = target.transform.position;
-    //        projectile.transform.position = this.transform.position + Vector3.up;
-
-    //        granadeCtrl.SetData(data);
-    //        granadeCtrl.SetTargetLayer(unit.EnemyLayer);
-    //        granadeCtrl.SetTargetPos(targetPos);
-    //        granadeCtrl.JumpTowards();
-    //    }
-
-    //}
-    
-
     // 유닛 대상 투사체 공격
     public void ShootProjectile(Unit unit, Unit target, GameObject projectilePrefab)
     {
@@ -324,6 +310,37 @@ public class AttackSkill : SkillBase
             return;
 
         GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up, unit.transform.rotation);
+
+        float distance = Vector3.Distance(unit.transform.position, target.transform.position);
+
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+        {
+            arrowCtrl.SetTarget(target);
+            arrowCtrl.SetEvent(() => {
+                Attack(unit, target);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((target.transform.position - unit.transform.position).normalized);
+        }
+        if (projectile.TryGetComponent<GranadeCtrl>(out GranadeCtrl granadeCtrl))
+        {
+            Vector3 targetPos = target.transform.position;
+            //projectile.transform.position = this.transform.position;
+
+            granadeCtrl.SetData(data);
+            granadeCtrl.SetTargetLayer(unit.EnemyLayer);
+            granadeCtrl.SetTargetPos(targetPos);
+            granadeCtrl.JumpTowards();
+        }
+    }
+
+    // 투사체 발사 위치 높이 조정 -> 특정 위치(ex 무기 위치) 에서 발사 가능하게 수정(ex yPos -> transform) 될 수도...
+    public void ShootProjectile(Unit unit, Unit target, float yPos, GameObject projectilePrefab)
+    {
+        if (target == null)
+            return;
+
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up * yPos, unit.transform.rotation);
 
         float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
@@ -367,6 +384,24 @@ public class AttackSkill : SkillBase
 
     }
 
+    public void ShootProjectile(Unit unit, Fortress fortress, float yPos, GameObject projectilePrefab)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, unit.transform.position + Vector3.up * yPos, unit.transform.rotation);
+
+        float distance = Vector3.Distance(unit.transform.position, fortress.transform.position);
+
+        if (projectile.TryGetComponent<ArrowCtrl>(out ArrowCtrl arrowCtrl))
+        {
+            arrowCtrl.SetTarget(fortress);
+            arrowCtrl.SetEvent(() => {
+                AttackFortress(unit, fortress);
+            });
+            //arrowCtrl.CalculateTime(distance);
+            //arrowCtrl.Shoot((fortress.transform.position - unit.transform.position).normalized);
+        }
+
+    }
+
 
     public void Attack(Unit unit, Unit target)
     {
@@ -376,9 +411,9 @@ public class AttackSkill : SkillBase
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
-        if(!data.IgnoreDefenseType)
+        if(!data.IgnoreDefenseType && !unit.HasIgnoreDefenseType)     // 스킬이 방어 속성 무시 효과가 아니고 유닛이 방어 속성 무시 효과가 없을 경우
         {
-            if (IsBlocked(target.Armortype))
+            if (IsBlocked(target.Armortype))        // 스킬의 공격 속성이 대상의 방어 속성에 대응되는 경우
             {
                 float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
                 calcDamage *= calcBlockRate;
@@ -403,6 +438,9 @@ public class AttackSkill : SkillBase
             data.Info.Type == AttackType.PIERCE ||
             data.Info.Type == AttackType.CRUSH)
         {
+            if (unit.HasIgnoreDefenseType)
+                Debug.Log("치명타 발생 확률 : " + calcCrit);
+
             if (Random.Range(0f, 1f) <= calcCrit)
             {
                 AddCritVFX(unit, target);
@@ -415,6 +453,9 @@ public class AttackSkill : SkillBase
                 AddHitSFX(target.transform.position);
             }
         }
+
+        if (unit.HasIgnoreDefenseType)
+            Debug.Log(calcDamage);
 
         target.TakeDamage(calcDamage, unit);
 

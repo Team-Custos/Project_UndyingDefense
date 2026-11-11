@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Resources;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,11 +34,6 @@ public class EnemyUnit : Unit
         HIGHTIER        // 티어가 높은 적
     }
 
-    public enum AIStance
-    {
-        NORMAL,
-        AGGRESSIVE
-    }
 
     private enum Mission
     {
@@ -380,7 +376,7 @@ public class EnemyUnit : Unit
                         {
                             SkillBase generalSkill = GetGeneralSkill();
                             if (generalSkill != null)
-                                ActivateSkill(fortress, data);
+                                UseSkill(fortress, data);
                         }
 
                         
@@ -685,7 +681,7 @@ public class EnemyUnit : Unit
                             {
                                 SkillBase generalSkill = GetGeneralSkill();
                                 if (generalSkill != null)
-                                    ActivateSkill(fortress, data);
+                                    UseSkill(fortress, data);
                             }
 
                         }
@@ -718,7 +714,7 @@ public class EnemyUnit : Unit
         }
     }
 
-    private void ActivateSkill(Fortress fortress, UnitData data)  // 성 공격 상태
+    private void UseSkill(Fortress fortress, UnitData data)  // 성 공격 상태
     {
         intervalCheck = interval / attackSpeedMult;
         skillEffectActivationTime = GeneralSkill.Data.ActivateTime / attackSpeedMult;
@@ -729,7 +725,12 @@ public class EnemyUnit : Unit
         isSkillEffectAlreadyActivated = false;
         PlayAnimation("GeneralSkill", attackSpeedMult);
 
+
         transform.LookAt(fortress.transform.position);
+
+        SkillBase skill = GetGeneralSkill();
+
+        skill.ActivateStartTimeEvent(this);
         //isSkillEffectAlreadyActivated = false;
 
         if (navAgent.enabled)

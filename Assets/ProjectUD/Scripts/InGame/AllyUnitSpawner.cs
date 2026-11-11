@@ -1,6 +1,7 @@
 using InputEventInterface;
 using System.Collections.Generic;
 using System.Linq;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -61,6 +62,9 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] SelectedUnitManager selectedUnitManager;
 
     [SerializeField] private AudioClip allySummon;
+
+    private UltEvent<Unit, DurationEffect> onUnitAddEffect;
+    private UltEvent<Unit, DurationEffect> onUnitRemoveEffect;
 
     public AllyUnitData[] Units => units;
     public SpecialAbility SpecialAbility => specialAbility;
@@ -425,11 +429,11 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     // 소환시 이벤트 등록
     public void RegisterCurseClearEvent(Unit target)
     {
-        target.onGetCurseEffect -= AddCurseUnit;
-        target.onGetCurseEffect += AddCurseUnit;
+        target.onGetCurseEffect -= AddGetCurseUnit;
+        target.onGetCurseEffect += AddGetCurseUnit;
 
-        target.onRemoveCurseEffect -= RemoveCurseUnit;
-        target.onRemoveCurseEffect += RemoveCurseUnit;
+        target.onRemoveCurseEffect -= RemoveGetCurseUnit;
+        target.onRemoveCurseEffect += RemoveGetCurseUnit;
     }
 
     // 아군이 사망하거나 비활성화될 때 이벤트 제거 및 리스트에서 제거
@@ -438,8 +442,8 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
         if (target == null)
             return;
 
-        target.onGetCurseEffect -= AddCurseUnit;
-        target.onRemoveCurseEffect -= RemoveCurseUnit;
+        target.onGetCurseEffect -= AddGetCurseUnit;
+        target.onRemoveCurseEffect -= RemoveGetCurseUnit;
 
         if (appliedCurseEffectUnitList.Contains(target))
             appliedCurseEffectUnitList.Remove(target);
@@ -447,7 +451,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
 
 
     // 저주가 상태 부여 시 리스트에 추가
-    private void AddCurseUnit(Unit target, DurationEffect effect)
+    private void AddGetCurseUnit(Unit target, DurationEffect effect)
     {
         if (target == null || target.IsDead)
             return;
@@ -457,7 +461,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     }
 
     // 저주 상태 해제시 리스트에서 제거
-    private void RemoveCurseUnit(Unit target)
+    private void RemoveGetCurseUnit(Unit target)
     {
         if (target == null)
             return;

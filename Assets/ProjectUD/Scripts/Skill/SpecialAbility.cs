@@ -15,7 +15,8 @@ public class SpecialAbility : MonoBehaviour
         ATTACK,     // 공격 시 ex) 
         TAKE_DAMAGE, // 피해를 입었을 때 ex) 원한
         DEAD,   // 적이 죽었을 때 ex) 영생
-        GET_EFFECT
+        NONE,
+
     }
 
     [SerializeField] private string id;
@@ -45,7 +46,7 @@ public class SpecialAbility : MonoBehaviour
     // 능력 소유 유닛 설정
     public virtual void Initialize(Unit unit)
     {
-        //this.unit = unit;
+        this.unit = unit;
     }
 
     public virtual void Register(Unit target)
