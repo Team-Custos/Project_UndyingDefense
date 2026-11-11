@@ -452,10 +452,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 941137871755041425}
     m_Modifications:
+    - target: {fileID: 3425594841841165432, guid: 83e164eec33e84621be5528120c29d81,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8e1433b11d7c74f4bb101ece92400389, type: 2}
     - target: {fileID: 3425594841843169976, guid: 83e164eec33e84621be5528120c29d81,
         type: 3}
       propertyPath: m_Name
       value: dagger
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425594841843590808, guid: 83e164eec33e84621be5528120c29d81,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425594841843590808, guid: 83e164eec33e84621be5528120c29d81,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425594841843590808, guid: 83e164eec33e84621be5528120c29d81,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 3425594841843590808, guid: 83e164eec33e84621be5528120c29d81,
         type: 3}
@@ -506,6 +526,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425594841843590808, guid: 83e164eec33e84621be5528120c29d81,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
