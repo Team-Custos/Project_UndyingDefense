@@ -488,6 +488,7 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
         selectedUnit.SetSelectedUnitManager(null);
         unitSelectUI.Hide();
         selectedUnitInfoPanel.HideUnitInfo();
+        unitUpgradeMenuUI.HideUpgradeUI();
         selectedUnit = null;
         selectedAllyUnit = null;
 
