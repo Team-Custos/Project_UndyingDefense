@@ -49,14 +49,9 @@ public class SpecialAbility : MonoBehaviour
         this.unit = unit;
     }
 
-    public virtual void Register(Unit target)
+    public virtual void Remove(Unit unit)
     {
-
-    }
-
-    public virtual void Unregister(Unit target)
-    {
-
+        
     }
 
     public void Activate(Unit unit, Unit target)
@@ -215,15 +210,4 @@ public class SpecialAbility : MonoBehaviour
     }
 
 
-    public void OnGetDurationEffect(Unit target, DurationEffect effect)
-    {
-        //target.RemoveDurationEffect(effect);
-        //Activate(unit, target);
-        Debug.Log("상태 부여 시 발동되는 능력 적용");
-    }
-
-    //private void ClearCurseEffect(Unit target, DurationEffect effect)
-    //{
-    //    target.RemoveDurationEffect(effect);
-    //}
 }

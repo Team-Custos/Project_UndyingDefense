@@ -53,9 +53,6 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private AudioClip healStateSFX;
     [SerializeField] private GameObject recoveryVFX;
 
-    public UltEvent<Unit, DurationEffect> onGetCurseEffect;     // 저주 상태를 받았을 때 실행 할 이벤트
-    public UltEvent<Unit> onRemoveCurseEffect;                  // 저주 상태가 제거되었을 때 실행 할 이벤트
-
     protected float maxhp;
     protected float hp;
     protected float critPercent;
@@ -1565,10 +1562,8 @@ public abstract class Unit : MonoBehaviour
 
             effect.gameObject.SetActive(true);
 
-            if(effect.Type == EffectType.CURSE)
-                onGetCurseEffect?.Invoke(this, effect);
+            ActivateAddEffectEvent(effect);
         }
-
         
 
         UpdateState();
@@ -1596,17 +1591,13 @@ public abstract class Unit : MonoBehaviour
     {
         effectList.Remove(effect);
         UpdateState();
-        
-        if(effect.Type == EffectType.CURSE)
-            onRemoveCurseEffect?.Invoke(this);
     }
 
     protected void RemoveAllEffect()
     {
         for (int i = effectList.Count - 1; i >= 0; i--)
         {
-            effectList[i].RemoveEffect();
-            effectList.RemoveAt(i);
+            effectList[i].Remove();
         }
     }
 
@@ -1830,10 +1821,7 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        //effectImage.Disappear();
         effectImagePool.ReturnEffectImage(effectImage);
-        //effectImage.gameObject.SetActive(false);
-
     }
 
     private int GetEmptyEffectImageSlot()
@@ -1942,5 +1930,13 @@ public abstract class Unit : MonoBehaviour
         SoundManager.Instance.PlaySFX(healStateSFX, this.transform.position);
     }
 
-
+    private void ActivateAddEffectEvent(DurationEffect effect)
+    {
+        if(this is AllyUnit allyUnit)
+        {
+            AllyUnitSpawner spawner = allyUnit.Spawner;
+            spawner.onUnitAddEffect?.Invoke(this, effect);
+        }
+        // 적군 추가?
+    }
 }

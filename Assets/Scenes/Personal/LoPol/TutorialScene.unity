@@ -25957,7 +25957,6 @@ MonoBehaviour:
   dollyCamera: {fileID: 478265408}
   waveManager: {fileID: 1713546831}
   enemyUnitSpawner: {fileID: 1402139191}
-  specialAbility: {fileID: 0}
   alarmImages:
   - {fileID: 523125358}
   - {fileID: 771561438}
@@ -25977,6 +25976,8 @@ MonoBehaviour:
     m_Bits: 8
   selectedUnitManager: {fileID: 296548010}
   allySummon: {fileID: 8300000, guid: dec70ab48168cd34ea1c2504eea91dbf, type: 3}
+  onUnitAddEffect:
+    _PersistentCalls: []
 --- !u!4 &1418562302
 Transform:
   m_ObjectHideFlags: 0

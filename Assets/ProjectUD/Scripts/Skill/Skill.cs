@@ -151,7 +151,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         else
             percent = Data.AddEffectPercent;       // 저주 상태가 아닌 경우는 스킬 자체 확률에 따라 발동
 
-        Debug.Log($"{Data.name} 상태 부여 확률 : {percent}%");
+        //Debug.Log($"{Data.name} 상태 부여 확률 : {percent}%");
 
         return Mathf.Clamp(percent, 0f, 100f);
     }
@@ -161,7 +161,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     {
         int mentalDifference = unitMental - targetMental;
 
-        Debug.Log($"멘탈 차이 : {mentalDifference}");
+        //Debug.Log($"멘탈 차이 : {mentalDifference}");
 
         switch (mentalDifference)
         {

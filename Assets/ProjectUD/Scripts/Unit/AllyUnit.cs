@@ -81,9 +81,6 @@ public class AllyUnit : Unit
 
     private EnemyUnit ImmortalityEnemy;    // 영생 보유 적 유닛
 
-
-
-
     public override void Initialize() // 유닛 소환시
     {
         base.Initialize();
@@ -103,10 +100,15 @@ public class AllyUnit : Unit
 
         navObstacle.carvingMoveThreshold = moveThresholdOnStop;
 
-        if (SpecialAbility != null)
-            SpecialAbility.Initialize(this);
+        //SpecialAbility specialAbility = this.SpecialAbility;
 
-        spawner.RegisterCurseClearEvent(this);
+        //if(specialAbility != null && specialAbility is ClearCurseEffectAbility clearCurseAbility)
+        //{
+        //    clearCurseAbility.Initialize(spawner.SearchHasCurseEffectUnits());
+
+        //    spawner.onUnitAddEffect += clearCurseAbility.AddList;
+        //    spawner.onUnitRemoveEffect += clearCurseAbility.AddList;
+        //}
     }
 
 
@@ -300,18 +302,6 @@ public class AllyUnit : Unit
                                 LookAt(targetUnit.transform.position);
                         }
 
-                        //if (idleState == IdleState.DEFAULT)
-                        //{
-                        //    Vector3 direction = Vector3.left;
-                        //    Quaternion rot = Quaternion.LookRotation(direction);
-                        //    transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10.0f);
-                        //    modelAnimator.SetBool("isRunning", false);
-                        //}
-                        //else
-                        //{
-                        //    if (targetUnit != null && targetUnit != this)
-                        //        LookAt(targetUnit.transform.position);
-                        //}
                     }
 
                     UpdateMode();
@@ -659,7 +649,7 @@ public class AllyUnit : Unit
 
     public void ChangeMode()
     {
-        state = State.COMAT_IDLE;
+        SetIdleState(waveManager.IsWaveEnd);
         modelAnimator.SetBool("isRunning", false);
 
         changeDuration -= Time.deltaTime;
@@ -852,26 +842,20 @@ public class AllyUnit : Unit
                 isSelected = false;
                 upgradedUnit.isSelected = true;
 
-                //selectedUnitUI.UpdateUnitInfo(upgradedUnit);
-                //selectedUnitInfoPanel.UpdateUnitInfo(upgradedUnit);   // 선택한 유닛 정보 패널
 
                 if (selectedUnitManager != null)
                     selectedUnitManager.OnSelectedUnitUpgraded(this, upgradedUnit);
 
 
-                //upgradedUnit.SetSelectedUnitManager(selectedUnitManager);
-                //upgradedUnit.selectedUnitManager.SetSelectedUnit(upgradedUnit);
-
-                //selectedUnitUI.ShowAllyUI(upgradedUnit);
-                //selectedUnitUI.ShowHp(upgradedUnit);    // 삭제 _261025
-                //selectedUnitUI.Show(upgradedUnit);
             }
 
             upgradeIndex = -1;
             upgradeDuraiton = 3f;
             isUpgrade = false;
 
-            spawner.UnregisterCurseClearEvent(this);
+            if (SpecialAbility != null)
+                SpecialAbility.Remove(this);
+
             pool.Pool.Release(this);
             gameObject.SetActive(false);
         }
@@ -1016,8 +1000,10 @@ public class AllyUnit : Unit
             base.RemoveStun();
         }
 
-        state = State.DEAD;
+        if (SpecialAbility != null)
+            SpecialAbility.Remove(this);
 
+        state = State.DEAD;
 
 
         navObstacle.enabled = false;
@@ -1046,7 +1032,6 @@ public class AllyUnit : Unit
         unitGrid.ClearTile();
         siegeModeVFx.SetActive(false);
 
-        spawner.UnregisterCurseClearEvent(this);
 
         SoundManager.Instance.PlaySFX(this.transform.position, allyDeadSFX);
     }

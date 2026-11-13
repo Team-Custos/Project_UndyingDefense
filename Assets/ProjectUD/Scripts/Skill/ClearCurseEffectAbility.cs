@@ -7,22 +7,30 @@ public class ClearCurseEffectAbility : SpecialAbility
 {
     [SerializeField] private float range = 5f; // 효과 작동 범위
     [SerializeField] private GameObject vfx;
-    private UltEvent<Unit, DurationEffect> onClearCurse; // 저주 해제 시 이벤트
-    private IReadOnlyList<Unit> appliedCurseEffectUnitList;
+    private List<Unit> hasCurseEffectUnitList;
+
+    private UltEvent<Unit, DurationEffect> onClearCurse;
+    private AllyUnitSpawner allyUnitSpawner;
 
     // 능력 소유자 설정 및 이벤트 등록
     public override void Initialize(Unit unit)
     {
         base.Initialize(unit);
 
-        appliedCurseEffectUnitList = null;
+        if (unit is AllyUnit allyUnit)
+        {
+            allyUnitSpawner = allyUnit.Spawner;
+            allyUnitSpawner.onUnitAddEffect -= AddList;
+            allyUnitSpawner.onUnitAddEffect += AddList;
+            hasCurseEffectUnitList = allyUnitSpawner.SearchHasCurseEffectUnits();
+        }
+    }
 
-        if (unit is AllyUnit allyUnit && allyUnit.Spawner != null)
-            appliedCurseEffectUnitList = allyUnit.Spawner.AppliedCurseEffectUnitList;
+    public override void Remove(Unit unit)
+    {
+        base.Remove(unit);
 
-        // 저주 해제 이벤트 등록 및 중복 방지
-        onClearCurse -= ClearCurseEffect;
-        onClearCurse += ClearCurseEffect;
+        allyUnitSpawner.onUnitAddEffect -= AddList;
     }
 
     private void Update()
@@ -30,29 +38,40 @@ public class ClearCurseEffectAbility : SpecialAbility
         if (unit.IsDead)
             return;
 
-        if (appliedCurseEffectUnitList.Count > 0)
+        if (hasCurseEffectUnitList.Count > 0)
         {
-            for (int i = appliedCurseEffectUnitList.Count - 1; i >= 0; i--)
+            for (int i = hasCurseEffectUnitList.Count - 1; i >= 0; i--)
             {
-                Unit target = appliedCurseEffectUnitList[i];
+                Unit target = hasCurseEffectUnitList[i];
 
-                if (target == null || target.IsDead)
+                // 대상이 죽었으면 리스트에서 제거
+                if (target.IsDead)
+                {
+                    hasCurseEffectUnitList.Remove(target);
                     continue;
+                }
 
-                float distance = Vector3.Distance(unit.transform.position, target.transform.position);
+                if(!CheckUnitHasCurseEffect(target))    // 대상이 더 이상 저주 상태가 없으면 리스트에서 제거(시간 초과, 다른 유닛의 정화 능력)
+                {
+                    hasCurseEffectUnitList.Remove(target);
+                }
+                else
+                {
+                    float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
-                if (distance <= range)
-                    ClearAllCurseEffect(target);
-
+                    if (distance <= range)
+                        ClearAllCurseEffect(target);
+                }
             }
         }
     }
 
-    private void ClearCurseEffect(Unit target, DurationEffect effect)
+    public void AddList(Unit target, DurationEffect effect)
     {
-        target.RemoveEffect(effect);
-        effect.RemoveEffect();
-        Debug.Log($"{effect.Id} 해제");
+        if (!hasCurseEffectUnitList.Contains(target) && effect.Type == EffectType.CURSE)
+        {
+            hasCurseEffectUnitList.Add(target);
+        }
     }
 
 
@@ -68,62 +87,30 @@ public class ClearCurseEffectAbility : SpecialAbility
             if (effect == null || effect.Type != EffectType.CURSE)
                 continue;
 
-            onClearCurse?.Invoke(target, effect);
+            Debug.Log($"{effect.name} : 제거");
+            effect.Remove();
             curseCleared = true;
         }
 
-        // VFX는 한번만 재생
+        // 리스트 제걱 및 VFX 한번만 발생
         if (curseCleared)
+        {
+            hasCurseEffectUnitList.Remove(target);
             target.AddVFX(vfx, target.transform);
+        }
     }
 
-    // 능력 대상자 이벤트 등록
-    //public override void Register(Unit target)
-    //{
-    //    if (target == null || target.IsDead)
-    //        return;
+    private bool CheckUnitHasCurseEffect(Unit target)
+    {
+        for (int i = 0; i < target.EffectList.Count; i++)
+        {
+            DurationEffect effect = target.EffectList[i];
 
-    //    target.onGetCurseEffect -= ApplyAbility;
-    //    target.onGetCurseEffect += ApplyAbility;
-    //}
+            if (effect != null && effect.Type == EffectType.CURSE)
+                return true;
+        }
 
-
-    //// 능력 대상자 이벤트 해제
-    //public override void Unregister(Unit target)
-    //{
-    //    if (target == null)
-    //        return;
-
-    //    target.onGetCurseEffect -= ApplyAbility;
-    //    appliedCurseEffectUnitList.Remove(target);
-    //}
-
-
-
-
-
-    // 발동할 능력 내용
-    //private void ApplyAbility(Unit target, DurationEffect effect)
-    //{
-    //    if (target.IsDead) return;
-
-    //    // 이펙트가 존재하는 지 확인(다른 유닛에 의해 이미 제거)
-    //    if (effect == null || effect.Type != EffectType.CURSE)
-    //        return;
-
-    //    float distance = Vector3.Distance(unit.transform.position, target.transform.position);
-
-    //    if (distance <= range)
-    //    {
-    //        onClearCurse?.Invoke(target, effect);   // 거리가 범위 내일 경우 저주 바로 해제
-    //        target.AddVFX(vfx, target.transform);
-    //    }
-    //    else if (!appliedCurseEffectUnitList.Contains(target))
-    //    {
-    //        // 대상은 리스트에 한번만 추가
-    //        appliedCurseEffectUnitList.Add(target);
-    //    }
-    //}
-
-
+        Debug.Log("저주 제거 되어 있음");
+        return false;
+    }
 }
