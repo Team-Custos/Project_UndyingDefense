@@ -86,7 +86,8 @@ public class MessageUI : MonoBehaviour
         showTimer = duration;
         string str = messages[0];
         message.text = str;
-        messagePanel.SetActive(true);
+        if(messagePanel != null)
+            messagePanel.SetActive(true);
         message.gameObject.SetActive(true);
         animator.SetTrigger("FadeIn");
         SoundManager.Instance.PlayUISFX(sfx);
@@ -95,7 +96,8 @@ public class MessageUI : MonoBehaviour
     private void RemoveMessage()
     {
         messages.RemoveAt(0);
-        messagePanel.SetActive(false);
+        if(messagePanel != null)
+            messagePanel.SetActive(false);
         if (messages.Count > 0)
         {
             ShowNextMessage();

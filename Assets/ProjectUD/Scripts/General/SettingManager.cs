@@ -222,6 +222,9 @@ public class SettingManager : Singleton<SettingManager>
         SetFullScreen(true);
         SetResolution(0); // 1920x1080으로 초기화 (드롭다운 인덱스 0)
         ChangeLanguage(DEFAULT_LOCALE);
+        // 품질은 높음으로 초기화
+        SetQualityLevel(QualitySettings.names.Length - 1); // 가장 높은 품질
+        Debug.Log($"SettingManager.ResetToDefault() - QualityLevel: {QualitySettings.GetQualityLevel()}");
         SaveSettings();
     }
 
@@ -239,6 +242,9 @@ public class SettingManager : Singleton<SettingManager>
     {
         // 그래픽 품질 Dropdown과 동기화
         int qualityIndex = PlayerPrefs.GetInt(KEY_QUALITY);
+        Debug.Log($"SettingManager.ApplyQualityDropdownIndex() - QualityIndex_PlayerPrefs.GetInt(KEY_QUALITY): {qualityIndex}");
+        // KEY_QUALITY에 저장된 값이 없으면 기본값으로 설정 (높음)
+        //if (qualityIndex < 0 || qualityIndex >= QualitySettings.names.Length)
         QualitySettings.SetQualityLevel(qualityIndex, true);    // 저장된 품질 인덱스 적용
         //qualityDropdown.value = qualityIndex; => 추후 그래픽 품질 옵션 추가 시 구현
         //return qualityIndex;
