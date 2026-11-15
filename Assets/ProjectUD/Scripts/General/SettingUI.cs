@@ -195,7 +195,8 @@ public class SettingUI : MonoBehaviour, IInputESC
     public void OnResetCorfirmButtonClicked()
     {
         SettingManager.Instance.ResetToDefault();
-        InitializeUI(); // 슬라이더 UI도 동기화
+        StartCoroutine(SyncDropdownsWhenReady());
+        //InitializeUI(); // 슬라이더 UI도 동기화
     }
 
     /// 저장 & 닫기 버튼
