@@ -207,6 +207,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
         enemyUnitSpawner.StopActivateEnemy();
         allyUnitSpawner.StopActivateAlly();
         ingameScreenUI.OnOffInGameUI(false);
+        selectedUnitManager.DeSelecteUnit();
     }
 
     public void WinGame()
@@ -243,6 +244,7 @@ public class InGameManager : MonoBehaviour, IInputClick, IInputESC, IInputSpeedU
 
         allyUnitSpawner.StopActivateAlly();
         ingameScreenUI.OnOffInGameUI(false);
+        selectedUnitManager.DeSelecteUnit();
 
     }
 

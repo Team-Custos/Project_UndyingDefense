@@ -55,10 +55,23 @@ public class SettingUI : MonoBehaviour, IInputESC
 
     private void OnEnable()
     {
-        InitializeUI();
+        StartCoroutine(SyncDropdownsWhenReady());
 
-        if(inGameManager == null)
+        if (inGameManager == null)
             inputEventManager.OnESCTarget = this;
+    }
+
+    private IEnumerator SyncDropdownsWhenReady()
+    {
+        yield return new WaitUntil(() => qualityDropdown.options.Count > 0);
+        qualityDropdown.SetValueWithoutNotify(QualitySettings.GetQualityLevel());
+        qualityDropdown.RefreshShownValue();
+
+        yield return new WaitUntil(() => resolutionDropdown.options.Count > 0);
+        resolutionDropdown.SetValueWithoutNotify(SettingManager.Instance.GetSavedResolutionIndex());
+        resolutionDropdown.RefreshShownValue();
+
+        InitializeUI();
     }
 
     private void InitializeUI()
@@ -83,6 +96,8 @@ public class SettingUI : MonoBehaviour, IInputESC
 
         // 품질 옵션 동기화
         qualityDropdown.value = QualitySettings.GetQualityLevel();        //sm.ApplyQualityDropdownIndex();
+        Debug.Log($"SettingUI.InitializeUI() - options: {qualityDropdown.options.Count}, " +
+          $"Quality: {QualitySettings.GetQualityLevel()}, Dropdown: {qualityDropdown.value}");
 
         RefreshAllTexts();
 

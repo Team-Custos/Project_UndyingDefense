@@ -125,6 +125,8 @@ public class LanguageChanger : MonoBehaviour
     {
         image.sprite = isSelected ? selectedSprite : deselectedSprite;
         text.color = isSelected ? selectedTextColor : deselectedTextColor;
+        // 버튼의  상호작용 가능 여부를 설정하여 선택된 버튼은 비활성화하고, 선택되지 않은 버튼은 활성화
+        image.gameObject.GetComponent<Button>().interactable = !isSelected;
     }
 
     // 씬을 다시 로드하여 언어 변경 사항을 적용하는 메서드
