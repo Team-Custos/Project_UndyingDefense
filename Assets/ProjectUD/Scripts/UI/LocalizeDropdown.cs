@@ -35,12 +35,11 @@ public class LocalizeDropdown : MonoBehaviour
 
     async void RefreshOptions()
     {
-        int currentIndex = dropdown.value;
-
         var texts = new List<string>();
         foreach (var option in options)
             texts.Add(await option.text.GetLocalizedStringAsync().Task);
 
+        int currentIndex = dropdown.value;
         dropdown.ClearOptions();
         dropdown.AddOptions(texts);
         dropdown.SetValueWithoutNotify(Mathf.Clamp(currentIndex, 0, texts.Count - 1));
