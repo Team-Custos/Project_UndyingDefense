@@ -384,6 +384,7 @@ public class EnemyUnit : Unit
                     }
 
                     NavMesh.CalculatePath(transform.position, fortressPos, navAgent.areaMask, path);
+
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {   // 길막힘
 
@@ -526,8 +527,13 @@ public class EnemyUnit : Unit
                     }
                     else
                     {   // 길 뚫림
-                        ForceMoveTo(fortressPos);
+
                         targetUnit = null;
+
+                        if (navAgent.isStopped)
+                            navAgent.isStopped = false;
+
+                        navAgent.SetPath(path);
                     }
 
                     

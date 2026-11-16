@@ -1227,6 +1227,7 @@ public abstract class Unit : MonoBehaviour
         //}
     }
 
+
     public virtual void ForceMoveTo(Vector3 pos)
     {
         //bool navAgentEnabled = navAgent.enabled;
@@ -1241,18 +1242,9 @@ public abstract class Unit : MonoBehaviour
             if (navAgent.isStopped)
                 navAgent.isStopped = false;
 
-            //navObstacle.carvingMoveThreshold = unitStats.moveSpeed * 0.1f;
             navAgent.SetPath(path);
-            return;
         }
 
-        // 경로 계산 이전에 navAgent가 비활성화 상태였을 경우
-        //if (!navAgentEnabled)
-        //{
-        //    // 다시 비활성화 상태로 원상복구.
-        //    navAgent.enabled = false;
-        //    navObstacle.enabled = true;
-        //}
     }
 
     protected  void MoveToTargetUnit(Unit target)
