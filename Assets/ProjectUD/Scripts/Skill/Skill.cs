@@ -1,6 +1,5 @@
 using UnityEngine;
 using UltEvents;
-using UnityEngine.WSA;
 
 public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클래스
 {

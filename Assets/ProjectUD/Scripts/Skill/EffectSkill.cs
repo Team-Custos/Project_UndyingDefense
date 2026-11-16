@@ -9,7 +9,7 @@ public class EffectSkill : SkillBase
 
     // 범위를 가진 스킬
     protected Collider[] targets;
-    protected const int maxTargetCount = 10;
+    protected const int maxTargetCount = 50;
 
     public void AreaEffectSkill(Unit unit, float radius) //원형
     {

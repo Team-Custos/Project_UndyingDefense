@@ -279,6 +279,7 @@ public abstract class Unit : MonoBehaviour
         attackSpeedMult = 1f;
         atkMult = 1f;
         damageTakenMult = 1f;
+        intervalCheck = 0f;
 
         //Debug.Log(modelAnimator.GetFloat("moveAnimationSpeed"));
         //modelAnimator.SetFloat("moveAnimationSpeed", navAgent.speed / 3f);
@@ -298,6 +299,8 @@ public abstract class Unit : MonoBehaviour
         if(specialAbility)
             specialAbility.Initialize(this);
 
+        UpdateState();
+
         //InvokeEvent(SpecialAbility.BASIC);
         ActivateSpecialAbility(ActiveType.ALWAYS, null);
 
@@ -307,7 +310,6 @@ public abstract class Unit : MonoBehaviour
             effectParent.GetChild(idx).gameObject.SetActive(false);
         }
 
-        UpdateState();
 
         for(int i = 0; i < VFXParent.childCount; i++)
         {
@@ -365,8 +367,7 @@ public abstract class Unit : MonoBehaviour
             hp = unitStats.maxHp;
             critPercent = unitStats.critChance;
             mental = unitStats.mental;
-            intervalCheck = unitStats.interval;
-            interval = 0;
+            interval = unitStats.interval;
             navAgent.speed = unitStats.moveSpeed;
             //navAgent.stoppingDistance = 1.0f;
 

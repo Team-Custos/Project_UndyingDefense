@@ -86,7 +86,6 @@ public class AllyUnit : Unit
         base.Initialize();
         isDead = false;
         collider.enabled = true;
-        state = State.COMAT_IDLE;
 
         SetIdleState(waveManager.IsWaveEnd);
 
@@ -256,7 +255,7 @@ public class AllyUnit : Unit
 
                         //stateDurationCheck = 0f;
                         currentSkill = null; // 사용한 스킬 초기화 후 스킬 선택 단계로 진입
-                        state = State.COMAT_IDLE;
+                        SetIdleState(waveManager.IsWaveEnd);
                     }
                 }
                 break;
@@ -313,7 +312,7 @@ public class AllyUnit : Unit
 
                     if (!navAgent.enabled || navAgent.velocity.magnitude <= 0f)
                     {
-                        state = State.COMAT_IDLE;
+                        SetIdleState(waveManager.IsWaveEnd);
                         modelAnimator.SetBool("isRunning", false);
                     }
 
@@ -473,16 +472,17 @@ public class AllyUnit : Unit
                             {
                                 MoveTo(commandDestination);
 
-                                if (navAgent.remainingDistance < navAgent.stoppingDistance)
+                                if (navAgent.remainingDistance < navAgent.stoppingDistance) // 이동 명령 목적지 도착
                                 {
                                     freeModeState = FreeModeState.COMBAT;
+                                    SetIdleState(waveManager.IsWaveEnd);
                                 }
 
                                 break;
                             }
                         case FreeModeState.COMBAT:
                             {
-                                if (state == State.NORMAL_IDLE)
+                                if (state == State.NORMAL_IDLE || waveManager.IsWaveEnd)
                                 {
                                     targetUnit = null;
                                     navAgent.isStopped = true;
@@ -500,6 +500,8 @@ public class AllyUnit : Unit
 
                                 if (currentSkill != null) // 사용 가능한 스킬이 존재할 경우
                                 {
+                                    Debug.Log(state);
+
                                     SkillBase.TargetType skillTargetType = currentSkill.GetTargetType(); // 스킬 대상 종류 확인
 
                                     switch (skillTargetType)
@@ -788,7 +790,7 @@ public class AllyUnit : Unit
     {
         if (isDead) return;
 
-        state = State.COMAT_IDLE;
+        SetIdleState(waveManager.IsWaveEnd);
         modelAnimator.SetBool("isRunning", false);
 
         upgradeDuraiton -= Time.deltaTime;
@@ -911,7 +913,7 @@ public class AllyUnit : Unit
         {
             //if (navAgent.enabled)
             //    navAgent.isStopped = false;
-            state = State.COMAT_IDLE;
+            SetIdleState(waveManager.IsWaveEnd);
         }
 
         //if (navAgent.enabled)
@@ -1040,7 +1042,7 @@ public class AllyUnit : Unit
     public override void SetDeferredState()
     {
         base.SetDeferredState();
-        state = State.COMAT_IDLE;
+        SetIdleState(waveManager.IsWaveEnd);
     }
 
     public void SetImmortalityEnemy(EnemyUnit enmeyUnit)
