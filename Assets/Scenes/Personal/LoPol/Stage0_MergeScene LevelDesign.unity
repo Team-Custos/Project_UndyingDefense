@@ -17322,6 +17322,16 @@ PrefabInstance:
       propertyPath: upgradeUnitPanels.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8382143678255958375, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 129854060588744704
+      objectReference: {fileID: 0}
+    - target: {fileID: 8382143678255958375, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 8467994125172271096, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: fNameTextTable
@@ -23210,7 +23220,6 @@ MonoBehaviour:
   dollyCamera: {fileID: 311500981}
   waveManager: {fileID: 1023733844}
   enemyUnitSpawner: {fileID: 679628028}
-  specialAbility: {fileID: 0}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -23226,6 +23235,8 @@ MonoBehaviour:
     m_Bits: 8
   selectedUnitManager: {fileID: 1137951088}
   allySummon: {fileID: 8300000, guid: dec70ab48168cd34ea1c2504eea91dbf, type: 3}
+  onUnitAddEffect:
+    _PersistentCalls: []
 --- !u!4 &923510899
 Transform:
   m_ObjectHideFlags: 0

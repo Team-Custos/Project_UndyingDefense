@@ -939,7 +939,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c,
+      objectReference: {fileID: 21300000, guid: 37f1aef347776214db839f0e3572d466,
         type: 3}
     - target: {fileID: 2382524824842162305, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -1251,7 +1251,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnBtnPriceText.Array.data[3]
       value: 
-      objectReference: {fileID: 1887119715}
+      objectReference: {fileID: 0}
     - target: {fileID: 3160074883116625961, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive
@@ -1476,7 +1476,7 @@ PrefabInstance:
         type: 3}
       propertyPath: frameIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c,
+      objectReference: {fileID: 21300000, guid: 37f1aef347776214db839f0e3572d466,
         type: 3}
     - target: {fileID: 4606055465547900221, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -1518,7 +1518,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnBtnPriceText.Array.data[3]
       value: 
-      objectReference: {fileID: 1887119715}
+      objectReference: {fileID: 0}
     - target: {fileID: 4630086186540190507, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive
@@ -1765,7 +1765,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c,
+      objectReference: {fileID: 21300000, guid: 37f1aef347776214db839f0e3572d466,
         type: 3}
     - target: {fileID: 5473007531718833991, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -2553,6 +2553,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 8382143678255958375, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 51458137609781248
+      objectReference: {fileID: 0}
+    - target: {fileID: 8382143678255958375, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:8cec99a52ee84ed4eb3a1bf69b3405aa
+      objectReference: {fileID: 0}
     - target: {fileID: 8454950084530244899, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       propertyPath: m_IsActive
@@ -2668,7 +2678,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c,
+      objectReference: {fileID: 21300000, guid: 37f1aef347776214db839f0e3572d466,
         type: 3}
     - target: {fileID: 8986293360549294020, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -2719,7 +2729,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 94d29a87edf059e49a5ec9e317f6cd2c,
+      objectReference: {fileID: 21300000, guid: 37f1aef347776214db839f0e3572d466,
         type: 3}
     - target: {fileID: 9147555170584457807, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
@@ -2744,6 +2754,10 @@ PrefabInstance:
     - {fileID: 3133083849860112591, guid: 8daaea2bb8c9aea4684d2b3766934e24, type: 3}
     - {fileID: 2027176509926627916, guid: 8daaea2bb8c9aea4684d2b3766934e24, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8254926603441986876, guid: 8daaea2bb8c9aea4684d2b3766934e24,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1690172238}
     - targetCorrespondingSourceObject: {fileID: 461546421768596807, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       insertIndex: 11
@@ -2764,10 +2778,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1080181396}
-    - targetCorrespondingSourceObject: {fileID: 8254926603441986876, guid: 8daaea2bb8c9aea4684d2b3766934e24,
-        type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1690172238}
     - targetCorrespondingSourceObject: {fileID: 5645326700162038117, guid: 8daaea2bb8c9aea4684d2b3766934e24,
         type: 3}
       insertIndex: -1
@@ -48274,7 +48284,6 @@ MonoBehaviour:
   dollyCamera: {fileID: 2030394660}
   waveManager: {fileID: 510280746}
   enemyUnitSpawner: {fileID: 963799560}
-  specialAbility: {fileID: 0}
   alarmImages: []
   units:
   - {fileID: 11400000, guid: db899bc72bfd41f4bb1f45152c9ec36f, type: 2}
@@ -48290,6 +48299,8 @@ MonoBehaviour:
     m_Bits: 8
   selectedUnitManager: {fileID: 485910518}
   allySummon: {fileID: 8300000, guid: dec70ab48168cd34ea1c2504eea91dbf, type: 3}
+  onUnitAddEffect:
+    _PersistentCalls: []
 --- !u!4 &1866204815
 Transform:
   m_ObjectHideFlags: 0
@@ -48927,18 +48938,6 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
---- !u!114 &1887119715 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3900878027160900278, guid: 8daaea2bb8c9aea4684d2b3766934e24,
-    type: 3}
-  m_PrefabInstance: {fileID: 21649794}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1892189149
 PrefabInstance:
   m_ObjectHideFlags: 0
