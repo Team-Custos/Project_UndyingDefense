@@ -20,6 +20,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
     [SerializeField] private TextMeshProUGUI waveTextUI;
     [SerializeField] private TextMeshProUGUI goldTextUI;
     [SerializeField] private GameObject settingUI;
+    [SerializeField] private GameObject recordUI;
     [SerializeField] private TextMeshProUGUI recordTextUI;
     [SerializeField] private GameObject newReorcUI;         // 결과창의 일부. 결과창으로 이동 예정. (결과창에서만 사용)
     [SerializeField] private Image portraitImg;
@@ -286,6 +287,7 @@ public class IngameScreenUI : MonoBehaviour//, IInputESC
         settingBtn.SetActive(on);
         commandSkillPanel.SetActive(on);
         spawnPanel.SetActive(on);
+        recordUI.SetActive(on);
         recordTextUI.gameObject.SetActive(on);
         speedBtn.gameObject.SetActive(on);
     }

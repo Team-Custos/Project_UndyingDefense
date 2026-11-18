@@ -503,9 +503,9 @@ public class SelectedUnitManager : MonoBehaviour, IInputClick, IInputUnitDelete
     {
         selectedUnit = unit;                                // 유닛 대입
         selectedUnit.IsSelected = true;
-        selectedUnit.SetSelectedUnitManager(this);          // 참조는 매니저 하나만
-        //selectedUnit.SetSelectedUnitUI(unitSelectUI);
-        //selectedUnit.SetSelectedUnitInfoPanel(selectedUnitInfoPanel);
+        selectedUnit.SetSelectedUnitManager(this);          
+
+        camManager.FocusSelectedUnit(selectedUnit.transform.position);      // 카메라 포커스 이동
 
         if (selectedUnit is AllyUnit)
             selectedAllyUnit = (AllyUnit)selectedUnit;
