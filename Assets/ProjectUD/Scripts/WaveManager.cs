@@ -142,14 +142,16 @@ public class WaveManager : MonoBehaviour
 
     private void SetTutorialEnd()   // 나중에 StagePrefsData로 메서드 옮기기
     {
-        PlayerPrefs.SetInt("IsTutorialEnd", 1);
-        StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsanCastle");
-        if (!stagedata.isOpen)
-        {
-            stagedata.isOpen = true;
-        }
-        //stagePrefsData.SetStageDictionary("UNQ_gumsan", true, false, 0);  // struct 일때 사용했던 코드
-        stagePrefsData.SaveStageData();
+        //PlayerPrefs.SetInt("IsTutorialEnd", 1);
+
+        ////StageData stagedata = stagePrefsData.GetStageData("UNQ_gumsanCastle");
+        //// 의령 전장 오픈
+        //StageData stagedata = stagePrefsData.GetStageData("UNQ_uiryeong");
+        //if (!stagedata.isOpen)
+        //{
+        //    stagedata.isOpen = true;
+        //}
+        //stagePrefsData.SaveStageData();
     }
 
     public void StartWave()

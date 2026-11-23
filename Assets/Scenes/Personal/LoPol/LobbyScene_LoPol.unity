@@ -3174,7 +3174,7 @@ GameObject:
   - component: {fileID: 244540975}
   - component: {fileID: 244540974}
   m_Layer: 0
-  m_Name: DIA_main04_After&WinGeumsan
+  m_Name: DIA_main04_AfterUiryeong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3226,8 +3226,8 @@ MonoBehaviour:
   - {fileID: 244540974}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1225665816}
-      _MemberName: EndDialogue
+    - _Target: {fileID: 1540953620}
+      _MemberName: ShowWinUiryeongDialogue
       _PersistentArguments: []
 --- !u!114 &245343406 stripped
 MonoBehaviour:
@@ -9632,7 +9632,7 @@ PrefabInstance:
     - target: {fileID: 937790808981536632, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1251296271114954100, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
@@ -9657,7 +9657,7 @@ PrefabInstance:
     - target: {fileID: 2552587290082323431, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4412170819678940930, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
@@ -9697,7 +9697,7 @@ PrefabInstance:
     - target: {fileID: 6215658963109188433, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6215658963109188433, guid: 042e8046d5c173747accdb8b6927d9a2,
         type: 3}
@@ -9741,7 +9741,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 618925766}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -10509,7 +10509,7 @@ GameObject:
   - component: {fileID: 686461379}
   - component: {fileID: 686461380}
   m_Layer: 0
-  m_Name: DIA_main02_IsTutorialEnd
+  m_Name: DIA_main02_AfterTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10531,8 +10531,8 @@ MonoBehaviour:
   - {fileID: 686461380}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1225665816}
-      _MemberName: EndDialogue
+    - _Target: {fileID: 1540953620}
+      _MemberName: ShowWinTutorialDialogue
       _PersistentArguments: []
 --- !u!114 &686461380
 MonoBehaviour:
@@ -14524,6 +14524,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 955737462}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &956019955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2552587290082323431, guid: 042e8046d5c173747accdb8b6927d9a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 618925766}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &971492518
 GameObject:
   m_ObjectHideFlags: 0
@@ -17577,7 +17583,7 @@ GameObject:
   - component: {fileID: 1200128837}
   - component: {fileID: 1200128836}
   m_Layer: 0
-  m_Name: DIA_main03_AfterGeumsan
+  m_Name: DIA_main03_WinTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17629,8 +17635,87 @@ MonoBehaviour:
   - {fileID: 1200128836}
   nextEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1540953620}
-      _MemberName: ShowWinGumsamDialogue
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
+--- !u!114 &1205927349 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8108908100054450351, guid: 042e8046d5c173747accdb8b6927d9a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 618925766}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1223168537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1223168538}
+  - component: {fileID: 1223168540}
+  - component: {fileID: 1223168539}
+  m_Layer: 0
+  m_Name: DIA_main07_WinHaengju
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1223168538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223168537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1223168539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223168537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main07_line
+  tableName: Dialogue_Main07
+--- !u!114 &1223168540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223168537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 1223168539}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
       _PersistentArguments: []
 --- !u!1 &1225665814
 GameObject:
@@ -17667,6 +17752,10 @@ Transform:
   - {fileID: 686461381}
   - {fileID: 1200128835}
   - {fileID: 244540973}
+  - {fileID: 1579890708}
+  - {fileID: 2002808880}
+  - {fileID: 1223168538}
+  - {fileID: 1381115106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1225665816
@@ -19402,6 +19491,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1283694616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4412170819678940930, guid: 042e8046d5c173747accdb8b6927d9a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 618925766}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1290316093 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4697804900115701890, guid: 1ba7a88ba12fd5b4aacfdc7fd74aad9e,
@@ -20449,6 +20544,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372074277}
   m_CullTransparentMesh: 1
+--- !u!1 &1381115105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1381115106}
+  - component: {fileID: 1381115108}
+  - component: {fileID: 1381115107}
+  m_Layer: 0
+  m_Name: DIA_main08_WinNamwon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1381115106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381115105}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1381115107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381115105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main08_line
+  tableName: Dialogue_Main08
+--- !u!114 &1381115108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381115105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 1381115107}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!1 &1393604491
 GameObject:
   m_ObjectHideFlags: 0
@@ -22857,6 +23019,10 @@ MonoBehaviour:
   alarm: {fileID: 2128916164}
   messageUI: {fileID: 0}
   dialogueUI: {fileID: 1562747904}
+  pInputManager: {fileID: 346775373}
+  dialogueManager: {fileID: 1225665816}
+  accountInfoPanel: {fileID: 936420104}
+  portraitSelectManager: {fileID: 1600809974}
   isTutorialEnd:
     _PersistentCalls:
     - _Target: {fileID: 1225665816}
@@ -22885,7 +23051,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 1435160610}
-  isGameEnd:
+  winTutorial:
     _PersistentCalls:
     - _Target: {fileID: 1225665816}
       _MemberName: ShowDialogue
@@ -22899,7 +23065,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 1200128837}
-  isGameWin:
+  afterUiryeong:
     _PersistentCalls:
     - _Target: {fileID: 1225665816}
       _MemberName: ShowDialogue
@@ -22913,10 +23079,62 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 244540975}
-  pInputManager: {fileID: 346775373}
-  dialogueManager: {fileID: 1225665816}
-  accountInfoPanel: {fileID: 936420104}
-  portraitSelectManager: {fileID: 1600809974}
+  winUiryeong:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 1579890710}
+  winGumsan:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 2002808882}
+  winHaengju:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 1223168540}
+  winNamwon:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: ShowDialogue
+      _PersistentArguments:
+      - _Type: 13
+        _Int: 0
+        _String: SpeakingArray, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 1381115108}
   portraitLine: {fileID: 684026553}
   portrait: {fileID: 346120328}
   nicknameTextUI: {fileID: 895855968}
@@ -22930,10 +23148,10 @@ MonoBehaviour:
   uiryeongBtn: {fileID: 618925767}
   tutorialRecordPanel: {fileID: 131596095}
   tutorialRecordText: {fileID: 51212950}
-  uiryeongLock: {fileID: 0}
-  uiryeongCloud: {fileID: 0}
-  uiryeongRecordPanel: {fileID: 0}
-  uiryeongRecordText: {fileID: 0}
+  uiryeongLock: {fileID: 956019955}
+  uiryeongCloud: {fileID: 2016860970}
+  uiryeongRecordPanel: {fileID: 1283694616}
+  uiryeongRecordText: {fileID: 1205927349}
   guemsanLock: {fileID: 458638071}
   guemsanCloud: {fileID: 1036040412}
   guemsanRecordPanel: {fileID: 174589583}
@@ -22946,7 +23164,9 @@ MonoBehaviour:
   namwonCloud: {fileID: 1822056860}
   namwonRecordPanel: {fileID: 257870677}
   namwonRecordText: {fileID: 1580586721}
-  afterWinGusan: {fileID: 244540975}
+  winTutorialDialogue: {fileID: 1200128837}
+  winUiryeongDialogue: {fileID: 1579890710}
+  afterWinGusan: {fileID: 2002808882}
   inputBlocker: {fileID: 1608005345}
 --- !u!1001 &1542036748
 PrefabInstance:
@@ -23748,6 +23968,73 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1577180223}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1579890707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579890708}
+  - component: {fileID: 1579890710}
+  - component: {fileID: 1579890709}
+  m_Layer: 0
+  m_Name: DIA_main05_WinUiryeong
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579890708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579890707}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579890709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579890707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main05_line
+  tableName: Dialogue_Main05
+--- !u!114 &1579890710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579890707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 1579890709}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!114 &1580586721 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8108908100054450351, guid: 042e8046d5c173747accdb8b6927d9a2,
@@ -32349,6 +32636,73 @@ MonoBehaviour:
   commandSkillDeckBtn: {fileID: 1999633214}
   index: 2
   defaultImage: {fileID: 0}
+--- !u!1 &2002808879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002808880}
+  - component: {fileID: 2002808882}
+  - component: {fileID: 2002808881}
+  m_Layer: 0
+  m_Name: DIA_main06_WinGumsan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2002808880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002808879}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1225665815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2002808881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002808879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133c93deb2372a4eb6732197271f2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 60108edc0259fb54a8c6fe237e4c91fa, type: 2}
+  id: DIA_main06_line
+  tableName: Dialogue_Main06
+--- !u!114 &2002808882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002808879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa48c3cb430587e4b987cd6a3b0c890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array:
+  - {fileID: 2002808881}
+  nextEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1225665816}
+      _MemberName: EndDialogue
+      _PersistentArguments: []
 --- !u!1 &2009005239
 GameObject:
   m_ObjectHideFlags: 0
@@ -32472,6 +32826,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139838032e28fc4418c7c5414ce6a833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2016860970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 937790808981536632, guid: 042e8046d5c173747accdb8b6927d9a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 618925766}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2033448922
 GameObject:
   m_ObjectHideFlags: 0

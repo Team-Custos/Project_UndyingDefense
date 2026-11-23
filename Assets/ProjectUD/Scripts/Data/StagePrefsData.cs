@@ -191,18 +191,58 @@ public class StagePrefsData : MonoBehaviour
 
         stagePlayerPrefs[id] = stagedata;
     }
-    public void SetTutorialFinish()
+    public void SetTutorialEnd()
     {
-        //PlayerPrefs.SetInt("IsTutorialFinished", 1);
+        PlayerPrefs.SetInt("IsTutorialEnd", 1);
         Debug.Log("훈련장종료");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_tutorial"];
+        stagedata.isStageEnd = true;
+
+        SaveStageData();
     }
 
     public void SetTutorialWin()
     {
+        //PlayerPrefs.SetInt("IsTutorialEnd", 1);
         PlayerPrefs.SetInt("TutorialWin", 1);
-        PlayerPrefs.SetInt("IsTutorialEnd", 1);
         Debug.Log("훈련장 이김");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_tutorial"];
+        stagedata.isStageEnd = true;
+
+        // 의령 전장 오픈
+        StageData nextStage = stagePlayerPrefs["UNQ_uiryeong"];
+        nextStage.isOpen = true;
+
+        SaveStageData();
     }
+
+    public void SetUiryeongEnd()
+    {
+        PlayerPrefs.SetInt("IsUiryeongFinished", 1);
+        Debug.Log("의령전투종료");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_uiryeong"];
+        stagedata.isStageEnd = true;
+
+        SaveStageData();
+    }
+
+    public void SetUiryeongWin()
+    {
+        PlayerPrefs.SetInt("UiryeongWin", 1);
+        Debug.Log("의령전투 이김");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_uiryeong"];
+        stagedata.isStageEnd = true;
+
+        // 금산 전투 오픈
+        StageData nextStage = stagePlayerPrefs["UNQ_gumsanCastle"];
+        nextStage.isOpen = true;
+        SaveStageData();
+    }
+
     public void SetGuemsanFinish()  // 인게임매니저 이벤트용 메서드
     {
         PlayerPrefs.SetInt("IsGeumsanFinished", 1);
@@ -243,12 +283,40 @@ public class StagePrefsData : MonoBehaviour
 
     public void SetNamhanWin()     // 인게임매니저 이벤트용 메서드
     {
-        //PlayerPrefs.SetInt("NamhanWin", 1);
-        Debug.Log("남한산성전투 이김");
+        PlayerPrefs.SetInt("HaengjuWin", 1);
+        Debug.Log("행주산성전투 이김");
+
         StageData stagedata = stagePlayerPrefs["UNQ_namhanFortress"];
         stagedata.isStageEnd = true;
+
         StageData nextStage = stagePlayerPrefs["UNQ_namwonCastle"];
         nextStage.isOpen = true;
+
+        SaveStageData();
+    }
+
+    public void SetNamwonFinish()  // 인게임매니저 이벤트용 메서드
+    {
+        PlayerPrefs.SetInt("IsNamwonFinished", 1);
+        Debug.Log("남원전투종료");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_namwonCastle"];
+        stagedata.isStageEnd = true;
+
+        SaveStageData();
+    }
+
+    public void SetNamwonWin()
+    {
+        PlayerPrefs.SetInt("NamwonWin", 1);
+        Debug.Log("남원전투 이김");
+
+        StageData stagedata = stagePlayerPrefs["UNQ_namwonCastle"];
+        stagedata.isStageEnd = true;
+
+        //StageData nextStage = stagePlayerPrefs["UNQ_jinjuCastle"];
+        //nextStage.isOpen = true;
+
         SaveStageData();
     }
 
@@ -260,12 +328,6 @@ public class StagePrefsData : MonoBehaviour
             stagePlayerPrefs[id].clearTime = recordTime;
             SaveStageData();
         }
-    }
-
-    public void SetTutorialEnd()
-    {
-        PlayerPrefs.SetInt("IsTutorialEnd", 1);
-        Debug.Log("훈련장끝");
     }
 
     public bool IsNewRecord(float recordTime, string id)

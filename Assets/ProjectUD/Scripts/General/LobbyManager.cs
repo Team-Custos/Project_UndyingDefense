@@ -29,14 +29,20 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [Header("Class")]
     [SerializeField] private MessageUI messageUI;
     [SerializeField] private DialogueUI dialogueUI;
-    [SerializeField] private UltEvent isTutorialEnd;
-    [SerializeField]private UltEvent beforeTuorial;
-    [SerializeField] private UltEvent isGameEnd;
-    [SerializeField] private UltEvent isGameWin;
     [SerializeField] private PlayerInputEventManager pInputManager;
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private AccountInfo accountInfoPanel;
     [SerializeField] private PortraitSelectManager portraitSelectManager;
+
+    [Header("DialogueEvent")]
+    [SerializeField] private UltEvent isTutorialEnd;
+    [SerializeField]private UltEvent beforeTuorial;
+    [SerializeField] private UltEvent winTutorial;
+    [SerializeField] private UltEvent afterUiryeong;
+    [SerializeField] private UltEvent winUiryeong;
+    [SerializeField] private UltEvent winGumsan;
+    [SerializeField] private UltEvent winHaengju;
+    [SerializeField] private UltEvent winNamwon;
 
     [Header("초상화")]
     [SerializeField] private Image portraitLine;
@@ -84,6 +90,8 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     [SerializeField] private GameObject namwonRecordPanel;
     [SerializeField] private TextMeshProUGUI namwonRecordText;
     [Header("StagePrefsData")]
+    [SerializeField] private SpeakingArray winTutorialDialogue;
+    [SerializeField] private SpeakingArray winUiryeongDialogue;
     [SerializeField] private SpeakingArray afterWinGusan;
 
     // -- 씬 로딩 중복 방지용 플래그 -- 260718
@@ -112,6 +120,7 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     public void CheckStage()
     {
         StageData tutorial = stagePrefsData.GetStageData("UNQ_tutorial");
+        StageData uiryeong = stagePrefsData.GetStageData("UNQ_uiryeong");   // 의령 추가
         StageData guemsan = stagePrefsData.GetStageData("UNQ_gumsanCastle");
         StageData namhan = stagePrefsData.GetStageData(("UNQ_namhanFortress"));
         StageData namwon = stagePrefsData.GetStageData(("UNQ_namwonCastle"));
@@ -123,6 +132,19 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         {
             tutorialRecordText.text = ConvertToTime(tutorial.clearTime);
             tutorialRecordPanel.SetActive(true);
+        }
+
+        if(uiryeong.isOpen)
+        {
+            uiryeongBtn.enabled = true;
+            uiryeongLock.SetActive(false);
+            uiryeongCloud.SetActive(false);
+            if (uiryeong.clearTime != 0)
+            {
+                //uiryeongRecordText.text = $"{uiryeong.clearTime}";
+                uiryeongRecordText.text = ConvertToTime(uiryeong.clearTime);
+                uiryeongRecordPanel.SetActive(true);
+            }
         }
 
         if (guemsan.isOpen)
@@ -185,48 +207,87 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
     }
     public void DialogueEventInvoke()
     {
-        Debug.Log($"훈련장 {PlayerPrefs.GetInt("IsTutorialEnd")}, 금산전투 {PlayerPrefs.GetInt("IsGeumsanFinished")}, 금산 승패 {PlayerPrefs.GetInt("GeumsanWin")}," +
-            $"메인대화 {PlayerPrefs.GetInt("FirstMainDialogue")}");
+        Debug.Log($"훈련장 {PlayerPrefs.GetInt("IsTutorialEnd")}, " +
+            $"훈련장 승패 {PlayerPrefs.GetInt("TutorialWin")}, " +
+            $"의령전투 {PlayerPrefs.GetInt("IsUiryeongFinished")}, " +
+            $"의령 승패 {PlayerPrefs.GetInt("UiryeongWin")}, " +
+            $"금산전투 {PlayerPrefs.GetInt("IsGeumsanFinished")}, " +
+            $"금산 승패 {PlayerPrefs.GetInt("GeumsanWin")}," +
+            $"행주 승패 {PlayerPrefs.GetInt("HaengjuWin")}," +
+            $"남원 승패 {PlayerPrefs.GetInt("NamwonWin")}," +
+            $"메인대화_01 {PlayerPrefs.GetInt("FirstMainDialogue")}");
 
-        if(PlayerPrefs.GetInt("IsTutorialEnd") == 0 && PlayerPrefs.GetInt("IsGeumsanFinished") == 0
-            && PlayerPrefs.GetInt("GeumsanWin")==0 && PlayerPrefs.GetInt("FirstMainDialogue") == 0)
+        // Main01 훈련장 진입 전
+        //if (PlayerPrefs.GetInt("IsTutorialEnd") == 0 && PlayerPrefs.GetInt("IsGeumsanFinished") == 0
+        //    && PlayerPrefs.GetInt("GeumsanWin") == 0 && PlayerPrefs.GetInt("FirstMainDialogue") == 0)
+        if (PlayerPrefs.GetInt("IsTutorialEnd") == 0 && PlayerPrefs.GetInt("TutorialWin") == 0
+            && PlayerPrefs.GetInt("IsUiryeongFinished") ==0 && PlayerPrefs.GetInt("FirstMainDialogue") == 0)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
             PlayerPrefs.SetInt("FirstMainDialogue", 1);
             beforeTuorial.Invoke();
         }
-
-        else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 0
-            && PlayerPrefs.GetInt("GeumsanWin") == 0 && PlayerPrefs.GetInt("AfterTutorialDialogue") == 0)
+        //Main02 훈련장 종료, 훈련장 승리 전
+        else if (PlayerPrefs.GetInt("IsTutorialEnd") == 1
+            && PlayerPrefs.GetInt("IsUiryeongFinished") == 0 && PlayerPrefs.GetInt("TutorialDialogue") == 0)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
-            PlayerPrefs.SetInt("AfterTutorialDialogue", 1);
+            PlayerPrefs.SetInt("TutorialDialogue", 1);
             isTutorialEnd.Invoke();
             //dialogueManager.ShowDialogue(tutorialEndDialogue);
         }
-
-        else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
-            &&  PlayerPrefs.GetInt("AfterGameDialogue") == 0)   //PlayerPrefs.GetInt("GeumsanWin") == 0 &&
+        //Main03 훈련장 승리 후, 의령 전장 진입 전
+        else if (PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("TutorialWin") == 1
+            &&  PlayerPrefs.GetInt("TutoWinDialogue") == 0 && PlayerPrefs.GetInt("TutorialDialogue") == 1)   //PlayerPrefs.GetInt("GeumsanWin") == 0 &&
         {
             pInputManager.OnSpaceTarget = dialogueManager;
-            PlayerPrefs.SetInt("AfterGameDialogue",1);
-            isGameEnd.Invoke();
+            PlayerPrefs.SetInt("TutoWinDialogue", 1);
+            winTutorial.Invoke();
 
         }
-
-        else if(PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("IsGeumsanFinished") == 1
-            && PlayerPrefs.GetInt("GeumsanWin") == 1 &&  PlayerPrefs.GetInt("AfterGameDialogue") == 1 && PlayerPrefs.GetInt("AfterGameWinDialogue") == 0)
+        //Main04 의령 종료
+        else if (PlayerPrefs.GetInt("IsTutorialEnd") == 1 && PlayerPrefs.GetInt("TutorialWin") == 1
+            && PlayerPrefs.GetInt("IsUiryeongFinished") == 1 &&  PlayerPrefs.GetInt("TutoWinDialogue") == 1 && PlayerPrefs.GetInt("UiryeongDialogue") == 0)
         {
             pInputManager.OnSpaceTarget = dialogueManager;
-            PlayerPrefs.SetInt("AfterGameWinDialogue", 1);
-            isGameWin.Invoke();
+            PlayerPrefs.SetInt("UiryeongDialogue", 1);
+            afterUiryeong.Invoke();
         }
-
-        else
+        //Main05 의령 승리
+        else if (PlayerPrefs.GetInt("IsUiryeongFinished") == 1 && PlayerPrefs.GetInt("UiryeongWin") == 1
+            && PlayerPrefs.GetInt("UiryeongDialogue") == 1 && PlayerPrefs.GetInt("UiryeongWinDialogue") == 0)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("UiryeongWinDialogue", 1);
+            winUiryeong.Invoke();
+        }
+        //Main06 금산 승리
+        else if (PlayerPrefs.GetInt("IsGeumsanFinished") == 1 && PlayerPrefs.GetInt("GeumsanWin") == 1 
+            && PlayerPrefs.GetInt("GumsanWinDialogue") == 0)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("GumsanWinDialogue", 1);
+            winGumsan.Invoke();
+        }
+        //Main07 행주 승리
+        else if (PlayerPrefs.GetInt("HaengjuWin") == 1 && PlayerPrefs.GetInt("HaengjuWinDialogue") == 0)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("HaengjuWinDialogue", 1);
+            winHaengju.Invoke();
+        }
+        //Main08 남원 승리
+        else if (PlayerPrefs.GetInt("NamwonWin") == 1 && PlayerPrefs.GetInt("NamwonWinDialogue") == 0)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("NamwonWinDialogue", 1);
+            winNamwon.Invoke();
+        }
+        else 
             return;
     }
 
-    public void ShowWinGumsamDialogue()
+    public void ShowWinGumsamDialogue() //  금산 한 번에 승리했을 때, 금산End 대화 이후 이벤트용
     {
         if(PlayerPrefs.GetInt("GeumsanWin") == 1 && PlayerPrefs.GetInt("AfterGameDialogue") == 1)
         {
@@ -237,6 +298,30 @@ public class LobbyManager : MonoBehaviour, IInputOnSpace
         }
         dialogueManager.EndDialogue();
 
+    }
+
+    public void ShowWinTutorialDialogue()
+    {
+        if (PlayerPrefs.GetInt("TutorialWin") == 1 && PlayerPrefs.GetInt("TutorialDialogue") == 1)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("TutoWinDialogue", 1);
+            dialogueManager.ShowDialogue(winTutorialDialogue);
+            return;
+        }
+        dialogueManager.EndDialogue();
+    }
+
+    public void ShowWinUiryeongDialogue()
+    {
+        if (PlayerPrefs.GetInt("UiryeongWin") == 1 && PlayerPrefs.GetInt("UiryeongDialogue") == 1)
+        {
+            pInputManager.OnSpaceTarget = dialogueManager;
+            PlayerPrefs.SetInt("UiryeongWinDialogue", 1);
+            dialogueManager.ShowDialogue(winUiryeongDialogue);
+            return;
+        }
+        dialogueManager.EndDialogue();
     }
 
     public void EndGame()
