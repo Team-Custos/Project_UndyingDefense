@@ -10,10 +10,10 @@ public class UnitData : ScriptableObject
     //[SerializeField] private float attackSpeed;
     //[SerializeField] private float sightRange;
     //[SerializeField] private float attackRange;
-    [SerializeField] private int tier;
 
     [Header("■ Unit")]
     [SerializeField] private string unitName;
+    [SerializeField] private int tier;
     [SerializeField] private ArmorType armorType;
     [SerializeField] private string id;
 

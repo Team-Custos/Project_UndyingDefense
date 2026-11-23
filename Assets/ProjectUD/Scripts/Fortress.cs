@@ -55,8 +55,7 @@ public class Fortress : MonoBehaviour
             SoundManager.Instance.StopBGM();
 
             if (!waveManager.IsTutorial)
-                inGameManager.SetMeritPoint(waveManager.CurWave - 1, false);
-            // 게임 실패 시 성공 웨이브 수 = 현재 웨이브 수 - 1
+                inGameManager.SetMeritPoint(waveManager.CurWave, false);
 
             inGameManager.LoseGame();
             //inGameManager.WinGame();

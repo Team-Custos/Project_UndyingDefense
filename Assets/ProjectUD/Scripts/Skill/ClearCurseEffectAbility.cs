@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UltEvents;
 using UnityEngine;
 
 public class ClearCurseEffectAbility : SpecialAbility
@@ -8,8 +6,6 @@ public class ClearCurseEffectAbility : SpecialAbility
     [SerializeField] private float range = 5f; // 효과 작동 범위
     [SerializeField] private GameObject vfx;
     private List<Unit> hasCurseEffectUnitList;
-
-    private UltEvent<Unit, DurationEffect> onClearCurse;
     private AllyUnitSpawner allyUnitSpawner;
 
     // 능력 소유자 설정 및 이벤트 등록
@@ -20,17 +16,17 @@ public class ClearCurseEffectAbility : SpecialAbility
         if (unit is AllyUnit allyUnit)
         {
             allyUnitSpawner = allyUnit.Spawner;
-            allyUnitSpawner.onUnitAddEffect -= AddList;
-            allyUnitSpawner.onUnitAddEffect += AddList;
+            allyUnitSpawner.onUnitAddEffect -= AddCursedUnit;
+            allyUnitSpawner.onUnitAddEffect += AddCursedUnit;
             hasCurseEffectUnitList = allyUnitSpawner.SearchHasCurseEffectUnits();
         }
     }
 
     public override void Remove(Unit unit)
     {
-        base.Remove(unit);
+        //base.Remove(unit);
 
-        allyUnitSpawner.onUnitAddEffect -= AddList;
+        allyUnitSpawner.onUnitAddEffect -= AddCursedUnit;
     }
 
     private void Update()
@@ -60,13 +56,13 @@ public class ClearCurseEffectAbility : SpecialAbility
                     float distance = Vector3.Distance(unit.transform.position, target.transform.position);
 
                     if (distance <= range)
-                        ClearAllCurseEffect(target);
+                        ClearCurseEffect(target);
                 }
             }
         }
     }
 
-    public void AddList(Unit target, DurationEffect effect)
+    public void AddCursedUnit(Unit target, DurationEffect effect)
     {
         if (!hasCurseEffectUnitList.Contains(target) && effect.Type == EffectType.CURSE)
         {
@@ -76,7 +72,7 @@ public class ClearCurseEffectAbility : SpecialAbility
 
 
     // 대상에게 적용된 모든 저주 정화
-    private void ClearAllCurseEffect(Unit target)
+    private void ClearCurseEffect(Unit target)
     {
         bool curseCleared = false;
 

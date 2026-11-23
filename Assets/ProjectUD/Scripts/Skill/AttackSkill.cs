@@ -411,19 +411,24 @@ public class AttackSkill : SkillBase
         float calcDamage = data.Damage;
         float calcCrit = (unit.CritPercent + target.CritVulnerability + data.BonusCritPercent) * 0.01f;
 
-        if(!data.IgnoreDefenseType && !unit.HasIgnoreDefenseType)     // 스킬이 방어 속성 무시 효과가 아니고 유닛이 방어 속성 무시 효과가 없을 경우
+        if (!unit.HasIgnoreDefenseType)
         {
-            if (IsBlocked(target.Armortype))        // 스킬의 공격 속성이 대상의 방어 속성에 대응되는 경우
+            float randomValue = Random.value * 100f;
+
+            if(randomValue > data.IgnoreDefenseTypePercent)
             {
-                float calcBlockRate = 1f - (0.5f * target.BlockPercent);    // 단위수정_AYO
-                calcDamage *= calcBlockRate;
+                if (IsBlocked(target.Armortype))
+                {
+                    float calcBlockRate = 1f - (0.5f * target.BlockPercent);
+                    calcDamage *= calcBlockRate;
 
-                calcCrit -= 0.5f; // 치명타율 감소
-                if (calcCrit < 0f)
-                    calcCrit = 0f;
+                    calcCrit -= 0.5f;
 
-                //Debug.Log($"치명타 율 : {calcCrit}");
+                    if (calcCrit < 0f)
+                        calcCrit = 0f;
+                }
             }
+
         }
 
         calcDamage *= Mathf.Max(0f, unit.AtkMult);      // 공격력 계산
