@@ -7,12 +7,16 @@ public class ElectricShockEffect : DurationEffect
 {
     [SerializeField] int mentalAmount;
     [SerializeField] float moveSpeedPercent;
+    [SerializeField] GameObject vfx;
 
 
     public override void Activate()
     {
         target.AddMental(mentalAmount);
         target.AddMoveSpeedMult(-moveSpeedPercent);
+
+        vfx.transform.position = target.transform.position;
+        vfx.SetActive(true);
 
         effectImage = target.ApplyEffectImage(iconSprite, false, 0);
     }
@@ -21,6 +25,8 @@ public class ElectricShockEffect : DurationEffect
     {
         target.AddMental(-mentalAmount);
         target.AddMoveSpeedMult(moveSpeedPercent);
+
+        vfx.SetActive(false);
 
         if (effectImage != null)
         {
@@ -32,6 +38,8 @@ public class ElectricShockEffect : DurationEffect
     public override void Reapply(GameObject effectPrefab)
     {
         base.Reapply(effectPrefab);
+
+        vfx.SetActive(true);
 
         if (effectImage != null)
         {

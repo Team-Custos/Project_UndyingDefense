@@ -66,7 +66,26 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   onAttackFortress:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 6005588856818494454}
+      _MemberName: AttackFortress
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 14
+        _Int: 1
+        _String: Fortress, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onSkillUse:
     _PersistentCalls: []
   targetRule: 0

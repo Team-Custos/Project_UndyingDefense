@@ -376,22 +376,22 @@ public class EnemyUnit : Unit
                     if (path.status != NavMeshPathStatus.PathComplete)
                     {   // 길막힘
 
-                        if (path.status == NavMeshPathStatus.PathPartial)
-                        {
-                            Vector3[] corners = path.corners;
-                            for (int i = 0; i < corners.Length - 1; i++)
-                            {
-                                // Partial 경로는 노란색으로 표시
-                                Debug.DrawLine(corners[i], corners[i + 1], Color.yellow);
-                            }
+                        //if (path.status == NavMeshPathStatus.PathPartial)
+                        //{
+                        //    Vector3[] corners = path.corners;
+                        //    for (int i = 0; i < corners.Length - 1; i++)
+                        //    {
+                        //        // Partial 경로는 노란색으로 표시
+                        //        Debug.DrawLine(corners[i], corners[i + 1], Color.yellow);
+                        //    }
 
-                            if (corners.Length > 0)
-                            {
-                                // 경로가 끊긴 마지막 지점(막힌 곳)에 빨간색 수직선 표시
-                                Vector3 endPoint = corners[corners.Length - 1];
-                                Debug.DrawRay(endPoint, Vector3.up * 3f, Color.red);
-                            }
-                        }
+                        //    if (corners.Length > 0)
+                        //    {
+                        //        // 경로가 끊긴 마지막 지점(막힌 곳)에 빨간색 수직선 표시
+                        //        Vector3 endPoint = corners[corners.Length - 1];
+                        //        Debug.DrawRay(endPoint, Vector3.up * 3f, Color.red);
+                        //    }
+                        //}
 
                         SearchReachableTargets(unitStats.sightRange, enemyLayer);
                         if (targets.Count > 0)

@@ -39,6 +39,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1974668887388968159}
     m_Modifications:
+    - target: {fileID: -8998121551933104840, guid: 3a0a4b2eada76a6409166ef0631b83b4,
+        type: 3}
+      propertyPath: targetLayerMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: -8998121551933104840, guid: 3a0a4b2eada76a6409166ef0631b83b4,
+        type: 3}
+      propertyPath: onSkillUse._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4887701372474759928, guid: 3a0a4b2eada76a6409166ef0631b83b4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -349,6 +359,51 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 171657414111301912}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._MemberName
+      value: AttackFortress
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Int
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._Type
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005588856818494454, guid: 27ccde4d02ab070419bf0fd5a77fd049,
+        type: 3}
+      propertyPath: onAttackFortress._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._String
+      value: Fortress, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 8675126071776639299, guid: 27ccde4d02ab070419bf0fd5a77fd049,
         type: 3}
       propertyPath: m_Name
@@ -625,6 +680,11 @@ PrefabInstance:
         type: 3}
       propertyPath: unitId
       value: moor_3Medic
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
+        type: 3}
+      propertyPath: mission
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7594603170829108628, guid: 62ba26cf95997ba469d44a0b8a93bc48,
         type: 3}

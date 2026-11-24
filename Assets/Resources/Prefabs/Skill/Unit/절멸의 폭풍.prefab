@@ -73,8 +73,85 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 5559337073386126002}
+      _MemberName: ShowVFX
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 13
+        _Int: 0
+        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 7507738300287501557, guid: f194b858916c7f1469ffa82fe96548d7,
+          type: 3}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onAttackFortress:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 5559337073386126002}
+      _MemberName: AttackFortress
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 14
+        _Int: 1
+        _String: Fortress, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 5559337073386126002}
+      _MemberName: ShowVFX
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: Unit, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 13
+        _Int: 0
+        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 7507738300287501557, guid: f194b858916c7f1469ffa82fe96548d7,
+          type: 3}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onSkillUse:
     _PersistentCalls: []
   targetRule: 0

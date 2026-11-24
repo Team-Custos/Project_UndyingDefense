@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2669028289171097528}
   - component: {fileID: 4006689667836875068}
   m_Layer: 0
-  m_Name: "\uC12C\uB729\uD55C \uD478\uB2E5\uAC70\uB9AC VFX"
+  m_Name: "\uC12C\uB729\uD55C \uD478\uB2E5\uAC70\uB9AC VFx"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6995037731894403593}
+  - {fileID: 5599826865175745700}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4006689667836875068
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ed8f66f65d3f24faa2d069a57d2c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durationTime: 5
+  durationTime: 6
 --- !u!1001 &8322665419545104878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,6 +114,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4482938463084381514, guid: ac75542d0dcb04e4f92a3fc4f5b8ca42,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5085861383855713363, guid: ac75542d0dcb04e4f92a3fc4f5b8ca42,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -134,9 +139,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac75542d0dcb04e4f92a3fc4f5b8ca42, type: 3}
---- !u!4 &6995037731894403593 stripped
+--- !u!4 &5599826865175745700 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1338503515507323879, guid: ac75542d0dcb04e4f92a3fc4f5b8ca42,
+  m_CorrespondingSourceObject: {fileID: 4482938463084381514, guid: ac75542d0dcb04e4f92a3fc4f5b8ca42,
     type: 3}
   m_PrefabInstance: {fileID: 8322665419545104878}
   m_PrefabAsset: {fileID: 0}
