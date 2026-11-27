@@ -61,6 +61,7 @@ public class AllyUnitSpawner : MonoBehaviour, IInputClick, IInputUnitSpawn
     [SerializeField] private AudioClip allySummon;
 
     public UltEvent<Unit, DurationEffect> onUnitAddEffect;
+    public UltEvent<Unit> onUnitDead;
 
     public AllyUnitData[] Units => units;
 

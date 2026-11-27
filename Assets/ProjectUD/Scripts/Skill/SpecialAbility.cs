@@ -49,7 +49,7 @@ public class SpecialAbility : MonoBehaviour
         this.unit = unit;
     }
 
-    public virtual void Remove(Unit unit)
+    public virtual void Remove()
     {
         
     }
@@ -121,7 +121,7 @@ public class SpecialAbility : MonoBehaviour
         {
             target.AddEffect(effect, target, Vector3.zero);
             target.AddVFX(vfx, target.transform.position, true, target.VfxScaleMult(target.Data.Tier));
-            SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
+            //SoundManager.Instance.PlaySFX(audioClip, target.transform.position);
         }
     }
 
@@ -201,13 +201,5 @@ public class SpecialAbility : MonoBehaviour
 
         auraVFX.transform.localScale = Vector3.one * unit.VfxScaleMult(unit.Data.Tier);
     }
-
-    public void SpawnEnemyUnit(EnemyUnit enemyUnit, Unit target, EnemyUnitData[] enemyDatas)
-    {
-        int randomIndex = Random.Range(0, enemyDatas.Length);
-
-        enemyUnit.EnemySpawner.SpawnEnemy(enemyDatas[randomIndex], target.transform.position);
-    }
-
 
 }

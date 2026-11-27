@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UltEvents;
 using UnityEngine;
 
 public class EnemyUnitSpawner : MonoBehaviour
@@ -47,8 +48,11 @@ public class EnemyUnitSpawner : MonoBehaviour
     private Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>> poolDic =
         new Dictionary<EnemyUnitData, ObjectPoolWithList<EnemyUnit>>();
 
+    public AllyUnitSpawner AllySpawner => allyUnitSpawner;
     public bool IsSpawnEnd => isSpawnEnd;
     public int ActivateEnemyCount => activateEnemyCount;
+
+    public UltEvent<Unit> onUnitDead;
 
 
     private void Update()
@@ -85,6 +89,9 @@ public class EnemyUnitSpawner : MonoBehaviour
                     
 
                 SpawnEnemy(enemyData, pos);
+                enemySpawnVfx.transform.position = pos;
+                enemySpawnVfx.gameObject.SetActive(true);
+                //enemySpawnVfx.Play();
 
                 spawnDataEnemyCount++;
                 spawnCount++;
@@ -174,18 +181,11 @@ public class EnemyUnitSpawner : MonoBehaviour
         enemyUnit.gameObject.SetActive(true);
         SoundManager.Instance.PlaySFX(enmeySpawnSfx, enemyUnit.transform.position);
 
-
-        enemySpawnVfx.transform.position = pos;
-        enemySpawnVfx.gameObject.SetActive(true);
-
         if(data == immortalityEnemy)
         {
             Debug.Log("영생 유닛 소환");
             allyUnitSpawner.SetImmortalityUnit(enemyUnit);
         }
-
-
-        enemySpawnVfx.Play();
 
         activateEnemyCount++;
     }

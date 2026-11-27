@@ -22,7 +22,7 @@ public class ClearCurseEffectAbility : SpecialAbility
         }
     }
 
-    public override void Remove(Unit unit)
+    public override void Remove()
     {
         //base.Remove(unit);
 

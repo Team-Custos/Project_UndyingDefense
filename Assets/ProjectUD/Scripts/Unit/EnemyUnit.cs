@@ -34,6 +34,7 @@ public class EnemyUnit : Unit
     private EnemyUnitData data;
     private ObjectPoolWithList<EnemyUnit> pool;
     private EnemyUnitSpawner enemySpawner;
+    //private AllyUnitSpawner allySpawner;
 
     private State state;
     //private AIStance aiStance;
@@ -54,6 +55,7 @@ public class EnemyUnit : Unit
 
     public override UnitData Data => data;
     public EnemyUnitSpawner EnemySpawner => enemySpawner;
+    //public AllyUnitSpawner AllySpawner => allySpawner;
 
     [SerializeField] private AudioClip[] enemyDeadSFX;
 
@@ -301,6 +303,8 @@ public class EnemyUnit : Unit
                             MoveTo(fortressPos);
                         else if (state == State.DEAD)
                         {
+                            enemySpawner.onUnitDead?.Invoke(this);
+
                             gameObject.SetActive(false);
                             pool.Pool.Release(this);
                         }
@@ -849,13 +853,10 @@ public class EnemyUnit : Unit
 
         SoundManager.Instance.PlaySFX(this.transform.position, enemyDeadSFX);
 
-        // 상태를 변경하고 에니메이션을 변경
-
         AddVFX(UnitDeathVFX.GetComponent<ParticleSystem>());
         AddVFX(CoinDropVFX.GetComponent<ParticleSystem>());
 
         enemySpawner.OnEnemyDead(data, this);
-
     }
 
 

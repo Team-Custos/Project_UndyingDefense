@@ -117,6 +117,7 @@ public abstract class Unit : MonoBehaviour
 
     private bool hasIgnoreDefenseType = false; // 방어 상성 무시 여부
 
+
     public bool HasIgnoreDefenseType
     {
         get => hasIgnoreDefenseType;
@@ -1429,6 +1430,9 @@ public abstract class Unit : MonoBehaviour
 
         PlayAnimation("Die");
         //modelAnimator.SetTrigger("Die");
+
+        if (SpecialAbility != null)
+            SpecialAbility.Remove();
 
         if (selectedUnitManager != null)
             selectedUnitManager.OnSelectedUnitDead(this);

@@ -5,6 +5,7 @@ public class IntimidatedEffect : StackEffect
     [Header("■ Intimidated Options")]
     [SerializeField] private float damageTakenPercent;
     [SerializeField] private int mentalAmount;
+    [SerializeField] private AudioClip sfx;
 
     [Header("■ Max Stack")]
     [SerializeField] private GameObject maxStackEffectPrefab;
@@ -19,6 +20,7 @@ public class IntimidatedEffect : StackEffect
     {
         base.Activate();
         effectImage = target.ApplyEffectImage(iconSprite, true, stack);
+        SoundManager.Instance.PlaySFX(sfx, target.transform.position);
     }
 
     protected override void OnMaxStack()
@@ -43,6 +45,7 @@ public class IntimidatedEffect : StackEffect
     public override void Reapply(GameObject effectPrefab)
     {
         base.Reapply(effectPrefab);
+        SoundManager.Instance.PlaySFX(sfx, target.transform.position);
 
         if (effectImage != null)
         {

@@ -22,6 +22,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
     [SerializeField] private UltEvent<Unit, Unit> onActivate; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit, Fortress> onAttackFortress; // 발동했을 때 실행할 이벤트
     [SerializeField] private UltEvent<Unit> onSkillUse; // 스킬 사용 시 실행할 이벤트
+
     [SerializeField] private TargetRule targetRule; // 타겟 선정 방식
 
     protected float coolTimeCheck;
@@ -84,7 +85,7 @@ public abstract class SkillBase : MonoBehaviour // 모든 스킬의 부모 클�
         coolTimeCheck = Data.CoolTime;
     }
 
-    protected virtual void Update()
+    public virtual void Update()
     {
         if (!IsCoolDown && isCoolTimeOn)
             coolTimeCheck += Time.deltaTime;

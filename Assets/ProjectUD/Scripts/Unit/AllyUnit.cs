@@ -270,6 +270,8 @@ public class AllyUnit : Unit
                     }
                     else
                     {
+                        spawner.onUnitDead?.Invoke(this);
+
                         gameObject.SetActive(false);
                         pool.Pool.Release(this);
                     }
@@ -856,7 +858,7 @@ public class AllyUnit : Unit
             isUpgrade = false;
 
             if (SpecialAbility != null)
-                SpecialAbility.Remove(this);
+                SpecialAbility.Remove();
 
             pool.Pool.Release(this);
             gameObject.SetActive(false);
@@ -1001,9 +1003,6 @@ public class AllyUnit : Unit
         {
             base.RemoveStun();
         }
-
-        if (SpecialAbility != null)
-            SpecialAbility.Remove(this);
 
         state = State.DEAD;
 
