@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class CommandSkillBtnUI : MonoBehaviour
@@ -86,7 +87,9 @@ public class CommandSkillBtnUI : MonoBehaviour
         {
             unlockButton.onClick.AddListener(() =>
             {
-                warningMessage.AddMessage("해당 계급이 되어야 스킬을 해금할 수 있습니다.");
+                // 해당 등급 달성 후 스킬 해금 가능 메세지
+                string warningMessageText = LocalizationSettings.StringDatabase.GetLocalizedString("LobbyUI", "MSG_noRank", LocalizationSettings.SelectedLocale);
+                warningMessage.AddMessage(warningMessageText);  // LobbyUI MSG_noRank
             });
         }
     }

@@ -221,7 +221,7 @@ public class SettingManager : Singleton<SettingManager>
         SetMute(false);
         SetFullScreen(true);
         SetResolution(0); // 1920x1080으로 초기화 (드롭다운 인덱스 0)
-        ChangeLanguage(DEFAULT_LOCALE);
+        //ChangeLanguage(DEFAULT_LOCALE);       // 언어와 초기값 설정은 별개로 기획_261128
         // 품질은 높음으로 초기화
         SetQualityLevel(QualitySettings.names.Length - 1); // 가장 높은 품질
         Debug.Log($"SettingManager.ResetToDefault() - QualityLevel: {QualitySettings.GetQualityLevel()}");

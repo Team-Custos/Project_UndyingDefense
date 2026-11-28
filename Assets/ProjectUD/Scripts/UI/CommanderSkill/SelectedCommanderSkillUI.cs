@@ -78,7 +78,8 @@ public class SelectedCommanderSkillUI : MonoBehaviour
                 return true;
             }
         }
-        warningMessage.AddMessage("모든 슬롯이 채워져 있습니다!");
+        string warningMessageText = LocalizationSettings.StringDatabase.GetLocalizedString("LobbyUI", "MSG_noSlots", LocalizationSettings.SelectedLocale);
+        warningMessage.AddMessage(warningMessageText); // LobbyUI MSG_noSlots
         return false;
     }
 
